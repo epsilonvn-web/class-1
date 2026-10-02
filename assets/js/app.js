@@ -1555,9 +1555,25 @@
   }
 
   async function updateInstallVisibility() {
-    // Nút mặc định ẩn trong HTML; chỉ hiện sau khi xác định app chưa được cài.
+    // Nút mặc định ẩn trong HTML. Với Chromium desktop, chỉ hiện khi chính
+    // trình duyệt phát beforeinstallprompt (nghĩa là app đang thực sự có thể cài).
+    // Sau khi đã cài, Chrome không phát lại sự kiện này ở lần tải trang kế tiếp,
+    // nên nút tự ẩn kể cả khi website được mở trong tab Chrome bình thường.
     const installed = await detectInstalledPwa();
-    el.installButton.classList.toggle("hidden", installed);
+    if (installed) {
+      el.installButton.classList.add("hidden");
+      return;
+    }
+
+    const env = getInstallEnvironment();
+    if (env.isChromium) {
+      el.installButton.classList.toggle("hidden", !state.installPrompt);
+      return;
+    }
+
+    // iOS/Safari/Firefox không dùng beforeinstallprompt ổn định; vẫn giữ nút
+    // để mở hướng dẫn cài thủ công theo đúng đặc tả.
+    el.installButton.classList.remove("hidden");
   }
 
   function formatDate(value) {
