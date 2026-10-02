@@ -187,17 +187,34 @@
 
   function readStoredToken() {
     try {
-      return String(window.localStorage.getItem(TOKEN_STORAGE_KEY) || "").trim();
+      const token = String(window.localStorage.getItem(TOKEN_STORAGE_KEY) || "").trim();
+      if (token) return token;
+    } catch (_) {}
+    try {
+      return String(window.sessionStorage.getItem(TOKEN_STORAGE_KEY) || "").trim();
     } catch (_) {
       return "";
     }
   }
 
   function storeToken(token) {
+    let stored = false;
     try {
-      if (token) window.localStorage.setItem(TOKEN_STORAGE_KEY, token);
-      else window.localStorage.removeItem(TOKEN_STORAGE_KEY);
+      if (token) {
+        window.localStorage.setItem(TOKEN_STORAGE_KEY, token);
+        stored = String(window.localStorage.getItem(TOKEN_STORAGE_KEY) || "") === String(token);
+      } else {
+        window.localStorage.removeItem(TOKEN_STORAGE_KEY);
+        stored = true;
+      }
     } catch (_) {}
+
+    // Fallback cho môi trường trình duyệt chặn localStorage. sessionStorage vẫn sống qua F5.
+    try {
+      if (token && !stored) window.sessionStorage.setItem(TOKEN_STORAGE_KEY, token);
+      else window.sessionStorage.removeItem(TOKEN_STORAGE_KEY);
+    } catch (_) {}
+    return stored;
   }
 
   function applyAuthData(data, token) {
@@ -311,16 +328,44 @@
     }
 
     state.auth.token = token;
+    state.auth.ready = false;
     updateAccountButton(true);
-    try {
-      const data = await apiRequest("sessionVerify", {}, { token, auth: true });
-      applyAuthData(data, token);
-    } catch (_) {
-      clearAuthState();
-    } finally {
-      state.auth.ready = true;
-      render();
+
+    let lastError = null;
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      try {
+        const data = await apiRequest("sessionVerify", {}, {
+          token,
+          auth: true,
+          keepSessionOnUnauthorized: true
+        });
+        applyAuthData(data, token);
+        state.auth.ready = true;
+        render();
+        return;
+      } catch (err) {
+        lastError = err;
+        if (err && (err.code === "UNAUTHORIZED" || err.code === "ACCOUNT_NOT_FOUND")) {
+          clearAuthState();
+          state.auth.ready = true;
+          render();
+          return;
+        }
+        if (attempt < 2) {
+          await new Promise((resolve) => window.setTimeout(resolve, 900 * (attempt + 1)));
+        }
+      }
     }
+
+    // Lỗi mạng/server tạm thời không được biến thành logout. Giữ token để lần tải sau
+    // còn xác minh lại, nhưng không coi trạng thái client là đã đăng nhập khi server chưa xác nhận.
+    state.auth.token = token;
+    state.auth.user = null;
+    state.auth.access = emptyAccess();
+    state.auth.ready = true;
+    updateAccountButton();
+    render();
+    if (lastError) showToast("Chưa xác minh được phiên đăng nhập. Vui lòng thử lại sau.");
   }
 
   function setScreen(screen) {
