@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="referrer" content="no-referrer">
-  <meta name="theme-color" content="#FEFCF2">
+  <meta name="theme-color" content="#FFFFFF">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -20,13 +20,13 @@
       window.__class1InstallPrompt = null;
     });
   </script>
-  <link rel="manifest" href="manifest.json?v=class1-pwa-6">
+  <link rel="manifest" href="manifest.json?v=class1-core-7">
   <link rel="icon" type="image/jpeg" href="favicon.jpg">
   <link rel="apple-touch-icon" href="icon-192.png">
   <title>Lớp 1 - Cô Thỏ Hồng | Epsilon Edu</title>
   <style>
     :root{
-      --page:#FEFCF2;
+      --page:#FFFFFF;
       --white:#FFFFFF;
       --ink:#344054;
       --muted:#667085;
@@ -136,6 +136,7 @@
     }
     .nav-tab.is-active::after{opacity:1;transform:scaleX(1)}
     .nav-tab.is-active{color:white!important;border-color:transparent!important}
+    .nav-tab.is-locked:not(.is-active)::before{content:"🔒";position:absolute;right:7px;top:6px;font-size:11px;opacity:.72}
 
     .tone-purple{background:#F3E8FF;color:#7C3AED;border-color:#DDD6FE}
     .tone-purple.is-active{background:linear-gradient(90deg,#A855F7,#7C3AED)}
@@ -565,6 +566,73 @@
       font-weight:900;
     }
     .auth-divider{height:1px;background:#FCE7F3;margin:1rem 0}
+    .account-panel,.access-request-panel{display:grid;gap:.75rem}
+    .account-identity{
+      display:grid;grid-template-columns:56px minmax(0,1fr);gap:.7rem;align-items:center;
+      padding:.75rem;border:1px solid #FBCFE8;border-radius:18px;background:linear-gradient(135deg,#FFF7FB,#FAF5FF);
+    }
+    .account-avatar{width:56px;height:56px;border-radius:18px;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid #E9D5FF;font-size:30px;box-shadow:0 4px 12px rgba(76,29,149,.08)}
+    .account-identity strong{display:block;color:#5B216E;font-size:17px;line-height:1.2}
+    .account-identity span{display:block;margin-top:.2rem;color:#667085;font-size:13px;font-weight:900;user-select:text}
+    .account-subtitle{margin:.15rem 0 0;color:#7C3AED;font-size:13px;font-weight:950}
+    .account-access-list,.account-requests{display:grid;gap:.45rem}
+    .account-access-row,.account-request-item{
+      display:flex;align-items:center;justify-content:space-between;gap:.65rem;padding:.58rem .65rem;
+      border:1px solid #E9D5FF;border-radius:14px;background:#fff;
+    }
+    .account-access-row strong,.account-request-item strong{display:block;color:#344054;font-size:13px}
+    .account-access-row span,.account-request-item span{display:block;margin-top:.12rem;color:#667085;font-size:11.5px;font-weight:800}
+    .access-chip{display:inline-flex!important;align-items:center!important;justify-content:center;min-width:66px;min-height:27px;margin:0!important;padding:.18rem .48rem;border-radius:999px;border:1px solid;font-size:11px!important;font-weight:950!important;white-space:nowrap}
+    .access-regular{color:#64748B!important;background:#F8FAFC;border-color:#CBD5E1}
+    .access-trial{color:#0369A1!important;background:#EFF8FF;border-color:#BAE6FD}
+    .access-vip{color:#7E22CE!important;background:#FAF5FF;border-color:#D8B4FE}
+    .access-admin{color:#BE185D!important;background:#FFF1F7;border-color:#F9A8D4}
+    .account-request-empty,.admin-empty{padding:.68rem;border:1px dashed #D8B4FE;border-radius:14px;background:#FAF5FF;color:#667085;font-size:12px;font-weight:800;text-align:center}
+    .account-avatar-control{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:.5rem}
+    .account-avatar-control label{color:#7C3AED;font-size:12px;font-weight:950}
+    .account-avatar-control select,.admin-access-control select{
+      height:38px;border:1px solid #D8B4FE;border-radius:11px;background:#fff;color:#475467;padding:0 .5rem;font-weight:900;outline:none;
+    }
+    .account-actions{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+    .account-actions .wide{grid-column:1/-1}
+    .mini-action{
+      min-height:36px;border:1px solid #D8B4FE;border-radius:11px;background:#fff;color:#7C3AED;padding:.35rem .62rem;font-weight:950;font-size:12px;
+      display:inline-flex;align-items:center;justify-content:center;gap:.35rem;
+    }
+    .mini-action:hover{background:#FAF5FF}
+    .mini-action.positive{color:#047857;border-color:#A7F3D0;background:#ECFDF5}
+    .mini-action.danger{color:#BE123C;border-color:#FECDD3;background:#FFF1F2}
+    .mini-action:disabled{opacity:.65;cursor:wait}
+    .subject-choice-list{display:grid;gap:.5rem}
+    .subject-choice{display:flex;align-items:center;gap:.65rem;padding:.68rem;border:1px solid #E9D5FF;border-radius:15px;background:#fff;cursor:pointer}
+    .subject-choice input{width:18px;height:18px;accent-color:#8B5CF6}
+    .subject-choice strong{display:block;color:#344054;font-size:14px}
+    .subject-choice small{display:block;margin-top:.15rem;color:#667085;font-weight:800}
+    .subject-choice.is-disabled{opacity:.58;cursor:not-allowed;background:#F8FAFC}
+    .access-request-note{margin:0;padding:.65rem;border-radius:14px;background:#FFF7FB;border:1px solid #FBCFE8;color:#667085;font-size:12px;font-weight:800;line-height:1.45}
+
+    .inline-spinner{display:inline-block;width:22px;height:22px;margin:0 auto .45rem;border-radius:50%;border:3px solid #E9D5FF;border-top-color:#8B5CF6;animation:spin .75s linear infinite}
+    .admin-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.65rem;margin-bottom:.8rem}
+    .admin-stat{min-height:92px;padding:.75rem;border:1px solid #E9D5FF;border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(76,29,149,.05)}
+    .admin-stat span{font-size:21px}.admin-stat strong{display:block;margin-top:.18rem;color:#5B216E;font-size:22px}.admin-stat small{display:block;margin-top:.12rem;color:#667085;font-weight:900}
+    .admin-section{margin-top:.8rem;padding:.82rem;border:1px solid #E9D5FF;border-radius:19px;background:rgba(255,255,255,.9);box-shadow:0 5px 15px rgba(76,29,149,.05)}
+    .admin-section-head{display:flex;align-items:center;justify-content:space-between;gap:.65rem;margin-bottom:.65rem}
+    .admin-section-head h2{margin:0;color:#5B216E;font-size:18px}.admin-section-head p{margin:.16rem 0 0;color:#667085;font-size:12px;font-weight:800}
+    .admin-request-list,.admin-user-list{display:grid;gap:.55rem}
+    .admin-request-card{display:flex;align-items:center;justify-content:space-between;gap:.7rem;padding:.68rem;border:1px solid #E9D5FF;border-radius:15px;background:#fff}
+    .admin-request-card strong,.admin-user-head strong{display:block;color:#344054;font-size:13px}.admin-request-card span,.admin-user-head span{display:block;margin-top:.14rem;color:#667085;font-size:11.5px;font-weight:800}
+    .admin-request-actions{display:flex;gap:.4rem;flex:0 0 auto}
+    .admin-search{margin-bottom:.62rem}.admin-search input{width:100%;height:42px;border:1px solid #D8B4FE;border-radius:13px;background:#FAF5FF;padding:0 .75rem;outline:none;font-weight:850;color:#344054}
+    .admin-user-card{padding:.72rem;border:1px solid #E9D5FF;border-radius:16px;background:#fff}
+    .admin-user-head{display:flex;align-items:center;justify-content:space-between;gap:.65rem}
+    .admin-user-controls{display:grid;gap:.42rem;margin-top:.58rem;padding-top:.58rem;border-top:1px solid #F1E8FF}
+    .admin-access-control{display:grid;grid-template-columns:84px minmax(120px,1fr) 66px;gap:.45rem;align-items:center}
+    .admin-access-control label,.admin-reset-control label{color:#667085;font-size:12px;font-weight:950}
+    .admin-reset-control{display:grid;grid-template-columns:84px minmax(160px,1fr) 66px;gap:.45rem;align-items:center}
+    .admin-reset-control input{height:38px;border:1px solid #D8B4FE;border-radius:11px;background:#fff;padding:0 .55rem;font-weight:850;outline:none}
+    .admin-note{margin-top:.55rem;padding:.55rem;border-radius:12px;background:#FFF7FB;color:#667085;font-size:12px;font-weight:800}
+    .dialog-actions{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-top:1rem}
+    .dialog-actions .primary-action,.dialog-actions .secondary-action{margin-top:0;min-width:0}
     .spinner{
       width:17px;height:17px;border-radius:50%;
       border:2px solid rgba(255,255,255,.45);
@@ -895,6 +963,18 @@
       .footer-copy small{font-size:10.5px;}
     }
 
+
+    @media (max-width:767px){
+      .account-actions{grid-template-columns:1fr}
+      .account-actions .wide{grid-column:auto}
+      .admin-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .admin-request-card{align-items:flex-start;flex-direction:column}
+      .admin-request-actions{width:100%}.admin-request-actions .mini-action{flex:1}
+      .admin-user-head{align-items:flex-start}
+      .admin-access-control,.admin-reset-control{grid-template-columns:72px minmax(0,1fr) 62px}
+      .auth-card{width:min(96vw,440px);padding:.9rem .9rem 1rem}
+    }
+
   </style>
 </head>
 <body>
@@ -944,7 +1024,7 @@
       <img class="auth-logo" src="logo-home.jpg" alt="Lớp 1">
       <div id="auth-title" class="auth-name">Cô Thỏ Hồng</div>
 
-      <div class="auth-tabs" role="tablist" aria-label="Tài khoản">
+      <div id="auth-tabs" class="auth-tabs" role="tablist" aria-label="Tài khoản">
         <button id="auth-tab-login" class="auth-tab is-active" type="button">Đăng nhập</button>
         <button id="auth-tab-register" class="auth-tab" type="button">Đăng ký tài khoản</button>
       </div>
@@ -977,6 +1057,37 @@
         <button id="register-submit" class="primary-action" type="submit">Đăng ký ngay</button>
       </form>
 
+      <section id="account-panel" class="account-panel hidden" aria-label="Tài khoản đang đăng nhập">
+        <div class="account-identity">
+          <div id="account-avatar" class="account-avatar" aria-hidden="true">🐰</div>
+          <div><strong id="account-name">Tài khoản Lớp 1</strong><span id="account-id"></span></div>
+        </div>
+        <div class="account-avatar-control">
+          <label for="account-avatar-select">Avatar</label>
+          <select id="account-avatar-select" aria-label="Chọn avatar"></select>
+          <button id="account-avatar-save" class="mini-action" type="button">Lưu</button>
+        </div>
+        <div class="account-subtitle">Quyền học theo môn</div>
+        <div id="account-access-list" class="account-access-list"></div>
+        <div class="account-subtitle">Yêu cầu đang chờ</div>
+        <div id="account-requests" class="account-requests"></div>
+        <div class="account-actions">
+          <button id="account-request-button" class="primary-action wide" type="button">Đăng ký quyền học</button>
+          <button id="account-admin-button" class="secondary-action hidden" type="button">Quản trị</button>
+          <button id="account-logout-button" class="secondary-action" type="button">Đăng xuất</button>
+        </div>
+      </section>
+
+      <section id="access-request-panel" class="access-request-panel hidden" aria-label="Đăng ký quyền học">
+        <div class="account-subtitle">Chọn từ 1 đến 3 môn</div>
+        <p class="access-request-note">Yêu cầu này không tự mở quyền học. Admin sẽ xem và duyệt từng môn.</p>
+        <form id="access-request-form" class="form-stack" novalidate>
+          <div id="access-request-choices" class="subject-choice-list"></div>
+          <button id="access-request-submit" class="primary-action" type="submit">Gửi yêu cầu VIP</button>
+        </form>
+        <button id="access-request-back" class="secondary-action" type="button">← Quay lại tài khoản</button>
+      </section>
+
       <div class="auth-divider"></div>
       <button id="auth-later" class="secondary-action" type="button">Để sau nhé</button>
     </div>
@@ -987,12 +1098,15 @@
       <div id="dialog-icon" class="dialog-icon">🐰</div>
       <h3 id="dialog-title">Thông báo</h3>
       <p id="dialog-message"></p>
-      <button id="dialog-ok" class="primary-action" type="button">OK</button>
+      <div class="dialog-actions">
+        <button id="dialog-secondary" class="secondary-action hidden" type="button"></button>
+        <button id="dialog-ok" class="primary-action" type="button">OK</button>
+      </div>
     </div>
   </div>
 
   <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
 
-  <script src="assets/js/app.js?v=class1-pwa-6"></script>
+  <script src="assets/js/app.js?v=class1-core-7"></script>
 </body>
 </html>
