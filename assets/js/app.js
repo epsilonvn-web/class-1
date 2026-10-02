@@ -712,11 +712,14 @@
       return;
     }
 
-    // Với Chromium, nút bình thường chỉ được hiện khi prompt native đã sẵn sàng.
-    // Nhánh này chỉ là bảo vệ trong trường hợp trạng thái đổi giữa lúc render và lúc bấm.
+    // Chrome/Edge vẫn giữ nút Cài App ở Trang chủ. Nếu trình duyệt chưa cấp
+    // beforeinstallprompt cho phiên hiện tại, hướng dẫn đường cài native của Chrome.
     if (env.isChromium) {
-      showToast("Trình cài đặt đang được Chrome chuẩn bị. Vui lòng thử lại sau ít phút.");
-      updateInstallVisibility();
+      showDialog(
+        "Cài App",
+        "Chrome chưa mở hộp cài trực tiếp cho phiên này. Chọn menu ⋮ → Cast, save and share → Install page as app để cài Lớp 1.",
+        "🖥️"
+      );
       return;
     }
 
@@ -730,11 +733,9 @@
   function updateInstallVisibility() {
     const standalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
     const outsideHome = state.screen !== "home";
-    const env = getInstallEnvironment();
-    const directReady = !!state.installPrompt || typeof navigator.install === "function";
-    const needsGuidedFallback = env.isIOS || env.isSafari || (env.isFirefox && env.isWindows);
-    const shouldShow = !standalone && !outsideHome && (directReady || needsGuidedFallback);
-    el.installButton.classList.toggle("hidden", !shouldShow);
+    // Nút Cài App luôn hiện ở Trang chủ theo đặc tả. Chỉ ẩn khi đang chạy
+    // ở chế độ đã cài hoặc khi người dùng đã rời Trang chủ.
+    el.installButton.classList.toggle("hidden", standalone || outsideHome);
   }
 
   function escapeHtml(value) {
