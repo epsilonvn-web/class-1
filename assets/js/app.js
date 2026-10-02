@@ -1,6 +1,8 @@
 (() => {
   "use strict";
 
+  const API_URL = "https://script.google.com/macros/s/AKfycbx74jCwq-XWlHDQWP-EMWd_Jqfbgd8AwflgpSY_vVCu5eI-ShWh7AXgX-Sl3aL0XTs2og/exec";
+
   // BẢN KHUNG GIAO DIỆN LỚP 1
   // Chưa kết nối học liệu, tiến độ, quyền học hoặc backend tài khoản.
   // Không lưu mật khẩu / role / quyền trên trình duyệt.
