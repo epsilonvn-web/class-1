@@ -595,6 +595,27 @@
     }
     .account-actions{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
     .account-actions .wide{grid-column:1/-1}
+    .account-page{display:grid;gap:.78rem;max-width:980px;margin:0 auto}
+    .account-page-hero{
+      display:grid;grid-template-columns:72px minmax(0,1fr);gap:.85rem;align-items:center;
+      padding:1rem 1.05rem;border:1px solid #FBCFE8;border-radius:22px;
+      background:linear-gradient(135deg,#FFF7FB 0%,#FAF5FF 100%);box-shadow:0 6px 16px rgba(76,29,149,.06);
+    }
+    .account-page-avatar{width:72px;height:72px;border-radius:22px;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid #E9D5FF;font-size:38px;box-shadow:0 5px 13px rgba(76,29,149,.08)}
+    .account-page-hero strong{display:block;color:#5B216E;font-size:23px;line-height:1.18}
+    .account-page-hero span{display:block;margin-top:.22rem;color:#667085;font-size:14px;font-weight:900;user-select:text}
+    .account-page-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:.75rem}
+    .account-section{padding:.9rem;border:1px solid #E9D5FF;border-radius:19px;background:rgba(255,255,255,.9);box-shadow:0 5px 15px rgba(76,29,149,.045)}
+    .account-section h2{margin:0 0 .62rem;color:#5B216E;font-size:18px}
+    .account-section p{margin:.1rem 0 .65rem;color:#667085;font-size:12.5px;font-weight:800;line-height:1.45}
+    .account-inline-control{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.5rem;align-items:center}
+    .account-inline-control input,.account-inline-control select{width:100%;height:42px;border:1px solid #D8B4FE;border-radius:12px;background:#fff;color:#344054;padding:0 .68rem;font-weight:850;outline:none}
+    .account-inline-control input:focus,.account-inline-control select:focus{border-color:#A855F7;box-shadow:0 0 0 3px rgba(168,85,247,.09)}
+    .account-field-label{display:block;margin:0 0 .28rem;color:#7C3AED;font-size:12.5px;font-weight:950}
+    .account-field-block + .account-field-block{margin-top:.65rem}
+    .account-page-actions{display:grid;grid-template-columns:2fr 1fr 1fr;gap:.55rem}
+    .account-page-actions .primary-action,.account-page-actions .secondary-action{min-height:46px}
+    .account-request-page{max-width:760px;margin:0 auto;display:grid;gap:.7rem}
     .mini-action{
       min-height:36px;border:1px solid #D8B4FE;border-radius:11px;background:#fff;color:#7C3AED;padding:.35rem .62rem;font-weight:950;font-size:12px;
       display:inline-flex;align-items:center;justify-content:center;gap:.35rem;
@@ -967,6 +988,14 @@
     @media (max-width:767px){
       .account-actions{grid-template-columns:1fr}
       .account-actions .wide{grid-column:auto}
+      .account-page{gap:.62rem}
+      .account-page-hero{grid-template-columns:58px minmax(0,1fr);padding:.78rem;border-radius:18px}
+      .account-page-avatar{width:58px;height:58px;border-radius:18px;font-size:31px}
+      .account-page-hero strong{font-size:20px}
+      .account-page-grid{grid-template-columns:1fr}
+      .account-section{padding:.75rem;border-radius:17px}
+      .account-inline-control{grid-template-columns:1fr auto}
+      .account-page-actions{grid-template-columns:1fr}
       .admin-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
       .admin-request-card{align-items:flex-start;flex-direction:column}
       .admin-request-actions{width:100%}.admin-request-actions .mini-action{flex:1}
@@ -1057,37 +1086,6 @@
         <button id="register-submit" class="primary-action" type="submit">Đăng ký ngay</button>
       </form>
 
-      <section id="account-panel" class="account-panel hidden" aria-label="Tài khoản đang đăng nhập">
-        <div class="account-identity">
-          <div id="account-avatar" class="account-avatar" aria-hidden="true">🐰</div>
-          <div><strong id="account-name">Tài khoản Lớp 1</strong><span id="account-id"></span></div>
-        </div>
-        <div class="account-avatar-control">
-          <label for="account-avatar-select">Avatar</label>
-          <select id="account-avatar-select" aria-label="Chọn avatar"></select>
-          <button id="account-avatar-save" class="mini-action" type="button">Lưu</button>
-        </div>
-        <div class="account-subtitle">Quyền học theo môn</div>
-        <div id="account-access-list" class="account-access-list"></div>
-        <div class="account-subtitle">Yêu cầu đang chờ</div>
-        <div id="account-requests" class="account-requests"></div>
-        <div class="account-actions">
-          <button id="account-request-button" class="primary-action wide" type="button">Đăng ký quyền học</button>
-          <button id="account-admin-button" class="secondary-action hidden" type="button">Quản trị</button>
-          <button id="account-logout-button" class="secondary-action" type="button">Đăng xuất</button>
-        </div>
-      </section>
-
-      <section id="access-request-panel" class="access-request-panel hidden" aria-label="Đăng ký quyền học">
-        <div class="account-subtitle">Chọn từ 1 đến 3 môn</div>
-        <p class="access-request-note">Yêu cầu này không tự mở quyền học. Admin sẽ xem và duyệt từng môn.</p>
-        <form id="access-request-form" class="form-stack" novalidate>
-          <div id="access-request-choices" class="subject-choice-list"></div>
-          <button id="access-request-submit" class="primary-action" type="submit">Gửi yêu cầu VIP</button>
-        </form>
-        <button id="access-request-back" class="secondary-action" type="button">← Quay lại tài khoản</button>
-      </section>
-
       <div class="auth-divider"></div>
       <button id="auth-later" class="secondary-action" type="button">Để sau nhé</button>
     </div>
@@ -1107,6 +1105,6 @@
 
   <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
 
-  <script src="assets/js/app.js?v=class1-core-7"></script>
+  <script src="assets/js/app.js?v=class1-core-8"></script>
 </body>
 </html>
