@@ -4,6 +4,7 @@
   const API_URL = "https://script.google.com/macros/s/AKfycbx74jCwq-XWlHDQWP-EMWd_Jqfbgd8AwflgpSY_vVCu5eI-ShWh7AXgX-Sl3aL0XTs2og/exec";
   const TOKEN_STORAGE_KEY = "epsilon_class1_session_v1";
   const API_TIMEOUT_MS = 60000;
+  const INSTALL_FLAG_KEY = "epsilon_class1_pwa_installed_v1";
 
   const HOME_TABS = [
     { id: "class1", label: "Lớp 1", icon: "🎒", tone: "purple" },
@@ -1462,9 +1463,46 @@
     return { isIOS, isMac, isWindows, isFirefox, isEdge, isChromium, isSafari };
   }
 
+  function isStandalonePwa() {
+    return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+  }
+
+  function readInstallFlag() {
+    try { return localStorage.getItem(INSTALL_FLAG_KEY) === "1"; }
+    catch (_) { return false; }
+  }
+
+  function writeInstallFlag(installed) {
+    try {
+      if (installed) localStorage.setItem(INSTALL_FLAG_KEY, "1");
+      else localStorage.removeItem(INSTALL_FLAG_KEY);
+    } catch (_) {}
+  }
+
+  async function detectInstalledPwa() {
+    if (isStandalonePwa()) {
+      writeInstallFlag(true);
+      return true;
+    }
+
+    // Chrome/Edge mới có thể xác định PWA cùng origin đã được cài, kể cả khi
+    // người dùng đang mở website trong tab trình duyệt thay vì cửa sổ app.
+    if (typeof navigator.getInstalledRelatedApps === "function") {
+      try {
+        const related = await navigator.getInstalledRelatedApps();
+        const installed = Array.isArray(related) && related.some((app) => app && app.platform === "webapp");
+        writeInstallFlag(installed);
+        return installed;
+      } catch (_) {
+        // Trình duyệt/nguồn hiện tại không hỗ trợ kiểm tra; dùng cờ local làm fallback UX.
+      }
+    }
+
+    return readInstallFlag();
+  }
+
   async function handleInstall() {
-    const standalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
-    if (standalone) {
+    if (await detectInstalledPwa()) {
       showToast("Lớp 1 đã được cài trên thiết bị này.");
       updateInstallVisibility();
       return;
@@ -1473,6 +1511,7 @@
     if (typeof navigator.install === "function") {
       try {
         await navigator.install();
+        writeInstallFlag(true);
         showToast("Đang mở trình cài Lớp 1…");
       } catch (_) {}
       updateInstallVisibility();
@@ -1486,7 +1525,10 @@
       try {
         await promptEvent.prompt();
         const choice = await promptEvent.userChoice.catch(() => null);
-        if (choice && choice.outcome === "accepted") showToast("Đang cài Lớp 1…");
+        if (choice && choice.outcome === "accepted") {
+          writeInstallFlag(true);
+          showToast("Đang cài Lớp 1…");
+        }
       } catch (_) {}
       updateInstallVisibility();
       return;
@@ -1512,9 +1554,10 @@
     showDialog({ title: "Cài App", message: "Trình duyệt này chưa hỗ trợ mở hộp cài trực tiếp. Hãy dùng chức năng thêm trang web thành ứng dụng của trình duyệt.", icon: "📲" });
   }
 
-  function updateInstallVisibility() {
-    const standalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
-    el.installButton.classList.toggle("hidden", standalone);
+  async function updateInstallVisibility() {
+    // Nút mặc định ẩn trong HTML; chỉ hiện sau khi xác định app chưa được cài.
+    const installed = await detectInstalledPwa();
+    el.installButton.classList.toggle("hidden", installed);
   }
 
   function formatDate(value) {
@@ -1581,12 +1624,15 @@
 
   window.addEventListener("beforeinstallprompt", (event) => {
     event.preventDefault();
+    // Nếu sự kiện này xuất hiện thì trình duyệt đang coi app là chưa cài.
+    writeInstallFlag(false);
     state.installPrompt = event;
     window.__class1InstallPrompt = event;
     updateInstallVisibility();
   });
 
   window.addEventListener("appinstalled", () => {
+    writeInstallFlag(true);
     state.installPrompt = null;
     window.__class1InstallPrompt = null;
     updateInstallVisibility();
