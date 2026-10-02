@@ -1,6 +1,6 @@
 // Lớp 1 — PWA service worker
 // Network-first cho app shell; bỏ qua Apps Script/cross-origin và dữ liệu học động.
-const CACHE_NAME = 'epsilon-class1-runtime-v5';
+const CACHE_NAME = 'epsilon-class1-runtime-v6';
 const APP_SHELL = [
   './',
   './index.html',

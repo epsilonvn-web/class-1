@@ -8,7 +8,19 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <link rel="manifest" href="manifest.json?v=class1-pwa-3">
+  <script>
+    // Bắt lời mời cài PWA càng sớm càng tốt để nút Cài App không bỏ lỡ sự kiện của Chromium.
+    window.__class1InstallPrompt = null;
+    window.addEventListener("beforeinstallprompt", (event) => {
+      event.preventDefault();
+      window.__class1InstallPrompt = event;
+      window.dispatchEvent(new Event("class1-install-ready"));
+    });
+    window.addEventListener("appinstalled", () => {
+      window.__class1InstallPrompt = null;
+    });
+  </script>
+  <link rel="manifest" href="manifest.json?v=class1-pwa-4">
   <link rel="icon" type="image/jpeg" href="favicon.jpg">
   <title>Lớp 1 - Cô Thỏ Hồng | Epsilon Edu</title>
   <style>
@@ -894,7 +906,7 @@
       <nav id="primary-nav" class="primary-nav" aria-label="Các tab chính"></nav>
 
       <div class="header-tools">
-        <button id="install-button" class="tool-btn install-btn" type="button">Cài App</button>
+        <button id="install-button" class="tool-btn install-btn hidden" type="button">Cài App</button>
         <div id="score-box" class="score-box hidden" aria-label="Thống kê đúng sai">
           <span class="good">★ Đúng</span><strong class="good">0</strong>
           <span class="bad">★ Sai</span><strong class="bad">0</strong>
@@ -980,6 +992,6 @@
 
   <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
 
-  <script src="assets/js/app.js?v=class1-pwa-3"></script>
+  <script src="assets/js/app.js?v=class1-pwa-4"></script>
 </body>
 </html>
