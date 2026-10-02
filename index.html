@@ -8,7 +8,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="manifest.json?v=class1-pwa-2">
   <link rel="icon" type="image/jpeg" href="favicon.jpg">
   <title>Lớp 1 - Cô Thỏ Hồng | Epsilon Edu</title>
   <style>
@@ -654,7 +654,8 @@
       .subject-card .card-title{font-size:19px}
       .subject-card .card-desc{font-size:15px}
       .app-footer{margin-top:-.6rem;padding-bottom:0}
-      .footer-copy{font-size:11px}
+      .content-stage:has(> .card-grid) + .app-footer{margin-top:0}
+      .footer-copy{font-size:11px;transform:none}
       .footer-copy small{font-size:9px}
       .auth-logo{width:225px;max-width:74%}
     }
@@ -749,8 +750,11 @@
 
     /* Chỉ màn hình môn học: hàng card cuối hơi chờm lên footer như ảnh mẫu. */
     .content-stage:has(> .card-grid){
-      /* Kéo footer lên dưới hàng card cuối để card chờm vào vùng hoa/bướm vừa phải. */
+      /* Màn hình môn học: card cuối chạm chân trang, không chờm vào ảnh footer. */
       padding-bottom:0;
+    }
+    .content-stage:has(> .card-grid) + .app-footer{
+      margin-top:0;
     }
 
     @media (max-width:767px){
@@ -765,6 +769,117 @@
       .card-grid .content-card .card-title{font-size:17px;}
       .card-grid .content-card .card-desc{font-size:14px;}
       .content-stage:has(> .card-grid){padding-bottom:0;}
+    }
+
+
+    /* Mobile: chu lon hon + 3 tab moi hang (Trang chu va man hinh mon hoc) */
+    @media (max-width:767px){
+      .primary-nav{
+        display:grid;
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        grid-auto-flow:row;
+        grid-auto-columns:auto;
+        gap:.42rem;
+        overflow:visible;
+        padding-bottom:2px;
+      }
+      .nav-tab{
+        width:100%;
+        min-width:0;
+        min-height:64px;
+        padding:.42rem .28rem;
+        border-radius:15px;
+        flex-direction:column;
+        gap:.2rem;
+        font-size:15px;
+        line-height:1.12;
+      }
+      .nav-tab .tab-icon{font-size:21px}
+
+      .tool-btn{font-size:14px;font-weight:950}
+      .install-btn{min-width:82px}
+
+      .section-heading h1{font-size:26px}
+      .section-heading p{font-size:16px;line-height:1.42}
+
+      .subject-card{
+        min-height:146px;
+        padding:1rem;
+      }
+      .subject-card .card-icon{
+        width:48px;height:48px;flex-basis:48px;
+        font-size:26px;
+      }
+      .subject-card .card-title{font-size:22px;line-height:1.18}
+      .subject-card .card-desc{font-size:17px;line-height:1.38}
+      .subject-card .badge{
+        min-height:30px;
+        padding:.3rem .65rem;
+        font-size:14px;
+      }
+      .subject-card .arrow{width:34px;height:34px;flex-basis:34px;font-size:18px}
+
+      .subject-profile-card{
+        min-height:64px;
+        padding:.62rem .72rem;
+      }
+      .subject-profile-icon{
+        width:38px;height:38px;flex-basis:38px;
+        font-size:20px;
+      }
+      .subject-profile-title{font-size:16px}
+      .subject-profile-note{font-size:13px}
+      .subject-profile-arrow{width:30px;height:30px;flex-basis:30px;font-size:15px}
+
+      .card-grid .content-card .card-title{font-size:18px}
+      .card-grid .content-card .card-desc{font-size:15.5px}
+      .card-grid .content-card .badge{font-size:13px}
+      .learning-profile-stat strong{font-size:15px}
+      .learning-profile-stat span{font-size:14px}
+      .learning-profile-empty{font-size:15px}
+    }
+
+
+    /* Tinh chinh co chu desktop/tablet + muc hoc - 2026-10-02 */
+    @media (min-width:768px){
+      .nav-tab{font-size:17px;line-height:1.1;}
+      .nav-tab .tab-icon{font-size:25px;}
+      .tool-btn{font-size:15px;}
+      .section-heading p{font-size:17px;}
+
+      .subject-card .card-icon{width:56px;height:56px;flex-basis:56px;font-size:31px;}
+      .subject-card .card-title{font-size:24px;line-height:1.18;}
+      .subject-card .card-desc{font-size:18px;line-height:1.38;}
+      .subject-card .badge{min-height:29px;padding:.28rem .68rem;font-size:14px;}
+      .subject-card .arrow{width:34px;height:34px;flex-basis:34px;font-size:18px;}
+
+      .subject-profile-icon{width:42px;height:42px;flex-basis:42px;font-size:22px;}
+      .subject-profile-title{font-size:17px;}
+      .subject-profile-note{font-size:13px;}
+      .subject-profile-arrow{width:30px;height:30px;flex-basis:30px;font-size:15px;}
+
+      .card-grid .content-card .card-icon{width:48px;height:48px;flex-basis:48px;font-size:27px;}
+      .card-grid .content-card .card-title{font-size:21px;}
+      .card-grid .content-card .card-desc{font-size:17px;}
+      .card-grid .content-card .badge{font-size:13.5px;}
+
+      .footer-copy{font-size:16px;}
+      .footer-copy small{font-size:12px;}
+    }
+
+    @media (max-width:767px){
+      .nav-tab{font-size:16px;}
+      .nav-tab .tab-icon{font-size:23px;}
+      .subject-card .card-title{font-size:23px;}
+      .subject-card .card-desc{font-size:18px;}
+      .subject-card .badge{font-size:15px;}
+      .subject-profile-title{font-size:17px;}
+      .subject-profile-note{font-size:14px;}
+      .card-grid .content-card .card-title{font-size:19px;}
+      .card-grid .content-card .card-desc{font-size:16px;}
+      .card-grid .content-card .badge{font-size:14px;}
+      .footer-copy{font-size:13px;}
+      .footer-copy small{font-size:10.5px;}
     }
 
   </style>
@@ -865,6 +980,6 @@
 
   <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
 
-  <script src="assets/js/app.js?v=ui-shell-1"></script>
+  <script src="assets/js/app.js?v=class1-pwa-2"></script>
 </body>
 </html>

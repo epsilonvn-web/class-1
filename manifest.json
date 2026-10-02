@@ -1,13 +1,13 @@
 {
-  "name": "Lớp 1 - Cô Thỏ Hồng",
-  "short_name": "Lớp 1",
-  "description": "Epsilon Edu - Tiến bộ từng ngày",
   "id": "./",
+  "name": "Lớp 1 - Cô Thỏ Hồng | Epsilon Edu",
+  "short_name": "Lớp 1",
+  "description": "Lớp 1 - Toán, Tiếng Việt, Tiếng Anh | Epsilon Edu - Tiến bộ từng ngày",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#FEFCF2",
-  "theme_color": "#8B5CF6",
+  "theme_color": "#FEFCF2",
   "lang": "vi",
   "orientation": "any",
   "icons": [
