@@ -187,7 +187,34 @@
       box-shadow:0 6px 16px rgba(168,85,247,.28);
       transform:translateY(-1px);
     }
-    .user-btn{width:42px;padding:0;font-size:19px}
+    .user-btn{
+      width:86px;
+      min-width:86px;
+      height:74px;
+      padding:.42rem .38rem;
+      border-radius:17px;
+      flex-direction:column;
+      gap:.18rem;
+      background:#FAF5FF;
+      color:#7C3AED;
+      border-color:#DDD6FE;
+      line-height:1.05;
+      overflow:hidden;
+    }
+    .user-btn:hover{background:#F3E8FF!important;transform:translateY(-1px);box-shadow:0 7px 17px rgba(76,29,149,.10)}
+    .user-btn-avatar{display:block;font-size:24px;line-height:1;flex:0 0 auto}
+    .user-btn-name{
+      display:block;
+      width:100%;
+      max-width:100%;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      font-size:13px;
+      font-weight:950;
+      color:currentColor;
+      text-align:center;
+    }
     .score-box{
       height:50px;
       padding:.24rem .54rem;
@@ -690,6 +717,9 @@
       .nav-tab{min-height:64px;font-size:13px}
       .nav-tab .tab-icon{font-size:19px}
       .tool-btn{height:39px}
+      .user-btn{width:78px;min-width:78px;height:64px}
+      .user-btn-avatar{font-size:22px}
+      .user-btn-name{font-size:12px}
       .score-box{height:47px}
     }
 
@@ -729,7 +759,11 @@
       .nav-tab::after{bottom:-3px;height:2px}
       .tool-btn{height:38px;border-radius:12px;padding:0 .52rem;font-size:12px}
       .install-btn{min-width:74px}
-      .user-btn{width:38px;padding:0;font-size:17px}
+      .user-btn{
+        width:72px;min-width:72px;height:57px;padding:.3rem .28rem;border-radius:14px;gap:.12rem;
+      }
+      .user-btn-avatar{font-size:20px}
+      .user-btn-name{font-size:11px}
       .score-box{height:46px;padding:.18rem .38rem;font-size:12px}
       .score-box strong{font-size:13px}
       .main-banner{aspect-ratio:3.5/1}
@@ -1021,7 +1055,7 @@
           <span class="good">★ Đúng</span><strong class="good">0</strong>
           <span class="bad">★ Sai</span><strong class="bad">0</strong>
         </div>
-        <button id="account-button" class="tool-btn user-btn" type="button" title="Tài khoản" aria-label="Tài khoản">👤</button>
+        <button id="account-button" class="tool-btn user-btn" type="button" title="Tài khoản" aria-label="Tài khoản"><span class="user-btn-avatar" aria-hidden="true">👤</span><span class="user-btn-name">Tài khoản</span></button>
       </div>
     </header>
 
@@ -1105,6 +1139,6 @@
 
   <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
 
-  <script src="assets/js/app.js?v=class1-core-10"></script>
+  <script src="assets/js/app.js?v=class1-core-11"></script>
 </body>
 </html>
