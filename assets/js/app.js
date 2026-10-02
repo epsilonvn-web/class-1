@@ -249,7 +249,7 @@
         renderEmptyHomeTab("🎮", "Games", "Khu Games của Trang chủ sẽ được bổ sung ở bước nội dung.");
         break;
       case "tools":
-        renderEmptyHomeTab("🧰", "Tools", "Khu công cụ sẽ được bổ sung sau khi anh chốt danh sách chức năng.");
+        renderEmptyHomeTab("🧰", "Tools", "Khu công cụ sẽ được bổ sung sau.");
         break;
       case "contact":
         renderContactTab();
@@ -371,7 +371,7 @@
           openHomeTab("class1");
           return;
         }
-        showToast(`Liên kết Lớp ${grade} sẽ được gắn khi anh cung cấp URL.`);
+        showToast(`Liên kết Lớp ${grade} hiện chưa được cập nhật.`);
       });
     });
   }
@@ -608,7 +608,7 @@
       setButtonBusy(el.loginSubmit, false);
       showDialog(
         "Bản khung giao diện",
-        "Phần đăng nhập chưa kết nối backend ở bước này.\nEm chỉ dựng UI để anh duyệt khung chương trình.",
+        "Phần đăng nhập chưa kết nối backend ở bước này.\nĐây là bản giao diện thử nghiệm.",
         "🔐"
       );
     }, 700);
@@ -633,28 +633,83 @@
     }, 850);
   }
 
+  function getInstallEnvironment() {
+    const ua = navigator.userAgent || "";
+    const isIOS = /iphone|ipad|ipod/i.test(ua);
+    const isMac = /macintosh|mac os x/i.test(ua);
+    const isWindows = /windows/i.test(ua);
+    const isFirefox = /firefox\//i.test(ua);
+    const isEdge = /edg\//i.test(ua);
+    const isChromium = /chrome|chromium|crios/i.test(ua) || isEdge;
+    const isSafari = /safari/i.test(ua) && !/chrome|chromium|crios|edg|opr|firefox/i.test(ua);
+    return { isIOS, isMac, isWindows, isFirefox, isEdge, isChromium, isSafari };
+  }
+
   async function handleInstall() {
-    if (state.installPrompt) {
-      state.installPrompt.prompt();
-      await state.installPrompt.userChoice.catch(() => null);
-      state.installPrompt = null;
+    const standalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+    if (standalone) {
+      showToast("Lớp 1 đã được cài trên thiết bị này.");
       updateInstallVisibility();
       return;
     }
 
-    const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-    if (isIOS) {
+    if (state.installPrompt) {
+      const promptEvent = state.installPrompt;
+      state.installPrompt = null;
+      try {
+        await promptEvent.prompt();
+        const choice = await promptEvent.userChoice.catch(() => null);
+        if (choice && choice.outcome === "accepted") {
+          showToast("Đang cài Lớp 1…");
+        }
+      } catch (_) {
+        state.installPrompt = null;
+      }
+      updateInstallVisibility();
+      return;
+    }
+
+    const env = getInstallEnvironment();
+
+    if (env.isIOS) {
       showDialog(
-        "Cài App trên iPhone/iPad",
-        "Mở nút Chia sẻ của Safari, chọn “Thêm vào Màn hình chính”, rồi xác nhận.",
+        "Cài App",
+        "Mở menu Chia sẻ của trình duyệt, chọn “Thêm vào Màn hình chính”, rồi xác nhận để cài Lớp 1.",
         "📱"
+      );
+      return;
+    }
+
+    if (env.isFirefox && env.isWindows) {
+      showDialog(
+        "Cài App",
+        "Trên Firefox Windows, hãy bấm biểu tượng Ứng dụng web ở thanh địa chỉ để cài Lớp 1. Sau khi cài, ứng dụng sẽ mở trong cửa sổ riêng và có thể ghim vào thanh tác vụ.",
+        "🖥️"
+      );
+      return;
+    }
+
+    if (env.isSafari && env.isMac) {
+      showDialog(
+        "Cài App",
+        "Trên Safari, chọn Tệp (File) → Thêm vào Dock (Add to Dock), rồi xác nhận để cài Lớp 1.",
+        "🖥️"
+      );
+      return;
+    }
+
+    if (env.isChromium) {
+      showDialog(
+        "Cài App",
+        "Nếu hộp cài chưa xuất hiện, hãy bấm biểu tượng Cài đặt ở bên phải thanh địa chỉ hoặc mở menu trình duyệt và chọn Cài Lớp 1. Sau khi cài, ứng dụng sẽ mở trong cửa sổ riêng.",
+        "🖥️"
       );
       return;
     }
 
     showDialog(
       "Cài App",
-      "Trình duyệt chưa cung cấp hộp cài tự động. Anh có thể dùng menu của trình duyệt để thêm ứng dụng vào màn hình chính.",
+      "Trình duyệt này chưa cho trang web mở hộp cài trực tiếp. Hãy dùng chức năng cài ứng dụng hoặc thêm trang web thành ứng dụng trong menu của trình duyệt.",
       "📲"
     );
   }
