@@ -60,7 +60,7 @@
     subjectTab: "discover",
     profileSubjectId: null,
     detail: null,
-    installPrompt: null
+    installPrompt: window.__class1InstallPrompt || null
   };
 
   const el = {
@@ -653,9 +653,23 @@
       return;
     }
 
+    // Web Install API mới: ưu tiên dùng khi trình duyệt cung cấp.
+    if (typeof navigator.install === "function") {
+      try {
+        await navigator.install();
+        showToast("Đang mở trình cài Lớp 1…");
+      } catch (_) {
+        // Người dùng hủy hoặc trình duyệt từ chối: không lộ lỗi kỹ thuật.
+      }
+      updateInstallVisibility();
+      return;
+    }
+
+    // Chrome/Edge hiện tại: đây là đường cài trực tiếp chuẩn.
     if (state.installPrompt) {
       const promptEvent = state.installPrompt;
       state.installPrompt = null;
+      window.__class1InstallPrompt = null;
       try {
         await promptEvent.prompt();
         const choice = await promptEvent.userChoice.catch(() => null);
@@ -663,7 +677,7 @@
           showToast("Đang cài Lớp 1…");
         }
       } catch (_) {
-        state.installPrompt = null;
+        // Prompt đã hết hiệu lực hoặc người dùng hủy.
       }
       updateInstallVisibility();
       return;
@@ -683,7 +697,7 @@
     if (env.isFirefox && env.isWindows) {
       showDialog(
         "Cài App",
-        "Trên Firefox Windows, hãy bấm biểu tượng Ứng dụng web ở thanh địa chỉ để cài Lớp 1. Sau khi cài, ứng dụng sẽ mở trong cửa sổ riêng và có thể ghim vào thanh tác vụ.",
+        "Trên Firefox Windows, hãy bấm biểu tượng Ứng dụng web ở thanh địa chỉ để cài Lớp 1.",
         "🖥️"
       );
       return;
@@ -698,18 +712,17 @@
       return;
     }
 
+    // Với Chromium, nút bình thường chỉ được hiện khi prompt native đã sẵn sàng.
+    // Nhánh này chỉ là bảo vệ trong trường hợp trạng thái đổi giữa lúc render và lúc bấm.
     if (env.isChromium) {
-      showDialog(
-        "Cài App",
-        "Nếu hộp cài chưa xuất hiện, hãy bấm biểu tượng Cài đặt ở bên phải thanh địa chỉ hoặc mở menu trình duyệt và chọn Cài Lớp 1. Sau khi cài, ứng dụng sẽ mở trong cửa sổ riêng.",
-        "🖥️"
-      );
+      showToast("Trình cài đặt đang được Chrome chuẩn bị. Vui lòng thử lại sau ít phút.");
+      updateInstallVisibility();
       return;
     }
 
     showDialog(
       "Cài App",
-      "Trình duyệt này chưa cho trang web mở hộp cài trực tiếp. Hãy dùng chức năng cài ứng dụng hoặc thêm trang web thành ứng dụng trong menu của trình duyệt.",
+      "Trình duyệt này chưa hỗ trợ mở hộp cài trực tiếp. Hãy dùng chức năng thêm trang web thành ứng dụng của trình duyệt.",
       "📲"
     );
   }
@@ -717,7 +730,11 @@
   function updateInstallVisibility() {
     const standalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
     const outsideHome = state.screen !== "home";
-    el.installButton.classList.toggle("hidden", standalone || outsideHome);
+    const env = getInstallEnvironment();
+    const directReady = !!state.installPrompt || typeof navigator.install === "function";
+    const needsGuidedFallback = env.isIOS || env.isSafari || (env.isFirefox && env.isWindows);
+    const shouldShow = !standalone && !outsideHome && (directReady || needsGuidedFallback);
+    el.installButton.classList.toggle("hidden", !shouldShow);
   }
 
   function escapeHtml(value) {
@@ -747,21 +764,33 @@
     if (event.target === el.dialog) hideDialog();
   });
 
+  window.addEventListener("class1-install-ready", () => {
+    if (window.__class1InstallPrompt) {
+      state.installPrompt = window.__class1InstallPrompt;
+      updateInstallVisibility();
+    }
+  });
+
   window.addEventListener("beforeinstallprompt", (event) => {
     event.preventDefault();
     state.installPrompt = event;
+    window.__class1InstallPrompt = event;
     updateInstallVisibility();
   });
 
   window.addEventListener("appinstalled", () => {
     state.installPrompt = null;
+    window.__class1InstallPrompt = null;
     updateInstallVisibility();
     showToast("Đã cài App.");
   });
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./service-worker.js").catch(() => {});
+      navigator.serviceWorker
+        .register("./service-worker.js", { updateViaCache: "none" })
+        .then((registration) => registration.update().catch(() => {}))
+        .catch(() => {});
     });
   }
 
