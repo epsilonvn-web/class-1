@@ -818,18 +818,32 @@
 
   function updateAccountButton(verifying = false) {
     if (!el.accountButton) return;
+
+    const avatar = document.createElement("span");
+    avatar.className = "user-btn-avatar";
+    avatar.setAttribute("aria-hidden", "true");
+
+    const label = document.createElement("span");
+    label.className = "user-btn-name";
+
     if (verifying || !state.auth.ready) {
-      el.accountButton.textContent = "…";
+      avatar.textContent = "🐰";
+      label.textContent = "Đang tải";
       el.accountButton.title = "Đang kiểm tra phiên đăng nhập";
-      return;
-    }
-    if (state.auth.user) {
-      el.accountButton.textContent = state.auth.user.avatarEmoji || "🐰";
+      el.accountButton.setAttribute("aria-label", "Đang kiểm tra tài khoản");
+    } else if (state.auth.user) {
+      avatar.textContent = state.auth.user.avatarEmoji || "🐰";
+      label.textContent = state.auth.user.name || "Tài khoản";
       el.accountButton.title = `${state.auth.user.name} · ${state.auth.user.userId}`;
+      el.accountButton.setAttribute("aria-label", `Tài khoản ${state.auth.user.name}`);
     } else {
-      el.accountButton.textContent = "👤";
+      avatar.textContent = "👤";
+      label.textContent = "Tài khoản";
       el.accountButton.title = "Tài khoản";
+      el.accountButton.setAttribute("aria-label", "Tài khoản");
     }
+
+    el.accountButton.replaceChildren(avatar, label);
   }
 
   function openAccountPage(view = "overview") {
