@@ -2,2022 +2,869 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>🌸 VƯỜN TRI THỨC LỚP 1 🎒 - Bé Vui Học</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#FEFCF2">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/jpeg" href="favicon.jpg">
+  <title>Lớp 1 - Cô Thỏ Hồng | Epsilon Edu</title>
   <style>
-    :root {
-      --primary: #FF5A5F;
-      --secondary: #00A699;
-      --accent: #FFB400;
-      --blue: #2980B9;
-      --purple: #8E44AD;
-      --dark: #2C3E50;
-      --bg: #F8FAFC;
-    }
-    * {
-      box-sizing: border-box;
-      user-select: none;
-      -webkit-user-select: none;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: 'Segoe UI', 'Comic Sans MS', -apple-system, sans-serif;
-      background: linear-gradient(135deg, #74EBD5 0%, #9FACE6 100%);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 12px;
-      overflow-x: hidden;
-    }
-    #app-container {
-      background: rgba(255, 255, 255, 0.98);
-      width: 100%;
-      max-width: 980px;
-      min-height: 720px;
-      border-radius: 36px;
-      box-shadow: 0 24px 60px rgba(0,0,0,0.18);
-      border: 8px solid #FFF;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden;
-    }
-    #start-overlay {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(135deg, #FF5A5F 0%, #00A699 100%);
-      z-index: 999;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      text-align: center;
-      color: white;
-    }
-    .big-start-btn {
-      background: #FFE66D;
-      color: #D35400;
-      font-size: 28px;
-      font-weight: 900;
-      padding: 18px 46px;
-      border-radius: 50px;
-      border: none;
-      box-shadow: 0 8px 0 #E67E22;
-      cursor: pointer;
-      margin-top: 24px;
-      animation: pulse 1.5s infinite;
-      transition: 0.15s;
-    }
-    .big-start-btn:active { transform: translateY(6px); box-shadow: 0 2px 0 #E67E22; }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-    header {
-      background: #F8FAFC;
-      padding: 12px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 3px dashed #E2E8F0;
-      gap: 12px;
-    }
-    .header-center-title {
-      font-size: 22px;
-      font-weight: 900;
-      color: #FF5A5F;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      text-align: center;
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      text-shadow: 1px 1px 0 #FFF;
-    }
-    .score-badge {
-      background: linear-gradient(135deg, #FFE66D, #FFB400);
-      color: #7A3E00;
-      font-size: 18px;
-      font-weight: 800;
-      padding: 8px 18px;
-      border-radius: 50px;
-      box-shadow: 0 4px 0 #D48800;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      white-space: nowrap;
-    }
-    .nav-btns { display: flex; gap: 8px; }
-    .btn-nav {
-      background: #EDF2F7;
-      border: none;
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--dark);
-      padding: 8px 14px;
-      border-radius: 14px;
-      cursor: pointer;
-      box-shadow: 0 4px 0 #CBD5E1;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: 0.1s;
-      white-space: nowrap;
-    }
-    .btn-nav:active { transform: translateY(4px); box-shadow: none; }
-    #main-content {
-      flex: 1;
-      padding: 18px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-    .hub-title {
-      font-size: 30px;
-      font-weight: 900;
-      color: var(--dark);
-      margin-bottom: 20px;
-    }
-    .hub-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 18px;
-      width: 100%;
-      max-width: 880px;
-    }
-    .topics-grid-10 {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 12px;
-      width: 100%;
-      max-width: 950px;
-    }
-    @media (max-width: 860px) {
-      .topics-grid-10 { grid-template-columns: repeat(3, 1fr); }
-    }
-    @media (max-width: 550px) {
-      .topics-grid-10 { grid-template-columns: repeat(2, 1fr); }
-    }
-    .subject-card {
-      background: #FFF;
-      border: 3px solid;
-      border-radius: 20px;
-      padding: 14px 10px;
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      position: relative;
-      min-height: 105px;
-    }
-    .subject-card:hover { transform: translateY(-5px); }
-    .subject-card:active { transform: translateY(2px); }
-    .subject-card.math { border-color: var(--primary); box-shadow: 0 5px 0 var(--primary); }
-    .subject-card.viet { border-color: var(--secondary); box-shadow: 0 5px 0 var(--secondary); }
-    .subject-card.eng { border-color: var(--purple); box-shadow: 0 5px 0 var(--purple); }
-    .subject-card.vocab-topic { border-color: #3B82F6; box-shadow: 0 5px 0 #2563EB; }
-    .subject-card .icon-wrap { font-size: 34px; }
-    .subject-card .title { font-size: 14px; font-weight: 800; color: var(--dark); line-height: 1.2; }
-    .subject-card .desc { font-size: 11px; color: #7F8C8D; font-weight: 600; line-height: 1.3; }
-    
-    .badge-corner {
-      position: absolute;
-      top: -8px;
-      right: -6px;
-      background: #FF5A5F;
-      color: white;
-      font-size: 10px;
-      font-weight: 900;
-      padding: 3px 8px;
-      border-radius: 10px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-    
-    .question-prompt {
-      font-size: 21px;
-      font-weight: 800;
-      color: var(--dark);
-      margin-bottom: 10px;
-      line-height: 1.4;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .speaker-btn {
-      background: #E8F0FE;
-      border: 2px solid #3498DB;
-      font-size: 15px;
-      padding: 5px 12px;
-      border-radius: 12px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-weight: 700;
-      color: #2980B9;
-      box-shadow: 0 3px 0 #BDC3C7;
-    }
-    .speaker-btn:active { transform: translateY(3px); box-shadow: none; }
-    
-    .stage-box {
-      min-height: 160px;
-      background: #F8FAFC;
-      border-radius: 24px;
-      border: 3px dashed #CBD5E1;
-      width: 100%;
-      max-width: 940px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      padding: 14px;
-      margin-bottom: 12px;
-    }
-    
-    .choices-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 12px;
-      width: 100%;
-      max-width: 780px;
-    }
-    .choice-btn {
-      background: #FFF;
-      border: 3px solid var(--secondary);
-      color: var(--dark);
-      font-size: 19px;
-      font-weight: 800;
-      padding: 12px 8px;
-      border-radius: 16px;
-      cursor: pointer;
-      box-shadow: 0 5px 0 #45B7AF;
-      transition: all 0.15s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2px;
-    }
-    .choice-btn .ipa-sub {
-      font-size: 13px;
-      color: #2980B9;
-      font-weight: 700;
-      font-family: 'Segoe UI', sans-serif;
-    }
-    .choice-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #45B7AF; }
-    .choice-btn.correct { background: #2ECC71 !important; color: white !important; border-color: #27AE60 !important; box-shadow: 0 5px 0 #219653 !important; }
-    .choice-btn.correct .ipa-sub { color: #FFF !important; }
-    .choice-btn.wrong { background: #E74C3C !important; color: white !important; border-color: #C0392B !important; box-shadow: 0 5px 0 #A93226 !important; }
-    .choice-btn.wrong .ipa-sub { color: #FFF !important; }
-    
-    .game-asset-svg { width: 56px; height: 56px; }
-    .hand-svg { width: 78px; height: 88px; }
-    .hands-display-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      background: #FFF;
-      padding: 6px 12px;
-      border-radius: 18px;
-      border: 2px solid #E2E8F0;
-    }
-    .calc-row-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .kid-instruction-text {
-      font-size: 17px;
-      font-weight: 800;
-      color: #D35400;
-      background: #FFF9DB;
-      padding: 6px 14px;
-      border-radius: 14px;
-      border: 2px dashed #F59F00;
-    }
-    
-    .sequence-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .seq-item {
-      width: 56px;
-      height: 56px;
-      border-radius: 14px;
-      background: #FFF;
-      border: 3px solid #CBD5E1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      font-weight: 900;
-      color: var(--dark);
-    }
-    .seq-item.target {
-      background: #FFF9DB;
-      border: 3px dashed #F59F00;
-      color: #E67E22;
-      animation: pulse 1.2s infinite;
-    }
-    
-    .mic-record-btn {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: #FF5A5F;
-      color: white;
-      font-size: 34px;
-      border: 4px solid #FFF;
-      box-shadow: 0 6px 16px rgba(255,90,95,0.35);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-    }
-    .mic-record-btn.recording {
-      background: #2ECC71;
-      animation: micPulse 1s infinite;
-    }
-    @keyframes micPulse {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(46,204,113,0.7); }
-      50% { transform: scale(1.1); box-shadow: 0 0 0 14px rgba(46,204,113,0); }
-    }
-    
-    .word-tile-btn {
-      background: #FFF;
-      border: 3px solid #8E44AD;
-      color: #8E44AD;
-      font-size: 18px;
-      font-weight: 800;
-      padding: 8px 14px;
-      border-radius: 14px;
-      cursor: pointer;
-      box-shadow: 0 4px 0 #732D91;
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-    }
-    .word-tile-btn:active { transform: translateY(3px); box-shadow: none; }
-    
-    .letter-clean-btn {
-      width: 48px;
-      height: 52px;
-      border-radius: 12px;
-      background: #FFF;
-      border: 3px solid #3498DB;
-      font-size: 24px;
-      font-weight: 900;
-      color: #2980B9;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 0 #BDC3C7;
-    }
-    
-    .ipa-badge {
-      font-size: 14px;
-      font-weight: 700;
-      color: #2980B9;
-      background: #EBF8FF;
-      padding: 2px 8px;
-      border-radius: 8px;
-      border: 1px solid #BEE3F8;
+    :root{
+      --page:#FEFCF2;
+      --white:#FFFFFF;
+      --ink:#344054;
+      --muted:#667085;
+      --pink:#EC4899;
+      --pink-2:#F472B6;
+      --purple:#8B5CF6;
+      --purple-2:#7C3AED;
+      --blue:#3B82F6;
+      --sky:#38BDF8;
+      --green:#10B981;
+      --teal:#14B8A6;
+      --amber:#F59E0B;
+      --red:#F43F5E;
+      --brand:#173A78;
+      --line:#EDE9FE;
+      --shadow:0 7px 18px rgba(76,29,149,.10);
+      --radius:18px;
+      --app-width:82rem;
     }
 
-    /* Bảng Chữ Cái IPA Grid & Thẻ 3 Ví Dụ */
-    .alphabet-ipa-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
-      gap: 7px;
-      width: 100%;
-      max-width: 940px;
-      margin-top: 8px;
+    *{box-sizing:border-box}
+    html{background:var(--page);scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-height:100vh;
+      background:var(--page);
+      color:var(--ink);
+      font-family:"Nunito","Segoe UI",Arial,sans-serif;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
     }
-    .alpha-card-btn {
-      background: #FFF;
-      border: 2px solid #CBD5E1;
-      border-radius: 14px;
-      padding: 7px 3px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2px;
-      box-shadow: 0 3px 0 #CBD5E1;
-      transition: all 0.15s;
-    }
-    .alpha-card-btn:hover { transform: translateY(-3px); border-color: var(--purple); }
-    .alpha-card-btn.active { border-color: var(--primary); background: #FFF5F5; box-shadow: 0 3px 0 var(--primary); transform: scale(1.04); }
-    .alpha-card-btn .char-main { font-size: 19px; font-weight: 900; color: var(--dark); }
-    .alpha-card-btn .ipa-tag { font-size: 11px; font-weight: 700; color: #2563EB; }
+    button,input{font:inherit}
+    button{cursor:pointer}
+    img{max-width:100%}
+    .hidden{display:none!important}
 
-    .ipa-interactive-card {
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .ipa-interactive-card:hover { transform: translateY(-4px); }
-    .ipa-interactive-card:active { transform: translateY(2px); }
-
-    .examples-3-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      flex: 1;
-      width: 100%;
-    }
-    @media (max-width: 760px) {
-      .examples-3-grid { grid-template-columns: 1fr; }
+    .app-shell{
+      width:min(100%,var(--app-width));
+      margin:0 auto;
+      padding:0 .5rem max(.25rem,env(safe-area-inset-bottom));
     }
 
-    #fx-canvas {
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: 99;
+    .app-header{
+      display:grid;
+      grid-template-columns:112px minmax(0,1fr) auto;
+      align-items:stretch;
+      gap:.55rem;
+      padding:.45rem 0;
+      position:relative;
+      z-index:20;
+      background:var(--page);
     }
+
+    .home-btn{
+      width:112px;
+      height:74px;
+      border:1px solid #E9D5FF;
+      border-radius:17px;
+      padding:0;
+      overflow:hidden;
+      background:#fff;
+      box-shadow:var(--shadow);
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .home-btn:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(139,92,246,.18)}
+    .home-btn img{width:100%;height:100%;object-fit:cover;display:block}
+
+    .primary-nav{
+      min-width:0;
+      display:grid;
+      grid-auto-flow:column;
+      grid-auto-columns:minmax(96px,1fr);
+      gap:.45rem;
+      overflow-x:auto;
+      scrollbar-width:none;
+      align-items:stretch;
+    }
+    .primary-nav::-webkit-scrollbar{display:none}
+
+    .nav-tab{
+      position:relative;
+      min-width:0;
+      min-height:74px;
+      padding:.5rem .42rem;
+      border:1px solid;
+      border-radius:17px;
+      box-shadow:0 3px 10px rgba(15,23,42,.05);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:.22rem;
+      font-weight:900;
+      font-size:15px;
+      line-height:1.08;
+      text-align:center;
+      transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;
+      white-space:normal;
+    }
+    .nav-tab:hover{transform:translateY(-1px);filter:brightness(1.01);box-shadow:0 7px 17px rgba(76,29,149,.10)}
+    .nav-tab .tab-icon{font-size:22px;line-height:1}
+    .nav-tab::after{
+      content:"";
+      position:absolute;
+      left:30%;right:30%;bottom:-5px;height:3px;border-radius:99px;
+      background:currentColor;opacity:0;transform:scaleX(.5);transition:.16s ease;
+    }
+    .nav-tab.is-active::after{opacity:1;transform:scaleX(1)}
+    .nav-tab.is-active{color:white!important;border-color:transparent!important}
+
+    .tone-purple{background:#F3E8FF;color:#7C3AED;border-color:#DDD6FE}
+    .tone-purple.is-active{background:linear-gradient(90deg,#A855F7,#7C3AED)}
+    .tone-pink{background:#FCE7F3;color:#DB2777;border-color:#FBCFE8}
+    .tone-pink.is-active{background:linear-gradient(90deg,#F472B6,#EC4899)}
+    .tone-blue{background:#E0F2FE;color:#0369A1;border-color:#BAE6FD}
+    .tone-blue.is-active{background:linear-gradient(90deg,#38BDF8,#0284C7)}
+    .tone-amber{background:#FEF3C7;color:#B45309;border-color:#FDE68A}
+    .tone-amber.is-active{background:linear-gradient(90deg,#FBBF24,#F59E0B)}
+    .tone-green{background:#DCFCE7;color:#15803D;border-color:#BBF7D0}
+    .tone-green.is-active{background:linear-gradient(90deg,#4ADE80,#16A34A)}
+    .tone-indigo{background:#EDE9FE;color:#6D28D9;border-color:#DDD6FE}
+    .tone-indigo.is-active{background:linear-gradient(90deg,#8B5CF6,#6D28D9)}
+
+    .header-tools{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:.4rem;
+    }
+    .tool-btn{
+      height:42px;
+      border:1px solid #E9D5FF;
+      background:#fff;
+      color:#6D28D9;
+      border-radius:14px;
+      box-shadow:0 3px 9px rgba(76,29,149,.07);
+      font-weight:900;
+      padding:0 .7rem;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:.35rem;
+      white-space:nowrap;
+    }
+    .tool-btn:not(.install-btn):hover{background:#FAF5FF}
+    .install-btn{
+      color:white;
+      border:0;
+      background:linear-gradient(90deg,var(--pink),var(--purple));
+      min-width:86px;
+      transition:filter .18s ease, box-shadow .18s ease, transform .18s ease;
+    }
+    .install-btn:hover{
+      color:white;
+      background:linear-gradient(90deg,var(--pink),var(--purple));
+      filter:brightness(1.12) saturate(1.08);
+      box-shadow:0 6px 16px rgba(168,85,247,.28);
+      transform:translateY(-1px);
+    }
+    .user-btn{width:42px;padding:0;font-size:19px}
+    .score-box{
+      height:50px;
+      padding:.24rem .54rem;
+      border:1px solid #FBCFE8;
+      border-radius:17px;
+      background:#FFF7FB;
+      display:grid;
+      grid-template-columns:auto auto;
+      gap:.06rem .5rem;
+      align-content:center;
+      box-shadow:0 3px 9px rgba(236,72,153,.06);
+      font-size:13px;
+      font-weight:900;
+    }
+    .score-box .good{color:#059669}
+    .score-box .bad{color:#E11D48}
+    .score-box strong{font-size:16px}
+
+    .banner-slot{width:100%;position:relative}
+    .main-banner{
+      width:100%;
+      aspect-ratio:5.5/1;
+      overflow:hidden;
+      background:#EAF8FF;
+    }
+    .main-banner picture,.main-banner img{width:100%;height:100%;display:block}
+    .main-banner img{object-fit:cover}
+
+    .sub-banner{
+      width:100%;
+      aspect-ratio:15/1;
+      position:relative;
+      overflow:hidden;
+      background:url("banner-sub.jpg") center/cover no-repeat;
+      display:flex;
+      align-items:center;
+      padding:0 1.25rem;
+    }
+    .sub-pill{
+      position:relative;
+      z-index:1;
+      min-width:200px;
+      max-width:46%;
+      min-height:38px;
+      padding:.48rem 1rem;
+      border-radius:999px;
+      border:1px solid rgba(244,114,182,.42);
+      background:rgba(255,255,255,.84);
+      backdrop-filter:blur(5px);
+      box-shadow:0 4px 14px rgba(76,29,149,.10);
+      color:#BE185D;
+      font-weight:900;
+      font-size:15px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
+    .content-stage{
+      position:relative;
+      z-index:3;
+      min-height:340px;
+      padding:1rem .1rem 2.2rem;
+    }
+    .section-heading{
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:1rem;
+      margin:.05rem 0 .85rem;
+    }
+    .section-heading h1{
+      margin:0;
+      color:#5B216E;
+      font-size:clamp(24px,2.2vw,31px);
+      line-height:1.08;
+      font-weight:950;
+      letter-spacing:-.02em;
+    }
+    .section-heading p{
+      margin:.3rem 0 0;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.45;
+      font-weight:700;
+    }
+
+    .subject-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:.85rem;
+    }
+    .card-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+      gap:.75rem;
+    }
+    .home-link-grid{
+      display:grid;
+      grid-template-columns:repeat(5,minmax(0,1fr));
+      gap:.7rem;
+    }
+
+    .content-card{
+      position:relative;
+      min-height:126px;
+      border:1px solid;
+      border-radius:18px;
+      padding:1rem 1rem .92rem;
+      box-shadow:0 5px 13px rgba(15,23,42,.05);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:.55rem;
+      text-align:left;
+      overflow:hidden;
+      transition:transform .16s ease, box-shadow .16s ease;
+    }
+    button.content-card:hover{transform:translateY(-2px);box-shadow:0 9px 22px rgba(76,29,149,.10)}
+    .content-card[data-tone="pink"]{background:#FFF1F7;border-color:#FBCFE8;color:#BE185D}
+    .content-card[data-tone="purple"]{background:#FAF5FF;border-color:#E9D5FF;color:#7E22CE}
+    .content-card[data-tone="blue"]{background:#EFF8FF;border-color:#BAE6FD;color:#0369A1}
+    .content-card[data-tone="green"]{background:#ECFDF5;border-color:#BBF7D0;color:#047857}
+    .content-card[data-tone="amber"]{background:#FFFBEB;border-color:#FDE68A;color:#A16207}
+    .content-card[data-tone="teal"]{background:#F0FDFA;border-color:#99F6E4;color:#0F766E}
+
+    .card-top{display:flex;align-items:flex-start;gap:.65rem;min-width:0}
+    .card-icon{
+      width:42px;height:42px;flex:0 0 42px;border-radius:14px;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(255,255,255,.72);
+      border:1px solid rgba(255,255,255,.85);
+      font-size:23px;
+    }
+    .card-copy{min-width:0;flex:1}
+    .card-title{
+      margin:0;
+      font-size:18px;
+      line-height:1.22;
+      font-weight:950;
+      color:currentColor;
+      display:-webkit-box;
+      -webkit-box-orient:vertical;
+      -webkit-line-clamp:2;
+      overflow:hidden;
+      min-height:2.44em;
+    }
+    .card-desc{
+      margin:.34rem 0 0;
+      font-size:16px;
+      line-height:1.38;
+      font-weight:700;
+      color:#475467;
+      display:-webkit-box;
+      -webkit-box-orient:vertical;
+      -webkit-line-clamp:2;
+      overflow:hidden;
+      min-height:2.76em;
+    }
+    .card-foot{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:.5rem;
+      min-height:28px;
+    }
+    .badge{
+      display:inline-flex;align-items:center;gap:.25rem;
+      min-height:26px;padding:.25rem .55rem;
+      border:1px solid currentColor;border-radius:999px;
+      background:rgba(255,255,255,.62);
+      font-size:12px;font-weight:900;
+    }
+    .arrow{
+      width:30px;height:30px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      color:#fff;background:var(--accent,#7C3AED);
+      font-size:16px;font-weight:950;flex:0 0 30px;
+    }
+    .arrow span{color:#fff}
+    .subject-card{min-height:160px;padding:1.15rem}
+    .subject-card .card-icon{width:52px;height:52px;flex-basis:52px;font-size:29px}
+    .subject-card .card-title{font-size:21px;min-height:auto}
+    .subject-card .card-desc{font-size:16px}
+
+    /* Hồ sơ học tập đặt ngay dưới từng môn ở Trang chủ */
+    .subject-column{
+      display:flex;
+      flex-direction:column;
+      gap:.58rem;
+      min-width:0;
+    }
+    .subject-column > .subject-card{width:100%;}
+    .subject-profile-card{
+      width:100%;
+      min-height:62px;
+      border:1px solid;
+      border-radius:16px;
+      padding:.62rem .72rem;
+      display:flex;
+      align-items:center;
+      gap:.62rem;
+      text-align:left;
+      cursor:pointer;
+      box-shadow:0 4px 11px rgba(15,23,42,.045);
+      transition:transform .16s ease,box-shadow .16s ease,filter .16s ease;
+    }
+    .subject-profile-card:hover{
+      transform:translateY(-1px);
+      box-shadow:0 7px 17px rgba(76,29,149,.09);
+      filter:brightness(1.025);
+    }
+    .subject-profile-card[data-tone="blue"]{background:#F5FBFF;border-color:#BAE6FD;color:#0369A1}
+    .subject-profile-card[data-tone="pink"]{background:#FFF7FB;border-color:#FBCFE8;color:#BE185D}
+    .subject-profile-card[data-tone="green"]{background:#F5FFF9;border-color:#BBF7D0;color:#047857}
+    .subject-profile-icon{
+      width:38px;height:38px;flex:0 0 38px;border-radius:13px;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(255,255,255,.88);
+      box-shadow:0 3px 8px rgba(76,29,149,.06);
+      font-size:20px;
+    }
+    .subject-profile-copy{min-width:0;flex:1;}
+    .subject-profile-title{display:block;font-size:15px;line-height:1.15;font-weight:950;color:currentColor;}
+    .subject-profile-note{
+      display:block;margin-top:.18rem;font-size:11.5px;line-height:1.18;font-weight:800;color:#64748B;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .subject-profile-arrow{
+      width:27px;height:27px;flex:0 0 27px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg,#A855F7,#7C3AED);
+      color:#fff;font-size:14px;font-weight:950;
+      box-shadow:0 4px 9px rgba(124,58,237,.18);
+    }
+
+    .learning-profile-grid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:.7rem;
+      margin-top:.15rem;
+    }
+    .learning-profile-stat{
+      min-height:108px;
+      border:1px solid #E9D5FF;
+      border-radius:18px;
+      background:rgba(255,255,255,.74);
+      padding:.85rem;
+      box-shadow:0 4px 12px rgba(76,29,149,.045);
+    }
+    .learning-profile-stat .stat-icon{font-size:23px;}
+    .learning-profile-stat strong{display:block;margin-top:.35rem;color:#5B216E;font-size:14px;}
+    .learning-profile-stat span{display:block;margin-top:.3rem;color:#64748B;font-size:13px;font-weight:800;line-height:1.3;}
+    .learning-profile-empty{
+      margin-top:.75rem;
+      border:1px dashed #D8B4FE;
+      border-radius:18px;
+      background:linear-gradient(135deg,rgba(253,242,248,.78),rgba(245,243,255,.78));
+      padding:1.1rem;
+      text-align:center;
+      color:#64748B;
+      font-weight:800;
+      line-height:1.45;
+    }
+    .learning-profile-empty strong{display:block;color:#7C3AED;font-size:18px;margin-bottom:.28rem;}
+
+    .empty-panel{
+      border:1px dashed #D8B4FE;
+      background:rgba(255,255,255,.64);
+      border-radius:20px;
+      min-height:220px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:2rem 1rem;
+      color:#6B7280;
+    }
+    .empty-panel strong{display:block;color:#7C3AED;font-size:20px;margin-bottom:.35rem}
+
+    .detail-panel{
+      background:rgba(255,255,255,.68);
+      border:1px solid #E9D5FF;
+      border-radius:20px;
+      padding:1rem;
+      box-shadow:0 5px 15px rgba(76,29,149,.05);
+    }
+    .back-btn{
+      border:0;
+      background:linear-gradient(90deg,#EC4899,#8B5CF6);
+      color:#fff;
+      border-radius:14px;
+      min-height:42px;
+      padding:0 .95rem;
+      font-weight:900;
+      box-shadow:0 5px 12px rgba(139,92,246,.18);
+    }
+
+    .app-footer{
+      position:relative;
+      z-index:1;
+      width:100%;
+      aspect-ratio:7/1;
+      margin:-1.05rem auto 0;
+      background:url("footer-bg.jpg") center/cover no-repeat;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:0 1rem;
+      pointer-events:none;
+    }
+    .footer-copy{
+      color:#0000FF;
+      text-shadow:0 1px 0 rgba(255,255,255,.98);
+      transform:translateY(-7px);
+      line-height:1.25;
+      font-weight:900;
+      font-size:14px;
+    }
+    .footer-copy small{display:block;font-size:11px;margin-top:.16rem}
+
+    .modal-backdrop{
+      position:fixed;inset:0;z-index:100;
+      background:rgba(30,41,59,.48);
+      backdrop-filter:blur(6px);
+      display:flex;align-items:center;justify-content:center;
+      padding:1rem;
+    }
+    .auth-card{
+      width:min(94vw,440px);
+      max-height:94vh;
+      overflow-y:auto;
+      background:#fff;
+      border:1px solid #F9A8D4;
+      border-radius:28px;
+      box-shadow:0 24px 70px rgba(76,29,149,.26);
+      padding:1rem 1.1rem 1.2rem;
+      position:relative;
+    }
+    .close-btn{
+      position:absolute;right:14px;top:14px;
+      width:36px;height:36px;border-radius:50%;
+      border:1px solid #FBCFE8;background:#FFF1F7;color:#EC4899;
+      font-size:21px;font-weight:900;
+    }
+    .auth-logo{display:block;width:240px;max-width:72%;margin:.45rem auto .35rem;border-radius:18px}
+    .auth-name{text-align:center;color:#EC4899;font-size:19px;font-weight:950;margin:.2rem 0 1rem}
+    .auth-tabs{
+      display:grid;grid-template-columns:1fr 1fr;
+      padding:4px;border:1px solid #FBCFE8;border-radius:16px;background:#FFF1F7;
+      margin-bottom:1rem;
+    }
+    .auth-tab{
+      min-height:40px;border:0;border-radius:12px;background:transparent;
+      color:#98A2B3;font-weight:900;
+    }
+    .auth-tab.is-active{background:#fff;color:#EC4899;box-shadow:0 2px 7px rgba(76,29,149,.07)}
+    .form-stack{display:grid;gap:.78rem}
+    .field label{display:block;margin:0 0 .32rem;color:#DB2777;font-size:13px;font-weight:900}
+    .field input{
+      width:100%;height:48px;border-radius:15px;border:1.5px solid #F9A8D4;
+      background:#FFF9FC;color:#344054;padding:0 .85rem;outline:none;font-weight:800;
+    }
+    .field input:focus{border-color:#A855F7;box-shadow:0 0 0 3px rgba(168,85,247,.10)}
+    .primary-action{
+      width:100%;min-height:48px;border:0;border-radius:15px;color:#fff;
+      background:linear-gradient(90deg,#EC4899,#8B5CF6);
+      font-weight:950;box-shadow:0 6px 14px rgba(139,92,246,.22);
+      display:flex;align-items:center;justify-content:center;gap:.5rem;
+    }
+    .primary-action:disabled{opacity:.7;cursor:wait}
+    .secondary-action{
+      width:100%;min-height:46px;border:1px solid #E9D5FF;border-radius:15px;
+      color:#7C3AED;background:linear-gradient(90deg,#FDF2F8,#F5F3FF);
+      font-weight:900;
+    }
+    .auth-divider{height:1px;background:#FCE7F3;margin:1rem 0}
+    .spinner{
+      width:17px;height:17px;border-radius:50%;
+      border:2px solid rgba(255,255,255,.45);
+      border-top-color:#fff;
+      animation:spin .75s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .dialog-card{
+      width:min(92vw,390px);
+      border-radius:24px;border:1px solid #F9A8D4;background:#fff;
+      box-shadow:0 24px 70px rgba(76,29,149,.28);
+      padding:1.2rem;text-align:center;
+    }
+    .dialog-icon{font-size:34px}
+    .dialog-card h3{color:#EC4899;margin:.5rem 0 .35rem}
+    .dialog-card p{margin:0;color:#475467;font-weight:700;line-height:1.55;white-space:pre-line}
+    .dialog-card button{margin-top:1rem;min-width:120px}
+
+    .toast{
+      position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom));z-index:130;
+      transform:translate(-50%,18px);opacity:0;
+      width:min(92vw,430px);
+      background:#fff;border:1px solid #E9D5FF;border-radius:15px;
+      box-shadow:0 14px 34px rgba(15,23,42,.18);
+      padding:.75rem .9rem;color:#475467;font-weight:900;
+      transition:.2s ease;pointer-events:none;
+    }
+    .toast.is-visible{opacity:1;transform:translate(-50%,0)}
+
+    @media (max-width:980px){
+      .app-header{grid-template-columns:96px minmax(0,1fr) auto}
+      .home-btn{width:96px;height:64px}
+      .nav-tab{min-height:64px;font-size:13px}
+      .nav-tab .tab-icon{font-size:19px}
+      .tool-btn{height:39px}
+      .score-box{height:47px}
+    }
+
+    @media (max-width:767px){
+      .app-shell{padding-left:.3rem;padding-right:.3rem}
+      .app-header{
+        grid-template-columns:auto minmax(0,1fr);
+        grid-template-rows:auto auto;
+        gap:.38rem;
+        padding:.35rem 0;
+      }
+      .home-btn{
+        grid-column:1;grid-row:1;
+        width:86px;height:57px;border-radius:14px;
+      }
+      .header-tools{
+        grid-column:2;grid-row:1;
+        gap:.3rem;
+      }
+      .primary-nav{
+        grid-column:1/3;grid-row:2;
+        display:flex;
+        overflow-x:auto;
+        gap:.35rem;
+        padding-bottom:2px;
+      }
+      .nav-tab{
+        flex:0 0 104px;
+        min-height:53px;
+        border-radius:14px;
+        flex-direction:row;
+        gap:.34rem;
+        font-size:13px;
+        padding:.38rem .45rem;
+      }
+      .nav-tab .tab-icon{font-size:18px}
+      .nav-tab::after{bottom:-3px;height:2px}
+      .tool-btn{height:38px;border-radius:12px;padding:0 .52rem;font-size:12px}
+      .install-btn{min-width:74px}
+      .user-btn{width:38px;padding:0;font-size:17px}
+      .score-box{height:46px;padding:.18rem .38rem;font-size:12px}
+      .score-box strong{font-size:13px}
+      .main-banner{aspect-ratio:3.5/1}
+      .sub-banner{aspect-ratio:15/1;padding:0 .55rem}
+      .sub-pill{min-width:0;max-width:72%;min-height:32px;padding:.34rem .68rem;font-size:12px}
+      .content-stage{min-height:300px;padding:.72rem .05rem 1.65rem}
+      .section-heading{align-items:flex-start}
+      .section-heading h1{font-size:23px}
+      .section-heading p{font-size:14px}
+      .subject-grid{grid-template-columns:1fr;gap:.72rem}
+      .subject-column{gap:.48rem}
+      .subject-card{min-height:132px}
+      .subject-profile-card{min-height:56px;border-radius:15px;padding:.55rem .65rem}
+      .subject-profile-icon{width:34px;height:34px;flex-basis:34px;border-radius:11px;font-size:18px}
+      .subject-profile-title{font-size:14px}
+      .subject-profile-note{font-size:11px}
+      .learning-profile-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}
+      .card-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.58rem}
+      .home-link-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.58rem}
+      .content-card{min-height:118px;padding:.78rem;border-radius:16px}
+      .card-icon{width:36px;height:36px;flex-basis:36px;font-size:20px}
+      .card-title{font-size:16px}
+      .card-desc{font-size:14px}
+      .subject-card .card-title{font-size:19px}
+      .subject-card .card-desc{font-size:15px}
+      .app-footer{margin-top:-.6rem;padding-bottom:0}
+      .footer-copy{font-size:11px}
+      .footer-copy small{font-size:9px}
+      .auth-logo{width:225px;max-width:74%}
+    }
+
+    @media (max-width:430px){
+      .score-box{display:none}
+      .install-btn{min-width:70px}
+      .card-grid{grid-template-columns:1fr 1fr}
+      .content-card{min-height:124px}
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+    }
+
+    /* LOP 1 UI - card muc hoc cute + chon footer nhe */
+    .card-grid .content-card{
+      min-height:148px;
+      border-radius:22px;
+      padding:.95rem 1rem .86rem;
+      gap:.62rem;
+      box-shadow:0 6px 16px rgba(76,29,149,.065), inset 0 1px 0 rgba(255,255,255,.82);
+      isolation:isolate;
+    }
+    .card-grid .content-card::before{
+      content:"";
+      position:absolute;
+      width:84px;
+      height:84px;
+      right:-28px;
+      top:-34px;
+      border-radius:50%;
+      background:rgba(255,255,255,.34);
+      z-index:-1;
+      pointer-events:none;
+    }
+    .card-grid .content-card[data-tone="pink"]{background:linear-gradient(145deg,#FFF9FC 0%,#FFF0F6 100%);}
+    .card-grid .content-card[data-tone="purple"]{background:linear-gradient(145deg,#FDF9FF 0%,#F6F0FF 100%);}
+    .card-grid .content-card[data-tone="blue"]{background:linear-gradient(145deg,#F7FCFF 0%,#EAF6FF 100%);}
+    .card-grid .content-card[data-tone="green"]{background:linear-gradient(145deg,#F7FFFB 0%,#E9FBF3 100%);}
+    .card-grid .content-card[data-tone="amber"]{background:linear-gradient(145deg,#FFFDF7 0%,#FFF7DE 100%);}
+    .card-grid .content-card[data-tone="teal"]{background:linear-gradient(145deg,#F7FFFD 0%,#E9FBF7 100%);}
+    .card-grid .content-card .card-top{
+      gap:.78rem;
+      align-items:flex-start;
+    }
+    .card-grid .content-card .card-icon{
+      width:44px;
+      height:44px;
+      flex:0 0 44px;
+      border-radius:15px;
+      background:rgba(255,255,255,.86);
+      border:1px solid rgba(255,255,255,.98);
+      box-shadow:0 4px 10px rgba(76,29,149,.07);
+      font-size:24px;
+      transform:rotate(-2deg);
+    }
+    .card-grid .content-card:nth-child(even) .card-icon{transform:rotate(2deg);}
+    .card-grid .content-card .card-title{
+      font-size:19px;
+      line-height:1.22;
+      min-height:2.44em;
+      letter-spacing:-.012em;
+    }
+    .card-grid .content-card .card-desc{
+      margin:.28rem 0 0;
+      font-size:15.5px;
+      line-height:1.34;
+      font-weight:750;
+      color:#445066;
+      min-height:2.68em;
+    }
+    .card-grid .content-card .card-foot{min-height:31px;}
+    .card-grid .content-card .badge{
+      min-height:27px;
+      padding:.28rem .62rem;
+      background:rgba(255,255,255,.78);
+      box-shadow:0 2px 6px rgba(76,29,149,.04);
+      font-size:12px;
+    }
+    .card-grid .content-card .arrow{
+      width:32px;
+      height:32px;
+      flex-basis:32px;
+      font-size:17px;
+      box-shadow:0 5px 11px rgba(124,58,237,.20);
+    }
+    .card-grid .content-card:hover{
+      transform:translateY(-3px);
+      box-shadow:0 10px 24px rgba(76,29,149,.11), inset 0 1px 0 rgba(255,255,255,.9);
+    }
+
+    /* Chỉ màn hình môn học: hàng card cuối hơi chờm lên footer như ảnh mẫu. */
+    .content-stage:has(> .card-grid){
+      /* Kéo footer lên dưới hàng card cuối để card chờm vào vùng hoa/bướm vừa phải. */
+      padding-bottom:0;
+    }
+
+    @media (max-width:767px){
+      .card-grid .content-card{
+        min-height:132px;
+        border-radius:19px;
+        padding:.78rem .82rem .72rem;
+      }
+      .card-grid .content-card .card-icon{
+        width:39px;height:39px;flex-basis:39px;border-radius:13px;font-size:21px;
+      }
+      .card-grid .content-card .card-title{font-size:17px;}
+      .card-grid .content-card .card-desc{font-size:14px;}
+      .content-stage:has(> .card-grid){padding-bottom:0;}
+    }
+
   </style>
 </head>
 <body>
+  <div class="app-shell">
+    <header class="app-header" aria-label="Điều hướng chính">
+      <button id="home-button" class="home-btn" type="button" title="Về Trang chủ Lớp 1">
+        <img src="logo-home.jpg" alt="Lớp 1 - Trang chủ">
+      </button>
 
-  <div id="app-container">
-    <canvas id="fx-canvas"></canvas>
+      <nav id="primary-nav" class="primary-nav" aria-label="Các tab chính"></nav>
 
-    <div id="start-overlay">
-      <h1 style="font-size: 38px; font-weight: 900; margin-bottom: 12px;">🌸 VƯỜN TRI THỨC LỚP 1 🎒</h1>
-      <p style="font-size: 20px; font-weight: 700; color: #FFE66D; margin-bottom: 24px;">
-        Chào bé yêu! Cùng khám phá trọn bộ kiến thức SGK Lớp 1 nhé!
-      </p>
-      <button class="big-start-btn" onclick="initAppAudio()">🚀 BẮT ĐẦU HỌC NGAY</button>
-    </div>
-
-    <header>
-      <div class="nav-btns">
-        <button class="btn-nav" onclick="renderHub()">🏠 Trang chủ</button>
-        <button id="btn-back-sub" class="btn-nav" style="display:none;" onclick="renderCurrentSubject()">⬅️ Chọn chuyên đề</button>
-        <button id="btn-back-topics" class="btn-nav" style="display:none;" onclick="renderVocabTopicsMenu()">📑 Chọn chủ đề</button>
+      <div class="header-tools">
+        <button id="install-button" class="tool-btn install-btn" type="button">Cài App</button>
+        <div id="score-box" class="score-box hidden" aria-label="Thống kê đúng sai">
+          <span class="good">★ Đúng</span><strong class="good">0</strong>
+          <span class="bad">★ Sai</span><strong class="bad">0</strong>
+        </div>
+        <button id="account-button" class="tool-btn user-btn" type="button" title="Tài khoản" aria-label="Tài khoản">👤</button>
       </div>
-      <div class="header-center-title">🌸 VƯỜN TRI THỨC LỚP 1 🎒</div>
-      <div class="score-badge">⭐ <span id="stars-count">0</span> Sao</div>
     </header>
 
-    <div id="main-content"></div>
+    <section class="banner-slot" aria-label="Không gian nhận diện">
+      <div id="main-banner" class="main-banner">
+        <picture>
+          <source media="(max-width: 767px)" srcset="banner-main-mobile.jpg">
+          <img src="banner-main.jpg" alt="Lớp 1 - Cô Thỏ Hồng">
+        </picture>
+      </div>
+      <div id="sub-banner" class="sub-banner hidden">
+        <div id="sub-pill" class="sub-pill">🌸 Mục học</div>
+      </div>
+    </section>
+
+    <main id="content-stage" class="content-stage" tabindex="-1"></main>
+
+    <footer class="app-footer" aria-label="Chân trang">
+      <div class="footer-copy">
+        Epsilon Edu - Tiến bộ từng ngày
+        <small><span aria-hidden="true">📱</span> 0865.749.402</small>
+      </div>
+    </footer>
   </div>
 
-  <script>
-    // ==========================================
-    // 1. TÀI NGUYÊN SVG & HỖ TRỢ HÌNH HỌC
-    // ==========================================
-    const SVG_LIB = {
-      apple: `<svg viewBox="0 0 100 100" class="game-asset-svg"><circle cx="50" cy="55" r="38" fill="#FF4D4D"/><path d="M50,18 Q55,5 65,10" stroke="#8D6E63" stroke-width="6" fill="none" stroke-linecap="round"/><ellipse cx="62" cy="18" rx="8" ry="4" fill="#4CAF50" transform="rotate(-20, 62, 18)"/></svg>`,
-      star: `<svg viewBox="0 0 100 100" class="game-asset-svg"><polygon points="50,5 64,36 98,36 70,57 81,91 50,70 19,91 30,57 2,36 36,36" fill="#FDCB6E" stroke="#E17055" stroke-width="3"/></svg>`,
-      square: `<svg viewBox="0 0 100 100" class="game-asset-svg" style="width:80px;height:80px;"><rect x="15" y="15" width="70" height="70" rx="8" fill="#FF7675" stroke="#D63031" stroke-width="4"/></svg>`,
-      circle: `<svg viewBox="0 0 100 100" class="game-asset-svg" style="width:80px;height:80px;"><circle cx="50" cy="50" r="38" fill="#74B9FF" stroke="#0984E3" stroke-width="4"/></svg>`,
-      triangle: `<svg viewBox="0 0 100 100" class="game-asset-svg" style="width:80px;height:80px;"><polygon points="50,15 88,80 12,80" fill="#55EFC4" stroke="#00B894" stroke-width="4"/></svg>`,
-      rect: `<svg viewBox="0 0 100 100" class="game-asset-svg" style="width:100px;height:70px;"><rect x="10" y="25" width="80" height="50" rx="8" fill="#FDCB6E" stroke="#E17055" stroke-width="4"/></svg>`
-    };
+  <div id="auth-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+    <div class="auth-card">
+      <button id="auth-close" class="close-btn" type="button" aria-label="Đóng">×</button>
+      <img class="auth-logo" src="logo-home.jpg" alt="Lớp 1">
+      <div id="auth-title" class="auth-name">Cô Thỏ Hồng</div>
 
-    function generateSingleHandSvg(fingersCount, isLeft = true, skinColor = '#FFB074') {
-      const f = Math.max(0, Math.min(5, fingersCount));
-      const foldColor = '#E2E8F0', foldStroke = '#CBD5E1', activeColor = skinColor, activeStroke = '#E67E22';
-      const up = [f >= 1, f >= 2, f >= 3, f >= 4, f >= 5];
+      <div class="auth-tabs" role="tablist" aria-label="Tài khoản">
+        <button id="auth-tab-login" class="auth-tab is-active" type="button">Đăng nhập</button>
+        <button id="auth-tab-register" class="auth-tab" type="button">Đăng ký tài khoản</button>
+      </div>
 
-      const pinky = up[4] ? `<rect x="75" y="25" width="13" height="42" rx="6.5" fill="${activeColor}" stroke="${activeStroke}" stroke-width="2"/>` : `<circle cx="81" cy="56" r="6" fill="${foldColor}" stroke="${foldStroke}" stroke-width="2"/>`;
-      const ring = up[3] ? `<rect x="58" y="14" width="14" height="55" rx="7" fill="${activeColor}" stroke="${activeStroke}" stroke-width="2"/>` : `<circle cx="65" cy="55" r="7" fill="${foldColor}" stroke="${foldStroke}" stroke-width="2"/>`;
-      const middle = up[2] ? `<rect x="41" y="8" width="14" height="62" rx="7" fill="${activeColor}" stroke="${activeStroke}" stroke-width="2"/>` : `<circle cx="48" cy="54" r="7" fill="${foldColor}" stroke="${foldStroke}" stroke-width="2"/>`;
-      const index = up[1] ? `<rect x="24" y="16" width="14" height="54" rx="7" fill="${activeColor}" stroke="${activeStroke}" stroke-width="2"/>` : `<circle cx="31" cy="56" r="7" fill="${foldColor}" stroke="${foldStroke}" stroke-width="2"/>`;
-      const thumb = up[0] ? `<path d="M12,50 Q4,42 8,30 Q12,24 18,34 L25,52 Z" fill="${activeColor}" stroke="${activeStroke}" stroke-width="2"/>` : `<ellipse cx="18" cy="58" rx="6" ry="8" fill="${foldColor}" stroke="${foldStroke}" stroke-width="2"/>`;
-      const palm = `<path d="M18,52 L83,52 C86,68 82,88 68,96 C50,98 32,98 18,92 C14,84 14,64 18,52 Z" fill="${activeColor}" stroke="${activeStroke}" stroke-width="2.5"/>`;
-      const transformAttr = isLeft ? '' : 'transform="scale(-1, 1) translate(-100, 0)"';
-
-      return `<svg viewBox="0 0 100 110" class="hand-svg"><g ${transformAttr}>${pinky}${ring}${middle}${index}${thumb}${palm}</g></svg>`;
-    }
-
-    function renderTwoHandsNumber(n, skinColor = '#FF9F43') {
-      let leftFingers = n <= 5 ? n : 5;
-      let rightFingers = n <= 5 ? 0 : n - 5;
-      return `
-        <div class="hands-display-wrapper">
-          <div style="display:flex; flex-direction:column; align-items:center;">
-            ${generateSingleHandSvg(leftFingers, true, skinColor)}
-          </div>
-          ${n > 5 ? `<div style="display:flex; flex-direction:column; align-items:center;">${generateSingleHandSvg(rightFingers, false, skinColor)}</div>` : ''}
+      <form id="login-form" class="form-stack" novalidate>
+        <div class="field">
+          <label for="login-id">Mã ID</label>
+          <input id="login-id" name="login-id" autocomplete="username" placeholder="Ví dụ: L1-A001">
         </div>
-      `;
-    }
-
-    // =========================================================================
-    // 2. KHO TỪ VỰNG TIẾNG ANH 10 CHỦ ĐỀ - TRÍCH XUẤT SGK LỚP 1
-    // =========================================================================
-    const VOCAB_THEMES = [
-      { id: 'numbers', title: '1. Numbers (Số đếm)', icon: '🔢', desc: 'One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten...', words: [
-        { word: 'One', ipa: '/wʌn/', emoji: '1️⃣', vi: 'Số 1', examples: [{ en: 'One apple.', vi: 'Một quả táo.' }, { en: 'I have one book.', vi: 'Tôi có một quyển sách.' }, { en: 'Number one.', vi: 'Số một.' }] },
-        { word: 'Two', ipa: '/tuː/', emoji: '2️⃣', vi: 'Số 2', examples: [{ en: 'There are two locks.', vi: 'Có hai cái ổ khóa.' }, { en: 'Two clocks.', vi: 'Hai chiếc đồng hồ.' }, { en: 'I have two hands.', vi: 'Tôi có hai bàn tay.' }] },
-        { word: 'Three', ipa: '/θriː/', emoji: '3️⃣', vi: 'Số 3', examples: [{ en: 'There are three clocks.', vi: 'Có ba chiếc đồng hồ.' }, { en: 'Three mops.', vi: 'Ba cây lau nhà.' }, { en: 'I see three cats.', vi: 'Tôi thấy ba chú mèo.' }] },
-        { word: 'Four', ipa: '/fɔːr/', emoji: '4️⃣', vi: 'Số 4', examples: [{ en: 'There are four mops.', vi: 'Có bốn cây lau nhà.' }, { en: 'Four pots.', vi: 'Bốn cái nồi.' }, { en: 'I have four pencils.', vi: 'Tôi có bốn chiếc bút chì.' }] },
-        { word: 'Five', ipa: '/faɪv/', emoji: '5️⃣', vi: 'Số 5', examples: [{ en: 'There are five pots.', vi: 'Có năm cái nồi xoong.' }, { en: 'Five locks.', vi: 'Năm cái ổ khóa.' }, { en: 'Five monkeys.', vi: 'Năm con khỉ.' }] },
-        { word: 'Six', ipa: '/sɪks/', emoji: '6️⃣', vi: 'Số 6', examples: [{ en: 'I can see six windows.', vi: 'Tôi có thể nhìn thấy sáu chiếc cửa sổ.' }, { en: 'Six footballs.', vi: 'Sáu quả bóng đá.' }, { en: 'Six apples.', vi: 'Sáu quả táo.' }] },
-        { word: 'Seven', ipa: '/ˈsevn/', emoji: '7️⃣', vi: 'Số 7', examples: [{ en: 'Seven tops.', vi: 'Bảy con quay đồ chơi.' }, { en: 'Seven days.', vi: 'Bảy ngày.' }, { en: 'Seven pens.', vi: 'Bảy cây bút.' }] },
-        { word: 'Eight', ipa: '/eɪt/', emoji: '8️⃣', vi: 'Số 8', examples: [{ en: 'Eight pens.', vi: 'Tám cây bút mực.' }, { en: 'Eight balls.', vi: 'Tám quả bóng.' }, { en: 'Eight books.', vi: 'Tám quyển sách.' }] },
-        { word: 'Nine', ipa: '/naɪn/', emoji: '9️⃣', vi: 'Số 9', examples: [{ en: 'Nine birds.', vi: 'Chín chú chim.' }, { en: 'Nine cups.', vi: 'Chín cái cốc.' }, { en: 'Number nine.', vi: 'Số chín.' }] },
-        { word: 'Ten', ipa: '/ten/', emoji: '🔟', vi: 'Số 10', examples: [{ en: 'Ten lemons.', vi: 'Mười quả chanh.' }, { en: 'Ten fingers.', vi: 'Mười ngón tay.' }, { en: 'Count to ten.', vi: 'Đếm đến mười.' }] }
-      ]},
-      { id: 'colors', title: '2. Colors (Màu sắc)', icon: '🎨', desc: 'Red, Blue, Green, Yellow, Pink, Orange...', words: [
-        { word: 'Red', ipa: '/red/', emoji: '🔴', vi: 'Màu đỏ', examples: [{ en: 'It is a red pen.', vi: 'Đó là một cây bút đỏ.' }, { en: 'A red pencil.', vi: 'Một cây bút chì đỏ.' }, { en: 'This is a red apple.', vi: 'Đây là một quả táo đỏ.' }] },
-        { word: 'Blue', ipa: '/bluː/', emoji: '🔵', vi: 'Màu xanh dương', examples: [{ en: 'A blue car.', vi: 'Một chiếc ô tô màu xanh.' }, { en: 'The sky is blue.', vi: 'Bầu trời có màu xanh dương.' }, { en: 'A blue book.', vi: 'Quyển sách màu xanh.' }] },
-        { word: 'Green', ipa: '/ɡriːn/', emoji: '🟢', vi: 'Màu xanh lá', examples: [{ en: 'A green leaf.', vi: 'Một chiếc lá màu xanh.' }, { en: 'The green garden.', vi: 'Khu vườn xanh tươi.' }, { en: 'A green bag.', vi: 'Một chiếc cặp xanh lá.' }] },
-        { word: 'Yellow', ipa: '/ˈjeləʊ/', emoji: '🟡', vi: 'Màu vàng', examples: [{ en: 'A yellow duck.', vi: 'Một chú vịt màu vàng.' }, { en: 'The sun is yellow.', vi: 'Ông mặt trời màu vàng.' }, { en: 'A yellow banana.', vi: 'Quả chuối màu vàng.' }] },
-        { word: 'Pink', ipa: '/pɪŋk/', emoji: '🌸', vi: 'Màu hồng', examples: [{ en: 'A pink hat.', vi: 'Một chiếc mũ màu hồng.' }, { en: 'A lovely pink dress.', vi: 'Chiếc váy màu hồng đáng yêu.' }, { en: 'A pink flower.', vi: 'Một bông hoa màu hồng.' }] },
-        { word: 'Orange', ipa: '/ˈɒrɪndʒ/', emoji: '🟠', vi: 'Màu cam', examples: [{ en: 'An orange ball.', vi: 'Quả bóng màu cam.' }, { en: 'An orange bike.', vi: 'Một chiếc xe đạp màu cam.' }, { en: 'Orange juice.', vi: 'Nước cam tươi.' }] }
-      ]},
-      { id: 'family', title: '3. Family (Gia đình)', icon: '👨‍👩‍👧‍👦', desc: 'Father, Mother, Brother, Sister, Baby, Girl...', words: [
-        { word: 'Father', ipa: '/ˈfɑːðər/', emoji: '👨', vi: 'Bố (Cha)', examples: [{ en: 'Father is watching football.', vi: 'Bố đang xem bóng đá.' }, { en: 'This is my father.', vi: 'Đây là bố của tôi.' }, { en: 'I love my father.', vi: 'Tôi yêu bố của mình.' }] },
-        { word: 'Mother', ipa: '/ˈmʌðər/', emoji: '👩', vi: 'Mẹ', examples: [{ en: 'That is my mother.', vi: 'Đó là mẹ của tôi.' }, { en: 'This is my mother.', vi: 'Đây là mẹ của tôi.' }, { en: 'I love my mother.', vi: 'Tôi rất yêu mẹ.' }] },
-        { word: 'Brother', ipa: '/ˈbrʌðər/', emoji: '👦', vi: 'Anh / Em trai', examples: [{ en: 'He is my brother.', vi: 'Cậu ấy là anh trai tôi.' }, { en: 'My brother plays ball.', vi: 'Anh trai tôi chơi bóng.' }, { en: 'I love my brother.', vi: 'Tôi yêu anh trai tôi.' }] },
-        { word: 'Sister', ipa: '/ˈsɪstər/', emoji: '👧', vi: 'Chị / Em gái', examples: [{ en: 'She is my sister.', vi: 'Cô ấy là chị gái của tôi.' }, { en: 'My sister is cute.', vi: 'Em gái tôi rất dễ thương.' }, { en: 'I love my sister.', vi: 'Tôi yêu chị gái của mình.' }] },
-        { word: 'Baby', ipa: '/ˈbeɪbi/', emoji: '👶', vi: 'Em bé', examples: [{ en: 'The baby is smiling.', vi: 'Em bé đang mỉm cười.' }, { en: 'A cute baby.', vi: 'Một em bé thật đáng yêu.' }, { en: 'Look at the baby.', vi: 'Nhìn em bé kìa.' }] },
-        { word: 'Girl', ipa: '/ɡɜːl/', emoji: '👧', vi: 'Cô bé / Bé gái', examples: [{ en: 'There is a girl in the garden.', vi: 'Có một cô bé trong vườn.' }, { en: 'A cute little girl.', vi: 'Một cô bé dễ thương.' }, { en: 'Look at the girl.', vi: 'Nhìn cô bé kìa.' }] }
-      ]},
-      { id: 'animals', title: '4. Animals (Động vật)', icon: '🐶', desc: 'Cat, Dog, Duck, Fish, Monkey, Mouse, Goat, Horse, Tiger, Turtle...', words: [
-        { word: 'Cat', ipa: '/kæt/', emoji: '🐱', vi: 'Con mèo', examples: [{ en: 'I have a cat.', vi: 'Tôi có một con mèo.' }, { en: 'There is a cat.', vi: 'Có một chú mèo.' }, { en: 'Look out, cat!', vi: 'Coi chừng kìa mèo ơi!' }] },
-        { word: 'Dog', ipa: '/dɒɡ/', emoji: '🐶', vi: 'Con chó', examples: [{ en: 'This is a dog.', vi: 'Đây là một chú chó.' }, { en: 'Look at my dog.', vi: 'Hãy nhìn chú chó của tôi.' }, { en: 'A duck and a dog.', vi: 'Một con vịt và một con chó.' }] },
-        { word: 'Duck', ipa: '/dʌk/', emoji: '🦆', vi: 'Con vịt', examples: [{ en: 'This is a duck.', vi: 'Đây là một chú vịt.' }, { en: 'The duck is yellow.', vi: 'Chú vịt có màu vàng.' }, { en: 'A duck on the desk.', vi: 'Con vịt ở trên bàn học.' }] },
-        { word: 'Fish', ipa: '/fɪʃ/', emoji: '🐟', vi: 'Con cá', examples: [{ en: 'I like fish.', vi: 'Tôi thích ăn cá.' }, { en: 'Look at the fish.', vi: 'Nhìn chú cá bơi kìa.' }, { en: 'Fish and chips.', vi: 'Món cá và khoai tây chiên.' }] },
-        { word: 'Monkey', ipa: '/ˈmʌŋki/', emoji: '🐵', vi: 'Con khỉ', examples: [{ en: 'That is a monkey.', vi: 'Đó là một con khỉ.' }, { en: 'Look at the monkey.', vi: 'Nhìn chú khỉ kìa.' }] },
-        { word: 'Mouse', ipa: '/maʊs/', emoji: '🐭', vi: 'Con chuột', examples: [{ en: 'The mouse is running.', vi: 'Chú chuột đang chạy.' }, { en: 'There is a mouse.', vi: 'Có một con chuột.' }] },
-        { word: 'Goat', ipa: '/ɡəʊt/', emoji: '🐐', vi: 'Con dê', examples: [{ en: 'There is a goat in the garden.', vi: 'Có một con dê trong vườn.' }, { en: 'A goat and a gate.', vi: 'Một con dê và một cánh cổng.' }] },
-        { word: 'Horse', ipa: '/hɔːs/', emoji: '🐴', vi: 'Con ngựa', examples: [{ en: 'Touch your horse.', vi: 'Chạm vào con ngựa của bạn.' }, { en: 'Your hand and horse.', vi: 'Bàn tay và chú ngựa.' }] },
-        { word: 'Tiger', ipa: '/ˈtaɪɡər/', emoji: '🐯', vi: 'Con hổ', examples: [{ en: 'I can see a tiger.', vi: 'Tôi nhìn thấy một con hổ.' }, { en: 'Tony has a tiger.', vi: 'Tony có một con hổ đồ chơi.' }] },
-        { word: 'Turtle', ipa: '/ˈtɜːtl/', emoji: '🐢', vi: 'Con rùa', examples: [{ en: 'I can see a turtle.', vi: 'Tôi có thể thấy một con rùa.' }, { en: 'Tony has a turtle.', vi: 'Tony có một con rùa.' }] }
-      ]},
-      { id: 'school', title: '5. School Things (Đồ dùng học tập)', icon: '🎒', desc: 'Book, Pen, Pencil, Bag, Bell, Ruler, Desk...', words: [
-        { word: 'Book', ipa: '/bʊk/', emoji: '📖', vi: 'Quyển sách', examples: [{ en: 'This is my book.', vi: 'Đây là quyển sách của tôi.' }, { en: 'I have a book.', vi: 'Tôi có một quyển sách.' }] },
-        { word: 'Pen', ipa: '/pen/', emoji: '🖊️', vi: 'Bút mực', examples: [{ en: 'It is a red pen.', vi: 'Nó là một cây bút mực đỏ.' }, { en: 'I have a pen.', vi: 'Tôi có một cây bút mực.' }] },
-        { word: 'Pencil', ipa: '/ˈpensl/', emoji: '✏️', vi: 'Bút chì', examples: [{ en: 'He has a red pencil.', vi: 'Cậu ấy có một cây bút chì màu đỏ.' }, { en: 'This is my pencil.', vi: 'Đây là cây bút chì của tôi.' }] },
-        { word: 'Bag', ipa: '/bæɡ/', emoji: '🎒', vi: 'Cặp sách / Túi', examples: [{ en: 'This is my bag.', vi: 'Đây là chiếc cặp của tôi.' }, { en: 'An apple in the bag.', vi: 'Một quả táo trong túi.' }] },
-        { word: 'Bell', ipa: '/bel/', emoji: '🔔', vi: 'Cái chuông', examples: [{ en: 'Look at the bell.', vi: 'Nhìn chiếc chuông kìa.' }, { en: 'Listen to the bell.', vi: 'Hãy lắng nghe tiếng chuông.' }] },
-        { word: 'Ruler', ipa: '/ˈruːlər/', emoji: '📏', vi: 'Cây thước kẻ', examples: [{ en: 'My ruler is long.', vi: 'Cây thước của tôi rất dài.' }, { en: 'Use the ruler.', vi: 'Dùng thước kẻ nhé.' }] },
-        { word: 'Desk', ipa: '/desk/', emoji: '🪑', vi: 'Bàn học sinh', examples: [{ en: 'It is on the desk.', vi: 'Nó ở trên bàn học.' }, { en: 'A door and a desk.', vi: 'Một cánh cửa và một cái bàn.' }] }
-      ]},
-      { id: 'body', title: '6. Body Parts (Bộ phận cơ thể)', icon: '👀', desc: 'Face, Hair, Hand, Head, Foot, Eye, Ear, Nose, Mouth...', words: [
-        { word: 'Face', ipa: '/feɪs/', emoji: '🧒', vi: 'Khuôn mặt', examples: [{ en: 'Point to your face.', vi: 'Chỉ vào khuôn mặt của bạn.' }, { en: 'A lovely face.', vi: 'Một khuôn mặt đáng yêu.' }] },
-        { word: 'Hair', ipa: '/heər/', emoji: '💇', vi: 'Mái tóc', examples: [{ en: 'Touch your hair.', vi: 'Chạm vào mái tóc của bạn.' }, { en: 'Your head and hair.', vi: 'Đầu và mái tóc của bạn.' }] },
-        { word: 'Hand', ipa: '/hænd/', emoji: '✋', vi: 'Bàn tay', examples: [{ en: 'Point to your hand.', vi: 'Chỉ vào bàn tay của bạn.' }, { en: 'Touch your hand.', vi: 'Chạm vào bàn tay nào.' }] },
-        { word: 'Head', ipa: '/hed/', emoji: '🗣️', vi: 'Cái đầu', examples: [{ en: 'Touch your head.', vi: 'Chạm vào đầu của bạn.' }, { en: 'Point to your head.', vi: 'Chỉ vào đầu của bạn nào.' }] },
-        { word: 'Foot', ipa: '/fʊt/', emoji: '🦶', vi: 'Bàn chân', examples: [{ en: 'Point to your foot.', vi: 'Chỉ vào bàn chân của bạn.' }, { en: 'That is your foot.', vi: 'Đó là bàn chân của bạn.' }] },
-        { word: 'Eye', ipa: '/aɪ/', emoji: '👁️', vi: 'Mắt', examples: [{ en: 'Touch your eye.', vi: 'Chạm vào mắt của bạn.' }, { en: 'I see with my eyes.', vi: 'Tôi nhìn bằng đôi mắt.' }] },
-        { word: 'Ear', ipa: '/ɪər/', emoji: '👂', vi: 'Tai', examples: [{ en: 'Touch your ear.', vi: 'Chạm vào tai nào.' }, { en: 'Listen with ears.', vi: 'Lắng nghe bằng đôi tai.' }] },
-        { word: 'Nose', ipa: '/nəʊz/', emoji: '👃', vi: 'Mũi', examples: [{ en: 'Point to your nose.', vi: 'Chỉ vào mũi nào.' }, { en: 'This is my nose.', vi: 'Đây là mũi của tôi.' }] },
-        { word: 'Mouth', ipa: '/maʊθ/', emoji: '👄', vi: 'Miệng', examples: [{ en: 'Open your mouth.', vi: 'Mở miệng ra nào.' }, { en: 'Smile with mouth.', vi: 'Mỉm cười xinh xắn.' }] }
-      ]},
-      { id: 'food', title: '7. Food & Drinks (Thức ăn & Uống)', icon: '🍎', desc: 'Apple, Cake, Chicken, Chips, Milk, Mango, Banana, Noodles, Nut, Water, Lemon, Bread...', words: [
-        { word: 'Apple', ipa: '/ˈæpl/', emoji: '🍎', vi: 'Quả táo', examples: [{ en: 'This is my apple.', vi: 'Đây là quả táo của tôi.' }, { en: 'An apple in the bag.', vi: 'Một quả táo ở trong túi.' }] },
-        { word: 'Cake', ipa: '/keɪk/', emoji: '🧁', vi: 'Cái bánh ngọt', examples: [{ en: 'I have a cake.', vi: 'Tôi có một chiếc bánh.' }, { en: 'A cup and a cake.', vi: 'Một chiếc cốc và một cái bánh.' }] },
-        { word: 'Chicken', ipa: '/ˈtʃɪkɪn/', emoji: '🍗', vi: 'Thịt gà', examples: [{ en: 'I like chicken.', vi: 'Tôi thích thịt gà.' }, { en: 'Milk and chicken.', vi: 'Sữa và thịt gà.' }] },
-        { word: 'Chips', ipa: '/tʃɪps/', emoji: '🍟', vi: 'Khoai tây chiên', examples: [{ en: 'I like chips.', vi: 'Tôi thích khoai tây chiên.' }, { en: 'Fish and chips.', vi: 'Cá và khoai tây chiên.' }] },
-        { word: 'Milk', ipa: '/mɪlk/', emoji: '🥛', vi: 'Sữa tươi', examples: [{ en: 'I like milk.', vi: 'Tôi thích sữa.' }, { en: 'Drink the milk.', vi: 'Uống sữa nhé.' }] },
-        { word: 'Mango', ipa: '/ˈmæŋɡəʊ/', emoji: '🥭', vi: 'Quả xoài', examples: [{ en: 'That is a mango.', vi: 'Đó là một quả xoài.' }, { en: 'I like mango.', vi: 'Tôi thích ăn xoài.' }] },
-        { word: 'Banana', ipa: '/bəˈnɑːnə/', emoji: '🍌', vi: 'Quả chuối', examples: [{ en: 'Look at bananas.', vi: 'Nhìn những quả chuối kìa.' }, { en: 'I eat a banana.', vi: 'Tôi ăn một quả chuối.' }] },
-        { word: 'Noodles', ipa: '/ˈnuːdlz/', emoji: '🍜', vi: 'Mì', examples: [{ en: 'She is having noodles.', vi: 'Cô ấy đang ăn mì.' }, { en: 'Nick is having noodles.', vi: 'Nick đang ăn mì.' }] },
-        { word: 'Nut', ipa: '/nʌt/', emoji: '🥜', vi: 'Hạt đậu phộng / Hạt', examples: [{ en: 'He is having nuts.', vi: 'Cậu ấy đang ăn các loại hạt.' }, { en: 'Nam is having nuts.', vi: 'Nam đang ăn hạt.' }] },
-        { word: 'Water', ipa: '/ˈwɔːtər/', emoji: '💧', vi: 'Nước uống', examples: [{ en: 'Drink clean water.', vi: 'Hãy uống nước sạch nhé.' }, { en: 'I want water.', vi: 'Tôi muốn uống nước.' }] },
-        { word: 'Lemon', ipa: '/ˈlemən/', emoji: '🍋', vi: 'Quả chanh', examples: [{ en: 'Look at the lemons.', vi: 'Hãy nhìn những quả chanh kìa.' }, { en: 'Ten lemons.', vi: 'Mười quả chanh.' }] },
-        { word: 'Bread', ipa: '/bred/', emoji: '🍞', vi: 'Bánh mì', examples: [{ en: 'I eat bread.', vi: 'Tôi ăn bánh mì.' }, { en: 'Fresh bread is good.', vi: 'Bánh mì mới thật ngon.' }] }
-      ]},
-      { id: 'toys', title: '8. Toys & Games (Đồ chơi)', icon: '🧸', desc: 'Ball, Bike, Car, Truck, Top, Teddy bear, Doll, Robot...', words: [
-        { word: 'Ball', ipa: '/bɔːl/', emoji: '⚽', vi: 'Quả bóng', examples: [{ en: 'I have a ball.', vi: 'Tôi có một quả bóng.' }, { en: 'Kick the ball.', vi: 'Sút quả bóng nào.' }] },
-        { word: 'Bike', ipa: '/baɪk/', emoji: '🚲', vi: 'Xe đạp', examples: [{ en: 'I have a bike.', vi: 'Tôi có một chiếc xe đạp.' }, { en: 'Ride a bike.', vi: 'Đi xe đạp.' }] },
-        { word: 'Car', ipa: '/kɑːr/', emoji: '🚗', vi: 'Xe ô tô', examples: [{ en: 'I have a car.', vi: 'Tôi có một chiếc xe ô tô.' }, { en: 'A cat and a car.', vi: 'Một con mèo và chiếc ô tô.' }] },
-        { word: 'Truck', ipa: '/trʌk/', emoji: '🚚', vi: 'Xe ô tô tải', examples: [{ en: 'Look at the truck.', vi: 'Hãy nhìn chiếc xe tải kìa.' }, { en: 'The truck is moving.', vi: 'Chiếc xe tải đang chuyển động.' }] },
-        { word: 'Top', ipa: '/tɒp/', emoji: '🪀', vi: 'Con quay đồ chơi', examples: [{ en: 'Tony has a top.', vi: 'Tony có một con quay đồ chơi.' }, { en: 'Seven tops.', vi: 'Bảy con quay.' }] },
-        { word: 'Teddy bear', ipa: '/ˈtedi beər/', emoji: '🧸', vi: 'Gấu bông', examples: [{ en: 'Tony has a teddy bear.', vi: 'Tony có một chú gấu bông.' }, { en: 'I can see a teddy bear.', vi: 'Tôi có thể thấy chú gấu bông.' }] },
-        { word: 'Doll', ipa: '/dɒl/', emoji: '🪆', vi: 'Búp bê', examples: [{ en: 'A pretty doll.', vi: 'Một con búp bê xinh xắn.' }, { en: 'Play with doll.', vi: 'Chơi cùng búp bê.' }] },
-        { word: 'Robot', ipa: '/ˈrəʊbɒt/', emoji: '🤖', vi: 'Người máy', examples: [{ en: 'A smart robot.', vi: 'Người máy thông minh.' }, { en: 'The robot walks.', vi: 'Người máy bước đi.' }] }
-      ]},
-      { id: 'classroom', title: '9. Classroom & Home (Lớp học & Nhà cửa)', icon: '🏫', desc: 'Door, Window, Clock, Pot, Mop, Lock, Cup, Hat, Can, Garden, Gate, Lake...', words: [
-        { word: 'Door', ipa: '/dɔːr/', emoji: '🚪', vi: 'Cửa ra vào', examples: [{ en: 'It is near the door.', vi: 'Nó ở gần cửa ra vào.' }, { en: 'Open the door.', vi: 'Mở cửa ra nào.' }] },
-        { word: 'Window', ipa: '/ˈwɪndəʊ/', emoji: '🪟', vi: 'Cửa sổ', examples: [{ en: 'How many windows can you see?', vi: 'Bạn thấy bao nhiêu chiếc cửa sổ?' }, { en: 'I can see six windows.', vi: 'Tôi thấy sáu chiếc cửa sổ.' }] },
-        { word: 'Clock', ipa: '/klɒk/', emoji: '⏰', vi: 'Cái đồng hồ', examples: [{ en: 'How many clocks? Two.', vi: 'Có mấy cái đồng hồ? Có hai cái.' }, { en: 'There are two clocks.', vi: 'Có hai chiếc đồng hồ.' }] },
-        { word: 'Pot', ipa: '/pɒt/', emoji: '🍲', vi: 'Cái nồi xoong', examples: [{ en: 'How many pots? Four.', vi: 'Có mấy cái nồi xoong? Có bốn cái.' }, { en: 'There are five pots.', vi: 'Có năm cái nồi xoong.' }] },
-        { word: 'Mop', ipa: '/mɒp/', emoji: '🧹', vi: 'Cây lau nhà', examples: [{ en: 'There are four mops.', vi: 'Có bốn cây lau nhà.' }, { en: 'Use the mop.', vi: 'Dùng cây lau nhà nhé.' }] },
-        { word: 'Lock', ipa: '/lɒk/', emoji: '🔒', vi: 'Ổ khóa', examples: [{ en: 'There are two locks.', vi: 'Có hai cái ổ khóa.' }, { en: 'Five locks.', vi: 'Năm cái ổ khóa.' }] },
-        { word: 'Cup', ipa: '/kʌp/', emoji: '☕', vi: 'Cái chén / Cốc', examples: [{ en: 'I have a cup.', vi: 'Tôi có một chiếc cốc.' }, { en: 'A cup and a cake.', vi: 'Một cái cốc và một cái bánh.' }] },
-        { word: 'Hat', ipa: '/hæt/', emoji: '👒', vi: 'Cái mũ (nón)', examples: [{ en: 'This is my hat.', vi: 'Đây là chiếc mũ của tôi.' }, { en: 'Wear your hat.', vi: 'Đội mũ vào nhé.' }] },
-        { word: 'Can', ipa: '/kæn/', emoji: '🥫', vi: 'Lon đồ uống', examples: [{ en: 'This is my can.', vi: 'Đây là lon nước của tôi.' }, { en: 'A can of juice.', vi: 'Một lon nước ép.' }] },
-        { word: 'Garden', ipa: '/ˈɡɑːdn/', emoji: '🏡', vi: 'Khu vườn', examples: [{ en: 'There is a garden.', vi: 'Có một khu vườn.' }, { en: 'A girl in the garden.', vi: 'Cô bé ở trong khu vườn.' }] },
-        { word: 'Gate', ipa: '/ɡeɪt/', emoji: '🚪', vi: 'Cổng ra vào', examples: [{ en: 'A goat and a gate.', vi: 'Một con dê và cánh cổng.' }, { en: 'Open the gate.', vi: 'Mở cánh cổng ra nào.' }] },
-        { word: 'Lake', ipa: '/leɪk/', emoji: '🏞️', vi: 'Hồ nước', examples: [{ en: 'Look at the lake.', vi: 'Nhìn ra hồ nước kìa.' }, { en: 'Running round the lake.', vi: 'Chạy quanh bờ hồ.' }] }
-      ]},
-      { id: 'actions', title: '10. Action Verbs (Hành động)', icon: '🏃', desc: 'Run, Wash, Look, Touch, Point, Sing, Clap, Jump...', words: [
-        { word: 'Run', ipa: '/rʌn/', emoji: '🏃', vi: 'Chạy bộ', examples: [{ en: 'He is running.', vi: 'Cậu ấy đang chạy bộ.' }, { en: 'She is running.', vi: 'Cô ấy đang chạy.' }] },
-        { word: 'Wash', ipa: '/wɒʃ/', emoji: '🧼', vi: 'Rửa / Giặt / Lau', examples: [{ en: 'Wash your hands.', vi: 'Rửa sạch bàn tay.' }, { en: 'Wendy is washing.', vi: 'Wendy đang rửa đồ.' }] },
-        { word: 'Look', ipa: '/lʊk/', emoji: '👀', vi: 'Nhìn / Quan sát', examples: [{ en: 'Look at the lemons.', vi: 'Hãy nhìn những quả chanh.' }, { en: 'Look at Lucy.', vi: 'Nhìn bạn Lucy kìa.' }] },
-        { word: 'Touch', ipa: '/tʌtʃ/', emoji: '👉', vi: 'Chạm vào', examples: [{ en: 'Touch your hair.', vi: 'Chạm vào mái tóc của bạn.' }, { en: 'Touch your head.', vi: 'Chạm vào đầu của bạn.' }] },
-        { word: 'Point', ipa: '/pɔɪnt/', emoji: '☝️', vi: 'Chỉ vào', examples: [{ en: 'Point to your face.', vi: 'Chỉ vào khuôn mặt.' }, { en: 'Point to your foot.', vi: 'Chỉ vào bàn chân.' }] },
-        { word: 'Sing', ipa: '/sɪŋ/', emoji: '🎤', vi: 'Hát ca', examples: [{ en: 'Let us sing!', vi: 'Cùng hát lên nào!' }, { en: 'Sing a happy song.', vi: 'Hát một bài hát vui vẻ.' }] },
-        { word: 'Clap', ipa: '/klæp/', emoji: '👏', vi: 'Vỗ tay', examples: [{ en: 'Clap your hands.', vi: 'Vỗ đôi bàn tay.' }, { en: 'Clap with me.', vi: 'Vỗ tay cùng tôi nào.' }] },
-        { word: 'Jump', ipa: '/dʒʌmp/', emoji: '🦘', vi: 'Nhảy lên', examples: [{ en: 'Jump high up!', vi: 'Nhảy thật cao lên nào!' }, { en: 'Jump like a frog.', vi: 'Nhảy như chú ếch con.' }] }
-      ]}
-    ];
-
-    // =========================================================================
-    // DỮ LIỆU BẢNG CHỮ CÁI TIẾNG ANH & 3 VÍ DỤ CHUẨN SGK LỚP 1
-    // =========================================================================
-    const ALPHABET_IPA_DATA = [
-      { letter: 'A', lower: 'a', nameIpa: '/eɪ/', soundIpa: '/æ/', examples: [
-        { word: 'Apple', ipa: '/ˈæpl/', vi: 'Quả táo', emoji: '🍎', sample: 'This is my apple' },
-        { word: 'Ant', ipa: '/ænt/', vi: 'Con kiến', emoji: '🐜', sample: 'Look at the ant' },
-        { word: 'Ax', ipa: '/æks/', vi: 'Cái rìu', emoji: '🪓', sample: 'An ax on the desk' }
-      ]},
-      { letter: 'B', lower: 'b', nameIpa: '/biː/', soundIpa: '/b/', examples: [
-        { word: 'Ball', ipa: '/bɔːl/', vi: 'Quả bóng', emoji: '⚽', sample: 'I have a ball' },
-        { word: 'Book', ipa: '/bʊk/', vi: 'Quyển sách', emoji: '📖', sample: 'This is my book' },
-        { word: 'Bike', ipa: '/baɪk/', vi: 'Xe đạp', emoji: '🚲', sample: 'Look at the bike' }
-      ]},
-      { letter: 'C', lower: 'c', nameIpa: '/siː/', soundIpa: '/k/', examples: [
-        { word: 'Cat', ipa: '/kæt/', vi: 'Con mèo', emoji: '🐱', sample: 'I have a cat' },
-        { word: 'Car', ipa: '/kɑːr/', vi: 'Xe ô tô', emoji: '🚗', sample: 'This is a car' },
-        { word: 'Cake', ipa: '/keɪk/', vi: 'Bánh ngọt', emoji: '🧁', sample: 'A cup and a cake' }
-      ]},
-      { letter: 'D', lower: 'd', nameIpa: '/diː/', soundIpa: '/d/', examples: [
-        { word: 'Dog', ipa: '/dɒɡ/', vi: 'Con chó', emoji: '🐶', sample: 'This is a dog' },
-        { word: 'Duck', ipa: '/dʌk/', vi: 'Con vịt', emoji: '🦆', sample: 'Look at the duck' },
-        { word: 'Desk', ipa: '/desk/', vi: 'Bàn học', emoji: '🪑', sample: 'It is on the desk' }
-      ]},
-      { letter: 'E', lower: 'e', nameIpa: '/iː/', soundIpa: '/e/', examples: [
-        { word: 'Egg', ipa: '/eɡ/', vi: 'Quả trứng', emoji: '🥚', sample: 'I have an egg' },
-        { word: 'Elephant', ipa: '/ˈelɪfənt/', vi: 'Con voi', emoji: '🐘', sample: 'A big elephant' },
-        { word: 'Envelope', ipa: '/ˈenvələʊp/', vi: 'Phong bì', emoji: '✉️', sample: 'Look at the envelope' }
-      ]},
-      { letter: 'F', lower: 'f', nameIpa: '/ef/', soundIpa: '/f/', examples: [
-        { word: 'Fish', ipa: '/fɪʃ/', vi: 'Con cá', emoji: '🐟', sample: 'I like fish' },
-        { word: 'Face', ipa: '/feɪs/', vi: 'Khuôn mặt', emoji: '🧒', sample: 'Point to your face' },
-        { word: 'Foot', ipa: '/fʊt/', vi: 'Bàn chân', emoji: '🦶', sample: 'Point to your foot' }
-      ]},
-      { letter: 'G', lower: 'g', nameIpa: '/dʒiː/', soundIpa: '/ɡ/', examples: [
-        { word: 'Goat', ipa: '/ɡəʊt/', vi: 'Con dê', emoji: '🐐', sample: 'A goat in the garden' },
-        { word: 'Garden', ipa: '/ˈɡɑːdn/', vi: 'Khu vườn', emoji: '🏡', sample: 'There is a garden' },
-        { word: 'Gate', ipa: '/ɡeɪt/', vi: 'Cổng ra vào', emoji: '🚪', sample: 'Open the gate' }
-      ]},
-      { letter: 'H', lower: 'h', nameIpa: '/eɪtʃ/', soundIpa: '/h/', examples: [
-        { word: 'Hand', ipa: '/hænd/', vi: 'Bàn tay', emoji: '✋', sample: 'Touch your hand' },
-        { word: 'Hair', ipa: '/heər/', vi: 'Mái tóc', emoji: '💇', sample: 'Touch your hair' },
-        { word: 'Head', ipa: '/hed/', vi: 'Cái đầu', emoji: '🗣️', sample: 'Touch your head' }
-      ]},
-      { letter: 'I', lower: 'i', nameIpa: '/aɪ/', soundIpa: '/ɪ/', examples: [
-        { word: 'Ink', ipa: '/ɪŋk/', vi: 'Mực viết', emoji: '🖋️', sample: 'A bottle of ink' },
-        { word: 'Igloo', ipa: '/ˈɪɡluː/', vi: 'Nhà băng', emoji: '🧊', sample: 'Look at the igloo' },
-        { word: 'Insect', ipa: '/ˈɪnsekt/', vi: 'Côn trùng', emoji: '🐞', sample: 'A little insect' }
-      ]},
-      { letter: 'J', lower: 'j', nameIpa: '/dʒeɪ/', soundIpa: '/dʒ/', examples: [
-        { word: 'Juice', ipa: '/dʒuːs/', vi: 'Nước ép', emoji: '🧃', sample: 'I drink orange juice' },
-        { word: 'Jam', ipa: '/dʒæm/', vi: 'Mứt quả', emoji: '🍓', sample: 'Sweet sweet jam' },
-        { word: 'Jelly', ipa: '/ˈdʒeli/', vi: 'Thạch rau câu', emoji: '🍮', sample: 'I like jelly' }
-      ]},
-      { letter: 'K', lower: 'k', nameIpa: '/keɪ/', soundIpa: '/k/', examples: [
-        { word: 'Kite', ipa: '/kaɪt/', vi: 'Cái diều', emoji: '🪁', sample: 'Fly a kite' },
-        { word: 'Key', ipa: '/kiː/', vi: 'Chìa khóa', emoji: '🔑', sample: 'A gold key' },
-        { word: 'Kangaroo', ipa: '/ˌkæŋɡəˈruː/', vi: 'Chuột túi', emoji: '🦘', sample: 'A cute kangaroo' }
-      ]},
-      { letter: 'L', lower: 'l', nameIpa: '/el/', soundIpa: '/l/', examples: [
-        { word: 'Leaf', ipa: '/liːf/', vi: 'Lá cây', emoji: '🍃', sample: 'Look at the leaf' },
-        { word: 'Lake', ipa: '/leɪk/', vi: 'Hồ nước', emoji: '🏞️', sample: 'Running round lake' },
-        { word: 'Lemon', ipa: '/ˈlemən/', vi: 'Quả chanh', emoji: '🍋', sample: 'Look at the lemons' }
-      ]},
-      { letter: 'M', lower: 'm', nameIpa: '/em/', soundIpa: '/m/', examples: [
-        { word: 'Monkey', ipa: '/ˈmʌŋki/', vi: 'Con khỉ', emoji: '🐵', sample: 'That is a monkey' },
-        { word: 'Mango', ipa: '/ˈmæŋɡəʊ/', vi: 'Quả xoài', emoji: '🥭', sample: 'A yellow mango' },
-        { word: 'Milk', ipa: '/mɪlk/', vi: 'Sữa tươi', emoji: '🥛', sample: 'I like milk' }
-      ]},
-      { letter: 'N', lower: 'n', nameIpa: '/en/', soundIpa: '/n/', examples: [
-        { word: 'Nut', ipa: '/nʌt/', vi: 'Hạt đậu', emoji: '🥜', sample: 'He is having nuts' },
-        { word: 'Noodles', ipa: '/ˈnuːdlz/', vi: 'Mì ăn', emoji: '🍜', sample: 'She is having noodles' },
-        { word: 'Nose', ipa: '/nəʊz/', vi: 'Chiếc mũi', emoji: '👃', sample: 'Point to your nose' }
-      ]},
-      { letter: 'O', lower: 'o', nameIpa: '/əʊ/', soundIpa: '/ɒ/', examples: [
-        { word: 'Orange', ipa: '/ˈɒrɪndʒ/', vi: 'Quả cam', emoji: '🍊', sample: 'I like oranges' },
-        { word: 'Owl', ipa: '/aʊl/', vi: 'Con cú mèo', emoji: '🦉', sample: 'Look at the owl' },
-        { word: 'Ox', ipa: '/ɒks/', vi: 'Con bò đực', emoji: '🐂', sample: 'A strong ox' }
-      ]},
-      { letter: 'P', lower: 'p', nameIpa: '/piː/', soundIpa: '/p/', examples: [
-        { word: 'Pen', ipa: '/pen/', vi: 'Bút mực', emoji: '🖊️', sample: 'It is a red pen' },
-        { word: 'Pencil', ipa: '/ˈpensl/', vi: 'Bút chì', emoji: '✏️', sample: 'He has a pencil' },
-        { word: 'Pot', ipa: '/pɒt/', vi: 'Cái nồi', emoji: '🍲', sample: 'There are five pots' }
-      ]},
-      { letter: 'Q', lower: 'q', nameIpa: '/kjuː/', soundIpa: '/kw/', examples: [
-        { word: 'Queen', ipa: '/kwiːn/', vi: 'Nữ hoàng', emoji: '👑', sample: 'A beautiful queen' },
-        { word: 'Quilt', ipa: '/kwɪlt/', vi: 'Chăn bông', emoji: '🛏️', sample: 'A warm quilt' },
-        { word: 'Question', ipa: '/ˈkwestʃən/', vi: 'Câu hỏi', emoji: '❓', sample: 'Ask a question' }
-      ]},
-      { letter: 'R', lower: 'r', nameIpa: '/ɑːr/', soundIpa: '/r/', examples: [
-        { word: 'Run', ipa: '/rʌn/', vi: 'Chạy bộ', emoji: '🏃', sample: 'He is running' },
-        { word: 'Red', ipa: '/red/', vi: 'Màu đỏ', emoji: '🔴', sample: 'It is red' },
-        { word: 'Robot', ipa: '/ˈrəʊbɒt/', vi: 'Người máy', emoji: '🤖', sample: 'A smart robot' }
-      ]},
-      { letter: 'S', lower: 's', nameIpa: '/es/', soundIpa: '/s/', examples: [
-        { word: 'Sun', ipa: '/sʌn/', vi: 'Mặt trời', emoji: '☀️', sample: 'Running in the sun' },
-        { word: 'Six', ipa: '/sɪks/', vi: 'Số 6', emoji: '6️⃣', sample: 'I can see six' },
-        { word: 'Sister', ipa: '/ˈsɪstər/', vi: 'Chị/Em gái', emoji: '👧', sample: 'This is my sister' }
-      ]},
-      { letter: 'T', lower: 't', nameIpa: '/tiː/', soundIpa: '/t/', examples: [
-        { word: 'Tiger', ipa: '/ˈtaɪɡər/', vi: 'Con hổ', emoji: '🐯', sample: 'I can see a tiger' },
-        { word: 'Top', ipa: '/tɒp/', vi: 'Con quay', emoji: '🪀', sample: 'Tony has a top' },
-        { word: 'Turtle', ipa: '/ˈtɜːtl/', vi: 'Con rùa', emoji: '🐢', sample: 'Look at the turtle' }
-      ]},
-      { letter: 'U', lower: 'u', nameIpa: '/juː/', soundIpa: '/ʌ/', examples: [
-        { word: 'Umbrella', ipa: '/ʌmˈbrelə/', vi: 'Cái ô che', emoji: '☂️', sample: 'A big umbrella' },
-        { word: 'Up', ipa: '/ʌp/', vi: 'Lên trên', emoji: '⬆️', sample: 'Stand up, please' },
-        { word: 'Uncle', ipa: '/ˈʌŋkl/', vi: 'Chú / Bác', emoji: '👨', sample: 'This is my uncle' }
-      ]},
-      { letter: 'V', lower: 'v', nameIpa: '/viː/', soundIpa: '/v/', examples: [
-        { word: 'Van', ipa: '/væn/', vi: 'Xe tải nhỏ', emoji: '🚐', sample: 'A blue van' },
-        { word: 'Violin', ipa: '/ˌvaɪəˈlɪn/', vi: 'Đàn vĩ cầm', emoji: '🎻', sample: 'Play the violin' },
-        { word: 'Vase', ipa: '/vɑːz/', vi: 'Bình hoa', emoji: '🏺', sample: 'A flower vase' }
-      ]},
-      { letter: 'W', lower: 'w', nameIpa: '/ˈdʌbljuː/', soundIpa: '/w/', examples: [
-        { word: 'Window', ipa: '/ˈwɪndəʊ/', vi: 'Cửa sổ', emoji: '🪟', sample: 'Look at the window' },
-        { word: 'Water', ipa: '/ˈwɔːtər/', vi: 'Nước uống', emoji: '💧', sample: 'Drink clean water' },
-        { word: 'Wash', ipa: '/wɒʃ/', vi: 'Rửa / Lau', emoji: '🧼', sample: 'Wash your hands' }
-      ]},
-      { letter: 'X', lower: 'x', nameIpa: '/eks/', soundIpa: '/ks/', examples: [
-        { word: 'Box', ipa: '/bɒks/', vi: 'Cái hộp', emoji: '📦', sample: 'A big box' },
-        { word: 'Fox', ipa: '/fɒks/', vi: 'Con cáo', emoji: '🦊', sample: 'Look at the fox' },
-        { word: 'Six', ipa: '/sɪks/', vi: 'Số 6', emoji: '6️⃣', sample: 'Six windows' }
-      ]},
-      { letter: 'Y', lower: 'y', nameIpa: '/waɪ/', soundIpa: '/j/', examples: [
-        { word: 'Yo-yo', ipa: '/ˈjəʊjəʊ/', vi: 'Đồ chơi Yoyo', emoji: '🪀', sample: 'Play with yo-yo' },
-        { word: 'Yellow', ipa: '/ˈjeləʊ/', vi: 'Màu vàng', emoji: '🟡', sample: 'A yellow duck' },
-        { word: 'Yogurt', ipa: '/ˈjɒɡət/', vi: 'Sữa chua', emoji: '🥛', sample: 'Sweet yogurt' }
-      ]},
-      { letter: 'Z', lower: 'z', nameIpa: '/zed/', soundIpa: '/z/', examples: [
-        { word: 'Zoo', ipa: '/zuː/', vi: 'Vườn bách thú', emoji: '🦁', sample: 'At the zoo' },
-        { word: 'Zebra', ipa: '/ˈzebrə/', vi: 'Ngựa vằn', emoji: '🦓', sample: 'Look at the zebra' },
-        { word: 'Zero', ipa: '/ˈzɪərəʊ/', vi: 'Số không (0)', emoji: '0️⃣', sample: 'Number zero' }
-      ]}
-    ];
-
-    const MASTER_VOCAB = [];
-    VOCAB_THEMES.forEach(t => t.words.forEach(w => MASTER_VOCAB.push(w)));
-
-    function highlightWordInSentence(sentence, targetWord) {
-      if (!sentence || !targetWord) return sentence;
-      const cleanTarget = targetWord.replace(/[^a-zA-Z]/g, '');
-      const regex = new RegExp(`\\b(${cleanTarget}[a-z]*)\\b`, 'gi');
-      return sentence.replace(regex, `<span style="color:#E74C3C; font-weight:900; background:#FEE2E2; padding:2px 6px; border-radius:6px;">$1</span>`);
-    }
-
-    const DECK_CONTAINER = {};
-    function getNextDeckItem(deckKey, sourceArray) {
-      if (!DECK_CONTAINER[deckKey] || DECK_CONTAINER[deckKey].length === 0) {
-        DECK_CONTAINER[deckKey] = [...sourceArray].sort(() => Math.random() - 0.5);
-      }
-      return DECK_CONTAINER[deckKey].pop();
-    }
-
-    function getIpaForWord(word) {
-      if (!word) return '';
-      const clean = String(word).toLowerCase().replace(/[^a-z]/g, '');
-      const found = MASTER_VOCAB.find(v => v.word.toLowerCase().replace(/[^a-z]/g, '') === clean);
-      return found ? found.ipa : `/${clean}/`;
-    }
-
-    // ==========================================
-    // 3. LOGIC ÂM THANH & PHÁT ÂM
-    // ==========================================
-    let stars = 0, currentSubject = null, currentTopicFunc = null, currentAnswer = null, audioCtx = null;
-    const onlineAudioPlayer = new Audio();
-
-    function initAppAudio() {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (AudioContext) {
-        audioCtx = new AudioContext();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-      }
-      playTone('correct');
-      speakClear("Chào mừng bé đến với Vườn Tri Thức Lớp 1!", "vi");
-      document.getElementById('start-overlay').style.display = 'none';
-      renderHub();
-    }
-
-    function playTone(type) {
-      try {
-        if (!audioCtx) {
-          const AudioContext = window.AudioContext || window.webkitAudioContext;
-          if (AudioContext) audioCtx = new AudioContext();
-        }
-        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-        if (!audioCtx) return;
-
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        const now = audioCtx.currentTime;
-
-        if (type === 'correct') {
-          osc.frequency.setValueAtTime(523.25, now);
-          osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.15);
-          gain.gain.setValueAtTime(0.3, now);
-          gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
-          osc.start(now);
-          osc.stop(now + 0.35);
-        } else {
-          osc.frequency.setValueAtTime(250, now);
-          osc.frequency.linearRampToValueAtTime(160, now + 0.22);
-          gain.gain.setValueAtTime(0.25, now);
-          gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
-          osc.start(now);
-          osc.stop(now + 0.25);
-        }
-      } catch (e) {}
-    }
-
-    function speakClear(text, lang = 'vi') {
-      try {
-        onlineAudioPlayer.pause();
-        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-
-        const targetLang = (lang === 'en' || lang === 'en-US') ? 'en' : 'vi';
-        let cleanText = text;
-        if (targetLang === 'vi') {
-          cleanText = cleanText.replace(/\+/g, ' cộng ')
-                               .replace(/-/g, ' trừ ')
-                               .replace(/=/g, ' bằng ')
-                               .replace(/b-a/g, 'bờ a ba')
-                               .replace(/c-a-sắc-cá/g, 'cờ, a, ca, sắc, cá');
-        }
-
-        const encoded = encodeURIComponent(cleanText.trim());
-        const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${targetLang}&client=tw-ob&q=${encoded}`;
-
-        onlineAudioPlayer.src = ttsUrl;
-        onlineAudioPlayer.playbackRate = 0.95;
-        const playPromise = onlineAudioPlayer.play();
-
-        if (playPromise !== undefined) {
-          playPromise.catch(() => { fallbackWebSpeech(cleanText, targetLang); });
-        }
-      } catch (err) {
-        fallbackWebSpeech(text, lang);
-      }
-    }
-
-    function fallbackWebSpeech(text, lang) {
-      if (!('speechSynthesis' in window)) return;
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.85;
-      utterance.lang = (lang === 'vi' || lang === 'vi-VN') ? 'vi-VN' : 'en-US';
-      window.speechSynthesis.speak(utterance);
-    }
-
-    // ==========================================
-    // 4. HIỆU ỨNG PHÁO HOA
-    // ==========================================
-    const canvas = document.getElementById('fx-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-
-    function resizeCanvas() {
-      canvas.width = canvas.parentElement.clientWidth;
-      canvas.height = canvas.parentElement.clientHeight;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    function triggerConfetti() {
-      resizeCanvas();
-      particles = [];
-      const colors = ['#FF5A5F', '#00A699', '#FFB400', '#8E44AD', '#27AE60', '#2980B9'];
-      for (let i = 0; i < 40; i++) {
-        particles.push({
-          x: canvas.width / 2, y: canvas.height / 2,
-          vx: (Math.random() - 0.5) * 14, vy: (Math.random() - 0.5) * 14 - 3,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          size: Math.random() * 8 + 4, life: 1
-        });
-      }
-    }
-
-    function renderFX() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach((p, idx) => {
-        p.x += p.vx; p.y += p.vy; p.vy += 0.3; p.life -= 0.025;
-        ctx.fillStyle = p.color; ctx.globalAlpha = Math.max(0, p.life);
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
-        if (p.life <= 0) particles.splice(idx, 1);
-      });
-      requestAnimationFrame(renderFX);
-    }
-    renderFX();
-
-    // ==========================================
-    // 5. ĐIỀU HƯỚNG TRANG CHỦ
-    // ==========================================
-    const container = document.getElementById('main-content');
-    const btnBackSub = document.getElementById('btn-back-sub');
-    const btnBackTopics = document.getElementById('btn-back-topics');
-
-    function renderHub() {
-      currentSubject = null;
-      currentTopicFunc = null;
-      btnBackSub.style.display = 'none';
-      btnBackTopics.style.display = 'none';
-      container.innerHTML = `
-        <h1 class="hub-title">🌸 VƯỜN TRI THỨC LỚP 1 🎒</h1>
-        <div class="hub-grid">
-          <div class="subject-card math" onclick="renderMathMenu()">
-            <div class="icon-wrap">🔢</div>
-            <div class="title">Bé Học Toán</div>
-            <div class="desc">10 chuyên đề SGK Toán Lớp 1</div>
-          </div>
-          <div class="subject-card viet" onclick="renderVietMenu()">
-            <div class="icon-wrap">📖</div>
-            <div class="title">Bé Học Tiếng Việt</div>
-            <div class="desc">10 chuyên đề SGK Tiếng Việt Lớp 1</div>
-          </div>
-          <div class="subject-card eng" onclick="renderEngMenu()">
-            <div class="icon-wrap">🌍</div>
-            <div class="title">English Grade 1</div>
-            <div class="desc">Chữ Cái, IPA & 10 Chủ Đề Từ Vựng</div>
-          </div>
+        <div class="field">
+          <label for="login-password">Mật khẩu</label>
+          <input id="login-password" name="login-password" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu">
         </div>
-      `;
-    }
+        <button id="login-submit" class="primary-action" type="submit">Đăng nhập</button>
+      </form>
 
-    function renderCurrentSubject() {
-      btnBackTopics.style.display = 'none';
-      if (currentSubject === 'math') renderMathMenu();
-      else if (currentSubject === 'viet') renderVietMenu();
-      else if (currentSubject === 'eng') renderEngMenu();
-      else renderHub();
-    }
-
-    // =========================================================
-    // MÔN 1: TOÁN HỌC (10 CHUYÊN ĐỀ)
-    // =========================================================
-    function renderMathMenu() {
-      currentSubject = 'math';
-      btnBackSub.style.display = 'inline-flex';
-      btnBackTopics.style.display = 'none';
-      container.innerHTML = `
-        <h2 style="font-size: 22px; font-weight: 800; margin-bottom: 16px; color: var(--primary);">🔢 TOÁN LỚP 1 (10 CHUYÊN ĐỀ TOÀN DIỆN)</h2>
-        <div class="topics-grid-10">
-          <div class="subject-card math" onclick="startMathCount()"><div class="icon-wrap">🍎</div><div class="title">1. Đếm Số Lượng</div></div>
-          <div class="subject-card math" onclick="startMathCompare()"><div class="icon-wrap">⚖️</div><div class="title">2. So Sánh &gt;, &lt;, =</div></div>
-          <div class="subject-card math" onclick="startMathOperations()"><div class="icon-wrap">🖐️</div><div class="title">3. Đếm Ngón Tay (+, -)</div></div>
-          <div class="subject-card math" onclick="startMathSequenceAndProperties()"><div class="icon-wrap">🎯</div><div class="title">4. Dãy Số & Số Đặc Biệt</div></div>
-          <div class="subject-card math" onclick="startMathShapes()"><div class="icon-wrap">🔷</div><div class="title">5. Nhận Biết Hình Khối</div></div>
-          <div class="subject-card math" onclick="startMathSpatial()"><div class="icon-wrap">🧭</div><div class="title">6. Vị Trí & Không Gian</div></div>
-          <div class="subject-card math" onclick="startMathSplitJoin()"><div class="icon-wrap">🧩</div><div class="title">7. Tách - Gộp Số</div></div>
-          <div class="subject-card math" onclick="startMathClock()"><div class="icon-wrap">⏰</div><div class="title">8. Xem Giờ Đúng</div></div>
-          <div class="subject-card math" onclick="startMathMeasurement()"><div class="icon-wrap">📏</div><div class="title">9. Độ Dài & Tiền Tệ</div></div>
-          <div class="subject-card math" onclick="startMathWordProblems()"><div class="icon-wrap">💡</div><div class="title">10. Toán Đố Có Lời Văn</div></div>
+      <form id="register-form" class="form-stack hidden" novalidate>
+        <div class="field">
+          <label for="register-name">Họ và tên học sinh</label>
+          <input id="register-name" name="register-name" autocomplete="name" placeholder="Ví dụ: Nguyễn Minh An">
         </div>
-      `;
-    }
-
-    function startMathCount() {
-      currentTopicFunc = startMathCount;
-      const count = getNextDeckItem('math_count', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-      currentAnswer = count;
-      let items = '';
-      for (let i = 0; i < count; i++) items += SVG_LIB.apple;
-      let choices = [count];
-      while (choices.length < 4) {
-        let r = Math.floor(Math.random() * 10) + 1;
-        if (!choices.includes(r)) choices.push(r);
-      }
-      choices.sort(() => Math.random() - 0.5);
-      const promptText = `Bé đếm xem có bao nhiêu quả táo nào?`;
-      container.innerHTML = `
-        <div class="question-prompt">${promptText} <button class="speaker-btn" onclick="speakClear('${promptText}', 'vi')">🔊 Nghe</button></div>
-        <div class="stage-box" style="flex-direction:row; flex-wrap:wrap;">${items}</div>
-        <div class="choices-grid">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, ${c})">${c}</button>`).join('')}</div>
-      `;
-      speakClear(promptText, 'vi');
-    }
-
-    function startMathCompare() {
-      currentTopicFunc = startMathCompare;
-      const [a, b] = getNextDeckItem('math_compare', [[3, 5], [7, 2], [4, 4], [8, 9], [6, 3], [5, 5], [2, 7], [9, 6], [1, 4], [8, 8]]);
-      currentAnswer = a > b ? '>' : (a < b ? '<' : '=');
-      let left = '', right = '';
-      for (let i = 0; i < a; i++) left += SVG_LIB.apple;
-      for (let i = 0; i < b; i++) right += SVG_LIB.star;
-      const promptText = `Bé chọn dấu thích hợp: ${a} ... ${b}`;
-      container.innerHTML = `
-        <div class="question-prompt">${promptText} <button class="speaker-btn" onclick="speakClear('${promptText}', 'vi')">🔊 Nghe</button></div>
-        <div class="stage-box" style="flex-direction:row; gap: 20px;">
-          <div style="background:#FFF; padding:10px 16px; border-radius:18px; border:2px solid #E2E8F0;"><div style="font-size:24px; font-weight:800; color:#E74C3C;">${a}</div><div style="display:flex; gap:2px; flex-wrap:wrap;">${left}</div></div>
-          <div style="font-size:32px; font-weight:900; color:#7F8C8D;">?</div>
-          <div style="background:#FFF; padding:10px 16px; border-radius:18px; border:2px solid #E2E8F0;"><div style="font-size:24px; font-weight:800; color:#F39C12;">${b}</div><div style="display:flex; gap:2px; flex-wrap:wrap;">${right}</div></div>
+        <div class="field">
+          <label for="register-password">Mật khẩu <span aria-hidden="true">*</span></label>
+          <input id="register-password" name="register-password" type="password" minlength="6" autocomplete="new-password" placeholder="Tối thiểu 6 ký tự">
         </div>
-        <div class="choices-grid" style="max-width:380px;">
-          <button class="choice-btn" onclick="checkAnswer(this, '>')">&gt;</button>
-          <button class="choice-btn" onclick="checkAnswer(this, '=')">=</button>
-          <button class="choice-btn" onclick="checkAnswer(this, '<')">&lt;</button>
+        <div class="field">
+          <label for="register-confirm">Nhập lại mật khẩu <span aria-hidden="true">*</span></label>
+          <input id="register-confirm" name="register-confirm" type="password" minlength="6" autocomplete="new-password" placeholder="Nhập lại mật khẩu">
         </div>
-      `;
-      speakClear(promptText, 'vi');
-    }
-
-    function startMathOperations() {
-      currentTopicFunc = startMathOperations;
-      const op = getNextDeckItem('math_op', [
-        { type: '+', a: 3, b: 2 }, { type: '+', a: 4, b: 3 }, { type: '+', a: 5, b: 4 }, { type: '+', a: 2, b: 6 },
-        { type: '-', a: 8, b: 3 }, { type: '-', a: 9, b: 4 }, { type: '-', a: 7, b: 2 }, { type: '-', a: 6, b: 5 }
-      ]);
-      const res = (op.type === '+') ? (op.a + op.b) : (op.a - op.b);
-      currentAnswer = res;
-      const promptText = (op.type === '+') ? `Bé tính xem: ${op.a} cộng ${op.b} bằng bao nhiêu?` : `Bé tính xem: ${op.a} trừ ${op.b} bằng bao nhiêu?`;
-      const stageHtml = (op.type === '+') ? `
-        <div class="calc-row-wrapper">
-          <div style="display:flex; flex-direction:column; align-items:center;"><div style="font-size:18px; font-weight:900; color:#E67E22;">Có ${op.a} ngón:</div>${renderTwoHandsNumber(op.a, '#FF9F43')}</div>
-          <div style="font-size:32px; font-weight:900; color:var(--primary);">+</div>
-          <div style="display:flex; flex-direction:column; align-items:center;"><div style="font-size:18px; font-weight:900; color:#27AE60;">Thêm ${op.b} ngón:</div>${renderTwoHandsNumber(op.b, '#2ECC71')}</div>
-        </div>
-        <div class="kid-instruction-text">🖐️ Bé đếm gộp tất cả các ngón tay xòe ở 2 bên lại nhé!</div>
-      ` : `
-        <div class="calc-row-wrapper">
-          <div style="display:flex; flex-direction:column; align-items:center;"><div style="font-size:18px; font-weight:900; color:#E67E22;">Có ${op.a} ngón:</div>${renderTwoHandsNumber(op.a, '#FF9F43')}</div>
-          <div style="font-size:26px; font-weight:900; color:var(--dark); background:#FFF; padding:8px 14px; border-radius:14px; border:2px solid #E2E8F0;">${op.a} - ${op.b} = ?</div>
-          <div style="display:flex; flex-direction:column; align-items:center;"><div style="font-size:18px; font-weight:900; color:#E74C3C;">Bớt đi ${op.b} ngón:</div>${renderTwoHandsNumber(op.b, '#FF7675')}</div>
-        </div>
-        <div class="kid-instruction-text">🖐️ Bé nhìn ${op.a} ngón tay, rồi gập bớt ${op.b} ngón tay nhé!</div>
-      `;
-
-      let choices = [res];
-      while (choices.length < 4) {
-        let r = Math.floor(Math.random() * 10) + 1;
-        if (!choices.includes(r)) choices.push(r);
-      }
-      choices.sort(() => Math.random() - 0.5);
-
-      container.innerHTML = `
-        <div class="question-prompt">${promptText} <button class="speaker-btn" onclick="speakClear('${promptText}', 'vi')">🔊 Nghe</button></div>
-        <div class="stage-box">${stageHtml}</div>
-        <div class="choices-grid">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, ${c})">${c}</button>`).join('')}</div>
-      `;
-      speakClear(promptText, 'vi');
-    }
-
-    function startMathSequenceAndProperties() {
-      currentTopicFunc = startMathSequenceAndProperties;
-      const item = getNextDeckItem('math_prop', [
-        { mode: 'sequence', seq: [2, 3, 4, null, 6], ans: 5 },
-        { mode: 'sequence', seq: [10, 9, 8, null, 6], ans: 7 },
-        { mode: 'findMax', pool: [12, 7, 19, 15], ans: 19 },
-        { mode: 'findMin', pool: [8, 14, 5, 11], ans: 5 }
-      ]);
-      currentAnswer = item.ans;
-      if (item.mode === 'sequence') {
-        let choices = [item.ans, item.ans+1, item.ans-1, item.ans+2].filter(x => x > 0).sort(() => Math.random() - 0.5);
-        let seqHtml = item.seq.map(num => (num === null ? `<div class="seq-item target">?</div>` : `<div class="seq-item">${num}</div>`)).join('');
-        const promptText = `Bé tìm số thích hợp điền vào dấu hỏi chấm nhé!`;
-        container.innerHTML = `
-          <div class="question-prompt">${promptText} <button class="speaker-btn" onclick="speakClear('${promptText}', 'vi')">🔊 Nghe</button></div>
-          <div class="stage-box"><div class="sequence-container">${seqHtml}</div></div>
-          <div class="choices-grid">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, ${c})">${c}</button>`).join('')}</div>
-        `;
-        speakClear(promptText, 'vi');
-      } else {
-        const isMax = (item.mode === 'findMax');
-        const promptText = isMax ? `Trong các số dưới đây, số nào LỚN NHẤT?` : `Trong các số dưới đây, số nào BÉ NHẤT?`;
-        const choices = [...item.pool].sort(() => Math.random() - 0.5);
-        container.innerHTML = `
-          <div class="question-prompt">${promptText} <button class="speaker-btn" onclick="speakClear('${promptText}', 'vi')">🔊 Nghe</button></div>
-          <div class="stage-box"><div style="display:flex; gap:12px;">${item.pool.map(n => `<div style="background:#FFF; padding:10px 18px; border-radius:14px; font-size:26px; font-weight:900; color:var(--blue); border:2px solid #BFDBFE;">${n}</div>`).join('')}</div></div>
-          <div class="choices-grid">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, ${c})">${c}</button>`).join('')}</div>
-        `;
-        speakClear(promptText, 'vi');
-      }
-    }
-
-    function startMathShapes() {
-      currentTopicFunc = startMathShapes;
-      const target = getNextDeckItem('math_shapes', [
-        { name: 'Hình tròn', key: 'circle' }, { name: 'Hình vuông', key: 'square' },
-        { name: 'Hình tam giác', key: 'triangle' }, { name: 'Hình chữ nhật', key: 'rect' }
-      ]);
-      currentAnswer = target.name;
-      const choices = ['Hình tròn', 'Hình vuông', 'Hình tam giác', 'Hình chữ nhật'].sort(() => Math.random() - 0.5);
-      const promptText = `Đây là hình khối gì nào bé ơi?`;
-      container.innerHTML = `
-        <div class="question-prompt">${promptText} <button class="speaker-btn" onclick="speakClear('${promptText}', 'vi')">🔊 Nghe</button></div>
-        <div class="stage-box">${SVG_LIB[target.key]}</div>
-        <div class="choices-grid" style="grid-template-columns:1fr 1fr;">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, '${c}')">${c}</button>`).join('')}</div>
-      `;
-      speakClear(promptText, 'vi');
-    }
-
-    function startMathSpatial() {
-      currentTopicFunc = startMathSpatial;
-      const target = getNextDeckItem('math_spatial', [
-        { question: 'Quả táo ở TRÊN hay ở DƯỚI chiếc hộp?', display: '🍎<br>━━━<br>📦', answer: 'Ở Trên', speech: 'Quả táo ở trên hay ở dưới?' },
-        { question: 'Chiếc hộp ở TRÊN hay ở DƯỚI quả táo?', display: '🍎<br>━━━<br>📦', answer: 'Ở Dưới', speech: 'Chiếc hộp ở trên hay ở dưới?' }
-      ]);
-      currentAnswer = target.answer;
-      container.innerHTML = `
-        <div class="question-prompt">${target.question} <button class="speaker-btn" onclick="speakClear('${target.speech}', 'vi')">🔊 Nghe</button></div>
-        <div class="stage-box"><div style="font-size:38px; line-height:1.3; font-weight:800;">${target.display}</div></div>
-        <div class="choices-grid" style="max-width:360px;"><button class="choice-btn" onclick="checkAnswer(this, 'Ở Trên')">Ở Trên</button><button class="choice-btn" onclick="checkAnswer(this, 'Ở Dưới')">Ở Dưới</button></div>
-      `;
-      speakClear(target.speech, 'vi');
-    }
-
-    function startMathSplitJoin() {
-      currentTopicFunc = startMathSplitJoin;
-      const item = getNextDeckItem('math_split', [
-        { total: 5, p1: 2, p2: 3, speech: '5 gồm 2 và mấy?' },
-        { total: 4, p1: 1, p2: 3, speech: '4 gồm 1 và mấy?' },
-        { total: 6, p1: 4, p2: 2, speech: '6 gồm 4 và mấy?' },
-        { total: 8, p1: 5, p2: 3, speech: '8 gồm 5 và mấy?' }
-      ]);
-      currentAnswer = item.p2;
-      let choices = [item.p2, item.p2 + 1, item.p2 - 1, item.p2 + 2].filter(x => x >= 0).slice(0, 4).sort(() => Math.random() - 0.5);
-      const promptText = `Số ${item.total} gồm ${item.p1} và mấy?`;
-      container.innerHTML = `
-        <div class="question-prompt">${promptText} <button class="speaker-btn" onclick="speakClear('${item.speech}', 'vi')">🔊 Nghe</button></div>
-        <div class="stage-box">
-          <div style="font-size:32px; font-weight:900; color:var(--purple); background:#FFF; padding:12px 24px; border-radius:18px; border:2px dashed #8E44AD;">
-            ${item.total} ➔ ( ${item.p1} và <span style="color:#E74C3C;">?</span> )
-          </div>
-        </div>
-        <div class="choices-grid">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, ${c})">${c}</button>`).join('')}</div>
-      `;
-      speakClear(item.speech, 'vi');
-    }
-
-    function startMathClock() {
-      currentTopicFunc = startMathClock;
-      const hour = getNextDeckItem('math_clock', [2, 3, 5, 7, 8, 9, 10]);
-      currentAnswer = `${hour} giờ`;
-      let choices = [`${hour} giờ`, `${(hour+2)%12 || 12} giờ`, `${(hour+4)%12 || 12} giờ`, `${(hour+1)%12 || 12} giờ`].sort(() => Math.random() - 0.5);
-      const promptText = `Đồng hồ đang chỉ mấy giờ đúng?`;
-      container.innerHTML = `
-        <div class="question-prompt">${promptText} <button class="speaker-btn" onclick="speakClear('${promptText}', 'vi')">🔊 Nghe</button></div>
-        <div class="stage-box">
-          <div style="font-size:64px;">⏰</div>
-          <div style="font-size:24px; font-weight:900; color:var(--dark);">Kim ngắn chỉ số ${hour}, Kim dài chỉ số 12</div>
-        </div>
-        <div class="choices-grid">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, '${c}')">${c}</button>`).join('')}</div>
-      `;
-      speakClear(promptText, 'vi');
-    }
-
-    function startMathMeasurement() {
-      currentTopicFunc = startMathMeasurement;
-      const item = getNextDeckItem('math_measure', [
-        { question: 'Bút chì dài bao nhiêu cm?', display: '✏️ 0 ━━ 5 cm', ans: '5 cm', speech: 'Bút chì dài bao nhiêu xăng ti mét?' },
-        { question: 'Cây thước kẻ dài bao nhiêu cm?', display: '📏 0 ━━━━ 8 cm', ans: '8 cm', speech: 'Cây thước dài bao nhiêu xăng ti mét?' },
-        { question: 'Mệnh giá tờ tiền này là bao nhiêu?', display: '💵 5.000 Đồng', ans: '5000 đồng', speech: 'Tờ tiền có mệnh giá bao nhiêu?' }
-      ]);
-      currentAnswer = item.ans;
-      const pool = ['5 cm', '8 cm', '10 cm', '5000 đồng', '2000 đồng'];
-      let choices = [item.ans, ...pool.filter(x => x !== item.ans).slice(0, 3)].sort(() => Math.random() - 0.5);
-      container.innerHTML = `
-        <div class="question-prompt">${item.question} <button class="speaker-btn" onclick="speakClear('${item.speech}', 'vi')">🔊 Nghe</button></div>
-        <div class="stage-box"><div style="font-size:32px; font-weight:900; color:var(--blue);">${item.display}</div></div>
-        <div class="choices-grid">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, '${c}')">${c}</button>`).join('')}</div>
-      `;
-      speakClear(item.speech, 'vi');
-    }
-
-    function startMathWordProblems() {
-      currentTopicFunc = startMathWordProblems;
-      const item = getNextDeckItem('math_word_prob', [
-        { q: 'Cây có 3 quả táo 🍎, rụng thêm 2 quả 🍎. Hỏi có tất cả mấy quả táo?', ans: 5, speech: 'Cây có 3 quả táo, rụng thêm 2 quả. Hỏi có tất cả mấy quả táo?' },
-        { q: 'Hồ nước có 6 chú vịt 🦆, 2 chú bơi đi mất. Hỏi hồ nước còn mấy chú vịt?', ans: 4, speech: 'Hồ nước có 6 chú vịt, 2 chú bơi đi mất. Còn lại mấy chú vịt?' },
-        { q: 'Bé có 4 chiếc kẹo 🍬, mẹ cho thêm 3 chiếc 🍬. Hỏi bé có tất cả mấy chiếc kẹo?', ans: 7, speech: 'Bé có 4 chiếc kẹo, mẹ cho thêm 3 chiếc. Hỏi bé có mấy chiếc kẹo?' }
-      ]);
-      currentAnswer = item.ans;
-      let choices = [item.ans, item.ans + 1, item.ans - 1, item.ans + 2].filter(x => x > 0).sort(() => Math.random() - 0.5);
-      container.innerHTML = `
-        <div class="question-prompt">Toán đố thông minh <button class="speaker-btn" onclick="speakClear('${item.speech}', 'vi')">🔊 Nghe bài toán</button></div>
-        <div class="stage-box"><div style="font-size:22px; font-weight:800; color:var(--dark); line-height:1.5;">${item.q}</div></div>
-        <div class="choices-grid">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, ${c})">${c}</button>`).join('')}</div>
-      `;
-      speakClear(item.speech, 'vi');
-    }
-
-    // =========================================================
-    // MÔN 2: TIẾNG VIỆT (10 CHUYÊN ĐỀ)
-    // =========================================================
-    function renderVietMenu() {
-      currentSubject = 'viet';
-      btnBackSub.style.display = 'inline-flex';
-      btnBackTopics.style.display = 'none';
-      container.innerHTML = `
-        <h2 style="font-size: 22px; font-weight: 800; margin-bottom: 16px; color: var(--secondary);">📖 TIẾNG VIỆT LỚP 1 (10 CHUYÊN ĐỀ TOÀN DIỆN)</h2>
-        <div class="topics-grid-10">
-          <div class="subject-card viet" onclick="startVietLetter()"><div class="icon-wrap">🅰️</div><div class="title">1. 29 Chữ Cái</div></div>
-          <div class="subject-card viet" onclick="startVietTone()"><div class="icon-wrap">🪶</div><div class="title">2. 5 Thanh Điệu</div></div>
-          <div class="subject-card viet" onclick="startVietBlend()"><div class="icon-wrap">🧩</div><div class="title">3. Ghép Âm - Vần</div></div>
-          <div class="subject-card viet" onclick="startVietMissing()"><div class="icon-wrap">✏️</div><div class="title">4. Điền Chữ Tranh</div></div>
-          <div class="subject-card viet" onclick="startVietFirstSound()"><div class="icon-wrap">🔍</div><div class="title">5. Âm Đầu Từ</div></div>
-          <div class="subject-card viet" onclick="startVietSpellingRules()"><div class="icon-wrap">📚</div><div class="title">6. Chính Tả c/k, g/gh</div></div>
-          <div class="subject-card viet" onclick="startVietDiphthongs()"><div class="icon-wrap">🌿</div><div class="title">7. Vần Đôi ia, ua, ưa</div></div>
-          <div class="subject-card viet" onclick="startVietSentenceMake()"><div class="icon-wrap">📝</div><div class="title">8. Ghép Từ Thành Câu</div></div>
-          <div class="subject-card viet" onclick="startVietWordMatch()"><div class="icon-wrap">🎯</div><div class="title">9. Nối Từ Với Hình</div></div>
-          <div class="subject-card viet" onclick="startVietRiddles()"><div class="icon-wrap">💡</div><div class="title">10. Đố Vui Bé Ngoan</div></div>
-        </div>
-      `;
-    }
-
-    function startVietLetter() {
-      currentTopicFunc = startVietLetter;
-      const target = getNextDeckItem('viet_letters', [
-        { upper: 'A', lower: 'a', name: 'Chữ A', sound: 'A' }, { upper: 'B', lower: 'b', name: 'Chữ Bờ', sound: 'Bờ' },
-        { upper: 'C', lower: 'c', name: 'Chữ Cờ', sound: 'Cờ' }, { upper: 'D', lower: 'd', name: 'Chữ Dờ', sound: 'Dờ' },
-        { upper: 'Đ', lower: 'đ', name: 'Chữ Đờ', sound: 'Đờ' }, { upper: 'E', lower: 'e', name: 'Chữ E', sound: 'E' },
-        { upper: 'G', lower: 'g', name: 'Chữ Gờ', sound: 'Gờ' }, { upper: 'H', lower: 'h', name: 'Chữ Hát', sound: 'Hát' }
-      ]);
-      currentAnswer = `${target.upper} ${target.lower}`;
-      const pool = ['A a', 'B b', 'C c', 'D d', 'Đ đ', 'E e', 'G g', 'H h'];
-      let choices = [currentAnswer, ...pool.filter(x => x !== currentAnswer).slice(0, 3)].sort(() => Math.random() - 0.5);
-      const promptText = `Bé hãy tìm: ${target.name}`;
-      container.innerHTML = `
-        <div class="question-prompt">${promptText} <button class="speaker-btn" onclick="speakClear('${target.name}', 'vi')">🔊 Nghe</button></div>
-        <div class="stage-box"><div style="font-size:48px; font-weight:900; color:var(--primary);">👂 ${target.sound}</div></div>
-        <div class="choices-grid">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, '${c}')">${c}</button>`).join('')}</div>
-      `;
-      speakClear(promptText, 'vi');
-    }
-
-    function startVietTone() {
-      currentTopicFunc = startVietTone;
-      const target = getNextDeckItem('viet_tones', [
-        { word: 'cá', tone: 'Dấu Sắc ( / )', guide: 'Con cá mang dấu sắc' },
-        { word: 'bà', tone: 'Dấu Huyền ( \\ )', guide: 'Bà ngoại mang dấu huyền' },
-        { word: 'thỏ', tone: 'Dấu Hỏi ( ? )', guide: 'Chú thỏ mang dấu hỏi' },
-        { word: 'gỗ', tone: 'Dấu Ngã ( ~ )', guide: 'Cây gỗ mang dấu ngã' },
-        { word: 'ngựa', tone: 'Dấu Nặng ( . )', guide: 'Con ngựa mang dấu nặng' }
-      ]);
-      currentAnswer = target.tone;
-      const choices = ['Dấu Sắc ( / )', 'Dấu Huyền ( \\ )', 'Dấu Hỏi ( ? )', 'Dấu Ngã ( ~ )'].sort(() => Math.random() - 0.5);
-      const promptText = `Tiếng "${target.word}" mang thanh điệu gì?`;
-      container.innerHTML = `
-        <div class="question-prompt">${promptText} <button class="speaker-btn" onclick="speakClear('${target.guide}', 'vi')">🔊 Nghe</button></div>
-        <div class="stage-box"><div style="font-size:56px; font-weight:900; color:#E74C3C;">${target.word}</div></div>
-        <div class="choices-grid" style="grid-template-columns:1fr 1fr;">${choices.map(c => `<button class="choice-btn" style="font-size:18px;" onclick="checkAnswer(this, '${c}')">${c}</button>`).join('')}</div>
-      `;
-      speakClear(target.guide, 'vi');
-    }
-
-    function startVietBlend() {
-      currentTopicFunc = startVietBlend;
-      const target = getNextDeckItem('viet_blends', [
-        { c: 'b', v: 'a', res: 'ba', sp: 'Bờ a ba' }, { c: 'c', v: 'o', res: 'co', sp: 'Cờ o co' },
-        { c: 'g', v: 'à', res: 'gà', sp: 'Gờ a ga huyền gà' }, { c: 'c', v: 'á', res: 'cá', sp: 'Cờ a ca sắc cá' }
-      ]);
-      currentAnswer = target.res;
-      let choices = [target.res, 'bo', 'ca', 'ga'].sort(() => Math.random() - 0.5);
-      const promptText = `Ghép: "${target.c}" + "${target.v}" thành tiếng gì?`;
-      container.innerHTML = `
-        <div class="question-prompt">${promptText} <button class="speaker-btn" onclick="speakClear('${target.sp}', 'vi')">🔊 Nghe</button></div>
-        <div class="stage-box"><div style="font-size:36px; font-weight:800;">${target.c} + ${target.v} = <span style="color:var(--primary);">?</span></div></div>
-        <div class="choices-grid">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, '${c}')">${c}</button>`).join('')}</div>
-      `;
-      speakClear(target.sp, 'vi');
-    }
-
-    function startVietMissing() {
-      currentTopicFunc = startVietMissing;
-      const target = getNextDeckItem('viet_missing', [
-        { d: '_À', m: 'G', emo: '🐔', snd: 'Con gà' }, { d: '_Á', m: 'C', emo: '🐟', snd: 'Con cá' },
-        { d: '_Ò', m: 'B', emo: '🐄', snd: 'Con bò' }, { d: '_ÈO', m: 'M', emo: '🐱', snd: 'Con mèo' }
-      ]);
-      currentAnswer = target.m;
-      let choices = [target.m, 'D', 'H', 'N'].sort(() => Math.random() - 0.5);
-      const promptText = `Bé điền chữ cái còn thiếu vào dấu chấm:`;
-      container.innerHTML = `
-        <div class="question-prompt">${promptText} <button class="speaker-btn" onclick="speakClear('${target.snd}', 'vi')">🔊 Gợi ý</button></div>
-        <div class="stage-box"><span style="font-size:52px;">${target.emo}</span><div style="font-size:36px; font-weight:900;">${target.d}</div></div>
-        <div class="choices-grid">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, '${c}')">${c}</button>`).join('')}</div>
-      `;
-      speakClear(target.snd, 'vi');
-    }
-
-    function startVietFirstSound() {
-      currentTopicFunc = startVietFirstSound;
-      const target = getNextDeckItem('viet_first_snd', [
-        { w: 'Hổ', l: 'H', emo: '🐯' }, { w: 'Rùa', l: 'R', emo: '🐢' },
-        { w: 'Khỉ', l: 'K', emo: '🐵' }, { w: 'Sư tử', l: 'S', emo: '🦁' }
-      ]);
-      currentAnswer = target.l;
-      let choices = [target.l, 'B', 'M', 'T'].sort(() => Math.random() - 0.5);
-      const promptText = `Từ "${target.w}" bắt đầu bằng chữ cái nào?`;
-      container.innerHTML = `
-        <div class="question-prompt">${promptText} <button class="speaker-btn" onclick="speakClear('${target.w}', 'vi')">🔊 Phát âm: ${target.w}</button></div>
-        <div class="stage-box"><span style="font-size:56px;">${target.emo}</span><div style="font-size:30px; font-weight:800;">${target.w}</div></div>
-        <div class="choices-grid">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, '${c}')">${c}</button>`).join('')}</div>
-      `;
-      speakClear(promptText, 'vi');
-    }
-
-    function startVietSpellingRules() {
-      currentTopicFunc = startVietSpellingRules;
-      const target = getNextDeckItem('viet_spell', [
-        { q: 'Điền c hay k: "___em que"', a: 'k', hint: 'K đi với e, ê, i', f: 'kem' },
-        { q: 'Điền c hay k: "___on cá"', a: 'c', hint: 'C đi với a, o, ô, u', f: 'con cá' },
-        { q: 'Điền g hay gh: "___ế gỗ"', a: 'gh', hint: 'Gh đi với e, ê, i', f: 'ghế' },
-        { q: 'Điền g hay gh: "con ___à"', a: 'g', hint: 'G đi với a, o, ô, u', f: 'gà' }
-      ]);
-      currentAnswer = target.a;
-      const choices = (target.a === 'c' || target.a === 'k') ? ['c', 'k'] : ['g', 'gh'];
-      container.innerHTML = `
-        <div class="question-prompt">${target.q} <button class="speaker-btn" onclick="speakClear('${target.f}', 'vi')">🔊 Phát âm</button></div>
-        <div class="stage-box"><div style="font-size:30px; font-weight:800;">${target.q}</div><div style="font-size:16px; color:#7F8C8D; margin-top:6px;">💡 Gợi ý: ${target.hint}</div></div>
-        <div class="choices-grid" style="max-width:320px;">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, '${c}')">${c}</button>`).join('')}</div>
-      `;
-      speakClear(target.q, 'vi');
-    }
-
-    function startVietDiphthongs() {
-      currentTopicFunc = startVietDiphthongs;
-      const target = getNextDeckItem('viet_diphthongs', [
-        { q: 'Tiếng "lá m___" (cây mía) điền vần gì?', a: 'ia', word: 'mía', sp: 'Mờ ia mia sắc mía' },
-        { q: 'Tiếng "con c___" (con cua) điền vần gì?', a: 'ua', word: 'cua', sp: 'Cờ ua cua' },
-        { q: 'Tiếng "cây d___" (cây dừa) điền vần gì?', a: 'ưa', word: 'dừa', sp: 'Dờ ưa dưa huyền dừa' }
-      ]);
-      currentAnswer = target.a;
-      const choices = ['ia', 'ua', 'ưa', 'ai'].sort(() => Math.random() - 0.5);
-      container.innerHTML = `
-        <div class="question-prompt">${target.q} <button class="speaker-btn" onclick="speakClear('${target.sp}', 'vi')">🔊 Đánh vần</button></div>
-        <div class="stage-box"><div style="font-size:32px; font-weight:800; color:var(--dark);">${target.q}</div></div>
-        <div class="choices-grid">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, '${c}')">${c}</button>`).join('')}</div>
-      `;
-      speakClear(target.q, 'vi');
-    }
-
-    function startVietSentenceMake() {
-      currentTopicFunc = startVietSentenceMake;
-      const target = getNextDeckItem('viet_sent_make', [
-        { q: 'Bé chọn từ thích hợp: "Bé đi ___" (học / ngủ / cá)', a: 'học', full: 'Bé đi học' },
-        { q: 'Bé chọn từ thích hợp: "Bà đi ___" (chợ / bút / vở)', a: 'chợ', full: 'Bà đi chợ' },
-        { q: 'Bé chọn từ thích hợp: "Mẹ mua ___" (cá / bay / chạy)', a: 'cá', full: 'Mẹ mua cá' }
-      ]);
-      currentAnswer = target.a;
-      let pool = ['học', 'chợ', 'cá', 'ngủ', 'bút'];
-      let choices = [target.a, ...pool.filter(x => x !== target.a).slice(0, 3)].sort(() => Math.random() - 0.5);
-      container.innerHTML = `
-        <div class="question-prompt">Ghép từ tạo câu đúng <button class="speaker-btn" onclick="speakClear('${target.full}', 'vi')">🔊 Nghe</button></div>
-        <div class="stage-box"><div style="font-size:28px; font-weight:800;">${target.q}</div></div>
-        <div class="choices-grid">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, '${c}')">${c}</button>`).join('')}</div>
-      `;
-      speakClear(target.full, 'vi');
-    }
-
-    function startVietWordMatch() {
-      currentTopicFunc = startVietWordMatch;
-      const target = getNextDeckItem('viet_word_match', [
-        { emo: '🌸', word: 'bông hoa', sp: 'Bông hoa' },
-        { emo: '☀️', word: 'ông mặt trời', sp: 'Ông mặt trời' },
-        { emo: '🚗', word: 'xe ô tô', sp: 'Xe ô tô' },
-        { emo: '📖', word: 'quyển sách', sp: 'Quyển sách' }
-      ]);
-      currentAnswer = target.word;
-      const pool = ['bông hoa', 'ông mặt trời', 'xe ô tô', 'quyển sách', 'con cá'];
-      let choices = [target.word, ...pool.filter(x => x !== target.word).slice(0, 3)].sort(() => Math.random() - 0.5);
-      const promptText = `Bức hình này tương ứng với từ nào?`;
-      container.innerHTML = `
-        <div class="question-prompt">${promptText} <button class="speaker-btn" onclick="speakClear('${target.sp}', 'vi')">🔊 Gợi ý</button></div>
-        <div class="stage-box"><span style="font-size:68px;">${target.emo}</span></div>
-        <div class="choices-grid">${choices.map(c => `<button class="choice-btn" style="font-size:18px;" onclick="checkAnswer(this, '${c}')">${c}</button>`).join('')}</div>
-      `;
-      speakClear(promptText, 'vi');
-    }
-
-    function startVietRiddles() {
-      currentTopicFunc = startVietRiddles;
-      const target = getNextDeckItem('viet_riddles', [
-        { r: 'Con gì kêu meo meo, thích bắt chuột?', a: 'Con mèo', emo: '🐱', sp: 'Con gì kêu meo meo, thích bắt chuột?' },
-        { r: 'Cái gì để bé đội trên đầu khi đi học trời nắng?', a: 'Cái mũ', emo: '🧢', sp: 'Cái gì để đội trên đầu?' },
-        { r: 'Quả gì vỏ đỏ, ruột ngọt, ăn rất ngon?', a: 'Quả táo', emo: '🍎', sp: 'Quả gì vỏ đỏ ruột ngọt?' }
-      ]);
-      currentAnswer = target.a;
-      let pool = ['Con mèo', 'Cái mũ', 'Quả táo', 'Con gà'];
-      let choices = pool.sort(() => Math.random() - 0.5);
-      container.innerHTML = `
-        <div class="question-prompt">Đố vui bé ngoan <button class="speaker-btn" onclick="speakClear('${target.sp}', 'vi')">🔊 Nghe câu đố</button></div>
-        <div class="stage-box"><div style="font-size:24px; font-weight:800; color:#8E44AD;">${target.r}</div></div>
-        <div class="choices-grid">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, '${c}')">${c}</button>`).join('')}</div>
-      `;
-      speakClear(target.sp, 'vi');
-    }
-
-    // =========================================================================
-    // MÔN 3: TIẾNG ANH (11 CHUYÊN ĐỀ - NÂNG CẤP 3 VÍ DỤ TƯƠNG TÁC IPA)
-    // =========================================================================
-    function renderEngMenu() {
-      currentSubject = 'eng';
-      btnBackSub.style.display = 'inline-flex';
-      btnBackTopics.style.display = 'none';
-      container.innerHTML = `
-        <h2 style="font-size: 22px; font-weight: 800; margin-bottom: 16px; color: var(--purple);">🌍 ENGLISH GRADE 1 (11 CHUYÊN ĐỀ TOÀN DIỆN)</h2>
-        <div class="topics-grid-10">
-          <div class="subject-card eng" onclick="startEngAlphabetIPA()"><div class="badge-corner" style="background:#E67E22;">3 VÍ DỤ</div><div class="icon-wrap">🔤</div><div class="title">1. Chữ Cái & Âm IPA</div></div>
-          <div class="subject-card eng" onclick="renderVocabTopicsMenu()"><div class="badge-corner" style="background:#2ECC71;">10 CHỦ ĐỀ</div><div class="icon-wrap">📚</div><div class="title">2. Khám Phá Từ Vựng</div></div>
-          <div class="subject-card eng" onclick="startEngReadingCoach()"><div class="badge-corner">MICRO AI</div><div class="icon-wrap">🎙️</div><div class="title">3. Luyện Đọc AI</div></div>
-          <div class="subject-card eng" onclick="startEngSentenceBuilder()"><div class="icon-wrap">🧩</div><div class="title">4. Xếp Câu Đúng</div></div>
-          <div class="subject-card eng" onclick="startEngLetterCleaner()"><div class="icon-wrap">🧹</div><div class="title">5. Xóa Chữ Thừa</div></div>
-          <div class="subject-card eng" onclick="startEngFillBlank()"><div class="icon-wrap">✏️</div><div class="title">6. Điền Từ Vào Câu</div></div>
-          <div class="subject-card eng" onclick="startEngSmartQA()"><div class="icon-wrap">💡</div><div class="title">7. Hỏi Đáp Q&A</div></div>
-          <div class="subject-card eng" onclick="startEngListenPick()"><div class="icon-wrap">🎧</div><div class="title">8. Nghe Chọn Tranh</div></div>
-          <div class="subject-card eng" onclick="startEngWordPicMatch()"><div class="icon-wrap">🖼️</div><div class="title">9. Ghép Từ - Hình</div></div>
-          <div class="subject-card eng" onclick="startEngPhonics()"><div class="icon-wrap">🅰️</div><div class="title">10. Âm Đầu Phonics</div></div>
-          <div class="subject-card eng" onclick="startEngNumberCount()"><div class="icon-wrap">🔢</div><div class="title">11. Đếm Số Tiếng Anh</div></div>
-        </div>
-      `;
-    }
-
-    // Chuyên đề 1: Chữ Cái & Phát Âm IPA (Có 3 ví dụ trực quan & âm thanh riêng biệt)
-    let currentAlphaObj = ALPHABET_IPA_DATA[0];
-    function startEngAlphabetIPA(selectedLetter = null) {
-      currentTopicFunc = () => startEngAlphabetIPA(selectedLetter);
-      btnBackTopics.style.display = 'none';
-
-      if (selectedLetter) {
-        const found = ALPHABET_IPA_DATA.find(a => a.letter === selectedLetter);
-        if (found) currentAlphaObj = found;
-      }
-
-      const examplesHtml = currentAlphaObj.examples.map(ex => `
-        <div class="ipa-interactive-card" onclick="speakAlphabetExample('${ex.word.replace(/'/g, "\\'")}', '${ex.sample.replace(/'/g, "\\'")}')" style="background:#FFF; border:2.5px solid #2ECC71; border-radius:18px; padding:10px 8px; display:flex; flex-direction:column; align-items:center; justify-content:center; box-shadow:0 4px 0 #27AE60;">
-          <span style="font-size:38px; line-height:1.1;">${ex.emoji}</span>
-          <div style="font-size:18px; font-weight:900; color:var(--dark); margin-top:3px;">${ex.word}</div>
-          <div class="ipa-badge" style="margin-top:2px;">${ex.ipa}</div>
-          <div style="font-size:12px; font-weight:700; color:#27AE60; margin-top:2px;">${ex.vi}</div>
-          <div style="font-size:11px; font-weight:600; color:#7F8C8D; margin-top:3px; font-style:italic;">"${ex.sample}"</div>
-          <div style="margin-top:4px; font-size:11px; font-weight:800; color:#2980B9;">🔊 Chạm để nghe</div>
-        </div>
-      `).join('');
-
-      container.innerHTML = `
-        <div class="question-prompt">
-          <span>Bấm vào Chữ cái hoặc Từng ví dụ để nghe phát âm:</span>
-          <button class="speaker-btn" onclick="playLetterMainSound('${currentAlphaObj.letter}', '${currentAlphaObj.nameIpa}', '${currentAlphaObj.soundIpa}')">🔊 Nghe Chữ ${currentAlphaObj.letter}</button>
-        </div>
-        <div class="stage-box" style="flex-direction:row; flex-wrap:wrap; justify-content:space-between; align-items:stretch; gap:12px;">
-          <div class="ipa-interactive-card" onclick="playLetterMainSound('${currentAlphaObj.letter}', '${currentAlphaObj.nameIpa}', '${currentAlphaObj.soundIpa}')" style="display:flex; flex-direction:column; align-items:center; justify-content:center; background:#FFF; padding:14px 18px; border-radius:20px; border:3.5px solid #8E44AD; min-width:170px; box-shadow:0 4px 0 #732D91;">
-            <div style="font-size:52px; font-weight:900; color:#8E44AD; line-height:1;">${currentAlphaObj.letter} ${currentAlphaObj.lower}</div>
-            <div style="font-size:16px; font-weight:800; color:#2980B9; margin-top:6px;">Tên chữ: ${currentAlphaObj.nameIpa}</div>
-            <div style="font-size:15px; font-weight:800; color:#E67E22; margin-top:2px;">Âm Phonics: ${currentAlphaObj.soundIpa}</div>
-            <div style="margin-top:6px; font-size:11px; font-weight:800; color:#8E44AD;">👉 Chạm để nghe chữ</div>
-          </div>
-          <div class="examples-3-grid">${examplesHtml}</div>
-        </div>
-        <div style="display:flex; gap:10px; margin-bottom:4px;">
-          <button class="btn-nav" style="background:#FFE66D; color:#7A3E00;" onclick="startAlphabetListenQuiz()">🎯 Làm Bài Đố IPA</button>
-        </div>
-        <div class="alphabet-ipa-grid">
-          ${ALPHABET_IPA_DATA.map(item => `
-            <button class="alpha-card-btn ${item.letter === currentAlphaObj.letter ? 'active' : ''}" onclick="selectAlphabetItem('${item.letter}')">
-              <span class="char-main">${item.letter}${item.lower}</span>
-              <span class="ipa-tag">${item.soundIpa}</span>
-            </button>
-          `).join('')}
-        </div>
-      `;
-      speakClear(`Letter ${currentAlphaObj.letter}. Phonics sound ${currentAlphaObj.soundIpa}`, 'en');
-    }
-
-    function selectAlphabetItem(letter) {
-      const found = ALPHABET_IPA_DATA.find(a => a.letter === letter);
-      if (found) {
-        currentAlphaObj = found;
-        playTone('correct');
-        startEngAlphabetIPA(letter);
-      }
-    }
-
-    function playLetterMainSound(letter, nameIpa, soundIpa) {
-      playTone('correct');
-      speakClear(`Letter ${letter}. Sound ${soundIpa}`, 'en');
-    }
-
-    function speakAlphabetExample(word, sampleSentence) {
-      playTone('correct');
-      speakClear(`${word}. ${sampleSentence}.`, 'en');
-    }
-
-    // Mini Quiz cho chuyên đề Chữ cái & IPA
-    function startAlphabetListenQuiz() {
-      currentTopicFunc = startAlphabetListenQuiz;
-      const target = getNextDeckItem('alpha_quiz', ALPHABET_IPA_DATA);
-      currentAnswer = target.letter;
-
-      let choices = [target];
-      let pool = ALPHABET_IPA_DATA.filter(a => a.letter !== target.letter);
-      while (choices.length < 4) {
-        let r = pool[Math.floor(Math.random() * pool.length)];
-        if (!choices.map(c => c.letter).includes(r.letter)) choices.push(r);
-      }
-      choices.sort(() => Math.random() - 0.5);
-
-      const firstEx = target.examples[0];
-      container.innerHTML = `
-        <div class="question-prompt">
-          <span>Bé nghe và chọn chữ cái có âm tương ứng:</span>
-          <button class="speaker-btn" onclick="speakClear('Letter ${target.letter}', 'en')">🔊 Nghe lại âm</button>
-        </div>
-        <div class="stage-box">
-          <div style="font-size:52px;">🎧 ❓ 🅰️</div>
-          <div style="font-size:22px; font-weight:900; color:var(--purple);">Âm phát âm: ${target.nameIpa} (Phonics: ${target.soundIpa})</div>
-          <div style="font-size:15px; font-weight:700; color:#7F8C8D; margin-top:4px;">Gợi ý từ SGK: ${firstEx.emoji} ${firstEx.word} (${firstEx.vi})</div>
-        </div>
-        <div class="choices-grid">
-          ${choices.map(c => `
-            <button class="choice-btn" onclick="checkAnswer(this, '${c.letter}')">
-              <span>${c.letter} ${c.lower}</span>
-              <span class="ipa-sub">${c.nameIpa} ${c.soundIpa}</span>
-            </button>
-          `).join('')}
-        </div>
-        <div style="margin-top:12px;">
-          <button class="btn-nav" onclick="startEngAlphabetIPA('${target.letter}')">⬅️ Xem lại Bảng Chữ Cái & IPA</button>
-        </div>
-      `;
-      speakClear(`Letter ${target.letter}`, 'en');
-    }
-
-    // Eng 3: Luyện đọc Micro AI
-    let recognition = null, isRecording = false;
-    function startEngReadingCoach() {
-      currentTopicFunc = startEngReadingCoach;
-      btnBackTopics.style.display = 'none';
-      const target = getNextDeckItem('eng_reading', MASTER_VOCAB);
-      currentAnswer = target.word.toLowerCase();
-
-      container.innerHTML = `
-        <div class="question-prompt">Bé hãy bấm Micro và đọc to từ: <b>${target.word}</b> <button class="speaker-btn" onclick="speakClear('${target.word}', 'en')">🔊 Nghe mẫu</button></div>
-        <div class="stage-box">
-          <span style="font-size:64px;">${target.emoji}</span>
-          <div style="font-size:32px; font-weight:900; color:var(--primary);">${target.word}</div>
-          <div class="ipa-badge">${target.ipa}</div>
-          <div style="font-size:15px; font-weight:800; color:#7F8C8D; margin-top:4px;">Nghĩa: ${target.vi}</div>
-        </div>
-        <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
-          <button id="mic-btn" class="mic-record-btn" onclick="toggleSpeechRecognition('${target.word}')">🎙️</button>
-          <div id="mic-status" style="font-size:17px; font-weight:800; color:#8E44AD;">Chạm vào Micro để đọc!</div>
-        </div>
-      `;
-      speakClear(target.word, 'en');
-    }
-
-    function toggleSpeechRecognition(expectedWord) {
-      const micBtn = document.getElementById('mic-btn');
-      const micStatus = document.getElementById('mic-status');
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-      if (!SpeechRecognition) {
-        micStatus.innerHTML = `⚠️ Đang tự động kiểm tra...`;
-        setTimeout(() => { triggerSuccessReading(expectedWord); }, 1200);
-        return;
-      }
-
-      if (!recognition) {
-        recognition = new SpeechRecognition();
-        recognition.lang = 'en-US';
-        recognition.interimResults = false;
-        recognition.maxAlternatives = 3;
-
-        recognition.onstart = function() {
-          isRecording = true;
-          micBtn.classList.add('recording');
-          micStatus.innerText = "🎧 Đang lắng nghe bé đọc...";
-        };
-
-        recognition.onresult = function(event) {
-          const results = event.results[0];
-          let isMatch = false;
-          for (let i = 0; i < results.length; i++) {
-            let alt = results[i].transcript.toLowerCase().trim();
-            if (alt.includes(expectedWord.toLowerCase()) || expectedWord.toLowerCase().includes(alt)) {
-              isMatch = true; break;
-            }
-          }
-          if (isMatch) {
-            triggerSuccessReading(expectedWord);
-          } else {
-            micStatus.innerHTML = `<span style="color:#E74C3C;">Bé thử lại to rõ hơn nhé!</span>`;
-            playTone('wrong');
-            speakClear("Try again!", "en");
-          }
-        };
-
-        recognition.onerror = function() { micStatus.innerText = "Chưa nghe rõ giọng bé. Bé bấm đọc lại nhé!"; };
-        recognition.onend = function() { isRecording = false; micBtn.classList.remove('recording'); };
-      }
-
-      if (isRecording) { recognition.stop(); } else { try { recognition.start(); } catch (e) { recognition.stop(); } }
-    }
-
-    function triggerSuccessReading(word) {
-      const micStatus = document.getElementById('mic-status');
-      if (micStatus) micStatus.innerHTML = `<span style="color:#27AE60;">🌟 Tuyệt vời! Bé đọc rất chuẩn!</span>`;
-      playTone('correct');
-      triggerConfetti();
-      stars += 1;
-      document.getElementById('stars-count').innerText = stars;
-      speakClear(`${word}`, "en");
-      setTimeout(() => { if (currentTopicFunc) currentTopicFunc(); }, 1500);
-    }
-
-    // Eng 2: Khám Phá 10 Chủ Đề Từ Vựng
-    function renderVocabTopicsMenu() {
-      btnBackSub.style.display = 'inline-flex';
-      btnBackTopics.style.display = 'none';
-      container.innerHTML = `
-        <h2 style="font-size: 22px; font-weight: 800; margin-bottom: 6px; color: #2563EB;">📚 10 CHỦ ĐỀ TỪ VỰNG SGK TIẾNG ANH LỚP 1</h2>
-        <div class="topics-grid-10">
-          ${VOCAB_THEMES.map(theme => `
-            <div class="subject-card vocab-topic" onclick="selectVocabTopic('${theme.id}')">
-              <div class="icon-wrap">${theme.icon}</div>
-              <div class="title">${theme.title}</div>
-            </div>
-          `).join('')}
-        </div>
-      `;
-    }
-
-    let currentActiveTheme = null, themeVocabHistory = [], themeVocabHistoryIdx = -1, currentVocabObj = null;
-    function selectVocabTopic(themeId) {
-      currentActiveTheme = VOCAB_THEMES.find(t => t.id === themeId);
-      themeVocabHistory = [];
-      themeVocabHistoryIdx = -1;
-      btnBackTopics.style.display = 'inline-flex';
-      startEngVocabExplore(1);
-    }
-
-    function startEngVocabExplore(step = 1) {
-      if (!currentActiveTheme) { renderVocabTopicsMenu(); return; }
-      currentTopicFunc = () => startEngVocabExplore(1);
-      if (step === 1) {
-        if (themeVocabHistoryIdx < themeVocabHistory.length - 1) {
-          themeVocabHistoryIdx++;
-          currentVocabObj = themeVocabHistory[themeVocabHistoryIdx];
-        } else {
-          currentVocabObj = getNextDeckItem(`theme_${currentActiveTheme.id}`, currentActiveTheme.words);
-          themeVocabHistory.push(currentVocabObj);
-          themeVocabHistoryIdx = themeVocabHistory.length - 1;
-        }
-      } else if (step === -1 && themeVocabHistoryIdx > 0) {
-        themeVocabHistoryIdx--;
-        currentVocabObj = themeVocabHistory[themeVocabHistoryIdx];
-      }
-
-      currentAnswer = currentVocabObj.word;
-      let choices = [currentVocabObj];
-      let pool = currentActiveTheme.words.length >= 4 ? currentActiveTheme.words : MASTER_VOCAB;
-      while (choices.length < Math.min(4, pool.length)) {
-        let r = pool[Math.floor(Math.random() * pool.length)];
-        if (!choices.map(c => c.word).includes(r.word)) choices.push(r);
-      }
-      choices.sort(() => Math.random() - 0.5);
-      renderVocabExploreUI(currentVocabObj, choices, false);
-      speakClear(currentVocabObj.vi, 'vi');
-    }
-
-    function renderVocabExploreUI(target, choices, isAnsweredCorrect = false) {
-      let rightPanelContent = isAnsweredCorrect && target.examples ? `
-        <div style="font-size:15px; font-weight:900; color:var(--purple); margin-bottom:4px;">🌟 3 Câu ví dụ tiếng Anh:</div>
-        ${target.examples.map(ex => `
-          <div style="background:#FFF; border:2px solid #BFDBFE; border-radius:12px; padding:6px 10px; display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
-            <div>
-              <div style="font-size:15px; font-weight:800; color:var(--dark);">${highlightWordInSentence(ex.en, target.word)}</div>
-              <div style="font-size:12px; font-weight:600; color:#7F8C8D;">${ex.vi}</div>
-            </div>
-            <button class="speaker-btn" style="padding:4px 8px; font-size:13px;" onclick="speakClear('${ex.en.replace(/'/g, "\\'")}', 'en')">🔊</button>
-          </div>
-        `).join('')}
-      ` : `
-        <div style="min-height:120px; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#FFF; border:2px dashed #CBD5E1; border-radius:16px; padding:12px;">
-          <div style="font-size:32px;">💡</div>
-          <div style="font-size:15px; font-weight:800; color:#7F8C8D; margin-top:4px;">Bé hãy chọn đúng từ vựng bên dưới để mở khóa 3 câu ví dụ nhé!</div>
-        </div>
-      `;
-
-      container.innerHTML = `
-        <div class="question-prompt"><span style="color:#2563EB;">[${currentActiveTheme.title}]</span> Find word: <button class="speaker-btn" onclick="speakClear('${target.vi}', 'vi')">🔊 Nghe: ${target.vi}</button></div>
-        <div class="stage-box">
-          <div style="display:grid; grid-template-columns: 240px 1fr; gap:14px; width:100%; align-items:center;">
-            <div style="display:flex; flex-direction:column; align-items:center; background:#FFF; padding:12px; border-radius:16px; border:2px solid #E2E8F0;">
-              <span style="font-size:56px;">${target.emoji}</span>
-              <div style="font-size:20px; font-weight:900; color:#2C3E50; margin-top:4px;">Nghĩa: ${target.vi}</div>
-              ${isAnsweredCorrect ? `<div class="ipa-badge" style="font-size:16px;">${target.word} ${target.ipa}</div>` : ''}
-            </div>
-            <div>${rightPanelContent}</div>
-          </div>
-        </div>
-        <div class="choices-grid">
-          ${choices.map(c => `
-            <button class="choice-btn ${isAnsweredCorrect && c.word === target.word ? 'correct' : ''}" onclick="checkVocabExploreAnswer(this, '${c.word}')">
-              <span>${c.word}</span>
-              <span class="ipa-sub">${c.ipa}</span>
-            </button>
-          `).join('')}
-        </div>
-        <div style="display:flex; gap:14px; margin-top:12px;">
-          <button class="btn-nav" onclick="startEngVocabExplore(-1)" ${themeVocabHistoryIdx <= 0 ? 'disabled style="opacity:0.5;"' : ''}>⬅️ Câu trước</button>
-          <button class="btn-nav" style="background:#FFE66D; color:#D35400;" onclick="startEngVocabExplore(1)">Câu tiếp ➡️</button>
-        </div>
-      `;
-    }
-
-    function checkVocabExploreAnswer(btnElement, selected) {
-      if (selected === currentAnswer) {
-        playTone('correct');
-        triggerConfetti();
-        stars += 1;
-        document.getElementById('stars-count').innerText = stars;
-        speakClear(`${selected}`, "en");
-
-        let choices = [];
-        document.querySelectorAll('.choice-btn').forEach(b => {
-          const w = b.querySelector('span').innerText;
-          const found = MASTER_VOCAB.find(v => v.word === w);
-          if (found) choices.push(found);
-        });
-        renderVocabExploreUI(currentVocabObj, choices, true);
-      } else {
-        btnElement.classList.add('wrong');
-        playTone('wrong');
-        speakClear("Try again!", "en");
-        setTimeout(() => { btnElement.classList.remove('wrong'); }, 800);
-      }
-    }
-
-    // Eng 4: Xếp Câu Đúng
-    let userSentenceArr = [], currentSentenceObj = null;
-    function startEngSentenceBuilder() {
-      currentTopicFunc = startEngSentenceBuilder;
-      btnBackTopics.style.display = 'none';
-      currentSentenceObj = getNextDeckItem('eng_sentences', [
-        { full: 'This is my bag', words: ['This', 'is', 'my', 'bag'], emoji: '🎒', vi: 'Đây là chiếc cặp của tôi' },
-        { full: 'I have a car', words: ['I', 'have', 'a', 'car'], emoji: '🚗', vi: 'Tôi có một chiếc ô tô' },
-        { full: 'I like milk', words: ['I', 'like', 'milk'], emoji: '🥛', vi: 'Tôi thích sữa tươi' },
-        { full: 'Touch your hair', words: ['Touch', 'your', 'hair'], emoji: '💇', vi: 'Chạm vào mái tóc của bạn' },
-        { full: 'Look at the lemons', words: ['Look', 'at', 'the', 'lemons'], emoji: '🍋', vi: 'Hãy nhìn những quả chanh' }
-      ]);
-      userSentenceArr = [];
-      renderSentenceUI();
-      speakClear(currentSentenceObj.full, 'en');
-    }
-
-    function renderSentenceUI() {
-      const scrambled = [...currentSentenceObj.words].sort(() => 0.5 - Math.random());
-      container.innerHTML = `
-        <div class="question-prompt">Bé chạm các từ để ghép thành câu hoàn chỉnh: <button class="speaker-btn" onclick="speakClear('${currentSentenceObj.full}', 'en')">🔊 Nghe câu</button></div>
-        <div class="stage-box">
-          <span style="font-size:48px;">${currentSentenceObj.emoji}</span>
-          <div style="font-size:15px; font-weight:800; color:#7F8C8D;">Nghĩa: ${currentSentenceObj.vi}</div>
-          <div id="sentence-slot" style="min-height:48px; background:#FFF; border:2px dashed #8E44AD; border-radius:14px; width:90%; display:flex; align-items:center; justify-content:center; gap:8px; padding:6px 12px; font-size:20px; font-weight:900; color:#8E44AD; flex-wrap:wrap;">
-            ${userSentenceArr.length === 0 ? '👉 Chạm các từ bên dưới để xếp vào đây' : userSentenceArr.map(w => `<span style="background:#EBF8FF; padding:3px 8px; border-radius:8px; border:1px solid #BEE3F8;">${w}</span>`).join('')}
-          </div>
-        </div>
-        <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
-          ${scrambled.map(w => `<button class="word-tile-btn" onclick="pickSentenceWord('${w}')"><span>${w}</span><span style="font-size:11px; color:#7F8C8D;">${getIpaForWord(w)}</span></button>`).join('')}
-          <button class="word-tile-btn" style="border-color:#E74C3C; color:#E74C3C;" onclick="resetSentenceBuilder()">🔄 Xếp lại</button>
-        </div>
-      `;
-    }
-
-    function pickSentenceWord(word) {
-      userSentenceArr.push(word);
-      speakClear(word, 'en');
-      renderSentenceUI();
-      if (userSentenceArr.length === currentSentenceObj.words.length) {
-        if (userSentenceArr.join(' ') === currentSentenceObj.full) {
-          playTone('correct');
-          triggerConfetti();
-          stars += 1;
-          document.getElementById('stars-count').innerText = stars;
-          speakClear(`${currentSentenceObj.full}`, 'en');
-          setTimeout(() => { startEngSentenceBuilder(); }, 1500);
-        } else {
-          playTone('wrong');
-          speakClear("Try again!", "en");
-          setTimeout(() => { userSentenceArr = []; renderSentenceUI(); }, 1000);
-        }
-      }
-    }
-    function resetSentenceBuilder() { userSentenceArr = []; renderSentenceUI(); }
-
-    // Eng 5: Xóa Chữ Thừa
-    function startEngLetterCleaner() {
-      currentTopicFunc = startEngLetterCleaner;
-      btnBackTopics.style.display = 'none';
-      const target = getNextDeckItem('eng_cleaner', MASTER_VOCAB);
-      const originalWord = target.word.toUpperCase().replace(/\s/g, '');
-      const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-      const extraLetter = alphabet[Math.floor(Math.random() * alphabet.length)];
-      const insertIdx = Math.floor(Math.random() * (originalWord.length + 1));
-      let letterList = originalWord.split('');
-      letterList.splice(insertIdx, 0, extraLetter);
-
-      container.innerHTML = `
-        <div class="question-prompt">Bấm vào chữ cái thừa để sửa thành từ đúng: <b>${originalWord}</b> <button class="speaker-btn" onclick="speakClear('${target.word}', 'en')">🔊 Nghe</button></div>
-        <div class="stage-box">
-          <span style="font-size:54px;">${target.emoji}</span>
-          <div style="font-size:16px; font-weight:800; color:#7F8C8D;">Nghĩa: ${target.vi}</div>
-          <div class="ipa-badge">${target.ipa}</div>
-          <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:8px;">
-            ${letterList.map((ch, idx) => `<button class="letter-clean-btn" onclick="cleanLetterCheck(this, ${idx}, ${insertIdx}, '${target.word}')">${ch}</button>`).join('')}
-          </div>
-        </div>
-      `;
-      speakClear(target.word, 'en');
-    }
-
-    function cleanLetterCheck(btnElement, clickedIdx, correctExtraIdx, correctWord) {
-      if (clickedIdx === correctExtraIdx) {
-        btnElement.style.background = '#2ECC71';
-        btnElement.style.color = '#FFF';
-        playTone('correct');
-        triggerConfetti();
-        stars += 1;
-        document.getElementById('stars-count').innerText = stars;
-        speakClear(`${correctWord}`, "en");
-        setTimeout(() => { startEngLetterCleaner(); }, 1400);
-      } else {
-        btnElement.style.background = '#E74C3C';
-        btnElement.style.color = '#FFF';
-        playTone('wrong');
-        speakClear("Try again!", "en");
-        setTimeout(() => { btnElement.style.background = '#FFF'; btnElement.style.color = '#2980B9'; }, 800);
-      }
-    }
-
-    // Eng 6: Điền Từ Vào Câu
-    function startEngFillBlank() {
-      currentTopicFunc = startEngFillBlank;
-      btnBackTopics.style.display = 'none';
-      const target = getNextDeckItem('eng_fill_blank', [
-        { text: 'It is a red ___', missing: 'pen', emoji: '🖊️', choices: ['pen', 'cake', 'duck'], full: 'It is a red pen' },
-        { text: 'I have a ___', missing: 'car', emoji: '🚗', choices: ['car', 'sun', 'lemon'], full: 'I have a car' },
-        { text: 'This is my ___', missing: 'bag', emoji: '🎒', choices: ['bag', 'milk', 'fish'], full: 'This is my bag' },
-        { text: 'Look at the ___', missing: 'lemons', emoji: '🍋', choices: ['lemons', 'desk', 'horse'], full: 'Look at the lemons' }
-      ]);
-      currentAnswer = target.missing;
-      const choices = [...target.choices].sort(() => Math.random() - 0.5);
-      container.innerHTML = `
-        <div class="question-prompt">Chọn từ đúng hoàn thành câu: <button class="speaker-btn" onclick="speakClear('${target.full}', 'en')">🔊 Nghe mẫu</button></div>
-        <div class="stage-box"><span style="font-size:56px;">${target.emoji}</span><div style="font-size:28px; font-weight:900;">${target.text}</div></div>
-        <div class="choices-grid">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, '${c}')"><span>${c}</span><span class="ipa-sub">${getIpaForWord(c)}</span></button>`).join('')}</div>
-      `;
-      speakClear(target.text.replace('___', 'what'), 'en');
-    }
-
-    // Eng 7: Hỏi Đáp Q&A
-    function startEngSmartQA() {
-      currentTopicFunc = startEngSmartQA;
-      btnBackTopics.style.display = 'none';
-      const target = getNextDeckItem('eng_smart_qa', [
-        { question: "How many clocks?", correct: "Two", choices: ["Two", "It is red", "I have a pen"] },
-        { question: "How many windows can you see?", correct: "I can see six", choices: ["I can see six", "My name is Bill", "This is a dog"] },
-        { question: "What is your name?", correct: "Hi, I'm Bill", choices: ["Hi, I'm Bill", "I like milk", "It's on the desk"] }
-      ]);
-      currentAnswer = target.correct;
-      const choices = [...target.choices].sort(() => Math.random() - 0.5);
-      container.innerHTML = `
-        <div class="question-prompt">${target.question} <button class="speaker-btn" onclick="speakClear('${target.question}', 'en')">🔊 Nghe câu hỏi</button></div>
-        <div class="stage-box"><div style="font-size:42px;">💡 ❓</div><div style="font-size:22px; font-weight:900; color:#8E44AD;">${target.question}</div></div>
-        <div class="choices-grid" style="grid-template-columns:1fr;">${choices.map(c => `<button class="choice-btn" style="font-size:18px; padding:12px;" onclick="checkAnswer(this, '${c}')">${c}</button>`).join('')}</div>
-      `;
-      speakClear(target.question, 'en');
-    }
-
-    // Eng 8: Nghe Chọn Tranh
-    function startEngListenPick() {
-      currentTopicFunc = startEngListenPick;
-      btnBackTopics.style.display = 'none';
-      const target = getNextDeckItem('eng_listen_pick', MASTER_VOCAB);
-      currentAnswer = target.word;
-      let pool = MASTER_VOCAB.filter(x => x.word !== target.word);
-      let choices = [target, ...pool.sort(() => Math.random() - 0.5).slice(0, 3)].sort(() => Math.random() - 0.5);
-      container.innerHTML = `
-        <div class="question-prompt">Bé hãy bấm nghe và chọn đúng hình: <button class="speaker-btn" onclick="speakClear('${target.word}', 'en')">🔊 Nghe: ${target.word}</button></div>
-        <div class="stage-box"><div style="font-size:48px;">🎧 ❓ 🖼️</div><div style="font-size:16px; font-weight:800; color:#7F8C8D;">Nghe kỹ âm thanh và chọn bức tranh đúng nhé!</div></div>
-        <div class="choices-grid">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, '${c.word}')"><span style="font-size:36px;">${c.emoji}</span></button>`).join('')}</div>
-      `;
-      speakClear(target.word, 'en');
-    }
-
-    // Eng 9: Ghép Từ - Hình
-    function startEngWordPicMatch() {
-      currentTopicFunc = startEngWordPicMatch;
-      btnBackTopics.style.display = 'none';
-      const target = getNextDeckItem('eng_pic_match', MASTER_VOCAB);
-      currentAnswer = target.word;
-      let pool = MASTER_VOCAB.filter(x => x.word !== target.word);
-      let choices = [target, ...pool.sort(() => Math.random() - 0.5).slice(0, 3)].sort(() => Math.random() - 0.5);
-      container.innerHTML = `
-        <div class="question-prompt">Find the word for this picture: <button class="speaker-btn" onclick="speakClear('${target.word}', 'en')">🔊 Phát âm</button></div>
-        <div class="stage-box"><span style="font-size:68px;">${target.emoji}</span><div style="font-size:18px; font-weight:800; color:#7F8C8D;">${target.vi}</div></div>
-        <div class="choices-grid">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, '${c.word}')"><span>${c.word}</span><span class="ipa-sub">${c.ipa}</span></button>`).join('')}</div>
-      `;
-      speakClear(target.word, 'en');
-    }
-
-    // Eng 10: Âm Đầu Phonics
-    function startEngPhonics() {
-      currentTopicFunc = startEngPhonics;
-      btnBackTopics.style.display = 'none';
-      const target = getNextDeckItem('eng_phonics', [
-        { word: 'Ball', letter: 'B', emo: '⚽', snd: 'Letter B makes /b/ in Ball' },
-        { word: 'Cat', letter: 'C', emo: '🐱', snd: 'Letter C makes /k/ in Cat' },
-        { word: 'Apple', letter: 'A', emo: '🍎', snd: 'Letter A makes /æ/ in Apple' },
-        { word: 'Dog', letter: 'D', emo: '🐶', snd: 'Letter D makes /d/ in Dog' },
-        { word: 'Fish', letter: 'F', emo: '🐟', snd: 'Letter F makes /f/ in Fish' },
-        { word: 'Goat', letter: 'G', emo: '🐐', snd: 'Letter G makes /ɡ/ in Goat' },
-        { word: 'Hand', letter: 'H', emo: '✋', snd: 'Letter H makes /h/ in Hand' }
-      ]);
-      currentAnswer = target.letter;
-      let choices = [target.letter, 'E', 'M', 'N'].sort(() => Math.random() - 0.5);
-      container.innerHTML = `
-        <div class="question-prompt">What letter does <b>${target.word}</b> start with? <button class="speaker-btn" onclick="speakClear('${target.snd}', 'en')">🔊 Phonics</button></div>
-        <div class="stage-box"><span style="font-size:60px;">${target.emo}</span><div style="font-size:28px; font-weight:900;">${target.word}</div></div>
-        <div class="choices-grid">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, '${c}')">${c}</button>`).join('')}</div>
-      `;
-      speakClear(target.word, 'en');
-    }
-
-    // Eng 11: Đếm Số Tiếng Anh
-    function startEngNumberCount() {
-      currentTopicFunc = startEngNumberCount;
-      btnBackTopics.style.display = 'none';
-      const target = getNextDeckItem('eng_num_count', [
-        { num: 1, word: 'One' }, { num: 2, word: 'Two' }, { num: 3, word: 'Three' },
-        { num: 4, word: 'Four' }, { num: 5, word: 'Five' }, { num: 6, word: 'Six' }
-      ]);
-      currentAnswer = target.word;
-      let items = '';
-      for (let i = 0; i < target.num; i++) items += '⭐ ';
-      let choices = ['One', 'Two', 'Three', 'Four', 'Five', 'Six'].sort(() => Math.random() - 0.5).slice(0, 4);
-      if (!choices.includes(target.word)) choices[0] = target.word;
-      choices.sort(() => Math.random() - 0.5);
-      container.innerHTML = `
-        <div class="question-prompt">Count in English: <button class="speaker-btn" onclick="speakClear('${target.word}', 'en')">🔊 Nghe</button></div>
-        <div class="stage-box"><div style="font-size:48px;">${items}</div></div>
-        <div class="choices-grid">${choices.map(c => `<button class="choice-btn" onclick="checkAnswer(this, '${c}')"><span>${c}</span><span class="ipa-sub">${getIpaForWord(c)}</span></button>`).join('')}</div>
-      `;
-      speakClear("How many stars?", 'en');
-    }
-
-    // ==========================================
-    // 6. XỬ LÝ ĐÁP ÁN CHUNG
-    // ==========================================
-    function checkAnswer(btnElement, selected) {
-      const allBtns = document.querySelectorAll('.choice-btn');
-      allBtns.forEach(b => b.disabled = true);
-      const isEnglish = (currentSubject === 'eng');
-
-      if (String(selected).trim().toLowerCase() === String(currentAnswer).trim().toLowerCase()) {
-        btnElement.classList.add('correct');
-        playTone('correct');
-        triggerConfetti();
-        stars += 1;
-        document.getElementById('stars-count').innerText = stars;
-
-        if (isEnglish) { speakClear(`${selected}`, "en"); } 
-        else { speakClear("Hoan hô! Bé giỏi quá!", "vi"); }
-
-        setTimeout(() => { if (currentTopicFunc) currentTopicFunc(); }, 1400);
-      } else {
-        btnElement.classList.add('wrong');
-        playTone('wrong');
-        if (isEnglish) { speakClear("Try again!", "en"); } 
-        else { speakClear("Bé thử lại nhé!", "vi"); }
-
-        setTimeout(() => {
-          btnElement.classList.remove('wrong');
-          allBtns.forEach(b => b.disabled = false);
-        }, 900);
-      }
-    }
-  </script>
+        <button id="register-submit" class="primary-action" type="submit">Đăng ký ngay</button>
+      </form>
+
+      <div class="auth-divider"></div>
+      <button id="auth-later" class="secondary-action" type="button">Để sau nhé</button>
+    </div>
+  </div>
+
+  <div id="app-dialog" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+    <div class="dialog-card">
+      <div id="dialog-icon" class="dialog-icon">🐰</div>
+      <h3 id="dialog-title">Thông báo</h3>
+      <p id="dialog-message"></p>
+      <button id="dialog-ok" class="primary-action" type="button">OK</button>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="assets/js/app.js?v=ui-shell-1"></script>
 </body>
 </html>
