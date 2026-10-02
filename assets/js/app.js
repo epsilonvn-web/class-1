@@ -80,6 +80,9 @@
       data: null,
       failed: false
     },
+    account: {
+      view: "overview"
+    },
     admin: {
       loading: false,
       loaded: false,
@@ -110,22 +113,6 @@
     registerForm: document.getElementById("register-form"),
     loginSubmit: document.getElementById("login-submit"),
     registerSubmit: document.getElementById("register-submit"),
-    accountPanel: document.getElementById("account-panel"),
-    accountAvatar: document.getElementById("account-avatar"),
-    accountName: document.getElementById("account-name"),
-    accountId: document.getElementById("account-id"),
-    accountAccessList: document.getElementById("account-access-list"),
-    accountRequests: document.getElementById("account-requests"),
-    accountRequestButton: document.getElementById("account-request-button"),
-    accountAdminButton: document.getElementById("account-admin-button"),
-    accountLogoutButton: document.getElementById("account-logout-button"),
-    avatarSelect: document.getElementById("account-avatar-select"),
-    avatarSaveButton: document.getElementById("account-avatar-save"),
-    accessRequestPanel: document.getElementById("access-request-panel"),
-    accessRequestForm: document.getElementById("access-request-form"),
-    accessRequestChoices: document.getElementById("access-request-choices"),
-    accessRequestSubmit: document.getElementById("access-request-submit"),
-    accessRequestBack: document.getElementById("access-request-back"),
     dialog: document.getElementById("app-dialog"),
     dialogIcon: document.getElementById("dialog-icon"),
     dialogTitle: document.getElementById("dialog-title"),
@@ -242,6 +229,7 @@
     state.auth.requests = [];
     state.auth.ready = true;
     state.profile = { subjectId: null, loading: false, data: null, failed: false };
+    state.account = { view: "overview" };
     state.admin = { loading: false, loaded: false, overview: null, requests: [], users: [], query: "" };
     updateAccountButton();
   }
@@ -558,6 +546,7 @@
   function renderContent() {
     if (state.screen === "home") return renderHomeContent();
     if (state.screen === "profile") return renderLearningProfile();
+    if (state.screen === "account") return renderAccountPage();
     if (state.screen === "admin") return renderAdmin();
     if (state.detail) return renderDetailContent();
     renderSubjectContent();
@@ -794,23 +783,19 @@
   }
 
   function openAuth(mode = "login") {
-    if (mode === "request" && !state.auth.user) mode = "login";
-    if ((mode === "login" || mode === "register") && state.auth.user) mode = "account";
-    switchAuthView(mode);
+    if (state.auth.user) {
+      closeAuth();
+      openAccountPage();
+      return;
+    }
+    const safeMode = mode === "register" ? "register" : "login";
+    switchAuthView(safeMode);
     el.authModal.classList.remove("hidden");
     document.body.style.overflow = "hidden";
-    if (mode === "account") refreshAccessState(true);
-    if (mode === "request") {
-      refreshAccessState(false).then(() => {
-        if (!el.accessRequestPanel.classList.contains("hidden")) renderAccessRequestChoices();
-      });
-    }
     window.setTimeout(() => {
-      const target = mode === "register"
+      const target = safeMode === "register"
         ? document.getElementById("register-name")
-        : mode === "login"
-          ? document.getElementById("login-id")
-          : null;
+        : document.getElementById("login-id");
       target?.focus();
     }, 50);
   }
@@ -821,22 +806,13 @@
   }
 
   function switchAuthView(mode) {
-    const login = mode === "login";
     const register = mode === "register";
-    const account = mode === "account";
-    const request = mode === "request";
-
-    el.authTabs.classList.toggle("hidden", account || request);
-    el.authTabLogin.classList.toggle("is-active", login);
+    el.authTabs.classList.remove("hidden");
+    el.authTabLogin.classList.toggle("is-active", !register);
     el.authTabRegister.classList.toggle("is-active", register);
-    el.loginForm.classList.toggle("hidden", !login);
+    el.loginForm.classList.toggle("hidden", register);
     el.registerForm.classList.toggle("hidden", !register);
-    el.accountPanel.classList.toggle("hidden", !account);
-    el.accessRequestPanel.classList.toggle("hidden", !request);
-    el.authLater.textContent = account || request ? "Đóng" : "Để sau nhé";
-
-    if (account) renderAccountPanel();
-    if (request) renderAccessRequestChoices();
+    el.authLater.textContent = "Để sau nhé";
   }
 
   function updateAccountButton(verifying = false) {
@@ -855,7 +831,23 @@
     }
   }
 
-  async function refreshAccessState(updatePanel) {
+  function openAccountPage(view = "overview") {
+    if (!state.auth.user) {
+      openAuth("login");
+      return;
+    }
+    state.screen = "account";
+    state.account.view = view === "request" ? "request" : "overview";
+    state.homeTab = "class1";
+    state.subjectId = null;
+    state.profileSubjectId = null;
+    state.detail = null;
+    render();
+    focusContent();
+    refreshAccessState(true);
+  }
+
+  async function refreshAccessState(rerenderAccount = false) {
     if (!state.auth.user || !state.auth.token) return;
     try {
       const data = await apiRequest("accessStateGet");
@@ -871,98 +863,135 @@
       }
       state.auth.access = normalizeAccess(data.access || {});
       state.auth.requests = Array.isArray(data.requests) ? data.requests : [];
-      if (updatePanel && !el.accountPanel.classList.contains("hidden")) renderAccountPanel();
+      if (rerenderAccount && state.screen === "account") render();
       if (state.screen === "home" || state.screen === "subject") render();
     } catch (err) {
       if (err.code === "UNAUTHORIZED") {
-        closeAuth();
+        if (state.screen === "account") goHome();
         render();
         showToast("Phiên đăng nhập không còn hiệu lực. Vui lòng đăng nhập lại.");
-      } else if (updatePanel) {
+      } else if (rerenderAccount) {
         showToast(friendlyError(err));
       }
     }
   }
 
-  function renderAccountPanel() {
-    const user = state.auth.user;
-    if (!user) return switchAuthView("login");
-
-    el.accountAvatar.textContent = user.avatarEmoji || "🐰";
-    el.accountName.textContent = user.name || "Tài khoản Lớp 1";
-    el.accountId.textContent = user.userId || "";
-    el.accountAdminButton.classList.toggle("hidden", user.role !== "admin");
-
-    el.accountAccessList.replaceChildren();
-    SUBJECTS.forEach((subject) => {
+  function accountAccessRowsHtml() {
+    return SUBJECTS.map((subject) => {
       const access = state.auth.access[subject.id] || { type: "regular", endAt: "" };
       const type = accessTypeFor(subject.id);
-      const row = document.createElement("div");
-      row.className = "account-access-row";
-      const left = document.createElement("div");
-      left.innerHTML = `<strong>${escapeHtml(subject.fullLabel)}</strong><span>${escapeHtml(accessExpiryText(type, access.endAt))}</span>`;
-      const badge = document.createElement("span");
-      badge.className = `access-chip access-${type}`;
-      badge.textContent = type === "admin" ? "Admin" : type.charAt(0).toUpperCase() + type.slice(1);
-      row.append(left, badge);
-      el.accountAccessList.appendChild(row);
-    });
+      const label = type === "admin" ? "Admin" : type.charAt(0).toUpperCase() + type.slice(1);
+      return `<div class="account-access-row"><div><strong>${escapeHtml(subject.fullLabel)}</strong><span>${escapeHtml(accessExpiryText(type, access.endAt))}</span></div><span class="access-chip access-${escapeHtml(type)}">${escapeHtml(label)}</span></div>`;
+    }).join("");
+  }
 
-    el.accountRequests.replaceChildren();
-    if (!state.auth.requests.length) {
-      const empty = document.createElement("div");
-      empty.className = "account-request-empty";
-      empty.textContent = "Chưa có yêu cầu quyền học đang chờ.";
-      el.accountRequests.appendChild(empty);
-    } else {
-      state.auth.requests.forEach((request) => {
-        const item = document.createElement("div");
-        item.className = "account-request-item";
-        const subjectLabels = (request.subjectIds || []).map(apiIdToLabel).filter(Boolean).join(", ");
-        const copy = document.createElement("div");
-        copy.innerHTML = `<strong>Đang chờ duyệt</strong><span>${escapeHtml(subjectLabels || "Quyền học")} · ${escapeHtml(String(request.accessType || "vip").toUpperCase())}</span>`;
-        const cancel = document.createElement("button");
-        cancel.type = "button";
-        cancel.className = "mini-action";
-        cancel.textContent = "Hủy";
-        cancel.addEventListener("click", () => cancelAccessRequest(request.requestId, cancel));
-        item.append(copy, cancel);
-        el.accountRequests.appendChild(item);
-      });
+  function accountRequestsHtml() {
+    if (!state.auth.requests.length) return `<div class="account-request-empty">Chưa có yêu cầu quyền học đang chờ.</div>`;
+    return state.auth.requests.map((request) => {
+      const subjectLabels = (request.subjectIds || []).map(apiIdToLabel).filter(Boolean).join(", ");
+      return `<div class="account-request-item"><div><strong>Đang chờ duyệt</strong><span>${escapeHtml(subjectLabels || "Quyền học")} · ${escapeHtml(String(request.accessType || "vip").toUpperCase())}</span></div><button class="mini-action" type="button" data-cancel-request="${escapeHtml(request.requestId)}">Hủy</button></div>`;
+    }).join("");
+  }
+
+  function renderAccountPage() {
+    const user = state.auth.user;
+    if (!user) {
+      state.screen = "home";
+      render();
+      openAuth("login");
+      return;
     }
+    if (state.account.view === "request") return renderAccessRequestPage();
 
-    el.avatarSelect.replaceChildren();
-    AVATARS.forEach((avatar) => {
-      const option = document.createElement("option");
-      option.value = avatar;
-      option.textContent = avatar;
-      option.selected = avatar === user.avatarEmoji;
-      el.avatarSelect.appendChild(option);
+    const avatarOptions = AVATARS.map((avatar) => `<option value="${escapeHtml(avatar)}"${avatar === user.avatarEmoji ? " selected" : ""}>${escapeHtml(avatar)}</option>`).join("");
+    const adminButtonClass = user.role === "admin" ? "secondary-action" : "secondary-action hidden";
+
+    el.content.innerHTML = `
+      <div class="section-heading">
+        <div><h1>👤 Tài khoản</h1><p>Thông tin cá nhân và quyền học của Lớp 1.</p></div>
+        <button id="account-back" class="back-btn" type="button">← Lớp 1</button>
+      </div>
+      <section class="account-page" aria-label="Tài khoản đang đăng nhập">
+        <div class="account-page-hero">
+          <div class="account-page-avatar" aria-hidden="true">${escapeHtml(user.avatarEmoji || "🐰")}</div>
+          <div><strong>${escapeHtml(user.name || "Tài khoản Lớp 1")}</strong><span>ID đăng nhập: ${escapeHtml(user.userId || "")}</span></div>
+        </div>
+
+        <div class="account-page-grid">
+          <section class="account-section">
+            <h2>Thông tin tài khoản</h2>
+            <p>Có thể sửa lại họ tên nếu lúc đăng ký nhập nhầm. ID đăng nhập không thay đổi.</p>
+            <div class="account-field-block">
+              <label class="account-field-label" for="account-name-input">Họ và tên học sinh</label>
+              <div class="account-inline-control">
+                <input id="account-name-input" type="text" maxlength="80" autocomplete="name" value="${escapeHtml(user.name || "")}">
+                <button id="account-name-save" class="mini-action" type="button">Lưu tên</button>
+              </div>
+            </div>
+            <div class="account-field-block">
+              <label class="account-field-label" for="account-avatar-select">Avatar</label>
+              <div class="account-inline-control">
+                <select id="account-avatar-select" aria-label="Chọn avatar">${avatarOptions}</select>
+                <button id="account-avatar-save" class="mini-action" type="button">Lưu</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="account-section">
+            <h2>Quyền học theo môn</h2>
+            <div class="account-access-list">${accountAccessRowsHtml()}</div>
+          </section>
+        </div>
+
+        <section class="account-section">
+          <h2>Yêu cầu đang chờ</h2>
+          <div class="account-requests">${accountRequestsHtml()}</div>
+        </section>
+
+        <div class="account-page-actions">
+          <button id="account-request-button" class="primary-action" type="button">Đăng ký quyền học</button>
+          <button id="account-admin-button" class="${adminButtonClass}" type="button">Quản trị</button>
+          <button id="account-logout-button" class="secondary-action" type="button">Đăng xuất</button>
+        </div>
+      </section>`;
+
+    document.getElementById("account-back")?.addEventListener("click", goHome);
+    document.getElementById("account-request-button")?.addEventListener("click", () => openAccountPage("request"));
+    document.getElementById("account-admin-button")?.addEventListener("click", openAdmin);
+    document.getElementById("account-logout-button")?.addEventListener("click", onLogout);
+    document.getElementById("account-avatar-save")?.addEventListener("click", onAvatarSave);
+    document.getElementById("account-name-save")?.addEventListener("click", onNameSave);
+    el.content.querySelectorAll("[data-cancel-request]").forEach((button) => {
+      button.addEventListener("click", () => cancelAccessRequest(button.dataset.cancelRequest, button));
     });
   }
 
-  function renderAccessRequestChoices() {
-    if (!state.auth.user) return;
+  function renderAccessRequestPage() {
+    if (!state.auth.user) return openAuth("login");
     const pendingApiIds = new Set();
     state.auth.requests.forEach((r) => (r.subjectIds || []).forEach((id) => pendingApiIds.add(id)));
-    el.accessRequestChoices.replaceChildren();
-
-    SUBJECTS.forEach((subject) => {
+    const choices = SUBJECTS.map((subject) => {
       const type = accessTypeFor(subject.id);
       const active = type === "trial" || type === "vip" || type === "admin";
       const pending = pendingApiIds.has(subject.apiId);
-      const label = document.createElement("label");
-      label.className = `subject-choice${active || pending ? " is-disabled" : ""}`;
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.name = "subject-choice";
-      checkbox.value = subject.apiId;
-      checkbox.disabled = active || pending;
-      const copy = document.createElement("span");
-      copy.innerHTML = `<strong>${escapeHtml(subject.fullLabel)}</strong><small>${active ? "Đang có quyền học" : pending ? "Đang chờ duyệt" : "Có thể đăng ký"}</small>`;
-      label.append(checkbox, copy);
-      el.accessRequestChoices.appendChild(label);
-    });
+      return `<label class="subject-choice${active || pending ? " is-disabled" : ""}"><input type="checkbox" name="subject-choice" value="${escapeHtml(subject.apiId)}"${active || pending ? " disabled" : ""}><span><strong>${escapeHtml(subject.fullLabel)}</strong><small>${active ? "Đang có quyền học" : pending ? "Đang chờ duyệt" : "Có thể đăng ký"}</small></span></label>`;
+    }).join("");
+
+    el.content.innerHTML = `
+      <div class="section-heading">
+        <div><h1>🌟 Đăng ký quyền học</h1><p>Chọn từ 1 đến 3 môn cần đăng ký.</p></div>
+        <button id="access-request-back" class="back-btn" type="button">← Tài khoản</button>
+      </div>
+      <section class="account-request-page account-section">
+        <p class="access-request-note">Yêu cầu này không tự mở quyền học. Admin sẽ xem và duyệt đúng các môn đã chọn.</p>
+        <form id="access-request-form" class="form-stack" novalidate>
+          <div class="subject-choice-list">${choices}</div>
+          <button id="access-request-submit" class="primary-action" type="submit">Gửi yêu cầu VIP</button>
+        </form>
+      </section>`;
+
+    document.getElementById("access-request-back")?.addEventListener("click", () => openAccountPage("overview"));
+    document.getElementById("access-request-form")?.addEventListener("submit", onAccessRequestSubmit);
   }
 
   async function cancelAccessRequest(requestId, button) {
@@ -970,7 +999,7 @@
     try {
       await apiRequest("accessRequestCancel", { requestId });
       await refreshAccessState(false);
-      renderAccountPanel();
+      if (state.screen === "account") render();
       showToast("Đã hủy yêu cầu quyền học.");
     } catch (err) {
       setButtonBusy(button, false);
@@ -1058,62 +1087,89 @@
 
   async function onAccessRequestSubmit(event) {
     event.preventDefault();
-    const subjectIds = Array.from(el.accessRequestForm.querySelectorAll('input[name="subject-choice"]:checked')).map((input) => input.value);
+    const form = event.currentTarget;
+    const submit = form.querySelector('button[type="submit"]');
+    const subjectIds = Array.from(form.querySelectorAll('input[name="subject-choice"]:checked')).map((input) => input.value);
     if (subjectIds.length < 1 || subjectIds.length > 3) return showToast("Vui lòng chọn từ 1 đến 3 môn.");
 
-    setButtonBusy(el.accessRequestSubmit, true, "Đang gửi…");
+    setButtonBusy(submit, true, "Đang gửi…");
     try {
       await apiRequest("accessRequestCreate", { subjectIds, accessType: "vip" });
       await refreshAccessState(false);
-      switchAuthView("account");
+      state.account.view = "overview";
+      render();
       showToast("Đã gửi yêu cầu. Vui lòng chờ Admin duyệt.");
     } catch (err) {
       showToast(friendlyError(err));
     } finally {
-      setButtonBusy(el.accessRequestSubmit, false);
+      if (state.screen === "account" && state.account.view === "request") setButtonBusy(submit, false);
     }
   }
 
   async function onAvatarSave() {
-    const avatarEmoji = el.avatarSelect.value;
-    setButtonBusy(el.avatarSaveButton, true, "Đang lưu…");
+    const select = document.getElementById("account-avatar-select");
+    const button = document.getElementById("account-avatar-save");
+    if (!select || !button) return;
+    const avatarEmoji = select.value;
+    setButtonBusy(button, true, "Đang lưu…");
     try {
       const data = await apiRequest("avatarUpdate", { avatarEmoji });
       if (data.user) {
         state.auth.user.avatarEmoji = AVATARS.includes(data.user.avatarEmoji) ? data.user.avatarEmoji : "🐰";
         updateAccountButton();
-        renderAccountPanel();
       }
+      if (state.screen === "account") render();
       showToast("Đã cập nhật avatar.");
     } catch (err) {
+      setButtonBusy(button, false);
       showToast(friendlyError(err));
-    } finally {
-      setButtonBusy(el.avatarSaveButton, false);
+    }
+  }
+
+  async function onNameSave() {
+    const input = document.getElementById("account-name-input");
+    const button = document.getElementById("account-name-save");
+    if (!input || !button) return;
+    const name = input.value.trim();
+    if (!name) return showToast("Vui lòng nhập họ và tên học sinh.");
+    if (name.length > 80) return showToast("Họ và tên tối đa 80 ký tự.");
+    if (name === state.auth.user.name) return showToast("Tên hiện tại chưa thay đổi.");
+
+    setButtonBusy(button, true, "Đang lưu…");
+    try {
+      const data = await apiRequest("profileNameUpdate", { name });
+      if (data.user && data.user.userId === state.auth.user.userId) {
+        state.auth.user.name = String(data.user.name || name);
+        updateAccountButton();
+      }
+      if (state.screen === "account") render();
+      showToast("Đã cập nhật họ tên.");
+    } catch (err) {
+      setButtonBusy(button, false);
+      showToast(friendlyError(err));
     }
   }
 
   async function onLogout() {
+    const button = document.getElementById("account-logout-button");
     if (!state.auth.token) {
       clearAuthState();
-      closeAuth();
-      render();
+      goHome();
       return;
     }
-    setButtonBusy(el.accountLogoutButton, true, "Đang đăng xuất…");
+    setButtonBusy(button, true, "Đang đăng xuất…");
     try {
       await apiRequest("logout");
       clearAuthState();
-      closeAuth();
       goHome();
       showToast("Đã đăng xuất.");
     } catch (err) {
       if (err.code === "UNAUTHORIZED") {
         clearAuthState();
-        closeAuth();
         goHome();
         showToast("Phiên đăng nhập đã kết thúc.");
       } else {
-        setButtonBusy(el.accountLogoutButton, false);
+        setButtonBusy(button, false);
         showToast("Chưa đăng xuất được. Vui lòng thử lại.");
       }
     }
@@ -1121,7 +1177,6 @@
 
   function openAdmin() {
     if (!state.auth.user || state.auth.user.role !== "admin") return;
-    closeAuth();
     state.screen = "admin";
     state.homeTab = "class1";
     state.subjectId = null;
@@ -1491,19 +1546,13 @@
   }
 
   el.homeButton.addEventListener("click", goHome);
-  el.accountButton.addEventListener("click", () => openAuth(state.auth.user ? "account" : "login"));
+  el.accountButton.addEventListener("click", () => state.auth.user ? openAccountPage() : openAuth("login"));
   el.authClose.addEventListener("click", closeAuth);
   el.authLater.addEventListener("click", closeAuth);
   el.authTabLogin.addEventListener("click", () => switchAuthView("login"));
   el.authTabRegister.addEventListener("click", () => switchAuthView("register"));
   el.loginForm.addEventListener("submit", onLoginSubmit);
   el.registerForm.addEventListener("submit", onRegisterSubmit);
-  el.accountRequestButton.addEventListener("click", () => switchAuthView("request"));
-  el.accountAdminButton.addEventListener("click", openAdmin);
-  el.accountLogoutButton.addEventListener("click", onLogout);
-  el.avatarSaveButton.addEventListener("click", onAvatarSave);
-  el.accessRequestForm.addEventListener("submit", onAccessRequestSubmit);
-  el.accessRequestBack.addEventListener("click", () => switchAuthView("account"));
   el.installButton.addEventListener("click", handleInstall);
 
   el.dialogOk.addEventListener("click", () => {
