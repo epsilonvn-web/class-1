@@ -14,6 +14,8 @@
     { id: "contact", label: "Liên hệ", icon: "💌", tone: "amber" }
   ];
 
+  const ADMIN_HOME_TAB = { id: "admin", label: "Quản lý", icon: "🛠️", tone: "indigo" };
+
   const SUBJECTS = [
     {
       id: "math",
@@ -55,7 +57,11 @@
 
   const AVATARS = [
     "🐰","🐼","🐯","🦊","🐨","🐸","🐧","🦁","🐱","🐶","🐵","🦄",
-    "🌟","🚀","🎨","📚","⚽","🎵","🌈","🍀","🌻","🦋","🐳","🐙"
+    "🐹","🐭","🐻","🐮","🐷","🐔","🐤","🦆","🦉","🐺","🐴","🦓",
+    "🦒","🐘","🦏","🦛","🐢","🐬","🐠","🐡","🐙","🦀","🦋","🐝",
+    "🐞","🐌","🌟","⭐","🚀","🛸","🎨","📚","⚽","🏀","🏸","🎵",
+    "🎧","🌈","🍀","🌻","🌸","🌺","🍎","🍓","🍉","🍒","🧁","🍦",
+    "🎈","🎁","👑","💎","🧩","🎯","🏆","🪁","🛼","🚲","⛵","🌞",
   ];
 
   const PREVIEW_TONES = ["pink", "purple", "blue", "green", "teal", "amber"];
@@ -90,7 +96,14 @@
       overview: null,
       requests: [],
       users: [],
-      query: ""
+      tab: "requests",
+      pendingCount: 0,
+      badgeLoading: false,
+      badgeUpdatedAt: 0,
+      userQuery: "",
+      userFilter: "all",
+      userSort: "id-asc",
+      accessQuery: ""
     }
   };
 
@@ -220,6 +233,9 @@
     state.auth.ready = true;
     if (state.auth.token) storeToken(state.auth.token);
     updateAccountButton();
+    if (state.auth.user.role === "admin") {
+      window.setTimeout(() => refreshAdminPendingBadge(true), 0);
+    }
   }
 
   function clearAuthState() {
@@ -231,7 +247,21 @@
     state.auth.ready = true;
     state.profile = { subjectId: null, loading: false, data: null, failed: false };
     state.account = { view: "overview" };
-    state.admin = { loading: false, loaded: false, overview: null, requests: [], users: [], query: "" };
+    state.admin = {
+      loading: false,
+      loaded: false,
+      overview: null,
+      requests: [],
+      users: [],
+      tab: "requests",
+      pendingCount: 0,
+      badgeLoading: false,
+      badgeUpdatedAt: 0,
+      userQuery: "",
+      userFilter: "all",
+      userSort: "id-asc",
+      accessQuery: ""
+    };
     updateAccountButton();
   }
 
@@ -495,8 +525,19 @@
     updateAccountButton();
   }
 
+  function homeTabsForCurrentUser() {
+    if (!state.auth.user || state.auth.user.role !== "admin") return HOME_TABS;
+    const contactIndex = HOME_TABS.findIndex((tab) => tab.id === "contact");
+    if (contactIndex < 0) return [...HOME_TABS, ADMIN_HOME_TAB];
+    return [
+      ...HOME_TABS.slice(0, contactIndex + 1),
+      ADMIN_HOME_TAB,
+      ...HOME_TABS.slice(contactIndex + 1)
+    ];
+  }
+
   function renderNav() {
-    const tabs = state.screen === "subject" ? SUBJECT_TABS : HOME_TABS;
+    const tabs = state.screen === "subject" ? SUBJECT_TABS : homeTabsForCurrentUser();
     el.nav.replaceChildren();
 
     tabs.forEach((tab, index) => {
@@ -507,7 +548,9 @@
 
       const active = state.screen === "subject"
         ? state.subjectTab === tab.id
-        : state.homeTab === tab.id;
+        : state.screen === "admin"
+          ? tab.id === "admin"
+          : state.homeTab === tab.id;
 
       if (active) button.classList.add("is-active");
 
@@ -524,14 +567,29 @@
       label.textContent = displayLabel;
       button.append(icon, label);
 
+      if (tab.id === "admin" && state.auth.user && state.auth.user.role === "admin" && Number(state.admin.pendingCount || 0) > 0) {
+        const badge = document.createElement("span");
+        badge.className = "nav-alert-badge";
+        badge.textContent = String(Math.min(99, Number(state.admin.pendingCount || 0)));
+        badge.setAttribute("aria-label", `${state.admin.pendingCount} yêu cầu đang chờ`);
+        button.appendChild(badge);
+      }
+
       if (state.screen === "subject" && tab.id !== "discover" && !hasPremiumAccess(state.subjectId)) {
         button.classList.add("is-locked");
         button.title = "Cần Trial/VIP của môn";
       }
 
       button.addEventListener("click", () => {
-        if (state.screen === "subject") openSubjectTab(tab.id);
-        else openHomeTab(tab.id);
+        if (state.screen === "subject") {
+          openSubjectTab(tab.id);
+          return;
+        }
+        if (tab.id === "admin") {
+          openAdmin();
+          return;
+        }
+        openHomeTab(tab.id);
       });
       el.nav.appendChild(button);
     });
@@ -665,23 +723,33 @@
     document.getElementById("profile-back-button")?.addEventListener("click", () => openHomeTab("class1"));
   }
 
+  const EE_CLASS_SITES = Object.freeze({
+    1: "https://epsilon-class-1.pages.dev/",
+    2: "https://epsilon-class-2.pages.dev/",
+    3: "https://epsilon-class-3.pages.dev/"
+  });
+
   function renderEpsilonTab() {
     const grades = Array.from({ length: 9 }, (_, i) => i + 1);
-    const cards = grades.map((grade, index) => `
-      <button class="content-card" data-tone="${PREVIEW_TONES[index % PREVIEW_TONES.length]}" data-grade="${grade}" type="button">
-        <div class="card-top">
-          <span class="card-icon" aria-hidden="true">🏫</span>
-          <div class="card-copy">
-            <h2 class="card-title">Lớp ${grade}</h2>
-            <p class="card-desc">${grade === 1 ? "Website Lớp 1 hiện tại." : "Liên kết website sẽ được gắn sau."}</p>
+    const cards = grades.map((grade, index) => {
+      const url = EE_CLASS_SITES[grade] || "";
+      const available = Boolean(url);
+      return `
+        <button class="content-card" data-tone="${PREVIEW_TONES[index % PREVIEW_TONES.length]}" data-grade="${grade}" type="button">
+          <div class="card-top">
+            <span class="card-icon" aria-hidden="true">🏫</span>
+            <div class="card-copy">
+              <h2 class="card-title">Lớp ${grade}</h2>
+              <p class="card-desc">${available ? `Epsilon Edu Lớp ${grade}.` : "Lớp này chưa triển khai."}</p>
+            </div>
           </div>
-        </div>
-        <div class="card-foot">
-          <span class="badge">${grade === 1 ? "Đang mở" : "Mở website"}</span>
-          <span class="arrow"><span>↗</span></span>
-        </div>
-      </button>
-    `).join("");
+          <div class="card-foot">
+            <span class="badge">${available ? "Mở website" : "Chưa mở"}</span>
+            <span class="arrow"><span>${available ? "↗" : "•"}</span></span>
+          </div>
+        </button>
+      `;
+    }).join("");
 
     el.content.innerHTML = `
       <div class="section-heading"><div><h1>🌐 Epsilon Edu</h1><p>Danh mục website Lớp 1 đến Lớp 9.</p></div></div>
@@ -691,8 +759,13 @@
     el.content.querySelectorAll("[data-grade]").forEach((card) => {
       card.addEventListener("click", () => {
         const grade = Number(card.dataset.grade);
-        if (grade === 1) return openHomeTab("class1");
-        showToast(`Liên kết Lớp ${grade} hiện chưa được cập nhật.`);
+        const url = EE_CLASS_SITES[grade] || "";
+        if (!url) {
+          showToast(`Website Lớp ${grade} hiện chưa được triển khai.`);
+          return;
+        }
+        const opened = window.open(url, "_blank", "noopener,noreferrer");
+        if (!opened) showToast(`Trình duyệt đang chặn cửa sổ mới của Lớp ${grade}.`);
       });
     });
   }
@@ -834,8 +907,15 @@
     } else if (state.auth.user) {
       avatar.textContent = state.auth.user.avatarEmoji || "🐰";
       label.textContent = state.auth.user.name || "Tài khoản";
-      el.accountButton.title = `${state.auth.user.name} · ${state.auth.user.userId}`;
-      el.accountButton.setAttribute("aria-label", `Tài khoản ${state.auth.user.name}`);
+      el.accountButton.title = `${state.auth.user.name} · ${state.auth.user.userId}${state.auth.user.role === "admin" ? " · Admin" : ""}`;
+      el.accountButton.setAttribute("aria-label", `Tài khoản ${state.auth.user.name}${state.auth.user.role === "admin" ? ", Admin" : ""}`);
+      if (state.auth.user.role === "admin") {
+        const roleBadge = document.createElement("span");
+        roleBadge.className = "user-btn-role-badge";
+        roleBadge.textContent = "Admin";
+        el.accountButton.replaceChildren(avatar, label, roleBadge);
+        return;
+      }
     } else {
       avatar.textContent = "👤";
       label.textContent = "Tài khoản";
@@ -920,7 +1000,7 @@
     }
     if (state.account.view === "request") return renderAccessRequestPage();
 
-    const avatarOptions = AVATARS.map((avatar) => `<option value="${escapeHtml(avatar)}"${avatar === user.avatarEmoji ? " selected" : ""}>${escapeHtml(avatar)}</option>`).join("");
+    const avatarButtons = AVATARS.map((avatar) => `<button class="account-avatar-choice${avatar === user.avatarEmoji ? " selected" : ""}" type="button" data-account-avatar="${escapeHtml(avatar)}" aria-label="Chọn avatar ${escapeHtml(avatar)}" aria-pressed="${avatar === user.avatarEmoji ? "true" : "false"}">${escapeHtml(avatar)}</button>`).join("");
     const isAdmin = user.role === "admin";
     const createdText = formatDate(user.createdAt);
     const adminButtonClass = isAdmin ? "secondary-action" : "secondary-action hidden";
@@ -958,9 +1038,10 @@
               </div>
             </div>
             <div class="account-field-block">
-              <label class="account-field-label" for="account-avatar-select">Avatar</label>
-              <div class="account-inline-control">
-                <select id="account-avatar-select" aria-label="Chọn avatar">${avatarOptions}</select>
+              <span class="account-field-label">Avatar</span>
+              <div id="account-avatar-picker" class="account-avatar-picker" role="group" aria-label="Chọn avatar">${avatarButtons}</div>
+              <div class="account-avatar-save-row">
+                <span id="account-avatar-selected-text" class="account-avatar-selected-text">Đang chọn: ${escapeHtml(user.avatarEmoji || "🐰")}</span>
                 <button id="account-avatar-save" class="mini-action" type="button">Lưu avatar</button>
               </div>
             </div>
@@ -968,7 +1049,7 @@
 
           <section class="account-section">
             <h2>Quyền học theo môn</h2>
-            <p>${isAdmin ? "Tài khoản Admin có quyền quản trị toàn bộ ba môn." : "Regular chỉ dùng nội dung Free trong Khám phá; Trial/VIP mở nội dung Premium của từng môn."}</p>
+            <p>${isAdmin ? "Tài khoản Admin có quyền quản lý toàn bộ ba môn." : "Regular chỉ dùng nội dung Free trong Khám phá; Trial/VIP mở nội dung Premium của từng môn."}</p>
             <div class="account-access-list">${accountAccessRowsHtml()}</div>
           </section>
         </div>
@@ -977,7 +1058,7 @@
 
         <div class="account-page-actions${isAdmin ? " is-admin" : ""}">
           <button id="account-request-button" class="${requestButtonClass}" type="button">Đăng ký quyền học</button>
-          <button id="account-admin-button" class="${adminButtonClass}" type="button">Quản trị</button>
+          <button id="account-admin-button" class="${adminButtonClass}" type="button">Quản lý</button>
           <button id="account-logout-button" class="secondary-action" type="button">Đăng xuất</button>
         </div>
       </section>`;
@@ -990,6 +1071,18 @@
     document.getElementById("account-request-button")?.addEventListener("click", () => openAccountPage("request"));
     document.getElementById("account-admin-button")?.addEventListener("click", openAdmin);
     document.getElementById("account-logout-button")?.addEventListener("click", onLogout);
+    el.content.querySelectorAll("[data-account-avatar]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const avatarEmoji = button.dataset.accountAvatar || "🐰";
+        el.content.querySelectorAll("[data-account-avatar]").forEach((item) => {
+          const selected = item === button;
+          item.classList.toggle("selected", selected);
+          item.setAttribute("aria-pressed", selected ? "true" : "false");
+        });
+        const status = document.getElementById("account-avatar-selected-text");
+        if (status) status.textContent = `Đang chọn: ${avatarEmoji}`;
+      });
+    });
     document.getElementById("account-avatar-save")?.addEventListener("click", onAvatarSave);
     document.getElementById("account-name-save")?.addEventListener("click", onNameSave);
     el.content.querySelectorAll("[data-cancel-request]").forEach((button) => {
@@ -1062,7 +1155,7 @@
   }
 
   function accessExpiryText(type, endAt) {
-    if (type === "admin") return "Quyền quản trị";
+    if (type === "admin") return "Quyền Admin";
     if (type === "regular") return "Nội dung Free trong Khám phá";
     const formatted = formatDate(endAt);
     return formatted ? `Đến ${formatted}` : "Đang có hiệu lực";
@@ -1161,10 +1254,14 @@
   }
 
   async function onAvatarSave() {
-    const select = document.getElementById("account-avatar-select");
+    const selected = document.querySelector(".account-avatar-choice.selected[data-account-avatar]");
     const button = document.getElementById("account-avatar-save");
-    if (!select || !button) return;
-    const avatarEmoji = select.value;
+    if (!selected || !button) return;
+    const avatarEmoji = selected.dataset.accountAvatar || "🐰";
+    if (!AVATARS.includes(avatarEmoji)) {
+      showToast("Avatar không hợp lệ.");
+      return;
+    }
     setButtonBusy(button, true, "Đang lưu…");
     try {
       const data = await apiRequest("avatarUpdate", { avatarEmoji });
@@ -1244,13 +1341,36 @@
   function openAdmin() {
     if (!state.auth.user || state.auth.user.role !== "admin") return;
     state.screen = "admin";
-    state.homeTab = "class1";
+    state.homeTab = "admin";
     state.subjectId = null;
     state.detail = null;
+    state.admin.tab = "requests";
     state.admin.loading = true;
     render();
     focusContent();
     loadAdminData();
+  }
+
+  async function refreshAdminPendingBadge(force = false) {
+    if (!state.auth.user || state.auth.user.role !== "admin" || !state.auth.token) return;
+    const now = Date.now();
+    if (state.admin.badgeLoading) return;
+    if (!force && state.admin.badgeUpdatedAt && now - state.admin.badgeUpdatedAt < 30000) return;
+    state.admin.badgeLoading = true;
+    try {
+      const data = await apiRequest("adminAccessRequestsList");
+      const rows = Array.isArray(data.requests) ? data.requests : [];
+      state.admin.requests = rows;
+      state.admin.pendingCount = rows.length;
+      state.admin.badgeUpdatedAt = Date.now();
+      if (state.admin.overview) state.admin.overview.pendingRequests = rows.length;
+      renderNav();
+      if (state.screen === "admin" && state.admin.loaded && state.admin.tab === "requests") renderAdmin();
+    } catch (err) {
+      if (err.code === "UNAUTHORIZED" || err.code === "FORBIDDEN") return;
+    } finally {
+      state.admin.badgeLoading = false;
+    }
   }
 
   async function loadAdminData() {
@@ -1266,6 +1386,8 @@
       state.admin.overview = overviewData;
       state.admin.requests = Array.isArray(requestData.requests) ? requestData.requests : [];
       state.admin.users = Array.isArray(userData.users) ? userData.users : [];
+      state.admin.pendingCount = state.admin.requests.length;
+      state.admin.badgeUpdatedAt = Date.now();
       state.admin.loaded = true;
     } catch (err) {
       state.admin.loaded = false;
@@ -1274,7 +1396,164 @@
     } finally {
       state.admin.loading = false;
       if (state.screen === "admin") render();
+      else renderNav();
     }
+  }
+
+  function adminUserClass(user) {
+    const role = String(user.role || "student").toLowerCase();
+    const access = normalizeAccess(user.access || {});
+    const hasVip = SUBJECTS.some((subject) => access[subject.id]?.type === "vip");
+    const hasTrial = SUBJECTS.some((subject) => access[subject.id]?.type === "trial");
+    const isAdmin = role === "admin";
+    return { role, access, isAdmin, hasVip, hasTrial, isRegular: !isAdmin && !hasVip && !hasTrial };
+  }
+
+  function renderAdminAccessChips(user) {
+    const info = adminUserClass(user);
+    if (info.isAdmin) return `<span class="admin-chip admin">ADMIN · toàn bộ ba môn</span>`;
+    const chips = SUBJECTS.map((subject) => {
+      const item = info.access[subject.id] || { type: "regular", endAt: "" };
+      if (item.type !== "vip" && item.type !== "trial") return "";
+      const date = formatDate(item.endAt);
+      return `<span class="admin-chip ${escapeHtml(item.type)}">${escapeHtml(subject.fullLabel)} · ${escapeHtml(item.type.toUpperCase())}${date ? ` · ${escapeHtml(date)}` : ""}</span>`;
+    }).filter(Boolean).join("");
+    return chips || `<span class="admin-regular-label">Regular · chưa có quyền Trial/VIP</span>`;
+  }
+
+  function renderAdminUserRow(user) {
+    const info = adminUserClass(user);
+    const rowClass = info.isAdmin ? "is-admin" : (info.hasVip ? "has-vip" : (info.hasTrial ? "has-trial" : "is-regular"));
+    const badge = info.isAdmin
+      ? `<span class="account-type-badge admin">ADMIN</span>`
+      : info.hasVip
+        ? `<span class="account-type-badge vip">VIP</span>`
+        : info.hasTrial
+          ? `<span class="account-type-badge trial">TRIAL</span>`
+          : "";
+    const created = formatDate(user.createdAt);
+    const recent = user.lastLearningAt ? ` · Học gần nhất ${escapeHtml(formatDate(user.lastLearningAt))}` : "";
+    return `<div class="admin-user-row ${rowClass}">
+      <div class="admin-user-primary"><span class="admin-list-avatar">${escapeHtml(user.avatarEmoji || "🐰")}</span><div><div class="admin-user-id">${escapeHtml(user.userId)} ${badge}</div><div class="admin-user-name">${escapeHtml(user.name || "")}</div></div></div>
+      <div class="admin-user-meta-block"><div class="admin-user-role">${info.isAdmin ? "Admin" : "Học sinh"}</div><div class="admin-user-meta">${created ? `Tạo ${escapeHtml(created)}` : ""}${recent}</div></div>
+      <div class="admin-access-chips">${renderAdminAccessChips(user)}</div>
+    </div>`;
+  }
+
+  function filterAndSortAdminUsers() {
+    const query = String(state.admin.userQuery || "").trim().toLowerCase();
+    const type = state.admin.userFilter || "all";
+    const mode = state.admin.userSort || "id-asc";
+    const rows = state.admin.users.filter((user) => {
+      const info = adminUserClass(user);
+      const matchesQuery = !query || `${user.userId || ""} ${user.name || ""}`.toLowerCase().includes(query);
+      let matchesType = true;
+      if (type === "admin") matchesType = info.isAdmin;
+      if (type === "vip") matchesType = info.hasVip;
+      if (type === "trial") matchesType = info.hasTrial;
+      if (type === "regular") matchesType = info.isRegular;
+      return matchesQuery && matchesType;
+    });
+
+    return rows.sort((a, b) => {
+      const ai = adminUserClass(a);
+      const bi = adminUserClass(b);
+      const rank = (info) => {
+        if (mode === "admin-first") return info.isAdmin ? 0 : 1;
+        if (mode === "vip-first") return info.hasVip ? 0 : 1;
+        if (mode === "trial-first") return info.hasTrial ? 0 : 1;
+        if (mode === "regular-first") return info.isRegular ? 0 : 1;
+        return 0;
+      };
+      if (["admin-first", "vip-first", "trial-first", "regular-first"].includes(mode)) {
+        const diff = rank(ai) - rank(bi);
+        if (diff) return diff;
+      }
+      if (mode === "id-desc") return String(b.userId || "").localeCompare(String(a.userId || ""), "vi", { numeric: true });
+      if (mode === "name-asc") return String(a.name || "").localeCompare(String(b.name || ""), "vi");
+      if (mode === "name-desc") return String(b.name || "").localeCompare(String(a.name || ""), "vi");
+      if (mode === "newest") return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+      if (mode === "oldest") return new Date(a.createdAt || 0) - new Date(b.createdAt || 0);
+      return String(a.userId || "").localeCompare(String(b.userId || ""), "vi", { numeric: true });
+    });
+  }
+
+  function adminSubjectToneClass(apiId) {
+    const id = String(apiId || "").trim().toLowerCase();
+    if (id === "toan") return "subject-math";
+    if (id === "tv") return "subject-vietnamese";
+    if (id === "ta") return "subject-english";
+    return "";
+  }
+
+  function renderAdminRequestSubjects(subjectIds) {
+    return (Array.isArray(subjectIds) ? subjectIds : []).map((apiId) => {
+      const label = apiIdToLabel(apiId);
+      if (!label) return "";
+      return `<span class="admin-request-subject ${adminSubjectToneClass(apiId)}">${escapeHtml(label)}</span>`;
+    }).filter(Boolean).join('<span class="admin-request-subject-sep">,</span>');
+  }
+
+  function renderAdminRequestsTab() {
+    const rows = state.admin.requests;
+    const subjectCount = new Set(rows.flatMap((r) => Array.isArray(r.subjectIds) ? r.subjectIds : [])).size;
+    const summaryText = rows.length
+      ? `Có ${rows.length} yêu cầu ở ${subjectCount || 1} môn học đang chờ duyệt.`
+      : "Hiện không có yêu cầu nào đang chờ duyệt.";
+    const requests = rows.length ? rows.map((request) => {
+      const subjectsHtml = renderAdminRequestSubjects(request.subjectIds);
+      return `<div class="admin-request pending" data-request-id="${escapeHtml(request.requestId)}">
+        <div class="admin-request-main">
+          <div class="admin-request-title"><strong>${escapeHtml(request.name || request.userId)}</strong><span class="admin-chip pending">CHỜ DUYỆT</span></div>
+          <div class="admin-muted admin-request-meta"><span>${escapeHtml(request.userId)}</span><span class="admin-request-dot">·</span>${subjectsHtml || `<span>Chưa xác định môn</span>`}</div>
+          <div class="admin-muted">Yêu cầu ${escapeHtml(String(request.accessType || "vip").toUpperCase())} · gửi ${escapeHtml(formatDateTime(request.createdAt) || "")}</div>
+          ${request.note ? `<div class="admin-muted">Ghi chú: ${escapeHtml(request.note)}</div>` : ""}
+        </div>
+        <div class="admin-request-actions"><button class="mini-action positive" data-request-decision="approve" type="button">Duyệt</button><button class="mini-action danger" data-request-decision="reject" type="button">Từ chối</button></div>
+      </div>`;
+    }).join("") : `<div class="admin-empty">Không có yêu cầu chờ xử lý.</div>`;
+
+    return `<div class="admin-summary"><div><strong>${escapeHtml(summaryText)}</strong><div class="admin-muted">Mặc định mở tab này để Admin thấy ngay việc cần xử lý.</div></div><button id="admin-refresh" class="mini-action" type="button">Làm mới</button></div><div class="admin-table">${requests}</div>`;
+  }
+
+  function renderAdminUsersTab() {
+    const rows = filterAndSortAdminUsers();
+    const filters = [
+      ["all", "Tất cả", ""], ["admin", "Admin", "admin"], ["vip", "VIP", "vip"], ["trial", "Trial", "trial"], ["regular", "Regular", "regular"]
+    ].map(([value, label, cls]) => `<button type="button" class="admin-filter-chip ${cls}${state.admin.userFilter === value ? " active" : ""}" data-user-filter="${value}">#${label}</button>`).join("");
+    const list = rows.length ? rows.slice(0, 100).map(renderAdminUserRow).join("") : `<div class="admin-empty">Không tìm thấy người dùng phù hợp với bộ lọc hiện tại.</div>`;
+    return `<div class="admin-summary"><div><strong><span class="admin-user-count">${rows.length}</span> / ${state.admin.users.length} tài khoản</strong><div class="admin-muted">Tìm kiếm, lọc bằng hashtag và sắp xếp tức thời.</div></div><div class="admin-user-tools"><input id="admin-user-search" aria-label="Tìm người dùng" placeholder="Tìm tên hoặc UserId" value="${escapeHtml(state.admin.userQuery)}"><select id="admin-user-sort" aria-label="Sắp xếp người dùng"><option value="id-asc"${state.admin.userSort === "id-asc" ? " selected" : ""}>UserId tăng dần</option><option value="id-desc"${state.admin.userSort === "id-desc" ? " selected" : ""}>UserId giảm dần</option><option value="name-asc"${state.admin.userSort === "name-asc" ? " selected" : ""}>Tên A → Z</option><option value="name-desc"${state.admin.userSort === "name-desc" ? " selected" : ""}>Tên Z → A</option><option value="newest"${state.admin.userSort === "newest" ? " selected" : ""}>Mới đăng ký trước</option><option value="oldest"${state.admin.userSort === "oldest" ? " selected" : ""}>Cũ đăng ký trước</option><option value="admin-first"${state.admin.userSort === "admin-first" ? " selected" : ""}>Admin trước</option><option value="vip-first"${state.admin.userSort === "vip-first" ? " selected" : ""}>VIP trước</option><option value="trial-first"${state.admin.userSort === "trial-first" ? " selected" : ""}>Trial trước</option><option value="regular-first"${state.admin.userSort === "regular-first" ? " selected" : ""}>Regular trước</option></select></div></div><div class="admin-user-filters">${filters}</div><div class="admin-filter-note">Lớp 1 chỉ quản lý tài khoản của website Lớp 1; không có email/lớp hành chính trong hồ sơ.</div><div class="admin-table admin-user-table">${list}</div>`;
+  }
+
+  function renderAdminAccessTab() {
+    const query = String(state.admin.accessQuery || "").trim().toLowerCase();
+    const rows = state.admin.users.filter((user) => !query || `${user.userId || ""} ${user.name || ""}`.toLowerCase().includes(query)).slice(0, 100);
+    const list = rows.length ? rows.map(renderAdminUserCard).join("") : `<div class="admin-empty">Không tìm thấy tài khoản phù hợp.</div>`;
+    return `<div class="admin-summary"><div><strong>Quyền học theo môn</strong><div class="admin-muted">Cấp hoặc thu hồi Trial/VIP riêng cho Toán 1, Tiếng Việt 1 và Tiếng Anh 1. Reset mật khẩu cũng thực hiện tại đây.</div></div><div class="admin-user-tools"><input id="admin-access-search" aria-label="Tìm tài khoản để sửa quyền" placeholder="Tìm tên hoặc UserId" value="${escapeHtml(state.admin.accessQuery)}"></div></div><div class="admin-table admin-access-management">${list}</div>`;
+  }
+
+  function renderAdminOverviewTab() {
+    const o = state.admin.overview || {};
+    const classified = state.admin.users.map(adminUserClass);
+    const usersWithVip = classified.filter((x) => x.hasVip).length;
+    const usersWithTrial = classified.filter((x) => x.hasTrial).length;
+    const regularOnly = classified.filter((x) => x.isRegular).length;
+    const cards = [
+      ["Tổng tài khoản", Number(o.totalUsers || state.admin.users.length || 0)],
+      ["Học sinh", Number(o.studentUsers || 0)],
+      ["Admin", Number(o.adminUsers || 0)],
+      ["Chỉ Regular", regularOnly],
+      ["Có VIP", usersWithVip],
+      ["Có Trial", usersWithTrial],
+      ["Yêu cầu chờ", Number(state.admin.pendingCount || 0)],
+      ["Hoạt động 30 ngày", Number(o.active30Days || 0)]
+    ].map(([label, value]) => `<div class="admin-stat"><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(label)}</small></div>`).join("");
+
+    const subjectRows = SUBJECTS.map((subject) => {
+      const s = o.subjectAccess && o.subjectAccess[subject.apiId] ? o.subjectAccess[subject.apiId] : { vip: 0, trial: 0, total: 0 };
+      return `<div class="admin-subject-row"><strong>${escapeHtml(subject.fullLabel)}</strong><span class="admin-chip vip">VIP ${Number(s.vip || 0)}</span><span class="admin-chip trial">Trial ${Number(s.trial || 0)}</span><span class="admin-muted">Tổng ${Number(s.total || 0)}</span></div>`;
+    }).join("");
+    return `<div class="admin-stat-grid overview">${cards}</div><div class="admin-summary"><div><strong>Phân bố quyền theo môn</strong><div class="admin-muted">Một học sinh có thể đồng thời có VIP ở môn này và Trial ở môn khác.</div></div></div><div class="admin-table">${subjectRows}</div>`;
   }
 
   function renderAdmin() {
@@ -1284,74 +1563,33 @@
     }
 
     if (state.admin.loading && !state.admin.loaded) {
-      el.content.innerHTML = `
-        <div class="section-heading"><div><h1>🛡️ Quản trị Lớp 1</h1><p>Đang tải dữ liệu quản trị…</p></div><button id="admin-back" class="back-btn" type="button">← Lớp 1</button></div>
-        <div class="empty-panel"><div><span class="inline-spinner" aria-hidden="true"></span><strong>Đang tải…</strong></div></div>`;
+      el.content.innerHTML = `<div class="section-heading"><div><h1>🛡️ Quản lý Lớp 1</h1><p>Đang tải dữ liệu quản lý…</p></div><button id="admin-back" class="back-btn" type="button">← Lớp 1</button></div><div class="empty-panel"><div><span class="inline-spinner" aria-hidden="true"></span><strong>Đang tải…</strong></div></div>`;
       document.getElementById("admin-back")?.addEventListener("click", goHome);
       return;
     }
 
-    const o = state.admin.overview || {};
-    const activeAccess = ["toan", "tv", "ta"].reduce((sum, id) => sum + Number(o.subjectAccess && o.subjectAccess[id] ? o.subjectAccess[id].total || 0 : 0), 0);
-    const stats = [
-      ["👥", "Tài khoản", Number(o.totalUsers || 0)],
-      ["🎓", "Học sinh", Number(o.studentUsers || 0)],
-      ["🕒", "Chờ duyệt", Number(o.pendingRequests || 0)],
-      ["🔑", "Quyền môn hiệu lực", activeAccess]
-    ].map(([icon, label, value]) => `<div class="admin-stat"><span>${icon}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(label)}</small></div>`).join("");
+    const tabs = [
+      ["requests", "Yêu cầu", state.admin.pendingCount],
+      ["users", "Người dùng", null],
+      ["access", "Quyền học", null],
+      ["overview", "Tổng quan", null]
+    ].map(([id, label, count]) => `<button class="admin-tab${state.admin.tab === id ? " active" : ""}" type="button" data-admin-tab="${id}">${label}${count !== null ? ` <span class="admin-tab-count">${Number(count || 0)}</span>` : ""}</button>`).join("");
 
-    const requests = state.admin.requests.length
-      ? state.admin.requests.map((request) => {
-          const subjects = (request.subjectIds || []).map(apiIdToLabel).filter(Boolean).join(", ");
-          return `
-            <div class="admin-request-card" data-request-id="${escapeHtml(request.requestId)}">
-              <div><strong>${escapeHtml(request.userId)} · ${escapeHtml(request.name || "")}</strong><span>${escapeHtml(subjects)} · ${escapeHtml(String(request.accessType || "vip").toUpperCase())} · ${escapeHtml(formatDateTime(request.createdAt) || "")}</span></div>
-              <div class="admin-request-actions">
-                <button class="mini-action positive" data-request-decision="approve" type="button">Duyệt</button>
-                <button class="mini-action danger" data-request-decision="reject" type="button">Từ chối</button>
-              </div>
-            </div>`;
-        }).join("")
-      : `<div class="admin-empty">Không có yêu cầu đang chờ.</div>`;
+    let body = renderAdminRequestsTab();
+    if (state.admin.tab === "users") body = renderAdminUsersTab();
+    if (state.admin.tab === "access") body = renderAdminAccessTab();
+    if (state.admin.tab === "overview") body = renderAdminOverviewTab();
 
-    const query = state.admin.query.trim().toLowerCase();
-    const filteredUsers = state.admin.users.filter((user) => {
-      if (!query) return true;
-      return String(user.userId || "").toLowerCase().includes(query) || String(user.name || "").toLowerCase().includes(query);
-    }).slice(0, 100);
-
-    const users = filteredUsers.length
-      ? filteredUsers.map(renderAdminUserCard).join("")
-      : `<div class="admin-empty">Không tìm thấy tài khoản phù hợp.</div>`;
-
-    el.content.innerHTML = `
-      <div class="section-heading">
-        <div><h1>🛡️ Quản trị Lớp 1</h1><p>Quản lý tài khoản, quyền môn và yêu cầu đăng ký.</p></div>
-        <button id="admin-back" class="back-btn" type="button">← Lớp 1</button>
-      </div>
-      <section class="admin-stat-grid">${stats}</section>
-      <section class="admin-section">
-        <div class="admin-section-head"><div><h2>Yêu cầu quyền học</h2><p>Duyệt đúng môn được yêu cầu.</p></div><button id="admin-refresh" class="mini-action" type="button">Làm mới</button></div>
-        <div class="admin-request-list">${requests}</div>
-      </section>
-      <section class="admin-section">
-        <div class="admin-section-head"><div><h2>Tài khoản</h2><p>Hiển thị tối đa 100 kết quả theo bộ lọc.</p></div></div>
-        <div class="admin-search"><input id="admin-search-input" type="search" autocomplete="off" placeholder="Tìm theo ID hoặc tên" value="${escapeHtml(state.admin.query)}"></div>
-        <div class="admin-user-list">${users}</div>
-      </section>`;
+    el.content.innerHTML = `<div class="section-heading"><div><h1>🛡️ Quản lý Lớp 1</h1><p>Quản lý yêu cầu, người dùng và quyền học trong một khu vực riêng.</p></div><button id="admin-back" class="back-btn" type="button">← Lớp 1</button></div><div class="admin-tabs" role="tablist" aria-label="Chức năng quản lý">${tabs}</div><section class="admin-workspace">${body}</section>`;
 
     document.getElementById("admin-back")?.addEventListener("click", goHome);
     document.getElementById("admin-refresh")?.addEventListener("click", loadAdminData);
-    const search = document.getElementById("admin-search-input");
-    search?.addEventListener("input", () => {
-      state.admin.query = search.value;
+    el.content.querySelectorAll("[data-admin-tab]").forEach((button) => button.addEventListener("click", () => {
+      const next = String(button.dataset.adminTab || "requests");
+      if (!["requests", "users", "access", "overview"].includes(next)) return;
+      state.admin.tab = next;
       renderAdmin();
-      const next = document.getElementById("admin-search-input");
-      if (next) {
-        next.focus();
-        next.setSelectionRange(next.value.length, next.value.length);
-      }
-    });
+    }));
 
     el.content.querySelectorAll("[data-request-decision]").forEach((button) => {
       button.addEventListener("click", () => {
@@ -1360,47 +1598,56 @@
       });
     });
 
-    el.content.querySelectorAll("[data-save-access]").forEach((button) => {
-      button.addEventListener("click", () => saveAdminAccess(button));
+    const userSearch = document.getElementById("admin-user-search");
+    userSearch?.addEventListener("input", () => {
+      state.admin.userQuery = userSearch.value;
+      renderAdmin();
+      const next = document.getElementById("admin-user-search");
+      if (next) { next.focus(); next.setSelectionRange(next.value.length, next.value.length); }
     });
-    el.content.querySelectorAll("[data-reset-password]").forEach((button) => {
-      button.addEventListener("click", () => resetAdminPassword(button));
+    document.getElementById("admin-user-sort")?.addEventListener("change", (event) => {
+      state.admin.userSort = event.target.value || "id-asc";
+      renderAdmin();
     });
+    el.content.querySelectorAll("[data-user-filter]").forEach((button) => button.addEventListener("click", () => {
+      state.admin.userFilter = button.dataset.userFilter || "all";
+      renderAdmin();
+    }));
+
+    const accessSearch = document.getElementById("admin-access-search");
+    accessSearch?.addEventListener("input", () => {
+      state.admin.accessQuery = accessSearch.value;
+      renderAdmin();
+      const next = document.getElementById("admin-access-search");
+      if (next) { next.focus(); next.setSelectionRange(next.value.length, next.value.length); }
+    });
+
+    el.content.querySelectorAll("[data-save-access]").forEach((button) => button.addEventListener("click", () => saveAdminAccess(button)));
+    el.content.querySelectorAll("[data-reset-password]").forEach((button) => button.addEventListener("click", () => resetAdminPassword(button)));
   }
 
   function renderAdminUserCard(user) {
     const role = String(user.role || "student");
     const access = normalizeAccess(user.access || {});
     const controls = role === "admin"
-      ? `<div class="admin-note">Tài khoản Admin được kiểm tra quyền tươi phía server.</div>`
-      : `<div class="admin-user-controls">
-          ${SUBJECTS.map((subject) => {
-            const type = access[subject.id]?.type || "regular";
-            return `<div class="admin-access-control">
-              <label>${escapeHtml(subject.label)}</label>
-              <select data-access-select="${subject.apiId}">
-                <option value="regular"${type === "regular" ? " selected" : ""}>Regular</option>
-                <option value="trial"${type === "trial" ? " selected" : ""}>Trial</option>
-                <option value="vip"${type === "vip" ? " selected" : ""}>VIP</option>
-              </select>
-              <button class="mini-action" type="button" data-save-access="${subject.apiId}" data-user-id="${escapeHtml(user.userId)}">Lưu</button>
-            </div>`;
-          }).join("")}
-          <div class="admin-reset-control">
-            <label>Mật khẩu mới</label>
-            <input type="password" minlength="6" maxlength="128" autocomplete="new-password" data-reset-input="${escapeHtml(user.userId)}" placeholder="Tối thiểu 6 ký tự">
-            <button class="mini-action" type="button" data-reset-password="1" data-user-id="${escapeHtml(user.userId)}">Reset</button>
+      ? `<div class="admin-note">Tài khoản Admin có quyền quản lý toàn bộ ba môn. Quyền Admin luôn được backend kiểm tra lại trước mỗi thao tác.</div>`
+      : `<div class="admin-user-controls admin-user-controls-compact">
+          <div class="admin-access-fields-grid">
+            ${SUBJECTS.map((subject) => {
+              const type = access[subject.id]?.type || "regular";
+              const expiry = access[subject.id]?.endAt ? formatDate(access[subject.id].endAt) : "";
+              const toneClass = adminSubjectToneClass(subject.apiId);
+              return `<div class="admin-access-field ${toneClass}"><label><span>${escapeHtml(subject.label)}</span><small>${expiry ? `Hết hạn ${escapeHtml(expiry)}` : "Regular"}</small></label><select data-access-select="${subject.apiId}" aria-label="Quyền ${escapeHtml(subject.label)}"><option value="regular"${type === "regular" ? " selected" : ""}>Regular</option><option value="trial"${type === "trial" ? " selected" : ""}>Trial</option><option value="vip"${type === "vip" ? " selected" : ""}>VIP</option></select></div>`;
+            }).join("")}
+            <div class="admin-access-field admin-password-field"><label><span>Mật khẩu mới</span><small>6–128 ký tự</small></label><input type="password" minlength="6" maxlength="128" autocomplete="new-password" data-reset-input="${escapeHtml(user.userId)}" placeholder="Nhập mật khẩu"></div>
+          </div>
+          <div class="admin-access-actions-grid">
+            ${SUBJECTS.map((subject) => `<button class="mini-action admin-access-action ${adminSubjectToneClass(subject.apiId)}" type="button" data-save-access="${subject.apiId}" data-user-id="${escapeHtml(user.userId)}">Lưu ${escapeHtml(subject.label)}</button>`).join("")}
+            <button class="mini-action admin-access-action admin-password-action" type="button" data-reset-password="1" data-user-id="${escapeHtml(user.userId)}">Reset mật khẩu</button>
           </div>
         </div>`;
 
-    return `
-      <article class="admin-user-card" data-user-card="${escapeHtml(user.userId)}">
-        <div class="admin-user-head">
-          <div><strong>${escapeHtml(user.avatarEmoji || "🐰")} ${escapeHtml(user.userId)} · ${escapeHtml(user.name || "")}</strong><span>${role === "admin" ? "Admin" : "Student"}${user.lastLearningAt ? ` · Học gần nhất ${escapeHtml(formatDate(user.lastLearningAt))}` : ""}</span></div>
-          <span class="access-chip access-${role === "admin" ? "admin" : "regular"}">${role === "admin" ? "Admin" : "Student"}</span>
-        </div>
-        ${controls}
-      </article>`;
+    return `<article class="admin-user-card" data-user-card="${escapeHtml(user.userId)}"><div class="admin-user-head"><div><strong>${escapeHtml(user.avatarEmoji || "🐰")} ${escapeHtml(user.userId)} · ${escapeHtml(user.name || "")}</strong>${user.lastLearningAt ? `<span>Học gần nhất ${escapeHtml(formatDate(user.lastLearningAt))}</span>` : ""}</div><span class="access-chip access-${role === "admin" ? "admin" : "regular"}">${role === "admin" ? "Admin" : "Student"}</span></div>${controls}</article>`;
   }
 
   async function resolveAccessRequest(requestId, decision, button) {
@@ -1429,6 +1676,8 @@
       await apiRequest("adminSetSubjectAccess", { userId, subjectId, accessType: select.value });
       showToast("Đã cập nhật quyền môn.");
       await loadAdminData();
+      state.admin.tab = "access";
+      renderAdmin();
     } catch (err) {
       setButtonBusy(button, false);
       showToast(friendlyError(err));
@@ -1447,6 +1696,7 @@
       await apiRequest("adminResetPassword", { userId, newPassword });
       if (input) input.value = "";
       showToast("Đã reset mật khẩu và thu hồi các phiên cũ của tài khoản.");
+      setButtonBusy(button, false);
     } catch (err) {
       setButtonBusy(button, false);
       showToast(friendlyError(err));
@@ -1718,6 +1968,11 @@
     window.__class1InstallPrompt = null;
     updateInstallVisibility();
     showToast("Đã cài App.");
+  });
+
+  window.addEventListener("focus", () => refreshAdminPendingBadge(false));
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) refreshAdminPendingBadge(false);
   });
 
   if ("serviceWorker" in navigator) {
