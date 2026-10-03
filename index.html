@@ -1,1215 +1,1148 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="referrer" content="no-referrer">
-  <meta name="theme-color" content="#FFFFFF">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <script>
-    // Bắt lời mời cài PWA càng sớm càng tốt để nút Cài App không bỏ lỡ sự kiện của Chromium.
-    window.__class1InstallPrompt = null;
-    window.addEventListener("beforeinstallprompt", (event) => {
-      event.preventDefault();
-      window.__class1InstallPrompt = event;
-      window.dispatchEvent(new Event("class1-install-ready"));
-    });
-    window.addEventListener("appinstalled", () => {
-      window.__class1InstallPrompt = null;
-    });
-  </script>
-  <link rel="manifest" href="manifest.json?v=class1-core-8">
-  <link rel="icon" type="image/jpeg" href="favicon.jpg">
-  <link rel="apple-touch-icon" href="icon-192.png">
-  <title>Lớp 1 - Cô Thỏ Hồng | Epsilon Edu</title>
-  <style>
-    :root{
-      --page:#FFFFFF;
-      --white:#FFFFFF;
-      --ink:#344054;
-      --muted:#667085;
-      --pink:#EC4899;
-      --pink-2:#F472B6;
-      --purple:#8B5CF6;
-      --purple-2:#7C3AED;
-      --blue:#3B82F6;
-      --sky:#38BDF8;
-      --green:#10B981;
-      --teal:#14B8A6;
-      --amber:#F59E0B;
-      --red:#F43F5E;
-      --brand:#173A78;
-      --line:#EDE9FE;
-      --shadow:0 7px 18px rgba(76,29,149,.10);
-      --radius:18px;
-      --app-width:82rem;
-    }
-
-    *{box-sizing:border-box}
-    html{background:var(--page);scroll-behavior:smooth}
-    body{
-      margin:0;
-      min-height:100vh;
-      background:var(--page);
-      color:var(--ink);
-      font-family:"Nunito","Segoe UI",Arial,sans-serif;
-      -webkit-font-smoothing:antialiased;
-      text-rendering:optimizeLegibility;
-    }
-    button,input{font:inherit}
-    button{cursor:pointer}
-    img{max-width:100%}
-    .hidden{display:none!important}
-
-    .app-shell{
-      width:min(100%,var(--app-width));
-      margin:0 auto;
-      padding:0 .5rem max(.25rem,env(safe-area-inset-bottom));
-    }
-
-    .app-header{
-      display:grid;
-      grid-template-columns:112px minmax(0,1fr) auto;
-      align-items:stretch;
-      gap:.55rem;
-      padding:.45rem 0;
-      position:relative;
-      z-index:20;
-      background:var(--page);
-    }
-
-    .home-btn{
-      width:112px;
-      height:74px;
-      border:1px solid #E9D5FF;
-      border-radius:17px;
-      padding:0;
-      overflow:hidden;
-      background:#fff;
-      box-shadow:var(--shadow);
-      transition:transform .18s ease, box-shadow .18s ease;
-    }
-    .home-btn:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(139,92,246,.18)}
-    .home-btn img{width:100%;height:100%;object-fit:cover;display:block}
-
-    .primary-nav{
-      min-width:0;
-      display:grid;
-      grid-auto-flow:column;
-      grid-auto-columns:minmax(96px,1fr);
-      gap:.45rem;
-      overflow-x:auto;
-      scrollbar-width:none;
-      align-items:stretch;
-    }
-    .primary-nav::-webkit-scrollbar{display:none}
-
-    .nav-tab{
-      position:relative;
-      min-width:0;
-      min-height:74px;
-      padding:.5rem .42rem;
-      border:1px solid;
-      border-radius:17px;
-      box-shadow:0 3px 10px rgba(15,23,42,.05);
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:.22rem;
-      font-weight:900;
-      font-size:15px;
-      line-height:1.08;
-      text-align:center;
-      transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;
-      white-space:normal;
-    }
-    .nav-tab:hover{transform:translateY(-1px);filter:brightness(1.01);box-shadow:0 7px 17px rgba(76,29,149,.10)}
-    .nav-tab .tab-icon{font-size:22px;line-height:1}
-    .nav-tab::after{
-      content:"";
-      position:absolute;
-      left:30%;right:30%;bottom:-5px;height:3px;border-radius:99px;
-      background:currentColor;opacity:0;transform:scaleX(.5);transition:.16s ease;
-    }
-    .nav-tab.is-active::after{opacity:1;transform:scaleX(1)}
-    .nav-tab.is-active{color:white!important;border-color:transparent!important}
-    .nav-tab.is-locked:not(.is-active)::before{content:"🔒";position:absolute;right:7px;top:6px;font-size:11px;opacity:.72}
-    .nav-alert-badge{position:absolute;right:6px;top:5px;min-width:23px;height:23px;padding:0 6px;border-radius:999px;background:#EF4444;color:#fff;border:2px solid #fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:950;line-height:1;box-shadow:0 3px 8px rgba(239,68,68,.28);z-index:2}
-    .nav-tab.is-active .nav-alert-badge{background:#fff;color:#DC2626;border-color:rgba(255,255,255,.75)}
-
-    .tone-purple{background:#F3E8FF;color:#7C3AED;border-color:#DDD6FE}
-    .tone-purple.is-active{background:linear-gradient(90deg,#A855F7,#7C3AED)}
-    .tone-pink{background:#FCE7F3;color:#DB2777;border-color:#FBCFE8}
-    .tone-pink.is-active{background:linear-gradient(90deg,#F472B6,#EC4899)}
-    .tone-blue{background:#E0F2FE;color:#0369A1;border-color:#BAE6FD}
-    .tone-blue.is-active{background:linear-gradient(90deg,#38BDF8,#0284C7)}
-    .tone-amber{background:#FEF3C7;color:#B45309;border-color:#FDE68A}
-    .tone-amber.is-active{background:linear-gradient(90deg,#FBBF24,#F59E0B)}
-    .tone-green{background:#DCFCE7;color:#15803D;border-color:#BBF7D0}
-    .tone-green.is-active{background:linear-gradient(90deg,#4ADE80,#16A34A)}
-    .tone-indigo{background:#EDE9FE;color:#6D28D9;border-color:#DDD6FE}
-    .tone-indigo.is-active{background:linear-gradient(90deg,#8B5CF6,#6D28D9)}
-
-    .header-tools{
-      display:flex;
-      align-items:center;
-      justify-content:flex-end;
-      gap:.4rem;
-    }
-    .tool-btn{
-      height:42px;
-      border:1px solid #E9D5FF;
-      background:#fff;
-      color:#6D28D9;
-      border-radius:14px;
-      box-shadow:0 3px 9px rgba(76,29,149,.07);
-      font-weight:900;
-      padding:0 .7rem;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:.35rem;
-      white-space:nowrap;
-    }
-    .tool-btn:not(.install-btn):hover{background:#FAF5FF}
-    .install-btn{
-      color:white;
-      border:0;
-      background:linear-gradient(90deg,var(--pink),var(--purple));
-      min-width:86px;
-      transition:filter .18s ease, box-shadow .18s ease, transform .18s ease;
-    }
-    .install-btn:hover{
-      color:white;
-      background:linear-gradient(90deg,var(--pink),var(--purple));
-      filter:brightness(1.12) saturate(1.08);
-      box-shadow:0 6px 16px rgba(168,85,247,.28);
-      transform:translateY(-1px);
-    }
-    .user-btn{
-      position:relative;
-      width:auto;
-      min-width:96px;
-      max-width:180px;
-      height:74px;
-      padding:.42rem .68rem;
-      border-radius:17px;
-      flex-direction:column;
-      gap:.18rem;
-      background:#FAF5FF;
-      color:#7C3AED;
-      border-color:#DDD6FE;
-      line-height:1.05;
-      overflow:hidden;
-    }
-    .user-btn:hover{background:#F3E8FF!important;transform:translateY(-1px);box-shadow:0 7px 17px rgba(76,29,149,.10)}
-    .user-btn-avatar{display:block;font-size:30px;line-height:1;flex:0 0 auto}
-    .user-btn-name{
-      display:block;
-      width:100%;
-      max-width:100%;
-      overflow:visible;
-      text-overflow:clip;
-      white-space:normal;
-      overflow-wrap:anywhere;
-      font-size:13px;
-      font-weight:950;
-      color:currentColor;
-      text-align:center;
-    }
-    .user-btn-role-badge{
-      position:absolute;
-      top:5px;
-      right:5px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-height:17px;
-      padding:1px 5px;
-      border:1px solid #F9A8D4;
-      border-radius:999px;
-      background:#FDF2F8;
-      color:#DB2777;
-      font-size:8px;
-      font-weight:950;
-      line-height:1;
-      letter-spacing:.01em;
-      box-shadow:0 2px 5px rgba(219,39,119,.08);
-      pointer-events:none;
-    }
-    .score-box{
-      height:50px;
-      padding:.24rem .54rem;
-      border:1px solid #FBCFE8;
-      border-radius:17px;
-      background:#FFF7FB;
-      display:grid;
-      grid-template-columns:auto auto;
-      gap:.06rem .5rem;
-      align-content:center;
-      box-shadow:0 3px 9px rgba(236,72,153,.06);
-      font-size:13px;
-      font-weight:900;
-    }
-    .score-box .good{color:#059669}
-    .score-box .bad{color:#E11D48}
-    .score-box strong{font-size:16px}
-
-    .banner-slot{width:100%;position:relative}
-    .main-banner{
-      width:100%;
-      aspect-ratio:5.5/1;
-      overflow:hidden;
-      background:#EAF8FF;
-    }
-    .main-banner picture,.main-banner img{width:100%;height:100%;display:block}
-    .main-banner img{object-fit:cover}
-
-    .sub-banner{
-      width:100%;
-      aspect-ratio:15/1;
-      position:relative;
-      overflow:hidden;
-      background:url("banner-sub.jpg") center/cover no-repeat;
-      display:flex;
-      align-items:center;
-      padding:0 1.25rem;
-    }
-    .sub-pill{
-      position:relative;
-      z-index:1;
-      min-width:200px;
-      max-width:46%;
-      min-height:38px;
-      padding:.48rem 1rem;
-      border-radius:999px;
-      border:1px solid rgba(244,114,182,.42);
-      background:rgba(255,255,255,.84);
-      backdrop-filter:blur(5px);
-      box-shadow:0 4px 14px rgba(76,29,149,.10);
-      color:#BE185D;
-      font-weight:900;
-      font-size:15px;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-    }
-
-    .content-stage{
-      position:relative;
-      z-index:3;
-      min-height:340px;
-      padding:1rem .1rem 2.2rem;
-    }
-    .section-heading{
-      display:flex;
-      align-items:end;
-      justify-content:space-between;
-      gap:1rem;
-      margin:.05rem 0 .85rem;
-    }
-    .section-heading h1{
-      margin:0;
-      color:#5B216E;
-      font-size:clamp(24px,2.2vw,31px);
-      line-height:1.08;
-      font-weight:950;
-      letter-spacing:-.02em;
-    }
-    .section-heading p{
-      margin:.3rem 0 0;
-      color:var(--muted);
-      font-size:15px;
-      line-height:1.45;
-      font-weight:700;
-    }
-
-    .subject-grid{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:.85rem;
-    }
-    .card-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
-      gap:.75rem;
-    }
-    .home-link-grid{
-      display:grid;
-      grid-template-columns:repeat(5,minmax(0,1fr));
-      gap:.7rem;
-    }
-
-    .content-card{
-      position:relative;
-      min-height:126px;
-      border:1px solid;
-      border-radius:18px;
-      padding:1rem 1rem .92rem;
-      box-shadow:0 5px 13px rgba(15,23,42,.05);
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      gap:.55rem;
-      text-align:left;
-      overflow:hidden;
-      transition:transform .16s ease, box-shadow .16s ease;
-    }
-    button.content-card:hover{transform:translateY(-2px);box-shadow:0 9px 22px rgba(76,29,149,.10)}
-    .content-card[data-tone="pink"]{background:#FFF1F7;border-color:#FBCFE8;color:#BE185D}
-    .content-card[data-tone="purple"]{background:#FAF5FF;border-color:#E9D5FF;color:#7E22CE}
-    .content-card[data-tone="blue"]{background:#EFF8FF;border-color:#BAE6FD;color:#0369A1}
-    .content-card[data-tone="green"]{background:#ECFDF5;border-color:#BBF7D0;color:#047857}
-    .content-card[data-tone="amber"]{background:#FFFBEB;border-color:#FDE68A;color:#A16207}
-    .content-card[data-tone="teal"]{background:#F0FDFA;border-color:#99F6E4;color:#0F766E}
-
-    .card-top{display:flex;align-items:flex-start;gap:.65rem;min-width:0}
-    .card-icon{
-      width:42px;height:42px;flex:0 0 42px;border-radius:14px;
-      display:flex;align-items:center;justify-content:center;
-      background:rgba(255,255,255,.72);
-      border:1px solid rgba(255,255,255,.85);
-      font-size:23px;
-    }
-    .card-copy{min-width:0;flex:1}
-    .card-title{
-      margin:0;
-      font-size:18px;
-      line-height:1.22;
-      font-weight:950;
-      color:currentColor;
-      display:-webkit-box;
-      -webkit-box-orient:vertical;
-      -webkit-line-clamp:2;
-      overflow:hidden;
-      min-height:2.44em;
-    }
-    .card-desc{
-      margin:.34rem 0 0;
-      font-size:16px;
-      line-height:1.38;
-      font-weight:700;
-      color:#475467;
-      display:-webkit-box;
-      -webkit-box-orient:vertical;
-      -webkit-line-clamp:2;
-      overflow:hidden;
-      min-height:2.76em;
-    }
-    .card-foot{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:.5rem;
-      min-height:28px;
-    }
-    .badge{
-      display:inline-flex;align-items:center;gap:.25rem;
-      min-height:26px;padding:.25rem .55rem;
-      border:1px solid currentColor;border-radius:999px;
-      background:rgba(255,255,255,.62);
-      font-size:12px;font-weight:900;
-    }
-    .arrow{
-      width:30px;height:30px;border-radius:50%;
-      display:flex;align-items:center;justify-content:center;
-      color:#fff;background:var(--accent,#7C3AED);
-      font-size:16px;font-weight:950;flex:0 0 30px;
-    }
-    .arrow span{color:#fff}
-    .subject-card{min-height:160px;padding:1.15rem}
-    .subject-card .card-icon{width:52px;height:52px;flex-basis:52px;font-size:29px}
-    .subject-card .card-title{font-size:21px;min-height:auto}
-    .subject-card .card-desc{font-size:16px}
-
-    /* Hồ sơ học tập đặt ngay dưới từng môn ở Trang chủ */
-    .subject-column{
-      display:flex;
-      flex-direction:column;
-      gap:.58rem;
-      min-width:0;
-    }
-    .subject-column > .subject-card{width:100%;}
-    .subject-profile-card{
-      width:100%;
-      min-height:62px;
-      border:1px solid;
-      border-radius:16px;
-      padding:.62rem .72rem;
-      display:flex;
-      align-items:center;
-      gap:.62rem;
-      text-align:left;
-      cursor:pointer;
-      box-shadow:0 4px 11px rgba(15,23,42,.045);
-      transition:transform .16s ease,box-shadow .16s ease,filter .16s ease;
-    }
-    .subject-profile-card:hover{
-      transform:translateY(-1px);
-      box-shadow:0 7px 17px rgba(76,29,149,.09);
-      filter:brightness(1.025);
-    }
-    .subject-profile-card[data-tone="blue"]{background:#F5FBFF;border-color:#BAE6FD;color:#0369A1}
-    .subject-profile-card[data-tone="pink"]{background:#FFF7FB;border-color:#FBCFE8;color:#BE185D}
-    .subject-profile-card[data-tone="green"]{background:#F5FFF9;border-color:#BBF7D0;color:#047857}
-    .subject-profile-icon{
-      width:38px;height:38px;flex:0 0 38px;border-radius:13px;
-      display:flex;align-items:center;justify-content:center;
-      background:rgba(255,255,255,.88);
-      box-shadow:0 3px 8px rgba(76,29,149,.06);
-      font-size:20px;
-    }
-    .subject-profile-copy{min-width:0;flex:1;}
-    .subject-profile-title{display:block;font-size:15px;line-height:1.15;font-weight:950;color:currentColor;}
-    .subject-profile-note{
-      display:block;margin-top:.18rem;font-size:11.5px;line-height:1.18;font-weight:800;color:#64748B;
-      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-    }
-    .subject-profile-arrow{
-      width:27px;height:27px;flex:0 0 27px;border-radius:50%;
-      display:flex;align-items:center;justify-content:center;
-      background:linear-gradient(135deg,#A855F7,#7C3AED);
-      color:#fff;font-size:14px;font-weight:950;
-      box-shadow:0 4px 9px rgba(124,58,237,.18);
-    }
-
-    .learning-profile-grid{
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:.7rem;
-      margin-top:.15rem;
-    }
-    .learning-profile-stat{
-      min-height:108px;
-      border:1px solid #E9D5FF;
-      border-radius:18px;
-      background:rgba(255,255,255,.74);
-      padding:.85rem;
-      box-shadow:0 4px 12px rgba(76,29,149,.045);
-    }
-    .learning-profile-stat .stat-icon{font-size:23px;}
-    .learning-profile-stat strong{display:block;margin-top:.35rem;color:#5B216E;font-size:14px;}
-    .learning-profile-stat span{display:block;margin-top:.3rem;color:#64748B;font-size:13px;font-weight:800;line-height:1.3;}
-    .learning-profile-empty{
-      margin-top:.75rem;
-      border:1px dashed #D8B4FE;
-      border-radius:18px;
-      background:linear-gradient(135deg,rgba(253,242,248,.78),rgba(245,243,255,.78));
-      padding:1.1rem;
-      text-align:center;
-      color:#64748B;
-      font-weight:800;
-      line-height:1.45;
-    }
-    .learning-profile-empty strong{display:block;color:#7C3AED;font-size:18px;margin-bottom:.28rem;}
-
-    .empty-panel{
-      border:1px dashed #D8B4FE;
-      background:rgba(255,255,255,.64);
-      border-radius:20px;
-      min-height:220px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding:2rem 1rem;
-      color:#6B7280;
-    }
-    .empty-panel strong{display:block;color:#7C3AED;font-size:20px;margin-bottom:.35rem}
-
-    .detail-panel{
-      background:rgba(255,255,255,.68);
-      border:1px solid #E9D5FF;
-      border-radius:20px;
-      padding:1rem;
-      box-shadow:0 5px 15px rgba(76,29,149,.05);
-    }
-    .back-btn{
-      border:0;
-      background:linear-gradient(90deg,#EC4899,#8B5CF6);
-      color:#fff;
-      border-radius:14px;
-      min-height:42px;
-      padding:0 .95rem;
-      font-weight:900;
-      box-shadow:0 5px 12px rgba(139,92,246,.18);
-    }
-
-    .app-footer{
-      position:relative;
-      z-index:1;
-      width:100%;
-      aspect-ratio:7/1;
-      margin:-1.05rem auto 0;
-      background:url("footer-bg.jpg") center/cover no-repeat;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding:0 1rem;
-      pointer-events:none;
-    }
-    .footer-copy{
-      color:#0000FF;
-      text-shadow:0 1px 0 rgba(255,255,255,.98);
-      transform:translateY(-7px);
-      line-height:1.25;
-      font-weight:900;
-      font-size:14px;
-    }
-    .footer-copy small{display:block;font-size:11px;margin-top:.16rem}
-
-    .modal-backdrop{
-      position:fixed;inset:0;z-index:100;
-      background:rgba(30,41,59,.48);
-      backdrop-filter:blur(6px);
-      display:flex;align-items:center;justify-content:center;
-      padding:1rem;
-    }
-    .auth-card{
-      width:min(94vw,440px);
-      max-height:94vh;
-      overflow-y:auto;
-      background:#fff;
-      border:1px solid #F9A8D4;
-      border-radius:28px;
-      box-shadow:0 24px 70px rgba(76,29,149,.26);
-      padding:1rem 1.1rem 1.2rem;
-      position:relative;
-    }
-    .close-btn{
-      position:absolute;right:14px;top:14px;
-      width:36px;height:36px;border-radius:50%;
-      border:1px solid #FBCFE8;background:#FFF1F7;color:#EC4899;
-      font-size:21px;font-weight:900;
-    }
-    .auth-logo{display:block;width:240px;max-width:72%;margin:.45rem auto .35rem;border-radius:18px}
-    .auth-name{text-align:center;color:#EC4899;font-size:19px;font-weight:950;margin:.2rem 0 1rem}
-    .auth-tabs{
-      display:grid;grid-template-columns:1fr 1fr;
-      padding:4px;border:1px solid #FBCFE8;border-radius:16px;background:#FFF1F7;
-      margin-bottom:1rem;
-    }
-    .auth-tab{
-      min-height:40px;border:0;border-radius:12px;background:transparent;
-      color:#98A2B3;font-weight:900;
-    }
-    .auth-tab.is-active{background:#fff;color:#EC4899;box-shadow:0 2px 7px rgba(76,29,149,.07)}
-    .form-stack{display:grid;gap:.78rem}
-    .field label{display:block;margin:0 0 .32rem;color:#DB2777;font-size:13px;font-weight:900}
-    .field input{
-      width:100%;height:48px;border-radius:15px;border:1.5px solid #F9A8D4;
-      background:#FFF9FC;color:#344054;padding:0 .85rem;outline:none;font-weight:800;
-    }
-    .field input:focus{border-color:#A855F7;box-shadow:0 0 0 3px rgba(168,85,247,.10)}
-    .primary-action{
-      width:100%;min-height:48px;border:0;border-radius:15px;color:#fff;
-      background:linear-gradient(90deg,#EC4899,#8B5CF6);
-      font-weight:950;box-shadow:0 6px 14px rgba(139,92,246,.22);
-      display:flex;align-items:center;justify-content:center;gap:.5rem;
-    }
-    .primary-action:disabled{opacity:.7;cursor:wait}
-    .secondary-action{
-      width:100%;min-height:46px;border:1px solid #E9D5FF;border-radius:15px;
-      color:#7C3AED;background:linear-gradient(90deg,#FDF2F8,#F5F3FF);
-      font-weight:900;
-    }
-    .auth-divider{height:1px;background:#FCE7F3;margin:1rem 0}
-    .account-panel,.access-request-panel{display:grid;gap:.75rem}
-    .account-identity{
-      display:grid;grid-template-columns:56px minmax(0,1fr);gap:.7rem;align-items:center;
-      padding:.75rem;border:1px solid #FBCFE8;border-radius:18px;background:linear-gradient(135deg,#FFF7FB,#FAF5FF);
-    }
-    .account-avatar{width:56px;height:56px;border-radius:18px;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid #E9D5FF;font-size:30px;box-shadow:0 4px 12px rgba(76,29,149,.08)}
-    .account-identity strong{display:block;color:#5B216E;font-size:17px;line-height:1.2}
-    .account-identity span{display:block;margin-top:.2rem;color:#667085;font-size:13px;font-weight:900;user-select:text}
-    .account-subtitle{margin:.15rem 0 0;color:#7C3AED;font-size:13px;font-weight:950}
-    .account-access-list,.account-requests{display:grid;gap:.45rem}
-    .account-access-row,.account-request-item{
-      display:flex;align-items:center;justify-content:space-between;gap:.65rem;padding:.58rem .65rem;
-      border:1px solid #E9D5FF;border-radius:14px;background:#fff;
-    }
-    .account-access-row strong,.account-request-item strong{display:block;color:#344054;font-size:13px}
-    .account-access-row span,.account-request-item span{display:block;margin-top:.12rem;color:#667085;font-size:11.5px;font-weight:800}
-    .access-chip{display:inline-flex!important;align-items:center!important;justify-content:center;min-width:66px;min-height:27px;margin:0!important;padding:.18rem .48rem;border-radius:999px;border:1px solid;font-size:11px!important;font-weight:950!important;white-space:nowrap}
-    .access-regular{color:#64748B!important;background:#F8FAFC;border-color:#CBD5E1}
-    .access-trial{color:#0369A1!important;background:#EFF8FF;border-color:#BAE6FD}
-    .access-vip{color:#7E22CE!important;background:#FAF5FF;border-color:#D8B4FE}
-    .access-admin{color:#BE185D!important;background:#FFF1F7;border-color:#F9A8D4}
-    .account-request-empty,.admin-empty{padding:.68rem;border:1px dashed #D8B4FE;border-radius:14px;background:#FAF5FF;color:#667085;font-size:12px;font-weight:800;text-align:center}
-    .account-avatar-control{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:.5rem}
-    .account-avatar-control label{color:#7C3AED;font-size:12px;font-weight:950}
-    .account-avatar-control select,.admin-access-control select{
-      height:38px;border:1px solid #D8B4FE;border-radius:11px;background:#fff;color:#475467;padding:0 .5rem;font-weight:900;outline:none;
-    }
-    .account-actions{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
-    .account-actions .wide{grid-column:1/-1}
-    .account-page{display:grid;gap:.78rem;max-width:980px;margin:0 auto}
-    .account-page-hero{
-      display:grid;grid-template-columns:72px minmax(0,1fr);gap:.85rem;align-items:center;
-      padding:1rem 1.05rem;border:1px solid #FBCFE8;border-radius:22px;
-      background:linear-gradient(135deg,#FFF7FB 0%,#FAF5FF 100%);box-shadow:0 6px 16px rgba(76,29,149,.06);
-    }
-    .account-page-avatar{width:72px;height:72px;border-radius:22px;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid #E9D5FF;font-size:38px;box-shadow:0 5px 13px rgba(76,29,149,.08)}
-    .account-page-hero strong{display:block;color:#5B216E;font-size:23px;line-height:1.18}
-    .account-page-hero span{display:block;margin-top:.22rem;color:#667085;font-size:14px;font-weight:900;user-select:text}
-    .account-hero-copy{min-width:0}
-    .account-hero-name-row{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
-    .account-role-chip{display:inline-flex!important;align-items:center;justify-content:center;margin:0!important;min-height:25px;padding:.18rem .55rem;border:1px solid #BAE6FD;border-radius:999px;background:#EFF8FF;color:#0369A1!important;font-size:11px!important;font-weight:950!important}
-    .account-role-chip.is-admin{border-color:#F9A8D4;background:#FFF1F7;color:#BE185D!important}
-    .account-id-row{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-top:.28rem}
-    .account-id-row span{margin:0!important}
-    .account-id-row .mini-action{min-height:30px;padding:.22rem .5rem}
-    .account-hero-copy small{display:block;margin-top:.28rem;color:#98A2B3;font-size:11.5px;font-weight:850}
-    .account-page-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:.75rem}
-    .account-section{padding:.9rem;border:1px solid #E9D5FF;border-radius:19px;background:rgba(255,255,255,.9);box-shadow:0 5px 15px rgba(76,29,149,.045)}
-    .account-section h2{margin:0 0 .62rem;color:#5B216E;font-size:18px}
-    .account-section p{margin:.1rem 0 .65rem;color:#667085;font-size:12.5px;font-weight:800;line-height:1.45}
-    .account-inline-control{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.5rem;align-items:center}
-    .account-inline-control input,.account-inline-control select{width:100%;height:42px;border:1px solid #D8B4FE;border-radius:12px;background:#fff;color:#344054;padding:0 .68rem;font-weight:850;outline:none}
-    .account-inline-control input:focus,.account-inline-control select:focus{border-color:#A855F7;box-shadow:0 0 0 3px rgba(168,85,247,.09)}
-    .account-field-label{display:block;margin:0 0 .28rem;color:#7C3AED;font-size:12.5px;font-weight:950}
-    .account-field-block + .account-field-block{margin-top:.65rem}
-     .account-avatar-picker{
-      display:grid;grid-template-columns:repeat(auto-fill,52px);gap:.5rem;align-content:start;
-      max-height:184px;overflow-y:auto;overflow-x:hidden;padding:.22rem .38rem .22rem .12rem;
-      border:1px solid #F3E8FF;border-radius:14px;background:linear-gradient(180deg,#fff,#fdfaff);
-      scrollbar-gutter:stable;overscroll-behavior:contain
-    }
-    .account-avatar-picker::-webkit-scrollbar{width:9px}
-    .account-avatar-picker::-webkit-scrollbar-thumb{background:#D8B4FE;border-radius:999px;border:2px solid #fff}
-    .account-avatar-picker::-webkit-scrollbar-track{background:#FAF5FF;border-radius:999px}
-    .account-avatar-choice{
-      width:52px;height:52px;border:1.5px solid #E9D5FF;border-radius:14px;background:#fff;
-      display:inline-flex;align-items:center;justify-content:center;padding:0;font-size:29px;line-height:1;
-      box-shadow:0 2px 7px rgba(76,29,149,.04);transition:transform .14s ease,border-color .14s ease,background .14s ease,box-shadow .14s ease;
-    }
-    .account-avatar-choice:hover{background:#FAF5FF;border-color:#C4B5FD;transform:translateY(-1px);box-shadow:0 5px 11px rgba(124,58,237,.10)}
-    .account-avatar-choice.selected{border-color:#A855F7;background:#FAF5FF;box-shadow:0 0 0 3px rgba(168,85,247,.13),0 5px 12px rgba(124,58,237,.10);transform:translateY(-1px)}
-    .account-avatar-choice:focus-visible{outline:3px solid rgba(14,165,233,.25);outline-offset:2px}
-    .account-avatar-save-row{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-top:.55rem}
-    .account-avatar-selected-text{color:#667085;font-size:11.5px;font-weight:850}
-    .account-page-actions{display:grid;grid-template-columns:2fr 1fr 1fr;gap:.55rem}
-    .account-page-actions .primary-action,.account-page-actions .secondary-action{min-height:46px}
-    .account-request-page{max-width:760px;margin:0 auto;display:grid;gap:.7rem}
-    .mini-action{
-      min-height:36px;border:1px solid #D8B4FE;border-radius:11px;background:#fff;color:#7C3AED;padding:.35rem .62rem;font-weight:950;font-size:12px;
-      display:inline-flex;align-items:center;justify-content:center;gap:.35rem;
-    }
-    .mini-action:hover{background:#FAF5FF}
-    .mini-action.positive{color:#047857;border-color:#A7F3D0;background:#ECFDF5}
-    .mini-action.danger{color:#BE123C;border-color:#FECDD3;background:#FFF1F2}
-    .mini-action:disabled{opacity:.65;cursor:wait}
-    .subject-choice-list{display:grid;gap:.5rem}
-    .subject-choice{display:flex;align-items:center;gap:.65rem;padding:.68rem;border:1px solid #E9D5FF;border-radius:15px;background:#fff;cursor:pointer}
-    .subject-choice input{width:18px;height:18px;accent-color:#8B5CF6}
-    .subject-choice strong{display:block;color:#344054;font-size:14px}
-    .subject-choice small{display:block;margin-top:.15rem;color:#667085;font-weight:800}
-    .subject-choice.is-disabled{opacity:.58;cursor:not-allowed;background:#F8FAFC}
-    .access-request-note{margin:0;padding:.65rem;border-radius:14px;background:#FFF7FB;border:1px solid #FBCFE8;color:#667085;font-size:12px;font-weight:800;line-height:1.45}
-    .access-request-summary{min-height:38px;display:flex;align-items:center;justify-content:center;border:1px dashed #D8B4FE;border-radius:12px;background:#FAF5FF;color:#7C3AED;font-size:12.5px;font-weight:950}
-    .account-page-actions.is-admin{grid-template-columns:1fr 1fr}
-
-    .inline-spinner{display:inline-block;width:22px;height:22px;margin:0 auto .45rem;border-radius:50%;border:3px solid #E9D5FF;border-top-color:#8B5CF6;animation:spin .75s linear infinite}
-    .admin-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.5rem;margin:.15rem 0 .8rem}.admin-tab{min-height:44px;border:1px solid #E9D5FF;border-radius:13px;background:#FAF5FF;color:#7C3AED;font-weight:950;box-shadow:none}.admin-tab.active{background:linear-gradient(90deg,#EC4899,#A855F7 56%,#7C3AED);color:#fff;border-color:#D946EF;box-shadow:0 5px 14px rgba(168,85,247,.18)}.admin-tab-count{display:inline-flex;min-width:23px;height:23px;padding:0 7px;margin-left:6px;align-items:center;justify-content:center;border-radius:999px;background:#fff;color:#7C3AED;font-size:12.5px;font-weight:950;line-height:1}.admin-workspace{padding:.85rem;border:1px solid #F3D4E5;border-radius:20px;background:#fff;box-shadow:0 5px 16px rgba(76,29,149,.05)}
-    .admin-summary{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:.75rem;padding:.78rem .85rem;border:1px solid #E9D5FF;border-radius:15px;background:linear-gradient(135deg,#FAF5FF,#FFF7FB)}.admin-summary strong{color:#344054;font-size:15px}.admin-muted{color:#667085;font-size:12px;font-weight:800;line-height:1.45}.admin-table{display:grid;gap:.55rem}.admin-request{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.7rem;align-items:center;border:1px solid #E9D5FF;border-radius:15px;padding:.72rem;background:#fff}.admin-request.pending{background:#FFFBEB;border-color:#FDE68A}.admin-request-main{display:grid;gap:.22rem}.admin-request-title{display:flex;gap:.45rem;align-items:center;flex-wrap:wrap}.admin-request-title strong{color:#344054}.admin-chip{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:4px 8px;font-size:10.5px;font-weight:950;border:1px solid #DDD6FE;background:#F5F3FF;color:#6D28D9}.admin-chip.admin{border-color:#86EFAC;background:#F0FDF4;color:#047857}.admin-chip.vip{border-color:#C4B5FD;background:#F5F3FF;color:#6D28D9}.admin-chip.trial{border-color:#FDE68A;background:#FFFBEB;color:#B45309}.admin-chip.pending{border-color:#FCD34D;background:#FFF7ED;color:#B45309}
-    .admin-user-tools{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;justify-content:flex-end}.admin-user-tools input,.admin-user-tools select{height:40px;border:1.5px solid #E9D5FF;border-radius:12px;background:#fff;color:#344054;font-weight:850;padding:0 .7rem;outline:none}.admin-user-tools input{width:min(100%,300px)}.admin-user-tools select{min-width:175px}.admin-user-filters{display:flex;gap:.42rem;flex-wrap:wrap;margin:0 0 .62rem}.admin-filter-chip{border:1px solid #E9D5FF;border-radius:999px;background:#fff;color:#667085;font-size:11.5px;font-weight:950;padding:6px 10px;box-shadow:none}.admin-filter-chip.active{background:linear-gradient(90deg,#EC4899,#A855F7);border-color:#D946EF;color:#fff}.admin-filter-chip.admin.active{background:#22C55E;border-color:#16A34A}.admin-filter-chip.vip.active{background:#8B5CF6;border-color:#7C3AED}.admin-filter-chip.trial.active{background:#F59E0B;border-color:#D97706}.admin-filter-chip.regular.active{background:#64748B;border-color:#475569}.admin-filter-note{font-size:11.5px;color:#667085;font-weight:800;margin:-.2rem 0 .65rem}.admin-user-count{color:#7C3AED;font-weight:950}
-    .admin-user-row{display:grid;grid-template-columns:minmax(180px,.9fr) minmax(160px,.8fr) minmax(0,1.8fr);gap:.7rem;align-items:center;border:1px solid #E9D5FF;border-radius:15px;padding:.72rem}.admin-user-row.is-admin{background:linear-gradient(90deg,#F0FDF4,#fff);border-color:#86EFAC;border-left:5px solid #22C55E}.admin-user-row.has-vip{background:linear-gradient(90deg,#FAF5FF,#fff);border-color:#C4B5FD;border-left:5px solid #8B5CF6}.admin-user-row.has-trial{background:linear-gradient(90deg,#FFFBEB,#fff);border-color:#FDE68A;border-left:5px solid #F59E0B}.admin-user-primary{display:flex;align-items:center;gap:.55rem;min-width:0}.admin-list-avatar{font-size:25px;line-height:1}.admin-user-id,.admin-user-name,.admin-user-role,.admin-user-meta{color:#344054;font-weight:850}.admin-user-id{font-size:12.5px}.admin-user-name{font-size:13px;margin-top:1px}.admin-user-role{font-size:12.5px}.admin-user-meta{font-size:11px;color:#667085;margin-top:2px}.admin-access-chips{display:flex;gap:.35rem;flex-wrap:wrap}.admin-regular-label{color:#94A3B8;font-size:11.5px;font-weight:850}.account-type-badge{display:inline-flex;vertical-align:1px;margin-left:4px;border-radius:999px;padding:2px 6px;font-size:9px;font-weight:950}.account-type-badge.admin{background:#DCFCE7;border:1px solid #86EFAC;color:#047857}.account-type-badge.vip{background:#EDE9FE;border:1px solid #C4B5FD;color:#6D28D9}.account-type-badge.trial{background:#FFFBEB;border:1px solid #FDE68A;color:#B45309}
-    .admin-subject-row{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(90px,.45fr));gap:.6rem;align-items:center;border:1px solid #E9D5FF;border-radius:14px;padding:.68rem .75rem}.admin-subject-row strong{color:#344054}.admin-access-expiry{color:#667085;font-size:11px;font-weight:850;text-align:center}.admin-access-management .admin-user-card{box-shadow:none}.admin-stat-grid.overview{grid-template-columns:repeat(4,minmax(0,1fr))}
-    .admin-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.65rem;margin-bottom:.8rem}
-    .admin-stat{min-height:92px;padding:.75rem;border:1px solid #E9D5FF;border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(76,29,149,.05)}
-    .admin-stat span{font-size:21px}.admin-stat strong{display:block;margin-top:.18rem;color:#5B216E;font-size:22px}.admin-stat small{display:block;margin-top:.12rem;color:#667085;font-weight:900}
-    .admin-section{margin-top:.8rem;padding:.82rem;border:1px solid #E9D5FF;border-radius:19px;background:rgba(255,255,255,.9);box-shadow:0 5px 15px rgba(76,29,149,.05)}
-    .admin-section-head{display:flex;align-items:center;justify-content:space-between;gap:.65rem;margin-bottom:.65rem}
-    .admin-section-head h2{margin:0;color:#5B216E;font-size:18px}.admin-section-head p{margin:.16rem 0 0;color:#667085;font-size:12px;font-weight:800}
-    .admin-request-list,.admin-user-list{display:grid;gap:.55rem}
-    .admin-request-card{display:flex;align-items:center;justify-content:space-between;gap:.7rem;padding:.68rem;border:1px solid #E9D5FF;border-radius:15px;background:#fff}
-    .admin-request-card strong,.admin-user-head strong{display:block;color:#344054;font-size:13px}.admin-request-card span,.admin-user-head span{display:block;margin-top:.14rem;color:#667085;font-size:11.5px;font-weight:800}
-    .admin-request-actions{display:flex;gap:.4rem;flex:0 0 auto}
-    .admin-search{margin-bottom:.62rem}.admin-search input{width:100%;height:42px;border:1px solid #D8B4FE;border-radius:13px;background:#FAF5FF;padding:0 .75rem;outline:none;font-weight:850;color:#344054}
-    .admin-user-card{padding:.72rem;border:1px solid #E9D5FF;border-radius:16px;background:#fff}
-    .admin-user-head{display:flex;align-items:center;justify-content:space-between;gap:.65rem}
-    .admin-user-head > div > strong,.admin-user-head > div > span,.admin-user-id,.admin-user-name,.admin-user-role{color:#111827!important;font-weight:950!important}
-    .admin-user-controls{display:grid;gap:.42rem;margin-top:.58rem;padding-top:.58rem;border-top:1px solid #F1E8FF}
-    .admin-request-meta{display:flex;align-items:center;gap:.32rem;flex-wrap:wrap}.admin-request-dot{color:#94A3B8}.admin-request-subject{display:inline-flex;align-items:center;padding:2px 7px;border-radius:999px;border:1px solid;font-size:11px;font-weight:950;line-height:1.45}.admin-request-subject-sep{display:none}.admin-request-subject.subject-math{color:#0369A1;background:#EFF8FF;border-color:#BAE6FD}.admin-request-subject.subject-vietnamese{color:#BE185D;background:#FFF1F7;border-color:#F9A8D4}.admin-request-subject.subject-english{color:#6D28D9;background:#FAF5FF;border-color:#D8B4FE}
-    .admin-user-controls-compact{gap:.45rem}.admin-access-fields-grid,.admin-access-actions-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.48rem}.admin-access-field{min-width:0}.admin-access-field label{display:flex;align-items:center;justify-content:space-between;gap:.35rem;margin-bottom:4px;font-size:13px;font-weight:950}.admin-access-field label small{font-size:11.5px;color:#111827;font-weight:950;white-space:nowrap}.admin-password-field label small{font-size:10px;color:#667085;font-weight:900}.admin-access-field select,.admin-access-field input{width:100%;height:38px;border:1.5px solid #E9D5FF;border-radius:11px;background:#fff;padding:0 .6rem;color:#344054;font-weight:900;outline:none}.admin-access-field.subject-math label span{color:#0369A1}.admin-access-field.subject-math select{border-color:#BAE6FD;background:#F7FCFF}.admin-access-field.subject-vietnamese label span{color:#BE185D}.admin-access-field.subject-vietnamese select{border-color:#F9A8D4;background:#FFF8FB}.admin-access-field.subject-english label span{color:#6D28D9}.admin-access-field.subject-english select{border-color:#D8B4FE;background:#FCF9FF}.admin-password-field label span{color:#475569}.admin-password-field input{border-color:#CBD5E1;background:#F8FAFC}.admin-access-actions-grid .mini-action{width:100%;min-height:34px;padding:6px 9px}.admin-access-action.subject-math{color:#0369A1;border-color:#BAE6FD;background:#EFF8FF}.admin-access-action.subject-vietnamese{color:#BE185D;border-color:#F9A8D4;background:#FFF1F7}.admin-access-action.subject-english{color:#6D28D9;border-color:#D8B4FE;background:#FAF5FF}.admin-password-action{color:#C2410C;border-color:#FED7AA;background:#FFF7ED}.admin-access-management .admin-user-card{padding:.62rem .72rem}.admin-access-management .admin-user-controls{margin-top:.45rem;padding-top:.45rem}
-    .admin-access-control{display:grid;grid-template-columns:84px minmax(120px,1fr) 82px 66px;gap:.45rem;align-items:center}
-    .admin-access-control label,.admin-reset-control label{color:#667085;font-size:12px;font-weight:950}
-    .admin-reset-control{display:grid;grid-template-columns:84px minmax(160px,1fr) 66px;gap:.45rem;align-items:center}
-    .admin-reset-control input{height:38px;border:1px solid #D8B4FE;border-radius:11px;background:#fff;padding:0 .55rem;font-weight:850;outline:none}
-    .admin-note{margin-top:.55rem;padding:.55rem;border-radius:12px;background:#FFF7FB;color:#667085;font-size:12px;font-weight:800}
-    .dialog-actions{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-top:1rem}
-    .dialog-actions .primary-action,.dialog-actions .secondary-action{margin-top:0;min-width:0}
-    .spinner{
-      width:17px;height:17px;border-radius:50%;
-      border:2px solid rgba(255,255,255,.45);
-      border-top-color:#fff;
-      animation:spin .75s linear infinite;
-    }
-    @keyframes spin{to{transform:rotate(360deg)}}
-
-    .dialog-card{
-      width:min(92vw,390px);
-      border-radius:24px;border:1px solid #F9A8D4;background:#fff;
-      box-shadow:0 24px 70px rgba(76,29,149,.28);
-      padding:1.2rem;text-align:center;
-    }
-    .dialog-icon{font-size:34px}
-    .dialog-card h3{color:#EC4899;margin:.5rem 0 .35rem}
-    .dialog-card p{margin:0;color:#475467;font-weight:700;line-height:1.55;white-space:pre-line}
-    .dialog-card button{margin-top:1rem;min-width:120px}
-
-    .toast{
-      position:fixed;left:50%;bottom:max(24px,env(safe-area-inset-bottom));z-index:130;
-      transform:translate(-50%,18px);opacity:0;
-      width:min(92vw,430px);
-      background:#fff;border:1px solid #E9D5FF;border-radius:15px;
-      box-shadow:0 14px 34px rgba(15,23,42,.18);
-      padding:.75rem .9rem;color:#475467;font-weight:900;
-      transition:.2s ease;pointer-events:none;
-    }
-    .toast.is-visible{opacity:1;transform:translate(-50%,0)}
-
-    @media (max-width:980px){
-      .app-header{grid-template-columns:96px minmax(0,1fr) auto}
-      .home-btn{width:96px;height:64px}
-      .nav-tab{min-height:64px;font-size:13px}
-      .nav-tab .tab-icon{font-size:19px}
-      .tool-btn{height:39px}
-      .user-btn{width:auto;min-width:92px;max-width:160px;height:64px;padding:.34rem .55rem}
-      .user-btn-avatar{font-size:27px}
-      .user-btn-name{font-size:12px;line-height:1.08}
-      .score-box{height:47px}
-    }
-
-    @media (max-width:767px){
-      .app-shell{padding-left:.3rem;padding-right:.3rem}
-      .app-header{
-        grid-template-columns:auto minmax(0,1fr);
-        grid-template-rows:auto auto;
-        gap:.38rem;
-        padding:.35rem 0;
-      }
-      .home-btn{
-        grid-column:1;grid-row:1;
-        width:86px;height:57px;border-radius:14px;
-      }
-      .header-tools{
-        grid-column:2;grid-row:1;
-        gap:.3rem;
-      }
-      .primary-nav{
-        grid-column:1/3;grid-row:2;
-        display:flex;
-        overflow-x:auto;
-        gap:.35rem;
-        padding-bottom:2px;
-      }
-      .nav-tab{
-        flex:0 0 104px;
-        min-height:53px;
-        border-radius:14px;
-        flex-direction:row;
-        gap:.34rem;
-        font-size:13px;
-        padding:.38rem .45rem;
-      }
-      .nav-tab .tab-icon{font-size:18px}
-      .nav-tab::after{bottom:-3px;height:2px}
-      .tool-btn{height:38px;border-radius:12px;padding:0 .52rem;font-size:12px}
-      .install-btn{min-width:74px}
-      .user-btn{
-        width:auto;min-width:84px;max-width:132px;height:57px;padding:.28rem .4rem;border-radius:14px;gap:.1rem;
-      }
-      .user-btn-avatar{font-size:24px}
-      .user-btn-name{font-size:11px;line-height:1.05}
-      .score-box{height:46px;padding:.18rem .38rem;font-size:12px}
-      .score-box strong{font-size:13px}
-      .main-banner{aspect-ratio:3.5/1}
-      .sub-banner{aspect-ratio:15/1;padding:0 .55rem}
-      .sub-pill{min-width:0;max-width:72%;min-height:32px;padding:.34rem .68rem;font-size:12px}
-      .content-stage{min-height:300px;padding:.72rem .05rem 1.65rem}
-      .section-heading{align-items:flex-start}
-      .section-heading h1{font-size:23px}
-      .section-heading p{font-size:14px}
-      .subject-grid{grid-template-columns:1fr;gap:.72rem}
-      .subject-column{gap:.48rem}
-      .subject-card{min-height:132px}
-      .subject-profile-card{min-height:56px;border-radius:15px;padding:.55rem .65rem}
-      .subject-profile-icon{width:34px;height:34px;flex-basis:34px;border-radius:11px;font-size:18px}
-      .subject-profile-title{font-size:14px}
-      .subject-profile-note{font-size:11px}
-      .learning-profile-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}
-      .card-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.58rem}
-      .home-link-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.58rem}
-      .content-card{min-height:118px;padding:.78rem;border-radius:16px}
-      .card-icon{width:36px;height:36px;flex-basis:36px;font-size:20px}
-      .card-title{font-size:16px}
-      .card-desc{font-size:14px}
-      .subject-card .card-title{font-size:19px}
-      .subject-card .card-desc{font-size:15px}
-      .app-footer{margin-top:-.6rem;padding-bottom:0}
-      .content-stage:has(> .card-grid) + .app-footer{margin-top:0}
-      .footer-copy{font-size:11px;transform:none}
-      .footer-copy small{font-size:9px}
-      .auth-logo{width:225px;max-width:74%}
-    }
-
-    @media (max-width:430px){
-      .score-box{display:none}
-      .install-btn{min-width:70px}
-      .card-grid{grid-template-columns:1fr 1fr}
-      .content-card{min-height:124px}
-    }
-
-    @media (prefers-reduced-motion:reduce){
-      *{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
-    }
-
-    /* LOP 1 UI - card muc hoc cute + chon footer nhe */
-    .card-grid .content-card{
-      min-height:148px;
-      border-radius:22px;
-      padding:.95rem 1rem .86rem;
-      gap:.62rem;
-      box-shadow:0 6px 16px rgba(76,29,149,.065), inset 0 1px 0 rgba(255,255,255,.82);
-      isolation:isolate;
-    }
-    .card-grid .content-card::before{
-      content:"";
-      position:absolute;
-      width:84px;
-      height:84px;
-      right:-28px;
-      top:-34px;
-      border-radius:50%;
-      background:rgba(255,255,255,.34);
-      z-index:-1;
-      pointer-events:none;
-    }
-    .card-grid .content-card[data-tone="pink"]{background:linear-gradient(145deg,#FFF9FC 0%,#FFF0F6 100%);}
-    .card-grid .content-card[data-tone="purple"]{background:linear-gradient(145deg,#FDF9FF 0%,#F6F0FF 100%);}
-    .card-grid .content-card[data-tone="blue"]{background:linear-gradient(145deg,#F7FCFF 0%,#EAF6FF 100%);}
-    .card-grid .content-card[data-tone="green"]{background:linear-gradient(145deg,#F7FFFB 0%,#E9FBF3 100%);}
-    .card-grid .content-card[data-tone="amber"]{background:linear-gradient(145deg,#FFFDF7 0%,#FFF7DE 100%);}
-    .card-grid .content-card[data-tone="teal"]{background:linear-gradient(145deg,#F7FFFD 0%,#E9FBF7 100%);}
-    .card-grid .content-card .card-top{
-      gap:.78rem;
-      align-items:flex-start;
-    }
-    .card-grid .content-card .card-icon{
-      width:44px;
-      height:44px;
-      flex:0 0 44px;
-      border-radius:15px;
-      background:rgba(255,255,255,.86);
-      border:1px solid rgba(255,255,255,.98);
-      box-shadow:0 4px 10px rgba(76,29,149,.07);
-      font-size:24px;
-      transform:rotate(-2deg);
-    }
-    .card-grid .content-card:nth-child(even) .card-icon{transform:rotate(2deg);}
-    .card-grid .content-card .card-title{
-      font-size:19px;
-      line-height:1.22;
-      min-height:2.44em;
-      letter-spacing:-.012em;
-    }
-    .card-grid .content-card .card-desc{
-      margin:.28rem 0 0;
-      font-size:15.5px;
-      line-height:1.34;
-      font-weight:750;
-      color:#445066;
-      min-height:2.68em;
-    }
-    .card-grid .content-card .card-foot{min-height:31px;}
-    .card-grid .content-card .badge{
-      min-height:27px;
-      padding:.28rem .62rem;
-      background:rgba(255,255,255,.78);
-      box-shadow:0 2px 6px rgba(76,29,149,.04);
-      font-size:12px;
-    }
-    .card-grid .content-card .arrow{
-      width:32px;
-      height:32px;
-      flex-basis:32px;
-      font-size:17px;
-      box-shadow:0 5px 11px rgba(124,58,237,.20);
-    }
-    .card-grid .content-card:hover{
-      transform:translateY(-3px);
-      box-shadow:0 10px 24px rgba(76,29,149,.11), inset 0 1px 0 rgba(255,255,255,.9);
-    }
-
-    /* Chỉ màn hình môn học: hàng card cuối hơi chờm lên footer như ảnh mẫu. */
-    .content-stage:has(> .card-grid){
-      /* Màn hình môn học: card cuối chạm chân trang, không chờm vào ảnh footer. */
-      padding-bottom:0;
-    }
-    .content-stage:has(> .card-grid) + .app-footer{
-      margin-top:0;
-    }
-
-    @media (max-width:767px){
-      .card-grid .content-card{
-        min-height:132px;
-        border-radius:19px;
-        padding:.78rem .82rem .72rem;
-      }
-      .card-grid .content-card .card-icon{
-        width:39px;height:39px;flex-basis:39px;border-radius:13px;font-size:21px;
-      }
-      .card-grid .content-card .card-title{font-size:17px;}
-      .card-grid .content-card .card-desc{font-size:14px;}
-      .content-stage:has(> .card-grid){padding-bottom:0;}
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <title>Toán 2 - Cô Thỏ Ngọc</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Quicksand & Nunito -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <!-- html2pdf.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        html { background: #ffffff; }
+        body {
+            font-family: 'Quicksand', 'Nunito', sans-serif;
+            background: #ffffff;
+            color: #4a4a4a;
+            user-select: none;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .pastel-card {
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 12px 30px rgba(236, 72, 153, 0.12);
+            border: 3px solid #fbcfe8;
+        }
+        .pastel-btn {
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        .pastel-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.09);
+        }
+        .pastel-btn:active { transform: translateY(1px); }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+        .floating { animation: float 3s ease-in-out infinite; }
+        @keyframes sway {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-5px) rotate(-7deg); }
+            75% { transform: translateY(-5px) rotate(7deg); }
+        }
+        .swaying {
+            animation: sway 2.4s ease-in-out infinite;
+            display: inline-block;
+            transform-origin: bottom center;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { filter: drop-shadow(0 0 6px rgba(236, 72, 153, 0.6)); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 16px rgba(236, 72, 153, 0.9)); transform: scale(1.04); }
+        }
+        .node-current {
+            animation: pulse-glow 2s infinite ease-in-out;
+            transform-origin: center;
+        }
+        ::-webkit-scrollbar { width: 3px; height: 3px; }
+        ::-webkit-scrollbar-track { background: #fdf2f8; }
+        ::-webkit-scrollbar-thumb { background: #f472b6; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ec4899; }
 
 
-    /* Mobile: chu lon hon + 3 tab moi hang (Trang chu va man hinh mon hoc) */
-    @media (max-width:767px){
-      .primary-nav{
-        display:grid;
-        grid-template-columns:repeat(3,minmax(0,1fr));
-        grid-auto-flow:row;
-        grid-auto-columns:auto;
-        gap:.42rem;
-        overflow:visible;
-        padding-bottom:2px;
-      }
-      .nav-tab{
-        width:100%;
-        min-width:0;
-        min-height:64px;
-        padding:.42rem .28rem;
-        border-radius:15px;
-        flex-direction:column;
-        gap:.2rem;
-        font-size:15px;
-        line-height:1.12;
-      }
-      .nav-tab .tab-icon{font-size:21px}
+        @media (max-width: 767px) {
+            .app-main-header {
+                display: grid !important;
+                grid-template-columns: auto minmax(0, 1fr) auto auto;
+                grid-template-rows: auto auto;
+                gap: 0.35rem 0.35rem !important;
+                align-items: center;
+                padding: 0.35rem 0.45rem !important;
+            }
 
-      .tool-btn{font-size:14px;font-weight:950}
-      .install-btn{min-width:82px}
+            #header-nav-zone,
+            #header-info-zone {
+                display: contents !important;
+            }
 
-      .section-heading h1{font-size:26px}
-      .section-heading p{font-size:16px;line-height:1.42}
+            #btn-header-home {
+                grid-row: 1;
+                grid-column: 1;
+            }
 
-      .subject-card{
-        min-height:146px;
-        padding:1rem;
-      }
-      .subject-card .card-icon{
-        width:48px;height:48px;flex-basis:48px;
-        font-size:26px;
-      }
-      .subject-card .card-title{font-size:22px;line-height:1.18}
-      .subject-card .card-desc{font-size:17px;line-height:1.38}
-      .subject-card .badge{
-        min-height:30px;
-        padding:.3rem .65rem;
-        font-size:14px;
-      }
-      .subject-card .arrow{width:34px;height:34px;flex-basis:34px;font-size:18px}
+            #header-learning-tabs {
+                grid-row: 1;
+                grid-column: 2;
+                min-width: 0;
+                overflow-x: auto;
+                overflow-y: hidden;
+                scrollbar-width: none;
+                margin-left: 0;
+            }
+            #header-learning-tabs::-webkit-scrollbar { display: none; }
 
-      .subject-profile-card{
-        min-height:64px;
-        padding:.62rem .72rem;
-      }
-      .subject-profile-icon{
-        width:38px;height:38px;flex-basis:38px;
-        font-size:20px;
-      }
-      .subject-profile-title{font-size:16px}
-      .subject-profile-note{font-size:13px}
-      .subject-profile-arrow{width:30px;height:30px;flex-basis:30px;font-size:15px}
+            #header-level2-icon { display: none !important; }
+            #header-level2-tab > button {
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
+                column-gap: 0 !important;
+            }
 
-      .card-grid .content-card .card-title{font-size:18px}
-      .card-grid .content-card .card-desc{font-size:15.5px}
-      .card-grid .content-card .badge{font-size:13px}
-      .learning-profile-stat strong{font-size:15px}
-      .learning-profile-stat span{font-size:14px}
-      .learning-profile-empty{font-size:15px}
-    }
+            #btn-progress-map {
+                grid-row: 1;
+                grid-column: 3;
+                justify-self: end;
+            }
 
+            #btn-mini-game {
+                grid-row: 1;
+                grid-column: 4;
+                justify-self: end;
+            }
 
-    /* Tinh chinh co chu desktop/tablet + muc hoc - 2026-10-02 */
-    @media (min-width:768px){
-      .nav-tab{font-size:17px;line-height:1.1;}
-      .nav-tab .tab-icon{font-size:25px;}
-      .tool-btn{font-size:15px;}
-      .section-heading p{font-size:17px;}
+            #btn-toggle-autospeech {
+                grid-row: 2;
+                grid-column: 1;
+                justify-self: start;
+                margin: 0;
+            }
 
-      .subject-card .card-icon{width:56px;height:56px;flex-basis:56px;font-size:31px;}
-      .subject-card .card-title{font-size:24px;line-height:1.18;}
-      .subject-card .card-desc{font-size:18px;line-height:1.38;}
-      .subject-card .badge{min-height:29px;padding:.28rem .68rem;font-size:14px;}
-      .subject-card .arrow{width:34px;height:34px;flex-basis:34px;font-size:18px;}
+            #header-star-box {
+                grid-row: 2;
+                grid-column: 1;
+                justify-self: start;
+                margin-left: 0 !important;
+                transform: translateX(2.7rem);
+            }
 
-      .subject-profile-icon{width:42px;height:42px;flex-basis:42px;font-size:22px;}
-      .subject-profile-title{font-size:17px;}
-      .subject-profile-note{font-size:13px;}
-      .subject-profile-arrow{width:30px;height:30px;flex-basis:30px;font-size:15px;}
+            #user-info-box {
+                grid-row: 2;
+                grid-column: 2 / 5;
+                justify-self: end;
+                width: auto;
+                min-width: 0;
+                margin-left: auto;
+                text-align: right;
+            }
 
-      .card-grid .content-card .card-icon{width:48px;height:48px;flex-basis:48px;font-size:27px;}
-      .card-grid .content-card .card-title{font-size:21px;}
-      .card-grid .content-card .card-desc{font-size:17px;}
-      .card-grid .content-card .badge{font-size:13.5px;}
+            #user-info-box > div,
+            #user-info-box > span { margin-left: auto; }
 
-      .footer-copy{font-size:16px;}
-      .footer-copy small{font-size:12px;}
-    }
+            #user-info-box > * { max-width: 100%; }
 
-    @media (max-width:767px){
-      .nav-tab{font-size:16px;}
-      .nav-tab .tab-icon{font-size:23px;}
-      .subject-card .card-title{font-size:23px;}
-      .subject-card .card-desc{font-size:18px;}
-      .subject-card .badge{font-size:15px;}
-      .subject-profile-title{font-size:17px;}
-      .subject-profile-note{font-size:14px;}
-      .card-grid .content-card .card-title{font-size:19px;}
-      .card-grid .content-card .card-desc{font-size:16px;}
-      .card-grid .content-card .badge{font-size:14px;}
-      .footer-copy{font-size:13px;}
-      .footer-copy small{font-size:10.5px;}
-    }
+            #header-star-box .star-word { display: none !important; }
+
+            #btn-progress-map,
+            #btn-mini-game {
+                padding-left: 0.625rem !important;
+                padding-right: 0.625rem !important;
+            }
+        }
 
 
-    @media (max-width:767px){
-      .account-actions{grid-template-columns:1fr}
-      .account-actions .wide{grid-column:auto}
-      .account-page{gap:.62rem}
-      .account-page-hero{grid-template-columns:58px minmax(0,1fr);padding:.78rem;border-radius:18px}
-      .account-page-avatar{width:58px;height:58px;border-radius:18px;font-size:31px}
-      .account-page-hero strong{font-size:20px}
-      .account-hero-name-row{align-items:flex-start}
-      .account-id-row{align-items:flex-start}
-      .account-page-grid{grid-template-columns:1fr}
-      .account-section{padding:.75rem;border-radius:17px}
-      .account-inline-control{grid-template-columns:1fr auto}
-      .account-page-actions{grid-template-columns:1fr}
-      .account-avatar-picker{grid-template-columns:repeat(auto-fill,46px);gap:.42rem;max-height:170px;padding:.2rem .3rem .2rem .08rem}
-      .account-avatar-choice{width:46px;height:46px;border-radius:13px;font-size:26px}
-      .account-avatar-save-row{align-items:stretch;flex-direction:column}
-      .account-avatar-save-row .mini-action{width:100%}
-      .admin-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .admin-summary{align-items:stretch;flex-direction:column}.admin-user-tools{justify-content:stretch}.admin-user-tools input,.admin-user-tools select{width:100%;max-width:none}
-      .admin-user-row{grid-template-columns:1fr}.admin-user-meta-block{padding-top:.25rem}.admin-subject-row{grid-template-columns:1fr 1fr}.admin-subject-row strong{grid-column:1/-1}
-      .admin-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-      .admin-request-card{align-items:flex-start;flex-direction:column}
-      .admin-request-actions{width:100%}.admin-request-actions .mini-action{flex:1}
-      .admin-user-head{align-items:flex-start}
-      .admin-access-fields-grid,.admin-access-actions-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-access-field label{align-items:flex-start;flex-direction:column;gap:1px}.admin-access-field label small{white-space:normal}
-      .auth-card{width:min(96vw,440px);padding:.9rem .9rem 1rem}
-    }
+        /* Breadcrumb header: text only, never overlap the account/info area.
+           If the deepest tab is too long, clip it instead of pushing/chồng tab khác. */
+        #header-nav-zone {
+            flex: 1 1 auto !important;
+            min-width: 0 !important;
+            overflow: hidden !important;
+            justify-content: flex-start !important;
+        }
+        #header-learning-tabs {
+            flex: 1 1 auto;
+            min-width: 0;
+            overflow: hidden;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+        }
+        #header-learning-tabs > div { flex: 0 0 auto; min-width: 0; }
+        #header-learning-tabs button { min-width: 0; }
+        #header-info-zone { flex: 0 0 auto !important; }
+        #header-level2-icon { display: none !important; }
+        #header-level3-tab {
+            flex: 1 1 auto !important;
+            overflow: hidden;
+        }
+        #header-level3-tab > button {
+            max-width: 100% !important;
+            overflow: hidden;
+        }
 
-  </style>
+        @media print {
+            body * { visibility: hidden; }
+            #printable-report-area, #printable-report-area * { visibility: visible; }
+            #printable-report-area {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                background: white !important;
+                padding: 10px !important;
+            }
+            .no-print { display: none !important; }
+            .page-break-1 { page-break-after: always; break-after: page; }
+            .page-break-2 { page-break-before: always; break-before: page; page-break-after: always; break-after: page; }
+            .page-break-3 { page-break-before: always; break-before: page; }
+        }
+
+
+        /* UI chuẩn 6 tab chính: Khám phá | Bài học | Bài tập | Ôn tập | Đề thi | Mini games */
+        .main-module-tab {
+            position: relative;
+            min-height: 46px;
+            padding: 7px 8px;
+            border-radius: 14px;
+            border: 1.5px solid #f5c5df;
+            background: linear-gradient(180deg,#fff,#fff8fc);
+            color: #7e3bb8;
+            font-weight: 900;
+            font-size: 13px;
+            line-height: 1.05;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 2px 7px rgba(109,40,217,.07);
+            transition: box-shadow .18s,border-color .18s,background .18s,color .18s;
+        }
+        .main-module-tab:hover { border-color:#e879f9; box-shadow:0 0 13px rgba(217,70,239,.22); }
+        .main-module-tab.is-active {
+            color:#fff;
+            border-color:#d946ef;
+            background:linear-gradient(135deg,#ec4899 0%,#a855f7 55%,#7c3aed 100%);
+            box-shadow:0 5px 14px rgba(168,85,247,.28);
+        }
+        @media (min-width:768px) { .main-module-tab { min-height:50px; font-size:14px; } }
+
+        .semester-switch-btn {
+            min-width: 88px;
+            height: 34px;
+            padding: 0 14px;
+            border-radius: 12px;
+            font-weight: 900;
+            font-size: 12px;
+            transform: none !important;
+            transition: background .18s ease,color .18s ease,border-color .18s ease,box-shadow .18s ease;
+        }
+        .semester-switch-btn.is-active {
+            color:#fff !important;
+            background:linear-gradient(135deg,#ec4899 0%,#a855f7 100%) !important;
+            border:2px solid #c026d3 !important;
+            box-shadow:0 5px 12px rgba(168,85,247,.28) !important;
+        }
+        .semester-switch-btn.is-inactive {
+            color:#7e22ce !important;
+            background:linear-gradient(135deg,#fff1f7 0%,#f5f3ff 100%) !important;
+            border:1.5px solid #e9d5ff !important;
+            box-shadow:0 2px 6px rgba(126,34,206,.08) !important;
+        }
+        @media (max-width:900px) {
+            .semester-switch-btn { min-width:78px; height:32px; padding:0 10px; font-size:11px; }
+        }
+
+    
+
+        /* =========================================================
+           TOAN 2 UI 2026-09-20 - APP SHELL THEO TV1
+           Chi thay presentation/layout, giu nguyen engine va workflow.
+           ========================================================= */
+        body { background:#ffffff !important; }
+        #screen-dashboard { background:transparent !important; max-width:82rem !important; }
+
+        .app-main-header{
+            display:grid !important;
+            grid-template-columns:auto minmax(0,1fr) auto;
+            align-items:center;
+            gap:10px;
+            padding:7px 0 !important;
+            background:transparent !important;
+            border:0 !important;
+            box-shadow:none !important;
+            backdrop-filter:none !important;
+            -webkit-backdrop-filter:none !important;
+            border-radius:0 !important;
+        }
+        #btn-header-home{
+            width:101px !important; min-width:101px !important; height:67px !important;
+            border-radius:16px !important; box-shadow:0 3px 10px rgba(76,29,149,.08) !important;
+        }
+        #header-info-zone{
+            width:auto !important; min-width:0; margin-left:0 !important;
+            justify-content:flex-end !important; gap:7px !important;
+        }
+        #header-star-box{background:#fff7fb !important;}
+
+        #main-module-tabs{width:100%;min-width:0;background:transparent!important;border:0!important;border-radius:0!important;padding:0!important;box-shadow:none!important;}
+        #main-module-tabs>div{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;}
+        .main-module-tab{
+            position:relative; min-width:0; min-height:62px; padding:7px 5px; border-radius:16px;
+            border:1.5px solid; font-weight:900; font-size:13px; line-height:1.05;
+            display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px;
+            box-shadow:0 3px 9px rgba(76,29,149,.08);transition:box-shadow .18s,border-color .18s,background .18s,color .18s;
+            overflow:visible;
+        }
+        .main-module-tab>span:first-child{font-size:21px!important;line-height:1;}
+        .main-module-tab::after{content:'';position:absolute;left:34%;right:34%;bottom:-5px;height:3px;border-radius:99px;opacity:0;transform:scaleX(.45);transition:all .18s ease;background:currentColor;}
+        .main-module-tab.is-active::after{opacity:.95;transform:scaleX(1);}
+        .main-module-tab[data-tab="discover"]{background:#f3e8ff;color:#7c3aed;border-color:#ddd6fe;}
+        .main-module-tab[data-tab="lessons"]{background:#fce7f3;color:#db2777;border-color:#fbcfe8;}
+        .main-module-tab[data-tab="exercises"]{background:#e0f2fe;color:#0369a1;border-color:#bae6fd;}
+        .main-module-tab[data-tab="review"]{background:#fef3c7;color:#b45309;border-color:#fde68a;}
+        .main-module-tab[data-tab="exams"]{background:#dcfce7;color:#15803d;border-color:#bbf7d0;}
+        .main-module-tab[data-tab="games"]{background:#ede9fe;color:#6d28d9;border-color:#ddd6fe;}
+        .main-module-tab[data-tab="discover"].is-active{background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;border-color:#8b5cf6;box-shadow:0 7px 17px rgba(124,58,237,.27);}
+        .main-module-tab[data-tab="lessons"].is-active{background:linear-gradient(135deg,#f472b6,#ec4899);color:#fff;border-color:#ec4899;box-shadow:0 7px 17px rgba(236,72,153,.25);}
+        .main-module-tab[data-tab="exercises"].is-active{background:linear-gradient(135deg,#38bdf8,#0284c7);color:#fff;border-color:#0ea5e9;box-shadow:0 7px 17px rgba(14,165,233,.25);}
+        .main-module-tab[data-tab="review"].is-active{background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#fff;border-color:#f59e0b;box-shadow:0 7px 17px rgba(245,158,11,.25);}
+        .main-module-tab[data-tab="exams"].is-active{background:linear-gradient(135deg,#4ade80,#16a34a);color:#fff;border-color:#22c55e;box-shadow:0 7px 17px rgba(34,197,94,.24);}
+        .main-module-tab[data-tab="games"].is-active{background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;border-color:#7c3aed;box-shadow:0 7px 17px rgba(109,40,217,.25);}
+
+        #app-banner-slot{width:100%;position:relative;}
+        #app-main-banner{position:relative;width:100%;aspect-ratio:6/1;min-height:0;overflow:hidden;border-radius:0;border:0;box-shadow:none;background:#fff;}
+        #app-main-banner picture{display:block;width:100%;height:100%;}
+        #app-main-banner img{width:100%;height:100%;object-fit:cover;display:block;}
+        .app-main-banner-copy{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);width:36%;text-align:center;pointer-events:none;text-shadow:0 2px 0 rgba(255,255,255,.9),0 3px 12px rgba(126,34,206,.12);}
+        .app-main-banner-title{font-size:clamp(21px,2.35vw,34px);line-height:1;font-weight:900;color:#ec4899;letter-spacing:-.02em;}
+        .app-main-banner-teacher{margin-top:5px;font-size:clamp(12px,1.15vw,17px);font-weight:900;color:#7e22ce;}
+        #app-context-banner.hidden,#app-main-banner.hidden{display:none!important;}
+        #app-context-banner{position:relative;min-height:58px;overflow:hidden;border-radius:0;border:0!important;background:none!important;box-shadow:none!important;display:flex;align-items:center;padding:7px 10px;}
+        #app-context-banner::before{content:'';position:absolute;inset:0;background-image:url('banner-sub.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;transform:none;opacity:1;filter:none;pointer-events:none;z-index:0;}
+        #header-learning-tabs{width:100%!important;max-width:none!important;flex:1 1 auto!important;min-width:0!important;overflow-x:auto!important;overflow-y:hidden!important;scrollbar-width:none;gap:5px;position:relative;z-index:2;white-space:nowrap;}
+        #header-learning-tabs::-webkit-scrollbar{display:none;}
+        #header-level2-tab,#header-level3-tab,#header-level4-tab{width:auto!important;min-width:0!important;max-width:none!important;flex:0 0 auto!important;overflow:visible!important;}
+        #header-level2-tab>button,#header-level3-tab>button,#header-level4-tab>button{height:38px!important;max-width:260px!important;min-width:0!important;padding:0 12px!important;border-radius:13px!important;background:rgba(255,255,255,.50)!important;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);box-shadow:0 2px 7px rgba(76,29,149,.08)!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        #header-level2-tab>button{color:#be185d!important;border:1.5px solid #f9a8d4!important;}
+        #header-level3-tab>button{color:#7e22ce!important;border:1.5px solid #d8b4fe!important;}
+        #header-level4-tab>button{color:#b45309!important;border:1.5px solid #fde68a!important;}
+        #header-level2-title,#header-level3-title,#header-level4-title{font-size:12px!important;font-weight:900!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        #header-level3-tab>span,#header-level4-tab>span{color:#c084fc!important;font-size:13px!important;}
+
+        #app-footer{width:100%;max-width:82rem;height:76px;min-height:76px;flex:0 0 76px;margin:10px auto 0;padding:0 14px;border-radius:0;background-image:url('footer-bg.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;display:flex;align-items:center;justify-content:center;text-align:center;color:#1827f2;border:0;box-shadow:none;}
+        #app-footer .footer-title{font-size:17px;font-weight:900;line-height:1.35;text-shadow:0 1px 0 #fff;}
+        #app-footer .footer-sub{font-size:13px;font-weight:800;line-height:1.35;color:#1827f2;text-shadow:0 1px 0 #fff;}
+
+        /* Bo khung lon, chi giu card noi dung thuc su */
+        #view-roadmap,#view-bai-hoc-detail,#view-minigame-hub,#view-game-play,#view-exam-hub{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;min-height:0!important;padding:8px 0!important;}
+        #roadmap-svg-container{background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;padding-left:0!important;padding-right:0!important;}
+        #view-quiz>.pastel-card{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;min-height:0!important;padding:8px 0!important;}
+        #view-quiz{gap:8px!important;}
+        #view-quiz #question-box{margin-top:4px!important;margin-bottom:4px!important;}
+        #view-quiz #quiz-bottom-nav{padding-top:6px!important;}
+        #view-bai-hoc-detail .space-y-3>:not([hidden])~:not([hidden]),#view-game-play .space-y-3>:not([hidden])~:not([hidden]){margin-top:8px!important;}
+
+        /* Card Kham pha tang co chu nhu TV1 */
+        #view-dashboard-grid .pastel-card h3{font-size:1.2rem!important;}
+        #view-dashboard-grid .pastel-card>div:last-child{font-size:13.2px!important;}
+
+        @media(max-width:767px){
+            .app-main-header{display:grid!important;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto;gap:7px!important;padding:7px 0!important;}
+            #btn-header-home{grid-column:1;grid-row:1;width:86px!important;min-width:86px!important;height:58px!important;justify-self:start;}
+            #header-info-zone{display:flex!important;grid-column:2;grid-row:1;justify-self:end!important;width:auto!important;min-width:0!important;gap:5px!important;}
+            #main-module-tabs{grid-column:1/3;grid-row:2;width:100%!important;}
+            #main-module-tabs>div{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;}
+            .main-module-tab{min-height:52px;flex-direction:row;gap:6px;font-size:12px;padding:6px 8px;border-radius:15px;}
+            .main-module-tab>span:first-child{font-size:18px!important;}
+            .main-module-tab::after{bottom:-4px;height:2px;}
+            #header-star-box{transform:none!important;margin-left:0!important;padding:3px 5px!important;}
+            #user-info-box{margin-left:0!important;min-width:0;text-align:right;}
+            #user-info-box .admin-manage-label{display:none!important;}
+            #user-info-box button[title="Quản lý tài khoản"],
+            #user-info-box button[onclick="openAdminAccountManager()"]{
+                width:34px!important;
+                min-width:34px!important;
+                padding-left:0!important;
+                padding-right:0!important;
+                justify-content:center!important;
+                gap:0!important;
+            }
+            #user-info-box button[onclick="openAdminAccountManager()"] > span{display:none!important;}
+            #app-main-banner{aspect-ratio:4/1;}
+            .app-main-banner-copy{width:39%;left:51%;top:49%;}
+            .app-main-banner-title{font-size:clamp(13px,4.2vw,20px);}
+            .app-main-banner-teacher{font-size:clamp(9px,2.8vw,13px);margin-top:2px;}
+            #app-context-banner{min-height:52px;padding:6px 8px;}
+            #header-learning-tabs{gap:4px;}
+            #header-level2-tab>button,#header-level3-tab>button,#header-level4-tab>button{height:34px!important;max-width:180px!important;padding:0 9px!important;border-radius:11px!important;}
+            #header-level2-title,#header-level3-title,#header-level4-title{font-size:11px!important;}
+            #header-level2-icon{display:none!important;}
+            #app-footer{height:64px;min-height:64px;flex:0 0 64px;margin-top:8px;}
+            #app-footer .footer-title{font-size:14px;}
+            #app-footer .footer-sub{font-size:12px;}
+            #view-roadmap,#view-bai-hoc-detail,#view-minigame-hub,#view-game-play,#view-exam-hub,#view-quiz>.pastel-card{padding-top:6px!important;padding-bottom:6px!important;}
+            #view-dashboard-grid .pastel-card h3{font-size:1.05rem!important;}
+            #view-dashboard-grid .pastel-card>div:last-child{font-size:13.2px!important;}
+        }
+
+    
+
+        /* TOAN 2 - CHUAN BANNER / FOOTER / NEN THEO TV1 2026-09-22 */
+        #screen-dashboard, #app-viewport, #view-dashboard-grid { background:#ffffff !important; }
+        #view-dashboard-grid .pastel-card, #view-dashboard-grid .pastel-card:hover { box-shadow:none !important; }
+        #view-dashboard-grid .pastel-card:has(h3.text-pink-700)    { background:rgba(253,242,248,.82) !important; }
+        #view-dashboard-grid .pastel-card:has(h3.text-purple-700)  { background:rgba(250,245,255,.84) !important; }
+        #view-dashboard-grid .pastel-card:has(h3.text-blue-700)    { background:rgba(239,246,255,.86) !important; }
+        #view-dashboard-grid .pastel-card:has(h3.text-fuchsia-700) { background:rgba(253,244,255,.84) !important; }
+        #view-dashboard-grid .pastel-card:has(h3.text-emerald-700) { background:rgba(236,253,245,.86) !important; }
+        #view-dashboard-grid .pastel-card:has(h3.text-indigo-700)  { background:rgba(238,242,255,.86) !important; }
+        #view-dashboard-grid .pastel-card:has(h3.text-amber-700)   { background:rgba(255,251,235,.88) !important; }
+        #view-dashboard-grid .pastel-card:has(h3.text-rose-700)    { background:rgba(255,241,242,.86) !important; }
+        #view-dashboard-grid .pastel-card:has(h3.text-cyan-700)    { background:rgba(236,254,255,.88) !important; }
+        #view-dashboard-grid .pastel-card:has(h3.text-violet-700)  { background:rgba(245,243,255,.88) !important; }
+        #view-dashboard-grid .pastel-card:has(h3.text-yellow-700)  { background:rgba(254,252,232,.90) !important; }
+
+        @media (min-width:768px){
+            .main-module-tab{font-size:16px !important;}
+            #header-level2-tab>button,#header-level3-tab>button,#header-level4-tab>button{
+                width:auto !important;min-width:0 !important;max-width:440px !important;
+                padding-left:18px !important;padding-right:18px !important;
+            }
+            #header-level2-title,#header-level3-title,#header-level4-title{
+                font-size:14px !important;max-width:400px !important;overflow:hidden !important;
+                text-overflow:ellipsis !important;white-space:nowrap !important;
+            }
+        }
+        @media (max-width:767px){
+            .main-module-tab{font-size:14px !important;}
+        }
+
+
+        /* TOAN 2 - can chinh cum sao va vien card Kham pha */
+        #view-dashboard-grid .pastel-card {
+            border-width: 1px !important;
+        }
+
+        @media (min-width: 768px) {
+            #header-star-box {
+                height: 62px !important;
+                min-height: 62px !important;
+                padding: 5px 8px !important;
+                justify-content: center !important;
+                gap: 4px !important;
+            }
+            #header-star-box > div {
+                min-height: 22px;
+                gap: 8px;
+            }
+            #header-star-box > div > span:first-child {
+                font-size: 12px !important;
+                padding: 3px 7px !important;
+                line-height: 1.15 !important;
+            }
+            #header-star-box > div > span:first-child i {
+                font-size: 12px !important;
+            }
+            #star-green-count,
+            #star-red-count {
+                font-size: 15px !important;
+                line-height: 1 !important;
+                min-width: 15px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 767px) {
+            #header-star-box {
+                height: 52px !important;
+                min-height: 52px !important;
+                padding: 4px 6px !important;
+                justify-content: center !important;
+                gap: 3px !important;
+            }
+            #header-star-box > div > span:first-child {
+                font-size: 11px !important;
+                padding: 2px 5px !important;
+            }
+            #header-star-box > div > span:first-child i {
+                font-size: 11px !important;
+            }
+            #star-green-count,
+            #star-red-count {
+                font-size: 13px !important;
+                line-height: 1 !important;
+            }
+        }
+
+        /* TOAN 2 - MOBILE TINH CHINH 2026-09-23 */
+        /* Footer 8:1, rong dung bang phan artwork banner ben trong dashboard */
+        #app-footer {
+            width: calc(100% - 1rem) !important;
+            max-width: calc(82rem - 1rem) !important;
+            aspect-ratio: 8 / 1 !important;
+            height: auto !important;
+            min-height: 0 !important;
+            flex: 0 0 auto !important;
+            box-sizing: border-box !important;
+        }
+
+        @media (max-width: 767px) {
+            /* Nut Quan ly chi con icon, badge dang ky moi van giu */
+            #user-info-box button[onclick="openAdminAccountManager()"] {
+                width: 36px !important;
+                min-width: 36px !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                gap: 0 !important;
+                justify-content: center !important;
+                font-size: 0 !important;
+            }
+            #user-info-box button[onclick="openAdminAccountManager()"] > .admin-manage-label,
+            #user-info-box button[onclick="openAdminAccountManager()"] > span:not(#admin-new-registration-badge) {
+                display: none !important;
+            }
+            #user-info-box button[onclick="openAdminAccountManager()"] > i {
+                font-size: 16px !important;
+                margin: 0 !important;
+            }
+
+            /* Chu 6 tab chinh lon hon tren mobile */
+            .main-module-tab {
+                font-size: 16px !important;
+                font-weight: 900 !important;
+            }
+            .main-module-tab > span:first-child {
+                font-size: 20px !important;
+            }
+
+            /* Tieu de + mo ta cac muc hoc lon hon */
+            #view-dashboard-grid .pastel-card h3 {
+                font-size: 1.2rem !important;
+                line-height: 1.2 !important;
+            }
+            #view-dashboard-grid .pastel-card > div:last-child {
+                font-size: 15px !important;
+                line-height: 1.4 !important;
+            }
+
+            #app-footer {
+                width: calc(100% - 0.5rem) !important;
+                max-width: calc(100% - 0.5rem) !important;
+                aspect-ratio: 8 / 1 !important;
+                height: auto !important;
+                min-height: 0 !important;
+                flex: 0 0 auto !important;
+            }
+        }
+
+    
+        /* TOAN 2 - Tang co chu card va tab mobile 2026-09-23 */
+        /* Card muc hoc: tang nhe ca desktop va mobile */
+        #view-dashboard-grid .pastel-card h3 {
+            font-size: 1.3rem !important;
+            line-height: 1.22 !important;
+        }
+        #view-dashboard-grid .pastel-card > div:last-child {
+            font-size: 15px !important;
+            line-height: 1.45 !important;
+        }
+
+        @media (max-width: 767px) {
+            /* Ten 6 tab chinh mobile lon hon, desktop giu nguyen */
+            .main-module-tab {
+                font-size: 17px !important;
+                font-weight: 900 !important;
+            }
+            .main-module-tab > span:first-child {
+                font-size: 21px !important;
+            }
+
+            /* Card muc hoc mobile: tang them de de doc */
+            #view-dashboard-grid .pastel-card h3 {
+                font-size: 1.32rem !important;
+                line-height: 1.22 !important;
+            }
+            #view-dashboard-grid .pastel-card > div:last-child {
+                font-size: 16px !important;
+                line-height: 1.45 !important;
+            }
+        }
+
+
+
+        /* MINI GAME TOAN 2 - tang co chu toan bo man choi 2026-09-30 */
+        #view-game-play > div > div:first-child h2 { font-size: 1.45rem !important; line-height: 1.25 !important; }
+        #view-game-play > div > div:first-child button { font-size: 0.95rem !important; }
+        #game-play-container .text-\[11px\] { font-size: 0.94rem !important; line-height: 1.45 !important; }
+        #game-play-container .text-xs { font-size: 0.96rem !important; line-height: 1.45 !important; }
+        #game-play-container .text-sm { font-size: 1.06rem !important; line-height: 1.45 !important; }
+        #game-play-container .text-base { font-size: 1.14rem !important; line-height: 1.45 !important; }
+        #game-play-container .text-lg { font-size: 1.32rem !important; line-height: 1.35 !important; }
+        #game-play-container .text-xl { font-size: 1.5rem !important; line-height: 1.3 !important; }
+        #game-play-container button { line-height: 1.25; }
+        @media (max-width: 640px) {
+            #view-game-play > div > div:first-child h2 { font-size: 1.25rem !important; }
+            #game-play-container .text-\[11px\], #game-play-container .text-xs { font-size: 0.88rem !important; }
+            #game-play-container .text-sm { font-size: 0.98rem !important; }
+            #game-play-container .text-base { font-size: 1.06rem !important; }
+            #game-play-container .text-lg { font-size: 1.18rem !important; }
+            #game-play-container .text-xl { font-size: 1.34rem !important; }
+        }
+</style>
 </head>
-<body>
-  <div class="app-shell">
-    <header class="app-header" aria-label="Điều hướng chính">
-      <button id="home-button" class="home-btn" type="button" title="Về Trang chủ Lớp 1">
-        <img src="logo-home.jpg" alt="Lớp 1 - Trang chủ">
-      </button>
+<body class="p-1 md:p-2 w-full" style="padding-top:0;padding-bottom:max(0.25rem,env(safe-area-inset-bottom));padding-left:max(0.25rem,env(safe-area-inset-left));padding-right:max(0.25rem,env(safe-area-inset-right));">
 
-      <nav id="primary-nav" class="primary-nav" aria-label="Các tab chính"></nav>
+    <div class="w-full flex justify-center items-center mt-0">
+        <!-- 1. MÀN HÌNH ĐĂNG NHẬP / ĐĂNG KÝ -->
+        <div id="screen-login" class="w-full max-w-md pastel-card p-6 md:p-8 flex flex-col items-center text-center my-auto">
+            <div class="mb-2 flex flex-col items-center">
+                <img src="icon-512.png" alt="Toán 2" class="w-[150px] h-[150px] md:w-[160px] md:h-[160px] object-contain select-none">
+            </div>
+            <p class="text-sm font-bold text-purple-600 mb-5">Cô Thỏ Ngọc</p>
 
-      <div class="header-tools">
-        <button id="install-button" class="tool-btn install-btn hidden" type="button">Cài App</button>
-        <div id="score-box" class="score-box hidden" aria-label="Thống kê đúng sai">
-          <span class="good">★ Đúng</span><strong class="good">0</strong>
-          <span class="bad">★ Sai</span><strong class="bad">0</strong>
+            <div class="w-full grid grid-cols-2 bg-pink-50 rounded-2xl p-1 mb-5 border border-pink-200">
+                <button id="tab-btn-login" onclick="switchAuthTab('login')" class="py-2.5 rounded-xl font-extrabold text-sm pastel-btn bg-white text-pink-600 shadow-sm">Đăng nhập</button>
+                <button id="tab-btn-register" onclick="switchAuthTab('register')" class="py-2.5 rounded-xl font-extrabold text-sm pastel-btn text-gray-400">Đăng ký tài khoản</button>
+            </div>
+
+            <div id="form-login" class="w-full space-y-3">
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-pink-400"><i class="fa-solid fa-id-card"></i></span>
+                    <input type="text" id="login-mahs" placeholder="Mã ID thẻ học sinh (ví dụ: 1A-09)" class="w-full pl-11 pr-4 py-3.5 rounded-2xl border-2 border-pink-200 focus:border-pink-400 focus:outline-none font-bold text-gray-700 placeholder-gray-300 bg-pink-50/20 text-sm">
+                </div>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-pink-400"><i class="fa-solid fa-lock"></i></span>
+                    <input type="password" id="login-mapin" maxlength="6" inputmode="numeric" placeholder="Mã PIN (6 số)" class="w-full pl-11 pr-4 py-3.5 rounded-2xl border-2 border-pink-200 focus:border-pink-400 focus:outline-none font-bold text-gray-700 placeholder-gray-300 bg-pink-50/20 text-sm">
+                </div>
+                <button onclick="doLogin()" id="btn-do-login" class="w-full py-3.5 bg-gradient-to-r from-pink-400 to-rose-400 text-white font-extrabold rounded-2xl text-sm pastel-btn shadow-md">
+                    <i class="fa-solid fa-right-to-bracket mr-1"></i> Đăng nhập
+                </button>
+            </div>
+
+            <div id="form-register" class="w-full space-y-3 hidden text-left">
+                <div>
+                    <label class="text-xs font-extrabold text-pink-600">Họ và tên học sinh <span class="text-rose-400">*</span></label>
+                    <input type="text" id="reg-hoten" placeholder="Ví dụ: Phùng Tường Vy" class="w-full mt-1 px-4 py-3 rounded-2xl border-2 border-pink-200 focus:border-pink-400 focus:outline-none font-bold text-gray-700 placeholder-gray-300 bg-pink-50/20 text-sm">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-xs font-extrabold text-pink-600">Ngày sinh <span class="text-rose-400">*</span></label>
+                        <input type="date" id="reg-ngaysinh" class="w-full mt-1 px-3 py-3 rounded-2xl border-2 border-pink-200 focus:border-pink-400 focus:outline-none font-bold text-gray-700 bg-pink-50/20 text-sm">
+                    </div>
+                    <div>
+                        <label class="text-xs font-extrabold text-pink-600">Tên lớp <span class="text-rose-400">*</span></label>
+                        <input type="text" id="reg-lop" placeholder="1A" oninput="updateMaHSPreview()" class="w-full mt-1 px-3 py-3 rounded-2xl border-2 border-pink-200 focus:border-pink-400 focus:outline-none font-bold text-gray-700 placeholder-gray-300 bg-pink-50/20 text-sm">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-xs font-extrabold text-pink-600">Số thứ tự <span class="text-rose-400">*</span></label>
+                        <input type="number" id="reg-stt" placeholder="09" min="1" max="99" oninput="updateMaHSPreview()" class="w-full mt-1 px-3 py-3 rounded-2xl border-2 border-pink-200 focus:border-pink-400 focus:outline-none font-bold text-gray-700 placeholder-gray-300 bg-pink-50/20 text-sm">
+                    </div>
+                    <div>
+                        <label class="text-xs font-extrabold text-pink-600">Mã PIN (6 số) <span class="text-rose-400">*</span></label>
+                        <input type="password" id="reg-mapin" maxlength="6" inputmode="numeric" placeholder="••••••" class="w-full mt-1 px-3 py-3 rounded-2xl border-2 border-pink-200 focus:border-pink-400 focus:outline-none font-bold text-gray-700 placeholder-gray-300 bg-pink-50/20 text-sm">
+                    </div>
+                </div>
+                <div class="flex items-center justify-between bg-pink-50 border border-pink-200 rounded-xl px-3 py-2.5">
+                    <span class="text-xs font-bold text-gray-500">Mã ID thẻ học sinh:</span>
+                    <span id="mahs-preview" class="text-sm font-extrabold text-pink-600 bg-white px-2.5 py-1 rounded-lg border border-pink-200">--</span>
+                </div>
+                <button onclick="doRegister()" id="btn-do-register" class="w-full py-3.5 bg-gradient-to-r from-purple-400 to-indigo-400 text-white font-extrabold rounded-2xl text-sm pastel-btn shadow-md">
+                    <i class="fa-solid fa-user-plus mr-1"></i> Đăng ký ngay
+                </button>
+            </div>
+
+            <div class="w-full mt-4 pt-4 border-t border-pink-100">
+                <button onclick="handleGuestMode()" class="w-full py-3 bg-gradient-to-r from-pink-100 to-purple-100 text-purple-700 font-extrabold rounded-2xl text-xs md:text-sm pastel-btn hover:from-pink-200 hover:to-purple-200 border border-purple-200 flex items-center justify-center space-x-1.5">
+                    <i class="fa-solid fa-arrow-left"></i><span>Để sau nhé</span>
+                </button>
+            </div>
+            <p id="auth-error-msg" class="text-xs font-bold text-rose-500 mt-3 hidden"></p>
         </div>
-        <button id="account-button" class="tool-btn user-btn" type="button" title="Tài khoản" aria-label="Tài khoản"><span class="user-btn-avatar" aria-hidden="true">👤</span><span class="user-btn-name">Tài khoản</span></button>
-      </div>
-    </header>
 
-    <section class="banner-slot" aria-label="Không gian nhận diện">
-      <div id="main-banner" class="main-banner">
-        <picture>
-          <source media="(max-width: 767px)" srcset="banner-main-mobile.jpg">
-          <img src="banner-main.jpg" alt="Lớp 1 - Cô Thỏ Hồng">
-        </picture>
-      </div>
-      <div id="sub-banner" class="sub-banner hidden">
-        <div id="sub-pill" class="sub-pill">🌸 Mục học</div>
-      </div>
-    </section>
+        <!-- 2. KHUNG CHÍNH CHUẨN TỶ LỆ 16:9 / 16:10 -->
+        <div id="screen-dashboard" class="w-full hidden flex flex-col space-y-1.5 md:space-y-2 p-1 md:p-2" style="max-width: 82rem !important;">
+            
+            <header class="app-main-header w-full">
+                <button id="btn-header-home" onclick="goHome()" title="Về trang chủ" class="flex items-center justify-center bg-white border border-pink-300 shadow-sm shrink-0 overflow-hidden p-0 transition-shadow duration-200 hover:border-pink-400 hover:shadow-[0_0_18px_rgba(244,114,182,0.65)]">
+                    <img src="./logo-home.png?v=20260923-2" alt="Trang chủ Toán 2" class="w-full h-full object-cover">
+                </button>
 
-    <main id="content-stage" class="content-stage" tabindex="-1"></main>
+                <nav id="main-module-tabs" aria-label="Điều hướng chính">
+                    <div>
+                        <button id="main-tab-discover" onclick="openMainTab('discover')" class="main-module-tab" data-tab="discover"><span>🧭</span><span>Khám phá</span></button>
+                        <button id="main-tab-lessons" onclick="openMainTab('lessons')" class="main-module-tab" data-tab="lessons"><span>📖</span><span>Bài học</span><span id="bai-hoc-lock-icon" class="hidden absolute -top-1 -right-1 text-[10px]">🔒</span></button>
+                        <button id="main-tab-exercises" onclick="openMainTab('exercises')" class="main-module-tab" data-tab="exercises"><span>✏️</span><span>Bài tập</span><span id="roadmap-lock-icon" class="hidden absolute -top-1 -right-1 text-[10px]">🔒</span></button>
+                        <button id="main-tab-review" onclick="openMainTab('review')" class="main-module-tab" data-tab="review"><span>🧠</span><span>Ôn tập</span><span id="review-lock-icon" class="hidden absolute -top-1 -right-1 text-[10px]">🔒</span></button>
+                        <button id="main-tab-exams" onclick="openMainTab('exams')" class="main-module-tab" data-tab="exams"><span>🏆</span><span>Đề thi</span><span id="exam-lock-icon" class="hidden absolute -top-1 -right-1 text-[10px]">🔒</span></button>
+                        <button id="main-tab-games" onclick="openMainTab('games')" class="main-module-tab" data-tab="games"><span>🎮</span><span>Mini games</span><span id="minigame-lock-icon" class="hidden absolute -top-1 -right-1 text-[10px]">🔒</span></button>
+                    </div>
+                </nav>
 
-    <footer class="app-footer" aria-label="Chân trang">
-      <div class="footer-copy">
-        Epsilon Edu - Tiến bộ từng ngày
-        <small><span aria-hidden="true">📱</span> 0865.749.402</small>
-      </div>
+                <div id="header-info-zone" class="flex items-center">
+                    <div id="header-star-box" class="flex flex-col space-y-0.5 bg-pink-50/90 px-1.5 md:px-2.5 py-1 rounded-xl border border-pink-200 shadow-inner">
+                        <div class="flex items-center justify-between space-x-2 font-extrabold"><span class="px-1.5 py-0.5 bg-emerald-500 text-white rounded text-[10px] shadow-sm flex items-center justify-center"><i class="fa-solid fa-star md:mr-0.5"></i><span class="hidden md:inline"> Đúng</span></span><span class="text-emerald-600 font-extrabold text-xs" id="star-green-count">0</span></div>
+                        <div class="flex items-center justify-between space-x-2 font-extrabold"><span class="px-1.5 py-0.5 bg-rose-500 text-white rounded text-[10px] shadow-sm flex items-center justify-center"><i class="fa-solid fa-star md:mr-0.5"></i><span class="hidden md:inline"> Sai</span></span><span class="text-rose-600 font-extrabold text-xs" id="star-red-count">0</span></div>
+                    </div>
+                    <div id="user-info-box" class="text-xs font-bold text-gray-600 text-right"></div>
+                </div>
+            </header>
+
+            <section id="app-banner-slot" aria-label="Không gian nhận diện và điều hướng">
+                <div id="app-main-banner">
+                    <picture>
+                        <source media="(max-width: 767px)" srcset="banner-main-mobile.jpg">
+                        <img src="banner-main.jpg" alt="Khu vườn học tập của Cô Thỏ Ngọc">
+                    </picture>
+                </div>
+                <div id="app-context-banner" class="hidden">
+                    <div id="header-learning-tabs" class="flex items-center min-w-0">
+                        <div id="header-level2-tab" class="hidden items-center">
+                            <button onclick="returnToTopicLecture()" class="flex items-center space-x-1.5 shrink-0 transition-shadow duration-200"><span id="header-level2-icon">🔢</span><span id="header-level2-title" class="truncate">Chủ đề học</span></button>
+                        </div>
+                        <div id="header-level3-tab" class="hidden items-center space-x-1"><span class="font-bold">›</span><button onclick="returnToLevel3FromHeader()" class="truncate flex items-center"><span id="header-level3-title" class="truncate">Mục nhỏ</span></button></div>
+                        <div id="header-level4-tab" class="hidden items-center space-x-1"><span class="font-bold">›</span><button onclick="returnToLevel4FromHeader()" class="truncate flex items-center"><span id="header-level4-title" class="truncate">Mục sâu</span></button></div>
+                    </div>
+                </div>
+            </section>
+
+            <main id="app-viewport" class="w-full">
+                
+                <!-- VIEW 1: TRANG CHỦ 12 CHỦ ĐỀ -->
+                <div id="view-dashboard-grid" class="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5"></div>
+
+                <!-- Khám phá dùng trực tiếp view-dashboard-grid để hiển thị chủ đề/mục con; không còn view lecture trung gian. -->
+
+                <!-- VIEW 3: PHÒNG LÀM BÀI / THI CHUẨN 16:9 -->
+                <div id="view-quiz" class="w-full hidden flex flex-col space-y-1.5">
+                    
+                    <!-- TOP BAR CỦA ĐỀ THI (ẨN HOÀN TOÀN TRONG CHẾ ĐỘ LUYỆN TẬP) -->
+                    <div id="quiz-top-bar" class="w-full bg-white rounded-2xl p-2.5 border-2 border-pink-200 flex flex-wrap items-center justify-between gap-2.5 shadow-xs">
+                        <div id="quiz-timer-container" class="flex items-center space-x-2">
+                            <div class="w-8 h-8 rounded-xl bg-pink-50 border border-pink-200 flex items-center justify-center text-pink-500 font-bold text-sm">
+                                <i class="fa-solid fa-stopwatch"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold text-gray-400 uppercase tracking-wider block">Thời gian</span>
+                                <span id="quiz-timer-display" class="text-base font-black text-rose-500 tracking-wider">40:00</span>
+                            </div>
+                        </div>
+
+                        <button id="btn-submit-quiz" onclick="triggerSubmitQuizPrompt()" class="ml-auto px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-black text-xs md:text-sm flex items-center space-x-1.5 transition-all shadow-sm pastel-btn">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Nộp bài thi</span>
+                        </button>
+                    </div>
+
+                    <!-- THẺ CARD LÀM BÀI CHÍNH -->
+                    <div class="w-full pastel-card p-3.5 md:p-5 flex flex-col justify-between min-h-[380px]">
+                        
+                        <!-- HEADER TRONG CARD (CHỈ HIỆN KHI THI) -->
+                        <div id="quiz-card-header" class="hidden items-center justify-between flex-wrap gap-2 border-b border-pink-100 pb-2">
+                            <div class="flex items-center space-x-2">
+                                <span id="q-badge-index" class="px-2.5 py-1 bg-pink-100 text-pink-800 text-sm font-black rounded-lg">CÂU 1 / 13</span>
+                                <span id="q-badge-skill" class="px-2.5 py-1 bg-pink-50 text-pink-700 border border-pink-200 text-sm font-bold rounded-lg flex items-center space-x-1">
+                                    <i class="fa-solid fa-tag text-xs"></i>
+                                    <span id="q-skill-text">Kiến thức cơ bản</span>
+                                </span>
+                                <span id="q-badge-score" class="px-2 py-1 bg-amber-50 text-amber-700 border border-amber-200 text-sm font-bold rounded-lg">(0.5 điểm)</span>
+                            </div>
+                            
+                            <button id="btn-roadmap-history" onclick="openHistoryModal('LichSuTienTrinhTuan')" class="hidden px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-xl text-sm font-extrabold items-center space-x-1.5 transition-shadow duration-200 hover:shadow-[0_0_10px_rgba(99,102,241,0.5)] shadow-xs">
+                                <i class="fa-solid fa-chart-line"></i>
+                                <span>Lịch sử tiến trình tuần</span>
+                            </button>
+
+                            <button onclick="speakCurrentQuestion()" class="px-3 py-1.5 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 rounded-xl text-sm font-extrabold flex items-center space-x-1.5 transition-all pastel-btn shadow-xs">
+                                <i class="fa-solid fa-volume-high text-pink-600"></i>
+                                <span>Nghe câu hỏi</span>
+                            </button>
+                        </div>
+
+                        <!-- KHU VỰC CÂU HỎI & ĐÁP ÁN -->
+                        <div id="question-box" class="w-full flex flex-col justify-center items-center flex-1 my-0.5"></div>
+
+                        <!-- ĐIỀU HƯỚNG ĐÁY -->
+                        <div id="quiz-bottom-nav" class="w-full pt-1">
+                            <!-- 1. GIAO DIỆN LUYỆN TẬP -->
+                            <div id="nav-group-practice" class="flex items-center justify-center gap-3 w-full">
+                                <button id="btn-prev-q-prac" onclick="prevQuestion()" class="px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-extrabold rounded-2xl text-xs md:text-sm pastel-btn border border-gray-200 flex items-center justify-center space-x-1.5 shadow-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                                    <i class="fa-solid fa-chevron-left"></i><span>Câu trước</span>
+                                </button>
+
+                                <div id="practice-step-indicator" class="px-5 py-1.5 bg-pink-50 border border-pink-200 text-pink-700 font-black rounded-full text-xs md:text-sm flex items-center justify-center shadow-xs select-none">
+                                    <span id="practice-step-text">Câu 1 / 59</span>
+                                </div>
+
+                                <button id="btn-next-q-prac" onclick="nextQuestion()" class="px-6 py-2 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-black rounded-2xl text-xs md:text-sm pastel-btn shadow-md flex items-center justify-center space-x-1.5 transition-all">
+                                    <span id="btn-next-text-prac">Câu tiếp theo</span>
+                                    <i id="btn-next-icon-prac" class="fa-solid fa-chevron-right ml-1"></i>
+                                </button>
+                            </div>
+
+                            <!-- 2. GIAO DIỆN ĐỀ THI -->
+                            <div id="nav-group-exam" class="hidden items-center justify-between w-full">
+                                <button id="btn-prev-q-exam" onclick="prevQuestion()" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-extrabold rounded-xl text-xs md:text-sm pastel-btn border border-gray-200 flex items-center justify-center space-x-1.5 shadow-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                                    <i class="fa-solid fa-chevron-left"></i><span>Câu trước</span>
+                                </button>
+
+                                <div id="quiz-pallet-container" class="grid grid-cols-10 gap-1.5 max-w-xl mx-2"></div>
+
+                                <button id="btn-next-q-exam" onclick="nextQuestion()" class="px-5 py-2 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-black rounded-xl text-xs md:text-sm pastel-btn shadow-md flex items-center justify-center space-x-1.5 transition-all">
+                                    <span id="btn-next-text-exam">Câu tiếp theo</span>
+                                    <i id="btn-next-icon-exam" class="fa-solid fa-chevron-right ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- VIEW 4: BẢN ĐỒ LỘ TRÌNH 12 TUẦN SVG CHỮ S -->
+                <div id="view-roadmap" class="w-full hidden pastel-card p-3 md:p-5 flex flex-col justify-between items-center min-h-[480px]">
+                    <div class="w-full max-w-5xl flex flex-col items-center">
+                        <div class="flex flex-col sm:flex-row items-center justify-between w-full px-2 mb-2 gap-2">
+                            <div>
+                                <h2 class="text-base md:text-lg font-extrabold text-indigo-600 flex items-center space-x-2">
+                                    <span>✏️</span><span>Bài tập</span>
+                                </h2>
+                                <p class="text-[11px] md:text-xs text-gray-500 font-bold">20 câu mỗi bài · đạt từ 80% để mở Bài tập tiếp theo · dùng khung 6 năng lực nhưng chỉ đánh giá nhóm có đủ dữ liệu.</p>
+                            </div>
+                            
+                            <div class="flex items-center space-x-2 shrink-0">
+                                <button onclick="openHistoryModal('LichSuTienTrinhTuan')" class="px-3 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-extrabold rounded-xl border border-indigo-200 text-xs pastel-btn flex items-center space-x-1.5 shadow-sm">
+                                    <i class="fa-solid fa-chart-line text-indigo-600"></i>
+                                    <span>📊 Lịch sử Bài tập</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="roadmap-semester-tabs" class="w-full flex items-center justify-center gap-2 mb-2"></div>
+                        <div id="roadmap-svg-container" class="w-full flex justify-center items-center overflow-hidden bg-gradient-to-b from-pink-50/30 to-purple-50/30 rounded-2xl border-2 border-pink-100 p-1"></div>
+                    </div>
+                </div>
+
+                <!-- VIEW: CHI TIẾT BÀI HỌC TOÁN 2 -->
+                <div id="view-bai-hoc-detail" class="w-full hidden pastel-card p-3 md:p-5">
+                    <div class="w-full max-w-5xl mx-auto space-y-3">
+                        <div class="flex items-start justify-between gap-3">
+                            <div class="min-w-0">
+                                <div id="bai-hoc-detail-meta" class="text-xs md:text-sm font-black text-sky-600 mb-1">Bài học</div>
+                                <h2 id="bai-hoc-detail-title" class="text-lg md:text-xl font-black text-slate-800 leading-snug"></h2>
+                            </div>
+                            <button onclick="backToBaiHocHubToan2_()" class="shrink-0 px-3 py-2 bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 rounded-xl text-xs font-extrabold">← Danh sách bài</button>
+                        </div>
+                        <div id="bai-hoc-detail-tabs" class="flex flex-wrap items-center justify-center gap-2 border-y border-pink-100 py-2.5"></div>
+                        <div id="bai-hoc-detail-body" class="w-full"></div>
+                    </div>
+                </div>
+
+                <!-- VIEW: TRUNG TÂM MINI GAME TOÁN 2 -->
+                <div id="view-minigame-hub" class="w-full hidden pastel-card p-3 md:p-5 flex flex-col items-center">
+                    <div class="w-full max-w-5xl">
+                        <div class="text-center mb-4">
+                            <h2 class="text-base md:text-lg font-extrabold text-teal-600 flex items-center justify-center space-x-2"><span>🎮</span><span>Trung tâm Mini Game Toán 2</span></h2>
+                            <p class="text-[11px] md:text-xs text-gray-500 font-bold">Học mà chơi - luyện tư duy Toán cùng Cô Thỏ Ngọc</p>
+                        </div>
+                        <div id="minigame-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
+                    </div>
+                </div>
+
+                <!-- VIEW: MÀN CHƠI GAME -->
+                <div id="view-game-play" class="w-full hidden pastel-card p-3 md:p-5 flex flex-col items-center">
+                    <div class="w-full max-w-6xl">
+                        <div class="flex items-center justify-between mb-3 gap-2">
+                            <h2 id="game-play-title" class="text-base md:text-lg font-extrabold text-teal-600 flex items-center gap-2 min-w-0"></h2>
+                            <button onclick="openMiniGameHub()" class="px-3 py-1.5 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-extrabold rounded-xl text-xs md:text-sm shadow-sm pastel-btn shrink-0"><i class="fa-solid fa-arrow-left"></i> Chọn game khác</button>
+                        </div>
+                        <div id="game-play-container" class="w-full"></div>
+                    </div>
+                </div>
+
+                <!-- VIEW 5: ĐẤU TRƯỜNG ĐỀ THI (MỤC 12) -->
+                <div id="view-exam-hub" class="w-full hidden pastel-card p-5 md:p-7 flex flex-col justify-between items-center min-h-[480px]">
+                    <div class="w-full max-w-5xl">
+                        <div class="text-center mb-5">
+                            <h2 class="font-extrabold text-amber-600 text-lg md:text-xl flex items-center justify-center space-x-2">
+                                <span>🏆</span><span>Đấu trường đề thi thử</span>
+                            </h2>
+                            <p class="text-xs md:text-sm text-gray-500 font-bold mt-1">Mỗi đề bám đúng phạm vi kỳ học · không ép đủ 6 năng lực vào một đề</p>
+                        </div>
+                        <div id="exam-categories-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+                    </div>
+                </div>
+
+                <!-- VIEW 6: MÀN HÌNH KẾT QUẢ & BÁO CÁO -->
+                <div id="view-result" class="w-full hidden flex flex-col space-y-3">
+                    
+                    <div class="bg-gradient-to-tr from-rose-900 via-pink-950 to-rose-900 rounded-3xl p-4 sm:p-5 text-white shadow-xl relative overflow-hidden">
+                        <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4">
+                            <div class="space-y-1 text-center md:text-left">
+                                <span class="px-3 py-0.5 bg-white/10 backdrop-blur-md rounded-full text-xs font-bold tracking-wider text-pink-200 border border-white/15 inline-block" id="report-exam-badge">
+                                    Kết quả bài thi
+                                </span>
+                                <h2 id="report-student-display" class="text-lg sm:text-xl font-black tracking-tight">Học sinh: --</h2>
+                                <p id="report-meta-display" class="text-xs text-pink-200">Lớp: -- | Mã số: -- | Thời gian: --</p>
+                            </div>
+
+                            <div class="flex items-center gap-3">
+                                <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-4 py-2 text-center">
+                                    <span class="text-[10px] uppercase tracking-wider text-pink-200 font-bold block mb-0.5">Tổng điểm</span>
+                                    <div class="text-2xl sm:text-3xl font-black font-math text-amber-300" id="report-total-score-val">0.0</div>
+                                    <span class="text-[9px] text-pink-200">Thang điểm 10</span>
+                                </div>
+                                <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-4 py-2 text-center">
+                                    <span class="text-[10px] uppercase tracking-wider text-pink-200 font-bold block mb-0.5">Độ chính xác</span>
+                                    <div class="text-2xl sm:text-3xl font-black font-math text-emerald-300" id="report-correct-ratio-val">0/13</div>
+                                    <span class="text-[9px] text-pink-200">Câu đúng</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-3xl p-4 sm:p-5 border border-pink-100 soft-shadow-pink space-y-2.5">
+                        <h3 class="text-sm sm:text-base font-black text-slate-800 tracking-tight flex items-center space-x-2">
+                            <i class="fa-solid fa-chart-bar text-pink-600"></i>
+                            <span>Bóc tách điểm số & năng lực thực sự được đo</span>
+                        </h3>
+                        <p class="text-[11px] sm:text-xs font-bold text-slate-500 leading-relaxed">Khung C1–C6 là khung toàn chương trình, không phải checklist của từng đề. Nhóm không có câu đo sẽ hiển thị <strong>Chưa đánh giá</strong>; nhóm có quá ít câu sẽ hiển thị <strong>Chưa đủ dữ liệu</strong> — tuyệt đối không quy thành 0%.</p>
+                        <div id="report-topics-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-0.5">
+                        <button onclick="openReviewWrongModal()" class="py-2.5 px-3 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-black text-xs rounded-2xl shadow-xs transition-all flex items-center justify-center space-x-1.5 pastel-btn">
+                            <i class="fa-solid fa-circle-question text-rose-500"></i>
+                            <span>👉 Xem lại các câu làm sai</span>
+                        </button>
+
+                        <button id="report-history-btn" onclick="openHistoryModal('LichSuBaiThi_HK1')" class="py-2.5 px-3 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 font-black text-xs rounded-2xl shadow-xs transition-all flex items-center justify-center space-x-1.5 pastel-btn">
+                            <i class="fa-solid fa-chart-line text-pink-600"></i>
+                            <span>📊 Lịch sử & biểu đồ tiến trình</span>
+                        </button>
+
+                        <button id="report-next-action-btn" onclick="handleNextExamFromReport()" class="py-2.5 px-3 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-black text-xs rounded-2xl shadow-sm transition-all flex items-center justify-center space-x-1.5 pastel-btn">
+                            <span id="report-next-action-label">🚀 Làm đề thi tiếp theo</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- MODAL XEM LẠI CÂU SAI -->
+    <div id="modal-review-wrong" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-pink-100 overflow-hidden">
+            <div class="p-3.5 border-b border-pink-100 flex items-center justify-between bg-rose-50/50">
+                <div class="flex items-center space-x-2 text-rose-800">
+                    <i class="fa-solid fa-triangle-exclamation text-rose-600"></i>
+                    <h3 class="font-black text-sm">Chi tiết các câu trả lời chưa chính xác</h3>
+                </div>
+                <button onclick="closeReviewWrongModal()" class="w-7 h-7 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-slate-700"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div id="review-wrong-content" class="p-4 overflow-y-auto space-y-3 flex-grow text-xs sm:text-sm"></div>
+
+            <div class="p-3 border-t border-slate-100 flex justify-end bg-slate-50">
+                <button onclick="closeReviewWrongModal()" class="px-5 py-2 bg-slate-800 text-white font-bold rounded-xl text-xs pastel-btn">Đóng lại</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL BÁO CÁO TIẾN TRÌNH & BIỂU ĐỒ (PHÂN TRANG 3 TRANG KHI XUẤT PDF) -->
+    <div id="modal-history-progress" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4">
+        <div class="bg-white rounded-3xl max-w-5xl w-full max-h-[96vh] flex flex-col shadow-2xl border-2 border-pink-200 overflow-hidden">
+            
+            <div id="printable-report-area" class="p-4 sm:p-6 overflow-y-auto space-y-4 flex-grow bg-white">
+                
+                <!-- TRANG 1: THÔNG TIN & BIỂU ĐỒ -->
+                <div class="space-y-4 page-break-1">
+                    <div class="p-3.5 sm:p-4 rounded-2xl border border-pink-200 bg-pink-50/70 flex flex-col md:flex-row items-center justify-between gap-3 shadow-xs">
+                        <div class="flex items-center space-x-3 text-pink-950 flex-1">
+                            <div class="w-10 h-10 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center shadow-xs shrink-0">
+                                <i class="fa-solid fa-award text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-black text-base sm:text-lg text-pink-950" id="hist-modal-title">Kết quả tiến trình học tập</h3>
+                                <p class="text-xs font-bold text-pink-600 whitespace-nowrap">Phân tích theo dữ liệu thực đo · không được đo ≠ 0%</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/95 border-2 border-pink-200 px-4 py-2 rounded-2xl shadow-xs text-left shrink-0">
+                            <div class="text-sm font-black text-slate-900 leading-tight">
+                                Học sinh: <span id="hist-info-name" class="text-pink-600">--</span>
+                            </div>
+                            <div class="text-xs font-bold text-slate-600 mt-0.5">
+                                Lớp: <span id="hist-info-class" class="text-slate-900 font-extrabold">--</span> &nbsp;|&nbsp; 
+                                Mã số: <span id="hist-info-code" class="text-slate-900 font-extrabold">--</span> &nbsp;|&nbsp; 
+                                Ngày sinh: <span id="hist-info-dob" class="text-slate-900 font-extrabold">--</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-2 shrink-0">
+                            <div class="text-xs font-bold text-slate-700 bg-white/95 px-3 py-2 rounded-xl border border-pink-200 text-center shadow-xs flex flex-col items-center justify-center leading-tight">
+                                <span>Ngày báo cáo</span>
+                                <span id="hist-report-date" class="font-bold text-rose-600">03/09/2026</span>
+                            </div>
+                            <button onclick="closeHistoryModal()" class="w-8 h-8 rounded-full bg-white border border-pink-200 flex items-center justify-center text-pink-400 hover:text-rose-600 transition-all shadow-xs no-print">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row gap-4 w-full">
+                        <div class="w-full md:w-[60%] bg-pink-50/40 border border-pink-100 rounded-2xl p-4 flex flex-col justify-between shadow-xs">
+                            <h4 class="text-xs sm:text-sm font-black text-slate-800 mb-2 flex items-center space-x-1.5">
+                                <i class="fa-solid fa-chart-line text-pink-600"></i>
+                                <span>Biến thiên tổng điểm các bài thi (/10)</span>
+                            </h4>
+                            <div class="h-64 w-full relative">
+                                <canvas id="progressChartCanvas"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="w-full md:w-[40%] bg-pink-50/40 border border-pink-100 rounded-2xl p-4 flex flex-col justify-between shadow-xs">
+                            <div class="mb-2">
+                                <h4 class="text-xs sm:text-sm font-black text-slate-800 flex items-center space-x-1.5">
+                                    <i class="fa-solid fa-chart-bar text-rose-600"></i>
+                                    <span>Năng lực trung bình theo dữ liệu đã đo (%)</span>
+                                </h4>
+                                <p class="text-[10px] text-slate-500 font-bold mt-1">Cột trống nghĩa là chưa có dữ liệu đánh giá hợp lệ, không phải 0%.</p>
+                            </div>
+                            <div class="h-64 w-full relative">
+                                <canvas id="topicRadarChartCanvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TRANG 2: NHẬN XÉT SƯ PHẠM CHI TIẾT -->
+                <div class="space-y-4 page-break-2">
+                    <div class="bg-gradient-to-br from-amber-50/90 via-orange-50/60 to-rose-50/50 border border-amber-200/80 rounded-2xl p-4 space-y-3 shadow-xs">
+                        <div class="flex items-center justify-between border-b border-amber-200/60 pb-1.5 gap-2 flex-wrap">
+                            <div class="flex items-center space-x-2.5">
+                                <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shadow-xs shrink-0">
+                                    <i class="fa-solid fa-award"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-base font-black text-amber-950 leading-tight">Nhận xét sư phạm & kế hoạch bồi dưỡng của giáo viên</h4>
+                                    <p class="text-xs font-bold text-amber-700">Chỉ nhận xét nhóm có đủ dữ liệu · nhóm chưa được đo không bị quy thành 0%</p>
+                                </div>
+                            </div>
+                            <button onclick="speakPedagogicalEvaluation()" class="no-print shrink-0 px-3 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300 rounded-xl text-xs font-black flex items-center space-x-1.5 pastel-btn shadow-xs">
+                                <i class="fa-solid fa-volume-high"></i><span>Nghe cô giáo đọc</span>
+                            </button>
+                        </div>
+                        <div id="pedagogical-evaluation-box" class="space-y-2.5 text-xs sm:text-sm text-slate-800 leading-normal font-semibold"></div>
+                    </div>
+                </div>
+
+                <!-- TRANG 3: BẢNG THỐNG KÊ CHI TIẾT TỪNG BÀI THI -->
+                <div class="space-y-3 page-break-3">
+                    <div>
+                        <h4 class="text-base font-black text-slate-900 flex items-center space-x-2">
+                            <i class="fa-solid fa-table text-pink-600"></i>
+                            <span>Bảng thống kê điểm số chi tiết từng bài thi</span>
+                        </h4>
+                        <p class="text-[10px] sm:text-xs text-slate-500 font-bold mt-1">“Chưa ĐG” = chưa đánh giá; “Chưa đủ DL” = chưa đủ dữ liệu để kết luận năng lực.</p>
+                    </div>
+                    <div class="border border-pink-200 rounded-2xl overflow-hidden shadow-xs bg-white overflow-x-auto">
+                        <table class="w-full text-center text-xs border-collapse">
+                            <thead class="bg-pink-100/70 text-pink-950 font-black border-b border-pink-200">
+                                <tr class="divide-x divide-pink-200">
+                                    <th class="py-2.5 px-2 whitespace-nowrap">Lần thi</th>
+                                    <th class="py-2.5 px-2 whitespace-nowrap">Đề / Tuần</th>
+                                    <th class="py-2.5 px-2 whitespace-nowrap text-rose-600">Tổng điểm</th>
+                                    <th class="py-2 px-1 leading-tight">C1: Nhận biết<br><span class="text-[10px] text-pink-700">(Số & hình)</span></th>
+                                    <th class="py-2 px-1 leading-tight">C2: Phép tính<br><span class="text-[10px] text-pink-700">(Tính nhẩm)</span></th>
+                                    <th class="py-2 px-1 leading-tight">C3: Đo lường<br><span class="text-[10px] text-pink-700">(Thời gian)</span></th>
+                                    <th class="py-2 px-1 leading-tight">C4: Quy luật<br><span class="text-[10px] text-pink-700">(Tìm x)</span></th>
+                                    <th class="py-2 px-1 leading-tight">C5: Giải toán<br><span class="text-[10px] text-pink-700">(Lời văn)</span></th>
+                                    <th class="py-2 px-1 leading-tight">C6: Tư duy<br><span class="text-[10px] text-pink-700">(Logic IQ)</span></th>
+                                    <th class="py-2.5 px-2 whitespace-nowrap">Ngày làm</th>
+                                    <th class="py-2.5 px-2 whitespace-nowrap">Thời gian</th>
+                                </tr>
+                            </thead>
+                            <tbody id="hist-table-body" class="divide-y divide-pink-100 font-bold text-slate-700"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="p-3.5 border-t border-pink-100 flex items-center justify-between bg-pink-50/40 no-print">
+                <button onclick="exportReportToPDF()" class="px-5 py-2.5 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white font-extrabold text-xs md:text-sm rounded-xl transition-all shadow-md pastel-btn flex items-center space-x-1.5">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    <span>Xuất PDF</span>
+                </button>
+
+                <button onclick="closeHistoryModal()" class="px-8 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl text-xs md:text-sm transition-all pastel-btn">
+                    Đóng lại
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHÂN TRANG DÙNG CHUNG - ảnh phong cảnh + chữ HTML -->
+    <footer id="app-footer" class="select-text cursor-text" style="user-select:text;-webkit-user-select:text;">
+        <div>
+            <div class="footer-title">Epsilon Edu - Tiến bộ từng ngày</div>
+            <div class="footer-sub"><i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i> 0865.749.402</div>
+        </div>
     </footer>
-  </div>
 
-  <div id="auth-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="auth-title">
-    <div class="auth-card">
-      <button id="auth-close" class="close-btn" type="button" aria-label="Đóng">×</button>
-      <img class="auth-logo" src="logo-home.jpg" alt="Lớp 1">
-      <div id="auth-title" class="auth-name">Cô Thỏ Hồng</div>
+    <!-- NẠP ENGINE JAVASCRIPT ĐỒNG BỘ -->
+    <script src="assets/js/app.js?v=12.9-minigame-interactive-20260930"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', async () => {
+          const isLocal = location.hostname === '127.0.0.1' || location.hostname === 'localhost';
 
-      <div id="auth-tabs" class="auth-tabs" role="tablist" aria-label="Tài khoản">
-        <button id="auth-tab-login" class="auth-tab is-active" type="button">Đăng nhập</button>
-        <button id="auth-tab-register" class="auth-tab" type="button">Đăng ký tài khoản</button>
-      </div>
+          if (isLocal) {
+            // Dev/Live Server: tránh service worker/cache cũ giữ index hoặc asset lỗi.
+            const regs = await navigator.serviceWorker.getRegistrations();
+            await Promise.all(regs.map(reg => reg.unregister()));
 
-      <form id="login-form" class="form-stack" novalidate>
-        <div class="field">
-          <label for="login-id">Mã ID</label>
-          <input id="login-id" name="login-id" autocomplete="username" placeholder="Ví dụ: L1-A001">
-        </div>
-        <div class="field">
-          <label for="login-password">Mật khẩu</label>
-          <input id="login-password" name="login-password" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu">
-        </div>
-        <button id="login-submit" class="primary-action" type="submit">Đăng nhập</button>
-      </form>
+            if ('caches' in window) {
+              const keys = await caches.keys();
+              await Promise.all(keys.map(key => caches.delete(key)));
+            }
+            return;
+          }
 
-      <form id="register-form" class="form-stack hidden" novalidate>
-        <div class="field">
-          <label for="register-name">Họ và tên học sinh</label>
-          <input id="register-name" name="register-name" autocomplete="name" placeholder="Ví dụ: Nguyễn Minh An">
-        </div>
-        <div class="field">
-          <label for="register-password">Mật khẩu <span aria-hidden="true">*</span></label>
-          <input id="register-password" name="register-password" type="password" minlength="6" autocomplete="new-password" placeholder="Tối thiểu 6 ký tự">
-        </div>
-        <div class="field">
-          <label for="register-confirm">Nhập lại mật khẩu <span aria-hidden="true">*</span></label>
-          <input id="register-confirm" name="register-confirm" type="password" minlength="6" autocomplete="new-password" placeholder="Nhập lại mật khẩu">
-        </div>
-        <button id="register-submit" class="primary-action" type="submit">Đăng ký ngay</button>
-      </form>
-
-      <div class="auth-divider"></div>
-      <button id="auth-later" class="secondary-action" type="button">Để sau nhé</button>
-    </div>
-  </div>
-
-  <div id="app-dialog" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
-    <div class="dialog-card">
-      <div id="dialog-icon" class="dialog-icon">🐰</div>
-      <h3 id="dialog-title">Thông báo</h3>
-      <p id="dialog-message"></p>
-      <div class="dialog-actions">
-        <button id="dialog-secondary" class="secondary-action hidden" type="button"></button>
-        <button id="dialog-ok" class="primary-action" type="button">OK</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
-
-  <script src="assets/js/app.js?v=class1-epsilon-links-2"></script>
+          navigator.serviceWorker.register('./service-worker.js').then((reg) => {
+            if (reg.waiting) reg.waiting.postMessage('SKIP_WAITING');
+            reg.addEventListener('updatefound', () => {
+              const worker = reg.installing;
+              if (worker) worker.addEventListener('statechange', () => {
+                if (worker.state === 'installed' && navigator.serviceWorker.controller) worker.postMessage('SKIP_WAITING');
+              });
+            });
+          }).catch(() => {});
+        });
+      }
+    </script>
 </body>
 </html>
