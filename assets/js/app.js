@@ -904,7 +904,9 @@
     if (!state.auth.requests.length) return `<div class="account-request-empty">Chưa có yêu cầu quyền học đang chờ.</div>`;
     return state.auth.requests.map((request) => {
       const subjectLabels = (request.subjectIds || []).map(apiIdToLabel).filter(Boolean).join(", ");
-      return `<div class="account-request-item"><div><strong>Đang chờ duyệt</strong><span>${escapeHtml(subjectLabels || "Quyền học")} · ${escapeHtml(String(request.accessType || "vip").toUpperCase())}</span></div><button class="mini-action" type="button" data-cancel-request="${escapeHtml(request.requestId)}">Hủy</button></div>`;
+      const created = formatDate(request.createdAt);
+      const detail = `${subjectLabels || "Quyền học"} · ${String(request.accessType || "vip").toUpperCase()}${created ? ` · Gửi ${created}` : ""}`;
+      return `<div class="account-request-item"><div><strong>Đang chờ Admin duyệt</strong><span>${escapeHtml(detail)}</span></div><button class="mini-action danger" type="button" data-cancel-request="${escapeHtml(request.requestId)}">Hủy</button></div>`;
     }).join("");
   }
 
@@ -919,7 +921,15 @@
     if (state.account.view === "request") return renderAccessRequestPage();
 
     const avatarOptions = AVATARS.map((avatar) => `<option value="${escapeHtml(avatar)}"${avatar === user.avatarEmoji ? " selected" : ""}>${escapeHtml(avatar)}</option>`).join("");
-    const adminButtonClass = user.role === "admin" ? "secondary-action" : "secondary-action hidden";
+    const isAdmin = user.role === "admin";
+    const createdText = formatDate(user.createdAt);
+    const adminButtonClass = isAdmin ? "secondary-action" : "secondary-action hidden";
+    const requestButtonClass = isAdmin ? "primary-action hidden" : "primary-action";
+    const requestSection = isAdmin ? "" : `
+        <section class="account-section">
+          <h2>Yêu cầu đang chờ</h2>
+          <div class="account-requests">${accountRequestsHtml()}</div>
+        </section>`;
 
     el.content.innerHTML = `
       <div class="section-heading">
@@ -929,7 +939,11 @@
       <section class="account-page" aria-label="Tài khoản đang đăng nhập">
         <div class="account-page-hero">
           <div class="account-page-avatar" aria-hidden="true">${escapeHtml(user.avatarEmoji || "🐰")}</div>
-          <div><strong>${escapeHtml(user.name || "Tài khoản Lớp 1")}</strong><span>ID đăng nhập: ${escapeHtml(user.userId || "")}</span></div>
+          <div class="account-hero-copy">
+            <div class="account-hero-name-row"><strong>${escapeHtml(user.name || "Tài khoản Lớp 1")}</strong>${isAdmin ? `<span class="account-role-chip is-admin">Admin</span>` : ""}</div>
+            <div class="account-id-row"><span>ID đăng nhập: <b>${escapeHtml(user.userId || "")}</b></span><button id="account-copy-id" class="mini-action" type="button">Sao chép ID</button></div>
+            ${createdText ? `<small>Tạo tài khoản: ${escapeHtml(createdText)}</small>` : ""}
+          </div>
         </div>
 
         <div class="account-page-grid">
@@ -947,30 +961,32 @@
               <label class="account-field-label" for="account-avatar-select">Avatar</label>
               <div class="account-inline-control">
                 <select id="account-avatar-select" aria-label="Chọn avatar">${avatarOptions}</select>
-                <button id="account-avatar-save" class="mini-action" type="button">Lưu</button>
+                <button id="account-avatar-save" class="mini-action" type="button">Lưu avatar</button>
               </div>
             </div>
           </section>
 
           <section class="account-section">
             <h2>Quyền học theo môn</h2>
+            <p>${isAdmin ? "Tài khoản Admin có quyền quản trị toàn bộ ba môn." : "Regular chỉ dùng nội dung Free trong Khám phá; Trial/VIP mở nội dung Premium của từng môn."}</p>
             <div class="account-access-list">${accountAccessRowsHtml()}</div>
           </section>
         </div>
 
-        <section class="account-section">
-          <h2>Yêu cầu đang chờ</h2>
-          <div class="account-requests">${accountRequestsHtml()}</div>
-        </section>
+        ${requestSection}
 
-        <div class="account-page-actions">
-          <button id="account-request-button" class="primary-action" type="button">Đăng ký quyền học</button>
+        <div class="account-page-actions${isAdmin ? " is-admin" : ""}">
+          <button id="account-request-button" class="${requestButtonClass}" type="button">Đăng ký quyền học</button>
           <button id="account-admin-button" class="${adminButtonClass}" type="button">Quản trị</button>
           <button id="account-logout-button" class="secondary-action" type="button">Đăng xuất</button>
         </div>
       </section>`;
 
     document.getElementById("account-back")?.addEventListener("click", goHome);
+    document.getElementById("account-copy-id")?.addEventListener("click", async () => {
+      const copied = await copyText(user.userId || "");
+      showToast(copied ? "Đã sao chép ID đăng nhập." : `ID đăng nhập: ${user.userId || ""}`);
+    });
     document.getElementById("account-request-button")?.addEventListener("click", () => openAccountPage("request"));
     document.getElementById("account-admin-button")?.addEventListener("click", openAdmin);
     document.getElementById("account-logout-button")?.addEventListener("click", onLogout);
@@ -983,30 +999,53 @@
 
   function renderAccessRequestPage() {
     if (!state.auth.user) return openAuth("login");
+    if (state.auth.user.role === "admin") {
+      state.account.view = "overview";
+      render();
+      showToast("Tài khoản Admin không cần đăng ký quyền học.");
+      return;
+    }
+
     const pendingApiIds = new Set();
     state.auth.requests.forEach((r) => (r.subjectIds || []).forEach((id) => pendingApiIds.add(id)));
+    let eligibleCount = 0;
     const choices = SUBJECTS.map((subject) => {
       const type = accessTypeFor(subject.id);
       const active = type === "trial" || type === "vip" || type === "admin";
       const pending = pendingApiIds.has(subject.apiId);
-      return `<label class="subject-choice${active || pending ? " is-disabled" : ""}"><input type="checkbox" name="subject-choice" value="${escapeHtml(subject.apiId)}"${active || pending ? " disabled" : ""}><span><strong>${escapeHtml(subject.fullLabel)}</strong><small>${active ? "Đang có quyền học" : pending ? "Đang chờ duyệt" : "Có thể đăng ký"}</small></span></label>`;
+      if (!active && !pending) eligibleCount += 1;
+      return `<label class="subject-choice${active || pending ? " is-disabled" : ""}"><input type="checkbox" name="subject-choice" value="${escapeHtml(subject.apiId)}"${active || pending ? " disabled" : ""}><span><strong>${escapeHtml(subject.fullLabel)}</strong><small>${active ? "Đang có quyền học" : pending ? "Đang chờ duyệt" : "Có thể đăng ký VIP"}</small></span></label>`;
     }).join("");
+
+    const body = eligibleCount > 0 ? `
+        <p class="access-request-note">Chọn 1/3, 2/3 hoặc 3/3 môn. Gửi yêu cầu không tự mở quyền; Admin sẽ duyệt đúng các môn đã chọn.</p>
+        <form id="access-request-form" class="form-stack" novalidate>
+          <div class="subject-choice-list">${choices}</div>
+          <div id="access-request-summary" class="access-request-summary">Chưa chọn môn nào.</div>
+          <button id="access-request-submit" class="primary-action" type="submit">Gửi yêu cầu VIP</button>
+        </form>` : `
+        <div class="account-request-empty">Hiện không còn môn nào có thể gửi yêu cầu mới. Môn đã có quyền hoặc đang chờ duyệt sẽ không gửi trùng.</div>`;
 
     el.content.innerHTML = `
       <div class="section-heading">
-        <div><h1>🌟 Đăng ký quyền học</h1><p>Chọn từ 1 đến 3 môn cần đăng ký.</p></div>
+        <div><h1>🌟 Đăng ký quyền học</h1><p>Đăng ký VIP theo từng môn.</p></div>
         <button id="access-request-back" class="back-btn" type="button">← Tài khoản</button>
       </div>
-      <section class="account-request-page account-section">
-        <p class="access-request-note">Yêu cầu này không tự mở quyền học. Admin sẽ xem và duyệt đúng các môn đã chọn.</p>
-        <form id="access-request-form" class="form-stack" novalidate>
-          <div class="subject-choice-list">${choices}</div>
-          <button id="access-request-submit" class="primary-action" type="submit">Gửi yêu cầu VIP</button>
-        </form>
-      </section>`;
+      <section class="account-request-page account-section">${body}</section>`;
 
     document.getElementById("access-request-back")?.addEventListener("click", () => openAccountPage("overview"));
-    document.getElementById("access-request-form")?.addEventListener("submit", onAccessRequestSubmit);
+    const form = document.getElementById("access-request-form");
+    form?.addEventListener("submit", onAccessRequestSubmit);
+    const updateSummary = () => {
+      if (!form) return;
+      const count = form.querySelectorAll('input[name="subject-choice"]:checked').length;
+      const summary = document.getElementById("access-request-summary");
+      const submit = document.getElementById("access-request-submit");
+      if (summary) summary.textContent = count ? `Đã chọn ${count}/3 môn.` : "Chưa chọn môn nào.";
+      if (submit) submit.textContent = count ? `Gửi yêu cầu VIP · ${count} môn` : "Gửi yêu cầu VIP";
+    };
+    form?.querySelectorAll('input[name="subject-choice"]').forEach((input) => input.addEventListener("change", updateSummary));
+    updateSummary();
   }
 
   async function cancelAccessRequest(requestId, button) {
@@ -1165,7 +1204,19 @@
     }
   }
 
-  async function onLogout() {
+  function onLogout() {
+    showDialog({
+      title: "Đăng xuất tài khoản?",
+      message: "Bạn sẽ cần nhập lại ID và mật khẩu để đăng nhập lần sau.",
+      icon: "👋",
+      primaryLabel: "Đăng xuất",
+      secondaryLabel: "Ở lại",
+      onPrimary: performLogout,
+      onSecondary: hideDialog
+    });
+  }
+
+  async function performLogout() {
     const button = document.getElementById("account-logout-button");
     if (!state.auth.token) {
       clearAuthState();
