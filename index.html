@@ -220,6 +220,7 @@
       color:currentColor;
       text-align:center;
     }
+    .user-notice-badge{position:absolute;top:5px;right:5px;min-width:23px;height:23px;padding:0 6px;border-radius:999px;background:#EF4444;color:#fff;border:2px solid #fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:950;line-height:1;box-shadow:0 3px 8px rgba(239,68,68,.28);z-index:3;pointer-events:none}
     .user-btn-role-badge{
       position:absolute;
       top:5px;
@@ -692,6 +693,19 @@
     .account-avatar-choice:focus-visible{outline:3px solid rgba(14,165,233,.25);outline-offset:2px}
     .account-avatar-save-row{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-top:.55rem}
     .account-avatar-selected-text{color:#667085;font-size:11.5px;font-weight:850}
+    .account-notice-panel{padding:.82rem .9rem;border:1px solid #F9A8D4;border-radius:19px;background:linear-gradient(90deg,#FFF7FB,#FAF5FF);box-shadow:0 5px 15px rgba(190,24,93,.05)}
+    .account-notice-heading{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:.58rem}
+    .account-notice-heading h2{margin:0;color:#5B216E;font-size:18px}
+    .account-notice-heading p{margin:.14rem 0 0;color:#667085;font-size:12px;font-weight:800}
+    .account-notice-count{min-width:28px;height:28px;padding:0 .5rem;border-radius:999px;background:#EC4899;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:950;box-shadow:0 4px 10px rgba(236,72,153,.18)}
+    .account-notice-list{display:grid;gap:.46rem}
+    .account-access-notice{display:grid;grid-template-columns:38px minmax(0,1fr);align-items:center;gap:.6rem;padding:.6rem .68rem;border:1px solid;border-radius:14px;background:#fff}
+    .account-access-notice-icon{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.72);font-size:20px}
+    .account-access-notice strong{display:block;font-size:13.5px;font-weight:950;line-height:1.25}
+    .account-access-notice span:not(.account-access-notice-icon){display:block;margin-top:.12rem;color:#475467;font-size:11.5px;font-weight:850}
+    .account-access-notice.notice-blue{border-color:#7DD3FC;background:#F0F9FF}.account-access-notice.notice-blue strong{color:#0369A1}
+    .account-access-notice.notice-pink{border-color:#F9A8D4;background:#FFF1F7}.account-access-notice.notice-pink strong{color:#BE185D}
+    .account-access-notice.notice-purple{border-color:#C4B5FD;background:#F5F3FF}.account-access-notice.notice-purple strong{color:#6D28D9}
     .account-page-actions{display:grid;grid-template-columns:2fr 1fr 1fr;gap:.55rem}
     .account-page-actions .primary-action,.account-page-actions .secondary-action{min-height:46px}
     .account-request-page{max-width:760px;margin:0 auto;display:grid;gap:.7rem}
@@ -1210,6 +1224,7 @@
 
   <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
 
-  <script src="assets/js/app.js?v=class1-cancel-fix-1"></script>
+  <script src="assets/js/core/class1-data.js?v=class1-data-split-1"></script>
+  <script src="assets/js/app.js?v=class1-data-split-1"></script>
 </body>
 </html>
