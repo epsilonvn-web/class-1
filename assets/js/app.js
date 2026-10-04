@@ -1,70 +1,22 @@
 (() => {
   "use strict";
 
-  const API_URL = "https://script.google.com/macros/s/AKfycbx74jCwq-XWlHDQWP-EMWd_Jqfbgd8AwflgpSY_vVCu5eI-ShWh7AXgX-Sl3aL0XTs2og/exec";
-  const TOKEN_STORAGE_KEY = "epsilon_class1_session_v1";
-  const API_TIMEOUT_MS = 60000;
-  const INSTALL_FLAG_KEY = "epsilon_class1_pwa_installed_v1";
+  const CLASS1_DATA = window.CLASS1_DATA;
+  if (!CLASS1_DATA) throw new Error("CLASS1_DATA_MISSING");
 
-  const HOME_TABS = [
-    { id: "class1", label: "Lớp 1", icon: "🎒", tone: "purple" },
-    { id: "epsilon", label: "Epsilon Edu", icon: "🌐", tone: "pink" },
-    { id: "games", label: "Games", icon: "🎮", tone: "blue" },
-    { id: "tools", label: "Tools", icon: "🧰", tone: "green" },
-    { id: "contact", label: "Liên hệ", icon: "💌", tone: "amber" }
-  ];
-
-  const ADMIN_HOME_TAB = { id: "admin", label: "Quản lý", icon: "🛠️", tone: "indigo" };
-
-  const SUBJECTS = [
-    {
-      id: "math",
-      apiId: "toan",
-      label: "Toán",
-      fullLabel: "Toán 1",
-      icon: "🧮",
-      tone: "blue",
-      description: "Không gian học Toán của bé."
-    },
-    {
-      id: "vietnamese",
-      apiId: "tv",
-      label: "Tiếng Việt",
-      fullLabel: "Tiếng Việt 1",
-      icon: "📚",
-      tone: "pink",
-      description: "Không gian học Tiếng Việt của bé."
-    },
-    {
-      id: "english",
-      apiId: "ta",
-      label: "Tiếng Anh",
-      fullLabel: "Tiếng Anh 1",
-      icon: "🔤",
-      tone: "green",
-      description: "Không gian học Tiếng Anh của bé."
-    }
-  ];
-
-  const SUBJECT_TABS = [
-    { id: "discover", label: "Khám phá", icon: "🧭", tone: "purple" },
-    { id: "lessons", label: "Bài học", icon: "📖", tone: "pink" },
-    { id: "exercises", label: "Bài tập", icon: "✏️", tone: "blue" },
-    { id: "review", label: "Ôn tập", icon: "🧠", tone: "amber" },
-    { id: "exams", label: "Đề thi", icon: "🏆", tone: "green" },
-    { id: "games", label: "Mini games", icon: "🎮", tone: "indigo" }
-  ];
-
-  const AVATARS = [
-    "🐰","🐼","🐯","🦊","🐨","🐸","🐧","🦁","🐱","🐶","🐵","🦄",
-    "🐹","🐭","🐻","🐮","🐷","🐔","🐤","🦆","🦉","🐺","🐴","🦓",
-    "🦒","🐘","🦏","🦛","🐢","🐬","🐠","🐡","🐙","🦀","🦋","🐝",
-    "🐞","🐌","🌟","⭐","🚀","🛸","🎨","📚","⚽","🏀","🏸","🎵",
-    "🎧","🌈","🍀","🌻","🌸","🌺","🍎","🍓","🍉","🍒","🧁","🍦",
-    "🎈","🎁","👑","💎","🧩","🎯","🏆","🪁","🛼","🚲","⛵","🌞",
-  ];
-
-  const PREVIEW_TONES = ["pink", "purple", "blue", "green", "teal", "amber"];
+  const {
+    API_URL,
+    TOKEN_STORAGE_KEY,
+    API_TIMEOUT_MS,
+    INSTALL_FLAG_KEY,
+    HOME_TABS,
+    ADMIN_HOME_TAB,
+    SUBJECTS,
+    SUBJECT_TABS,
+    AVATARS,
+    PREVIEW_TONES,
+    EE_CLASS_SITES
+  } = CLASS1_DATA;
 
   const state = {
     screen: "home",
@@ -79,7 +31,8 @@
       token: null,
       user: null,
       access: emptyAccess(),
-      requests: []
+      requests: [],
+      notices: []
     },
     profile: {
       subjectId: null,
@@ -88,7 +41,8 @@
       failed: false
     },
     account: {
-      view: "overview"
+      view: "overview",
+      visibleNotices: []
     },
     admin: {
       loading: false,
@@ -171,6 +125,23 @@
     return out;
   }
 
+  function normalizeAccessNotices(raw) {
+    if (!Array.isArray(raw)) return [];
+    return raw.map((item) => {
+      const subject = SUBJECTS.find((entry) => entry.apiId === String(item && item.subjectId || ""));
+      const type = String(item && item.type || "").toLowerCase();
+      if (!subject || !["trial", "vip"].includes(type)) return null;
+      return {
+        subjectId: subject.apiId,
+        frontId: subject.id,
+        fullLabel: subject.fullLabel,
+        type,
+        endAt: item.endAt || "",
+        updatedAt: item.updatedAt || ""
+      };
+    }).filter(Boolean).sort((a, b) => new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime());
+  }
+
   function accessTypeFor(subjectId) {
     if (state.auth.user && state.auth.user.role === "admin") return "admin";
     const item = state.auth.access[subjectId] || { type: "regular", endAt: "" };
@@ -230,6 +201,7 @@
       createdAt: user.createdAt || ""
     };
     state.auth.access = normalizeAccess(data.access || {});
+    state.auth.notices = normalizeAccessNotices(data.notices || []);
     state.auth.ready = true;
     if (state.auth.token) storeToken(state.auth.token);
     updateAccountButton();
@@ -244,9 +216,10 @@
     state.auth.user = null;
     state.auth.access = emptyAccess();
     state.auth.requests = [];
+    state.auth.notices = [];
     state.auth.ready = true;
     state.profile = { subjectId: null, loading: false, data: null, failed: false };
-    state.account = { view: "overview" };
+    state.account = { view: "overview", visibleNotices: [] };
     state.admin = {
       loading: false,
       loaded: false,
@@ -394,6 +367,7 @@
   }
 
   function goHome() {
+    state.account.visibleNotices = [];
     state.screen = "home";
     state.homeTab = "class1";
     state.subjectId = null;
@@ -405,6 +379,7 @@
   }
 
   function openHomeTab(tabId) {
+    state.account.visibleNotices = [];
     state.screen = "home";
     state.homeTab = HOME_TABS.some((t) => t.id === tabId) ? tabId : "class1";
     state.subjectId = null;
@@ -415,6 +390,7 @@
   }
 
   function openSubject(subjectId) {
+    state.account.visibleNotices = [];
     const subject = subjectByFrontId(subjectId);
     if (!subject) return;
     state.screen = "subject";
@@ -427,6 +403,7 @@
   }
 
   async function openLearningProfile(subjectId) {
+    state.account.visibleNotices = [];
     const subject = subjectByFrontId(subjectId);
     if (!subject) return;
     if (!state.auth.ready) {
@@ -723,12 +700,6 @@
     document.getElementById("profile-back-button")?.addEventListener("click", () => openHomeTab("class1"));
   }
 
-  const EE_CLASS_SITES = Object.freeze({
-    1: "https://epsilon-class-1.pages.dev/",
-    2: "https://epsilon-class-2.pages.dev/",
-    3: "https://epsilon-class-3.pages.dev/"
-  });
-
   function renderEpsilonTab() {
     const grades = Array.from({ length: 9 }, (_, i) => i + 1);
     const cards = grades.map((grade, index) => {
@@ -916,6 +887,15 @@
         el.accountButton.replaceChildren(avatar, label, roleBadge);
         return;
       }
+      const noticeCount = Number((state.auth.notices || []).length || 0);
+      if (noticeCount > 0) {
+        const noticeBadge = document.createElement("span");
+        noticeBadge.className = "user-notice-badge";
+        noticeBadge.textContent = String(Math.min(99, noticeCount));
+        noticeBadge.setAttribute("aria-label", `${noticeCount} thông báo quyền học mới`);
+        el.accountButton.replaceChildren(avatar, label, noticeBadge);
+        return;
+      }
     } else {
       avatar.textContent = "👤";
       label.textContent = "Tài khoản";
@@ -926,7 +906,7 @@
     el.accountButton.replaceChildren(avatar, label);
   }
 
-  function openAccountPage(view = "overview") {
+  async function openAccountPage(view = "overview") {
     if (!state.auth.user) {
       openAuth("login");
       return;
@@ -939,7 +919,10 @@
     state.detail = null;
     render();
     focusContent();
-    refreshAccessState(true);
+    await refreshAccessState(true);
+    if (state.screen === "account" && state.account.view === "overview") {
+      await markVisibleAccessNoticesSeen();
+    }
   }
 
   async function refreshAccessState(rerenderAccount = false) {
@@ -954,10 +937,11 @@
           avatarEmoji: AVATARS.includes(String(data.user.avatarEmoji || "")) ? String(data.user.avatarEmoji) : "🐰",
           createdAt: data.user.createdAt || ""
         };
-        updateAccountButton();
       }
       state.auth.access = normalizeAccess(data.access || {});
       state.auth.requests = Array.isArray(data.requests) ? data.requests : [];
+      state.auth.notices = normalizeAccessNotices(data.notices || []);
+      updateAccountButton();
       if (rerenderAccount && state.screen === "account") render();
       if (state.screen === "home" || state.screen === "subject") render();
     } catch (err) {
@@ -967,6 +951,67 @@
         showToast("Phiên đăng nhập không còn hiệu lực. Vui lòng đăng nhập lại.");
       } else if (rerenderAccount) {
         showToast(friendlyError(err));
+      }
+    }
+  }
+
+  function accessNoticeTone(frontId) {
+    if (frontId === "math") return "blue";
+    if (frontId === "vietnamese") return "pink";
+    return "purple";
+  }
+
+  function currentAccountNotices() {
+    const visible = Array.isArray(state.account.visibleNotices) ? state.account.visibleNotices : [];
+    return visible.length ? visible : (state.auth.notices || []);
+  }
+
+  function accountAccessNoticesHtml() {
+    const notices = currentAccountNotices();
+    if (!notices.length) return "";
+    const items = notices.map((notice) => {
+      const tone = accessNoticeTone(notice.frontId);
+      const label = notice.type === "vip" ? "VIP" : "Trial";
+      const endText = formatDate(notice.endAt);
+      const detail = endText ? `Có hiệu lực đến ${endText}.` : "Quyền học đã được kích hoạt.";
+      return `<div class="account-access-notice notice-${tone}"><span class="account-access-notice-icon" aria-hidden="true">🎉</span><div><strong>${escapeHtml(notice.fullLabel)} đã được cấp ${escapeHtml(label)}</strong><span>${escapeHtml(detail)}</span></div></div>`;
+    }).join("");
+    return `<section class="account-notice-panel" aria-label="Thông báo quyền học mới"><div class="account-notice-heading"><div><h2>🔔 Thông báo quyền học mới</h2><p>Quyền học vừa được Admin cập nhật cho tài khoản.</p></div><span class="account-notice-count">${notices.length}</span></div><div class="account-notice-list">${items}</div></section>`;
+  }
+
+  async function markVisibleAccessNoticesSeen() {
+    const notices = Array.isArray(state.auth.notices) ? state.auth.notices.slice() : [];
+    if (!notices.length || !state.auth.user || state.auth.user.role === "admin") return;
+
+    state.account.visibleNotices = notices;
+    if (state.screen === "account" && state.account.view === "overview") render();
+
+    const latestMs = notices.reduce((max, notice) => {
+      const ms = new Date(notice.updatedAt || 0).getTime();
+      return Number.isNaN(ms) ? max : Math.max(max, ms);
+    }, 0);
+    if (!latestMs) return;
+
+    try {
+      const data = await apiRequest("accessNoticesMarkSeen", { seenThrough: new Date(latestMs).toISOString() });
+      state.auth.notices = normalizeAccessNotices(data.notices || []);
+      updateAccountButton();
+    } catch (err) {
+      // Nếu đánh dấu đã xem tạm lỗi, giữ badge để người dùng không mất thông báo.
+      if (err && err.code === "UNAUTHORIZED") showToast(friendlyError(err));
+    }
+  }
+
+  async function refreshUserNoticeBadge() {
+    if (!state.auth.user || !state.auth.token || state.auth.user.role === "admin") return;
+    try {
+      const data = await apiRequest("sessionVerify");
+      state.auth.notices = normalizeAccessNotices(data.notices || []);
+      updateAccountButton();
+    } catch (err) {
+      if (err && err.code === "UNAUTHORIZED") {
+        clearAuthState();
+        render();
       }
     }
   }
@@ -1025,6 +1070,8 @@
             ${createdText ? `<small>Tạo tài khoản: ${escapeHtml(createdText)}</small>` : ""}
           </div>
         </div>
+
+        ${accountAccessNoticesHtml()}
 
         <div class="account-page-grid">
           <section class="account-section">
@@ -2009,9 +2056,15 @@
     showToast("Đã cài App.");
   });
 
-  window.addEventListener("focus", () => refreshAdminPendingBadge(false));
+  window.addEventListener("focus", () => {
+    refreshAdminPendingBadge(false);
+    refreshUserNoticeBadge();
+  });
   document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) refreshAdminPendingBadge(false);
+    if (!document.hidden) {
+      refreshAdminPendingBadge(false);
+      refreshUserNoticeBadge();
+    }
   });
 
   if ("serviceWorker" in navigator) {
