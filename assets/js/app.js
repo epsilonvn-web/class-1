@@ -14,13 +14,57 @@
     SUBJECTS,
     SUBJECT_TABS,
     AVATARS,
+    GREETINGS,
     PREVIEW_TONES,
     EE_CLASS_SITES
   } = CLASS1_DATA;
 
+
+  // Module học theo môn: chỉ nạp khi người dùng thực sự mở môn đó.
+  const SUBJECT_MODULE_SCRIPTS = Object.freeze({
+    math: "assets/js/math/toan_app.js?v=class1-math-2",
+    vietnamese: "assets/js/vietnamese/tv_app.js?v=class1-tv-1",
+    english: "assets/js/english/ta_app.js?v=class1-ta-1"
+  });
+  // Games/Tools ngoài Trang chủ: mỗi tool/game là một file JS độc lập và chỉ tải khi mở.
+  const TOOL_CATALOG = Object.freeze([
+    Object.freeze({ id: "calculator", icon: "🧮", title: "Calculator", description: "Máy tính khoa học Epsilon Edu.", badge: "Công cụ", tone: "purple" }),
+    Object.freeze({ id: "converter", icon: "📐", title: "Đổi đơn vị đo", description: "Đổi nhanh các đơn vị đo thông dụng.", badge: "Công cụ", tone: "teal" }),
+    Object.freeze({ id: "geometryArea", icon: "📏", title: "Tính diện tích", description: "Tính diện tích các hình học cơ bản.", badge: "Công cụ", tone: "pink" }),
+    Object.freeze({ id: "colorMixer", icon: "🎨", title: "Phối màu", description: "Phối màu theo hệ RGB và CMYK.", badge: "Công cụ", tone: "amber" })
+  ]);
+  const GAME_CATALOG = Object.freeze([
+    Object.freeze({ id: "paperFolding", icon: "🛩️", title: "Xưởng Gấp Giấy", description: "Gấp từng bước cùng Cô Thỏ Hồng.", badge: "Thủ công", tone: "pink" }),
+    Object.freeze({ id: "jigsawPuzzle", icon: "🧩", title: "Xưởng Xếp Hình", description: "Ghép 36 bức tranh qua 9 cấp độ.", badge: "Quan sát", tone: "purple" }),
+    Object.freeze({ id: "rabbitDrawing", icon: "🖍️", title: "Cô Thỏ Hồng dạy vẽ", description: "Vẽ 15 bức tranh đơn giản theo từng bước.", badge: "Mỹ thuật", tone: "teal" }),
+    Object.freeze({ id: "animalWorld", icon: "🐾", title: "Thế giới động vật", description: "Khám phá 30 phòng tranh động vật cùng Cô Thỏ Hồng.", badge: "Khám phá", tone: "amber" }),
+    Object.freeze({ id: "mcHost", icon: "🎤", title: "Tập làm MC", description: "Tập dẫn 12 chương trình cùng Cô Thỏ Hồng.", badge: "Kỹ năng", tone: "pink" }),
+    Object.freeze({ id: "missingPiece", icon: "🔗", title: "Mảnh ghép còn thiếu", description: "Ghép 232 cặp liên tưởng qua 6 cấp độ.", badge: "Tư duy", tone: "purple" })
+  ]);
+  const HOME_FEATURE_SCRIPTS = Object.freeze({
+    tools: Object.freeze({
+      calculator: "assets/js/tools/calculator.js?v=class1-calculator-2",
+      converter: "assets/js/tools/converter.js?v=class1-converter-1",
+      geometryArea: "assets/js/tools/geometry_area.js?v=class1-geometry-area-1",
+      colorMixer: "assets/js/tools/color_mixer.js?v=class1-color-mixer-1"
+    }),
+    games: Object.freeze({
+      paperFolding: "assets/js/games/paper_folding.js?v=class1-paper-folding-6",
+      jigsawPuzzle: "assets/js/games/jigsaw_puzzle.js?v=class1-jigsaw-puzzle-2",
+      rabbitDrawing: "assets/js/games/rabbit_drawing.js?v=class1-rabbit-drawing-2",
+      animalWorld: "assets/js/games/animal_world.js?v=class1-animal-world-1",
+      mcHost: "assets/js/games/mc_host.js?v=class1-mc-host-1",
+      missingPiece: "assets/js/games/missing_piece.js?v=class1-missing-piece-1"
+    })
+  });
+  const subjectModuleLoads = new Map();
+  const homeFeatureLoads = new Map();
+
   const state = {
     screen: "home",
     homeTab: "class1",
+    homeFeatureId: null,
+    homeFeatureBanner: null,
     subjectId: null,
     subjectTab: "discover",
     profileSubjectId: null,
@@ -94,6 +138,86 @@
   let dialogSecondaryHandler = null;
   let toastTimer = 0;
 
+  const class1GreetingAudio = new Audio();
+  class1GreetingAudio.referrerPolicy = "no-referrer";
+  class1GreetingAudio.preload = "none";
+  let pendingGreetingText = "";
+  let greetingPlayNonce = 0;
+
+  function greetingNameFromFullName(name) {
+    const raw = String(name || "").replace(/\s+/g, " ").trim();
+    if (!raw) return "bé";
+    const parts = raw.split(" ").filter(Boolean);
+    if (parts.length <= 1) return parts[0] || "bé";
+
+    const previous = String(parts[parts.length - 2] || "").toLocaleLowerCase("vi-VN");
+    if (previous === "thị" || previous === "văn") {
+      return parts[parts.length - 1];
+    }
+    return parts.slice(-2).join(" ");
+  }
+
+  function randomGreeting(name) {
+    const list = Array.isArray(GREETINGS) && GREETINGS.length
+      ? GREETINGS
+      : ["Chào {name}! Cô Thỏ Hồng rất vui được gặp bé. Mình cùng bắt đầu nhé!"];
+    const template = String(list[Math.floor(Math.random() * list.length)] || list[0]);
+    const displayName = greetingNameFromFullName(name);
+    return template.replace(/\{name\}/g, displayName);
+  }
+
+  function stopWelcomeGreeting(clearPending = true) {
+    greetingPlayNonce += 1;
+    if (clearPending) pendingGreetingText = "";
+    try {
+      class1GreetingAudio.pause();
+      class1GreetingAudio.currentTime = 0;
+      class1GreetingAudio.removeAttribute("src");
+      class1GreetingAudio.load();
+    } catch (_) {}
+  }
+
+  function greetingTtsUrl(text) {
+    return `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent(text)}`;
+  }
+
+  async function playWelcomeGreetingText(text) {
+    const cleanText = String(text || "").replace(/\s+/g, " ").trim();
+    if (!cleanText) return false;
+    const nonce = ++greetingPlayNonce;
+    pendingGreetingText = cleanText;
+    try {
+      class1GreetingAudio.pause();
+      class1GreetingAudio.currentTime = 0;
+      class1GreetingAudio.src = greetingTtsUrl(cleanText);
+      class1GreetingAudio.playbackRate = 0.96;
+      await class1GreetingAudio.play();
+      if (nonce !== greetingPlayNonce) return false;
+      pendingGreetingText = "";
+      return true;
+    } catch (_) {
+      // Trình duyệt có thể chặn tự phát khi vừa mở trang. Giữ câu chào
+      // để phát ở tương tác hợp lệ đầu tiên thay vì hiện chữ lên màn hình.
+      if (nonce === greetingPlayNonce) pendingGreetingText = cleanText;
+      return false;
+    }
+  }
+
+  function showWelcomeGreeting(name) {
+    const text = randomGreeting(name);
+    window.setTimeout(() => { void playWelcomeGreetingText(text); }, 180);
+  }
+
+  function retryPendingGreeting(event) {
+    if (!pendingGreetingText) return;
+    const target = event && event.target instanceof Element ? event.target : null;
+    // Nếu bé đang mở/nhập form tài khoản thì chưa phát câu chào khách. Sau khi
+    // đăng nhập thành công, câu chào mới sẽ dùng đúng tên bé.
+    if (target && target.closest("#account-button, #auth-modal")) return;
+    const text = pendingGreetingText;
+    void playWelcomeGreetingText(text);
+  }
+
   function emptyAccess() {
     const out = {};
     SUBJECTS.forEach((subject) => {
@@ -108,6 +232,331 @@
 
   function subjectByFrontId(subjectId) {
     return SUBJECTS.find((item) => item.id === subjectId) || null;
+  }
+
+
+  function homeFeatureRegistry(kind) {
+    if (kind === "tools") return window.CLASS1_TOOL_MODULES || null;
+    if (kind === "games") return window.CLASS1_GAME_MODULES || null;
+    return null;
+  }
+
+  function loadedHomeFeatureModule(kind, featureId) {
+    const registry = homeFeatureRegistry(kind);
+    return registry && registry[featureId] ? registry[featureId] : null;
+  }
+
+  function homeFeatureScript(kind, featureId) {
+    const group = HOME_FEATURE_SCRIPTS[kind];
+    return group && group[featureId] ? group[featureId] : "";
+  }
+
+  function ensureHomeFeatureModule(kind, featureId) {
+    const existing = loadedHomeFeatureModule(kind, featureId);
+    if (existing) return Promise.resolve(existing);
+    const src = homeFeatureScript(kind, featureId);
+    if (!src) return Promise.resolve(null);
+    const loadKey = `${kind}:${featureId}`;
+    if (homeFeatureLoads.has(loadKey)) return homeFeatureLoads.get(loadKey);
+
+    const promise = new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.async = true;
+      script.dataset.homeFeature = loadKey;
+      script.onload = () => {
+        const module = loadedHomeFeatureModule(kind, featureId);
+        if (!module) {
+          homeFeatureLoads.delete(loadKey);
+          reject(new Error(`HOME_FEATURE_MISSING:${loadKey}`));
+          return;
+        }
+        resolve(module);
+      };
+      script.onerror = () => {
+        homeFeatureLoads.delete(loadKey);
+        reject(new Error(`HOME_FEATURE_LOAD_FAILED:${loadKey}`));
+      };
+      document.head.appendChild(script);
+    });
+    homeFeatureLoads.set(loadKey, promise);
+    return promise;
+  }
+
+  function destroyActiveHomeFeature() {
+    if (!state.homeFeatureId || !state.homeTab) return;
+    const module = loadedHomeFeatureModule(state.homeTab, state.homeFeatureId);
+    if (module && typeof module.destroy === "function") {
+      try { module.destroy(); } catch (_) {}
+    }
+  }
+
+  function ensureHomeFeatureBannerStyles() {
+    if (document.getElementById("class1-home-feature-banner-style")) return;
+    const style = document.createElement("style");
+    style.id = "class1-home-feature-banner-style";
+    style.textContent = `
+      #sub-pill.home-sub-breadcrumbs{
+        min-width:0!important;
+        width:auto!important;
+        max-width:calc(100% - 1rem)!important;
+        min-height:0!important;
+        padding:0!important;
+        border:0!important;
+        border-radius:0!important;
+        background:transparent!important;
+        box-shadow:none!important;
+        backdrop-filter:none!important;
+        -webkit-backdrop-filter:none!important;
+        display:flex!important;
+        align-items:center!important;
+        gap:.34rem!important;
+        overflow-x:auto!important;
+        overflow-y:hidden!important;
+        scrollbar-width:none!important;
+        white-space:nowrap!important;
+      }
+      #sub-pill.home-sub-breadcrumbs::-webkit-scrollbar{display:none!important}
+      #sub-pill.home-sub-breadcrumbs .home-breadcrumb-sep{
+        flex:0 0 auto;color:#c084fc;font-size:15px;font-weight:900;
+      }
+      #sub-pill.home-sub-breadcrumbs .home-breadcrumb-tab{
+        flex:0 0 auto;height:38px;max-width:min(430px,42vw);padding:0 16px;border-radius:13px;
+        display:inline-flex;align-items:center;justify-content:center;overflow:hidden;text-overflow:ellipsis;
+        white-space:nowrap;font-size:15px;font-weight:900;line-height:1;box-shadow:0 2px 7px rgba(76,29,149,.08);
+        cursor:default;font-family:inherit;
+      }
+      #sub-pill.home-sub-breadcrumbs button.home-breadcrumb-tab{
+        cursor:pointer;transition:background .16s,border-color .16s,box-shadow .16s,transform .16s;
+      }
+      #sub-pill.home-sub-breadcrumbs button.home-breadcrumb-tab:hover{
+        transform:translateY(-1px);box-shadow:0 4px 11px rgba(76,29,149,.13);
+      }
+      #sub-pill.home-sub-breadcrumbs .home-breadcrumb-level2{
+        color:#be185d;border:1.5px solid #f9a8d4;background:rgba(255,255,255,.78);
+      }
+      #sub-pill.home-sub-breadcrumbs .home-breadcrumb-level3{
+        color:#7e22ce;border:1.5px solid #d8b4fe;background:rgba(255,255,255,.72);
+      }
+      #sub-pill.home-sub-breadcrumbs .home-breadcrumb-level4{
+        color:#b45309;border:1.5px solid #fde68a;background:rgba(255,255,255,.72);
+      }
+      @media(max-width:767px){
+        #sub-pill.home-sub-breadcrumbs{max-width:calc(100% - .35rem)!important;gap:.22rem!important}
+        #sub-pill.home-sub-breadcrumbs .home-breadcrumb-tab{height:32px;max-width:68vw;padding:0 11px;font-size:12px;border-radius:11px}
+        #sub-pill.home-sub-breadcrumbs .home-breadcrumb-sep{font-size:12px}
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  function resetHomeFeatureBreadcrumbPill() {
+    if (!el.subPill) return;
+    el.subPill.classList.remove("home-sub-breadcrumbs");
+    el.subPill.removeAttribute("aria-label");
+    el.subPill.removeAttribute("title");
+  }
+
+  function homeFeatureContext(kind, featureId) {
+    const setSubBanner = (banner) => {
+      if (state.screen !== "home" || state.homeTab !== kind || state.homeFeatureId !== featureId) return;
+      const rawItems = banner && Array.isArray(banner.items) ? banner.items : [];
+      const items = rawItems.map((item, index) => ({
+        title: String(item && item.title || "").trim(),
+        level: Math.min(4, Math.max(2, Number(item && item.level || (index + 2)) || 2)),
+        action: item && typeof item.action === "function" ? item.action : null
+      })).filter((item) => item.title);
+
+      if (!banner || (!items.length && !String(banner.title || "").trim())) {
+        state.homeFeatureBanner = null;
+      } else {
+        state.homeFeatureBanner = {
+          icon: String(banner.icon || "").trim(),
+          title: String(banner.title || "").trim(),
+          items
+        };
+      }
+      renderBanner();
+    };
+    return {
+      host: el.content,
+      kind,
+      featureId,
+      hooks: { showToast, showDialog, setSubBanner },
+      back: () => {
+        destroyActiveHomeFeature();
+        state.homeFeatureId = null;
+        state.homeFeatureBanner = null;
+        render();
+        focusContent();
+      }
+    };
+  }
+
+  function defaultHomeFeatureBanner(kind, featureId) {
+    const catalog = kind === "games" ? GAME_CATALOG : kind === "tools" ? TOOL_CATALOG : [];
+    const feature = catalog.find((item) => item.id === featureId) || null;
+    if (!feature) return null;
+    const index = Math.max(0, catalog.indexOf(feature));
+    return {
+      items: [{ level: 2, title: `${index + 1}. ${feature.title}`, action: null }]
+    };
+  }
+
+  function renderLoadedHomeFeature(module, kind, featureId) {
+    if (!module || typeof module.render !== "function") return false;
+
+    // Giống cơ chế shell Toán: ngay khi mở một Tool/Game, banner phụ phản ánh
+    // đúng cấp nội dung hiện tại. Module con có thể ghi đè thêm level 3/4 khi đi sâu.
+    if (state.screen === "home" && state.homeTab === kind && state.homeFeatureId === featureId) {
+      const initialBanner = defaultHomeFeatureBanner(kind, featureId);
+      if (initialBanner) {
+        state.homeFeatureBanner = initialBanner;
+        renderBanner();
+      }
+    }
+
+    Promise.resolve(module.render(homeFeatureContext(kind, featureId))).catch((err) => {
+      console.error("[Class1 home feature]", err);
+      el.content.innerHTML = `<div class="empty-panel"><div><strong>Chưa mở được ${escapeHtml(featureId)}</strong>Vui lòng kiểm tra file module và thử lại.</div></div>`;
+    });
+    return true;
+  }
+
+  function renderHomeFeatureOrLoading(kind, featureId) {
+    const src = homeFeatureScript(kind, featureId);
+    if (!src) return false;
+    const existing = loadedHomeFeatureModule(kind, featureId);
+    if (existing) return renderLoadedHomeFeature(existing, kind, featureId);
+
+    el.content.innerHTML = `<div class="empty-panel"><div><span class="inline-spinner" aria-hidden="true"></span><strong>Đang tải ${escapeHtml(featureId)}…</strong></div></div>`;
+    ensureHomeFeatureModule(kind, featureId).then((module) => {
+      if (state.screen === "home" && state.homeTab === kind && state.homeFeatureId === featureId) {
+        renderLoadedHomeFeature(module, kind, featureId);
+      }
+    }).catch((err) => {
+      if (state.screen !== "home" || state.homeTab !== kind || state.homeFeatureId !== featureId) return;
+      console.error("[Class1 home feature loader]", err);
+      el.content.innerHTML = `<div class="empty-panel"><div><strong>Chưa tải được ${escapeHtml(featureId)}</strong>Kiểm tra file ${escapeHtml(src)} và thử lại.</div></div>`;
+    });
+    return true;
+  }
+
+  function loadedSubjectModule(subjectId) {
+    return window.CLASS1_SUBJECT_MODULES && window.CLASS1_SUBJECT_MODULES[subjectId]
+      ? window.CLASS1_SUBJECT_MODULES[subjectId]
+      : null;
+  }
+
+  function ensureSubjectModule(subjectId) {
+    const existing = loadedSubjectModule(subjectId);
+    if (existing) return Promise.resolve(existing);
+    const src = SUBJECT_MODULE_SCRIPTS[subjectId];
+    if (!src) return Promise.resolve(null);
+    if (subjectModuleLoads.has(subjectId)) return subjectModuleLoads.get(subjectId);
+
+    const promise = new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.async = true;
+      script.dataset.subjectModule = subjectId;
+      script.onload = () => {
+        const module = loadedSubjectModule(subjectId);
+        if (!module) {
+          subjectModuleLoads.delete(subjectId);
+          reject(new Error(`SUBJECT_MODULE_MISSING:${subjectId}`));
+          return;
+        }
+        resolve(module);
+      };
+      script.onerror = () => {
+        subjectModuleLoads.delete(subjectId);
+        reject(new Error(`SUBJECT_MODULE_LOAD_FAILED:${subjectId}`));
+      };
+      document.head.appendChild(script);
+    });
+    subjectModuleLoads.set(subjectId, promise);
+    return promise;
+  }
+
+  function destroySubjectModule(subjectId) {
+    const module = loadedSubjectModule(subjectId);
+    if (module && typeof module.destroy === "function") {
+      try { module.destroy(); } catch (_) {}
+    }
+  }
+
+  function setScoreBox(correct, wrong) {
+    if (!el.scoreBox) return;
+    const strong = el.scoreBox.querySelectorAll("strong");
+    if (strong[0]) strong[0].textContent = String(Number(correct || 0));
+    if (strong[1]) strong[1].textContent = String(Number(wrong || 0));
+  }
+
+  function subjectModuleContext() {
+    const user = state.auth.user ? Object.freeze({
+      userId: String(state.auth.user.userId || ""),
+      name: String(state.auth.user.name || ""),
+      role: String(state.auth.user.role || "student") === "admin" ? "admin" : "student",
+      avatarEmoji: String(state.auth.user.avatarEmoji || "🐰"),
+      createdAt: state.auth.user.createdAt || ""
+    }) : null;
+    return {
+      host: el.content,
+      subject: currentSubject(),
+      tabId: state.subjectTab,
+      accessType: accessTypeFor(state.subjectId),
+      user,
+      isAuthenticated: !!(state.auth.token && user),
+      apiRequest(action, payload = {}, options = {}) {
+        return apiRequest(action, payload, options);
+      },
+      openAuth(mode = "login") {
+        openAuth(mode === "register" ? "register" : "login");
+      },
+      openAccount(view = "overview") {
+        return openAccountPage(view === "request" ? "request" : "overview");
+      },
+      hooks: {
+        setDetail(title) {
+          state.detail = title ? { title: String(title), tabLabel: (SUBJECT_TABS.find((t) => t.id === state.subjectTab) || SUBJECT_TABS[0]).label } : null;
+          renderBanner();
+        },
+        clearDetail() {
+          state.detail = null;
+          renderBanner();
+        },
+        showToast,
+        showDialog,
+        setScore: setScoreBox
+      }
+    };
+  }
+
+  function renderLoadedSubjectModule(module) {
+    if (!module || typeof module.render !== "function") return false;
+    Promise.resolve(module.render(subjectModuleContext())).catch((err) => {
+      console.error("[Class1 subject module]", err);
+      el.content.innerHTML = `<div class="empty-panel"><div><strong>Chưa mở được nội dung môn học</strong>Vui lòng kiểm tra file module và thử lại.</div></div>`;
+    });
+    return true;
+  }
+
+  function renderSubjectModuleOrLoading() {
+    const subjectId = state.subjectId;
+    if (!SUBJECT_MODULE_SCRIPTS[subjectId]) return false;
+    const existing = loadedSubjectModule(subjectId);
+    if (existing) return renderLoadedSubjectModule(existing);
+
+    el.content.innerHTML = `<div class="empty-panel"><div><span class="inline-spinner" aria-hidden="true"></span><strong>Đang tải ${escapeHtml(currentSubject().fullLabel)}…</strong></div></div>`;
+    ensureSubjectModule(subjectId).then((module) => {
+      if (state.screen === "subject" && state.subjectId === subjectId) renderLoadedSubjectModule(module);
+    }).catch((err) => {
+      if (state.screen !== "subject" || state.subjectId !== subjectId) return;
+      console.error("[Class1 module loader]", err);
+      el.content.innerHTML = `<div class="empty-panel"><div><strong>Chưa tải được ${escapeHtml(currentSubject().fullLabel)}</strong>Kiểm tra file ${escapeHtml(SUBJECT_MODULE_SCRIPTS[subjectId] || "module môn học")} và thử lại.</div></div>`;
+    });
+    return true;
   }
 
   function normalizeAccess(raw) {
@@ -316,6 +765,7 @@
       state.auth.ready = true;
       updateAccountButton();
       render();
+      showWelcomeGreeting("bé");
       return;
     }
 
@@ -334,6 +784,7 @@
         applyAuthData(data, token);
         state.auth.ready = true;
         render();
+        showWelcomeGreeting(state.auth.user && state.auth.user.name);
         return;
       } catch (err) {
         lastError = err;
@@ -361,15 +812,25 @@
   }
 
   function setScreen(screen) {
+    if (state.screen === "home" && screen !== "home") destroyActiveHomeFeature();
+    if (screen !== "home") {
+      state.homeFeatureId = null;
+      state.homeFeatureBanner = null;
+    }
     state.screen = screen;
     state.detail = null;
     render();
   }
 
   function goHome() {
+    stopWelcomeGreeting();
+    if (state.screen === "subject" && state.subjectId) destroySubjectModule(state.subjectId);
+    if (state.screen === "home") destroyActiveHomeFeature();
     state.account.visibleNotices = [];
     state.screen = "home";
     state.homeTab = "class1";
+    state.homeFeatureId = null;
+    state.homeFeatureBanner = null;
     state.subjectId = null;
     state.subjectTab = "discover";
     state.profileSubjectId = null;
@@ -379,9 +840,14 @@
   }
 
   function openHomeTab(tabId) {
+    stopWelcomeGreeting();
+    if (state.screen === "subject" && state.subjectId) destroySubjectModule(state.subjectId);
+    if (state.screen === "home") destroyActiveHomeFeature();
     state.account.visibleNotices = [];
     state.screen = "home";
     state.homeTab = HOME_TABS.some((t) => t.id === tabId) ? tabId : "class1";
+    state.homeFeatureId = null;
+    state.homeFeatureBanner = null;
     state.subjectId = null;
     state.profileSubjectId = null;
     state.detail = null;
@@ -390,10 +856,16 @@
   }
 
   function openSubject(subjectId) {
+    stopWelcomeGreeting();
+    if (state.screen === "home") destroyActiveHomeFeature();
     state.account.visibleNotices = [];
+    const previousSubjectId = state.screen === "subject" ? state.subjectId : null;
     const subject = subjectByFrontId(subjectId);
     if (!subject) return;
+    if (previousSubjectId && previousSubjectId !== subject.id) destroySubjectModule(previousSubjectId);
     state.screen = "subject";
+    state.homeFeatureId = null;
+    state.homeFeatureBanner = null;
     state.subjectId = subject.id;
     state.subjectTab = "discover";
     state.profileSubjectId = null;
@@ -403,6 +875,8 @@
   }
 
   async function openLearningProfile(subjectId) {
+    if (state.screen === "home") destroyActiveHomeFeature();
+    if (state.screen === "subject" && state.subjectId) destroySubjectModule(state.subjectId);
     state.account.visibleNotices = [];
     const subject = subjectByFrontId(subjectId);
     if (!subject) return;
@@ -441,6 +915,7 @@
   }
 
   function openSubjectTab(tabId) {
+    stopWelcomeGreeting();
     if (!SUBJECT_TABS.some((t) => t.id === tabId)) return;
     if (tabId !== "discover" && !hasPremiumAccess(state.subjectId)) {
       if (!state.auth.ready) {
@@ -470,6 +945,7 @@
     state.screen = "subject";
     state.subjectTab = tabId;
     state.detail = null;
+    setScoreBox(0, 0);
     render();
     focusContent();
   }
@@ -573,10 +1049,76 @@
   }
 
   function renderBanner() {
-    const detailMode = state.screen === "subject" && !!state.detail;
+    ensureHomeFeatureBannerStyles();
+    resetHomeFeatureBreadcrumbPill();
+
+    const subjectDetailMode = state.screen === "subject" && !!state.detail;
+    const homeFeatureMode = state.screen === "home"
+      && (state.homeTab === "games" || state.homeTab === "tools")
+      && !!state.homeFeatureId;
+    const detailMode = subjectDetailMode || homeFeatureMode;
+
     el.mainBanner.classList.toggle("hidden", detailMode);
     el.subBanner.classList.toggle("hidden", !detailMode);
-    if (detailMode) el.subPill.textContent = `🌸 ${state.detail.title}`;
+
+    if (!detailMode) return;
+    if (subjectDetailMode) {
+      el.subPill.textContent = `🌸 ${state.detail.title}`;
+      return;
+    }
+
+    const catalog = state.homeTab === "games" ? GAME_CATALOG : TOOL_CATALOG;
+    const feature = catalog.find((item) => item.id === state.homeFeatureId) || null;
+    const fallback = state.homeTab === "games" ? "Games" : "Tools";
+    const nested = state.homeFeatureBanner;
+
+    if (nested && Array.isArray(nested.items) && nested.items.length) {
+      el.subPill.classList.add("home-sub-breadcrumbs");
+      el.subPill.setAttribute("aria-label", `Điều hướng ${fallback}`);
+      el.subPill.title = nested.items.map((item) => item.title).join(" › ");
+      el.subPill.replaceChildren();
+
+      nested.items.forEach((item, index) => {
+        if (index) {
+          const sep = document.createElement("span");
+          sep.className = "home-breadcrumb-sep";
+          sep.setAttribute("aria-hidden", "true");
+          sep.textContent = "›";
+          el.subPill.appendChild(sep);
+        }
+        const clickable = typeof item.action === "function";
+        const node = document.createElement(clickable ? "button" : "span");
+        if (clickable) node.type = "button";
+        node.className = `home-breadcrumb-tab home-breadcrumb-level${item.level || 2}`;
+        node.textContent = item.title;
+        node.title = item.title;
+        if (clickable) {
+          node.setAttribute("aria-label", `Quay lại ${item.title}`);
+          node.addEventListener("click", () => {
+            if (state.screen !== "home" || !state.homeFeatureId) return;
+            item.action();
+          });
+        }
+        el.subPill.appendChild(node);
+      });
+      return;
+    }
+
+    if (feature) {
+      const featureIndex = Math.max(0, catalog.indexOf(feature));
+      el.subPill.classList.add("home-sub-breadcrumbs");
+      el.subPill.setAttribute("aria-label", `Điều hướng ${fallback}`);
+      const node = document.createElement("span");
+      node.className = "home-breadcrumb-tab home-breadcrumb-level2";
+      node.textContent = `${featureIndex + 1}. ${feature.title}`;
+      node.title = feature.title;
+      el.subPill.replaceChildren(node);
+      return;
+    }
+
+    const icon = nested && nested.icon ? nested.icon : (state.homeTab === "games" ? "🎮" : "🧰");
+    const title = nested && nested.title ? nested.title : fallback;
+    el.subPill.textContent = `${icon} ${title}`;
   }
 
   function renderContent() {
@@ -584,6 +1126,7 @@
     if (state.screen === "profile") return renderLearningProfile();
     if (state.screen === "account") return renderAccountPage();
     if (state.screen === "admin") return renderAdmin();
+    if (state.screen === "subject" && SUBJECT_MODULE_SCRIPTS[state.subjectId]) return renderSubjectContent();
     if (state.detail) return renderDetailContent();
     renderSubjectContent();
   }
@@ -591,12 +1134,62 @@
   function renderHomeContent() {
     switch (state.homeTab) {
       case "epsilon": renderEpsilonTab(); break;
-      case "games": renderEmptyHomeTab("🎮", "Games", "Khu Games của Trang chủ sẽ được bổ sung ở bước nội dung."); break;
-      case "tools": renderEmptyHomeTab("🧰", "Tools", "Khu công cụ sẽ được bổ sung sau."); break;
+      case "games": renderGamesTab(); break;
+      case "tools": renderToolsTab(); break;
       case "contact": renderContactTab(); break;
       case "class1":
       default: renderClass1Tab(); break;
     }
+  }
+
+  function renderHomeFeatureCatalog(kind, icon, title, description, catalog) {
+    if (state.homeFeatureId) {
+      if (!renderHomeFeatureOrLoading(kind, state.homeFeatureId)) {
+        renderEmptyHomeTab(icon, title, "Module này chưa có file JS tương ứng.");
+      }
+      return;
+    }
+
+    if (!catalog.length) {
+      renderEmptyHomeTab(icon, title, description);
+      return;
+    }
+
+    el.content.innerHTML = `
+      <div class="section-heading">
+        <div><h1>${icon} ${escapeHtml(title)}</h1><p>${escapeHtml(description)}</p></div>
+      </div>
+      <div class="card-grid home-feature-grid">
+        ${catalog.map((item, index) => `
+          <button class="content-card home-feature-card" data-tone="${escapeHtml(item.tone || "purple")}" data-home-feature="${escapeHtml(item.id)}" type="button">
+            <div class="card-top">
+              <span class="card-icon" aria-hidden="true">${item.icon}</span>
+              <div class="card-copy">
+                <h2 class="card-title">${index + 1}. ${escapeHtml(item.title)}</h2>
+                <p class="card-desc">${escapeHtml(item.description)}</p>
+              </div>
+            </div>
+          </button>`).join("")}
+      </div>`;
+
+    el.content.querySelectorAll("[data-home-feature]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const featureId = String(button.dataset.homeFeature || "");
+        if (!featureId || !homeFeatureScript(kind, featureId)) return;
+        state.homeFeatureId = featureId;
+        state.homeFeatureBanner = null;
+        render();
+        focusContent();
+      });
+    });
+  }
+
+  function renderToolsTab() {
+    renderHomeFeatureCatalog("tools", "🧰", "Tools", "Các công cụ tiện ích của Epsilon Edu.", TOOL_CATALOG);
+  }
+
+  function renderGamesTab() {
+    renderHomeFeatureCatalog("games", "🎮", "Games", "Các trò chơi và hoạt động sáng tạo của Epsilon Edu.", GAME_CATALOG);
   }
 
   function accessBadge(subjectId) {
@@ -620,7 +1213,6 @@
           </div>
           <div class="card-foot">
             <span class="badge">${escapeHtml(accessBadge(subject.id))}</span>
-            <span class="arrow"><span>→</span></span>
           </div>
         </button>
 
@@ -630,7 +1222,6 @@
             <span class="subject-profile-title">Hồ sơ học tập</span>
             <span class="subject-profile-note">${state.auth.user ? "Xem tiến trình của bé" : "Đăng nhập để xem"}</span>
           </span>
-          <span class="subject-profile-arrow" aria-hidden="true">→</span>
         </button>
       </div>
     `).join("");
@@ -716,7 +1307,6 @@
           </div>
           <div class="card-foot">
             <span class="badge">${available ? "Mở website" : "Chưa mở"}</span>
-            <span class="arrow"><span>${available ? "↗" : "•"}</span></span>
           </div>
         </button>
       `;
@@ -760,6 +1350,7 @@
   }
 
   function renderSubjectContent() {
+    if (renderSubjectModuleOrLoading()) return;
     const subject = currentSubject();
     const tab = SUBJECT_TABS.find((item) => item.id === state.subjectTab) || SUBJECT_TABS[0];
     const count = state.subjectTab === "games" ? 12 : state.subjectTab === "exams" ? 3 : 8;
@@ -870,6 +1461,8 @@
     const label = document.createElement("span");
     label.className = "user-btn-name";
 
+    el.accountButton.classList.remove("is-guest-auth");
+
     if (verifying || !state.auth.ready) {
       avatar.textContent = "🐰";
       label.textContent = "Đang tải";
@@ -897,16 +1490,26 @@
         return;
       }
     } else {
-      avatar.textContent = "👤";
-      label.textContent = "Tài khoản";
-      el.accountButton.title = "Tài khoản";
-      el.accountButton.setAttribute("aria-label", "Tài khoản");
+      el.accountButton.classList.add("is-guest-auth");
+      label.classList.add("guest-auth-label");
+      const registerLine = document.createElement("span");
+      registerLine.className = "guest-auth-line";
+      registerLine.textContent = "Đăng ký";
+      const loginLine = document.createElement("span");
+      loginLine.className = "guest-auth-line";
+      loginLine.textContent = "Đăng nhập";
+      label.replaceChildren(registerLine, loginLine);
+      el.accountButton.title = "Đăng ký hoặc Đăng nhập";
+      el.accountButton.setAttribute("aria-label", "Đăng ký hoặc Đăng nhập");
+      el.accountButton.replaceChildren(label);
+      return;
     }
 
     el.accountButton.replaceChildren(avatar, label);
   }
 
   async function openAccountPage(view = "overview") {
+    if (state.screen === "subject" && state.subjectId) destroySubjectModule(state.subjectId);
     if (!state.auth.user) {
       openAuth("login");
       return;
@@ -1276,7 +1879,7 @@
       document.getElementById("login-password").value = "";
       closeAuth();
       render();
-      showToast(`Đã đăng nhập: ${state.auth.user.name}.`);
+      showWelcomeGreeting(state.auth.user && state.auth.user.name);
     } catch (err) {
       showToast(friendlyError(err, "login"));
     } finally {
@@ -1306,6 +1909,7 @@
         icon: "🎉",
         primaryLabel: "Vào học",
         secondaryLabel: "Sao chép ID",
+        onPrimary: () => showWelcomeGreeting(state.auth.user && state.auth.user.name),
         onSecondary: async () => {
           const copied = await copyText(userId);
           showToast(copied ? "Đã sao chép ID." : `ID của bạn: ${userId}`);
@@ -1400,6 +2004,7 @@
   }
 
   async function performLogout() {
+    stopWelcomeGreeting();
     const button = document.getElementById("account-logout-button");
     if (!state.auth.token) {
       clearAuthState();
@@ -1425,6 +2030,7 @@
   }
 
   function openAdmin() {
+    if (state.screen === "subject" && state.subjectId) destroySubjectModule(state.subjectId);
     if (!state.auth.user || state.auth.user.role !== "admin") return;
     state.screen = "admin";
     state.homeTab = "admin";
@@ -2014,6 +2620,8 @@
   el.loginForm.addEventListener("submit", onLoginSubmit);
   el.registerForm.addEventListener("submit", onRegisterSubmit);
   el.installButton.addEventListener("click", handleInstall);
+  document.addEventListener("pointerdown", retryPendingGreeting, { passive: true });
+  document.addEventListener("keydown", retryPendingGreeting);
 
   el.dialogOk.addEventListener("click", () => {
     const handler = dialogPrimaryHandler;
