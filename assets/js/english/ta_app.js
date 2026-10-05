@@ -3716,18 +3716,18 @@ function openMiniGameHub() {
 // Đường dẫn file JS riêng của từng game — chỉ tải về máy khi bé THẬT SỰ bấm vào game đó,
 // không bắt tải sẵn hết 12 game ngay từ đầu (giữ app.js gọn nhẹ dù sau này thêm bao nhiêu game).
 const GAME_SCRIPT_MAP = {
-    'word-search': 'assets/js/games/word-search.js?v=mg4',
-    'word-scramble': 'assets/js/games/word-scramble.js?v=mg4',
-    'bingo': 'assets/js/games/bingo.js?v=mg4',
-    'fishing-game': 'assets/js/games/fishing-game.js?v=mg4',
-    'sentence-train': 'assets/js/games/sentence-train.js?v=mg5',
-    'grammar-river': 'assets/js/games/grammar-river.js?v=mg6',
-    'qa-bridge': 'assets/js/games/qa-bridge.js?v=mg7',
-    'sentence-doctor': 'assets/js/games/sentence-doctor.js?v=mg8',
-    'action-race': 'assets/js/games/action-race.js?v=mg9',
-    'feeling-detective': 'assets/js/games/feeling-detective.js?v=mg10',
-    'a-or-an-factory': 'assets/js/games/a-or-an-factory.js?v=mg11',
-    'teacher-says': 'assets/js/games/teacher-says.js?v=mg12'
+    'word-search': 'assets/js/english/games/word-search.js?v=mg4',
+    'word-scramble': 'assets/js/english/games/word-scramble.js?v=mg4',
+    'bingo': 'assets/js/english/games/bingo.js?v=mg4',
+    'fishing-game': 'assets/js/english/games/fishing-game.js?v=mg4',
+    'sentence-train': 'assets/js/english/games/sentence-train.js?v=mg5',
+    'grammar-river': 'assets/js/english/games/grammar-river.js?v=mg6',
+    'qa-bridge': 'assets/js/english/games/qa-bridge.js?v=mg7',
+    'sentence-doctor': 'assets/js/english/games/sentence-doctor.js?v=mg8',
+    'action-race': 'assets/js/english/games/action-race.js?v=mg9',
+    'feeling-detective': 'assets/js/english/games/feeling-detective.js?v=mg10',
+    'a-or-an-factory': 'assets/js/english/games/a-or-an-factory.js?v=mg11',
+    'teacher-says': 'assets/js/english/games/teacher-says.js?v=mg12'
 };
 const loadedGameScripts = {};
 
@@ -4328,6 +4328,13 @@ function installEnglishInlineBridge_(){
     let fn=null; try{fn=eval(name);}catch(_){}
     if(typeof fn==='function')Object.defineProperty(window,name,{configurable:true,writable:true,value:fn});
   });
+  // Game files are classic scripts loaded outside this module IIFE.
+  // Expose the shared palette explicitly so Bingo and any future game can
+  // use the same Mini Game theme without duplicating palette data.
+  if(!englishBridgePrevious_.has('MINIGAME_TOPIC_PALETTES')){
+    englishBridgePrevious_.set('MINIGAME_TOPIC_PALETTES',Object.prototype.hasOwnProperty.call(window,'MINIGAME_TOPIC_PALETTES')?Object.getOwnPropertyDescriptor(window,'MINIGAME_TOPIC_PALETTES'):null);
+    Object.defineProperty(window,'MINIGAME_TOPIC_PALETTES',{configurable:true,writable:false,value:MINIGAME_TOPIC_PALETTES});
+  }
   if(!englishBridgePrevious_.has('activeBaiHocContext')){
     englishBridgePrevious_.set('activeBaiHocContext',Object.prototype.hasOwnProperty.call(window,'activeBaiHocContext')?Object.getOwnPropertyDescriptor(window,'activeBaiHocContext'):null);
     Object.defineProperty(window,'activeBaiHocContext',{configurable:true,get:()=>activeBaiHocContext,set:(x)=>{activeBaiHocContext=x;}});
