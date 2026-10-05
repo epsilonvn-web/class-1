@@ -1,0 +1,5132 @@
+{
+  "schema_version": "L1_MATH_REVIEW_V1",
+  "data_version": "2026-10-03-structure-split-v1",
+  "subject": "Toán",
+  "grade": 1,
+  "module_model": "Ôn tập độc lập",
+  "title": "ÔN TẬP TOÁN LỚP 1",
+  "description": "Ôn tập theo học kỳ và tổng ôn cuối năm (nguồn nội bộ cho tab Ôn tập).",
+  "formal_six_competency_assessment": false,
+  "assessment_note": "Ôn tập có thể giữ tag kỹ năng/năng lực để phân loại nội dung, nhưng không dùng riêng kết quả Ôn tập để tạo kết luận sáu năng lực chính thức.",
+  "topics": [
+    {
+      "id": 13,
+      "name": "NỘI DUNG ÔN TẬP",
+      "desc": "Ôn tập theo học kỳ và tổng ôn cuối năm (nguồn nội bộ cho tab Ôn tập).",
+      "qs": [
+        {
+          "id": 11000,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 0 .... 3",
+          "o": [
+            "=",
+            ">",
+            "<",
+            "Khác"
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11001,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 2 = ....",
+          "o": [
+            "8",
+            "6",
+            "5",
+            "1"
+          ],
+          "a": "6",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 6 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11002,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên phải quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "phía sau",
+            "ở dưới",
+            "bên trái",
+            "phía trước"
+          ],
+          "a": "bên trái",
+          "h": "Chú mèo ở bên phải quả bóng nên quả bóng ở bên trái chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11003,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 8 bông hoa hồng đỏ, An tặng cho Lan 3 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "8 bông hoa",
+            "7 bông hoa",
+            "5 bông hoa",
+            "10 bông hoa"
+          ],
+          "a": "5 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 8 trừ 3 bằng 5 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11004,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Sáu, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Tư",
+            "Thứ Năm",
+            "Thứ Bảy",
+            "Thứ Hai"
+          ],
+          "a": "Thứ Bảy",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Sáu, chính là ngày Thứ Bảy đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11005,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 5 .... 8",
+          "o": [
+            "<",
+            "Khác",
+            ">",
+            "="
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11006,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 1 = ....",
+          "o": [
+            "6",
+            "5",
+            "4",
+            "10"
+          ],
+          "a": "5",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 5 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11007,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên trái quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "ở trong",
+            "bên trái",
+            "bên phải",
+            "phía trước"
+          ],
+          "a": "bên phải",
+          "h": "Chú mèo ở bên trái quả bóng nên quả bóng ở bên phải chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11008,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 10 bông hoa hồng đỏ, An tặng cho Lan 2 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "7 bông hoa",
+            "8 bông hoa",
+            "10 bông hoa",
+            "11 bông hoa"
+          ],
+          "a": "8 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 10 trừ 2 bằng 8 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11009,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Tư, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Bảy",
+            "Thứ Ba",
+            "Thứ Hai",
+            "Thứ Năm"
+          ],
+          "a": "Thứ Năm",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Tư, chính là ngày Thứ Năm đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11010,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 0 .... 3",
+          "o": [
+            "=",
+            "Khác",
+            "<",
+            ">"
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11011,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 3 = ....",
+          "o": [
+            "5",
+            "7",
+            "9",
+            "17"
+          ],
+          "a": "7",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 7 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11012,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên phải quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "ở trong",
+            "bên trái",
+            "bên phải",
+            "phía trước"
+          ],
+          "a": "bên trái",
+          "h": "Chú mèo ở bên phải quả bóng nên quả bóng ở bên trái chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11013,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 9 bông hoa hồng đỏ, An tặng cho Lan 3 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "11 bông hoa",
+            "8 bông hoa",
+            "9 bông hoa",
+            "6 bông hoa"
+          ],
+          "a": "6 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 9 trừ 3 bằng 6 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11014,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Hai, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Sáu",
+            "Thứ Ba",
+            "Thứ Tư",
+            "Chủ Nhật"
+          ],
+          "a": "Thứ Ba",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Hai, chính là ngày Thứ Ba đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11015,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 5 .... 8",
+          "o": [
+            "Khác",
+            ">",
+            "=",
+            "<"
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11016,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 2 = ....",
+          "o": [
+            "4",
+            "6",
+            "11",
+            "9"
+          ],
+          "a": "6",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 6 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11017,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên trái quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "phía trước",
+            "ở trong",
+            "ở trên",
+            "bên phải"
+          ],
+          "a": "bên phải",
+          "h": "Chú mèo ở bên trái quả bóng nên quả bóng ở bên phải chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11018,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 8 bông hoa hồng đỏ, An tặng cho Lan 2 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "6 bông hoa",
+            "7 bông hoa",
+            "9 bông hoa",
+            "11 bông hoa"
+          ],
+          "a": "6 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 8 trừ 2 bằng 6 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11019,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Bảy, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Tư",
+            "Chủ Nhật",
+            "Thứ Năm",
+            "Thứ Bảy"
+          ],
+          "a": "Chủ Nhật",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Bảy, chính là ngày Chủ Nhật đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11020,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 0 .... 3",
+          "o": [
+            "=",
+            "<",
+            "Khác",
+            ">"
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11021,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 1 = ....",
+          "o": [
+            "2",
+            "4",
+            "5",
+            "7"
+          ],
+          "a": "5",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 5 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11022,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên phải quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "ở trong",
+            "bên trái",
+            "ở dưới",
+            "ở giữa"
+          ],
+          "a": "bên trái",
+          "h": "Chú mèo ở bên phải quả bóng nên quả bóng ở bên trái chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11023,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 10 bông hoa hồng đỏ, An tặng cho Lan 3 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "10 bông hoa",
+            "8 bông hoa",
+            "9 bông hoa",
+            "7 bông hoa"
+          ],
+          "a": "7 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 10 trừ 3 bằng 7 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11024,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Năm, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Sáu",
+            "Thứ Năm",
+            "Thứ Hai",
+            "Thứ Ba"
+          ],
+          "a": "Thứ Sáu",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Năm, chính là ngày Thứ Sáu đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11025,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 5 .... 8",
+          "o": [
+            "Khác",
+            ">",
+            "<",
+            "="
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11026,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 3 = ....",
+          "o": [
+            "8",
+            "7",
+            "12",
+            "10"
+          ],
+          "a": "7",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 7 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11027,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên trái quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "bên trái",
+            "ở ngoài",
+            "bên phải",
+            "ở trên"
+          ],
+          "a": "bên phải",
+          "h": "Chú mèo ở bên trái quả bóng nên quả bóng ở bên phải chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11028,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 9 bông hoa hồng đỏ, An tặng cho Lan 2 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "5 bông hoa",
+            "8 bông hoa",
+            "7 bông hoa",
+            "10 bông hoa"
+          ],
+          "a": "7 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 9 trừ 2 bằng 7 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11029,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Ba, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Năm",
+            "Thứ Hai",
+            "Chủ Nhật",
+            "Thứ Tư"
+          ],
+          "a": "Thứ Tư",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Ba, chính là ngày Thứ Tư đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11030,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 0 .... 3",
+          "o": [
+            "=",
+            "<",
+            "Khác",
+            ">"
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11031,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 2 = ....",
+          "o": [
+            "11",
+            "5",
+            "6",
+            "3"
+          ],
+          "a": "6",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 6 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11032,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên phải quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "phía sau",
+            "bên trái",
+            "ở giữa",
+            "ở ngoài"
+          ],
+          "a": "bên trái",
+          "h": "Chú mèo ở bên phải quả bóng nên quả bóng ở bên trái chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11033,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 8 bông hoa hồng đỏ, An tặng cho Lan 3 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "7 bông hoa",
+            "5 bông hoa",
+            "3 bông hoa",
+            "8 bông hoa"
+          ],
+          "a": "5 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 8 trừ 3 bằng 5 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11034,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Chủ Nhật, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Năm",
+            "Thứ Hai",
+            "Thứ Sáu",
+            "Thứ Ba"
+          ],
+          "a": "Thứ Hai",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Chủ Nhật, chính là ngày Thứ Hai đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11035,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 5 .... 8",
+          "o": [
+            ">",
+            "Khác",
+            "=",
+            "<"
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11036,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 1 = ....",
+          "o": [
+            "10",
+            "5",
+            "2",
+            "6"
+          ],
+          "a": "5",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 5 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11037,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên trái quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "ở trên",
+            "bên phải",
+            "ở ngoài",
+            "ở trong"
+          ],
+          "a": "bên phải",
+          "h": "Chú mèo ở bên trái quả bóng nên quả bóng ở bên phải chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11038,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 10 bông hoa hồng đỏ, An tặng cho Lan 2 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "8 bông hoa",
+            "13 bông hoa",
+            "7 bông hoa",
+            "9 bông hoa"
+          ],
+          "a": "8 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 10 trừ 2 bằng 8 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11039,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Sáu, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Năm",
+            "Thứ Bảy",
+            "Thứ Hai",
+            "Thứ Ba"
+          ],
+          "a": "Thứ Bảy",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Sáu, chính là ngày Thứ Bảy đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11040,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 0 .... 3",
+          "o": [
+            ">",
+            "=",
+            "<",
+            "Khác"
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11041,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 3 = ....",
+          "o": [
+            "12",
+            "10",
+            "7",
+            "17"
+          ],
+          "a": "7",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 7 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11042,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên phải quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "bên phải",
+            "bên trái",
+            "ở trên",
+            "ở ngoài"
+          ],
+          "a": "bên trái",
+          "h": "Chú mèo ở bên phải quả bóng nên quả bóng ở bên trái chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11043,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 9 bông hoa hồng đỏ, An tặng cho Lan 3 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "11 bông hoa",
+            "5 bông hoa",
+            "6 bông hoa",
+            "9 bông hoa"
+          ],
+          "a": "6 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 9 trừ 3 bằng 6 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11044,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Tư, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Sáu",
+            "Thứ Năm",
+            "Thứ Ba",
+            "Chủ Nhật"
+          ],
+          "a": "Thứ Năm",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Tư, chính là ngày Thứ Năm đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11045,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 5 .... 8",
+          "o": [
+            "Khác",
+            "<",
+            ">",
+            "="
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11046,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 2 = ....",
+          "o": [
+            "8",
+            "9",
+            "11",
+            "6"
+          ],
+          "a": "6",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 6 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11047,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên trái quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "ở trong",
+            "phía trước",
+            "bên phải",
+            "ở dưới"
+          ],
+          "a": "bên phải",
+          "h": "Chú mèo ở bên trái quả bóng nên quả bóng ở bên phải chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11048,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 8 bông hoa hồng đỏ, An tặng cho Lan 2 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "7 bông hoa",
+            "5 bông hoa",
+            "8 bông hoa",
+            "6 bông hoa"
+          ],
+          "a": "6 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 8 trừ 2 bằng 6 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11049,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Hai, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Chủ Nhật",
+            "Thứ Hai",
+            "Thứ Tư",
+            "Thứ Ba"
+          ],
+          "a": "Thứ Ba",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Hai, chính là ngày Thứ Ba đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11050,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 0 .... 3",
+          "o": [
+            ">",
+            "<",
+            "=",
+            "Khác"
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11051,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 1 = ....",
+          "o": [
+            "3",
+            "6",
+            "4",
+            "5"
+          ],
+          "a": "5",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 5 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11052,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên phải quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "ở trong",
+            "phía trước",
+            "bên trái",
+            "ở dưới"
+          ],
+          "a": "bên trái",
+          "h": "Chú mèo ở bên phải quả bóng nên quả bóng ở bên trái chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11053,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 10 bông hoa hồng đỏ, An tặng cho Lan 3 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "12 bông hoa",
+            "7 bông hoa",
+            "8 bông hoa",
+            "5 bông hoa"
+          ],
+          "a": "7 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 10 trừ 3 bằng 7 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11054,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Bảy, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Hai",
+            "Chủ Nhật",
+            "Thứ Ba",
+            "Thứ Bảy"
+          ],
+          "a": "Chủ Nhật",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Bảy, chính là ngày Chủ Nhật đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11055,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 5 .... 8",
+          "o": [
+            "Khác",
+            ">",
+            "=",
+            "<"
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11056,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 3 = ....",
+          "o": [
+            "17",
+            "7",
+            "10",
+            "8"
+          ],
+          "a": "7",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 7 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11057,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên trái quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "bên phải",
+            "phía trước",
+            "ở giữa",
+            "phía sau"
+          ],
+          "a": "bên phải",
+          "h": "Chú mèo ở bên trái quả bóng nên quả bóng ở bên phải chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11058,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 9 bông hoa hồng đỏ, An tặng cho Lan 2 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "8 bông hoa",
+            "9 bông hoa",
+            "12 bông hoa",
+            "7 bông hoa"
+          ],
+          "a": "7 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 9 trừ 2 bằng 7 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11059,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Năm, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Sáu",
+            "Thứ Bảy",
+            "Thứ Tư",
+            "Thứ Ba"
+          ],
+          "a": "Thứ Sáu",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Năm, chính là ngày Thứ Sáu đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11060,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 0 .... 3",
+          "o": [
+            ">",
+            "=",
+            "<",
+            "Khác"
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11061,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 2 = ....",
+          "o": [
+            "16",
+            "3",
+            "9",
+            "6"
+          ],
+          "a": "6",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 6 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11062,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên phải quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "bên trái",
+            "ở ngoài",
+            "ở trên",
+            "ở trong"
+          ],
+          "a": "bên trái",
+          "h": "Chú mèo ở bên phải quả bóng nên quả bóng ở bên trái chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11063,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 8 bông hoa hồng đỏ, An tặng cho Lan 3 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "5 bông hoa",
+            "8 bông hoa",
+            "3 bông hoa",
+            "4 bông hoa"
+          ],
+          "a": "5 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 8 trừ 3 bằng 5 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11064,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Ba, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Tư",
+            "Thứ Ba",
+            "Thứ Bảy",
+            "Thứ Sáu"
+          ],
+          "a": "Thứ Tư",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Ba, chính là ngày Thứ Tư đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11065,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 5 .... 8",
+          "o": [
+            ">",
+            "Khác",
+            "=",
+            "<"
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11066,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 1 = ....",
+          "o": [
+            "8",
+            "4",
+            "3",
+            "5"
+          ],
+          "a": "5",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 5 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11067,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên trái quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "phía trước",
+            "bên phải",
+            "bên trái",
+            "ở dưới"
+          ],
+          "a": "bên phải",
+          "h": "Chú mèo ở bên trái quả bóng nên quả bóng ở bên phải chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11068,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 10 bông hoa hồng đỏ, An tặng cho Lan 2 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "10 bông hoa",
+            "8 bông hoa",
+            "11 bông hoa",
+            "9 bông hoa"
+          ],
+          "a": "8 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 10 trừ 2 bằng 8 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11069,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Chủ Nhật, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Chủ Nhật",
+            "Thứ Sáu",
+            "Thứ Hai",
+            "Thứ Bảy"
+          ],
+          "a": "Thứ Hai",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Chủ Nhật, chính là ngày Thứ Hai đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11070,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 0 .... 3",
+          "o": [
+            ">",
+            "<",
+            "Khác",
+            "="
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11071,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 3 = ....",
+          "o": [
+            "7",
+            "5",
+            "10",
+            "17"
+          ],
+          "a": "7",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 7 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11072,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên phải quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "bên phải",
+            "bên trái",
+            "ở dưới",
+            "ở giữa"
+          ],
+          "a": "bên trái",
+          "h": "Chú mèo ở bên phải quả bóng nên quả bóng ở bên trái chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11073,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 9 bông hoa hồng đỏ, An tặng cho Lan 3 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "5 bông hoa",
+            "4 bông hoa",
+            "6 bông hoa",
+            "8 bông hoa"
+          ],
+          "a": "6 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 9 trừ 3 bằng 6 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11074,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Sáu, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Chủ Nhật",
+            "Thứ Ba",
+            "Thứ Bảy",
+            "Thứ Năm"
+          ],
+          "a": "Thứ Bảy",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Sáu, chính là ngày Thứ Bảy đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11075,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 5 .... 8",
+          "o": [
+            "<",
+            "Khác",
+            ">",
+            "="
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11076,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 2 = ....",
+          "o": [
+            "4",
+            "5",
+            "6",
+            "16"
+          ],
+          "a": "6",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 6 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11077,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên trái quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "bên phải",
+            "bên trái",
+            "ở trên",
+            "ở dưới"
+          ],
+          "a": "bên phải",
+          "h": "Chú mèo ở bên trái quả bóng nên quả bóng ở bên phải chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11078,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 8 bông hoa hồng đỏ, An tặng cho Lan 2 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "4 bông hoa",
+            "8 bông hoa",
+            "6 bông hoa",
+            "9 bông hoa"
+          ],
+          "a": "6 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 8 trừ 2 bằng 6 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11079,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Tư, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Chủ Nhật",
+            "Thứ Năm",
+            "Thứ Hai",
+            "Thứ Tư"
+          ],
+          "a": "Thứ Năm",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Tư, chính là ngày Thứ Năm đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11080,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 0 .... 3",
+          "o": [
+            "<",
+            ">",
+            "=",
+            "Khác"
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11081,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 1 = ....",
+          "o": [
+            "7",
+            "8",
+            "5",
+            "2"
+          ],
+          "a": "5",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 5 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11082,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên phải quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "ở trong",
+            "ở giữa",
+            "bên trái",
+            "ở ngoài"
+          ],
+          "a": "bên trái",
+          "h": "Chú mèo ở bên phải quả bóng nên quả bóng ở bên trái chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11083,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 10 bông hoa hồng đỏ, An tặng cho Lan 3 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "8 bông hoa",
+            "10 bông hoa",
+            "7 bông hoa",
+            "12 bông hoa"
+          ],
+          "a": "7 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 10 trừ 3 bằng 7 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11084,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Hai, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Bảy",
+            "Thứ Ba",
+            "Thứ Tư",
+            "Chủ Nhật"
+          ],
+          "a": "Thứ Ba",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Hai, chính là ngày Thứ Ba đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11085,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 5 .... 8",
+          "o": [
+            "Khác",
+            ">",
+            "<",
+            "="
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11086,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 3 = ....",
+          "o": [
+            "10",
+            "7",
+            "4",
+            "12"
+          ],
+          "a": "7",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 7 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11087,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên trái quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "bên phải",
+            "ở ngoài",
+            "ở giữa",
+            "ở dưới"
+          ],
+          "a": "bên phải",
+          "h": "Chú mèo ở bên trái quả bóng nên quả bóng ở bên phải chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11088,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 9 bông hoa hồng đỏ, An tặng cho Lan 2 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "9 bông hoa",
+            "10 bông hoa",
+            "5 bông hoa",
+            "7 bông hoa"
+          ],
+          "a": "7 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 9 trừ 2 bằng 7 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11089,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Bảy, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Chủ Nhật",
+            "Thứ Ba",
+            "Thứ Năm",
+            "Thứ Tư"
+          ],
+          "a": "Chủ Nhật",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Bảy, chính là ngày Chủ Nhật đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11090,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 0 .... 3",
+          "o": [
+            ">",
+            "<",
+            "Khác",
+            "="
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11091,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 2 = ....",
+          "o": [
+            "7",
+            "16",
+            "6",
+            "5"
+          ],
+          "a": "6",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 6 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11092,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên phải quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "ở dưới",
+            "bên trái",
+            "phía sau",
+            "bên phải"
+          ],
+          "a": "bên trái",
+          "h": "Chú mèo ở bên phải quả bóng nên quả bóng ở bên trái chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11093,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 8 bông hoa hồng đỏ, An tặng cho Lan 3 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "7 bông hoa",
+            "5 bông hoa",
+            "10 bông hoa",
+            "6 bông hoa"
+          ],
+          "a": "5 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 8 trừ 3 bằng 5 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11094,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Năm, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Chủ Nhật",
+            "Thứ Sáu",
+            "Thứ Ba",
+            "Thứ Tư"
+          ],
+          "a": "Thứ Sáu",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Năm, chính là ngày Thứ Sáu đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11095,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 5 .... 8",
+          "o": [
+            ">",
+            "Khác",
+            "=",
+            "<"
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11096,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 1 = ....",
+          "o": [
+            "4",
+            "2",
+            "6",
+            "5"
+          ],
+          "a": "5",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 5 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11097,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên trái quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "phía trước",
+            "bên phải",
+            "ở trên",
+            "ở trong"
+          ],
+          "a": "bên phải",
+          "h": "Chú mèo ở bên trái quả bóng nên quả bóng ở bên phải chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11098,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 10 bông hoa hồng đỏ, An tặng cho Lan 2 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "8 bông hoa",
+            "10 bông hoa",
+            "7 bông hoa",
+            "11 bông hoa"
+          ],
+          "a": "8 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 10 trừ 2 bằng 8 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11099,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Ba, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Tư",
+            "Thứ Bảy",
+            "Thứ Sáu",
+            "Chủ Nhật"
+          ],
+          "a": "Thứ Tư",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Ba, chính là ngày Thứ Tư đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11100,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 0 .... 3",
+          "o": [
+            "<",
+            "=",
+            "Khác",
+            ">"
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11101,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 3 = ....",
+          "o": [
+            "17",
+            "10",
+            "9",
+            "7"
+          ],
+          "a": "7",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 7 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11102,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên phải quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "phía sau",
+            "ở trong",
+            "bên trái",
+            "ở giữa"
+          ],
+          "a": "bên trái",
+          "h": "Chú mèo ở bên phải quả bóng nên quả bóng ở bên trái chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11103,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 9 bông hoa hồng đỏ, An tặng cho Lan 3 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "8 bông hoa",
+            "9 bông hoa",
+            "6 bông hoa",
+            "7 bông hoa"
+          ],
+          "a": "6 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 9 trừ 3 bằng 6 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11104,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Chủ Nhật, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Năm",
+            "Chủ Nhật",
+            "Thứ Hai",
+            "Thứ Sáu"
+          ],
+          "a": "Thứ Hai",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Chủ Nhật, chính là ngày Thứ Hai đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11105,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 5 .... 8",
+          "o": [
+            "Khác",
+            "<",
+            "=",
+            ">"
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11106,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 2 = ....",
+          "o": [
+            "6",
+            "16",
+            "9",
+            "3"
+          ],
+          "a": "6",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 6 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11107,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên trái quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "phía sau",
+            "bên phải",
+            "ở giữa",
+            "bên trái"
+          ],
+          "a": "bên phải",
+          "h": "Chú mèo ở bên trái quả bóng nên quả bóng ở bên phải chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11108,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 8 bông hoa hồng đỏ, An tặng cho Lan 2 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "8 bông hoa",
+            "9 bông hoa",
+            "6 bông hoa",
+            "5 bông hoa"
+          ],
+          "a": "6 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 8 trừ 2 bằng 6 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11109,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Sáu, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Sáu",
+            "Thứ Tư",
+            "Thứ Năm",
+            "Thứ Bảy"
+          ],
+          "a": "Thứ Bảy",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Sáu, chính là ngày Thứ Bảy đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11110,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 0 .... 3",
+          "o": [
+            "<",
+            ">",
+            "Khác",
+            "="
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11111,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 1 = ....",
+          "o": [
+            "0",
+            "3",
+            "2",
+            "5"
+          ],
+          "a": "5",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 5 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11112,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên phải quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "ở trên",
+            "ở dưới",
+            "bên trái",
+            "ở giữa"
+          ],
+          "a": "bên trái",
+          "h": "Chú mèo ở bên phải quả bóng nên quả bóng ở bên trái chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11113,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 10 bông hoa hồng đỏ, An tặng cho Lan 3 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "7 bông hoa",
+            "5 bông hoa",
+            "12 bông hoa",
+            "10 bông hoa"
+          ],
+          "a": "7 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 10 trừ 3 bằng 7 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11114,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Tư, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Tư",
+            "Thứ Hai",
+            "Chủ Nhật",
+            "Thứ Năm"
+          ],
+          "a": "Thứ Năm",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Tư, chính là ngày Thứ Năm đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11115,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 5 .... 8",
+          "o": [
+            "<",
+            "=",
+            ">",
+            "Khác"
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11116,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 3 = ....",
+          "o": [
+            "17",
+            "7",
+            "6",
+            "12"
+          ],
+          "a": "7",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 7 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11117,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên trái quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "phía trước",
+            "bên phải",
+            "phía sau",
+            "ở dưới"
+          ],
+          "a": "bên phải",
+          "h": "Chú mèo ở bên trái quả bóng nên quả bóng ở bên phải chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11118,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 9 bông hoa hồng đỏ, An tặng cho Lan 2 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "8 bông hoa",
+            "7 bông hoa",
+            "6 bông hoa",
+            "9 bông hoa"
+          ],
+          "a": "7 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 9 trừ 2 bằng 7 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11119,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Hai, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Tư",
+            "Thứ Ba",
+            "Chủ Nhật",
+            "Thứ Bảy"
+          ],
+          "a": "Thứ Ba",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Hai, chính là ngày Thứ Ba đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11120,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 0 .... 3",
+          "o": [
+            ">",
+            "Khác",
+            "<",
+            "="
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11121,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 2 = ....",
+          "o": [
+            "9",
+            "8",
+            "16",
+            "6"
+          ],
+          "a": "6",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 6 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11122,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên phải quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "phía sau",
+            "ở dưới",
+            "ở trong",
+            "bên trái"
+          ],
+          "a": "bên trái",
+          "h": "Chú mèo ở bên phải quả bóng nên quả bóng ở bên trái chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11123,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 8 bông hoa hồng đỏ, An tặng cho Lan 3 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "10 bông hoa",
+            "8 bông hoa",
+            "7 bông hoa",
+            "5 bông hoa"
+          ],
+          "a": "5 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 8 trừ 3 bằng 5 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11124,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Bảy, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Chủ Nhật",
+            "Thứ Sáu",
+            "Thứ Ba",
+            "Thứ Hai"
+          ],
+          "a": "Chủ Nhật",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Bảy, chính là ngày Chủ Nhật đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11125,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 5 .... 8",
+          "o": [
+            "=",
+            ">",
+            "<",
+            "Khác"
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11126,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 1 = ....",
+          "o": [
+            "5",
+            "15",
+            "2",
+            "10"
+          ],
+          "a": "5",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 5 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11127,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên trái quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "ở giữa",
+            "phía trước",
+            "bên trái",
+            "bên phải"
+          ],
+          "a": "bên phải",
+          "h": "Chú mèo ở bên trái quả bóng nên quả bóng ở bên phải chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11128,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 10 bông hoa hồng đỏ, An tặng cho Lan 2 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "10 bông hoa",
+            "13 bông hoa",
+            "6 bông hoa",
+            "8 bông hoa"
+          ],
+          "a": "8 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 10 trừ 2 bằng 8 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11129,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Năm, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Năm",
+            "Thứ Tư",
+            "Thứ Sáu",
+            "Thứ Ba"
+          ],
+          "a": "Thứ Sáu",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Năm, chính là ngày Thứ Sáu đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11130,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 0 .... 3",
+          "o": [
+            "<",
+            "=",
+            ">",
+            "Khác"
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11131,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 3 = ....",
+          "o": [
+            "6",
+            "7",
+            "10",
+            "2"
+          ],
+          "a": "7",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 7 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11132,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên phải quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "bên phải",
+            "phía sau",
+            "bên trái",
+            "ở trên"
+          ],
+          "a": "bên trái",
+          "h": "Chú mèo ở bên phải quả bóng nên quả bóng ở bên trái chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11133,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 9 bông hoa hồng đỏ, An tặng cho Lan 3 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "8 bông hoa",
+            "11 bông hoa",
+            "6 bông hoa",
+            "5 bông hoa"
+          ],
+          "a": "6 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 9 trừ 3 bằng 6 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11134,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Ba, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Năm",
+            "Thứ Ba",
+            "Thứ Tư",
+            "Chủ Nhật"
+          ],
+          "a": "Thứ Tư",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Ba, chính là ngày Thứ Tư đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11135,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 5 .... 8",
+          "o": [
+            "=",
+            "<",
+            "Khác",
+            ">"
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11136,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 2 = ....",
+          "o": [
+            "1",
+            "5",
+            "16",
+            "6"
+          ],
+          "a": "6",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 6 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11137,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên trái quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "ở trên",
+            "bên phải",
+            "ở giữa",
+            "ở dưới"
+          ],
+          "a": "bên phải",
+          "h": "Chú mèo ở bên trái quả bóng nên quả bóng ở bên phải chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11138,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 8 bông hoa hồng đỏ, An tặng cho Lan 2 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "9 bông hoa",
+            "11 bông hoa",
+            "7 bông hoa",
+            "6 bông hoa"
+          ],
+          "a": "6 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 8 trừ 2 bằng 6 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11139,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Chủ Nhật, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Hai",
+            "Thứ Bảy",
+            "Thứ Sáu",
+            "Thứ Ba"
+          ],
+          "a": "Thứ Hai",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Chủ Nhật, chính là ngày Thứ Hai đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11140,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 0 .... 3",
+          "o": [
+            ">",
+            "=",
+            "Khác",
+            "<"
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11141,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 1 = ....",
+          "o": [
+            "4",
+            "2",
+            "5",
+            "7"
+          ],
+          "a": "5",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 5 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11142,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên phải quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "ở dưới",
+            "bên trái",
+            "ở giữa",
+            "ở ngoài"
+          ],
+          "a": "bên trái",
+          "h": "Chú mèo ở bên phải quả bóng nên quả bóng ở bên trái chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11143,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 10 bông hoa hồng đỏ, An tặng cho Lan 3 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "9 bông hoa",
+            "7 bông hoa",
+            "12 bông hoa",
+            "8 bông hoa"
+          ],
+          "a": "7 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 10 trừ 3 bằng 7 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11144,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Sáu, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Ba",
+            "Thứ Sáu",
+            "Thứ Tư",
+            "Thứ Bảy"
+          ],
+          "a": "Thứ Bảy",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Sáu, chính là ngày Thứ Bảy đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11145,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé hãy so sánh và điền dấu thích hợp: 5 .... 8",
+          "o": [
+            "Khác",
+            "<",
+            "=",
+            ">"
+          ],
+          "a": "<",
+          "h": "Cô giáo Thỏ Hồng ôn tập cùng bé: Chúng mình so sánh hai số trong phạm vi 10 nhé! Điền dấu '<' là chính xác rồi!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11146,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Kết quả của phép tính cộng gộp sau: 4 + 3 = ....",
+          "o": [
+            "17",
+            "12",
+            "7",
+            "10"
+          ],
+          "a": "7",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép cộng: Gộp các ngón tay lại và nhẩm tính ta được kết quả bằng 7 nha bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11147,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "Chú mèo đứng ở bên trái quả bóng. Vậy quả bóng ở bên nào so với chú mèo?",
+          "o": [
+            "bên phải",
+            "ở ngoài",
+            "bên trái",
+            "ở trong"
+          ],
+          "a": "bên phải",
+          "h": "Chú mèo ở bên trái quả bóng nên quả bóng ở bên phải chú mèo.",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11148,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Bé An có 9 bông hoa hồng đỏ, An tặng cho Lan 2 bông hoa. Hỏi An còn lại bao nhiêu bông hoa?",
+          "o": [
+            "5 bông hoa",
+            "9 bông hoa",
+            "10 bông hoa",
+            "7 bông hoa"
+          ],
+          "a": "7 bông hoa",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán: Tặng đi làm phép tính trừ bớt đi nhé, 9 trừ 2 bằng 7 bông hoa nè bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11149,
+          "sub_code": "13.1",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ I] Nếu ngày hôm nay là Thứ Tư, thì ngày mai chắc chắn là thứ mấy?",
+          "o": [
+            "Thứ Tư",
+            "Thứ Hai",
+            "Chủ Nhật",
+            "Thứ Năm"
+          ],
+          "a": "Thứ Năm",
+          "h": "Cô giáo Thỏ Hồng ôn tập lịch tuần lễ: Ngày mai là ngày đứng liền sau Thứ Tư, chính là ngày Thứ Năm đó bé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 1",
+          "sub": "Ôn tập Học kỳ 1"
+        },
+        {
+          "id": 11150,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 20 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "1 chục và 2 đơn vị",
+            "0 chục và 2 đơn vị",
+            "3 chục và 1 đơn vị",
+            "2 chục và 0 đơn vị"
+          ],
+          "a": "2 chục và 0 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (2) chỉ hàng chục, chữ số đứng sau (0) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11151,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 77 - 21 = ....",
+          "o": [
+            "59",
+            "46",
+            "56",
+            "66"
+          ],
+          "a": "56",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 7 - 1 = 6 và 7 - 2 = 5 là ra 56 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11152,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 3. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "9 giờ",
+            "10 giờ",
+            "2 giờ",
+            "3 giờ"
+          ],
+          "a": "3 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 3 tức là đúng 3 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11153,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 33 cm, sợi dây thứ hai cắt ngắn bớt đi 13 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "20 cm",
+            "19 cm",
+            "25 cm",
+            "17 cm"
+          ],
+          "a": "20 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 33 trừ 13 bằng 20 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11154,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 6, 8, 10, ....",
+          "o": [
+            "7",
+            "11",
+            "12",
+            "17"
+          ],
+          "a": "12",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 10 + 2 = 12 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11155,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 25 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "2 chục và 5 đơn vị",
+            "2 chục và 6 đơn vị",
+            "1 chục và 6 đơn vị",
+            "4 chục và 6 đơn vị"
+          ],
+          "a": "2 chục và 5 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (2) chỉ hàng chục, chữ số đứng sau (5) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11156,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 73 - 21 = ....",
+          "o": [
+            "49",
+            "52",
+            "51",
+            "62"
+          ],
+          "a": "52",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 3 - 1 = 2 và 7 - 2 = 5 là ra 52 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11157,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 8. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "6 giờ",
+            "10 giờ",
+            "2 giờ",
+            "8 giờ"
+          ],
+          "a": "8 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 8 tức là đúng 8 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11158,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 38 cm, sợi dây thứ hai cắt ngắn bớt đi 18 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "23 cm",
+            "21 cm",
+            "18 cm",
+            "20 cm"
+          ],
+          "a": "20 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 38 trừ 18 bằng 20 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11159,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 11, 13, 15, ....",
+          "o": [
+            "27",
+            "22",
+            "16",
+            "17"
+          ],
+          "a": "17",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 15 + 2 = 17 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11160,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 30 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "3 chục và 1 đơn vị",
+            "5 chục và 2 đơn vị",
+            "3 chục và 0 đơn vị",
+            "2 chục và 1 đơn vị"
+          ],
+          "a": "3 chục và 0 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (3) chỉ hàng chục, chữ số đứng sau (0) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11161,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 64 - 21 = ....",
+          "o": [
+            "43",
+            "40",
+            "46",
+            "48"
+          ],
+          "a": "43",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 4 - 1 = 3 và 6 - 2 = 4 là ra 43 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11162,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 1. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "11 giờ",
+            "1 giờ",
+            "9 giờ",
+            "2 giờ"
+          ],
+          "a": "1 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 1 tức là đúng 1 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11163,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 43 cm, sợi dây thứ hai cắt ngắn bớt đi 23 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "22 cm",
+            "20 cm",
+            "21 cm",
+            "15 cm"
+          ],
+          "a": "20 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 43 trừ 23 bằng 20 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11164,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 6, 8, 10, ....",
+          "o": [
+            "17",
+            "10",
+            "12",
+            "7"
+          ],
+          "a": "12",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 10 + 2 = 12 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11165,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 35 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "2 chục và 5 đơn vị",
+            "4 chục và 7 đơn vị",
+            "4 chục và 4 đơn vị",
+            "3 chục và 5 đơn vị"
+          ],
+          "a": "3 chục và 5 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (3) chỉ hàng chục, chữ số đứng sau (5) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11166,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 85 - 11 = ....",
+          "o": [
+            "69",
+            "74",
+            "71",
+            "76"
+          ],
+          "a": "74",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 5 - 1 = 4 và 8 - 1 = 7 là ra 74 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11167,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 6. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "12 giờ",
+            "6 giờ",
+            "9 giờ",
+            "7 giờ"
+          ],
+          "a": "6 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 6 tức là đúng 6 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11168,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 48 cm, sợi dây thứ hai cắt ngắn bớt đi 28 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "21 cm",
+            "20 cm",
+            "18 cm",
+            "25 cm"
+          ],
+          "a": "20 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 48 trừ 28 bằng 20 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11169,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 11, 13, 15, ....",
+          "o": [
+            "18",
+            "7",
+            "17",
+            "22"
+          ],
+          "a": "17",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 15 + 2 = 17 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11170,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 40 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "0 chục và 4 đơn vị",
+            "4 chục và 0 đơn vị",
+            "4 chục và 1 đơn vị",
+            "6 chục và 0 đơn vị"
+          ],
+          "a": "4 chục và 0 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (4) chỉ hàng chục, chữ số đứng sau (0) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11171,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 85 - 22 = ....",
+          "o": [
+            "63",
+            "58",
+            "65",
+            "64"
+          ],
+          "a": "63",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 5 - 2 = 3 và 8 - 2 = 6 là ra 63 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11172,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 11. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "4 giờ",
+            "8 giờ",
+            "11 giờ",
+            "5 giờ"
+          ],
+          "a": "11 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 11 tức là đúng 11 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11173,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 53 cm, sợi dây thứ hai cắt ngắn bớt đi 13 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "40 cm",
+            "41 cm",
+            "45 cm",
+            "39 cm"
+          ],
+          "a": "40 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 53 trừ 13 bằng 40 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11174,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 6, 8, 10, ....",
+          "o": [
+            "12",
+            "10",
+            "22",
+            "11"
+          ],
+          "a": "12",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 10 + 2 = 12 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11175,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 45 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "6 chục và 6 đơn vị",
+            "3 chục và 7 đơn vị",
+            "4 chục và 5 đơn vị",
+            "5 chục và 4 đơn vị"
+          ],
+          "a": "4 chục và 5 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (4) chỉ hàng chục, chữ số đứng sau (5) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11176,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 47 - 12 = ....",
+          "o": [
+            "40",
+            "35",
+            "33",
+            "36"
+          ],
+          "a": "35",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 7 - 2 = 5 và 4 - 1 = 3 là ra 35 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11177,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 4. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "2 giờ",
+            "4 giờ",
+            "10 giờ",
+            "7 giờ"
+          ],
+          "a": "4 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 4 tức là đúng 4 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11178,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 58 cm, sợi dây thứ hai cắt ngắn bớt đi 18 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "43 cm",
+            "40 cm",
+            "41 cm",
+            "37 cm"
+          ],
+          "a": "40 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 58 trừ 18 bằng 40 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11179,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 11, 13, 15, ....",
+          "o": [
+            "22",
+            "16",
+            "20",
+            "17"
+          ],
+          "a": "17",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 15 + 2 = 17 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11180,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 50 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "7 chục và 0 đơn vị",
+            "5 chục và 1 đơn vị",
+            "5 chục và 0 đơn vị",
+            "0 chục và 5 đơn vị"
+          ],
+          "a": "5 chục và 0 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (5) chỉ hàng chục, chữ số đứng sau (0) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11181,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 47 - 21 = ....",
+          "o": [
+            "36",
+            "24",
+            "26",
+            "21"
+          ],
+          "a": "26",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 7 - 1 = 6 và 4 - 2 = 2 là ra 26 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11182,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 9. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "1 giờ",
+            "6 giờ",
+            "3 giờ",
+            "9 giờ"
+          ],
+          "a": "9 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 9 tức là đúng 9 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11183,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 63 cm, sợi dây thứ hai cắt ngắn bớt đi 23 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "37 cm",
+            "38 cm",
+            "35 cm",
+            "40 cm"
+          ],
+          "a": "40 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 63 trừ 23 bằng 40 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11184,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 6, 8, 10, ....",
+          "o": [
+            "2",
+            "17",
+            "12",
+            "9"
+          ],
+          "a": "12",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 10 + 2 = 12 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11185,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 55 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "5 chục và 5 đơn vị",
+            "5 chục và 6 đơn vị",
+            "5 chục và 7 đơn vị",
+            "6 chục và 7 đơn vị"
+          ],
+          "a": "5 chục và 5 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (5) chỉ hàng chục, chữ số đứng sau (5) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11186,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 74 - 21 = ....",
+          "o": [
+            "48",
+            "56",
+            "54",
+            "53"
+          ],
+          "a": "53",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 4 - 1 = 3 và 7 - 2 = 5 là ra 53 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11187,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 2. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "6 giờ",
+            "8 giờ",
+            "7 giờ",
+            "2 giờ"
+          ],
+          "a": "2 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 2 tức là đúng 2 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11188,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 68 cm, sợi dây thứ hai cắt ngắn bớt đi 28 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "43 cm",
+            "40 cm",
+            "45 cm",
+            "41 cm"
+          ],
+          "a": "40 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 68 trừ 28 bằng 40 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11189,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 11, 13, 15, ....",
+          "o": [
+            "18",
+            "16",
+            "17",
+            "12"
+          ],
+          "a": "17",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 15 + 2 = 17 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11190,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 60 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "6 chục và 0 đơn vị",
+            "7 chục và 0 đơn vị",
+            "8 chục và 0 đơn vị",
+            "0 chục và 6 đơn vị"
+          ],
+          "a": "6 chục và 0 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (6) chỉ hàng chục, chữ số đứng sau (0) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11191,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 88 - 12 = ....",
+          "o": [
+            "77",
+            "66",
+            "75",
+            "76"
+          ],
+          "a": "76",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 8 - 2 = 6 và 8 - 1 = 7 là ra 76 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11192,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 7. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "10 giờ",
+            "6 giờ",
+            "7 giờ",
+            "8 giờ"
+          ],
+          "a": "7 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 7 tức là đúng 7 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11193,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 33 cm, sợi dây thứ hai cắt ngắn bớt đi 13 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "23 cm",
+            "18 cm",
+            "17 cm",
+            "20 cm"
+          ],
+          "a": "20 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 33 trừ 13 bằng 20 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11194,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 6, 8, 10, ....",
+          "o": [
+            "12",
+            "14",
+            "11",
+            "13"
+          ],
+          "a": "12",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 10 + 2 = 12 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11195,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 65 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "6 chục và 6 đơn vị",
+            "6 chục và 5 đơn vị",
+            "8 chục và 7 đơn vị",
+            "5 chục và 6 đơn vị"
+          ],
+          "a": "6 chục và 5 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (6) chỉ hàng chục, chữ số đứng sau (5) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11196,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 86 - 21 = ....",
+          "o": [
+            "65",
+            "64",
+            "63",
+            "70"
+          ],
+          "a": "65",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 6 - 1 = 5 và 8 - 2 = 6 là ra 65 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11197,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 12. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "3 giờ",
+            "12 giờ",
+            "8 giờ",
+            "1 giờ"
+          ],
+          "a": "12 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 12 tức là đúng 12 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11198,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 38 cm, sợi dây thứ hai cắt ngắn bớt đi 18 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "20 cm",
+            "17 cm",
+            "19 cm",
+            "25 cm"
+          ],
+          "a": "20 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 38 trừ 18 bằng 20 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11199,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 11, 13, 15, ....",
+          "o": [
+            "16",
+            "15",
+            "17",
+            "20"
+          ],
+          "a": "17",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 15 + 2 = 17 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11200,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 70 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "9 chục và 0 đơn vị",
+            "6 chục và 1 đơn vị",
+            "7 chục và 0 đơn vị",
+            "0 chục và 7 đơn vị"
+          ],
+          "a": "7 chục và 0 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (7) chỉ hàng chục, chữ số đứng sau (0) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11201,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 75 - 12 = ....",
+          "o": [
+            "62",
+            "66",
+            "60",
+            "63"
+          ],
+          "a": "63",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 5 - 2 = 3 và 7 - 1 = 6 là ra 63 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11202,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 5. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "6 giờ",
+            "12 giờ",
+            "5 giờ",
+            "1 giờ"
+          ],
+          "a": "5 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 5 tức là đúng 5 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11203,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 43 cm, sợi dây thứ hai cắt ngắn bớt đi 23 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "22 cm",
+            "20 cm",
+            "17 cm",
+            "19 cm"
+          ],
+          "a": "20 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 43 trừ 23 bằng 20 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11204,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 6, 8, 10, ....",
+          "o": [
+            "12",
+            "7",
+            "15",
+            "14"
+          ],
+          "a": "12",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 10 + 2 = 12 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11205,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 75 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "7 chục và 5 đơn vị",
+            "8 chục và 5 đơn vị",
+            "8 chục và 4 đơn vị",
+            "6 chục và 6 đơn vị"
+          ],
+          "a": "7 chục và 5 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (7) chỉ hàng chục, chữ số đứng sau (5) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11206,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 43 - 12 = ....",
+          "o": [
+            "31",
+            "29",
+            "21",
+            "30"
+          ],
+          "a": "31",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 3 - 2 = 1 và 4 - 1 = 3 là ra 31 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11207,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 10. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "12 giờ",
+            "10 giờ",
+            "6 giờ",
+            "1 giờ"
+          ],
+          "a": "10 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 10 tức là đúng 10 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11208,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 48 cm, sợi dây thứ hai cắt ngắn bớt đi 28 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "18 cm",
+            "20 cm",
+            "25 cm",
+            "23 cm"
+          ],
+          "a": "20 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 48 trừ 28 bằng 20 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11209,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 11, 13, 15, ....",
+          "o": [
+            "14",
+            "16",
+            "17",
+            "15"
+          ],
+          "a": "17",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 15 + 2 = 17 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11210,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 80 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "8 chục và 2 đơn vị",
+            "9 chục và 0 đơn vị",
+            "8 chục và 0 đơn vị",
+            "9 chục và 1 đơn vị"
+          ],
+          "a": "8 chục và 0 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (8) chỉ hàng chục, chữ số đứng sau (0) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11211,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 73 - 11 = ....",
+          "o": [
+            "63",
+            "62",
+            "61",
+            "64"
+          ],
+          "a": "62",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 3 - 1 = 2 và 7 - 1 = 6 là ra 62 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11212,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 3. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "3 giờ",
+            "4 giờ",
+            "2 giờ",
+            "6 giờ"
+          ],
+          "a": "3 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 3 tức là đúng 3 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11213,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 53 cm, sợi dây thứ hai cắt ngắn bớt đi 13 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "40 cm",
+            "35 cm",
+            "42 cm",
+            "41 cm"
+          ],
+          "a": "40 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 53 trừ 13 bằng 40 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11214,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 6, 8, 10, ....",
+          "o": [
+            "14",
+            "10",
+            "11",
+            "12"
+          ],
+          "a": "12",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 10 + 2 = 12 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11215,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 85 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "9 chục và 4 đơn vị",
+            "7 chục và 6 đơn vị",
+            "9 chục và 7 đơn vị",
+            "8 chục và 5 đơn vị"
+          ],
+          "a": "8 chục và 5 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (8) chỉ hàng chục, chữ số đứng sau (5) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11216,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 78 - 11 = ....",
+          "o": [
+            "67",
+            "57",
+            "64",
+            "66"
+          ],
+          "a": "67",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 8 - 1 = 7 và 7 - 1 = 6 là ra 67 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11217,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 8. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "12 giờ",
+            "7 giờ",
+            "3 giờ",
+            "8 giờ"
+          ],
+          "a": "8 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 8 tức là đúng 8 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11218,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 58 cm, sợi dây thứ hai cắt ngắn bớt đi 18 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "35 cm",
+            "40 cm",
+            "39 cm",
+            "43 cm"
+          ],
+          "a": "40 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 58 trừ 18 bằng 40 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11219,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 11, 13, 15, ....",
+          "o": [
+            "16",
+            "18",
+            "7",
+            "17"
+          ],
+          "a": "17",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 15 + 2 = 17 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11220,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 90 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "8 chục và 2 đơn vị",
+            "9 chục và 2 đơn vị",
+            "0 chục và 9 đơn vị",
+            "9 chục và 0 đơn vị"
+          ],
+          "a": "9 chục và 0 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (9) chỉ hàng chục, chữ số đứng sau (0) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11221,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 33 - 22 = ....",
+          "o": [
+            "1",
+            "13",
+            "11",
+            "10"
+          ],
+          "a": "11",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 3 - 2 = 1 và 3 - 2 = 1 là ra 11 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11222,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 1. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "1 giờ",
+            "3 giờ",
+            "5 giờ",
+            "11 giờ"
+          ],
+          "a": "1 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 1 tức là đúng 1 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11223,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 63 cm, sợi dây thứ hai cắt ngắn bớt đi 23 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "39 cm",
+            "40 cm",
+            "42 cm",
+            "43 cm"
+          ],
+          "a": "40 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 63 trừ 23 bằng 40 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11224,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 6, 8, 10, ....",
+          "o": [
+            "12",
+            "9",
+            "10",
+            "17"
+          ],
+          "a": "12",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 10 + 2 = 12 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11225,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 95 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "8 chục và 7 đơn vị",
+            "9 chục và 4 đơn vị",
+            "9 chục và 6 đơn vị",
+            "9 chục và 5 đơn vị"
+          ],
+          "a": "9 chục và 5 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (9) chỉ hàng chục, chữ số đứng sau (5) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11226,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 85 - 12 = ....",
+          "o": [
+            "74",
+            "68",
+            "73",
+            "75"
+          ],
+          "a": "73",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 5 - 2 = 3 và 8 - 1 = 7 là ra 73 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11227,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 6. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "6 giờ",
+            "1 giờ",
+            "4 giờ",
+            "11 giờ"
+          ],
+          "a": "6 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 6 tức là đúng 6 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11228,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 68 cm, sợi dây thứ hai cắt ngắn bớt đi 28 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "43 cm",
+            "42 cm",
+            "45 cm",
+            "40 cm"
+          ],
+          "a": "40 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 68 trừ 28 bằng 40 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11229,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 11, 13, 15, ....",
+          "o": [
+            "18",
+            "17",
+            "7",
+            "15"
+          ],
+          "a": "17",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 15 + 2 = 17 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11230,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 20 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "4 chục và 0 đơn vị",
+            "3 chục và 0 đơn vị",
+            "0 chục và 2 đơn vị",
+            "2 chục và 0 đơn vị"
+          ],
+          "a": "2 chục và 0 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (2) chỉ hàng chục, chữ số đứng sau (0) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11231,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 56 - 21 = ....",
+          "o": [
+            "37",
+            "25",
+            "40",
+            "35"
+          ],
+          "a": "35",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 6 - 1 = 5 và 5 - 2 = 3 là ra 35 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11232,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 11. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "9 giờ",
+            "8 giờ",
+            "6 giờ",
+            "11 giờ"
+          ],
+          "a": "11 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 11 tức là đúng 11 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11233,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 33 cm, sợi dây thứ hai cắt ngắn bớt đi 13 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "23 cm",
+            "15 cm",
+            "19 cm",
+            "20 cm"
+          ],
+          "a": "20 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 33 trừ 13 bằng 20 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11234,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 6, 8, 10, ....",
+          "o": [
+            "9",
+            "22",
+            "12",
+            "2"
+          ],
+          "a": "12",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 10 + 2 = 12 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11235,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 25 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "5 chục và 2 đơn vị",
+            "4 chục và 6 đơn vị",
+            "3 chục và 6 đơn vị",
+            "2 chục và 5 đơn vị"
+          ],
+          "a": "2 chục và 5 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (2) chỉ hàng chục, chữ số đứng sau (5) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11236,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 68 - 11 = ....",
+          "o": [
+            "56",
+            "62",
+            "58",
+            "57"
+          ],
+          "a": "57",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 8 - 1 = 7 và 6 - 1 = 5 là ra 57 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11237,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 4. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "1 giờ",
+            "9 giờ",
+            "4 giờ",
+            "11 giờ"
+          ],
+          "a": "4 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 4 tức là đúng 4 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11238,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 38 cm, sợi dây thứ hai cắt ngắn bớt đi 18 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "23 cm",
+            "19 cm",
+            "21 cm",
+            "20 cm"
+          ],
+          "a": "20 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 38 trừ 18 bằng 20 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11239,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 11, 13, 15, ....",
+          "o": [
+            "14",
+            "22",
+            "17",
+            "19"
+          ],
+          "a": "17",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 15 + 2 = 17 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11240,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 30 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "3 chục và 0 đơn vị",
+            "5 chục và 0 đơn vị",
+            "2 chục và 1 đơn vị",
+            "0 chục và 3 đơn vị"
+          ],
+          "a": "3 chục và 0 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (3) chỉ hàng chục, chữ số đứng sau (0) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11241,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 88 - 22 = ....",
+          "o": [
+            "66",
+            "61",
+            "69",
+            "76"
+          ],
+          "a": "66",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 8 - 2 = 6 và 8 - 2 = 6 là ra 66 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11242,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 9. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "6 giờ",
+            "9 giờ",
+            "5 giờ",
+            "7 giờ"
+          ],
+          "a": "9 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 9 tức là đúng 9 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11243,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 43 cm, sợi dây thứ hai cắt ngắn bớt đi 23 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "21 cm",
+            "19 cm",
+            "20 cm",
+            "15 cm"
+          ],
+          "a": "20 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 43 trừ 23 bằng 20 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11244,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 6, 8, 10, ....",
+          "o": [
+            "12",
+            "14",
+            "2",
+            "13"
+          ],
+          "a": "12",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 10 + 2 = 12 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11245,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 35 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "5 chục và 5 đơn vị",
+            "5 chục và 3 đơn vị",
+            "3 chục và 5 đơn vị",
+            "5 chục và 6 đơn vị"
+          ],
+          "a": "3 chục và 5 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (3) chỉ hàng chục, chữ số đứng sau (5) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11246,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 43 - 11 = ....",
+          "o": [
+            "34",
+            "29",
+            "22",
+            "32"
+          ],
+          "a": "32",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 3 - 1 = 2 và 4 - 1 = 3 là ra 32 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11247,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 2. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "2 giờ",
+            "1 giờ",
+            "3 giờ",
+            "6 giờ"
+          ],
+          "a": "2 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 2 tức là đúng 2 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11248,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 48 cm, sợi dây thứ hai cắt ngắn bớt đi 28 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "22 cm",
+            "15 cm",
+            "20 cm",
+            "18 cm"
+          ],
+          "a": "20 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 48 trừ 28 bằng 20 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11249,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 11, 13, 15, ....",
+          "o": [
+            "22",
+            "19",
+            "17",
+            "16"
+          ],
+          "a": "17",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 15 + 2 = 17 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11250,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 40 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "3 chục và 0 đơn vị",
+            "0 chục và 4 đơn vị",
+            "6 chục và 0 đơn vị",
+            "4 chục và 0 đơn vị"
+          ],
+          "a": "4 chục và 0 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (4) chỉ hàng chục, chữ số đứng sau (0) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11251,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 66 - 22 = ....",
+          "o": [
+            "34",
+            "44",
+            "41",
+            "43"
+          ],
+          "a": "44",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 6 - 2 = 4 và 6 - 2 = 4 là ra 44 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11252,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 7. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "8 giờ",
+            "12 giờ",
+            "5 giờ",
+            "7 giờ"
+          ],
+          "a": "7 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 7 tức là đúng 7 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11253,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 53 cm, sợi dây thứ hai cắt ngắn bớt đi 13 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "41 cm",
+            "37 cm",
+            "45 cm",
+            "40 cm"
+          ],
+          "a": "40 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 53 trừ 13 bằng 40 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11254,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 6, 8, 10, ....",
+          "o": [
+            "22",
+            "13",
+            "17",
+            "12"
+          ],
+          "a": "12",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 10 + 2 = 12 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11255,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 45 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "5 chục và 7 đơn vị",
+            "5 chục và 5 đơn vị",
+            "4 chục và 6 đơn vị",
+            "4 chục và 5 đơn vị"
+          ],
+          "a": "4 chục và 5 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (4) chỉ hàng chục, chữ số đứng sau (5) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11256,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 55 - 12 = ....",
+          "o": [
+            "43",
+            "38",
+            "53",
+            "46"
+          ],
+          "a": "43",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 5 - 2 = 3 và 5 - 1 = 4 là ra 43 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11257,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 12. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "8 giờ",
+            "11 giờ",
+            "12 giờ",
+            "6 giờ"
+          ],
+          "a": "12 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 12 tức là đúng 12 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11258,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 58 cm, sợi dây thứ hai cắt ngắn bớt đi 18 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "41 cm",
+            "43 cm",
+            "40 cm",
+            "39 cm"
+          ],
+          "a": "40 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 58 trừ 18 bằng 40 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11259,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 11, 13, 15, ....",
+          "o": [
+            "27",
+            "14",
+            "17",
+            "15"
+          ],
+          "a": "17",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 15 + 2 = 17 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11260,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 50 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "6 chục và 1 đơn vị",
+            "0 chục và 5 đơn vị",
+            "5 chục và 1 đơn vị",
+            "5 chục và 0 đơn vị"
+          ],
+          "a": "5 chục và 0 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (5) chỉ hàng chục, chữ số đứng sau (0) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11261,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 88 - 21 = ....",
+          "o": [
+            "67",
+            "77",
+            "64",
+            "68"
+          ],
+          "a": "67",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 8 - 1 = 7 và 8 - 2 = 6 là ra 67 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11262,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 5. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "7 giờ",
+            "5 giờ",
+            "9 giờ",
+            "4 giờ"
+          ],
+          "a": "5 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 5 tức là đúng 5 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11263,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 63 cm, sợi dây thứ hai cắt ngắn bớt đi 23 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "42 cm",
+            "40 cm",
+            "38 cm",
+            "41 cm"
+          ],
+          "a": "40 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 63 trừ 23 bằng 40 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11264,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 6, 8, 10, ....",
+          "o": [
+            "12",
+            "7",
+            "15",
+            "10"
+          ],
+          "a": "12",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 10 + 2 = 12 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11265,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 55 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "7 chục và 4 đơn vị",
+            "4 chục và 7 đơn vị",
+            "6 chục và 5 đơn vị",
+            "5 chục và 5 đơn vị"
+          ],
+          "a": "5 chục và 5 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (5) chỉ hàng chục, chữ số đứng sau (5) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11266,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 73 - 22 = ....",
+          "o": [
+            "56",
+            "46",
+            "48",
+            "51"
+          ],
+          "a": "51",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 3 - 2 = 1 và 7 - 2 = 5 là ra 51 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11267,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 10. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "4 giờ",
+            "10 giờ",
+            "9 giờ",
+            "2 giờ"
+          ],
+          "a": "10 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 10 tức là đúng 10 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11268,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 68 cm, sợi dây thứ hai cắt ngắn bớt đi 28 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "40 cm",
+            "41 cm",
+            "43 cm",
+            "45 cm"
+          ],
+          "a": "40 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 68 trừ 28 bằng 40 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11269,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 11, 13, 15, ....",
+          "o": [
+            "17",
+            "12",
+            "7",
+            "18"
+          ],
+          "a": "17",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 15 + 2 = 17 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11270,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 60 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "8 chục và 1 đơn vị",
+            "6 chục và 0 đơn vị",
+            "5 chục và 1 đơn vị",
+            "0 chục và 6 đơn vị"
+          ],
+          "a": "6 chục và 0 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (6) chỉ hàng chục, chữ số đứng sau (0) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11271,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 66 - 11 = ....",
+          "o": [
+            "52",
+            "50",
+            "55",
+            "54"
+          ],
+          "a": "55",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 6 - 1 = 5 và 6 - 1 = 5 là ra 55 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11272,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 3. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "12 giờ",
+            "8 giờ",
+            "3 giờ",
+            "4 giờ"
+          ],
+          "a": "3 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 3 tức là đúng 3 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11273,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 33 cm, sợi dây thứ hai cắt ngắn bớt đi 13 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "20 cm",
+            "17 cm",
+            "25 cm",
+            "19 cm"
+          ],
+          "a": "20 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 33 trừ 13 bằng 20 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11274,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 6, 8, 10, ....",
+          "o": [
+            "12",
+            "10",
+            "22",
+            "15"
+          ],
+          "a": "12",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 10 + 2 = 12 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11275,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 65 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "6 chục và 4 đơn vị",
+            "5 chục và 6 đơn vị",
+            "6 chục và 5 đơn vị",
+            "7 chục và 7 đơn vị"
+          ],
+          "a": "6 chục và 5 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (6) chỉ hàng chục, chữ số đứng sau (5) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11276,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 56 - 11 = ....",
+          "o": [
+            "45",
+            "35",
+            "43",
+            "40"
+          ],
+          "a": "45",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 6 - 1 = 5 và 5 - 1 = 4 là ra 45 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11277,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 8. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "12 giờ",
+            "8 giờ",
+            "1 giờ",
+            "7 giờ"
+          ],
+          "a": "8 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 8 tức là đúng 8 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11278,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 38 cm, sợi dây thứ hai cắt ngắn bớt đi 18 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "22 cm",
+            "19 cm",
+            "17 cm",
+            "20 cm"
+          ],
+          "a": "20 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 38 trừ 18 bằng 20 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11279,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 11, 13, 15, ....",
+          "o": [
+            "17",
+            "18",
+            "22",
+            "15"
+          ],
+          "a": "17",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 15 + 2 = 17 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11280,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 70 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "6 chục và 0 đơn vị",
+            "0 chục và 7 đơn vị",
+            "9 chục và 1 đơn vị",
+            "7 chục và 0 đơn vị"
+          ],
+          "a": "7 chục và 0 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (7) chỉ hàng chục, chữ số đứng sau (0) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11281,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 56 - 11 = ....",
+          "o": [
+            "45",
+            "48",
+            "50",
+            "40"
+          ],
+          "a": "45",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 6 - 1 = 5 và 5 - 1 = 4 là ra 45 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11282,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 1. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "9 giờ",
+            "7 giờ",
+            "1 giờ",
+            "10 giờ"
+          ],
+          "a": "1 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 1 tức là đúng 1 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11283,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 43 cm, sợi dây thứ hai cắt ngắn bớt đi 23 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "18 cm",
+            "20 cm",
+            "22 cm",
+            "25 cm"
+          ],
+          "a": "20 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 43 trừ 23 bằng 20 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11284,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 6, 8, 10, ....",
+          "o": [
+            "9",
+            "11",
+            "12",
+            "15"
+          ],
+          "a": "12",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 10 + 2 = 12 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11285,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 75 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "9 chục và 7 đơn vị",
+            "8 chục và 6 đơn vị",
+            "7 chục và 5 đơn vị",
+            "7 chục và 7 đơn vị"
+          ],
+          "a": "7 chục và 5 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (7) chỉ hàng chục, chữ số đứng sau (5) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11286,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 35 - 22 = ....",
+          "o": [
+            "3",
+            "15",
+            "13",
+            "23"
+          ],
+          "a": "13",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 5 - 2 = 3 và 3 - 2 = 1 là ra 13 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11287,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 6. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "4 giờ",
+            "5 giờ",
+            "6 giờ",
+            "9 giờ"
+          ],
+          "a": "6 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 6 tức là đúng 6 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11288,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 48 cm, sợi dây thứ hai cắt ngắn bớt đi 28 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "19 cm",
+            "22 cm",
+            "20 cm",
+            "21 cm"
+          ],
+          "a": "20 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 48 trừ 28 bằng 20 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11289,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 11, 13, 15, ....",
+          "o": [
+            "18",
+            "7",
+            "17",
+            "22"
+          ],
+          "a": "17",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 15 + 2 = 17 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11290,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 80 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "9 chục và 0 đơn vị",
+            "0 chục và 8 đơn vị",
+            "8 chục và 0 đơn vị",
+            "9 chục và 1 đơn vị"
+          ],
+          "a": "8 chục và 0 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (8) chỉ hàng chục, chữ số đứng sau (0) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11291,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 36 - 21 = ....",
+          "o": [
+            "17",
+            "15",
+            "16",
+            "13"
+          ],
+          "a": "15",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 6 - 1 = 5 và 3 - 2 = 1 là ra 15 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11292,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 11. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "10 giờ",
+            "9 giờ",
+            "5 giờ",
+            "11 giờ"
+          ],
+          "a": "11 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 11 tức là đúng 11 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11293,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 53 cm, sợi dây thứ hai cắt ngắn bớt đi 13 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "35 cm",
+            "45 cm",
+            "38 cm",
+            "40 cm"
+          ],
+          "a": "40 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 53 trừ 13 bằng 40 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11294,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 6, 8, 10, ....",
+          "o": [
+            "14",
+            "9",
+            "12",
+            "10"
+          ],
+          "a": "12",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 10 + 2 = 12 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11295,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy cho biết cấu tạo của số 85 gồm mấy chục và mấy đơn vị?",
+          "o": [
+            "5 chục và 8 đơn vị",
+            "8 chục và 5 đơn vị",
+            "8 chục và 4 đơn vị",
+            "9 chục và 6 đơn vị"
+          ],
+          "a": "8 chục và 5 đơn vị",
+          "h": "Cô giáo Thỏ Hồng ôn tập cấu tạo số: Chữ số đứng trước (8) chỉ hàng chục, chữ số đứng sau (5) chỉ hàng đơn vị nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11296,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Đặt tính rồi tính phép trừ sau: 47 - 11 = ....",
+          "o": [
+            "26",
+            "36",
+            "38",
+            "34"
+          ],
+          "a": "36",
+          "h": "Cô giáo Thỏ Hồng ôn tập phép tính đặt dọc: Thực hiện lấy 7 - 1 = 6 và 4 - 1 = 3 là ra 36 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11297,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Quan sát mặt đồng hồ kim: Kim dài chỉ đúng số 12, kim ngắn chỉ vào đúng số 4. Hỏi lúc này là mấy giờ?",
+          "o": [
+            "4 giờ",
+            "3 giờ",
+            "8 giờ",
+            "10 giờ"
+          ],
+          "a": "4 giờ",
+          "h": "Cô giáo Thỏ Hồng ôn tập xem đồng hồ: Kim ngắn chỉ vào số 4 tức là đúng 4 giờ chẵn đó bé yêu!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11298,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Sợi dây thứ nhất dài 58 cm, sợi dây thứ hai cắt ngắn bớt đi 18 cm. Hỏi độ dài còn lại của sợi dây thứ hai là bao nhiêu?",
+          "o": [
+            "35 cm",
+            "42 cm",
+            "40 cm",
+            "45 cm"
+          ],
+          "a": "40 cm",
+          "h": "Cô giáo Thỏ Hồng ôn tập giải toán có lời văn: Bé hãy lấy 58 trừ 18 bằng 40 và nhớ ghi đơn vị 'cm' ở đáp số nhé!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        },
+        {
+          "id": 11299,
+          "sub_code": "13.2",
+          "tag": "TOAN_C2",
+          "q": "[Ôn tập Học kỳ II] Bé hãy tìm quy luật và điền số khuyết vào dãy số sau: 11, 13, 15, ....",
+          "o": [
+            "12",
+            "17",
+            "22",
+            "16"
+          ],
+          "a": "17",
+          "h": "Cô giáo Thỏ Hồng ôn tập quy luật dãy số: Bé thấy các số đang tăng dần thêm 2 đơn vị đó! Số tiếp theo là 15 + 2 = 17 nè!",
+          "img": "",
+          "sub_name": "Ôn tập Học kỳ 2",
+          "sub": "Ôn tập Học kỳ 2"
+        }
+      ],
+      "sub_topics": [
+        {
+          "code": "13.1",
+          "name": "Ôn tập Học kỳ 1"
+        },
+        {
+          "code": "13.2",
+          "name": "Ôn tập Học kỳ 2"
+        }
+      ],
+      "hidden_internal_role": "review_tab"
+    }
+  ],
+  "migration_note": "Tách nguyên vẹn topic 13 khỏi kho_hoc_toan_1_part2.json; chưa biên soạn lại nội dung trong lượt tổ chức file này."
+}

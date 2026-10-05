@@ -1,0 +1,6524 @@
+{
+  "schema_version": "EPSILON_TA1_EXERCISES_V1",
+  "data_version": "2026-10-05-sgk-sbt-unit-aligned-v2-images-v6",
+  "subject": "Tiếng Anh",
+  "grade": 1,
+  "curriculum": "Global Success",
+  "module_model": "Bài tập độc lập",
+  "competency_framework": {
+    "ENG_PHO": "Ngữ âm & Chính tả",
+    "ENG_VOC": "Từ vựng & Ý nghĩa",
+    "ENG_LIS": "Nghe hiểu",
+    "ENG_GRA": "Ngữ pháp bối cảnh",
+    "ENG_SYN": "Cú pháp & Lập câu",
+    "ENG_READ": "Đọc hiểu"
+  },
+  "assessment_policy": {
+    "framework": "6 năng lực ENG_PHO, ENG_VOC, ENG_LIS, ENG_GRA, ENG_SYN, ENG_READ.",
+    "only_assess_with_sufficient_evidence": true,
+    "single_question_not_enough": true,
+    "not_assessed_label": "Chưa đánh giá",
+    "insufficient_data_label": "Chưa đủ dữ liệu",
+    "no_zero_for_missing_data": true,
+    "do_not_infer_from_total_score": true,
+    "minimum_evidence_threshold": "Chưa chốt trong bước tổ chức dữ liệu; phải được xác định trước khi bật báo cáo năng lực chính thức."
+  },
+  "rules": {
+    "questions_per_attempt": 20,
+    "pass_threshold_percent": 80,
+    "unlock": "Bài tập 1 mở sẵn; đạt từ 80% mở Bài tập kế tiếp.",
+    "lesson_alignment": "8 Bài tập bám Unit 1-8; không phụ thuộc runtime vào Khám phá.",
+    "selection": "Chọn chính xác theo unit_id/exercise_id của Bài tập; mỗi lượt dùng 20 câu đã biên soạn bám SGK + SBT, không trộn câu của Unit khác."
+  },
+  "source_summary": {
+    "total_bai_tap": 8,
+    "legacy_non_review_weeks": 0,
+    "candidate_bank_questions": 160,
+    "competency_tag_counts": {
+      "ENG_PHO": 24,
+      "ENG_VOC": 32,
+      "ENG_LIS": 32,
+      "ENG_GRA": 24,
+      "ENG_SYN": 24,
+      "ENG_READ": 24
+    },
+    "legacy_source": "Đã thay ngân hàng legacy theo tuần bằng ngân hàng câu hỏi bám chính xác từng Unit SGK/SBT.",
+    "semester_split": "Unit 1-8 theo học kỳ; mỗi Unit có đúng 20 câu runtime-ready."
+  },
+  "mapping_status": {
+    "runtime_ready": true,
+    "mapped_by": "source_unit + exercise_id + unit_id",
+    "verified_scope": "Units 1-8",
+    "questions_per_unit": 20,
+    "source_basis": "SGK Tiếng Anh 1 Global Success và SBT Tiếng Anh 1 Global Success do chủ sản phẩm cung cấp.",
+    "note": "Đã bỏ cơ chế chọn mơ hồ từ kho 20 tuần legacy. Ngưỡng đủ bằng chứng cho báo cáo năng lực vẫn do backend/chính sách đánh giá chính thức quyết định."
+  },
+  "bai_tap": [
+    {
+      "bai": 1,
+      "semester": 1,
+      "exercise_id": "TA1_BT01",
+      "title": "In the school playground",
+      "title_vi": "Ở sân chơi của trường",
+      "lesson_id": "TA1_U01",
+      "draw_count": 20,
+      "candidate_pool_target": 20,
+      "unlock_percent": 80,
+      "keywords": [
+        "ball",
+        "bike",
+        "book",
+        "bill",
+        "hi, i'm",
+        "bye"
+      ],
+      "extended_keywords": [
+        "school playground",
+        "playground",
+        "hello",
+        "greet",
+        "goodbye"
+      ],
+      "skill_tags": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_GRA",
+        "ENG_SYN",
+        "ENG_READ"
+      ],
+      "selection_rule": "Chỉ lấy câu có unit_id trùng chính xác với số Bài tập/Unit; không dùng keyword để kéo câu Unit khác.",
+      "instruction": "Answer 20 short questions.",
+      "instruction_vi": "Trả lời 20 câu hỏi ngắn."
+    },
+    {
+      "bai": 2,
+      "semester": 1,
+      "exercise_id": "TA1_BT02",
+      "title": "In the dining room",
+      "title_vi": "Trong phòng ăn",
+      "lesson_id": "TA1_U02",
+      "draw_count": 20,
+      "candidate_pool_target": 20,
+      "unlock_percent": 80,
+      "keywords": [
+        "cake",
+        "car",
+        "cat",
+        "cup",
+        "i have a"
+      ],
+      "extended_keywords": [
+        "dining room",
+        "have",
+        "possession",
+        "breakfast"
+      ],
+      "skill_tags": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_GRA",
+        "ENG_SYN",
+        "ENG_READ"
+      ],
+      "selection_rule": "Chỉ lấy câu có unit_id trùng chính xác với số Bài tập/Unit; không dùng keyword để kéo câu Unit khác.",
+      "instruction": "Answer 20 short questions.",
+      "instruction_vi": "Trả lời 20 câu hỏi ngắn."
+    },
+    {
+      "bai": 3,
+      "semester": 1,
+      "exercise_id": "TA1_BT03",
+      "title": "At the street market",
+      "title_vi": "Ở chợ đường phố",
+      "lesson_id": "TA1_U03",
+      "draw_count": 20,
+      "candidate_pool_target": 20,
+      "unlock_percent": 80,
+      "keywords": [
+        "apple",
+        "bag",
+        "can",
+        "hat",
+        "this is my"
+      ],
+      "extended_keywords": [
+        "street market",
+        "market",
+        "my bag",
+        "this is"
+      ],
+      "skill_tags": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_GRA",
+        "ENG_SYN",
+        "ENG_READ"
+      ],
+      "selection_rule": "Chỉ lấy câu có unit_id trùng chính xác với số Bài tập/Unit; không dùng keyword để kéo câu Unit khác.",
+      "instruction": "Answer 20 short questions.",
+      "instruction_vi": "Trả lời 20 câu hỏi ngắn."
+    },
+    {
+      "bai": 4,
+      "semester": 1,
+      "exercise_id": "TA1_BT04",
+      "title": "In the bedroom",
+      "title_vi": "Trong phòng ngủ",
+      "lesson_id": "TA1_U04",
+      "draw_count": 20,
+      "candidate_pool_target": 20,
+      "unlock_percent": 80,
+      "keywords": [
+        "desk",
+        "dog",
+        "door",
+        "duck",
+        "this is a"
+      ],
+      "extended_keywords": [
+        "bedroom",
+        "near the door",
+        "near the window"
+      ],
+      "skill_tags": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_GRA",
+        "ENG_SYN",
+        "ENG_READ"
+      ],
+      "selection_rule": "Chỉ lấy câu có unit_id trùng chính xác với số Bài tập/Unit; không dùng keyword để kéo câu Unit khác.",
+      "instruction": "Answer 20 short questions.",
+      "instruction_vi": "Trả lời 20 câu hỏi ngắn."
+    },
+    {
+      "bai": 5,
+      "semester": 1,
+      "exercise_id": "TA1_BT05",
+      "title": "At the fish and chip shop",
+      "title_vi": "Ở cửa hàng cá và khoai tây chiên",
+      "lesson_id": "TA1_U05",
+      "draw_count": 20,
+      "candidate_pool_target": 20,
+      "unlock_percent": 80,
+      "keywords": [
+        "chicken",
+        "chips",
+        "fish",
+        "milk",
+        "i like"
+      ],
+      "extended_keywords": [
+        "food",
+        "drink",
+        "fish and chips",
+        "like"
+      ],
+      "skill_tags": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_GRA",
+        "ENG_SYN",
+        "ENG_READ"
+      ],
+      "selection_rule": "Chỉ lấy câu có unit_id trùng chính xác với số Bài tập/Unit; không dùng keyword để kéo câu Unit khác.",
+      "instruction": "Answer 20 short questions.",
+      "instruction_vi": "Trả lời 20 câu hỏi ngắn."
+    },
+    {
+      "bai": 6,
+      "semester": 1,
+      "exercise_id": "TA1_BT06",
+      "title": "In the classroom",
+      "title_vi": "Trong lớp học",
+      "lesson_id": "TA1_U06",
+      "draw_count": 20,
+      "candidate_pool_target": 20,
+      "unlock_percent": 80,
+      "keywords": [
+        "bell",
+        "pen",
+        "pencil",
+        "red",
+        "it's a red"
+      ],
+      "extended_keywords": [
+        "classroom",
+        "school",
+        "red pen",
+        "desk"
+      ],
+      "skill_tags": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_GRA",
+        "ENG_SYN",
+        "ENG_READ"
+      ],
+      "selection_rule": "Chỉ lấy câu có unit_id trùng chính xác với số Bài tập/Unit; không dùng keyword để kéo câu Unit khác.",
+      "instruction": "Answer 20 short questions.",
+      "instruction_vi": "Trả lời 20 câu hỏi ngắn."
+    },
+    {
+      "bai": 7,
+      "semester": 1,
+      "exercise_id": "TA1_BT07",
+      "title": "In the garden",
+      "title_vi": "Trong vườn",
+      "lesson_id": "TA1_U07",
+      "draw_count": 20,
+      "candidate_pool_target": 20,
+      "unlock_percent": 80,
+      "keywords": [
+        "garden",
+        "gate",
+        "girl",
+        "goat",
+        "there's a"
+      ],
+      "extended_keywords": [
+        "there is",
+        "in the garden",
+        "flower",
+        "yard"
+      ],
+      "skill_tags": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_GRA",
+        "ENG_SYN",
+        "ENG_READ"
+      ],
+      "selection_rule": "Chỉ lấy câu có unit_id trùng chính xác với số Bài tập/Unit; không dùng keyword để kéo câu Unit khác.",
+      "instruction": "Answer 20 short questions.",
+      "instruction_vi": "Trả lời 20 câu hỏi ngắn."
+    },
+    {
+      "bai": 8,
+      "semester": 1,
+      "exercise_id": "TA1_BT08",
+      "title": "In the park",
+      "title_vi": "Trong công viên",
+      "lesson_id": "TA1_U08",
+      "draw_count": 20,
+      "candidate_pool_target": 20,
+      "unlock_percent": 80,
+      "keywords": [
+        "hair",
+        "hand",
+        "head",
+        "horse",
+        "touch your"
+      ],
+      "extended_keywords": [
+        "park",
+        "body",
+        "touch",
+        "point to"
+      ],
+      "skill_tags": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_GRA",
+        "ENG_SYN",
+        "ENG_READ"
+      ],
+      "selection_rule": "Chỉ lấy câu có unit_id trùng chính xác với số Bài tập/Unit; không dùng keyword để kéo câu Unit khác.",
+      "instruction": "Answer 20 short questions.",
+      "instruction_vi": "Trả lời 20 câu hỏi ngắn."
+    }
+  ],
+  "question_bank": {
+    "grouping": "sgk_sbt_unit_aligned",
+    "runtime_ready": true,
+    "questions_per_unit": 20,
+    "weeks": [
+      {
+        "week_id": 1,
+        "unit_id": 1,
+        "exercise_id": "TA1_BT01",
+        "week_name": "Unit 1: In the school playground",
+        "desc": "Ngân hàng 20 câu bám SGK và SBT Unit 1: phonics, vocabulary, listening, grammar in context, sentence building và reading.",
+        "questions": [
+          {
+            "id": 700101,
+            "unit_id": 1,
+            "exercise_id": "TA1_BT01",
+            "source_unit": 1,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "phonics_letter",
+            "topic": "In the school playground",
+            "q": "Chữ/âm trọng tâm của Unit 1 là chữ nào?",
+            "o": [
+              "C",
+              "D",
+              "B",
+              "A"
+            ],
+            "a": "B",
+            "h": "Unit 1 luyện chữ B với âm /b/.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Chữ trọng tâm là B, âm /b/."
+          },
+          {
+            "id": 700102,
+            "unit_id": 1,
+            "exercise_id": "TA1_BT01",
+            "source_unit": 1,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "missing_letter",
+            "topic": "In the school playground",
+            "q": "Chọn chữ còn thiếu để hoàn thành từ: _all",
+            "o": [
+              "d",
+              "b",
+              "a",
+              "c"
+            ],
+            "a": "b",
+            "h": "Điền 'b' ta được từ 'ball'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Từ đúng là 'ball'."
+          },
+          {
+            "id": 700103,
+            "unit_id": 1,
+            "exercise_id": "TA1_BT01",
+            "source_unit": 1,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "missing_letter",
+            "topic": "In the school playground",
+            "q": "Chọn chữ còn thiếu để hoàn thành từ: _ike",
+            "o": [
+              "b",
+              "a",
+              "c",
+              "d"
+            ],
+            "a": "b",
+            "h": "Điền 'b' ta được từ 'bike'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Từ đúng là 'bike'."
+          },
+          {
+            "id": 700104,
+            "unit_id": 1,
+            "exercise_id": "TA1_BT01",
+            "source_unit": 1,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "In the school playground",
+            "q": "Từ 'ball' có nghĩa là gì?",
+            "o": [
+              "xe đạp",
+              "quyển sách",
+              "ô tô",
+              "quả bóng"
+            ],
+            "a": "quả bóng",
+            "h": "'ball' nghĩa là 'quả bóng'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'ball' nghĩa là 'quả bóng'."
+          },
+          {
+            "id": 700105,
+            "unit_id": 1,
+            "exercise_id": "TA1_BT01",
+            "source_unit": 1,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "In the school playground",
+            "q": "Từ 'bike' có nghĩa là gì?",
+            "o": [
+              "quyển sách",
+              "ô tô",
+              "xe đạp",
+              "quả bóng"
+            ],
+            "a": "xe đạp",
+            "h": "'bike' nghĩa là 'xe đạp'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'bike' nghĩa là 'xe đạp'."
+          },
+          {
+            "id": 700106,
+            "unit_id": 1,
+            "exercise_id": "TA1_BT01",
+            "source_unit": 1,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "In the school playground",
+            "q": "Từ 'book' có nghĩa là gì?",
+            "o": [
+              "ô tô",
+              "quyển sách",
+              "quả bóng",
+              "xe đạp"
+            ],
+            "a": "quyển sách",
+            "h": "'book' nghĩa là 'quyển sách'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'book' nghĩa là 'quyển sách'."
+          },
+          {
+            "id": 700107,
+            "unit_id": 1,
+            "exercise_id": "TA1_BT01",
+            "source_unit": 1,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "image_word",
+            "topic": "In the school playground",
+            "q": "Nhìn hình và chọn từ tiếng Anh phù hợp.",
+            "o": [
+              "ball",
+              "bike",
+              "book",
+              "car"
+            ],
+            "a": "ball",
+            "h": "Hình minh họa cho từ 'ball'.",
+            "img": "",
+            "imageId": "do_vat_ball",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Hình minh họa cho từ 'ball'."
+          },
+          {
+            "id": 700108,
+            "unit_id": 1,
+            "exercise_id": "TA1_BT01",
+            "source_unit": 1,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_word",
+            "topic": "In the school playground",
+            "q": "Nghe từ thứ nhất và chọn từ con nghe được.",
+            "o": [
+              "bike",
+              "book",
+              "car",
+              "ball"
+            ],
+            "a": "ball",
+            "h": "Con nghe từ 'ball'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "ball",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Con nghe từ 'ball'."
+          },
+          {
+            "id": 700109,
+            "unit_id": 1,
+            "exercise_id": "TA1_BT01",
+            "source_unit": 1,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_word",
+            "topic": "In the school playground",
+            "q": "Nghe từ tiếp theo và chọn từ con nghe được.",
+            "o": [
+              "book",
+              "car",
+              "bike",
+              "ball"
+            ],
+            "a": "bike",
+            "h": "Con nghe từ 'bike'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "bike",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Con nghe từ 'bike'."
+          },
+          {
+            "id": 700110,
+            "unit_id": 1,
+            "exercise_id": "TA1_BT01",
+            "source_unit": 1,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_pair",
+            "topic": "In the school playground",
+            "q": "Nghe hai từ. Chọn đúng thứ tự cô đọc.",
+            "o": [
+              "book + bike",
+              "ball + bike",
+              "bike + ball",
+              "ball + book"
+            ],
+            "a": "ball + bike",
+            "h": "Thứ tự là 'ball', rồi 'bike'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "ball. bike.",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Thứ tự là 'ball', rồi 'bike'."
+          },
+          {
+            "id": 700111,
+            "unit_id": 1,
+            "exercise_id": "TA1_BT01",
+            "source_unit": 1,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_sentence",
+            "topic": "In the school playground",
+            "q": "Nghe mẫu câu và chọn câu đúng.",
+            "o": [
+              "Hi, I’m Bill. / Bye, Bill.",
+              "Hi, Bill I’m. / Bill, bye.",
+              "I’m hi Bill. / Bye I’m Bill.",
+              "Bill hi, I’m. / Bill I bye."
+            ],
+            "a": "Hi, I’m Bill. / Bye, Bill.",
+            "h": "Mẫu câu của Unit 1 là: Hi, I’m Bill. / Bye, Bill.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "Hi, I’m Bill.. Bye, Bill.",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Mẫu câu của Unit 1 là: Hi, I’m Bill. / Bye, Bill."
+          },
+          {
+            "id": 700112,
+            "unit_id": 1,
+            "exercise_id": "TA1_BT01",
+            "source_unit": 1,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "In the school playground",
+            "q": "Trong câu 'I’m Bill.', 'I’m' là dạng rút gọn của cụm nào?",
+            "o": [
+              "I is",
+              "My am",
+              "He is",
+              "I am"
+            ],
+            "a": "I am",
+            "h": "Đáp án đúng: I am",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: I am"
+          },
+          {
+            "id": 700113,
+            "unit_id": 1,
+            "exercise_id": "TA1_BT01",
+            "source_unit": 1,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "In the school playground",
+            "q": "Câu nào dùng để chào bạn Bill?",
+            "o": [
+              "Bill, bye.",
+              "I Bill.",
+              "Hi, Bill.",
+              "Bye, Bill."
+            ],
+            "a": "Hi, Bill.",
+            "h": "Đáp án đúng: Hi, Bill.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: Hi, Bill."
+          },
+          {
+            "id": 700114,
+            "unit_id": 1,
+            "exercise_id": "TA1_BT01",
+            "source_unit": 1,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "In the school playground",
+            "q": "Câu nào dùng để tạm biệt bạn Bill?",
+            "o": [
+              "Bill is hi.",
+              "Bye, Bill.",
+              "Hi, Bill.",
+              "I’m Bill."
+            ],
+            "a": "Bye, Bill.",
+            "h": "Đáp án đúng: Bye, Bill.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: Bye, Bill."
+          },
+          {
+            "id": 700115,
+            "unit_id": 1,
+            "exercise_id": "TA1_BT01",
+            "source_unit": 1,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sentence_choice",
+            "topic": "In the school playground",
+            "q": "Chọn mẫu câu đúng của Unit này.",
+            "o": [
+              "Hi, I’m Bill. / Bye, Bill.",
+              "Hi, Bill I’m. / Bill, bye.",
+              "I’m hi Bill. / Bye I’m Bill.",
+              "Bill hi, I’m. / Bill I bye."
+            ],
+            "a": "Hi, I’m Bill. / Bye, Bill.",
+            "h": "Mẫu đúng: Hi, I’m Bill. / Bye, Bill.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Mẫu đúng: Hi, I’m Bill. / Bye, Bill."
+          },
+          {
+            "id": 700116,
+            "unit_id": 1,
+            "exercise_id": "TA1_BT01",
+            "source_unit": 1,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sentence_completion",
+            "topic": "In the school playground",
+            "q": "Hoàn thành câu chào: Hi, ___ Bill.",
+            "o": [
+              "I",
+              "my",
+              "is",
+              "I’m"
+            ],
+            "a": "I’m",
+            "h": "Điền 'I’m' để câu đúng.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Điền 'I’m' để câu đúng."
+          },
+          {
+            "id": 700117,
+            "unit_id": 1,
+            "exercise_id": "TA1_BT01",
+            "source_unit": 1,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_to_sentence",
+            "topic": "In the school playground",
+            "q": "Chọn câu tiếng Anh đúng với ý: “Xin chào, mình là Bill.”",
+            "o": [
+              "I’m hi Bill. / Bye I’m Bill.",
+              "Bill hi, I’m. / Bill I bye.",
+              "Hi, I’m Bill.",
+              "Hi, Bill I’m. / Bill, bye."
+            ],
+            "a": "Hi, I’m Bill.",
+            "h": "Câu đúng là 'Hi, I’m Bill.'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Câu đúng là 'Hi, I’m Bill.'."
+          },
+          {
+            "id": 700118,
+            "unit_id": 1,
+            "exercise_id": "TA1_BT01",
+            "source_unit": 1,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "reading_detail",
+            "topic": "In the school playground",
+            "q": "Đọc câu: “Hi, I’m Bill.”\nBạn nhỏ tự giới thiệu tên gì?",
+            "o": [
+              "Nick",
+              "Bill",
+              "Ba",
+              "Ben"
+            ],
+            "a": "Bill",
+            "h": "Đọc câu cho thấy đáp án là 'Bill'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đọc câu cho thấy đáp án là 'Bill'.",
+            "reading_passage": "Hi, I’m Bill."
+          },
+          {
+            "id": 700119,
+            "unit_id": 1,
+            "exercise_id": "TA1_BT01",
+            "source_unit": 1,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "reading_sequence",
+            "topic": "In the school playground",
+            "q": "Đọc: “Hi, I’m Bill. Bye, Bill.”\nCâu thứ hai dùng để làm gì?",
+            "o": [
+              "tạm biệt",
+              "chào hỏi",
+              "đếm đồ vật",
+              "nói màu sắc"
+            ],
+            "a": "tạm biệt",
+            "h": "Chi tiết đúng là 'tạm biệt'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Chi tiết đúng là 'tạm biệt'.",
+            "reading_passage": "Hi, I’m Bill. Bye, Bill."
+          },
+          {
+            "id": 700120,
+            "unit_id": 1,
+            "exercise_id": "TA1_BT01",
+            "source_unit": 1,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sbt_context",
+            "topic": "In the school playground",
+            "q": "Chọn câu phù hợp khi bé gặp Bill lần đầu.",
+            "o": [
+              "Bye, Bill.",
+              "Two clocks.",
+              "Touch your hair.",
+              "Hi, Bill."
+            ],
+            "a": "Hi, Bill.",
+            "h": "Đáp án phù hợp nội dung Unit 1: Hi, Bill.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án phù hợp nội dung Unit 1: Hi, Bill."
+          }
+        ]
+      },
+      {
+        "week_id": 2,
+        "unit_id": 2,
+        "exercise_id": "TA1_BT02",
+        "week_name": "Unit 2: In the dining room",
+        "desc": "Ngân hàng 20 câu bám SGK và SBT Unit 2: phonics, vocabulary, listening, grammar in context, sentence building và reading.",
+        "questions": [
+          {
+            "id": 700201,
+            "unit_id": 2,
+            "exercise_id": "TA1_BT02",
+            "source_unit": 2,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "phonics_letter",
+            "topic": "In the dining room",
+            "q": "Chữ/âm trọng tâm của Unit 2 là chữ nào?",
+            "o": [
+              "D",
+              "C",
+              "A",
+              "B"
+            ],
+            "a": "C",
+            "h": "Unit 2 luyện chữ C với âm /k/.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Chữ trọng tâm là C, âm /k/."
+          },
+          {
+            "id": 700202,
+            "unit_id": 2,
+            "exercise_id": "TA1_BT02",
+            "source_unit": 2,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "missing_letter",
+            "topic": "In the dining room",
+            "q": "Chọn chữ còn thiếu để hoàn thành từ: _ake",
+            "o": [
+              "c",
+              "a",
+              "b",
+              "d"
+            ],
+            "a": "c",
+            "h": "Điền 'c' ta được từ 'cake'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Từ đúng là 'cake'."
+          },
+          {
+            "id": 700203,
+            "unit_id": 2,
+            "exercise_id": "TA1_BT02",
+            "source_unit": 2,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "missing_letter",
+            "topic": "In the dining room",
+            "q": "Chọn chữ còn thiếu để hoàn thành từ: _ar",
+            "o": [
+              "a",
+              "b",
+              "d",
+              "c"
+            ],
+            "a": "c",
+            "h": "Điền 'c' ta được từ 'car'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Từ đúng là 'car'."
+          },
+          {
+            "id": 700204,
+            "unit_id": 2,
+            "exercise_id": "TA1_BT02",
+            "source_unit": 2,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "In the dining room",
+            "q": "Từ 'cake' có nghĩa là gì?",
+            "o": [
+              "con mèo",
+              "cái cốc",
+              "bánh ngọt",
+              "ô tô"
+            ],
+            "a": "bánh ngọt",
+            "h": "'cake' nghĩa là 'bánh ngọt'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'cake' nghĩa là 'bánh ngọt'."
+          },
+          {
+            "id": 700205,
+            "unit_id": 2,
+            "exercise_id": "TA1_BT02",
+            "source_unit": 2,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "In the dining room",
+            "q": "Từ 'car' có nghĩa là gì?",
+            "o": [
+              "cái cốc",
+              "ô tô",
+              "bánh ngọt",
+              "con mèo"
+            ],
+            "a": "ô tô",
+            "h": "'car' nghĩa là 'ô tô'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'car' nghĩa là 'ô tô'."
+          },
+          {
+            "id": 700206,
+            "unit_id": 2,
+            "exercise_id": "TA1_BT02",
+            "source_unit": 2,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "In the dining room",
+            "q": "Từ 'cat' có nghĩa là gì?",
+            "o": [
+              "con mèo",
+              "bánh ngọt",
+              "ô tô",
+              "cái cốc"
+            ],
+            "a": "con mèo",
+            "h": "'cat' nghĩa là 'con mèo'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'cat' nghĩa là 'con mèo'."
+          },
+          {
+            "id": 700207,
+            "unit_id": 2,
+            "exercise_id": "TA1_BT02",
+            "source_unit": 2,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "image_word",
+            "topic": "In the dining room",
+            "q": "Nhìn hình và chọn từ tiếng Anh phù hợp.",
+            "o": [
+              "cake",
+              "car",
+              "cat",
+              "cup"
+            ],
+            "a": "cup",
+            "h": "Hình minh họa cho từ 'cup'.",
+            "img": "",
+            "imageId": "do_vat_cup",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Hình minh họa cho từ 'cup'."
+          },
+          {
+            "id": 700208,
+            "unit_id": 2,
+            "exercise_id": "TA1_BT02",
+            "source_unit": 2,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_word",
+            "topic": "In the dining room",
+            "q": "Nghe từ thứ nhất và chọn từ con nghe được.",
+            "o": [
+              "cat",
+              "cup",
+              "cake",
+              "car"
+            ],
+            "a": "cake",
+            "h": "Con nghe từ 'cake'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "cake",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Con nghe từ 'cake'."
+          },
+          {
+            "id": 700209,
+            "unit_id": 2,
+            "exercise_id": "TA1_BT02",
+            "source_unit": 2,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_word",
+            "topic": "In the dining room",
+            "q": "Nghe từ tiếp theo và chọn từ con nghe được.",
+            "o": [
+              "cup",
+              "car",
+              "cake",
+              "cat"
+            ],
+            "a": "car",
+            "h": "Con nghe từ 'car'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "car",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Con nghe từ 'car'."
+          },
+          {
+            "id": 700210,
+            "unit_id": 2,
+            "exercise_id": "TA1_BT02",
+            "source_unit": 2,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_pair",
+            "topic": "In the dining room",
+            "q": "Nghe hai từ. Chọn đúng thứ tự cô đọc.",
+            "o": [
+              "cake + car",
+              "car + cake",
+              "cake + cup",
+              "cup + car"
+            ],
+            "a": "cake + car",
+            "h": "Thứ tự là 'cake', rồi 'car'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "cake. car.",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Thứ tự là 'cake', rồi 'car'."
+          },
+          {
+            "id": 700211,
+            "unit_id": 2,
+            "exercise_id": "TA1_BT02",
+            "source_unit": 2,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_sentence",
+            "topic": "In the dining room",
+            "q": "Nghe mẫu câu và chọn câu đúng.",
+            "o": [
+              "I a car have.",
+              "Have I a car.",
+              "I has a car.",
+              "I have a car."
+            ],
+            "a": "I have a car.",
+            "h": "Mẫu câu của Unit 2 là: I have a car.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "I have a car.",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Mẫu câu của Unit 2 là: I have a car."
+          },
+          {
+            "id": 700212,
+            "unit_id": 2,
+            "exercise_id": "TA1_BT02",
+            "source_unit": 2,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "In the dining room",
+            "q": "Chọn từ đúng: I ___ a cup.",
+            "o": [
+              "is",
+              "are",
+              "have",
+              "has"
+            ],
+            "a": "have",
+            "h": "Đáp án đúng: have",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: have"
+          },
+          {
+            "id": 700213,
+            "unit_id": 2,
+            "exercise_id": "TA1_BT02",
+            "source_unit": 2,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "In the dining room",
+            "q": "Cụm nào đúng để nói 'một chiếc ô tô'?",
+            "o": [
+              "the cars",
+              "a car",
+              "car a",
+              "an car"
+            ],
+            "a": "a car",
+            "h": "Đáp án đúng: a car",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: a car"
+          },
+          {
+            "id": 700214,
+            "unit_id": 2,
+            "exercise_id": "TA1_BT02",
+            "source_unit": 2,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "In the dining room",
+            "q": "Trong mẫu câu 'I have a car.', từ nào chỉ người nói?",
+            "o": [
+              "I",
+              "have",
+              "a",
+              "car"
+            ],
+            "a": "I",
+            "h": "Đáp án đúng: I",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: I"
+          },
+          {
+            "id": 700215,
+            "unit_id": 2,
+            "exercise_id": "TA1_BT02",
+            "source_unit": 2,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sentence_choice",
+            "topic": "In the dining room",
+            "q": "Chọn mẫu câu đúng của Unit này.",
+            "o": [
+              "I a car have.",
+              "Have I a car.",
+              "I has a car.",
+              "I have a car."
+            ],
+            "a": "I have a car.",
+            "h": "Mẫu đúng: I have a car.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Mẫu đúng: I have a car."
+          },
+          {
+            "id": 700216,
+            "unit_id": 2,
+            "exercise_id": "TA1_BT02",
+            "source_unit": 2,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sentence_completion",
+            "topic": "In the dining room",
+            "q": "Hoàn thành câu: I ___ a car.",
+            "o": [
+              "am",
+              "is",
+              "have",
+              "has"
+            ],
+            "a": "have",
+            "h": "Điền 'have' để câu đúng.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Điền 'have' để câu đúng."
+          },
+          {
+            "id": 700217,
+            "unit_id": 2,
+            "exercise_id": "TA1_BT02",
+            "source_unit": 2,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_to_sentence",
+            "topic": "In the dining room",
+            "q": "Chọn câu tiếng Anh đúng với ý: “Mình có một cái cốc.”",
+            "o": [
+              "I has a car.",
+              "I have a cup.",
+              "I a car have.",
+              "Have I a car."
+            ],
+            "a": "I have a cup.",
+            "h": "Câu đúng là 'I have a cup.'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Câu đúng là 'I have a cup.'."
+          },
+          {
+            "id": 700218,
+            "unit_id": 2,
+            "exercise_id": "TA1_BT02",
+            "source_unit": 2,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "reading_detail",
+            "topic": "In the dining room",
+            "q": "Đọc câu: “I have a cup.”\nBạn nhỏ có gì?",
+            "o": [
+              "cup",
+              "cake",
+              "cat",
+              "car"
+            ],
+            "a": "cup",
+            "h": "Đọc câu cho thấy đáp án là 'cup'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đọc câu cho thấy đáp án là 'cup'.",
+            "reading_passage": "I have a cup."
+          },
+          {
+            "id": 700219,
+            "unit_id": 2,
+            "exercise_id": "TA1_BT02",
+            "source_unit": 2,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "reading_sequence",
+            "topic": "In the dining room",
+            "q": "Đọc: “I have a car. I have a cup.”\nĐồ vật nào được nhắc đến trước?",
+            "o": [
+              "cup",
+              "cake",
+              "cat",
+              "car"
+            ],
+            "a": "car",
+            "h": "Chi tiết đúng là 'car'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Chi tiết đúng là 'car'.",
+            "reading_passage": "I have a car. I have a cup."
+          },
+          {
+            "id": 700220,
+            "unit_id": 2,
+            "exercise_id": "TA1_BT02",
+            "source_unit": 2,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sbt_context",
+            "topic": "In the dining room",
+            "q": "Theo mẫu của Unit 2, chọn câu đúng khi bé muốn nói mình có một cái cốc.",
+            "o": [
+              "I like a cup.",
+              "Touch your cup.",
+              "I have a cup.",
+              "This is my cup."
+            ],
+            "a": "I have a cup.",
+            "h": "Đáp án phù hợp nội dung Unit 2: I have a cup.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án phù hợp nội dung Unit 2: I have a cup."
+          }
+        ]
+      },
+      {
+        "week_id": 3,
+        "unit_id": 3,
+        "exercise_id": "TA1_BT03",
+        "week_name": "Unit 3: At the street market",
+        "desc": "Ngân hàng 20 câu bám SGK và SBT Unit 3: phonics, vocabulary, listening, grammar in context, sentence building và reading.",
+        "questions": [
+          {
+            "id": 700301,
+            "unit_id": 3,
+            "exercise_id": "TA1_BT03",
+            "source_unit": 3,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "phonics_letter",
+            "topic": "At the street market",
+            "q": "Chữ/âm trọng tâm của Unit 3 là chữ nào?",
+            "o": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "a": "A",
+            "h": "Unit 3 luyện chữ A với âm /æ/.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Chữ trọng tâm là A, âm /æ/."
+          },
+          {
+            "id": 700302,
+            "unit_id": 3,
+            "exercise_id": "TA1_BT03",
+            "source_unit": 3,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "missing_letter",
+            "topic": "At the street market",
+            "q": "Chọn chữ còn thiếu để hoàn thành từ: _pple",
+            "o": [
+              "b",
+              "c",
+              "d",
+              "a"
+            ],
+            "a": "a",
+            "h": "Điền 'a' ta được từ 'apple'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Từ đúng là 'apple'."
+          },
+          {
+            "id": 700303,
+            "unit_id": 3,
+            "exercise_id": "TA1_BT03",
+            "source_unit": 3,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "missing_letter",
+            "topic": "At the street market",
+            "q": "Chọn chữ còn thiếu để hoàn thành từ: b_g",
+            "o": [
+              "c",
+              "d",
+              "a",
+              "b"
+            ],
+            "a": "a",
+            "h": "Điền 'a' ta được từ 'bag'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Từ đúng là 'bag'."
+          },
+          {
+            "id": 700304,
+            "unit_id": 3,
+            "exercise_id": "TA1_BT03",
+            "source_unit": 3,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "At the street market",
+            "q": "Từ 'apple' có nghĩa là gì?",
+            "o": [
+              "cái mũ",
+              "quả táo",
+              "cái túi",
+              "lon"
+            ],
+            "a": "quả táo",
+            "h": "'apple' nghĩa là 'quả táo'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'apple' nghĩa là 'quả táo'."
+          },
+          {
+            "id": 700305,
+            "unit_id": 3,
+            "exercise_id": "TA1_BT03",
+            "source_unit": 3,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "At the street market",
+            "q": "Từ 'bag' có nghĩa là gì?",
+            "o": [
+              "cái túi",
+              "quả táo",
+              "lon",
+              "cái mũ"
+            ],
+            "a": "cái túi",
+            "h": "'bag' nghĩa là 'cái túi'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'bag' nghĩa là 'cái túi'."
+          },
+          {
+            "id": 700306,
+            "unit_id": 3,
+            "exercise_id": "TA1_BT03",
+            "source_unit": 3,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "At the street market",
+            "q": "Từ 'can' có nghĩa là gì?",
+            "o": [
+              "quả táo",
+              "cái túi",
+              "cái mũ",
+              "lon"
+            ],
+            "a": "lon",
+            "h": "'can' nghĩa là 'lon'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'can' nghĩa là 'lon'."
+          },
+          {
+            "id": 700307,
+            "unit_id": 3,
+            "exercise_id": "TA1_BT03",
+            "source_unit": 3,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "image_word",
+            "topic": "At the street market",
+            "q": "Nhìn hình và chọn từ tiếng Anh phù hợp.",
+            "o": [
+              "can",
+              "hat",
+              "bag",
+              "apple"
+            ],
+            "a": "bag",
+            "h": "Hình minh họa cho từ 'bag'.",
+            "img": "",
+            "imageId": "do_vat_bag",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Hình minh họa cho từ 'bag'."
+          },
+          {
+            "id": 700308,
+            "unit_id": 3,
+            "exercise_id": "TA1_BT03",
+            "source_unit": 3,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_word",
+            "topic": "At the street market",
+            "q": "Nghe từ thứ nhất và chọn từ con nghe được.",
+            "o": [
+              "hat",
+              "apple",
+              "bag",
+              "can"
+            ],
+            "a": "apple",
+            "h": "Con nghe từ 'apple'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "apple",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Con nghe từ 'apple'."
+          },
+          {
+            "id": 700309,
+            "unit_id": 3,
+            "exercise_id": "TA1_BT03",
+            "source_unit": 3,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_word",
+            "topic": "At the street market",
+            "q": "Nghe từ tiếp theo và chọn từ con nghe được.",
+            "o": [
+              "bag",
+              "apple",
+              "can",
+              "hat"
+            ],
+            "a": "bag",
+            "h": "Con nghe từ 'bag'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "bag",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Con nghe từ 'bag'."
+          },
+          {
+            "id": 700310,
+            "unit_id": 3,
+            "exercise_id": "TA1_BT03",
+            "source_unit": 3,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_pair",
+            "topic": "At the street market",
+            "q": "Nghe hai từ. Chọn đúng thứ tự cô đọc.",
+            "o": [
+              "bag + apple",
+              "apple + hat",
+              "hat + bag",
+              "apple + bag"
+            ],
+            "a": "apple + bag",
+            "h": "Thứ tự là 'apple', rồi 'bag'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "apple. bag.",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Thứ tự là 'apple', rồi 'bag'."
+          },
+          {
+            "id": 700311,
+            "unit_id": 3,
+            "exercise_id": "TA1_BT03",
+            "source_unit": 3,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_sentence",
+            "topic": "At the street market",
+            "q": "Nghe mẫu câu và chọn câu đúng.",
+            "o": [
+              "This are my bag.",
+              "My bag this is.",
+              "This is my bag.",
+              "This my is bag."
+            ],
+            "a": "This is my bag.",
+            "h": "Mẫu câu của Unit 3 là: This is my bag.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "This is my bag.",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Mẫu câu của Unit 3 là: This is my bag."
+          },
+          {
+            "id": 700312,
+            "unit_id": 3,
+            "exercise_id": "TA1_BT03",
+            "source_unit": 3,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "At the street market",
+            "q": "Chọn từ đúng: This is ___ hat.",
+            "o": [
+              "are",
+              "my",
+              "I",
+              "me"
+            ],
+            "a": "my",
+            "h": "Đáp án đúng: my",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: my"
+          },
+          {
+            "id": 700313,
+            "unit_id": 3,
+            "exercise_id": "TA1_BT03",
+            "source_unit": 3,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "At the street market",
+            "q": "Cụm 'my bag' có nghĩa là gì?",
+            "o": [
+              "cái túi của mình",
+              "một quả táo",
+              "cái lon của bạn",
+              "cái mũ màu đỏ"
+            ],
+            "a": "cái túi của mình",
+            "h": "Đáp án đúng: cái túi của mình",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: cái túi của mình"
+          },
+          {
+            "id": 700314,
+            "unit_id": 3,
+            "exercise_id": "TA1_BT03",
+            "source_unit": 3,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "At the street market",
+            "q": "Câu nào có trật tự đúng?",
+            "o": [
+              "My this bag is.",
+              "This my is bag.",
+              "Is this my bag.",
+              "This is my bag."
+            ],
+            "a": "This is my bag.",
+            "h": "Đáp án đúng: This is my bag.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: This is my bag."
+          },
+          {
+            "id": 700315,
+            "unit_id": 3,
+            "exercise_id": "TA1_BT03",
+            "source_unit": 3,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sentence_choice",
+            "topic": "At the street market",
+            "q": "Chọn mẫu câu đúng của Unit này.",
+            "o": [
+              "This are my bag.",
+              "My bag this is.",
+              "This is my bag.",
+              "This my is bag."
+            ],
+            "a": "This is my bag.",
+            "h": "Mẫu đúng: This is my bag.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Mẫu đúng: This is my bag."
+          },
+          {
+            "id": 700316,
+            "unit_id": 3,
+            "exercise_id": "TA1_BT03",
+            "source_unit": 3,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sentence_completion",
+            "topic": "At the street market",
+            "q": "Hoàn thành câu: This is ___ bag.",
+            "o": [
+              "a",
+              "my",
+              "I",
+              "me"
+            ],
+            "a": "my",
+            "h": "Điền 'my' để câu đúng.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Điền 'my' để câu đúng."
+          },
+          {
+            "id": 700317,
+            "unit_id": 3,
+            "exercise_id": "TA1_BT03",
+            "source_unit": 3,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_to_sentence",
+            "topic": "At the street market",
+            "q": "Chọn câu tiếng Anh đúng với ý: “Đây là cái mũ của mình.”",
+            "o": [
+              "This is my hat.",
+              "This my is bag.",
+              "This are my bag.",
+              "My bag this is."
+            ],
+            "a": "This is my hat.",
+            "h": "Câu đúng là 'This is my hat.'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Câu đúng là 'This is my hat.'."
+          },
+          {
+            "id": 700318,
+            "unit_id": 3,
+            "exercise_id": "TA1_BT03",
+            "source_unit": 3,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "reading_detail",
+            "topic": "At the street market",
+            "q": "Đọc câu: “This is my bag.”\nĐồ vật nào là của bạn nhỏ?",
+            "o": [
+              "apple",
+              "can",
+              "hat",
+              "bag"
+            ],
+            "a": "bag",
+            "h": "Đọc câu cho thấy đáp án là 'bag'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đọc câu cho thấy đáp án là 'bag'.",
+            "reading_passage": "This is my bag."
+          },
+          {
+            "id": 700319,
+            "unit_id": 3,
+            "exercise_id": "TA1_BT03",
+            "source_unit": 3,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "reading_sequence",
+            "topic": "At the street market",
+            "q": "Đọc: “This is my bag. This is my hat.”\nĐồ vật nào được nhắc đến trước?",
+            "o": [
+              "apple",
+              "can",
+              "bag",
+              "hat"
+            ],
+            "a": "bag",
+            "h": "Chi tiết đúng là 'bag'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Chi tiết đúng là 'bag'.",
+            "reading_passage": "This is my bag. This is my hat."
+          },
+          {
+            "id": 700320,
+            "unit_id": 3,
+            "exercise_id": "TA1_BT03",
+            "source_unit": 3,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sbt_context",
+            "topic": "At the street market",
+            "q": "Theo mẫu của Unit 3, chọn câu đúng để giới thiệu cái mũ của mình.",
+            "o": [
+              "Touch your hat.",
+              "This is my hat.",
+              "I have hat my.",
+              "That a hat."
+            ],
+            "a": "This is my hat.",
+            "h": "Đáp án phù hợp nội dung Unit 3: This is my hat.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án phù hợp nội dung Unit 3: This is my hat."
+          }
+        ]
+      },
+      {
+        "week_id": 4,
+        "unit_id": 4,
+        "exercise_id": "TA1_BT04",
+        "week_name": "Unit 4: In the bedroom",
+        "desc": "Ngân hàng 20 câu bám SGK và SBT Unit 4: phonics, vocabulary, listening, grammar in context, sentence building và reading.",
+        "questions": [
+          {
+            "id": 700401,
+            "unit_id": 4,
+            "exercise_id": "TA1_BT04",
+            "source_unit": 4,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "phonics_letter",
+            "topic": "In the bedroom",
+            "q": "Chữ/âm trọng tâm của Unit 4 là chữ nào?",
+            "o": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "a": "D",
+            "h": "Unit 4 luyện chữ D với âm /d/.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Chữ trọng tâm là D, âm /d/."
+          },
+          {
+            "id": 700402,
+            "unit_id": 4,
+            "exercise_id": "TA1_BT04",
+            "source_unit": 4,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "missing_letter",
+            "topic": "In the bedroom",
+            "q": "Chọn chữ còn thiếu để hoàn thành từ: _esk",
+            "o": [
+              "b",
+              "c",
+              "d",
+              "a"
+            ],
+            "a": "d",
+            "h": "Điền 'd' ta được từ 'desk'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Từ đúng là 'desk'."
+          },
+          {
+            "id": 700403,
+            "unit_id": 4,
+            "exercise_id": "TA1_BT04",
+            "source_unit": 4,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "missing_letter",
+            "topic": "In the bedroom",
+            "q": "Chọn chữ còn thiếu để hoàn thành từ: _og",
+            "o": [
+              "c",
+              "d",
+              "a",
+              "b"
+            ],
+            "a": "d",
+            "h": "Điền 'd' ta được từ 'dog'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Từ đúng là 'dog'."
+          },
+          {
+            "id": 700404,
+            "unit_id": 4,
+            "exercise_id": "TA1_BT04",
+            "source_unit": 4,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "In the bedroom",
+            "q": "Từ 'desk' có nghĩa là gì?",
+            "o": [
+              "cái bàn",
+              "con chó",
+              "cánh cửa",
+              "con vịt"
+            ],
+            "a": "cái bàn",
+            "h": "'desk' nghĩa là 'cái bàn'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'desk' nghĩa là 'cái bàn'."
+          },
+          {
+            "id": 700405,
+            "unit_id": 4,
+            "exercise_id": "TA1_BT04",
+            "source_unit": 4,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "In the bedroom",
+            "q": "Từ 'dog' có nghĩa là gì?",
+            "o": [
+              "cái bàn",
+              "cánh cửa",
+              "con vịt",
+              "con chó"
+            ],
+            "a": "con chó",
+            "h": "'dog' nghĩa là 'con chó'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'dog' nghĩa là 'con chó'."
+          },
+          {
+            "id": 700406,
+            "unit_id": 4,
+            "exercise_id": "TA1_BT04",
+            "source_unit": 4,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "In the bedroom",
+            "q": "Từ 'door' có nghĩa là gì?",
+            "o": [
+              "con chó",
+              "con vịt",
+              "cánh cửa",
+              "cái bàn"
+            ],
+            "a": "cánh cửa",
+            "h": "'door' nghĩa là 'cánh cửa'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'door' nghĩa là 'cánh cửa'."
+          },
+          {
+            "id": 700407,
+            "unit_id": 4,
+            "exercise_id": "TA1_BT04",
+            "source_unit": 4,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "unit_word",
+            "topic": "In the bedroom",
+            "q": "Từ nào thuộc Unit 4 – In the bedroom?",
+            "o": [
+              "milk",
+              "duck",
+              "book",
+              "car"
+            ],
+            "a": "duck",
+            "h": "'duck' là từ trọng tâm của Unit 4.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'duck' là từ trọng tâm của Unit 4."
+          },
+          {
+            "id": 700408,
+            "unit_id": 4,
+            "exercise_id": "TA1_BT04",
+            "source_unit": 4,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_word",
+            "topic": "In the bedroom",
+            "q": "Nghe từ thứ nhất và chọn từ con nghe được.",
+            "o": [
+              "desk",
+              "dog",
+              "door",
+              "duck"
+            ],
+            "a": "desk",
+            "h": "Con nghe từ 'desk'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "desk",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Con nghe từ 'desk'."
+          },
+          {
+            "id": 700409,
+            "unit_id": 4,
+            "exercise_id": "TA1_BT04",
+            "source_unit": 4,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_word",
+            "topic": "In the bedroom",
+            "q": "Nghe từ tiếp theo và chọn từ con nghe được.",
+            "o": [
+              "desk",
+              "door",
+              "duck",
+              "dog"
+            ],
+            "a": "dog",
+            "h": "Con nghe từ 'dog'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "dog",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Con nghe từ 'dog'."
+          },
+          {
+            "id": 700410,
+            "unit_id": 4,
+            "exercise_id": "TA1_BT04",
+            "source_unit": 4,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_pair",
+            "topic": "In the bedroom",
+            "q": "Nghe hai từ. Chọn đúng thứ tự cô đọc.",
+            "o": [
+              "desk + duck",
+              "duck + dog",
+              "desk + dog",
+              "dog + desk"
+            ],
+            "a": "desk + dog",
+            "h": "Thứ tự là 'desk', rồi 'dog'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "desk. dog.",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Thứ tự là 'desk', rồi 'dog'."
+          },
+          {
+            "id": 700411,
+            "unit_id": 4,
+            "exercise_id": "TA1_BT04",
+            "source_unit": 4,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_sentence",
+            "topic": "In the bedroom",
+            "q": "Nghe mẫu câu và chọn câu đúng.",
+            "o": [
+              "This are dog.",
+              "This is a dog.",
+              "This a dog is.",
+              "These is a dog."
+            ],
+            "a": "This is a dog.",
+            "h": "Mẫu câu của Unit 4 là: This is a dog.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "This is a dog.",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Mẫu câu của Unit 4 là: This is a dog."
+          },
+          {
+            "id": 700412,
+            "unit_id": 4,
+            "exercise_id": "TA1_BT04",
+            "source_unit": 4,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "In the bedroom",
+            "q": "Chọn từ đúng: This is ___ duck.",
+            "o": [
+              "a",
+              "an",
+              "are",
+              "my"
+            ],
+            "a": "a",
+            "h": "Đáp án đúng: a",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: a"
+          },
+          {
+            "id": 700413,
+            "unit_id": 4,
+            "exercise_id": "TA1_BT04",
+            "source_unit": 4,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "In the bedroom",
+            "q": "Câu nào nói về một con chó?",
+            "o": [
+              "This are dogs.",
+              "A dog this.",
+              "This my dog a.",
+              "This is a dog."
+            ],
+            "a": "This is a dog.",
+            "h": "Đáp án đúng: This is a dog.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: This is a dog."
+          },
+          {
+            "id": 700414,
+            "unit_id": 4,
+            "exercise_id": "TA1_BT04",
+            "source_unit": 4,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "In the bedroom",
+            "q": "Trong 'This is a dog.', từ nào đứng trước 'dog'?",
+            "o": [
+              "this",
+              "dog",
+              "a",
+              "is"
+            ],
+            "a": "a",
+            "h": "Đáp án đúng: a",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: a"
+          },
+          {
+            "id": 700415,
+            "unit_id": 4,
+            "exercise_id": "TA1_BT04",
+            "source_unit": 4,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sentence_choice",
+            "topic": "In the bedroom",
+            "q": "Chọn mẫu câu đúng của Unit này.",
+            "o": [
+              "This are dog.",
+              "This is a dog.",
+              "This a dog is.",
+              "These is a dog."
+            ],
+            "a": "This is a dog.",
+            "h": "Mẫu đúng: This is a dog.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Mẫu đúng: This is a dog."
+          },
+          {
+            "id": 700416,
+            "unit_id": 4,
+            "exercise_id": "TA1_BT04",
+            "source_unit": 4,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sentence_completion",
+            "topic": "In the bedroom",
+            "q": "Hoàn thành câu: This is ___ dog.",
+            "o": [
+              "a",
+              "an",
+              "my",
+              "are"
+            ],
+            "a": "a",
+            "h": "Điền 'a' để câu đúng.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Điền 'a' để câu đúng."
+          },
+          {
+            "id": 700417,
+            "unit_id": 4,
+            "exercise_id": "TA1_BT04",
+            "source_unit": 4,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_to_sentence",
+            "topic": "In the bedroom",
+            "q": "Chọn câu tiếng Anh đúng với ý: “Đây là một con vịt.”",
+            "o": [
+              "This a dog is.",
+              "These is a dog.",
+              "This are dog.",
+              "This is a duck."
+            ],
+            "a": "This is a duck.",
+            "h": "Câu đúng là 'This is a duck.'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Câu đúng là 'This is a duck.'."
+          },
+          {
+            "id": 700418,
+            "unit_id": 4,
+            "exercise_id": "TA1_BT04",
+            "source_unit": 4,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "reading_detail",
+            "topic": "In the bedroom",
+            "q": "Đọc câu: “This is a dog.”\nĐây là con gì?",
+            "o": [
+              "desk",
+              "door",
+              "dog",
+              "duck"
+            ],
+            "a": "dog",
+            "h": "Đọc câu cho thấy đáp án là 'dog'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đọc câu cho thấy đáp án là 'dog'.",
+            "reading_passage": "This is a dog."
+          },
+          {
+            "id": 700419,
+            "unit_id": 4,
+            "exercise_id": "TA1_BT04",
+            "source_unit": 4,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "reading_sequence",
+            "topic": "In the bedroom",
+            "q": "Đọc: “This is a dog. This is a duck.”\nCon vật nào được nhắc đến trước?",
+            "o": [
+              "door",
+              "dog",
+              "duck",
+              "desk"
+            ],
+            "a": "dog",
+            "h": "Chi tiết đúng là 'dog'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Chi tiết đúng là 'dog'.",
+            "reading_passage": "This is a dog. This is a duck."
+          },
+          {
+            "id": 700420,
+            "unit_id": 4,
+            "exercise_id": "TA1_BT04",
+            "source_unit": 4,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sbt_context",
+            "topic": "In the bedroom",
+            "q": "Theo mẫu của Unit 4, chọn câu đúng để chỉ một con vịt.",
+            "o": [
+              "This is a duck.",
+              "This are a duck.",
+              "Duck this a.",
+              "I like duck."
+            ],
+            "a": "This is a duck.",
+            "h": "Đáp án phù hợp nội dung Unit 4: This is a duck.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án phù hợp nội dung Unit 4: This is a duck."
+          }
+        ]
+      },
+      {
+        "week_id": 5,
+        "unit_id": 5,
+        "exercise_id": "TA1_BT05",
+        "week_name": "Unit 5: At the fish and chip shop",
+        "desc": "Ngân hàng 20 câu bám SGK và SBT Unit 5: phonics, vocabulary, listening, grammar in context, sentence building và reading.",
+        "questions": [
+          {
+            "id": 700501,
+            "unit_id": 5,
+            "exercise_id": "TA1_BT05",
+            "source_unit": 5,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "phonics_letter",
+            "topic": "At the fish and chip shop",
+            "q": "Chữ/âm trọng tâm của Unit 5 là chữ nào?",
+            "o": [
+              "B",
+              "C",
+              "I",
+              "A"
+            ],
+            "a": "I",
+            "h": "Unit 5 luyện chữ I với âm /ɪ/.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Chữ trọng tâm là I, âm /ɪ/."
+          },
+          {
+            "id": 700502,
+            "unit_id": 5,
+            "exercise_id": "TA1_BT05",
+            "source_unit": 5,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "missing_letter",
+            "topic": "At the fish and chip shop",
+            "q": "Chọn chữ còn thiếu để hoàn thành từ: ch_cken",
+            "o": [
+              "c",
+              "i",
+              "a",
+              "b"
+            ],
+            "a": "i",
+            "h": "Điền 'i' ta được từ 'chicken'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Từ đúng là 'chicken'."
+          },
+          {
+            "id": 700503,
+            "unit_id": 5,
+            "exercise_id": "TA1_BT05",
+            "source_unit": 5,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "missing_letter",
+            "topic": "At the fish and chip shop",
+            "q": "Chọn chữ còn thiếu để hoàn thành từ: ch_ps",
+            "o": [
+              "i",
+              "a",
+              "b",
+              "c"
+            ],
+            "a": "i",
+            "h": "Điền 'i' ta được từ 'chips'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Từ đúng là 'chips'."
+          },
+          {
+            "id": 700504,
+            "unit_id": 5,
+            "exercise_id": "TA1_BT05",
+            "source_unit": 5,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "At the fish and chip shop",
+            "q": "Từ 'chicken' có nghĩa là gì?",
+            "o": [
+              "khoai tây chiên",
+              "cá",
+              "sữa",
+              "gà"
+            ],
+            "a": "gà",
+            "h": "'chicken' nghĩa là 'gà'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'chicken' nghĩa là 'gà'."
+          },
+          {
+            "id": 700505,
+            "unit_id": 5,
+            "exercise_id": "TA1_BT05",
+            "source_unit": 5,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "At the fish and chip shop",
+            "q": "Từ 'chips' có nghĩa là gì?",
+            "o": [
+              "cá",
+              "sữa",
+              "khoai tây chiên",
+              "gà"
+            ],
+            "a": "khoai tây chiên",
+            "h": "'chips' nghĩa là 'khoai tây chiên'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'chips' nghĩa là 'khoai tây chiên'."
+          },
+          {
+            "id": 700506,
+            "unit_id": 5,
+            "exercise_id": "TA1_BT05",
+            "source_unit": 5,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "At the fish and chip shop",
+            "q": "Từ 'fish' có nghĩa là gì?",
+            "o": [
+              "sữa",
+              "cá",
+              "gà",
+              "khoai tây chiên"
+            ],
+            "a": "cá",
+            "h": "'fish' nghĩa là 'cá'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'fish' nghĩa là 'cá'."
+          },
+          {
+            "id": 700507,
+            "unit_id": 5,
+            "exercise_id": "TA1_BT05",
+            "source_unit": 5,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "image_word",
+            "topic": "At the fish and chip shop",
+            "q": "Nhìn hình và chọn từ tiếng Anh phù hợp.",
+            "o": [
+              "fish",
+              "chicken",
+              "chips",
+              "milk"
+            ],
+            "a": "fish",
+            "h": "Hình minh họa cho từ 'fish'.",
+            "img": "",
+            "imageId": "do_an_fish_food",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Hình minh họa cho từ 'fish'."
+          },
+          {
+            "id": 700508,
+            "unit_id": 5,
+            "exercise_id": "TA1_BT05",
+            "source_unit": 5,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_word",
+            "topic": "At the fish and chip shop",
+            "q": "Nghe từ thứ nhất và chọn từ con nghe được.",
+            "o": [
+              "chips",
+              "fish",
+              "milk",
+              "chicken"
+            ],
+            "a": "chicken",
+            "h": "Con nghe từ 'chicken'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "chicken",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Con nghe từ 'chicken'."
+          },
+          {
+            "id": 700509,
+            "unit_id": 5,
+            "exercise_id": "TA1_BT05",
+            "source_unit": 5,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_word",
+            "topic": "At the fish and chip shop",
+            "q": "Nghe từ tiếp theo và chọn từ con nghe được.",
+            "o": [
+              "fish",
+              "milk",
+              "chips",
+              "chicken"
+            ],
+            "a": "chips",
+            "h": "Con nghe từ 'chips'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "chips",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Con nghe từ 'chips'."
+          },
+          {
+            "id": 700510,
+            "unit_id": 5,
+            "exercise_id": "TA1_BT05",
+            "source_unit": 5,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_pair",
+            "topic": "At the fish and chip shop",
+            "q": "Nghe hai từ. Chọn đúng thứ tự cô đọc.",
+            "o": [
+              "milk + chips",
+              "chicken + chips",
+              "chips + chicken",
+              "chicken + milk"
+            ],
+            "a": "chicken + chips",
+            "h": "Thứ tự là 'chicken', rồi 'chips'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "chicken. chips.",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Thứ tự là 'chicken', rồi 'chips'."
+          },
+          {
+            "id": 700511,
+            "unit_id": 5,
+            "exercise_id": "TA1_BT05",
+            "source_unit": 5,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_sentence",
+            "topic": "At the fish and chip shop",
+            "q": "Nghe mẫu câu và chọn câu đúng.",
+            "o": [
+              "I like milk.",
+              "I milk like.",
+              "I likes milk.",
+              "Like I milk."
+            ],
+            "a": "I like milk.",
+            "h": "Mẫu câu của Unit 5 là: I like milk.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "I like milk.",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Mẫu câu của Unit 5 là: I like milk."
+          },
+          {
+            "id": 700512,
+            "unit_id": 5,
+            "exercise_id": "TA1_BT05",
+            "source_unit": 5,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "At the fish and chip shop",
+            "q": "Chọn từ đúng: I ___ fish.",
+            "o": [
+              "likes",
+              "is",
+              "are",
+              "like"
+            ],
+            "a": "like",
+            "h": "Đáp án đúng: like",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: like"
+          },
+          {
+            "id": 700513,
+            "unit_id": 5,
+            "exercise_id": "TA1_BT05",
+            "source_unit": 5,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "At the fish and chip shop",
+            "q": "Câu nào có trật tự đúng?",
+            "o": [
+              "I milk like.",
+              "Like milk I.",
+              "I like milk.",
+              "Milk I like."
+            ],
+            "a": "I like milk.",
+            "h": "Đáp án đúng: I like milk.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: I like milk."
+          },
+          {
+            "id": 700514,
+            "unit_id": 5,
+            "exercise_id": "TA1_BT05",
+            "source_unit": 5,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "At the fish and chip shop",
+            "q": "Trong câu 'I like milk.', từ nào nói về sở thích?",
+            "o": [
+              "a",
+              "like",
+              "I",
+              "milk"
+            ],
+            "a": "like",
+            "h": "Đáp án đúng: like",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: like"
+          },
+          {
+            "id": 700515,
+            "unit_id": 5,
+            "exercise_id": "TA1_BT05",
+            "source_unit": 5,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sentence_choice",
+            "topic": "At the fish and chip shop",
+            "q": "Chọn mẫu câu đúng của Unit này.",
+            "o": [
+              "I like milk.",
+              "I milk like.",
+              "I likes milk.",
+              "Like I milk."
+            ],
+            "a": "I like milk.",
+            "h": "Mẫu đúng: I like milk.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Mẫu đúng: I like milk."
+          },
+          {
+            "id": 700516,
+            "unit_id": 5,
+            "exercise_id": "TA1_BT05",
+            "source_unit": 5,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sentence_completion",
+            "topic": "At the fish and chip shop",
+            "q": "Hoàn thành câu: I ___ milk.",
+            "o": [
+              "have",
+              "am",
+              "see",
+              "like"
+            ],
+            "a": "like",
+            "h": "Điền 'like' để câu đúng.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Điền 'like' để câu đúng."
+          },
+          {
+            "id": 700517,
+            "unit_id": 5,
+            "exercise_id": "TA1_BT05",
+            "source_unit": 5,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_to_sentence",
+            "topic": "At the fish and chip shop",
+            "q": "Chọn câu tiếng Anh đúng với ý: “Mình thích cá.”",
+            "o": [
+              "I likes milk.",
+              "Like I milk.",
+              "I like fish.",
+              "I milk like."
+            ],
+            "a": "I like fish.",
+            "h": "Câu đúng là 'I like fish.'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Câu đúng là 'I like fish.'."
+          },
+          {
+            "id": 700518,
+            "unit_id": 5,
+            "exercise_id": "TA1_BT05",
+            "source_unit": 5,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "reading_detail",
+            "topic": "At the fish and chip shop",
+            "q": "Đọc câu: “I like fish.”\nBạn nhỏ thích món gì?",
+            "o": [
+              "chicken",
+              "fish",
+              "milk",
+              "chips"
+            ],
+            "a": "fish",
+            "h": "Đọc câu cho thấy đáp án là 'fish'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đọc câu cho thấy đáp án là 'fish'.",
+            "reading_passage": "I like fish."
+          },
+          {
+            "id": 700519,
+            "unit_id": 5,
+            "exercise_id": "TA1_BT05",
+            "source_unit": 5,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "reading_sequence",
+            "topic": "At the fish and chip shop",
+            "q": "Đọc: “I like milk. I like chips.”\nMón nào được nhắc đến trước?",
+            "o": [
+              "milk",
+              "chips",
+              "fish",
+              "chicken"
+            ],
+            "a": "milk",
+            "h": "Chi tiết đúng là 'milk'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Chi tiết đúng là 'milk'.",
+            "reading_passage": "I like milk. I like chips."
+          },
+          {
+            "id": 700520,
+            "unit_id": 5,
+            "exercise_id": "TA1_BT05",
+            "source_unit": 5,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sbt_context",
+            "topic": "At the fish and chip shop",
+            "q": "Theo mẫu Unit 5, chọn câu đúng để nói bé thích cá.",
+            "o": [
+              "I have fish.",
+              "This is my fish.",
+              "Touch your fish.",
+              "I like fish."
+            ],
+            "a": "I like fish.",
+            "h": "Đáp án phù hợp nội dung Unit 5: I like fish.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án phù hợp nội dung Unit 5: I like fish."
+          }
+        ]
+      },
+      {
+        "week_id": 6,
+        "unit_id": 6,
+        "exercise_id": "TA1_BT06",
+        "week_name": "Unit 6: In the classroom",
+        "desc": "Ngân hàng 20 câu bám SGK và SBT Unit 6: phonics, vocabulary, listening, grammar in context, sentence building và reading.",
+        "questions": [
+          {
+            "id": 700601,
+            "unit_id": 6,
+            "exercise_id": "TA1_BT06",
+            "source_unit": 6,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "phonics_letter",
+            "topic": "In the classroom",
+            "q": "Chữ/âm trọng tâm của Unit 6 là chữ nào?",
+            "o": [
+              "C",
+              "E",
+              "A",
+              "B"
+            ],
+            "a": "E",
+            "h": "Unit 6 luyện chữ E với âm /e/.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Chữ trọng tâm là E, âm /e/."
+          },
+          {
+            "id": 700602,
+            "unit_id": 6,
+            "exercise_id": "TA1_BT06",
+            "source_unit": 6,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "missing_letter",
+            "topic": "In the classroom",
+            "q": "Chọn chữ còn thiếu để hoàn thành từ: b_ll",
+            "o": [
+              "e",
+              "a",
+              "b",
+              "c"
+            ],
+            "a": "e",
+            "h": "Điền 'e' ta được từ 'bell'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Từ đúng là 'bell'."
+          },
+          {
+            "id": 700603,
+            "unit_id": 6,
+            "exercise_id": "TA1_BT06",
+            "source_unit": 6,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "missing_letter",
+            "topic": "In the classroom",
+            "q": "Chọn chữ còn thiếu để hoàn thành từ: p_n",
+            "o": [
+              "a",
+              "b",
+              "c",
+              "e"
+            ],
+            "a": "e",
+            "h": "Điền 'e' ta được từ 'pen'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Từ đúng là 'pen'."
+          },
+          {
+            "id": 700604,
+            "unit_id": 6,
+            "exercise_id": "TA1_BT06",
+            "source_unit": 6,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "In the classroom",
+            "q": "Từ 'bell' có nghĩa là gì?",
+            "o": [
+              "bút chì",
+              "màu đỏ",
+              "cái chuông",
+              "bút mực"
+            ],
+            "a": "cái chuông",
+            "h": "'bell' nghĩa là 'cái chuông'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'bell' nghĩa là 'cái chuông'."
+          },
+          {
+            "id": 700605,
+            "unit_id": 6,
+            "exercise_id": "TA1_BT06",
+            "source_unit": 6,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "In the classroom",
+            "q": "Từ 'pen' có nghĩa là gì?",
+            "o": [
+              "màu đỏ",
+              "bút mực",
+              "cái chuông",
+              "bút chì"
+            ],
+            "a": "bút mực",
+            "h": "'pen' nghĩa là 'bút mực'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'pen' nghĩa là 'bút mực'."
+          },
+          {
+            "id": 700606,
+            "unit_id": 6,
+            "exercise_id": "TA1_BT06",
+            "source_unit": 6,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "In the classroom",
+            "q": "Từ 'pencil' có nghĩa là gì?",
+            "o": [
+              "bút chì",
+              "cái chuông",
+              "bút mực",
+              "màu đỏ"
+            ],
+            "a": "bút chì",
+            "h": "'pencil' nghĩa là 'bút chì'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'pencil' nghĩa là 'bút chì'."
+          },
+          {
+            "id": 700607,
+            "unit_id": 6,
+            "exercise_id": "TA1_BT06",
+            "source_unit": 6,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "unit_word",
+            "topic": "In the classroom",
+            "q": "Từ nào thuộc Unit 6 – In the classroom?",
+            "o": [
+              "book",
+              "car",
+              "dog",
+              "red"
+            ],
+            "a": "red",
+            "h": "'red' là từ trọng tâm của Unit 6.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'red' là từ trọng tâm của Unit 6."
+          },
+          {
+            "id": 700608,
+            "unit_id": 6,
+            "exercise_id": "TA1_BT06",
+            "source_unit": 6,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_word",
+            "topic": "In the classroom",
+            "q": "Nghe từ thứ nhất và chọn từ con nghe được.",
+            "o": [
+              "pencil",
+              "red",
+              "bell",
+              "pen"
+            ],
+            "a": "bell",
+            "h": "Con nghe từ 'bell'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "bell",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Con nghe từ 'bell'."
+          },
+          {
+            "id": 700609,
+            "unit_id": 6,
+            "exercise_id": "TA1_BT06",
+            "source_unit": 6,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_word",
+            "topic": "In the classroom",
+            "q": "Nghe từ tiếp theo và chọn từ con nghe được.",
+            "o": [
+              "red",
+              "pen",
+              "bell",
+              "pencil"
+            ],
+            "a": "pen",
+            "h": "Con nghe từ 'pen'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "pen",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Con nghe từ 'pen'."
+          },
+          {
+            "id": 700610,
+            "unit_id": 6,
+            "exercise_id": "TA1_BT06",
+            "source_unit": 6,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_pair",
+            "topic": "In the classroom",
+            "q": "Nghe hai từ. Chọn đúng thứ tự cô đọc.",
+            "o": [
+              "bell + pen",
+              "pen + bell",
+              "bell + red",
+              "red + pen"
+            ],
+            "a": "bell + pen",
+            "h": "Thứ tự là 'bell', rồi 'pen'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "bell. pen.",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Thứ tự là 'bell', rồi 'pen'."
+          },
+          {
+            "id": 700611,
+            "unit_id": 6,
+            "exercise_id": "TA1_BT06",
+            "source_unit": 6,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_sentence",
+            "topic": "In the classroom",
+            "q": "Nghe mẫu câu và chọn câu đúng.",
+            "o": [
+              "It a red pen is.",
+              "It’s red a pen.",
+              "It are a red pen.",
+              "It’s a red pen."
+            ],
+            "a": "It’s a red pen.",
+            "h": "Mẫu câu của Unit 6 là: It’s a red pen.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "It’s a red pen.",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Mẫu câu của Unit 6 là: It’s a red pen."
+          },
+          {
+            "id": 700612,
+            "unit_id": 6,
+            "exercise_id": "TA1_BT06",
+            "source_unit": 6,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "In the classroom",
+            "q": "'It’s' là dạng rút gọn của cụm nào?",
+            "o": [
+              "I am",
+              "This are",
+              "It is",
+              "It are"
+            ],
+            "a": "It is",
+            "h": "Đáp án đúng: It is",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: It is"
+          },
+          {
+            "id": 700613,
+            "unit_id": 6,
+            "exercise_id": "TA1_BT06",
+            "source_unit": 6,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "In the classroom",
+            "q": "Trong cụm 'a red pen', từ 'red' đứng ở đâu?",
+            "o": [
+              "không có trong cụm",
+              "trước từ pen",
+              "sau từ pen",
+              "trước từ a"
+            ],
+            "a": "trước từ pen",
+            "h": "Đáp án đúng: trước từ pen",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: trước từ pen"
+          },
+          {
+            "id": 700614,
+            "unit_id": 6,
+            "exercise_id": "TA1_BT06",
+            "source_unit": 6,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "In the classroom",
+            "q": "Chọn câu đúng.",
+            "o": [
+              "It’s a red pencil.",
+              "It’s red a pencil.",
+              "It are a red pencil.",
+              "A pencil red it’s."
+            ],
+            "a": "It’s a red pencil.",
+            "h": "Đáp án đúng: It’s a red pencil.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: It’s a red pencil."
+          },
+          {
+            "id": 700615,
+            "unit_id": 6,
+            "exercise_id": "TA1_BT06",
+            "source_unit": 6,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sentence_choice",
+            "topic": "In the classroom",
+            "q": "Chọn mẫu câu đúng của Unit này.",
+            "o": [
+              "It a red pen is.",
+              "It’s red a pen.",
+              "It are a red pen.",
+              "It’s a red pen."
+            ],
+            "a": "It’s a red pen.",
+            "h": "Mẫu đúng: It’s a red pen.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Mẫu đúng: It’s a red pen."
+          },
+          {
+            "id": 700616,
+            "unit_id": 6,
+            "exercise_id": "TA1_BT06",
+            "source_unit": 6,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sentence_completion",
+            "topic": "In the classroom",
+            "q": "Hoàn thành câu: It’s a red ___.",
+            "o": [
+              "desk",
+              "book",
+              "pen",
+              "bell"
+            ],
+            "a": "pen",
+            "h": "Điền 'pen' để câu đúng.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Điền 'pen' để câu đúng."
+          },
+          {
+            "id": 700617,
+            "unit_id": 6,
+            "exercise_id": "TA1_BT06",
+            "source_unit": 6,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_to_sentence",
+            "topic": "In the classroom",
+            "q": "Chọn câu tiếng Anh đúng với ý: “Đó là một chiếc bút chì màu đỏ.”",
+            "o": [
+              "It are a red pen.",
+              "It’s a red pencil.",
+              "It a red pen is.",
+              "It’s red a pen."
+            ],
+            "a": "It’s a red pencil.",
+            "h": "Câu đúng là 'It’s a red pencil.'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Câu đúng là 'It’s a red pencil.'."
+          },
+          {
+            "id": 700618,
+            "unit_id": 6,
+            "exercise_id": "TA1_BT06",
+            "source_unit": 6,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "reading_detail",
+            "topic": "In the classroom",
+            "q": "Đọc câu: “It’s a red pen.”\nĐồ vật màu đỏ là gì?",
+            "o": [
+              "pen",
+              "pencil",
+              "bell",
+              "desk"
+            ],
+            "a": "pen",
+            "h": "Đọc câu cho thấy đáp án là 'pen'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đọc câu cho thấy đáp án là 'pen'.",
+            "reading_passage": "It’s a red pen."
+          },
+          {
+            "id": 700619,
+            "unit_id": 6,
+            "exercise_id": "TA1_BT06",
+            "source_unit": 6,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "reading_sequence",
+            "topic": "In the classroom",
+            "q": "Đọc: “It’s a red pen. It’s a red pencil.”\nĐồ vật nào được nhắc đến trước?",
+            "o": [
+              "pencil",
+              "bell",
+              "desk",
+              "pen"
+            ],
+            "a": "pen",
+            "h": "Chi tiết đúng là 'pen'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Chi tiết đúng là 'pen'.",
+            "reading_passage": "It’s a red pen. It’s a red pencil."
+          },
+          {
+            "id": 700620,
+            "unit_id": 6,
+            "exercise_id": "TA1_BT06",
+            "source_unit": 6,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sbt_context",
+            "topic": "In the classroom",
+            "q": "Theo mẫu Unit 6, chọn câu đúng để nói về một chiếc bút chì màu đỏ.",
+            "o": [
+              "This my pencil red.",
+              "Touch your pencil.",
+              "It’s a red pencil.",
+              "I have red pencil."
+            ],
+            "a": "It’s a red pencil.",
+            "h": "Đáp án phù hợp nội dung Unit 6: It’s a red pencil.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án phù hợp nội dung Unit 6: It’s a red pencil."
+          }
+        ]
+      },
+      {
+        "week_id": 7,
+        "unit_id": 7,
+        "exercise_id": "TA1_BT07",
+        "week_name": "Unit 7: In the garden",
+        "desc": "Ngân hàng 20 câu bám SGK và SBT Unit 7: phonics, vocabulary, listening, grammar in context, sentence building và reading.",
+        "questions": [
+          {
+            "id": 700701,
+            "unit_id": 7,
+            "exercise_id": "TA1_BT07",
+            "source_unit": 7,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "phonics_letter",
+            "topic": "In the garden",
+            "q": "Chữ/âm trọng tâm của Unit 7 là chữ nào?",
+            "o": [
+              "G",
+              "A",
+              "B",
+              "C"
+            ],
+            "a": "G",
+            "h": "Unit 7 luyện chữ G với âm /g/.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Chữ trọng tâm là G, âm /g/."
+          },
+          {
+            "id": 700702,
+            "unit_id": 7,
+            "exercise_id": "TA1_BT07",
+            "source_unit": 7,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "missing_letter",
+            "topic": "In the garden",
+            "q": "Chọn chữ còn thiếu để hoàn thành từ: _arden",
+            "o": [
+              "a",
+              "b",
+              "c",
+              "g"
+            ],
+            "a": "g",
+            "h": "Điền 'g' ta được từ 'garden'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Từ đúng là 'garden'."
+          },
+          {
+            "id": 700703,
+            "unit_id": 7,
+            "exercise_id": "TA1_BT07",
+            "source_unit": 7,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "missing_letter",
+            "topic": "In the garden",
+            "q": "Chọn chữ còn thiếu để hoàn thành từ: _ate",
+            "o": [
+              "b",
+              "c",
+              "g",
+              "a"
+            ],
+            "a": "g",
+            "h": "Điền 'g' ta được từ 'gate'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Từ đúng là 'gate'."
+          },
+          {
+            "id": 700704,
+            "unit_id": 7,
+            "exercise_id": "TA1_BT07",
+            "source_unit": 7,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "In the garden",
+            "q": "Từ 'garden' có nghĩa là gì?",
+            "o": [
+              "con dê",
+              "khu vườn",
+              "cổng",
+              "bé gái"
+            ],
+            "a": "khu vườn",
+            "h": "'garden' nghĩa là 'khu vườn'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'garden' nghĩa là 'khu vườn'."
+          },
+          {
+            "id": 700705,
+            "unit_id": 7,
+            "exercise_id": "TA1_BT07",
+            "source_unit": 7,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "In the garden",
+            "q": "Từ 'gate' có nghĩa là gì?",
+            "o": [
+              "cổng",
+              "khu vườn",
+              "bé gái",
+              "con dê"
+            ],
+            "a": "cổng",
+            "h": "'gate' nghĩa là 'cổng'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'gate' nghĩa là 'cổng'."
+          },
+          {
+            "id": 700706,
+            "unit_id": 7,
+            "exercise_id": "TA1_BT07",
+            "source_unit": 7,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "In the garden",
+            "q": "Từ 'girl' có nghĩa là gì?",
+            "o": [
+              "khu vườn",
+              "cổng",
+              "con dê",
+              "bé gái"
+            ],
+            "a": "bé gái",
+            "h": "'girl' nghĩa là 'bé gái'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'girl' nghĩa là 'bé gái'."
+          },
+          {
+            "id": 700707,
+            "unit_id": 7,
+            "exercise_id": "TA1_BT07",
+            "source_unit": 7,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "image_word",
+            "topic": "In the garden",
+            "q": "Nhìn hình và chọn từ tiếng Anh phù hợp.",
+            "o": [
+              "girl",
+              "goat",
+              "gate",
+              "garden"
+            ],
+            "a": "gate",
+            "h": "Hình minh họa cho từ 'gate'.",
+            "img": "",
+            "imageId": "noi_chon_gate",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Hình minh họa cho từ 'gate'."
+          },
+          {
+            "id": 700708,
+            "unit_id": 7,
+            "exercise_id": "TA1_BT07",
+            "source_unit": 7,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_word",
+            "topic": "In the garden",
+            "q": "Nghe từ thứ nhất và chọn từ con nghe được.",
+            "o": [
+              "goat",
+              "garden",
+              "gate",
+              "girl"
+            ],
+            "a": "garden",
+            "h": "Con nghe từ 'garden'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "garden",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Con nghe từ 'garden'."
+          },
+          {
+            "id": 700709,
+            "unit_id": 7,
+            "exercise_id": "TA1_BT07",
+            "source_unit": 7,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_word",
+            "topic": "In the garden",
+            "q": "Nghe từ tiếp theo và chọn từ con nghe được.",
+            "o": [
+              "gate",
+              "garden",
+              "girl",
+              "goat"
+            ],
+            "a": "gate",
+            "h": "Con nghe từ 'gate'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "gate",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Con nghe từ 'gate'."
+          },
+          {
+            "id": 700710,
+            "unit_id": 7,
+            "exercise_id": "TA1_BT07",
+            "source_unit": 7,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_pair",
+            "topic": "In the garden",
+            "q": "Nghe hai từ. Chọn đúng thứ tự cô đọc.",
+            "o": [
+              "gate + garden",
+              "garden + goat",
+              "goat + gate",
+              "garden + gate"
+            ],
+            "a": "garden + gate",
+            "h": "Thứ tự là 'garden', rồi 'gate'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "garden. gate.",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Thứ tự là 'garden', rồi 'gate'."
+          },
+          {
+            "id": 700711,
+            "unit_id": 7,
+            "exercise_id": "TA1_BT07",
+            "source_unit": 7,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_sentence",
+            "topic": "In the garden",
+            "q": "Nghe mẫu câu và chọn câu đúng.",
+            "o": [
+              "There are a garden.",
+              "Garden there’s a.",
+              "There’s a garden.",
+              "There a garden is."
+            ],
+            "a": "There’s a garden.",
+            "h": "Mẫu câu của Unit 7 là: There’s a garden.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "There’s a garden.",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Mẫu câu của Unit 7 là: There’s a garden."
+          },
+          {
+            "id": 700712,
+            "unit_id": 7,
+            "exercise_id": "TA1_BT07",
+            "source_unit": 7,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "In the garden",
+            "q": "'There’s' là dạng rút gọn của cụm nào?",
+            "o": [
+              "This is",
+              "There is",
+              "There are",
+              "That is"
+            ],
+            "a": "There is",
+            "h": "Đáp án đúng: There is",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: There is"
+          },
+          {
+            "id": 700713,
+            "unit_id": 7,
+            "exercise_id": "TA1_BT07",
+            "source_unit": 7,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "In the garden",
+            "q": "Chọn từ đúng: There’s ___ goat.",
+            "o": [
+              "a",
+              "an",
+              "are",
+              "my"
+            ],
+            "a": "a",
+            "h": "Đáp án đúng: a",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: a"
+          },
+          {
+            "id": 700714,
+            "unit_id": 7,
+            "exercise_id": "TA1_BT07",
+            "source_unit": 7,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "In the garden",
+            "q": "Câu nào có trật tự đúng?",
+            "o": [
+              "A garden there is a.",
+              "Garden a there’s.",
+              "There are a garden.",
+              "There’s a garden."
+            ],
+            "a": "There’s a garden.",
+            "h": "Đáp án đúng: There’s a garden.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: There’s a garden."
+          },
+          {
+            "id": 700715,
+            "unit_id": 7,
+            "exercise_id": "TA1_BT07",
+            "source_unit": 7,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sentence_choice",
+            "topic": "In the garden",
+            "q": "Chọn mẫu câu đúng của Unit này.",
+            "o": [
+              "There are a garden.",
+              "Garden there’s a.",
+              "There’s a garden.",
+              "There a garden is."
+            ],
+            "a": "There’s a garden.",
+            "h": "Mẫu đúng: There’s a garden.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Mẫu đúng: There’s a garden."
+          },
+          {
+            "id": 700716,
+            "unit_id": 7,
+            "exercise_id": "TA1_BT07",
+            "source_unit": 7,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sentence_completion",
+            "topic": "In the garden",
+            "q": "Hoàn thành câu: There’s a ___.",
+            "o": [
+              "goat",
+              "garden",
+              "girl",
+              "gate"
+            ],
+            "a": "garden",
+            "h": "Điền 'garden' để câu đúng.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Điền 'garden' để câu đúng."
+          },
+          {
+            "id": 700717,
+            "unit_id": 7,
+            "exercise_id": "TA1_BT07",
+            "source_unit": 7,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_to_sentence",
+            "topic": "In the garden",
+            "q": "Chọn câu tiếng Anh đúng với ý: “Có một con dê.”",
+            "o": [
+              "There’s a goat.",
+              "There a garden is.",
+              "There are a garden.",
+              "Garden there’s a."
+            ],
+            "a": "There’s a goat.",
+            "h": "Câu đúng là 'There’s a goat.'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Câu đúng là 'There’s a goat.'."
+          },
+          {
+            "id": 700718,
+            "unit_id": 7,
+            "exercise_id": "TA1_BT07",
+            "source_unit": 7,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "reading_detail",
+            "topic": "In the garden",
+            "q": "Đọc câu: “There’s a goat.”\nCó con gì?",
+            "o": [
+              "girl",
+              "gate",
+              "garden",
+              "goat"
+            ],
+            "a": "goat",
+            "h": "Đọc câu cho thấy đáp án là 'goat'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đọc câu cho thấy đáp án là 'goat'.",
+            "reading_passage": "There’s a goat."
+          },
+          {
+            "id": 700719,
+            "unit_id": 7,
+            "exercise_id": "TA1_BT07",
+            "source_unit": 7,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "reading_sequence",
+            "topic": "In the garden",
+            "q": "Đọc: “There’s a garden. There’s a gate.”\nThứ gì được nhắc đến trước?",
+            "o": [
+              "girl",
+              "goat",
+              "garden",
+              "gate"
+            ],
+            "a": "garden",
+            "h": "Chi tiết đúng là 'garden'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Chi tiết đúng là 'garden'.",
+            "reading_passage": "There’s a garden. There’s a gate."
+          },
+          {
+            "id": 700720,
+            "unit_id": 7,
+            "exercise_id": "TA1_BT07",
+            "source_unit": 7,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sbt_context",
+            "topic": "In the garden",
+            "q": "Theo mẫu Unit 7, chọn câu đúng để nói có một cái cổng.",
+            "o": [
+              "Touch your gate.",
+              "There’s a gate.",
+              "This my gate.",
+              "I like gate."
+            ],
+            "a": "There’s a gate.",
+            "h": "Đáp án phù hợp nội dung Unit 7: There’s a gate.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án phù hợp nội dung Unit 7: There’s a gate."
+          }
+        ]
+      },
+      {
+        "week_id": 8,
+        "unit_id": 8,
+        "exercise_id": "TA1_BT08",
+        "week_name": "Unit 8: In the park",
+        "desc": "Ngân hàng 20 câu bám SGK và SBT Unit 8: phonics, vocabulary, listening, grammar in context, sentence building và reading.",
+        "questions": [
+          {
+            "id": 700801,
+            "unit_id": 8,
+            "exercise_id": "TA1_BT08",
+            "source_unit": 8,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "phonics_letter",
+            "topic": "In the park",
+            "q": "Chữ/âm trọng tâm của Unit 8 là chữ nào?",
+            "o": [
+              "A",
+              "B",
+              "C",
+              "H"
+            ],
+            "a": "H",
+            "h": "Unit 8 luyện chữ H với âm /h/.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Chữ trọng tâm là H, âm /h/."
+          },
+          {
+            "id": 700802,
+            "unit_id": 8,
+            "exercise_id": "TA1_BT08",
+            "source_unit": 8,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "missing_letter",
+            "topic": "In the park",
+            "q": "Chọn chữ còn thiếu để hoàn thành từ: _air",
+            "o": [
+              "b",
+              "c",
+              "h",
+              "a"
+            ],
+            "a": "h",
+            "h": "Điền 'h' ta được từ 'hair'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Từ đúng là 'hair'."
+          },
+          {
+            "id": 700803,
+            "unit_id": 8,
+            "exercise_id": "TA1_BT08",
+            "source_unit": 8,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "missing_letter",
+            "topic": "In the park",
+            "q": "Chọn chữ còn thiếu để hoàn thành từ: _and",
+            "o": [
+              "c",
+              "h",
+              "a",
+              "b"
+            ],
+            "a": "h",
+            "h": "Điền 'h' ta được từ 'hand'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_PHO",
+            "competency": "ENG_PHO",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Từ đúng là 'hand'."
+          },
+          {
+            "id": 700804,
+            "unit_id": 8,
+            "exercise_id": "TA1_BT08",
+            "source_unit": 8,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "In the park",
+            "q": "Từ 'hair' có nghĩa là gì?",
+            "o": [
+              "tóc",
+              "bàn tay",
+              "đầu",
+              "con ngựa"
+            ],
+            "a": "tóc",
+            "h": "'hair' nghĩa là 'tóc'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'hair' nghĩa là 'tóc'."
+          },
+          {
+            "id": 700805,
+            "unit_id": 8,
+            "exercise_id": "TA1_BT08",
+            "source_unit": 8,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "In the park",
+            "q": "Từ 'hand' có nghĩa là gì?",
+            "o": [
+              "tóc",
+              "đầu",
+              "con ngựa",
+              "bàn tay"
+            ],
+            "a": "bàn tay",
+            "h": "'hand' nghĩa là 'bàn tay'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'hand' nghĩa là 'bàn tay'."
+          },
+          {
+            "id": 700806,
+            "unit_id": 8,
+            "exercise_id": "TA1_BT08",
+            "source_unit": 8,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_choice",
+            "topic": "In the park",
+            "q": "Từ 'head' có nghĩa là gì?",
+            "o": [
+              "bàn tay",
+              "con ngựa",
+              "đầu",
+              "tóc"
+            ],
+            "a": "đầu",
+            "h": "'head' nghĩa là 'đầu'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "'head' nghĩa là 'đầu'."
+          },
+          {
+            "id": 700807,
+            "unit_id": 8,
+            "exercise_id": "TA1_BT08",
+            "source_unit": 8,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "image_word",
+            "topic": "In the park",
+            "q": "Nhìn hình và chọn từ tiếng Anh phù hợp.",
+            "o": [
+              "horse",
+              "hair",
+              "hand",
+              "head"
+            ],
+            "a": "hair",
+            "h": "Hình minh họa cho từ 'hair'.",
+            "img": "",
+            "imageId": "co_the_hair",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_VOC",
+            "competency": "ENG_VOC",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Hình minh họa cho từ 'hair'."
+          },
+          {
+            "id": 700808,
+            "unit_id": 8,
+            "exercise_id": "TA1_BT08",
+            "source_unit": 8,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_word",
+            "topic": "In the park",
+            "q": "Nghe từ thứ nhất và chọn từ con nghe được.",
+            "o": [
+              "hair",
+              "hand",
+              "head",
+              "horse"
+            ],
+            "a": "hair",
+            "h": "Con nghe từ 'hair'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "hair",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Con nghe từ 'hair'."
+          },
+          {
+            "id": 700809,
+            "unit_id": 8,
+            "exercise_id": "TA1_BT08",
+            "source_unit": 8,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_word",
+            "topic": "In the park",
+            "q": "Nghe từ tiếp theo và chọn từ con nghe được.",
+            "o": [
+              "hair",
+              "head",
+              "horse",
+              "hand"
+            ],
+            "a": "hand",
+            "h": "Con nghe từ 'hand'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "hand",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Con nghe từ 'hand'."
+          },
+          {
+            "id": 700810,
+            "unit_id": 8,
+            "exercise_id": "TA1_BT08",
+            "source_unit": 8,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_pair",
+            "topic": "In the park",
+            "q": "Nghe hai từ. Chọn đúng thứ tự cô đọc.",
+            "o": [
+              "hair + horse",
+              "horse + hand",
+              "hair + hand",
+              "hand + hair"
+            ],
+            "a": "hair + hand",
+            "h": "Thứ tự là 'hair', rồi 'hand'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "hair. hand.",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Thứ tự là 'hair', rồi 'hand'."
+          },
+          {
+            "id": 700811,
+            "unit_id": 8,
+            "exercise_id": "TA1_BT08",
+            "source_unit": 8,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "listening_sentence",
+            "topic": "In the park",
+            "q": "Nghe mẫu câu và chọn câu đúng.",
+            "o": [
+              "Touches your hair.",
+              "Touch your hair.",
+              "Your touch hair.",
+              "Touch hair your."
+            ],
+            "a": "Touch your hair.",
+            "h": "Mẫu câu của Unit 8 là: Touch your hair.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "Touch your hair.",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_LIS",
+            "competency": "ENG_LIS",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Mẫu câu của Unit 8 là: Touch your hair."
+          },
+          {
+            "id": 700812,
+            "unit_id": 8,
+            "exercise_id": "TA1_BT08",
+            "source_unit": 8,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "In the park",
+            "q": "Chọn từ đúng: Touch ___ hand.",
+            "o": [
+              "your",
+              "you",
+              "a",
+              "is"
+            ],
+            "a": "your",
+            "h": "Đáp án đúng: your",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: your"
+          },
+          {
+            "id": 700813,
+            "unit_id": 8,
+            "exercise_id": "TA1_BT08",
+            "source_unit": 8,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "In the park",
+            "q": "Từ nào là động từ mệnh lệnh trong 'Touch your hair.'?",
+            "o": [
+              "your",
+              "hair",
+              "the",
+              "Touch"
+            ],
+            "a": "Touch",
+            "h": "Đáp án đúng: Touch",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: Touch"
+          },
+          {
+            "id": 700814,
+            "unit_id": 8,
+            "exercise_id": "TA1_BT08",
+            "source_unit": 8,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "grammar_context",
+            "topic": "In the park",
+            "q": "Câu nào có trật tự đúng?",
+            "o": [
+              "Head your touch.",
+              "Touches head your.",
+              "Touch your head.",
+              "Your head touch."
+            ],
+            "a": "Touch your head.",
+            "h": "Đáp án đúng: Touch your head.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_GRA",
+            "competency": "ENG_GRA",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án đúng: Touch your head."
+          },
+          {
+            "id": 700815,
+            "unit_id": 8,
+            "exercise_id": "TA1_BT08",
+            "source_unit": 8,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sentence_choice",
+            "topic": "In the park",
+            "q": "Chọn mẫu câu đúng của Unit này.",
+            "o": [
+              "Touches your hair.",
+              "Touch your hair.",
+              "Your touch hair.",
+              "Touch hair your."
+            ],
+            "a": "Touch your hair.",
+            "h": "Mẫu đúng: Touch your hair.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "easy",
+            "reasoning_level": "recall",
+            "explanation": "Mẫu đúng: Touch your hair."
+          },
+          {
+            "id": 700816,
+            "unit_id": 8,
+            "exercise_id": "TA1_BT08",
+            "source_unit": 8,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sentence_completion",
+            "topic": "In the park",
+            "q": "Hoàn thành câu: Touch ___ hair.",
+            "o": [
+              "your",
+              "my",
+              "a",
+              "the"
+            ],
+            "a": "your",
+            "h": "Điền 'your' để câu đúng.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Điền 'your' để câu đúng."
+          },
+          {
+            "id": 700817,
+            "unit_id": 8,
+            "exercise_id": "TA1_BT08",
+            "source_unit": 8,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "meaning_to_sentence",
+            "topic": "In the park",
+            "q": "Chọn câu tiếng Anh đúng với ý: “Chạm vào bàn tay của con.”",
+            "o": [
+              "Your touch hair.",
+              "Touch hair your.",
+              "Touches your hair.",
+              "Touch your hand."
+            ],
+            "a": "Touch your hand.",
+            "h": "Câu đúng là 'Touch your hand.'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_SYN",
+            "competency": "ENG_SYN",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Câu đúng là 'Touch your hand.'."
+          },
+          {
+            "id": 700818,
+            "unit_id": 8,
+            "exercise_id": "TA1_BT08",
+            "source_unit": 8,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "reading_detail",
+            "topic": "In the park",
+            "q": "Đọc câu: “Touch your hand.”\nBé cần chạm vào bộ phận nào?",
+            "o": [
+              "head",
+              "horse",
+              "hand",
+              "hair"
+            ],
+            "a": "hand",
+            "h": "Đọc câu cho thấy đáp án là 'hand'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đọc câu cho thấy đáp án là 'hand'.",
+            "reading_passage": "Touch your hand."
+          },
+          {
+            "id": 700819,
+            "unit_id": 8,
+            "exercise_id": "TA1_BT08",
+            "source_unit": 8,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "reading_sequence",
+            "topic": "In the park",
+            "q": "Đọc: “Touch your hair. Touch your head.”\nBộ phận nào được nhắc đến trước?",
+            "o": [
+              "horse",
+              "hair",
+              "head",
+              "hand"
+            ],
+            "a": "hair",
+            "h": "Chi tiết đúng là 'hair'.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Chi tiết đúng là 'hair'.",
+            "reading_passage": "Touch your hair. Touch your head."
+          },
+          {
+            "id": 700820,
+            "unit_id": 8,
+            "exercise_id": "TA1_BT08",
+            "source_unit": 8,
+            "source_basis": "SGK Tiếng Anh 1 Global Success + SBT Tiếng Anh 1 Global Success",
+            "question_type": "sbt_context",
+            "topic": "In the park",
+            "q": "Theo mẫu Unit 8, chọn câu đúng để yêu cầu chạm vào đầu.",
+            "o": [
+              "Touch your head.",
+              "This is head.",
+              "I have head.",
+              "Head touch your."
+            ],
+            "a": "Touch your head.",
+            "h": "Đáp án phù hợp nội dung Unit 8: Touch your head.",
+            "img": "",
+            "imageId": "",
+            "audio_text": "",
+            "o_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "options_ipa": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "skill_tag": "ENG_READ",
+            "competency": "ENG_READ",
+            "difficulty": "medium",
+            "reasoning_level": "understand",
+            "explanation": "Đáp án phù hợp nội dung Unit 8: Touch your head."
+          }
+        ]
+      }
+    ]
+  },
+  "semester": 1,
+  "semester_label": "Học Kỳ I",
+  "unit_range": [
+    1,
+    8
+  ],
+  "image_catalog_version": 6,
+  "image_catalog_count": 209,
+  "image_catalog_file": "assets/data/shared_image_catalog.json",
+  "image_note": "Ưu tiên imageId từ kho ảnh dùng chung; đường dẫn ảnh legacy chỉ giữ để tương thích dữ liệu cũ."
+}

@@ -1,0 +1,4855 @@
+{
+  "schema_version": "EPSILON_TA1_LESSONS_V2",
+  "data_version": "2026-10-03-structure-v1-images-v6",
+  "subject": "Tiếng Anh",
+  "grade": 1,
+  "curriculum": "Global Success",
+  "module_model": "Bài học độc lập + Alphabet + IPA",
+  "competencies": [
+    "ENG_PHO",
+    "ENG_VOC",
+    "ENG_LIS",
+    "ENG_GRA",
+    "ENG_SYN",
+    "ENG_READ"
+  ],
+  "rules": {
+    "bai_hoc": "16 Bài học bám 16 Unit SGK Global Success; mỗi bài theo luồng Learn → Practice → Review.",
+    "assessment_note": "Bài học dùng để học và hiểu; đánh giá chính thức lấy ở Bài tập/Đề thi.",
+    "alphabet_ipa_location": "Alphabet và IPA nằm trong cùng bai_hoc_tieng_anh_1.json, không dùng JSON runtime riêng."
+  },
+  "bai_hoc": [
+    {
+      "bai": 1,
+      "semester": 1,
+      "source_unit": 1,
+      "source_title": "In the school playground",
+      "source_title_vi": "Ở sân chơi của trường",
+      "theme": "In the school playground",
+      "lesson_id": "TA1_U01",
+      "estimated_minutes": 15,
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Learn",
+        "Practice",
+        "Review"
+      ],
+      "learning_flow_vi": [
+        "Bài học",
+        "Luyện tập",
+        "Tổng kết"
+      ],
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "lesson",
+          "title": "Learn",
+          "title_vi": "Bài học",
+          "intro": "Look, listen and say.",
+          "intro_vi": "Nhìn, nghe và nói theo.",
+          "image": "",
+          "phonics": {
+            "letter": "B",
+            "sound": "/b/",
+            "words": [
+              "ball",
+              "bike",
+              "book"
+            ]
+          },
+          "vocabulary": [
+            {
+              "word": "ball",
+              "meaning": "quả bóng",
+              "ipa": "",
+              "imageId": "do_vat_ball"
+            },
+            {
+              "word": "bike",
+              "meaning": "xe đạp",
+              "ipa": "",
+              "imageId": "family_11_cycling_yard"
+            },
+            {
+              "word": "book",
+              "meaning": "quyển sách",
+              "ipa": "",
+              "imageId": "ban_hoc"
+            }
+          ],
+          "sentence_pattern": "Hi, I’m Bill. / Bye, Bill.",
+          "mini_dialogue": [],
+          "mini_dialogue_vi": [],
+          "learning_goal": "Listen, notice and say the key sound, words and sentence pattern.",
+          "learning_goal_vi": "Nghe, nhận biết và nói được âm, từ và mẫu câu trọng tâm.",
+          "imageId": "san_truong"
+        },
+        {
+          "page_no": 2,
+          "page_type": "questions",
+          "title": "Practice",
+          "title_vi": "Luyện tập",
+          "recall": "Look and answer.",
+          "recall_vi": "Nhìn và trả lời.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Which letter/sound is in this Unit?",
+              "prompt_vi": "Chữ/âm trọng tâm của Unit này là gì?",
+              "options": [
+                "B",
+                "M",
+                "C"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Which word belongs to this Unit?",
+              "prompt_vi": "Từ nào thuộc Unit này?",
+              "options": [
+                "bike",
+                "pencil",
+                "bedroom"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Choose the sentence pattern from this Unit.",
+              "prompt_vi": "Chọn mẫu câu của Unit này.",
+              "options": [
+                "Hi, I’m Bill. / Bye, Bill.",
+                "How are you? — I’m fine.",
+                "This is my school bag."
+              ],
+              "answer": 0
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the key words.",
+              "prompt_vi": "Đọc các từ trọng tâm.",
+              "speak_text": "ball, bike, book"
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the sentence pattern.",
+              "prompt_vi": "Nói mẫu câu.",
+              "speak_text": "Hi, I’m Bill. / Bye, Bill."
+            }
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Review",
+          "title_vi": "Tổng kết",
+          "key_points": [
+            "Sound: B /b/",
+            "Words: ball, bike, book.",
+            "Sentence: Hi, I’m Bill. / Bye, Bill."
+          ],
+          "key_points_vi": [
+            "Chữ/âm trọng tâm: B /b/",
+            "Từ vựng: ball, bike, book.",
+            "Mẫu câu: nghe và nói lại câu tiếng Anh phía trên."
+          ],
+          "practice_lines": [
+            "Hi, I’m Bill. / Bye, Bill."
+          ],
+          "finish_prompt": "Say one word and the sentence.",
+          "finish_prompt_vi": "Nói một từ và mẫu câu."
+        }
+      ],
+      "skill_links": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_SYN"
+      ],
+      "content_status": "sgk_aligned_structure_v1",
+      "copyright_note": "Cấu trúc và trọng tâm bám Tiếng Anh 1 Global Success; phần hiển thị trong app được biên soạn theo dạng tương tác."
+    },
+    {
+      "bai": 2,
+      "semester": 1,
+      "source_unit": 2,
+      "source_title": "In the dining room",
+      "source_title_vi": "Trong phòng ăn",
+      "theme": "In the dining room",
+      "lesson_id": "TA1_U02",
+      "estimated_minutes": 15,
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Learn",
+        "Practice",
+        "Review"
+      ],
+      "learning_flow_vi": [
+        "Bài học",
+        "Luyện tập",
+        "Tổng kết"
+      ],
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "lesson",
+          "title": "Learn",
+          "title_vi": "Bài học",
+          "intro": "Look, listen and say.",
+          "intro_vi": "Nhìn, nghe và nói theo.",
+          "image": "",
+          "phonics": {
+            "letter": "C",
+            "sound": "/k/",
+            "words": [
+              "cake",
+              "car",
+              "cat",
+              "cup"
+            ]
+          },
+          "vocabulary": [
+            {
+              "word": "cake",
+              "meaning": "bánh ngọt",
+              "ipa": "",
+              "imageId": "tiem_banh"
+            },
+            {
+              "word": "car",
+              "meaning": "ô tô",
+              "ipa": "",
+              "imageId": "family_03_front_yard_car"
+            },
+            {
+              "word": "cat",
+              "meaning": "con mèo",
+              "ipa": "",
+              "imageId": "family_08_pet_feeding"
+            },
+            {
+              "word": "cup",
+              "meaning": "cái cốc",
+              "ipa": "",
+              "imageId": "do_vat_cup"
+            }
+          ],
+          "sentence_pattern": "I have a car.",
+          "mini_dialogue": [],
+          "mini_dialogue_vi": [],
+          "learning_goal": "Listen, notice and say the key sound, words and sentence pattern.",
+          "learning_goal_vi": "Nghe, nhận biết và nói được âm, từ và mẫu câu trọng tâm.",
+          "imageId": "family_01_dinner"
+        },
+        {
+          "page_no": 2,
+          "page_type": "questions",
+          "title": "Practice",
+          "title_vi": "Luyện tập",
+          "recall": "Look and answer.",
+          "recall_vi": "Nhìn và trả lời.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Which letter/sound is in this Unit?",
+              "prompt_vi": "Chữ/âm trọng tâm của Unit này là gì?",
+              "options": [
+                "C",
+                "M",
+                "B"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Which word belongs to this Unit?",
+              "prompt_vi": "Từ nào thuộc Unit này?",
+              "options": [
+                "car",
+                "pencil",
+                "bedroom"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Choose the sentence pattern from this Unit.",
+              "prompt_vi": "Chọn mẫu câu của Unit này.",
+              "options": [
+                "I have a car.",
+                "How are you? — I’m fine.",
+                "This is my school bag."
+              ],
+              "answer": 0
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the key words.",
+              "prompt_vi": "Đọc các từ trọng tâm.",
+              "speak_text": "cake, car, cat, cup"
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the sentence pattern.",
+              "prompt_vi": "Nói mẫu câu.",
+              "speak_text": "I have a car."
+            }
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Review",
+          "title_vi": "Tổng kết",
+          "key_points": [
+            "Sound: C /k/",
+            "Words: cake, car, cat, cup.",
+            "Sentence: I have a car."
+          ],
+          "key_points_vi": [
+            "Chữ/âm trọng tâm: C /k/",
+            "Từ vựng: cake, car, cat, cup.",
+            "Mẫu câu: nghe và nói lại câu tiếng Anh phía trên."
+          ],
+          "practice_lines": [
+            "I have a car."
+          ],
+          "finish_prompt": "Say one word and the sentence.",
+          "finish_prompt_vi": "Nói một từ và mẫu câu."
+        }
+      ],
+      "skill_links": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_SYN"
+      ],
+      "content_status": "sgk_aligned_structure_v1",
+      "copyright_note": "Cấu trúc và trọng tâm bám Tiếng Anh 1 Global Success; phần hiển thị trong app được biên soạn theo dạng tương tác."
+    },
+    {
+      "bai": 3,
+      "semester": 1,
+      "source_unit": 3,
+      "source_title": "At the street market",
+      "source_title_vi": "Ở chợ đường phố",
+      "theme": "At the street market",
+      "lesson_id": "TA1_U03",
+      "estimated_minutes": 15,
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Learn",
+        "Practice",
+        "Review"
+      ],
+      "learning_flow_vi": [
+        "Bài học",
+        "Luyện tập",
+        "Tổng kết"
+      ],
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "lesson",
+          "title": "Learn",
+          "title_vi": "Bài học",
+          "intro": "Look, listen and say.",
+          "intro_vi": "Nhìn, nghe và nói theo.",
+          "image": "",
+          "phonics": {
+            "letter": "A",
+            "sound": "/æ/",
+            "words": [
+              "apple",
+              "bag",
+              "can",
+              "hat"
+            ]
+          },
+          "vocabulary": [
+            {
+              "word": "apple",
+              "meaning": "quả táo",
+              "ipa": "",
+              "imageId": "quay_trai_cay_ro_rang"
+            },
+            {
+              "word": "bag",
+              "meaning": "cái túi",
+              "ipa": "",
+              "imageId": "do_vat_bag"
+            },
+            {
+              "word": "can",
+              "meaning": "lon",
+              "ipa": "",
+              "imageId": "do_vat_can"
+            },
+            {
+              "word": "hat",
+              "meaning": "cái mũ",
+              "ipa": "",
+              "imageId": "do_vat_hat"
+            }
+          ],
+          "sentence_pattern": "This is my bag.",
+          "mini_dialogue": [],
+          "mini_dialogue_vi": [],
+          "learning_goal": "Listen, notice and say the key sound, words and sentence pattern.",
+          "learning_goal_vi": "Nghe, nhận biết và nói được âm, từ và mẫu câu trọng tâm.",
+          "imageId": "quay_trai_cay_ro_rang"
+        },
+        {
+          "page_no": 2,
+          "page_type": "questions",
+          "title": "Practice",
+          "title_vi": "Luyện tập",
+          "recall": "Look and answer.",
+          "recall_vi": "Nhìn và trả lời.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Which letter/sound is in this Unit?",
+              "prompt_vi": "Chữ/âm trọng tâm của Unit này là gì?",
+              "options": [
+                "A",
+                "M",
+                "B"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Which word belongs to this Unit?",
+              "prompt_vi": "Từ nào thuộc Unit này?",
+              "options": [
+                "bag",
+                "pencil",
+                "bedroom"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Choose the sentence pattern from this Unit.",
+              "prompt_vi": "Chọn mẫu câu của Unit này.",
+              "options": [
+                "This is my bag.",
+                "How are you? — I’m fine.",
+                "This is my school bag."
+              ],
+              "answer": 0
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the key words.",
+              "prompt_vi": "Đọc các từ trọng tâm.",
+              "speak_text": "apple, bag, can, hat"
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the sentence pattern.",
+              "prompt_vi": "Nói mẫu câu.",
+              "speak_text": "This is my bag."
+            }
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Review",
+          "title_vi": "Tổng kết",
+          "key_points": [
+            "Sound: A /æ/",
+            "Words: apple, bag, can, hat.",
+            "Sentence: This is my bag."
+          ],
+          "key_points_vi": [
+            "Chữ/âm trọng tâm: A /æ/",
+            "Từ vựng: apple, bag, can, hat.",
+            "Mẫu câu: nghe và nói lại câu tiếng Anh phía trên."
+          ],
+          "practice_lines": [
+            "This is my bag."
+          ],
+          "finish_prompt": "Say one word and the sentence.",
+          "finish_prompt_vi": "Nói một từ và mẫu câu."
+        }
+      ],
+      "skill_links": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_SYN"
+      ],
+      "content_status": "sgk_aligned_structure_v1",
+      "copyright_note": "Cấu trúc và trọng tâm bám Tiếng Anh 1 Global Success; phần hiển thị trong app được biên soạn theo dạng tương tác."
+    },
+    {
+      "bai": 4,
+      "semester": 1,
+      "source_unit": 4,
+      "source_title": "In the bedroom",
+      "source_title_vi": "Trong phòng ngủ",
+      "theme": "In the bedroom",
+      "lesson_id": "TA1_U04",
+      "estimated_minutes": 15,
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Learn",
+        "Practice",
+        "Review"
+      ],
+      "learning_flow_vi": [
+        "Bài học",
+        "Luyện tập",
+        "Tổng kết"
+      ],
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "lesson",
+          "title": "Learn",
+          "title_vi": "Bài học",
+          "intro": "Look, listen and say.",
+          "intro_vi": "Nhìn, nghe và nói theo.",
+          "image": "",
+          "phonics": {
+            "letter": "D",
+            "sound": "/d/",
+            "words": [
+              "desk",
+              "dog",
+              "door",
+              "duck"
+            ]
+          },
+          "vocabulary": [
+            {
+              "word": "desk",
+              "meaning": "cái bàn",
+              "ipa": "",
+              "imageId": "ban_hoc"
+            },
+            {
+              "word": "dog",
+              "meaning": "con chó",
+              "ipa": "",
+              "imageId": "family_08_pet_feeding"
+            },
+            {
+              "word": "door",
+              "meaning": "cánh cửa",
+              "ipa": ""
+            },
+            {
+              "word": "duck",
+              "meaning": "con vịt",
+              "ipa": "",
+              "imageId": "gia_suc_nong_trai_2"
+            }
+          ],
+          "sentence_pattern": "This is a dog.",
+          "mini_dialogue": [],
+          "mini_dialogue_vi": [],
+          "learning_goal": "Listen, notice and say the key sound, words and sentence pattern.",
+          "learning_goal_vi": "Nghe, nhận biết và nói được âm, từ và mẫu câu trọng tâm.",
+          "imageId": "phong_ngu"
+        },
+        {
+          "page_no": 2,
+          "page_type": "questions",
+          "title": "Practice",
+          "title_vi": "Luyện tập",
+          "recall": "Look and answer.",
+          "recall_vi": "Nhìn và trả lời.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Which letter/sound is in this Unit?",
+              "prompt_vi": "Chữ/âm trọng tâm của Unit này là gì?",
+              "options": [
+                "D",
+                "M",
+                "B"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Which word belongs to this Unit?",
+              "prompt_vi": "Từ nào thuộc Unit này?",
+              "options": [
+                "dog",
+                "pencil",
+                "bedroom"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Choose the sentence pattern from this Unit.",
+              "prompt_vi": "Chọn mẫu câu của Unit này.",
+              "options": [
+                "This is a dog.",
+                "How are you? — I’m fine.",
+                "This is my school bag."
+              ],
+              "answer": 0
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the key words.",
+              "prompt_vi": "Đọc các từ trọng tâm.",
+              "speak_text": "desk, dog, door, duck"
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the sentence pattern.",
+              "prompt_vi": "Nói mẫu câu.",
+              "speak_text": "This is a dog."
+            }
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Review",
+          "title_vi": "Tổng kết",
+          "key_points": [
+            "Sound: D /d/",
+            "Words: desk, dog, door, duck.",
+            "Sentence: This is a dog."
+          ],
+          "key_points_vi": [
+            "Chữ/âm trọng tâm: D /d/",
+            "Từ vựng: desk, dog, door, duck.",
+            "Mẫu câu: nghe và nói lại câu tiếng Anh phía trên."
+          ],
+          "practice_lines": [
+            "This is a dog."
+          ],
+          "finish_prompt": "Say one word and the sentence.",
+          "finish_prompt_vi": "Nói một từ và mẫu câu."
+        }
+      ],
+      "skill_links": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_SYN"
+      ],
+      "content_status": "sgk_aligned_structure_v1",
+      "copyright_note": "Cấu trúc và trọng tâm bám Tiếng Anh 1 Global Success; phần hiển thị trong app được biên soạn theo dạng tương tác."
+    },
+    {
+      "bai": 5,
+      "semester": 1,
+      "source_unit": 5,
+      "source_title": "At the fish and chip shop",
+      "source_title_vi": "Ở cửa hàng cá và khoai tây chiên",
+      "theme": "At the fish and chip shop",
+      "lesson_id": "TA1_U05",
+      "estimated_minutes": 15,
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Learn",
+        "Practice",
+        "Review"
+      ],
+      "learning_flow_vi": [
+        "Bài học",
+        "Luyện tập",
+        "Tổng kết"
+      ],
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "lesson",
+          "title": "Learn",
+          "title_vi": "Bài học",
+          "intro": "Look, listen and say.",
+          "intro_vi": "Nhìn, nghe và nói theo.",
+          "image": "",
+          "phonics": {
+            "letter": "I",
+            "sound": "/ɪ/",
+            "words": [
+              "chicken",
+              "chips",
+              "fish",
+              "milk"
+            ]
+          },
+          "vocabulary": [
+            {
+              "word": "chicken",
+              "meaning": "thịt gà",
+              "ipa": "",
+              "imageId": "do_an_chicken"
+            },
+            {
+              "word": "chips",
+              "meaning": "khoai tây chiên",
+              "ipa": "",
+              "imageId": "noi_chon_fish_and_chip_shop"
+            },
+            {
+              "word": "fish",
+              "meaning": "cá",
+              "ipa": "",
+              "imageId": "do_an_fish_food"
+            },
+            {
+              "word": "milk",
+              "meaning": "sữa",
+              "ipa": "",
+              "imageId": "family_27_breakfast_kitchen"
+            }
+          ],
+          "sentence_pattern": "I like milk.",
+          "mini_dialogue": [],
+          "mini_dialogue_vi": [],
+          "learning_goal": "Listen, notice and say the key sound, words and sentence pattern.",
+          "learning_goal_vi": "Nghe, nhận biết và nói được âm, từ và mẫu câu trọng tâm.",
+          "imageId": "noi_chon_fish_and_chip_shop"
+        },
+        {
+          "page_no": 2,
+          "page_type": "questions",
+          "title": "Practice",
+          "title_vi": "Luyện tập",
+          "recall": "Look and answer.",
+          "recall_vi": "Nhìn và trả lời.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Which letter/sound is in this Unit?",
+              "prompt_vi": "Chữ/âm trọng tâm của Unit này là gì?",
+              "options": [
+                "I",
+                "M",
+                "B"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Which word belongs to this Unit?",
+              "prompt_vi": "Từ nào thuộc Unit này?",
+              "options": [
+                "chips",
+                "pencil",
+                "bedroom"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Choose the sentence pattern from this Unit.",
+              "prompt_vi": "Chọn mẫu câu của Unit này.",
+              "options": [
+                "I like milk.",
+                "How are you? — I’m fine.",
+                "This is my school bag."
+              ],
+              "answer": 0
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the key words.",
+              "prompt_vi": "Đọc các từ trọng tâm.",
+              "speak_text": "chicken, chips, fish, milk"
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the sentence pattern.",
+              "prompt_vi": "Nói mẫu câu.",
+              "speak_text": "I like milk."
+            }
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Review",
+          "title_vi": "Tổng kết",
+          "key_points": [
+            "Sound: I /ɪ/",
+            "Words: chicken, chips, fish, milk.",
+            "Sentence: I like milk."
+          ],
+          "key_points_vi": [
+            "Chữ/âm trọng tâm: I /ɪ/",
+            "Từ vựng: chicken, chips, fish, milk.",
+            "Mẫu câu: nghe và nói lại câu tiếng Anh phía trên."
+          ],
+          "practice_lines": [
+            "I like milk."
+          ],
+          "finish_prompt": "Say one word and the sentence.",
+          "finish_prompt_vi": "Nói một từ và mẫu câu."
+        }
+      ],
+      "skill_links": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_SYN"
+      ],
+      "content_status": "sgk_aligned_structure_v1",
+      "copyright_note": "Cấu trúc và trọng tâm bám Tiếng Anh 1 Global Success; phần hiển thị trong app được biên soạn theo dạng tương tác."
+    },
+    {
+      "bai": 6,
+      "semester": 1,
+      "source_unit": 6,
+      "source_title": "In the classroom",
+      "source_title_vi": "Trong lớp học",
+      "theme": "In the classroom",
+      "lesson_id": "TA1_U06",
+      "estimated_minutes": 15,
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Learn",
+        "Practice",
+        "Review"
+      ],
+      "learning_flow_vi": [
+        "Bài học",
+        "Luyện tập",
+        "Tổng kết"
+      ],
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "lesson",
+          "title": "Learn",
+          "title_vi": "Bài học",
+          "intro": "Look, listen and say.",
+          "intro_vi": "Nhìn, nghe và nói theo.",
+          "image": "",
+          "phonics": {
+            "letter": "E",
+            "sound": "/e/",
+            "words": [
+              "bell",
+              "pen",
+              "pencil",
+              "red"
+            ]
+          },
+          "vocabulary": [
+            {
+              "word": "bell",
+              "meaning": "chuông",
+              "ipa": ""
+            },
+            {
+              "word": "pen",
+              "meaning": "bút mực",
+              "ipa": "",
+              "imageId": "ban_hoc"
+            },
+            {
+              "word": "pencil",
+              "meaning": "bút chì",
+              "ipa": "",
+              "imageId": "ban_hoc"
+            },
+            {
+              "word": "red",
+              "meaning": "màu đỏ",
+              "ipa": ""
+            }
+          ],
+          "sentence_pattern": "It’s a red pen.",
+          "mini_dialogue": [],
+          "mini_dialogue_vi": [],
+          "learning_goal": "Listen, notice and say the key sound, words and sentence pattern.",
+          "learning_goal_vi": "Nghe, nhận biết và nói được âm, từ và mẫu câu trọng tâm.",
+          "imageId": "noi_chon_classroom_clean"
+        },
+        {
+          "page_no": 2,
+          "page_type": "questions",
+          "title": "Practice",
+          "title_vi": "Luyện tập",
+          "recall": "Look and answer.",
+          "recall_vi": "Nhìn và trả lời.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Which letter/sound is in this Unit?",
+              "prompt_vi": "Chữ/âm trọng tâm của Unit này là gì?",
+              "options": [
+                "E",
+                "M",
+                "B"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Which word belongs to this Unit?",
+              "prompt_vi": "Từ nào thuộc Unit này?",
+              "options": [
+                "pen",
+                "pencil",
+                "bedroom"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Choose the sentence pattern from this Unit.",
+              "prompt_vi": "Chọn mẫu câu của Unit này.",
+              "options": [
+                "It’s a red pen.",
+                "How are you? — I’m fine.",
+                "This is my school bag."
+              ],
+              "answer": 0
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the key words.",
+              "prompt_vi": "Đọc các từ trọng tâm.",
+              "speak_text": "bell, pen, pencil, red"
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the sentence pattern.",
+              "prompt_vi": "Nói mẫu câu.",
+              "speak_text": "It’s a red pen."
+            }
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Review",
+          "title_vi": "Tổng kết",
+          "key_points": [
+            "Sound: E /e/",
+            "Words: bell, pen, pencil, red.",
+            "Sentence: It’s a red pen."
+          ],
+          "key_points_vi": [
+            "Chữ/âm trọng tâm: E /e/",
+            "Từ vựng: bell, pen, pencil, red.",
+            "Mẫu câu: nghe và nói lại câu tiếng Anh phía trên."
+          ],
+          "practice_lines": [
+            "It’s a red pen."
+          ],
+          "finish_prompt": "Say one word and the sentence.",
+          "finish_prompt_vi": "Nói một từ và mẫu câu."
+        }
+      ],
+      "skill_links": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_SYN"
+      ],
+      "content_status": "sgk_aligned_structure_v1",
+      "copyright_note": "Cấu trúc và trọng tâm bám Tiếng Anh 1 Global Success; phần hiển thị trong app được biên soạn theo dạng tương tác."
+    },
+    {
+      "bai": 7,
+      "semester": 1,
+      "source_unit": 7,
+      "source_title": "In the garden",
+      "source_title_vi": "Trong vườn",
+      "theme": "In the garden",
+      "lesson_id": "TA1_U07",
+      "estimated_minutes": 15,
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Learn",
+        "Practice",
+        "Review"
+      ],
+      "learning_flow_vi": [
+        "Bài học",
+        "Luyện tập",
+        "Tổng kết"
+      ],
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "lesson",
+          "title": "Learn",
+          "title_vi": "Bài học",
+          "intro": "Look, listen and say.",
+          "intro_vi": "Nhìn, nghe và nói theo.",
+          "image": "",
+          "phonics": {
+            "letter": "G",
+            "sound": "/g/",
+            "words": [
+              "garden",
+              "gate",
+              "girl",
+              "goat"
+            ]
+          },
+          "vocabulary": [
+            {
+              "word": "garden",
+              "meaning": "khu vườn",
+              "ipa": "",
+              "imageId": "vuon_nha"
+            },
+            {
+              "word": "gate",
+              "meaning": "cổng",
+              "ipa": "",
+              "imageId": "noi_chon_gate"
+            },
+            {
+              "word": "girl",
+              "meaning": "bé gái",
+              "ipa": "",
+              "imageId": "family_11_cycling_yard"
+            },
+            {
+              "word": "goat",
+              "meaning": "con dê",
+              "ipa": "",
+              "imageId": "gia_suc_nong_trai_1"
+            }
+          ],
+          "sentence_pattern": "There’s a garden.",
+          "mini_dialogue": [],
+          "mini_dialogue_vi": [],
+          "learning_goal": "Listen, notice and say the key sound, words and sentence pattern.",
+          "learning_goal_vi": "Nghe, nhận biết và nói được âm, từ và mẫu câu trọng tâm.",
+          "imageId": "vuon_nha"
+        },
+        {
+          "page_no": 2,
+          "page_type": "questions",
+          "title": "Practice",
+          "title_vi": "Luyện tập",
+          "recall": "Look and answer.",
+          "recall_vi": "Nhìn và trả lời.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Which letter/sound is in this Unit?",
+              "prompt_vi": "Chữ/âm trọng tâm của Unit này là gì?",
+              "options": [
+                "G",
+                "M",
+                "B"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Which word belongs to this Unit?",
+              "prompt_vi": "Từ nào thuộc Unit này?",
+              "options": [
+                "gate",
+                "pencil",
+                "bedroom"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Choose the sentence pattern from this Unit.",
+              "prompt_vi": "Chọn mẫu câu của Unit này.",
+              "options": [
+                "There’s a garden.",
+                "How are you? — I’m fine.",
+                "This is my school bag."
+              ],
+              "answer": 0
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the key words.",
+              "prompt_vi": "Đọc các từ trọng tâm.",
+              "speak_text": "garden, gate, girl, goat"
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the sentence pattern.",
+              "prompt_vi": "Nói mẫu câu.",
+              "speak_text": "There’s a garden."
+            }
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Review",
+          "title_vi": "Tổng kết",
+          "key_points": [
+            "Sound: G /g/",
+            "Words: garden, gate, girl, goat.",
+            "Sentence: There’s a garden."
+          ],
+          "key_points_vi": [
+            "Chữ/âm trọng tâm: G /g/",
+            "Từ vựng: garden, gate, girl, goat.",
+            "Mẫu câu: nghe và nói lại câu tiếng Anh phía trên."
+          ],
+          "practice_lines": [
+            "There’s a garden."
+          ],
+          "finish_prompt": "Say one word and the sentence.",
+          "finish_prompt_vi": "Nói một từ và mẫu câu."
+        }
+      ],
+      "skill_links": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_SYN"
+      ],
+      "content_status": "sgk_aligned_structure_v1",
+      "copyright_note": "Cấu trúc và trọng tâm bám Tiếng Anh 1 Global Success; phần hiển thị trong app được biên soạn theo dạng tương tác."
+    },
+    {
+      "bai": 8,
+      "semester": 1,
+      "source_unit": 8,
+      "source_title": "In the park",
+      "source_title_vi": "Trong công viên",
+      "theme": "In the park",
+      "lesson_id": "TA1_U08",
+      "estimated_minutes": 15,
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Learn",
+        "Practice",
+        "Review"
+      ],
+      "learning_flow_vi": [
+        "Bài học",
+        "Luyện tập",
+        "Tổng kết"
+      ],
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "lesson",
+          "title": "Learn",
+          "title_vi": "Bài học",
+          "intro": "Look, listen and say.",
+          "intro_vi": "Nhìn, nghe và nói theo.",
+          "image": "",
+          "phonics": {
+            "letter": "H",
+            "sound": "/h/",
+            "words": [
+              "hair",
+              "hand",
+              "head",
+              "horse"
+            ]
+          },
+          "vocabulary": [
+            {
+              "word": "hair",
+              "meaning": "tóc",
+              "ipa": "",
+              "imageId": "co_the_hair"
+            },
+            {
+              "word": "hand",
+              "meaning": "bàn tay",
+              "ipa": ""
+            },
+            {
+              "word": "head",
+              "meaning": "đầu",
+              "ipa": "",
+              "imageId": "co_the_head"
+            },
+            {
+              "word": "horse",
+              "meaning": "con ngựa",
+              "ipa": "",
+              "imageId": "gia_suc_nong_trai_1"
+            }
+          ],
+          "sentence_pattern": "Touch your hair.",
+          "mini_dialogue": [],
+          "mini_dialogue_vi": [],
+          "learning_goal": "Listen, notice and say the key sound, words and sentence pattern.",
+          "learning_goal_vi": "Nghe, nhận biết và nói được âm, từ và mẫu câu trọng tâm.",
+          "imageId": "cong_vien"
+        },
+        {
+          "page_no": 2,
+          "page_type": "questions",
+          "title": "Practice",
+          "title_vi": "Luyện tập",
+          "recall": "Look and answer.",
+          "recall_vi": "Nhìn và trả lời.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Which letter/sound is in this Unit?",
+              "prompt_vi": "Chữ/âm trọng tâm của Unit này là gì?",
+              "options": [
+                "H",
+                "M",
+                "B"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Which word belongs to this Unit?",
+              "prompt_vi": "Từ nào thuộc Unit này?",
+              "options": [
+                "hand",
+                "pencil",
+                "bedroom"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Choose the sentence pattern from this Unit.",
+              "prompt_vi": "Chọn mẫu câu của Unit này.",
+              "options": [
+                "Touch your hair.",
+                "How are you? — I’m fine.",
+                "This is my school bag."
+              ],
+              "answer": 0
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the key words.",
+              "prompt_vi": "Đọc các từ trọng tâm.",
+              "speak_text": "hair, hand, head, horse"
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the sentence pattern.",
+              "prompt_vi": "Nói mẫu câu.",
+              "speak_text": "Touch your hair."
+            }
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Review",
+          "title_vi": "Tổng kết",
+          "key_points": [
+            "Sound: H /h/",
+            "Words: hair, hand, head, horse.",
+            "Sentence: Touch your hair."
+          ],
+          "key_points_vi": [
+            "Chữ/âm trọng tâm: H /h/",
+            "Từ vựng: hair, hand, head, horse.",
+            "Mẫu câu: nghe và nói lại câu tiếng Anh phía trên."
+          ],
+          "practice_lines": [
+            "Touch your hair."
+          ],
+          "finish_prompt": "Say one word and the sentence.",
+          "finish_prompt_vi": "Nói một từ và mẫu câu."
+        }
+      ],
+      "skill_links": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_SYN"
+      ],
+      "content_status": "sgk_aligned_structure_v1",
+      "copyright_note": "Cấu trúc và trọng tâm bám Tiếng Anh 1 Global Success; phần hiển thị trong app được biên soạn theo dạng tương tác."
+    },
+    {
+      "bai": 9,
+      "semester": 2,
+      "source_unit": 9,
+      "source_title": "In the shop",
+      "source_title_vi": "Trong cửa hàng",
+      "theme": "In the shop",
+      "lesson_id": "TA1_U09",
+      "estimated_minutes": 15,
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Learn",
+        "Practice",
+        "Review"
+      ],
+      "learning_flow_vi": [
+        "Bài học",
+        "Luyện tập",
+        "Tổng kết"
+      ],
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "lesson",
+          "title": "Learn",
+          "title_vi": "Bài học",
+          "intro": "Look, listen and say.",
+          "intro_vi": "Nhìn, nghe và nói theo.",
+          "image": "",
+          "phonics": {
+            "letter": "O",
+            "sound": "/ɒ/",
+            "words": [
+              "clocks",
+              "locks",
+              "mops",
+              "pots"
+            ]
+          },
+          "vocabulary": [
+            {
+              "word": "clocks",
+              "meaning": "những chiếc đồng hồ",
+              "ipa": "",
+              "imageId": "nha_ga"
+            },
+            {
+              "word": "locks",
+              "meaning": "những cái khóa",
+              "ipa": ""
+            },
+            {
+              "word": "mops",
+              "meaning": "những cây lau nhà",
+              "ipa": "",
+              "imageId": "gia_dung_mop"
+            },
+            {
+              "word": "pots",
+              "meaning": "những cái nồi",
+              "ipa": "",
+              "imageId": "gia_dung_pot"
+            }
+          ],
+          "sentence_pattern": "How many clocks? — Two.",
+          "mini_dialogue": [],
+          "mini_dialogue_vi": [],
+          "learning_goal": "Listen, notice and say the key sound, words and sentence pattern.",
+          "learning_goal_vi": "Nghe, nhận biết và nói được âm, từ và mẫu câu trọng tâm.",
+          "imageId": "cua_hang_tap_hoa"
+        },
+        {
+          "page_no": 2,
+          "page_type": "questions",
+          "title": "Practice",
+          "title_vi": "Luyện tập",
+          "recall": "Look and answer.",
+          "recall_vi": "Nhìn và trả lời.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Which letter/sound is in this Unit?",
+              "prompt_vi": "Chữ/âm trọng tâm của Unit này là gì?",
+              "options": [
+                "O",
+                "M",
+                "B"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Which word belongs to this Unit?",
+              "prompt_vi": "Từ nào thuộc Unit này?",
+              "options": [
+                "locks",
+                "pencil",
+                "bedroom"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Choose the sentence pattern from this Unit.",
+              "prompt_vi": "Chọn mẫu câu của Unit này.",
+              "options": [
+                "How many clocks? — Two.",
+                "How are you? — I’m fine.",
+                "This is my school bag."
+              ],
+              "answer": 0
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the key words.",
+              "prompt_vi": "Đọc các từ trọng tâm.",
+              "speak_text": "clocks, locks, mops, pots"
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the sentence pattern.",
+              "prompt_vi": "Nói mẫu câu.",
+              "speak_text": "How many clocks? — Two."
+            }
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Review",
+          "title_vi": "Tổng kết",
+          "key_points": [
+            "Sound: O /ɒ/",
+            "Words: clocks, locks, mops, pots.",
+            "Sentence: How many clocks? — Two."
+          ],
+          "key_points_vi": [
+            "Chữ/âm trọng tâm: O /ɒ/",
+            "Từ vựng: clocks, locks, mops, pots.",
+            "Mẫu câu: nghe và nói lại câu tiếng Anh phía trên."
+          ],
+          "practice_lines": [
+            "How many clocks? — Two."
+          ],
+          "finish_prompt": "Say one word and the sentence.",
+          "finish_prompt_vi": "Nói một từ và mẫu câu."
+        }
+      ],
+      "skill_links": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_SYN"
+      ],
+      "content_status": "sgk_aligned_structure_v1",
+      "copyright_note": "Cấu trúc và trọng tâm bám Tiếng Anh 1 Global Success; phần hiển thị trong app được biên soạn theo dạng tương tác."
+    },
+    {
+      "bai": 10,
+      "semester": 2,
+      "source_unit": 10,
+      "source_title": "At the zoo",
+      "source_title_vi": "Ở sở thú",
+      "theme": "At the zoo",
+      "lesson_id": "TA1_U10",
+      "estimated_minutes": 15,
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Learn",
+        "Practice",
+        "Review"
+      ],
+      "learning_flow_vi": [
+        "Bài học",
+        "Luyện tập",
+        "Tổng kết"
+      ],
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "lesson",
+          "title": "Learn",
+          "title_vi": "Bài học",
+          "intro": "Look, listen and say.",
+          "intro_vi": "Nhìn, nghe và nói theo.",
+          "image": "",
+          "phonics": {
+            "letter": "M",
+            "sound": "/m/",
+            "words": [
+              "mango",
+              "monkey",
+              "mother",
+              "mouse"
+            ]
+          },
+          "vocabulary": [
+            {
+              "word": "mango",
+              "meaning": "quả xoài",
+              "ipa": ""
+            },
+            {
+              "word": "monkey",
+              "meaning": "con khỉ",
+              "ipa": "",
+              "imageId": "hoang_da_rung_xanh_1"
+            },
+            {
+              "word": "mother",
+              "meaning": "mẹ",
+              "ipa": "",
+              "imageId": "family_01_dinner"
+            },
+            {
+              "word": "mouse",
+              "meaning": "con chuột",
+              "ipa": ""
+            }
+          ],
+          "sentence_pattern": "That’s a monkey.",
+          "mini_dialogue": [],
+          "mini_dialogue_vi": [],
+          "learning_goal": "Listen, notice and say the key sound, words and sentence pattern.",
+          "learning_goal_vi": "Nghe, nhận biết và nói được âm, từ và mẫu câu trọng tâm.",
+          "imageId": "noi_chon_zoo"
+        },
+        {
+          "page_no": 2,
+          "page_type": "questions",
+          "title": "Practice",
+          "title_vi": "Luyện tập",
+          "recall": "Look and answer.",
+          "recall_vi": "Nhìn và trả lời.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Which letter/sound is in this Unit?",
+              "prompt_vi": "Chữ/âm trọng tâm của Unit này là gì?",
+              "options": [
+                "M",
+                "B",
+                "C"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Which word belongs to this Unit?",
+              "prompt_vi": "Từ nào thuộc Unit này?",
+              "options": [
+                "monkey",
+                "pencil",
+                "bedroom"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Choose the sentence pattern from this Unit.",
+              "prompt_vi": "Chọn mẫu câu của Unit này.",
+              "options": [
+                "That’s a monkey.",
+                "How are you? — I’m fine.",
+                "This is my school bag."
+              ],
+              "answer": 0
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the key words.",
+              "prompt_vi": "Đọc các từ trọng tâm.",
+              "speak_text": "mango, monkey, mother, mouse"
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the sentence pattern.",
+              "prompt_vi": "Nói mẫu câu.",
+              "speak_text": "That’s a monkey."
+            }
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Review",
+          "title_vi": "Tổng kết",
+          "key_points": [
+            "Sound: M /m/",
+            "Words: mango, monkey, mother, mouse.",
+            "Sentence: That’s a monkey."
+          ],
+          "key_points_vi": [
+            "Chữ/âm trọng tâm: M /m/",
+            "Từ vựng: mango, monkey, mother, mouse.",
+            "Mẫu câu: nghe và nói lại câu tiếng Anh phía trên."
+          ],
+          "practice_lines": [
+            "That’s a monkey."
+          ],
+          "finish_prompt": "Say one word and the sentence.",
+          "finish_prompt_vi": "Nói một từ và mẫu câu."
+        }
+      ],
+      "skill_links": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_SYN"
+      ],
+      "content_status": "sgk_aligned_structure_v1",
+      "copyright_note": "Cấu trúc và trọng tâm bám Tiếng Anh 1 Global Success; phần hiển thị trong app được biên soạn theo dạng tương tác."
+    },
+    {
+      "bai": 11,
+      "semester": 2,
+      "source_unit": 11,
+      "source_title": "At the bus stop",
+      "source_title_vi": "Ở trạm xe buýt",
+      "theme": "At the bus stop",
+      "lesson_id": "TA1_U11",
+      "estimated_minutes": 15,
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Learn",
+        "Practice",
+        "Review"
+      ],
+      "learning_flow_vi": [
+        "Bài học",
+        "Luyện tập",
+        "Tổng kết"
+      ],
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "lesson",
+          "title": "Learn",
+          "title_vi": "Bài học",
+          "intro": "Look, listen and say.",
+          "intro_vi": "Nhìn, nghe và nói theo.",
+          "image": "",
+          "phonics": {
+            "letter": "U",
+            "sound": "/ʌ/",
+            "words": [
+              "bus",
+              "run",
+              "sun",
+              "truck"
+            ]
+          },
+          "vocabulary": [
+            {
+              "word": "bus",
+              "meaning": "xe buýt",
+              "ipa": "",
+              "imageId": "traffic_09_bus_stop"
+            },
+            {
+              "word": "run",
+              "meaning": "chạy",
+              "ipa": "",
+              "imageId": "family_18_dog_fetch"
+            },
+            {
+              "word": "sun",
+              "meaning": "mặt trời",
+              "ipa": ""
+            },
+            {
+              "word": "truck",
+              "meaning": "xe tải",
+              "ipa": ""
+            }
+          ],
+          "sentence_pattern": "She’s running. / He’s running.",
+          "mini_dialogue": [],
+          "mini_dialogue_vi": [],
+          "learning_goal": "Listen, notice and say the key sound, words and sentence pattern.",
+          "learning_goal_vi": "Nghe, nhận biết và nói được âm, từ và mẫu câu trọng tâm.",
+          "imageId": "traffic_09_bus_stop"
+        },
+        {
+          "page_no": 2,
+          "page_type": "questions",
+          "title": "Practice",
+          "title_vi": "Luyện tập",
+          "recall": "Look and answer.",
+          "recall_vi": "Nhìn và trả lời.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Which letter/sound is in this Unit?",
+              "prompt_vi": "Chữ/âm trọng tâm của Unit này là gì?",
+              "options": [
+                "U",
+                "M",
+                "B"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Which word belongs to this Unit?",
+              "prompt_vi": "Từ nào thuộc Unit này?",
+              "options": [
+                "run",
+                "pencil",
+                "bedroom"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Choose the sentence pattern from this Unit.",
+              "prompt_vi": "Chọn mẫu câu của Unit này.",
+              "options": [
+                "She’s running. / He’s running.",
+                "How are you? — I’m fine.",
+                "This is my school bag."
+              ],
+              "answer": 0
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the key words.",
+              "prompt_vi": "Đọc các từ trọng tâm.",
+              "speak_text": "bus, run, sun, truck"
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the sentence pattern.",
+              "prompt_vi": "Nói mẫu câu.",
+              "speak_text": "She’s running. / He’s running."
+            }
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Review",
+          "title_vi": "Tổng kết",
+          "key_points": [
+            "Sound: U /ʌ/",
+            "Words: bus, run, sun, truck.",
+            "Sentence: She’s running. / He’s running."
+          ],
+          "key_points_vi": [
+            "Chữ/âm trọng tâm: U /ʌ/",
+            "Từ vựng: bus, run, sun, truck.",
+            "Mẫu câu: nghe và nói lại câu tiếng Anh phía trên."
+          ],
+          "practice_lines": [
+            "She’s running. / He’s running."
+          ],
+          "finish_prompt": "Say one word and the sentence.",
+          "finish_prompt_vi": "Nói một từ và mẫu câu."
+        }
+      ],
+      "skill_links": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_SYN"
+      ],
+      "content_status": "sgk_aligned_structure_v1",
+      "copyright_note": "Cấu trúc và trọng tâm bám Tiếng Anh 1 Global Success; phần hiển thị trong app được biên soạn theo dạng tương tác."
+    },
+    {
+      "bai": 12,
+      "semester": 2,
+      "source_unit": 12,
+      "source_title": "At the lake",
+      "source_title_vi": "Ở hồ",
+      "theme": "At the lake",
+      "lesson_id": "TA1_U12",
+      "estimated_minutes": 15,
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Learn",
+        "Practice",
+        "Review"
+      ],
+      "learning_flow_vi": [
+        "Bài học",
+        "Luyện tập",
+        "Tổng kết"
+      ],
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "lesson",
+          "title": "Learn",
+          "title_vi": "Bài học",
+          "intro": "Look, listen and say.",
+          "intro_vi": "Nhìn, nghe và nói theo.",
+          "image": "",
+          "phonics": {
+            "letter": "L",
+            "sound": "/l/",
+            "words": [
+              "lake",
+              "leaf",
+              "lemons"
+            ]
+          },
+          "vocabulary": [
+            {
+              "word": "lake",
+              "meaning": "hồ",
+              "ipa": "",
+              "imageId": "cay_lieu_ben_ho"
+            },
+            {
+              "word": "leaf",
+              "meaning": "chiếc lá",
+              "ipa": "",
+              "imageId": "kien_va_chim_bo_cau"
+            },
+            {
+              "word": "lemons",
+              "meaning": "những quả chanh",
+              "ipa": ""
+            }
+          ],
+          "sentence_pattern": "Look at the lemons.",
+          "mini_dialogue": [],
+          "mini_dialogue_vi": [],
+          "learning_goal": "Listen, notice and say the key sound, words and sentence pattern.",
+          "learning_goal_vi": "Nghe, nhận biết và nói được âm, từ và mẫu câu trọng tâm.",
+          "imageId": "cay_lieu_ben_ho"
+        },
+        {
+          "page_no": 2,
+          "page_type": "questions",
+          "title": "Practice",
+          "title_vi": "Luyện tập",
+          "recall": "Look and answer.",
+          "recall_vi": "Nhìn và trả lời.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Which letter/sound is in this Unit?",
+              "prompt_vi": "Chữ/âm trọng tâm của Unit này là gì?",
+              "options": [
+                "L",
+                "M",
+                "B"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Which word belongs to this Unit?",
+              "prompt_vi": "Từ nào thuộc Unit này?",
+              "options": [
+                "leaf",
+                "pencil",
+                "bedroom"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Choose the sentence pattern from this Unit.",
+              "prompt_vi": "Chọn mẫu câu của Unit này.",
+              "options": [
+                "Look at the lemons.",
+                "How are you? — I’m fine.",
+                "This is my school bag."
+              ],
+              "answer": 0
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the key words.",
+              "prompt_vi": "Đọc các từ trọng tâm.",
+              "speak_text": "lake, leaf, lemons"
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the sentence pattern.",
+              "prompt_vi": "Nói mẫu câu.",
+              "speak_text": "Look at the lemons."
+            }
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Review",
+          "title_vi": "Tổng kết",
+          "key_points": [
+            "Sound: L /l/",
+            "Words: lake, leaf, lemons.",
+            "Sentence: Look at the lemons."
+          ],
+          "key_points_vi": [
+            "Chữ/âm trọng tâm: L /l/",
+            "Từ vựng: lake, leaf, lemons.",
+            "Mẫu câu: nghe và nói lại câu tiếng Anh phía trên."
+          ],
+          "practice_lines": [
+            "Look at the lemons."
+          ],
+          "finish_prompt": "Say one word and the sentence.",
+          "finish_prompt_vi": "Nói một từ và mẫu câu."
+        }
+      ],
+      "skill_links": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_SYN"
+      ],
+      "content_status": "sgk_aligned_structure_v1",
+      "copyright_note": "Cấu trúc và trọng tâm bám Tiếng Anh 1 Global Success; phần hiển thị trong app được biên soạn theo dạng tương tác."
+    },
+    {
+      "bai": 13,
+      "semester": 2,
+      "source_unit": 13,
+      "source_title": "In the school canteen",
+      "source_title_vi": "Trong căng tin trường",
+      "theme": "In the school canteen",
+      "lesson_id": "TA1_U13",
+      "estimated_minutes": 15,
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Learn",
+        "Practice",
+        "Review"
+      ],
+      "learning_flow_vi": [
+        "Bài học",
+        "Luyện tập",
+        "Tổng kết"
+      ],
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "lesson",
+          "title": "Learn",
+          "title_vi": "Bài học",
+          "intro": "Look, listen and say.",
+          "intro_vi": "Nhìn, nghe và nói theo.",
+          "image": "",
+          "phonics": {
+            "letter": "N",
+            "sound": "/n/",
+            "words": [
+              "bananas",
+              "noodles",
+              "nuts"
+            ]
+          },
+          "vocabulary": [
+            {
+              "word": "bananas",
+              "meaning": "những quả chuối",
+              "ipa": "",
+              "imageId": "sieu_thi"
+            },
+            {
+              "word": "noodles",
+              "meaning": "mì",
+              "ipa": ""
+            },
+            {
+              "word": "nuts",
+              "meaning": "các loại hạt",
+              "ipa": ""
+            }
+          ],
+          "sentence_pattern": "She’s having noodles.",
+          "mini_dialogue": [],
+          "mini_dialogue_vi": [],
+          "learning_goal": "Listen, notice and say the key sound, words and sentence pattern.",
+          "learning_goal_vi": "Nghe, nhận biết và nói được âm, từ và mẫu câu trọng tâm.",
+          "imageId": "noi_chon_school_canteen"
+        },
+        {
+          "page_no": 2,
+          "page_type": "questions",
+          "title": "Practice",
+          "title_vi": "Luyện tập",
+          "recall": "Look and answer.",
+          "recall_vi": "Nhìn và trả lời.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Which letter/sound is in this Unit?",
+              "prompt_vi": "Chữ/âm trọng tâm của Unit này là gì?",
+              "options": [
+                "N",
+                "M",
+                "B"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Which word belongs to this Unit?",
+              "prompt_vi": "Từ nào thuộc Unit này?",
+              "options": [
+                "noodles",
+                "pencil",
+                "bedroom"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Choose the sentence pattern from this Unit.",
+              "prompt_vi": "Chọn mẫu câu của Unit này.",
+              "options": [
+                "She’s having noodles.",
+                "How are you? — I’m fine.",
+                "This is my school bag."
+              ],
+              "answer": 0
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the key words.",
+              "prompt_vi": "Đọc các từ trọng tâm.",
+              "speak_text": "bananas, noodles, nuts"
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the sentence pattern.",
+              "prompt_vi": "Nói mẫu câu.",
+              "speak_text": "She’s having noodles."
+            }
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Review",
+          "title_vi": "Tổng kết",
+          "key_points": [
+            "Sound: N /n/",
+            "Words: bananas, noodles, nuts.",
+            "Sentence: She’s having noodles."
+          ],
+          "key_points_vi": [
+            "Chữ/âm trọng tâm: N /n/",
+            "Từ vựng: bananas, noodles, nuts.",
+            "Mẫu câu: nghe và nói lại câu tiếng Anh phía trên."
+          ],
+          "practice_lines": [
+            "She’s having noodles."
+          ],
+          "finish_prompt": "Say one word and the sentence.",
+          "finish_prompt_vi": "Nói một từ và mẫu câu."
+        }
+      ],
+      "skill_links": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_SYN"
+      ],
+      "content_status": "sgk_aligned_structure_v1",
+      "copyright_note": "Cấu trúc và trọng tâm bám Tiếng Anh 1 Global Success; phần hiển thị trong app được biên soạn theo dạng tương tác."
+    },
+    {
+      "bai": 14,
+      "semester": 2,
+      "source_unit": 14,
+      "source_title": "In the toy shop",
+      "source_title_vi": "Trong cửa hàng đồ chơi",
+      "theme": "In the toy shop",
+      "lesson_id": "TA1_U14",
+      "estimated_minutes": 15,
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Learn",
+        "Practice",
+        "Review"
+      ],
+      "learning_flow_vi": [
+        "Bài học",
+        "Luyện tập",
+        "Tổng kết"
+      ],
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "lesson",
+          "title": "Learn",
+          "title_vi": "Bài học",
+          "intro": "Look, listen and say.",
+          "intro_vi": "Nhìn, nghe và nói theo.",
+          "image": "",
+          "phonics": {
+            "letter": "T",
+            "sound": "/t/",
+            "words": [
+              "teddy bear",
+              "tiger",
+              "top",
+              "turtle"
+            ]
+          },
+          "vocabulary": [
+            {
+              "word": "teddy bear",
+              "meaning": "gấu bông",
+              "ipa": "",
+              "imageId": "family_20_sleeping_toddler"
+            },
+            {
+              "word": "tiger",
+              "meaning": "con hổ",
+              "ipa": "",
+              "imageId": "hoang_da_rung_xanh_1"
+            },
+            {
+              "word": "top",
+              "meaning": "con quay",
+              "ipa": "",
+              "imageId": "do_choi_spinning_top"
+            },
+            {
+              "word": "turtle",
+              "meaning": "con rùa",
+              "ipa": "",
+              "imageId": "dai_duong_san_ho_1"
+            }
+          ],
+          "sentence_pattern": "I can see a tiger.",
+          "mini_dialogue": [],
+          "mini_dialogue_vi": [],
+          "learning_goal": "Listen, notice and say the key sound, words and sentence pattern.",
+          "learning_goal_vi": "Nghe, nhận biết và nói được âm, từ và mẫu câu trọng tâm.",
+          "imageId": "mall_14_toy_store"
+        },
+        {
+          "page_no": 2,
+          "page_type": "questions",
+          "title": "Practice",
+          "title_vi": "Luyện tập",
+          "recall": "Look and answer.",
+          "recall_vi": "Nhìn và trả lời.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Which letter/sound is in this Unit?",
+              "prompt_vi": "Chữ/âm trọng tâm của Unit này là gì?",
+              "options": [
+                "T",
+                "M",
+                "B"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Which word belongs to this Unit?",
+              "prompt_vi": "Từ nào thuộc Unit này?",
+              "options": [
+                "tiger",
+                "pencil",
+                "bedroom"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Choose the sentence pattern from this Unit.",
+              "prompt_vi": "Chọn mẫu câu của Unit này.",
+              "options": [
+                "I can see a tiger.",
+                "How are you? — I’m fine.",
+                "This is my school bag."
+              ],
+              "answer": 0
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the key words.",
+              "prompt_vi": "Đọc các từ trọng tâm.",
+              "speak_text": "teddy bear, tiger, top, turtle"
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the sentence pattern.",
+              "prompt_vi": "Nói mẫu câu.",
+              "speak_text": "I can see a tiger."
+            }
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Review",
+          "title_vi": "Tổng kết",
+          "key_points": [
+            "Sound: T /t/",
+            "Words: teddy bear, tiger, top, turtle.",
+            "Sentence: I can see a tiger."
+          ],
+          "key_points_vi": [
+            "Chữ/âm trọng tâm: T /t/",
+            "Từ vựng: teddy bear, tiger, top, turtle.",
+            "Mẫu câu: nghe và nói lại câu tiếng Anh phía trên."
+          ],
+          "practice_lines": [
+            "I can see a tiger."
+          ],
+          "finish_prompt": "Say one word and the sentence.",
+          "finish_prompt_vi": "Nói một từ và mẫu câu."
+        }
+      ],
+      "skill_links": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_SYN"
+      ],
+      "content_status": "sgk_aligned_structure_v1",
+      "copyright_note": "Cấu trúc và trọng tâm bám Tiếng Anh 1 Global Success; phần hiển thị trong app được biên soạn theo dạng tương tác."
+    },
+    {
+      "bai": 15,
+      "semester": 2,
+      "source_unit": 15,
+      "source_title": "At the football match",
+      "source_title_vi": "Ở trận bóng đá",
+      "theme": "At the football match",
+      "lesson_id": "TA1_U15",
+      "estimated_minutes": 15,
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Learn",
+        "Practice",
+        "Review"
+      ],
+      "learning_flow_vi": [
+        "Bài học",
+        "Luyện tập",
+        "Tổng kết"
+      ],
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "lesson",
+          "title": "Learn",
+          "title_vi": "Bài học",
+          "intro": "Look, listen and say.",
+          "intro_vi": "Nhìn, nghe và nói theo.",
+          "image": "",
+          "phonics": {
+            "letter": "F",
+            "sound": "/f/",
+            "words": [
+              "face",
+              "father",
+              "foot",
+              "football"
+            ]
+          },
+          "vocabulary": [
+            {
+              "word": "face",
+              "meaning": "khuôn mặt",
+              "ipa": "",
+              "imageId": "co_the_face"
+            },
+            {
+              "word": "father",
+              "meaning": "bố",
+              "ipa": "",
+              "imageId": "family_03_front_yard_car"
+            },
+            {
+              "word": "foot",
+              "meaning": "bàn chân",
+              "ipa": ""
+            },
+            {
+              "word": "football",
+              "meaning": "bóng đá",
+              "ipa": "",
+              "imageId": "san_bong_tre_em"
+            }
+          ],
+          "sentence_pattern": "Point to your hand.",
+          "mini_dialogue": [],
+          "mini_dialogue_vi": [],
+          "learning_goal": "Listen, notice and say the key sound, words and sentence pattern.",
+          "learning_goal_vi": "Nghe, nhận biết và nói được âm, từ và mẫu câu trọng tâm.",
+          "imageId": "san_bong_tre_em"
+        },
+        {
+          "page_no": 2,
+          "page_type": "questions",
+          "title": "Practice",
+          "title_vi": "Luyện tập",
+          "recall": "Look and answer.",
+          "recall_vi": "Nhìn và trả lời.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Which letter/sound is in this Unit?",
+              "prompt_vi": "Chữ/âm trọng tâm của Unit này là gì?",
+              "options": [
+                "F",
+                "M",
+                "B"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Which word belongs to this Unit?",
+              "prompt_vi": "Từ nào thuộc Unit này?",
+              "options": [
+                "father",
+                "pencil",
+                "bedroom"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Choose the sentence pattern from this Unit.",
+              "prompt_vi": "Chọn mẫu câu của Unit này.",
+              "options": [
+                "Point to your hand.",
+                "How are you? — I’m fine.",
+                "This is my school bag."
+              ],
+              "answer": 0
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the key words.",
+              "prompt_vi": "Đọc các từ trọng tâm.",
+              "speak_text": "face, father, foot, football"
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the sentence pattern.",
+              "prompt_vi": "Nói mẫu câu.",
+              "speak_text": "Point to your hand."
+            }
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Review",
+          "title_vi": "Tổng kết",
+          "key_points": [
+            "Sound: F /f/",
+            "Words: face, father, foot, football.",
+            "Sentence: Point to your hand."
+          ],
+          "key_points_vi": [
+            "Chữ/âm trọng tâm: F /f/",
+            "Từ vựng: face, father, foot, football.",
+            "Mẫu câu: nghe và nói lại câu tiếng Anh phía trên."
+          ],
+          "practice_lines": [
+            "Point to your hand."
+          ],
+          "finish_prompt": "Say one word and the sentence.",
+          "finish_prompt_vi": "Nói một từ và mẫu câu."
+        }
+      ],
+      "skill_links": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_SYN"
+      ],
+      "content_status": "sgk_aligned_structure_v1",
+      "copyright_note": "Cấu trúc và trọng tâm bám Tiếng Anh 1 Global Success; phần hiển thị trong app được biên soạn theo dạng tương tác."
+    },
+    {
+      "bai": 16,
+      "semester": 2,
+      "source_unit": 16,
+      "source_title": "At home",
+      "source_title_vi": "Ở nhà",
+      "theme": "At home",
+      "lesson_id": "TA1_U16",
+      "estimated_minutes": 15,
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Learn",
+        "Practice",
+        "Review"
+      ],
+      "learning_flow_vi": [
+        "Bài học",
+        "Luyện tập",
+        "Tổng kết"
+      ],
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "lesson",
+          "title": "Learn",
+          "title_vi": "Bài học",
+          "intro": "Look, listen and say.",
+          "intro_vi": "Nhìn, nghe và nói theo.",
+          "image": "",
+          "phonics": {
+            "letter": "W",
+            "sound": "/w/",
+            "words": [
+              "wash",
+              "water",
+              "window"
+            ]
+          },
+          "vocabulary": [
+            {
+              "word": "wash",
+              "meaning": "rửa",
+              "ipa": "",
+              "imageId": "noi_chon_washing_window"
+            },
+            {
+              "word": "water",
+              "meaning": "nước",
+              "ipa": "",
+              "imageId": "do_an_water"
+            },
+            {
+              "word": "window",
+              "meaning": "cửa sổ",
+              "ipa": "",
+              "imageId": "ba_chau_ben_cua_so"
+            }
+          ],
+          "sentence_pattern": "How many windows can you see? — I can see six.",
+          "mini_dialogue": [],
+          "mini_dialogue_vi": [],
+          "learning_goal": "Listen, notice and say the key sound, words and sentence pattern.",
+          "learning_goal_vi": "Nghe, nhận biết và nói được âm, từ và mẫu câu trọng tâm.",
+          "imageId": "noi_chon_washing_window"
+        },
+        {
+          "page_no": 2,
+          "page_type": "questions",
+          "title": "Practice",
+          "title_vi": "Luyện tập",
+          "recall": "Look and answer.",
+          "recall_vi": "Nhìn và trả lời.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Which letter/sound is in this Unit?",
+              "prompt_vi": "Chữ/âm trọng tâm của Unit này là gì?",
+              "options": [
+                "W",
+                "M",
+                "B"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Which word belongs to this Unit?",
+              "prompt_vi": "Từ nào thuộc Unit này?",
+              "options": [
+                "water",
+                "pencil",
+                "bedroom"
+              ],
+              "answer": 0
+            },
+            {
+              "type": "choice",
+              "prompt": "Choose the sentence pattern from this Unit.",
+              "prompt_vi": "Chọn mẫu câu của Unit này.",
+              "options": [
+                "How many windows can you see? — I can see six.",
+                "How are you? — I’m fine.",
+                "This is my school bag."
+              ],
+              "answer": 0
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the key words.",
+              "prompt_vi": "Đọc các từ trọng tâm.",
+              "speak_text": "wash, water, window"
+            },
+            {
+              "type": "speak",
+              "prompt": "Say the sentence pattern.",
+              "prompt_vi": "Nói mẫu câu.",
+              "speak_text": "How many windows can you see? — I can see six."
+            }
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Review",
+          "title_vi": "Tổng kết",
+          "key_points": [
+            "Sound: W /w/",
+            "Words: wash, water, window.",
+            "Sentence: How many windows can you see? — I can see six."
+          ],
+          "key_points_vi": [
+            "Chữ/âm trọng tâm: W /w/",
+            "Từ vựng: wash, water, window.",
+            "Mẫu câu: nghe và nói lại câu tiếng Anh phía trên."
+          ],
+          "practice_lines": [
+            "How many windows can you see? — I can see six."
+          ],
+          "finish_prompt": "Say one word and the sentence.",
+          "finish_prompt_vi": "Nói một từ và mẫu câu."
+        }
+      ],
+      "skill_links": [
+        "ENG_PHO",
+        "ENG_VOC",
+        "ENG_LIS",
+        "ENG_SYN"
+      ],
+      "content_status": "sgk_aligned_structure_v1",
+      "copyright_note": "Cấu trúc và trọng tâm bám Tiếng Anh 1 Global Success; phần hiển thị trong app được biên soạn theo dạng tương tác."
+    }
+  ],
+  "learning_resources": {
+    "alphabet": {
+      "id": "alphabet",
+      "title": "English Alphabet",
+      "title_vi": "Bảng chữ cái tiếng Anh",
+      "total_items": 26,
+      "items": [
+        {
+          "letter": "A",
+          "name": "A a",
+          "ipaName": "/eɪ/",
+          "sound": "/æ/",
+          "word1": {
+            "en": "Apple",
+            "ipa": "/ˈæp.əl/",
+            "vi": "Quả táo",
+            "emoji": "🍎",
+            "pos": "Noun",
+            "ex": "An apple a day.",
+            "imageId": "quay_trai_cay_ro_rang"
+          },
+          "word2": {
+            "en": "Ant",
+            "ipa": "/ænt/",
+            "vi": "Con kiến",
+            "emoji": "🐜",
+            "pos": "Noun",
+            "ex": "A tiny ant."
+          },
+          "word3": {
+            "en": "Alligator",
+            "ipa": "/ˈæl.ɪ.ɡeɪ.tər/",
+            "vi": "Cá sấu",
+            "emoji": "🐊",
+            "pos": "Noun",
+            "ex": "Green alligator."
+          }
+        },
+        {
+          "letter": "B",
+          "name": "B b",
+          "ipaName": "/biː/",
+          "sound": "/b/",
+          "word1": {
+            "en": "Ball",
+            "ipa": "/bɔːl/",
+            "vi": "Quả bóng",
+            "emoji": "⚽",
+            "pos": "Noun",
+            "ex": "Play with a ball.",
+            "imageId": "do_vat_ball"
+          },
+          "word2": {
+            "en": "Bear",
+            "ipa": "/beər/",
+            "vi": "Con gấu",
+            "emoji": "🐻",
+            "pos": "Noun",
+            "ex": "A brown bear.",
+            "imageId": "hoang_da_rung_xanh_1"
+          },
+          "word3": {
+            "en": "Book",
+            "ipa": "/bʊk/",
+            "vi": "Quyển sách",
+            "emoji": "📖",
+            "pos": "Noun",
+            "ex": "Open your book.",
+            "imageId": "ban_hoc"
+          }
+        },
+        {
+          "letter": "C",
+          "name": "C c",
+          "ipaName": "/siː/",
+          "sound": "/k/",
+          "word1": {
+            "en": "Cat",
+            "ipa": "/kæt/",
+            "vi": "Con mèo",
+            "emoji": "🐱",
+            "pos": "Noun",
+            "ex": "The cat sleeps.",
+            "imageId": "family_08_pet_feeding"
+          },
+          "word2": {
+            "en": "Car",
+            "ipa": "/kɑːr/",
+            "vi": "Xe ô tô",
+            "emoji": "🚗",
+            "pos": "Noun",
+            "ex": "A red fast car.",
+            "imageId": "family_03_front_yard_car"
+          },
+          "word3": {
+            "en": "Cup",
+            "ipa": "/kʌp/",
+            "vi": "Cái chén/cốc",
+            "emoji": "☕",
+            "pos": "Noun",
+            "ex": "A tea cup.",
+            "imageId": "do_vat_cup"
+          }
+        },
+        {
+          "letter": "D",
+          "name": "D d",
+          "ipaName": "/diː/",
+          "sound": "/d/",
+          "word1": {
+            "en": "Dog",
+            "ipa": "/dɒɡ/",
+            "vi": "Con chó",
+            "emoji": "🐶",
+            "pos": "Noun",
+            "ex": "The dog barks.",
+            "imageId": "family_08_pet_feeding"
+          },
+          "word2": {
+            "en": "Duck",
+            "ipa": "/dʌk/",
+            "vi": "Con vịt",
+            "emoji": "🦆",
+            "pos": "Noun",
+            "ex": "Yellow duck.",
+            "imageId": "gia_suc_nong_trai_2"
+          },
+          "word3": {
+            "en": "Door",
+            "ipa": "/dɔːr/",
+            "vi": "Cửa ra vào",
+            "emoji": "🚪",
+            "pos": "Noun",
+            "ex": "Close the door."
+          }
+        },
+        {
+          "letter": "E",
+          "name": "E e",
+          "ipaName": "/iː/",
+          "sound": "/e/",
+          "word1": {
+            "en": "Elephant",
+            "ipa": "/ˈel.ɪ.fənt/",
+            "vi": "Con voi",
+            "emoji": "🐘",
+            "pos": "Noun",
+            "ex": "Big gray elephant.",
+            "imageId": "dv_sinh_nhat_voi_con"
+          },
+          "word2": {
+            "en": "Egg",
+            "ipa": "/eɡ/",
+            "vi": "Quả trứng",
+            "emoji": "🥚",
+            "pos": "Noun",
+            "ex": "Eat an egg."
+          },
+          "word3": {
+            "en": "Eraser",
+            "ipa": "/ɪˈreɪ.zər/",
+            "vi": "Cục tẩy",
+            "emoji": "🧼",
+            "pos": "Noun",
+            "ex": "Pick up your eraser."
+          }
+        },
+        {
+          "letter": "F",
+          "name": "F f",
+          "ipaName": "/ef/",
+          "sound": "/f/",
+          "word1": {
+            "en": "Fish",
+            "ipa": "/fɪʃ/",
+            "vi": "Con cá",
+            "emoji": "🐟",
+            "pos": "Noun",
+            "ex": "Fish swims fast.",
+            "imageId": "do_an_fish_food"
+          },
+          "word2": {
+            "en": "Fox",
+            "ipa": "/fɒks/",
+            "vi": "Con cáo",
+            "emoji": "🦊",
+            "pos": "Noun",
+            "ex": "An orange fox."
+          },
+          "word3": {
+            "en": "Frog",
+            "ipa": "/frɒɡ/",
+            "vi": "Con ếch",
+            "emoji": "🐸",
+            "pos": "Noun",
+            "ex": "Green frog hops.",
+            "imageId": "sinh_vat_ao_ho"
+          }
+        },
+        {
+          "letter": "G",
+          "name": "G g",
+          "ipaName": "/dʒiː/",
+          "sound": "/ɡ/",
+          "word1": {
+            "en": "Giraffe",
+            "ipa": "/dʒɪˈrɑːf/",
+            "vi": "Hươu cao cổ",
+            "emoji": "🦒",
+            "pos": "Noun",
+            "ex": "Giraffe has long neck."
+          },
+          "word2": {
+            "en": "Goat",
+            "ipa": "/ɡəʊt/",
+            "vi": "Con dê",
+            "emoji": "🐐",
+            "pos": "Noun",
+            "ex": "A lovely goat.",
+            "imageId": "gia_suc_nong_trai_1"
+          },
+          "word3": {
+            "en": "Grape",
+            "ipa": "/ɡreɪp/",
+            "vi": "Quả nho",
+            "emoji": "🍇",
+            "pos": "Noun",
+            "ex": "Sweet purple grape."
+          }
+        },
+        {
+          "letter": "H",
+          "name": "H h",
+          "ipaName": "/eɪtʃ/",
+          "sound": "/h/",
+          "word1": {
+            "en": "Hat",
+            "ipa": "/hæt/",
+            "vi": "Cái mũ",
+            "emoji": "👒",
+            "pos": "Noun",
+            "ex": "Wear yellow hat.",
+            "imageId": "do_vat_hat"
+          },
+          "word2": {
+            "en": "Horse",
+            "ipa": "/hɔːs/",
+            "vi": "Con ngựa",
+            "emoji": "🐴",
+            "pos": "Noun",
+            "ex": "The horse runs.",
+            "imageId": "gia_suc_nong_trai_1"
+          },
+          "word3": {
+            "en": "Hand",
+            "ipa": "/hænd/",
+            "vi": "Bàn tay",
+            "emoji": "✋",
+            "pos": "Noun",
+            "ex": "Hands up!"
+          }
+        },
+        {
+          "letter": "I",
+          "name": "I i",
+          "ipaName": "/aɪ/",
+          "sound": "/ɪ/",
+          "word1": {
+            "en": "Igloo",
+            "ipa": "/ˈɪɡ.luː/",
+            "vi": "Lều tuyết",
+            "emoji": "🏔️",
+            "pos": "Noun",
+            "ex": "Cold ice igloo."
+          },
+          "word2": {
+            "en": "Ink",
+            "ipa": "/ɪŋk/",
+            "vi": "Mực viết",
+            "emoji": "🖋️",
+            "pos": "Noun",
+            "ex": "Blue pen ink."
+          },
+          "word3": {
+            "en": "Insect",
+            "ipa": "/ˈɪn.sekt/",
+            "vi": "Côn trùng",
+            "emoji": "🐞",
+            "pos": "Noun",
+            "ex": "Tiny insect."
+          }
+        },
+        {
+          "letter": "J",
+          "name": "J j",
+          "ipaName": "/dʒeɪ/",
+          "sound": "/dʒ/",
+          "word1": {
+            "en": "Jacket",
+            "ipa": "/ˈdʒæk.ɪt/",
+            "vi": "Áo khoác",
+            "emoji": "🧥",
+            "pos": "Noun",
+            "ex": "Zip your jacket."
+          },
+          "word2": {
+            "en": "Juice",
+            "ipa": "/dʒuːs/",
+            "vi": "Nước ép",
+            "emoji": "🧃",
+            "pos": "Noun",
+            "ex": "Drink orange juice."
+          },
+          "word3": {
+            "en": "Jellyfish",
+            "ipa": "/ˈdʒel.i.fɪʃ/",
+            "vi": "Con sứa",
+            "emoji": "🪼",
+            "pos": "Noun",
+            "ex": "Colorful jellyfish."
+          }
+        },
+        {
+          "letter": "K",
+          "name": "K k",
+          "ipaName": "/keɪ/",
+          "sound": "/k/",
+          "word1": {
+            "en": "Kangaroo",
+            "ipa": "/ˌkæŋ.ɡərˈuː/",
+            "vi": "Chuột túi",
+            "emoji": "🦘",
+            "pos": "Noun",
+            "ex": "Kangaroo jumps high."
+          },
+          "word2": {
+            "en": "Kite",
+            "ipa": "/kaɪt/",
+            "vi": "Cái diều",
+            "emoji": "🪁",
+            "pos": "Noun",
+            "ex": "Fly a kite.",
+            "imageId": "canh_dong_tha_dieu"
+          },
+          "word3": {
+            "en": "Kiwi",
+            "ipa": "/ˈkiː.wiː/",
+            "vi": "Quả kiwi",
+            "emoji": "🥝",
+            "pos": "Noun",
+            "ex": "Sweet green kiwi."
+          }
+        },
+        {
+          "letter": "L",
+          "name": "L l",
+          "ipaName": "/el/",
+          "sound": "/l/",
+          "word1": {
+            "en": "Lion",
+            "ipa": "/ˈlaɪ.ən/",
+            "vi": "Sư tử",
+            "emoji": "🦁",
+            "pos": "Noun",
+            "ex": "Lion is strong.",
+            "imageId": "hoang_da_dong_co_1"
+          },
+          "word2": {
+            "en": "Lemon",
+            "ipa": "/ˈlem.ən/",
+            "vi": "Quả chanh vàng",
+            "emoji": "🍋",
+            "pos": "Noun",
+            "ex": "Sour yellow lemon."
+          },
+          "word3": {
+            "en": "Leg",
+            "ipa": "/leɡ/",
+            "vi": "Cái chân",
+            "emoji": "🦵",
+            "pos": "Noun",
+            "ex": "Two strong legs."
+          }
+        },
+        {
+          "letter": "M",
+          "name": "M m",
+          "ipaName": "/em/",
+          "sound": "/m/",
+          "word1": {
+            "en": "Monkey",
+            "ipa": "/ˈmʌŋ.ki/",
+            "vi": "Con khỉ",
+            "emoji": "🐒",
+            "pos": "Noun",
+            "ex": "Monkey climbs trees.",
+            "imageId": "hoang_da_rung_xanh_1"
+          },
+          "word2": {
+            "en": "Mother",
+            "ipa": "/ˈmʌð.ər/",
+            "vi": "Mẹ",
+            "emoji": "👩",
+            "pos": "Noun",
+            "ex": "I love my mother.",
+            "imageId": "family_01_dinner"
+          },
+          "word3": {
+            "en": "Map",
+            "ipa": "/mæp/",
+            "vi": "Bản đồ",
+            "emoji": "🗺️",
+            "pos": "Noun",
+            "ex": "Look at the map."
+          }
+        },
+        {
+          "letter": "N",
+          "name": "N n",
+          "ipaName": "/en/",
+          "sound": "/n/",
+          "word1": {
+            "en": "Nose",
+            "ipa": "/nəʊz/",
+            "vi": "Cái mũi",
+            "emoji": "👃",
+            "pos": "Noun",
+            "ex": "Touch your nose."
+          },
+          "word2": {
+            "en": "Notebook",
+            "ipa": "/ˈnəʊt.bʊk/",
+            "vi": "Quyển vở",
+            "emoji": "📓",
+            "pos": "Noun",
+            "ex": "Write in notebook."
+          },
+          "word3": {
+            "en": "Noodles",
+            "ipa": "/ˈnuː.dəl/",
+            "vi": "Mì sợi",
+            "emoji": "🍜",
+            "pos": "Noun",
+            "ex": "Yummy hot noodles."
+          }
+        },
+        {
+          "letter": "O",
+          "name": "O o",
+          "ipaName": "/əʊ/",
+          "sound": "/ɒ/",
+          "word1": {
+            "en": "Octopus",
+            "ipa": "/ˈɒk.tə.pəs/",
+            "vi": "Bạch tuộc",
+            "emoji": "🐙",
+            "pos": "Noun",
+            "ex": "This is an octopus."
+          },
+          "word2": {
+            "en": "Orange",
+            "ipa": "/ˈɒr.ɪndʒ/",
+            "vi": "Quả cam",
+            "emoji": "🍊",
+            "pos": "Noun",
+            "ex": "An orange is round."
+          },
+          "word3": {
+            "en": "Owl",
+            "ipa": "/aʊl/",
+            "vi": "Con cú",
+            "emoji": "🦉",
+            "pos": "Noun",
+            "ex": "Wise night owl."
+          }
+        },
+        {
+          "letter": "P",
+          "name": "P p",
+          "ipaName": "/piː/",
+          "sound": "/p/",
+          "word1": {
+            "en": "Pencil",
+            "ipa": "/ˈpen.səl/",
+            "vi": "Bút chì",
+            "emoji": "✏️",
+            "pos": "Noun",
+            "ex": "Write with pencil.",
+            "imageId": "ban_hoc"
+          },
+          "word2": {
+            "en": "Panda",
+            "ipa": "/ˈpæn.də/",
+            "vi": "Gấu trúc",
+            "emoji": "🐼",
+            "pos": "Noun",
+            "ex": "Panda eats bamboo.",
+            "imageId": "hoang_da_rung_xanh_2"
+          },
+          "word3": {
+            "en": "Pig",
+            "ipa": "/pɪɡ/",
+            "vi": "Con lợn",
+            "emoji": "🐷",
+            "pos": "Noun",
+            "ex": "Pink little pig.",
+            "imageId": "gia_suc_nong_trai_1"
+          }
+        },
+        {
+          "letter": "Q",
+          "name": "Q q",
+          "ipaName": "/kjuː/",
+          "sound": "/kw/",
+          "word1": {
+            "en": "Queen",
+            "ipa": "/kwiːn/",
+            "vi": "Nữ hoàng",
+            "emoji": "👸",
+            "pos": "Noun",
+            "ex": "Beautiful queen."
+          },
+          "word2": {
+            "en": "Quiet",
+            "ipa": "/ˈkwaɪ.ət/",
+            "vi": "Yên lặng",
+            "emoji": "🤫",
+            "pos": "Adj",
+            "ex": "Be quiet in class."
+          },
+          "word3": {
+            "en": "Quilt",
+            "ipa": "/kwɪlt/",
+            "vi": "Cái chăn bông",
+            "emoji": "🛏️",
+            "pos": "Noun",
+            "ex": "Warm soft quilt."
+          }
+        },
+        {
+          "letter": "R",
+          "name": "R r",
+          "ipaName": "/ɑːr/",
+          "sound": "/r/",
+          "word1": {
+            "en": "Rabbit",
+            "ipa": "/ˈræb.ɪt/",
+            "vi": "Con thỏ",
+            "emoji": "🐰",
+            "pos": "Noun",
+            "ex": "The rabbit hops.",
+            "imageId": "dv_doi_tai_xau_xi"
+          },
+          "word2": {
+            "en": "Ruler",
+            "ipa": "/ˈruː.lər/",
+            "vi": "Thước kẻ",
+            "emoji": "📏",
+            "pos": "Noun",
+            "ex": "A straight ruler."
+          },
+          "word3": {
+            "en": "Red",
+            "ipa": "/red/",
+            "vi": "Màu đỏ",
+            "emoji": "🔴",
+            "pos": "Adj",
+            "ex": "Red juicy apple."
+          }
+        },
+        {
+          "letter": "S",
+          "name": "S s",
+          "ipaName": "/es/",
+          "sound": "/s/",
+          "word1": {
+            "en": "Sun",
+            "ipa": "/sʌn/",
+            "vi": "Mặt trời",
+            "emoji": "☀️",
+            "pos": "Noun",
+            "ex": "The sun shines."
+          },
+          "word2": {
+            "en": "School",
+            "ipa": "/skuːl/",
+            "vi": "Trường học",
+            "emoji": "🏫",
+            "pos": "Noun",
+            "ex": "I go to school."
+          },
+          "word3": {
+            "en": "Shoes",
+            "ipa": "/ʃuːz/",
+            "vi": "Đôi giày",
+            "emoji": "👟",
+            "pos": "Noun",
+            "ex": "Wear new shoes."
+          }
+        },
+        {
+          "letter": "T",
+          "name": "T t",
+          "ipaName": "/tiː/",
+          "sound": "/t/",
+          "word1": {
+            "en": "Tiger",
+            "ipa": "/ˈtaɪ.ɡər/",
+            "vi": "Con hổ",
+            "emoji": "🐯",
+            "pos": "Noun",
+            "ex": "Tiger is strong.",
+            "imageId": "hoang_da_rung_xanh_1"
+          },
+          "word2": {
+            "en": "Teacher",
+            "ipa": "/ˈtiː.tʃər/",
+            "vi": "Giáo viên",
+            "emoji": "👩‍🏫",
+            "pos": "Noun",
+            "ex": "Good morning teacher.",
+            "imageId": "nn_lon_len_ban_lam_gi"
+          },
+          "word3": {
+            "en": "Tree",
+            "ipa": "/triː/",
+            "vi": "Cái cây",
+            "emoji": "🌳",
+            "pos": "Noun",
+            "ex": "Tall green tree.",
+            "imageId": "cay_bang_san_truong"
+          }
+        },
+        {
+          "letter": "U",
+          "name": "U u",
+          "ipaName": "/juː/",
+          "sound": "/ʌ/",
+          "word1": {
+            "en": "Umbrella",
+            "ipa": "/ʌmˈbrel.ə/",
+            "vi": "Cây dù / ô",
+            "emoji": "☂️",
+            "pos": "Noun",
+            "ex": "Open the umbrella.",
+            "imageId": "bai_bien"
+          },
+          "word2": {
+            "en": "Uncle",
+            "ipa": "/ˈʌŋ.kəl/",
+            "vi": "Chú / Bác",
+            "emoji": "👨",
+            "pos": "Noun",
+            "ex": "My kind uncle."
+          },
+          "word3": {
+            "en": "Under",
+            "ipa": "/ˈʌn.dər/",
+            "vi": "Ở dưới",
+            "emoji": "⬇️",
+            "pos": "Prep",
+            "ex": "Under the table."
+          }
+        },
+        {
+          "letter": "V",
+          "name": "V v",
+          "ipaName": "/viː/",
+          "sound": "/v/",
+          "word1": {
+            "en": "Violin",
+            "ipa": "/ˌvaɪəˈlɪn/",
+            "vi": "Đàn vĩ cầm",
+            "emoji": "🎻",
+            "pos": "Noun",
+            "ex": "Play the violin."
+          },
+          "word2": {
+            "en": "Vest",
+            "ipa": "/vest/",
+            "vi": "Áo ghi-lê",
+            "emoji": "🦺",
+            "pos": "Noun",
+            "ex": "A smart vest."
+          },
+          "word3": {
+            "en": "Van",
+            "ipa": "/væn/",
+            "vi": "Xe tải nhỏ",
+            "emoji": "🚐",
+            "pos": "Noun",
+            "ex": "A yellow van."
+          }
+        },
+        {
+          "letter": "W",
+          "name": "W w",
+          "ipaName": "/ˈdʌb.əl.juː/",
+          "sound": "/w/",
+          "word1": {
+            "en": "Water",
+            "ipa": "/ˈwɔː.tər/",
+            "vi": "Nước uống",
+            "emoji": "💧",
+            "pos": "Noun",
+            "ex": "Drink fresh water.",
+            "imageId": "do_an_water"
+          },
+          "word2": {
+            "en": "Watch",
+            "ipa": "/wɒtʃ/",
+            "vi": "Đồng hồ đeo tay",
+            "emoji": "⌚",
+            "pos": "Noun",
+            "ex": "Look at my watch."
+          },
+          "word3": {
+            "en": "Window",
+            "ipa": "/ˈwɪn.dəʊ/",
+            "vi": "Cửa sổ",
+            "emoji": "🪟",
+            "pos": "Noun",
+            "ex": "Open the window.",
+            "imageId": "ba_chau_ben_cua_so"
+          }
+        },
+        {
+          "letter": "X",
+          "name": "X x",
+          "ipaName": "/eks/",
+          "sound": "/ks/",
+          "word1": {
+            "en": "Box",
+            "ipa": "/bɒks/",
+            "vi": "Cái hộp",
+            "emoji": "📦",
+            "pos": "Noun",
+            "ex": "A yellow toy box."
+          },
+          "word2": {
+            "en": "Fox",
+            "ipa": "/fɒks/",
+            "vi": "Con cáo",
+            "emoji": "🦊",
+            "pos": "Noun",
+            "ex": "Fox in the woods."
+          },
+          "word3": {
+            "en": "Xylophone",
+            "ipa": "/ˈzaɪ.lə.fəʊn/",
+            "vi": "Đàn mộc cầm",
+            "emoji": "🎹",
+            "pos": "Noun",
+            "ex": "Play xylophone."
+          }
+        },
+        {
+          "letter": "Y",
+          "name": "Y y",
+          "ipaName": "/waɪ/",
+          "sound": "/j/",
+          "word1": {
+            "en": "Yellow",
+            "ipa": "/ˈjel.əʊ/",
+            "vi": "Màu vàng",
+            "emoji": "🟡",
+            "pos": "Adj",
+            "ex": "Bright yellow sun."
+          },
+          "word2": {
+            "en": "Yo-yo",
+            "ipa": "/ˈjəʊ.jəʊ/",
+            "vi": "Đồ chơi Yo-yo",
+            "emoji": "🪀",
+            "pos": "Noun",
+            "ex": "Play with yo-yo."
+          },
+          "word3": {
+            "en": "Yogurt",
+            "ipa": "/ˈjɒɡ.ət/",
+            "vi": "Sữa chua",
+            "emoji": "🍧",
+            "pos": "Noun",
+            "ex": "Eat sweet yogurt."
+          }
+        },
+        {
+          "letter": "Z",
+          "name": "Z z",
+          "ipaName": "/zed/",
+          "sound": "/z/",
+          "word1": {
+            "en": "Zebra",
+            "ipa": "/ˈzeb.rə/",
+            "vi": "Con ngựa vằn",
+            "emoji": "🦓",
+            "pos": "Noun",
+            "ex": "Zebra in the zoo.",
+            "imageId": "hoang_da_dong_co_1"
+          },
+          "word2": {
+            "en": "Zoo",
+            "ipa": "/zuː/",
+            "vi": "Sở thú",
+            "emoji": "🦁",
+            "pos": "Noun",
+            "ex": "Visit the zoo.",
+            "imageId": "noi_chon_zoo"
+          },
+          "word3": {
+            "en": "Zipper",
+            "ipa": "/ˈzɪp.ər/",
+            "vi": "Khóa kéo",
+            "emoji": "🤐",
+            "pos": "Noun",
+            "ex": "Zip the jacket."
+          }
+        }
+      ]
+    },
+    "ipa": {
+      "id": "ipa",
+      "title": "IPA Pronunciation",
+      "title_vi": "Phát âm IPA",
+      "total_items": 44,
+      "items": [
+        {
+          "ipa": "/ɪ/",
+          "type": "vowel_mono",
+          "name": "Short i (i ngắn)",
+          "guide": "Giống âm \"i\" tiếng Việt nhưng ngắn hơn, bật nhanh dứt khoát. Môi hơi mở sang hai bên, lưỡi hạ thấp và thả lỏng.",
+          "soundWord": "it",
+          "words": [
+            {
+              "word": "Fish",
+              "ipa": "/fɪʃ/",
+              "vi": "Con cá",
+              "emoji": "🐟",
+              "pos": "Noun",
+              "ex": "Fish swims in water.",
+              "imageId": "do_an_fish_food"
+            },
+            {
+              "word": "Pig",
+              "ipa": "/pɪɡ/",
+              "vi": "Con lợn",
+              "emoji": "🐷",
+              "pos": "Noun",
+              "ex": "What's that? It's a pig.",
+              "imageId": "gia_suc_nong_trai_1"
+            },
+            {
+              "word": "Chicken",
+              "ipa": "/ˈtʃɪk.ɪn/",
+              "vi": "Con gà",
+              "emoji": "🐔",
+              "pos": "Noun",
+              "ex": "The chicken is in yard.",
+              "imageId": "do_an_chicken"
+            }
+          ]
+        },
+        {
+          "ipa": "/iː/",
+          "type": "vowel_mono",
+          "name": "Long ee (i dài)",
+          "guide": "Kéo dài âm \"i\", âm phát ra từ trong khoang miệng. Môi mở rộng sang hai bên như đang mỉm cười tươi, lưỡi nâng cao lên.",
+          "soundWord": "see",
+          "words": [
+            {
+              "word": "Sheep",
+              "ipa": "/ʃiːp/",
+              "vi": "Con cừu",
+              "emoji": "🐑",
+              "pos": "Noun",
+              "ex": "White sheep on farm.",
+              "imageId": "dv_chu_be_chan_cuu"
+            },
+            {
+              "word": "Tree",
+              "ipa": "/triː/",
+              "vi": "Cái cây",
+              "emoji": "🌳",
+              "pos": "Noun",
+              "ex": "Tall green tree.",
+              "imageId": "cay_bang_san_truong"
+            },
+            {
+              "word": "Teacher",
+              "ipa": "/ˈtiː.tʃər/",
+              "vi": "Giáo viên",
+              "emoji": "👩‍🏫",
+              "pos": "Noun",
+              "ex": "Good morning teacher.",
+              "imageId": "nn_lon_len_ban_lam_gi"
+            }
+          ]
+        },
+        {
+          "ipa": "/e/",
+          "type": "vowel_mono",
+          "name": "Short e (e ngắn)",
+          "guide": "Giống âm \"e\" tiếng Việt nhưng ngắn hơn. Môi mở rộng sang hai bên vừa phải, lưỡi hạ thấp hơn âm /ɪ/.",
+          "soundWord": "bed",
+          "words": [
+            {
+              "word": "Pen",
+              "ipa": "/pen/",
+              "vi": "Bút mực",
+              "emoji": "🖊️",
+              "pos": "Noun",
+              "ex": "I have a pen.",
+              "imageId": "ban_hoc"
+            },
+            {
+              "word": "Desk",
+              "ipa": "/desk/",
+              "vi": "Bàn học",
+              "emoji": "🪵",
+              "pos": "Noun",
+              "ex": "Sit at your desk.",
+              "imageId": "ban_hoc"
+            },
+            {
+              "word": "Red",
+              "ipa": "/red/",
+              "vi": "Màu đỏ",
+              "emoji": "🔴",
+              "pos": "Adj",
+              "ex": "The apple is red."
+            }
+          ]
+        },
+        {
+          "ipa": "/æ/",
+          "type": "vowel_mono",
+          "name": "Flat a (a bẹt)",
+          "guide": "Âm \"a\" bẹt hơi lai giữa \"a\" và \"e\", âm bị nén xuống. Miệng mở rộng, môi dưới hạ thấp, lưỡi hạ rất thấp.",
+          "soundWord": "cat",
+          "words": [
+            {
+              "word": "Cat",
+              "ipa": "/kæt/",
+              "vi": "Con mèo",
+              "emoji": "🐱",
+              "pos": "Noun",
+              "ex": "The cat is sleeping.",
+              "imageId": "family_08_pet_feeding"
+            },
+            {
+              "word": "Hat",
+              "ipa": "/hæt/",
+              "vi": "Mũ",
+              "emoji": "👒",
+              "pos": "Noun",
+              "ex": "Wear yellow hat.",
+              "imageId": "do_vat_hat"
+            },
+            {
+              "word": "Apple",
+              "ipa": "/ˈæp.əl/",
+              "vi": "Quả táo",
+              "emoji": "🍎",
+              "pos": "Noun",
+              "ex": "An apple a day.",
+              "imageId": "quay_trai_cay_ro_rang"
+            }
+          ]
+        },
+        {
+          "ipa": "/ʌ/",
+          "type": "vowel_mono",
+          "name": "Short u (ă ngắn)",
+          "guide": "Âm lai giữa \"ă\" và \"ơ\" tiếng Việt, nghiêng về \"ă\" hơn, phát âm bật hơi ra từ cổ họng. Miệng thu hẹp, lưỡi hơi nâng lên.",
+          "soundWord": "cup",
+          "words": [
+            {
+              "word": "Sun",
+              "ipa": "/sʌn/",
+              "vi": "Mặt trời",
+              "emoji": "☀️",
+              "pos": "Noun",
+              "ex": "The sun shines."
+            },
+            {
+              "word": "Duck",
+              "ipa": "/dʌk/",
+              "vi": "Con vịt",
+              "emoji": "🦆",
+              "pos": "Noun",
+              "ex": "The yellow duck swims.",
+              "imageId": "gia_suc_nong_trai_2"
+            },
+            {
+              "word": "Bus",
+              "ipa": "/bʌs/",
+              "vi": "Xe buýt",
+              "emoji": "🚌",
+              "pos": "Noun",
+              "ex": "I go by school bus.",
+              "imageId": "traffic_09_bus_stop"
+            }
+          ]
+        },
+        {
+          "ipa": "/ɒ/",
+          "type": "vowel_mono",
+          "name": "Short o (o ngắn)",
+          "guide": "Tương tự âm \"o\" tiếng Việt nhưng phát âm ngắn và dứt khoát. Môi hơi tròn, lưỡi hạ thấp trong khoang miệng.",
+          "soundWord": "hot",
+          "words": [
+            {
+              "word": "Dog",
+              "ipa": "/dɒɡ/",
+              "vi": "Con chó",
+              "emoji": "🐶",
+              "pos": "Noun",
+              "ex": "The dog runs fast.",
+              "imageId": "family_08_pet_feeding"
+            },
+            {
+              "word": "Fox",
+              "ipa": "/fɒks/",
+              "vi": "Con cáo",
+              "emoji": "🦊",
+              "pos": "Noun",
+              "ex": "I can see an orange fox."
+            },
+            {
+              "word": "Box",
+              "ipa": "/bɒks/",
+              "vi": "Cái hộp",
+              "emoji": "📦",
+              "pos": "Noun",
+              "ex": "A yellow toy box."
+            }
+          ]
+        },
+        {
+          "ipa": "/uː/",
+          "type": "vowel_mono",
+          "name": "Long oo (u dài)",
+          "guide": "Kéo dài âm \"u\", âm phát ra từ khoang miệng không thổi hơi. Môi tròn chặt hướng ra trước, lưỡi nâng cao lên.",
+          "soundWord": "food",
+          "words": [
+            {
+              "word": "School",
+              "ipa": "/skuːl/",
+              "vi": "Trường học",
+              "emoji": "🏫",
+              "pos": "Noun",
+              "ex": "I go to school."
+            },
+            {
+              "word": "Shoes",
+              "ipa": "/ʃuːz/",
+              "vi": "Đôi giày",
+              "emoji": "👟",
+              "pos": "Noun",
+              "ex": "Tie your shoes."
+            },
+            {
+              "word": "Blue",
+              "ipa": "/bluː/",
+              "vi": "Màu xanh dương",
+              "emoji": "🔵",
+              "pos": "Adj",
+              "ex": "The sky is blue."
+            }
+          ]
+        },
+        {
+          "ipa": "/ʊ/",
+          "type": "vowel_mono",
+          "name": "Short oo (u ngắn / ư)",
+          "guide": "Khá giống âm \"ư\" tiếng Việt. Không dùng môi mà đẩy hơi rất ngắn dứt khoát từ cổ họng, môi hơi tròn thả lỏng.",
+          "soundWord": "book",
+          "words": [
+            {
+              "word": "Book",
+              "ipa": "/bʊk/",
+              "vi": "Sách",
+              "emoji": "📖",
+              "pos": "Noun",
+              "ex": "Open your book.",
+              "imageId": "ban_hoc"
+            },
+            {
+              "word": "Foot",
+              "ipa": "/fʊt/",
+              "vi": "Bàn chân",
+              "emoji": "🦶",
+              "pos": "Noun",
+              "ex": "Hop on one foot."
+            },
+            {
+              "word": "Cook",
+              "ipa": "/kʊk/",
+              "vi": "Nấu ăn",
+              "emoji": "🍳",
+              "pos": "Verb",
+              "ex": "Cook yummy dinner."
+            }
+          ]
+        },
+        {
+          "ipa": "/ɑː/",
+          "type": "vowel_mono",
+          "name": "Long a (a dài sâu)",
+          "guide": "Âm \"a\" đọc kéo dài, phát âm sâu trong khoang miệng. Môi mở rộng thoải mái, lưỡi hạ thấp và thả lỏng.",
+          "soundWord": "car",
+          "words": [
+            {
+              "word": "Car",
+              "ipa": "/kɑːr/",
+              "vi": "Xe ô tô",
+              "emoji": "🚗",
+              "pos": "Noun",
+              "ex": "A red fast car.",
+              "imageId": "family_03_front_yard_car"
+            },
+            {
+              "word": "Arm",
+              "ipa": "/ɑːm/",
+              "vi": "Cánh tay",
+              "emoji": "💪",
+              "pos": "Noun",
+              "ex": "Raise your arm."
+            },
+            {
+              "word": "Shark",
+              "ipa": "/ʃɑːk/",
+              "vi": "Cá mập",
+              "emoji": "🦈",
+              "pos": "Noun",
+              "ex": "Shark has sharp teeth."
+            }
+          ]
+        },
+        {
+          "ipa": "/ɔː/",
+          "type": "vowel_mono",
+          "name": "Long o (o dài cong lưỡi)",
+          "guide": "Âm \"o\" tròn môi, phát âm sâu trong khoang miệng, kéo dài âm và cong nhẹ lưỡi về phía vòm họng.",
+          "soundWord": "door",
+          "words": [
+            {
+              "word": "Horse",
+              "ipa": "/hɔːs/",
+              "vi": "Con ngựa",
+              "emoji": "🐴",
+              "pos": "Noun",
+              "ex": "The horse runs on grass.",
+              "imageId": "gia_suc_nong_trai_1"
+            },
+            {
+              "word": "Corn",
+              "ipa": "/kɔːn/",
+              "vi": "Ngô / Bắp",
+              "emoji": "🌽",
+              "pos": "Noun",
+              "ex": "Sweet yellow corn."
+            },
+            {
+              "word": "Four",
+              "ipa": "/fɔːr/",
+              "vi": "Số bốn",
+              "emoji": "4️⃣",
+              "pos": "Noun",
+              "ex": "Four strong legs."
+            }
+          ]
+        },
+        {
+          "ipa": "/ɜː/",
+          "type": "vowel_mono",
+          "name": "Long er (ơ dài cuộn lưỡi)",
+          "guide": "Âm \"ơ\" kéo dài. Đọc là âm ơ nhưng cong lưỡi vào trong, môi hơi mở rộng, phát âm sâu trong vòm họng.",
+          "soundWord": "bird",
+          "words": [
+            {
+              "word": "Shirt",
+              "ipa": "/ʃɜːt/",
+              "vi": "Áo sơ mi",
+              "emoji": "👔",
+              "pos": "Noun",
+              "ex": "A white school shirt."
+            },
+            {
+              "word": "Skirt",
+              "ipa": "/skɜːt/",
+              "vi": "Chân váy",
+              "emoji": "👗",
+              "pos": "Noun",
+              "ex": "A blue school skirt."
+            },
+            {
+              "word": "Worm",
+              "ipa": "/wɜːm/",
+              "vi": "Con giun",
+              "emoji": "🪱",
+              "pos": "Noun",
+              "ex": "Worm in the soil."
+            }
+          ]
+        },
+        {
+          "ipa": "/ə/",
+          "type": "vowel_mono",
+          "name": "Schwa (ơ nhẹ thả lỏng)",
+          "guide": "Âm \"ơ\" cực ngắn và nhẹ trong các âm tiết không nhấn trọng âm. Môi và lưỡi ở vị trí trung tính, thả lỏng tự nhiên.",
+          "soundWord": "about",
+          "words": [
+            {
+              "word": "Mother",
+              "ipa": "/ˈmʌð.ər/",
+              "vi": "Mẹ",
+              "emoji": "👩",
+              "pos": "Noun",
+              "ex": "I love my mother.",
+              "imageId": "family_01_dinner"
+            },
+            {
+              "word": "Banana",
+              "ipa": "/bəˈnæn.ə/",
+              "vi": "Quả chuối",
+              "emoji": "🍌",
+              "pos": "Noun",
+              "ex": "Yellow sweet banana.",
+              "imageId": "sieu_thi"
+            },
+            {
+              "word": "Ruler",
+              "ipa": "/ˈruː.lər/",
+              "vi": "Thước kẻ",
+              "emoji": "📏",
+              "pos": "Noun",
+              "ex": "A straight ruler."
+            }
+          ]
+        },
+        {
+          "ipa": "/eɪ/",
+          "type": "vowel_di",
+          "name": "Diphthong ei (ây mượt)",
+          "guide": "Trượt mượt mà từ âm /e/ sang âm /ɪ/. Môi dẹt dần sang hai bên như mỉm cười, lưỡi hướng dần lên trên.",
+          "soundWord": "day",
+          "words": [
+            {
+              "word": "Grape",
+              "ipa": "/ɡreɪp/",
+              "vi": "Quả nho",
+              "emoji": "🍇",
+              "pos": "Noun",
+              "ex": "Sweet purple grape."
+            },
+            {
+              "word": "Train",
+              "ipa": "/treɪn/",
+              "vi": "Tàu hỏa",
+              "emoji": "🚆",
+              "pos": "Noun",
+              "ex": "Train runs on tracks.",
+              "imageId": "traffic_18_train_station"
+            },
+            {
+              "word": "Rainy",
+              "ipa": "/ˈreɪ.ni/",
+              "vi": "Trời mưa",
+              "emoji": "🌧️",
+              "pos": "Adj",
+              "ex": "Take umbrella when rainy."
+            }
+          ]
+        },
+        {
+          "ipa": "/aɪ/",
+          "type": "vowel_di",
+          "name": "Diphthong ai (ai)",
+          "guide": "Chuyển từ âm /ɑː/ sang âm /ɪ/. Miệng mở rộng rồi thu hẹp dần, môi dẹt sang hai bên, lưỡi nâng dần lên.",
+          "soundWord": "my",
+          "words": [
+            {
+              "word": "Tiger",
+              "ipa": "/ˈtaɪ.ɡər/",
+              "vi": "Con hổ",
+              "emoji": "🐯",
+              "pos": "Noun",
+              "ex": "The tiger is strong.",
+              "imageId": "hoang_da_rung_xanh_1"
+            },
+            {
+              "word": "Kite",
+              "ipa": "/kaɪt/",
+              "vi": "Cái diều",
+              "emoji": "🪁",
+              "pos": "Noun",
+              "ex": "Fly a kite.",
+              "imageId": "canh_dong_tha_dieu"
+            },
+            {
+              "word": "Bicycle",
+              "ipa": "/ˈbaɪ.sɪ.kəl/",
+              "vi": "Xe đạp",
+              "emoji": "🚲",
+              "pos": "Noun",
+              "ex": "Ride a bicycle."
+            }
+          ]
+        },
+        {
+          "ipa": "/ɔɪ/",
+          "type": "vowel_di",
+          "name": "Diphthong oi (oi)",
+          "guide": "Chuyển từ âm /ɔː/ sang âm /ɪ/. Môi ban đầu tròn rồi dẹt dần sang hai bên, nâng lưỡi lên trên.",
+          "soundWord": "boy",
+          "words": [
+            {
+              "word": "Point",
+              "ipa": "/pɔɪnt/",
+              "vi": "Chỉ tay",
+              "emoji": "👉",
+              "pos": "Verb",
+              "ex": "Point and say aloud."
+            },
+            {
+              "word": "Voice",
+              "ipa": "/vɔɪs/",
+              "vi": "Giọng nói",
+              "emoji": "🗣️",
+              "pos": "Noun",
+              "ex": "A sweet gentle voice."
+            },
+            {
+              "word": "Toy",
+              "ipa": "/tɔɪ/",
+              "vi": "Đồ chơi",
+              "emoji": "🧸",
+              "pos": "Noun",
+              "ex": "A cute teddy toy."
+            }
+          ]
+        },
+        {
+          "ipa": "/əʊ/",
+          "type": "vowel_di",
+          "name": "Diphthong ou (ôu)",
+          "guide": "Chuyển từ âm /ə/ sang âm /ʊ/. Môi từ hơi mở chuyển dần sang tròn nhỏ, lưỡi lùi dần về phía sau.",
+          "soundWord": "go",
+          "words": [
+            {
+              "word": "Nose",
+              "ipa": "/nəʊz/",
+              "vi": "Cái mũi",
+              "emoji": "👃",
+              "pos": "Noun",
+              "ex": "Touch your nose."
+            },
+            {
+              "word": "Goat",
+              "ipa": "/ɡəʊt/",
+              "vi": "Con dê",
+              "emoji": "🐐",
+              "pos": "Noun",
+              "ex": "A lovely goat.",
+              "imageId": "gia_suc_nong_trai_1"
+            },
+            {
+              "word": "Boat",
+              "ipa": "/bəʊt/",
+              "vi": "Thuyền",
+              "emoji": "⛵",
+              "pos": "Noun",
+              "ex": "A wooden boat."
+            }
+          ]
+        },
+        {
+          "ipa": "/aʊ/",
+          "type": "vowel_di",
+          "name": "Diphthong au (ao)",
+          "guide": "Chuyển từ âm /ɑː/ sang âm /ʊ/. Mở miệng rộng rồi thu tròn môi lại, lưỡi hơi thụt về phía sau.",
+          "soundWord": "now",
+          "words": [
+            {
+              "word": "Cow",
+              "ipa": "/kaʊ/",
+              "vi": "Con bò",
+              "emoji": "🐮",
+              "pos": "Noun",
+              "ex": "What's that? It's a cow.",
+              "imageId": "gia_suc_nong_trai_1"
+            },
+            {
+              "word": "Mouth",
+              "ipa": "/maʊθ/",
+              "vi": "Miệng",
+              "emoji": "👄",
+              "pos": "Noun",
+              "ex": "Open your mouth."
+            },
+            {
+              "word": "Cloudy",
+              "ipa": "/ˈklaʊ.di/",
+              "vi": "Nhiều mây",
+              "emoji": "☁️",
+              "pos": "Adj",
+              "ex": "Cloudy cool sky."
+            }
+          ]
+        },
+        {
+          "ipa": "/ɪə/",
+          "type": "vowel_di",
+          "name": "Diphthong ea (ia)",
+          "guide": "Chuyển từ âm /ɪ/ sang âm /ə/. Môi mở dẹt nhẹ rồi thả lỏng tự nhiên, lưỡi đẩy nhẹ về phía trước.",
+          "soundWord": "hear",
+          "words": [
+            {
+              "word": "Ear",
+              "ipa": "/ɪər/",
+              "vi": "Tai",
+              "emoji": "👂",
+              "pos": "Noun",
+              "ex": "Listen with ears."
+            },
+            {
+              "word": "Near",
+              "ipa": "/nɪər/",
+              "vi": "Ở gần",
+              "emoji": "📍",
+              "pos": "Prep",
+              "ex": "Near the green tree."
+            },
+            {
+              "word": "Clear",
+              "ipa": "/klɪər/",
+              "vi": "Trong trẻo / Rõ ràng",
+              "emoji": "✨",
+              "pos": "Adj",
+              "ex": "Clean clear water."
+            }
+          ]
+        },
+        {
+          "ipa": "/eə/",
+          "type": "vowel_di",
+          "name": "Diphthong ea (e-ơ)",
+          "guide": "Chuyển từ âm /e/ sang âm /ə/. Môi mở vừa phải rồi thu hẹp nhẹ, lưỡi hơi thụt dần về sau.",
+          "soundWord": "hair",
+          "words": [
+            {
+              "word": "Bear",
+              "ipa": "/beər/",
+              "vi": "Con gấu",
+              "emoji": "🐻",
+              "pos": "Noun",
+              "ex": "A big brown bear.",
+              "imageId": "hoang_da_rung_xanh_1"
+            },
+            {
+              "word": "Chair",
+              "ipa": "/tʃeər/",
+              "vi": "Cái ghế",
+              "emoji": "🪑",
+              "pos": "Noun",
+              "ex": "Sit on the chair.",
+              "imageId": "ban_hoc"
+            },
+            {
+              "word": "Pear",
+              "ipa": "/peər/",
+              "vi": "Quả lê",
+              "emoji": "🍐",
+              "pos": "Noun",
+              "ex": "A juicy sweet pear.",
+              "imageId": "quay_trai_cay_ro_rang"
+            }
+          ]
+        },
+        {
+          "ipa": "/ʊə/",
+          "type": "vowel_di",
+          "name": "Diphthong ua (u-ơ)",
+          "guide": "Chuyển từ âm /ʊ/ sang âm /ə/. Môi mở tròn bè rồi mở nhẹ ra, đưa lưỡi lùi về giữa khoang miệng.",
+          "soundWord": "tour",
+          "words": [
+            {
+              "word": "Tour",
+              "ipa": "/tʊər/",
+              "vi": "Chuyến du lịch",
+              "emoji": "✈️",
+              "pos": "Noun",
+              "ex": "A fun family tour."
+            },
+            {
+              "word": "Sure",
+              "ipa": "/ʃʊər/",
+              "vi": "Chắc chắn",
+              "emoji": "👍",
+              "pos": "Adj",
+              "ex": "Yes, I am sure."
+            },
+            {
+              "word": "Cure",
+              "ipa": "/kjʊər/",
+              "vi": "Chữa lành",
+              "emoji": "💊",
+              "pos": "Verb",
+              "ex": "Doctor helps cure pets."
+            }
+          ]
+        },
+        {
+          "ipa": "/p/",
+          "type": "consonant_unvoiced",
+          "name": "Voiceless P (p bật hơi)",
+          "guide": "Hai môi ngậm chặt chặn luồng khí, sau đó mở môi bật mạnh luồng khí ra ngoài. Dây thanh quản không rung.",
+          "soundWord": "pen",
+          "words": [
+            {
+              "word": "Pencil",
+              "ipa": "/ˈpen.səl/",
+              "vi": "Bút chì",
+              "emoji": "✏️",
+              "pos": "Noun",
+              "ex": "Write with pencil.",
+              "imageId": "ban_hoc"
+            },
+            {
+              "word": "Panda",
+              "ipa": "/ˈpæn.də/",
+              "vi": "Gấu trúc",
+              "emoji": "🐼",
+              "pos": "Noun",
+              "ex": "Panda eats bamboo.",
+              "imageId": "hoang_da_rung_xanh_2"
+            },
+            {
+              "word": "Pig",
+              "ipa": "/pɪɡ/",
+              "vi": "Con lợn",
+              "emoji": "🐷",
+              "pos": "Noun",
+              "ex": "Pink little pig.",
+              "imageId": "gia_suc_nong_trai_1"
+            }
+          ]
+        },
+        {
+          "ipa": "/b/",
+          "type": "consonant_voiced",
+          "name": "Voiced B (b rung)",
+          "guide": "Hai môi ngậm chặt, bật nhẹ ra đồng thời rung mạnh dây thanh quản trong cổ họng.",
+          "soundWord": "ball",
+          "words": [
+            {
+              "word": "Bear",
+              "ipa": "/beər/",
+              "vi": "Con gấu",
+              "emoji": "🐻",
+              "pos": "Noun",
+              "ex": "A brown bear.",
+              "imageId": "hoang_da_rung_xanh_1"
+            },
+            {
+              "word": "Book",
+              "ipa": "/bʊk/",
+              "vi": "Quyển sách",
+              "emoji": "📖",
+              "pos": "Noun",
+              "ex": "Open your book.",
+              "imageId": "ban_hoc"
+            },
+            {
+              "word": "Banana",
+              "ipa": "/bəˈnæn.ə/",
+              "vi": "Quả chuối",
+              "emoji": "🍌",
+              "pos": "Noun",
+              "ex": "Yellow sweet banana.",
+              "imageId": "sieu_thi"
+            }
+          ]
+        },
+        {
+          "ipa": "/t/",
+          "type": "consonant_unvoiced",
+          "name": "Voiceless T (t bật hơi)",
+          "guide": "Đầu lưỡi chạm chân răng cửa trên chặn luồng khí, sau đó bật mạnh hơi ra ngoài. Dây thanh quản không rung.",
+          "soundWord": "tea",
+          "words": [
+            {
+              "word": "Tiger",
+              "ipa": "/ˈtaɪ.ɡər/",
+              "vi": "Con hổ",
+              "emoji": "🐯",
+              "pos": "Noun",
+              "ex": "Tiger is strong.",
+              "imageId": "hoang_da_rung_xanh_1"
+            },
+            {
+              "word": "Teacher",
+              "ipa": "/ˈtiː.tʃər/",
+              "vi": "Giáo viên",
+              "emoji": "👩‍🏫",
+              "pos": "Noun",
+              "ex": "Good morning teacher.",
+              "imageId": "nn_lon_len_ban_lam_gi"
+            },
+            {
+              "word": "Tooth",
+              "ipa": "/tuːθ/",
+              "vi": "Răng",
+              "emoji": "🦷",
+              "pos": "Noun",
+              "ex": "Clean white tooth."
+            }
+          ]
+        },
+        {
+          "ipa": "/d/",
+          "type": "consonant_voiced",
+          "name": "Voiced D (d rung)",
+          "guide": "Đầu lưỡi chạm chân răng cửa trên, bật nhẹ ra ngoài đồng thời làm rung dây thanh quản trong cổ họng.",
+          "soundWord": "dog",
+          "words": [
+            {
+              "word": "Dog",
+              "ipa": "/dɒɡ/",
+              "vi": "Con chó",
+              "emoji": "🐶",
+              "pos": "Noun",
+              "ex": "The dog barks.",
+              "imageId": "family_08_pet_feeding"
+            },
+            {
+              "word": "Duck",
+              "ipa": "/dʌk/",
+              "vi": "Con vịt",
+              "emoji": "🦆",
+              "pos": "Noun",
+              "ex": "Yellow duck.",
+              "imageId": "gia_suc_nong_trai_2"
+            },
+            {
+              "word": "Desk",
+              "ipa": "/desk/",
+              "vi": "Bàn học",
+              "emoji": "🪵",
+              "pos": "Noun",
+              "ex": "Sit at your desk.",
+              "imageId": "ban_hoc"
+            }
+          ]
+        },
+        {
+          "ipa": "/k/",
+          "type": "consonant_unvoiced",
+          "name": "Voiceless K (k bật hơi)",
+          "guide": "Nâng phần sau của lưỡi chạm ngạc mềm chặn khí, sau đó hạ lưỡi bật mạnh luồng khí ra. Không rung cổ họng.",
+          "soundWord": "cat",
+          "words": [
+            {
+              "word": "Cat",
+              "ipa": "/kæt/",
+              "vi": "Con mèo",
+              "emoji": "🐱",
+              "pos": "Noun",
+              "ex": "The cat sleeps.",
+              "imageId": "family_08_pet_feeding"
+            },
+            {
+              "word": "Car",
+              "ipa": "/kɑːr/",
+              "vi": "Xe ô tô",
+              "emoji": "🚗",
+              "pos": "Noun",
+              "ex": "A red fast car.",
+              "imageId": "family_03_front_yard_car"
+            },
+            {
+              "word": "Kite",
+              "ipa": "/kaɪt/",
+              "vi": "Cái diều",
+              "emoji": "🪁",
+              "pos": "Noun",
+              "ex": "Fly a kite.",
+              "imageId": "canh_dong_tha_dieu"
+            }
+          ]
+        },
+        {
+          "ipa": "/ɡ/",
+          "type": "consonant_voiced",
+          "name": "Voiced G (g rung)",
+          "guide": "Nâng phần sau của lưỡi chạm ngạc mềm, hạ lưỡi bật nhẹ ra đồng thời làm rung dây thanh quản.",
+          "soundWord": "go",
+          "words": [
+            {
+              "word": "Goat",
+              "ipa": "/ɡəʊt/",
+              "vi": "Con dê",
+              "emoji": "🐐",
+              "pos": "Noun",
+              "ex": "A lovely goat.",
+              "imageId": "gia_suc_nong_trai_1"
+            },
+            {
+              "word": "Grape",
+              "ipa": "/ɡreɪp/",
+              "vi": "Quả nho",
+              "emoji": "🍇",
+              "pos": "Noun",
+              "ex": "Sweet purple grape."
+            },
+            {
+              "word": "Green",
+              "ipa": "/ɡriːn/",
+              "vi": "Xanh lá",
+              "emoji": "🟢",
+              "pos": "Adj",
+              "ex": "The frog is green."
+            }
+          ]
+        },
+        {
+          "ipa": "/tʃ/",
+          "type": "consonant_unvoiced",
+          "name": "Voiceless Ch (ch chu môi)",
+          "guide": "Môi hơi chu tròn ra phía trước. Đầu lưỡi chạm vòm miệng rồi buông ra nhẹ nhàng đẩy mạnh luồng khí. Không rung cổ.",
+          "soundWord": "chair",
+          "words": [
+            {
+              "word": "Chair",
+              "ipa": "/tʃeər/",
+              "vi": "Cái ghế",
+              "emoji": "🪑",
+              "pos": "Noun",
+              "ex": "Sit on the chair.",
+              "imageId": "ban_hoc"
+            },
+            {
+              "word": "Chicken",
+              "ipa": "/ˈtʃɪk.ɪn/",
+              "vi": "Con gà",
+              "emoji": "🐔",
+              "pos": "Noun",
+              "ex": "The chicken is in yard.",
+              "imageId": "do_an_chicken"
+            },
+            {
+              "word": "Cherry",
+              "ipa": "/ˈtʃer.i/",
+              "vi": "Quả anh đào",
+              "emoji": "🍒",
+              "pos": "Noun",
+              "ex": "Two red cherries."
+            }
+          ]
+        },
+        {
+          "ipa": "/dʒ/",
+          "type": "consonant_voiced",
+          "name": "Voiced J (j rung chu môi)",
+          "guide": "Môi chu tròn về trước, đầu lưỡi chạm vòm miệng rồi buông ra đẩy khí đồng thời làm rung mạnh dây thanh quản.",
+          "soundWord": "juice",
+          "words": [
+            {
+              "word": "Juice",
+              "ipa": "/dʒuːs/",
+              "vi": "Nước ép",
+              "emoji": "🧃",
+              "pos": "Noun",
+              "ex": "Drink orange juice."
+            },
+            {
+              "word": "Jacket",
+              "ipa": "/ˈdʒæk.ɪt/",
+              "vi": "Áo khoác",
+              "emoji": "🧥",
+              "pos": "Noun",
+              "ex": "Zip your jacket."
+            },
+            {
+              "word": "Giraffe",
+              "ipa": "/dʒɪˈrɑːf/",
+              "vi": "Hươu cao cổ",
+              "emoji": "🦒",
+              "pos": "Noun",
+              "ex": "Giraffe has long neck."
+            }
+          ]
+        },
+        {
+          "ipa": "/f/",
+          "type": "consonant_unvoiced",
+          "name": "Voiceless F (ph thổi hơi)",
+          "guide": "Hàm răng trên chạm nhẹ vào môi dưới, thổi luồng không khí thoát ra giữa răng và môi. Không rung cổ.",
+          "soundWord": "fish",
+          "words": [
+            {
+              "word": "Fish",
+              "ipa": "/fɪʃ/",
+              "vi": "Con cá",
+              "emoji": "🐟",
+              "pos": "Noun",
+              "ex": "Fish swims fast.",
+              "imageId": "do_an_fish_food"
+            },
+            {
+              "word": "Fox",
+              "ipa": "/fɒks/",
+              "vi": "Con cáo",
+              "emoji": "🦊",
+              "pos": "Noun",
+              "ex": "An orange fox."
+            },
+            {
+              "word": "Frog",
+              "ipa": "/frɒɡ/",
+              "vi": "Con ếch",
+              "emoji": "🐸",
+              "pos": "Noun",
+              "ex": "Green frog hops.",
+              "imageId": "sinh_vat_ao_ho"
+            }
+          ]
+        },
+        {
+          "ipa": "/v/",
+          "type": "consonant_voiced",
+          "name": "Voiced V (v rung răng môi)",
+          "guide": "Răng cửa hàm trên chạm nhẹ môi dưới, thổi khí ra ngoài đồng thời làm rung mạnh dây thanh quản.",
+          "soundWord": "van",
+          "words": [
+            {
+              "word": "Van",
+              "ipa": "/væn/",
+              "vi": "Xe tải nhỏ",
+              "emoji": "🚐",
+              "pos": "Noun",
+              "ex": "A yellow van."
+            },
+            {
+              "word": "Vest",
+              "ipa": "/vest/",
+              "vi": "Áo ghi-lê",
+              "emoji": "🦺",
+              "pos": "Noun",
+              "ex": "A smart vest."
+            },
+            {
+              "word": "Violin",
+              "ipa": "/ˌvaɪəˈlɪn/",
+              "vi": "Đàn vĩ cầm",
+              "emoji": "🎻",
+              "pos": "Noun",
+              "ex": "Play the violin."
+            }
+          ]
+        },
+        {
+          "ipa": "/θ/",
+          "type": "consonant_unvoiced",
+          "name": "Voiceless Th (th đặt lưỡi kẽ răng)",
+          "guide": "Đặt đầu lưỡi nhẹ giữa hai hàm răng, thổi luồng khí thoát ra ngoài. Không làm rung dây thanh quản.",
+          "soundWord": "think",
+          "words": [
+            {
+              "word": "Three",
+              "ipa": "/θriː/",
+              "vi": "Số ba",
+              "emoji": "3️⃣",
+              "pos": "Noun",
+              "ex": "Three yellow ducks."
+            },
+            {
+              "word": "Tooth",
+              "ipa": "/tuːθ/",
+              "vi": "Chiếc răng",
+              "emoji": "🦷",
+              "pos": "Noun",
+              "ex": "Clean white tooth."
+            },
+            {
+              "word": "Thirsty",
+              "ipa": "/ˈθɜː.sti/",
+              "vi": "Khát nước",
+              "emoji": "🥤",
+              "pos": "Adj",
+              "ex": "Minh is thirsty."
+            }
+          ]
+        },
+        {
+          "ipa": "/ð/",
+          "type": "consonant_voiced",
+          "name": "Voiced Th (th rung kẽ răng)",
+          "guide": "Đặt đầu lưỡi nhẹ giữa hai hàm răng, thổi luồng khí ra ngoài đồng thời làm rung dây thanh quản.",
+          "soundWord": "this",
+          "words": [
+            {
+              "word": "Mother",
+              "ipa": "/ˈmʌð.ər/",
+              "vi": "Mẹ",
+              "emoji": "👩",
+              "pos": "Noun",
+              "ex": "I love my mother.",
+              "imageId": "family_01_dinner"
+            },
+            {
+              "word": "Father",
+              "ipa": "/ˈfɑː.ðər/",
+              "vi": "Bố",
+              "emoji": "👨",
+              "pos": "Noun",
+              "ex": "My father is tall.",
+              "imageId": "family_03_front_yard_car"
+            },
+            {
+              "word": "Brother",
+              "ipa": "/ˈbrʌð.ər/",
+              "vi": "Anh em trai",
+              "emoji": "👦",
+              "pos": "Noun",
+              "ex": "He is my brother.",
+              "imageId": "gd_lam_anh"
+            }
+          ]
+        },
+        {
+          "ipa": "/s/",
+          "type": "consonant_unvoiced",
+          "name": "Voiceless S (s gió xì nhẹ)",
+          "guide": "Đầu lưỡi đặt gần nướu hàm trên, ép luồng khí xì thoát ra qua kẽ răng. Không rung thanh quản, môi thả lỏng.",
+          "soundWord": "sun",
+          "words": [
+            {
+              "word": "Sun",
+              "ipa": "/sʌn/",
+              "vi": "Mặt trời",
+              "emoji": "☀️",
+              "pos": "Noun",
+              "ex": "The sun shines."
+            },
+            {
+              "word": "Sister",
+              "ipa": "/ˈsɪs.tər/",
+              "vi": "Chị em gái",
+              "emoji": "👧",
+              "pos": "Noun",
+              "ex": "She is my sister."
+            },
+            {
+              "word": "School",
+              "ipa": "/skuːl/",
+              "vi": "Trường học",
+              "emoji": "🏫",
+              "pos": "Noun",
+              "ex": "I go to school."
+            }
+          ]
+        },
+        {
+          "ipa": "/z/",
+          "type": "consonant_voiced",
+          "name": "Voiced Z (z rung cổ)",
+          "guide": "Khẩu hình giống âm /s/ nhưng làm rung mạnh dây thanh quản trong cổ họng tạo âm zzz.",
+          "soundWord": "zoo",
+          "words": [
+            {
+              "word": "Zebra",
+              "ipa": "/ˈzeb.rə/",
+              "vi": "Con ngựa vằn",
+              "emoji": "🦓",
+              "pos": "Noun",
+              "ex": "Zebra at the zoo.",
+              "imageId": "hoang_da_dong_co_1"
+            },
+            {
+              "word": "Zoo",
+              "ipa": "/zuː/",
+              "vi": "Sở thú",
+              "emoji": "🦁",
+              "pos": "Noun",
+              "ex": "Visit the zoo.",
+              "imageId": "noi_chon_zoo"
+            },
+            {
+              "word": "Zipper",
+              "ipa": "/ˈzɪp.ər/",
+              "vi": "Khóa kéo",
+              "emoji": "🤐",
+              "pos": "Noun",
+              "ex": "Zip the jacket."
+            }
+          ]
+        },
+        {
+          "ipa": "/ʃ/",
+          "type": "consonant_unvoiced",
+          "name": "Voiceless Sh (sh xì tròn môi)",
+          "guide": "Môi chu tròn hướng về phía trước, mặt lưỡi chạm vòm miệng trên, xì luồng hơi mạnh ra ngoài. Không rung cổ.",
+          "soundWord": "ship",
+          "words": [
+            {
+              "word": "Sheep",
+              "ipa": "/ʃiːp/",
+              "vi": "Con cừu",
+              "emoji": "🐑",
+              "pos": "Noun",
+              "ex": "White sheep on farm.",
+              "imageId": "dv_chu_be_chan_cuu"
+            },
+            {
+              "word": "Shark",
+              "ipa": "/ʃɑːk/",
+              "vi": "Cá mập",
+              "emoji": "🦈",
+              "pos": "Noun",
+              "ex": "Shark has sharp teeth."
+            },
+            {
+              "word": "Shoes",
+              "ipa": "/ʃuːz/",
+              "vi": "Đôi giày",
+              "emoji": "👟",
+              "pos": "Noun",
+              "ex": "Tie your shoes."
+            }
+          ]
+        },
+        {
+          "ipa": "/ʒ/",
+          "type": "consonant_voiced",
+          "name": "Voiced Zh (zh rung tròn môi)",
+          "guide": "Khẩu hình chu môi giống âm /ʃ/, đồng thời làm rung mạnh dây thanh quản trong cổ họng.",
+          "soundWord": "vision",
+          "words": [
+            {
+              "word": "Measure",
+              "ipa": "/ˈmeʒ.ər/",
+              "vi": "Đo lường",
+              "emoji": "📏",
+              "pos": "Verb",
+              "ex": "Measure with ruler."
+            },
+            {
+              "word": "Television",
+              "ipa": "/ˈtel.ɪˌvɪʒ.ən/",
+              "vi": "Tivi",
+              "emoji": "📺",
+              "pos": "Noun",
+              "ex": "Watch television."
+            },
+            {
+              "word": "Pleasure",
+              "ipa": "/ˈpleʒ.ər/",
+              "vi": "Niềm vui thích",
+              "emoji": "😊",
+              "pos": "Noun",
+              "ex": "With great pleasure."
+            }
+          ]
+        },
+        {
+          "ipa": "/m/",
+          "type": "consonant_voiced",
+          "name": "Voiced M (m mũi)",
+          "guide": "Hai môi ngậm chặt, luồng không khí thoát hoàn toàn qua đường mũi, rung dây thanh quản.",
+          "soundWord": "man",
+          "words": [
+            {
+              "word": "Monkey",
+              "ipa": "/ˈmʌŋ.ki/",
+              "vi": "Con khỉ",
+              "emoji": "🐒",
+              "pos": "Noun",
+              "ex": "Monkey climbs trees.",
+              "imageId": "hoang_da_rung_xanh_1"
+            },
+            {
+              "word": "Mother",
+              "ipa": "/ˈmʌð.ər/",
+              "vi": "Mẹ",
+              "emoji": "👩",
+              "pos": "Noun",
+              "ex": "I love my mother.",
+              "imageId": "family_01_dinner"
+            },
+            {
+              "word": "Map",
+              "ipa": "/mæp/",
+              "vi": "Bản đồ",
+              "emoji": "🗺️",
+              "pos": "Noun",
+              "ex": "Look at the map."
+            }
+          ]
+        },
+        {
+          "ipa": "/n/",
+          "type": "consonant_voiced",
+          "name": "Voiced N (n mũi)",
+          "guide": "Đầu lưỡi chạm lợi hàm trên chặn khí, luồng khí thoát qua đường mũi, rung dây thanh quản.",
+          "soundWord": "nose",
+          "words": [
+            {
+              "word": "Nose",
+              "ipa": "/nəʊz/",
+              "vi": "Cái mũi",
+              "emoji": "👃",
+              "pos": "Noun",
+              "ex": "Touch your nose."
+            },
+            {
+              "word": "Notebook",
+              "ipa": "/ˈnəʊt.bʊk/",
+              "vi": "Quyển vở",
+              "emoji": "📓",
+              "pos": "Noun",
+              "ex": "Write in notebook."
+            },
+            {
+              "word": "Noodles",
+              "ipa": "/ˈnuː.dəl/",
+              "vi": "Mì sợi",
+              "emoji": "🍜",
+              "pos": "Noun",
+              "ex": "Yummy hot noodles."
+            }
+          ]
+        },
+        {
+          "ipa": "/ŋ/",
+          "type": "consonant_voiced",
+          "name": "Voiced Ng (ng ngạc mềm)",
+          "guide": "Cuống lưỡi nâng lên chạm ngạc mềm, luồng khí thoát ra từ mũi, rung dây thanh quản.",
+          "soundWord": "sing",
+          "words": [
+            {
+              "word": "Sing",
+              "ipa": "/sɪŋ/",
+              "vi": "Ca hát",
+              "emoji": "🎵",
+              "pos": "Verb",
+              "ex": "Sing English songs."
+            },
+            {
+              "word": "Pink",
+              "ipa": "/pɪŋk/",
+              "vi": "Màu hồng",
+              "emoji": "🌸",
+              "pos": "Adj",
+              "ex": "A pretty pink dress."
+            },
+            {
+              "word": "Morning",
+              "ipa": "/ˈmɔː.nɪŋ/",
+              "vi": "Buổi sáng",
+              "emoji": "🌅",
+              "pos": "Noun",
+              "ex": "Good morning teacher."
+            }
+          ]
+        },
+        {
+          "ipa": "/h/",
+          "type": "consonant_unvoiced",
+          "name": "Voiceless H (h thở nhẹ)",
+          "guide": "Môi hé mở tự nhiên, luồng khí thở nhẹ đẩy ra từ sâu trong cổ họng. Dây thanh quản không rung.",
+          "soundWord": "hat",
+          "words": [
+            {
+              "word": "Hat",
+              "ipa": "/hæt/",
+              "vi": "Cái mũ",
+              "emoji": "👒",
+              "pos": "Noun",
+              "ex": "Wear yellow hat.",
+              "imageId": "do_vat_hat"
+            },
+            {
+              "word": "Horse",
+              "ipa": "/hɔːs/",
+              "vi": "Con ngựa",
+              "emoji": "🐴",
+              "pos": "Noun",
+              "ex": "The horse runs.",
+              "imageId": "gia_suc_nong_trai_1"
+            },
+            {
+              "word": "Hand",
+              "ipa": "/hænd/",
+              "vi": "Bàn tay",
+              "emoji": "✋",
+              "pos": "Noun",
+              "ex": "Hands up!"
+            }
+          ]
+        },
+        {
+          "ipa": "/l/",
+          "type": "consonant_voiced",
+          "name": "Voiced L (l cong lưỡi)",
+          "guide": "Đầu lưỡi chạm nhẹ vào nướu răng cửa trên, luồng khí thoát ra hai bên cạnh lưỡi, rung dây thanh quản.",
+          "soundWord": "lion",
+          "words": [
+            {
+              "word": "Lion",
+              "ipa": "/ˈlaɪ.ən/",
+              "vi": "Sư tử",
+              "emoji": "🦁",
+              "pos": "Noun",
+              "ex": "Lion is strong.",
+              "imageId": "hoang_da_dong_co_1"
+            },
+            {
+              "word": "Lemon",
+              "ipa": "/ˈlem.ən/",
+              "vi": "Quả chanh vàng",
+              "emoji": "🍋",
+              "pos": "Noun",
+              "ex": "Sour yellow lemon."
+            },
+            {
+              "word": "Leg",
+              "ipa": "/leɡ/",
+              "vi": "Cái chân",
+              "emoji": "🦵",
+              "pos": "Noun",
+              "ex": "Two strong legs."
+            }
+          ]
+        },
+        {
+          "ipa": "/r/",
+          "type": "consonant_voiced",
+          "name": "Voiced R (r cuộn lưỡi)",
+          "guide": "Cuộn đầu lưỡi vào trong khoang miệng không chạm ngạc trên, môi hơi tròn, rung dây thanh quản.",
+          "soundWord": "red",
+          "words": [
+            {
+              "word": "Rabbit",
+              "ipa": "/ˈræb.ɪt/",
+              "vi": "Con thỏ",
+              "emoji": "🐰",
+              "pos": "Noun",
+              "ex": "The rabbit hops.",
+              "imageId": "dv_doi_tai_xau_xi"
+            },
+            {
+              "word": "Ruler",
+              "ipa": "/ˈruː.lər/",
+              "vi": "Thước kẻ",
+              "emoji": "📏",
+              "pos": "Noun",
+              "ex": "A straight ruler."
+            },
+            {
+              "word": "Red",
+              "ipa": "/red/",
+              "vi": "Màu đỏ",
+              "emoji": "🔴",
+              "pos": "Adj",
+              "ex": "Red juicy apple."
+            }
+          ]
+        },
+        {
+          "ipa": "/w/",
+          "type": "consonant_voiced",
+          "name": "Voiced W (w tròn môi)",
+          "guide": "Môi tròn chu về phía trước giống khi phát âm /uː/, mở nhanh sang hai bên và làm rung thanh quản.",
+          "soundWord": "water",
+          "words": [
+            {
+              "word": "Water",
+              "ipa": "/ˈwɔː.tər/",
+              "vi": "Nước uống",
+              "emoji": "💧",
+              "pos": "Noun",
+              "ex": "Drink fresh water.",
+              "imageId": "do_an_water"
+            },
+            {
+              "word": "Watch",
+              "ipa": "/wɒtʃ/",
+              "vi": "Đồng hồ đeo tay",
+              "emoji": "⌚",
+              "pos": "Noun",
+              "ex": "Look at my watch."
+            },
+            {
+              "word": "Window",
+              "ipa": "/ˈwɪn.dəʊ/",
+              "vi": "Cửa sổ",
+              "emoji": "🪟",
+              "pos": "Noun",
+              "ex": "Open the window.",
+              "imageId": "ba_chau_ben_cua_so"
+            }
+          ]
+        },
+        {
+          "ipa": "/j/",
+          "type": "consonant_voiced",
+          "name": "Voiced Y (y bán nguyên âm)",
+          "guide": "Nâng phần thân lưỡi lên gần ngạc cứng, đẩy khí mượt mà thoát ra và làm rung dây thanh quản.",
+          "soundWord": "yes",
+          "words": [
+            {
+              "word": "Yellow",
+              "ipa": "/ˈjel.əʊ/",
+              "vi": "Màu vàng",
+              "emoji": "🟡",
+              "pos": "Adj",
+              "ex": "Bright yellow sun."
+            },
+            {
+              "word": "Yo-yo",
+              "ipa": "/ˈjəʊ.jəʊ/",
+              "vi": "Đồ chơi Yo-yo",
+              "emoji": "🪀",
+              "pos": "Noun",
+              "ex": "Play with yo-yo."
+            },
+            {
+              "word": "Yogurt",
+              "ipa": "/ˈjɒɡ.ət/",
+              "vi": "Sữa chua",
+              "emoji": "🍧",
+              "pos": "Noun",
+              "ex": "Eat sweet yogurt."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "image_catalog_version": 6,
+  "image_catalog_count": 209,
+  "image_catalog_file": "assets/data/shared_image_catalog.json",
+  "image_note": "Ưu tiên imageId từ kho ảnh dùng chung; đường dẫn ảnh legacy chỉ giữ để tương thích dữ liệu cũ."
+}

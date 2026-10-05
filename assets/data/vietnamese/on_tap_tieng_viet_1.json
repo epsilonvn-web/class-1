@@ -1,0 +1,4686 @@
+{
+  "schema_version": "EPSILON_TV1_REVIEW_V1",
+  "data_version": "2026-10-03-structure-v1",
+  "subject": "Tiếng Việt",
+  "grade": 1,
+  "title": "Ôn tập Tiếng Việt 1",
+  "legacy_topic_id": 13,
+  "desc": "Ôn tập Học kỳ 1 và Học kỳ 2 theo dạng bài trong sách giáo khoa, sách bài tập và đề kiểm tra lớp 1.",
+  "l_title": "Ôn tập học kỳ",
+  "l_content": "Mỗi học kỳ gồm 100 câu tổng hợp ngữ âm, chính tả, vốn từ, từ loại, câu, dấu câu và đọc hiểu; câu hỏi được rà soát để tránh đáp án trùng, mơ hồ hoặc lỗi chính tả.",
+  "l_audio": "Bé hãy chọn Học kỳ 1 hoặc Học kỳ 2 để ôn tập tổng hợp nhé!",
+  "sections": [
+    {
+      "id": "hk1",
+      "name": "Ôn tập Học kỳ 1",
+      "question_count": 100,
+      "qs": [
+        {
+          "id": 11001,
+          "sub": "Học kỳ 1",
+          "q": "Chữ nào là nguyên âm?",
+          "o": [
+            "b",
+            "m",
+            "a",
+            "t"
+          ],
+          "a": "a",
+          "h": "Đúng rồi! Đáp án là \"a\".",
+          "emoji": "🔤",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 11002,
+          "sub": "Học kỳ 1",
+          "q": "Chữ nào là phụ âm?",
+          "o": [
+            "e",
+            "b",
+            "a",
+            "o"
+          ],
+          "a": "b",
+          "h": "Đúng rồi! Đáp án là \"b\".",
+          "emoji": "🔤",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 11003,
+          "sub": "Học kỳ 1",
+          "q": "Âm ghép nào có trong “chó”?",
+          "o": [
+            "th",
+            "ch",
+            "tr",
+            "nh"
+          ],
+          "a": "ch",
+          "h": "Đúng rồi! Đáp án là \"ch\".",
+          "emoji": "🐶",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 11004,
+          "sub": "Học kỳ 1",
+          "q": "Âm ghép nào có trong “trâu”?",
+          "o": [
+            "ph",
+            "ch",
+            "th",
+            "tr"
+          ],
+          "a": "tr",
+          "h": "Đúng rồi! Đáp án là \"tr\".",
+          "emoji": "🐃",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 11005,
+          "sub": "Học kỳ 1",
+          "q": "Tiếng “bé” mang thanh gì?",
+          "o": [
+            "thanh nặng",
+            "thanh hỏi",
+            "thanh huyền",
+            "thanh sắc"
+          ],
+          "a": "thanh sắc",
+          "h": "Đúng rồi! Đáp án là \"thanh sắc\".",
+          "emoji": "🎵",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 11006,
+          "sub": "Học kỳ 1",
+          "q": "Tiếng “bà” mang thanh gì?",
+          "o": [
+            "thanh sắc",
+            "thanh huyền",
+            "thanh ngã",
+            "thanh hỏi"
+          ],
+          "a": "thanh huyền",
+          "h": "Đúng rồi! Đáp án là \"thanh huyền\".",
+          "emoji": "🎵",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 11007,
+          "sub": "Học kỳ 1",
+          "q": "Tiếng “mũ” mang thanh gì?",
+          "o": [
+            "thanh nặng",
+            "thanh hỏi",
+            "thanh sắc",
+            "thanh ngã"
+          ],
+          "a": "thanh ngã",
+          "h": "Đúng rồi! Đáp án là \"thanh ngã\".",
+          "emoji": "🎵",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 11008,
+          "sub": "Học kỳ 1",
+          "q": "Tiếng “vở” mang thanh gì?",
+          "o": [
+            "thanh sắc",
+            "thanh hỏi",
+            "thanh ngã",
+            "thanh huyền"
+          ],
+          "a": "thanh hỏi",
+          "h": "Đúng rồi! Đáp án là \"thanh hỏi\".",
+          "emoji": "🎵",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 11009,
+          "sub": "Học kỳ 1",
+          "q": "Tiếng “mẹ” mang thanh gì?",
+          "o": [
+            "thanh ngang",
+            "thanh sắc",
+            "thanh nặng",
+            "thanh huyền"
+          ],
+          "a": "thanh nặng",
+          "h": "Đúng rồi! Đáp án là \"thanh nặng\".",
+          "emoji": "🎵",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 11010,
+          "sub": "Học kỳ 1",
+          "q": "Ghép b + a được tiếng nào?",
+          "o": [
+            "bă",
+            "ba",
+            "be",
+            "ab"
+          ],
+          "a": "ba",
+          "h": "Đúng rồi! Đáp án là \"ba\".",
+          "emoji": "🧩",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 11011,
+          "sub": "Học kỳ 1",
+          "q": "Ghép c + ao được tiếng nào?",
+          "o": [
+            "cao",
+            "coa",
+            "cau",
+            "caoo"
+          ],
+          "a": "cao",
+          "h": "Đúng rồi! Đáp án là \"cao\".",
+          "emoji": "🧩",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 11012,
+          "sub": "Học kỳ 1",
+          "q": "Ghép th + ỏ được tiếng nào?",
+          "o": [
+            "hỏ",
+            "thỏ",
+            "tỏ",
+            "trỏ"
+          ],
+          "a": "thỏ",
+          "h": "Đúng rồi! Đáp án là \"thỏ\".",
+          "emoji": "🐰",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 11013,
+          "sub": "Học kỳ 1",
+          "q": "Vần nào có trong tiếng “cam”?",
+          "o": [
+            "am",
+            "ăm",
+            "an",
+            "ang"
+          ],
+          "a": "am",
+          "h": "Đúng rồi! Đáp án là \"am\".",
+          "emoji": "🍊",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 11014,
+          "sub": "Học kỳ 1",
+          "q": "Vần nào có trong tiếng “sen”?",
+          "o": [
+            "ên",
+            "em",
+            "en",
+            "eng"
+          ],
+          "a": "en",
+          "h": "Đúng rồi! Đáp án là \"en\".",
+          "emoji": "🪷",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 11015,
+          "sub": "Học kỳ 1",
+          "q": "Vần nào có trong tiếng “bông”?",
+          "o": [
+            "ông",
+            "ong",
+            "ung",
+            "ang"
+          ],
+          "a": "ông",
+          "h": "Tiếng “bông” có vần “ông”.",
+          "emoji": "🌼",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 11016,
+          "sub": "Học kỳ 1",
+          "q": "Tiếng nào có vần “ươn”?",
+          "o": [
+            "vàng",
+            "viên",
+            "vườn",
+            "vần"
+          ],
+          "a": "vườn",
+          "h": "Đúng rồi! Đáp án là \"vườn\".",
+          "emoji": "🌿",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 11017,
+          "sub": "Học kỳ 1",
+          "q": "Tiếng nào bắt đầu bằng ng?",
+          "o": [
+            "nghỉ",
+            "ghế",
+            "gà",
+            "ngủ"
+          ],
+          "a": "ngủ",
+          "h": "Đúng rồi! Đáp án là \"ngủ\".",
+          "emoji": "😴",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 11018,
+          "sub": "Học kỳ 1",
+          "q": "Tiếng nào bắt đầu bằng ngh?",
+          "o": [
+            "ngà",
+            "nghỉ",
+            "ngủ",
+            "ghe"
+          ],
+          "a": "nghỉ",
+          "h": "Đúng rồi! Đáp án là \"nghỉ\".",
+          "emoji": "🏖️",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 11019,
+          "sub": "Học kỳ 1",
+          "q": "Tiếng nào bắt đầu bằng gh?",
+          "o": [
+            "gió",
+            "khe",
+            "ghế",
+            "gà"
+          ],
+          "a": "ghế",
+          "h": "Đúng rồi! Đáp án là \"ghế\".",
+          "emoji": "🪑",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 11020,
+          "sub": "Học kỳ 1",
+          "q": "Tiếng nào bắt đầu bằng k?",
+          "o": [
+            "kéo",
+            "gà",
+            "cá",
+            "quạt"
+          ],
+          "a": "kéo",
+          "h": "Đúng rồi! Đáp án là \"kéo\".",
+          "emoji": "✂️",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 11021,
+          "sub": "Học kỳ 1",
+          "q": "Điền ng/ngh: “...ỉ hè”",
+          "o": [
+            "ng",
+            "ngh",
+            "gh",
+            "g"
+          ],
+          "a": "ngh",
+          "h": "Đúng rồi! \"ngh\" là cách đúng.",
+          "emoji": "🏖️",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 11022,
+          "sub": "Học kỳ 1",
+          "q": "Điền ng/ngh: “giấc ...ủ”",
+          "o": [
+            "gh",
+            "ngh",
+            "ng",
+            "g"
+          ],
+          "a": "ng",
+          "h": "Đúng rồi! \"ng\" là cách đúng.",
+          "emoji": "😴",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 11023,
+          "sub": "Học kỳ 1",
+          "q": "Điền g/gh: “...ế gỗ”",
+          "o": [
+            "k",
+            "g",
+            "c",
+            "gh"
+          ],
+          "a": "gh",
+          "h": "Đúng rồi! \"gh\" là cách đúng.",
+          "emoji": "🪑",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 11024,
+          "sub": "Học kỳ 1",
+          "q": "Điền g/gh: “...à con”",
+          "o": [
+            "g",
+            "gh",
+            "c",
+            "k"
+          ],
+          "a": "g",
+          "h": "Đúng rồi! \"g\" là cách đúng.",
+          "emoji": "🐔",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 11025,
+          "sub": "Học kỳ 1",
+          "q": "Điền c/k: “...ái ca”",
+          "o": [
+            "c",
+            "k",
+            "g",
+            "q"
+          ],
+          "a": "c",
+          "h": "Đúng rồi! \"c\" là cách đúng.",
+          "emoji": "🥤",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 11026,
+          "sub": "Học kỳ 1",
+          "q": "Điền c/k: “...ái kéo”",
+          "o": [
+            "k",
+            "q",
+            "g",
+            "c"
+          ],
+          "a": "k",
+          "h": "Đúng rồi! \"k\" là cách đúng.",
+          "emoji": "✂️",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 11027,
+          "sub": "Học kỳ 1",
+          "q": "Điền s/x: “hoa ...en”",
+          "o": [
+            "tr",
+            "ch",
+            "s",
+            "x"
+          ],
+          "a": "s",
+          "h": "Đúng rồi! \"s\" là cách đúng.",
+          "emoji": "🪷",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 11028,
+          "sub": "Học kỳ 1",
+          "q": "Điền s/x: “...e đạp”",
+          "o": [
+            "tr",
+            "s",
+            "ch",
+            "x"
+          ],
+          "a": "x",
+          "h": "Đúng rồi! \"x\" là cách đúng.",
+          "emoji": "🚲",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 11029,
+          "sub": "Học kỳ 1",
+          "q": "Điền ch/tr: “...ú chó”",
+          "o": [
+            "ch",
+            "nh",
+            "tr",
+            "th"
+          ],
+          "a": "ch",
+          "h": "Đúng rồi! \"ch\" là cách đúng.",
+          "emoji": "🐶",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 11030,
+          "sub": "Học kỳ 1",
+          "q": "Điền ch/tr: “...ái cam”",
+          "o": [
+            "th",
+            "ch",
+            "ph",
+            "tr"
+          ],
+          "a": "tr",
+          "h": "Đúng rồi! \"tr\" là cách đúng.",
+          "emoji": "🍊",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 11031,
+          "sub": "Học kỳ 1",
+          "q": "Điền l/n: “...á cây”",
+          "o": [
+            "n",
+            "l",
+            "m",
+            "h"
+          ],
+          "a": "l",
+          "h": "Đúng rồi! \"l\" là cách đúng.",
+          "emoji": "🍃",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 11032,
+          "sub": "Học kỳ 1",
+          "q": "Điền l/n: “cái ...ón”",
+          "o": [
+            "n",
+            "l",
+            "m",
+            "h"
+          ],
+          "a": "n",
+          "h": "Đúng rồi! \"n\" là cách đúng.",
+          "emoji": "👒",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 11033,
+          "sub": "Học kỳ 1",
+          "q": "Từ nào viết đúng?",
+          "o": [
+            "ngệ sĩ",
+            "nghệ xĩ",
+            "ngệ xĩ",
+            "nghệ sĩ"
+          ],
+          "a": "nghệ sĩ",
+          "h": "Đúng rồi! \"nghệ sĩ\" là cách đúng.",
+          "emoji": "🎨",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 11034,
+          "sub": "Học kỳ 1",
+          "q": "Từ nào viết đúng?",
+          "o": [
+            "sân trường",
+            "xân chường",
+            "xân trường",
+            "sân chường"
+          ],
+          "a": "sân trường",
+          "h": "Đúng rồi! \"sân trường\" là cách đúng.",
+          "emoji": "🏫",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 11035,
+          "sub": "Học kỳ 1",
+          "q": "Từ nào viết đúng?",
+          "o": [
+            "chăn châu",
+            "chăn tâu",
+            "chăn trâu",
+            "chăn xâu"
+          ],
+          "a": "chăn trâu",
+          "h": "Đúng rồi! \"chăn trâu\" là cách đúng.",
+          "emoji": "🐃",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 11036,
+          "sub": "Học kỳ 1",
+          "q": "Từ nào viết đúng?",
+          "o": [
+            "giày dẹp",
+            "rày dép",
+            "giày dép",
+            "dày dép"
+          ],
+          "a": "giày dép",
+          "h": "Đúng rồi! \"giày dép\" là cách đúng.",
+          "emoji": "👟",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 11037,
+          "sub": "Học kỳ 1",
+          "q": "Từ nào viết đúng?",
+          "o": [
+            "giửa tay",
+            "rửa tay",
+            "dửa tay",
+            "rữa tay"
+          ],
+          "a": "rửa tay",
+          "h": "Đúng rồi! \"rửa tay\" là cách đúng.",
+          "emoji": "🧼",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 11038,
+          "sub": "Học kỳ 1",
+          "q": "Từ nào viết đúng?",
+          "o": [
+            "quả kam",
+            "của cam",
+            "qủa cam",
+            "quả cam"
+          ],
+          "a": "quả cam",
+          "h": "Đúng rồi! \"quả cam\" là cách đúng.",
+          "emoji": "🍊",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 11039,
+          "sub": "Học kỳ 1",
+          "q": "Câu nào viết đúng tên người?",
+          "o": [
+            "Lan đi học.",
+            "lan đi học.",
+            "LAN đi học.",
+            "lAn đi học."
+          ],
+          "a": "Lan đi học.",
+          "h": "Tên người “Lan” phải viết hoa chữ cái đầu.",
+          "emoji": "👧",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 11040,
+          "sub": "Học kỳ 1",
+          "q": "Câu nào viết đúng tên địa danh?",
+          "o": [
+            "Em sống ở Hà Nội.",
+            "Em sống ở hà nội.",
+            "Em sống ở Hà nội.",
+            "Em sống ở hà Nội."
+          ],
+          "a": "Em sống ở Hà Nội.",
+          "h": "Tên địa danh “Hà Nội” viết hoa chữ cái đầu của mỗi tiếng.",
+          "emoji": "🏙️",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 11041,
+          "sub": "Học kỳ 1",
+          "q": "Từ nào chỉ sự vật?",
+          "o": [
+            "bút chì",
+            "dài",
+            "đẹp",
+            "viết"
+          ],
+          "a": "bút chì",
+          "h": "Đúng rồi! Đáp án là \"bút chì\".",
+          "emoji": "✏️",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C3",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 11042,
+          "sub": "Học kỳ 1",
+          "q": "Từ nào chỉ hoạt động?",
+          "o": [
+            "đọc sách",
+            "quyển sách",
+            "hay",
+            "dày"
+          ],
+          "a": "đọc sách",
+          "h": "Đúng rồi! Đáp án là \"đọc sách\".",
+          "emoji": "📖",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C4",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 11043,
+          "sub": "Học kỳ 1",
+          "q": "Từ nào chỉ đặc điểm?",
+          "o": [
+            "bé",
+            "cô giáo",
+            "ngoan ngoãn",
+            "học bài"
+          ],
+          "a": "ngoan ngoãn",
+          "h": "Đúng rồi! Đáp án là \"ngoan ngoãn\".",
+          "emoji": "😊",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C3",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 11044,
+          "sub": "Học kỳ 1",
+          "q": "Điền từ: “Con cá ... dưới nước.”",
+          "o": [
+            "ngủ",
+            "chạy",
+            "bơi",
+            "bay"
+          ],
+          "a": "bơi",
+          "h": "Đúng rồi! Đáp án là \"bơi\".",
+          "emoji": "🐟",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C4",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 11045,
+          "sub": "Học kỳ 1",
+          "q": "Điền từ: “Bông hoa rất ...”",
+          "o": [
+            "đẹp",
+            "chạy",
+            "ăn",
+            "đọc"
+          ],
+          "a": "đẹp",
+          "h": "Đúng rồi! Đáp án là \"đẹp\".",
+          "emoji": "🌸",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C4",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 11046,
+          "sub": "Học kỳ 1",
+          "q": "Điền từ: “Bé ... bài.”",
+          "o": [
+            "xanh",
+            "tròn",
+            "ngọt",
+            "viết"
+          ],
+          "a": "viết",
+          "h": "Đúng rồi! Đáp án là \"viết\".",
+          "emoji": "✍️",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C4",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 11047,
+          "sub": "Học kỳ 1",
+          "q": "Câu nào đúng?",
+          "o": [
+            "Đi học bé.",
+            "Bé đi học.",
+            "Học bé đi.",
+            "Bé học đi."
+          ],
+          "a": "Bé đi học.",
+          "h": "Đúng rồi! Đáp án là \"Bé đi học.\".",
+          "emoji": "🏫",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C4",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 11048,
+          "sub": "Học kỳ 1",
+          "q": "Câu nào đúng?",
+          "o": [
+            "Mẹ cơm nấu.",
+            "Mẹ nấu cơm.",
+            "Nấu mẹ cơm.",
+            "Cơm mẹ nấu."
+          ],
+          "a": "Mẹ nấu cơm.",
+          "h": "Đúng rồi! Đáp án là \"Mẹ nấu cơm.\".",
+          "emoji": "🍚",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C4",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 11049,
+          "sub": "Học kỳ 1",
+          "q": "Từ trái nghĩa với “to” là gì?",
+          "o": [
+            "rộng",
+            "cao",
+            "dài",
+            "nhỏ"
+          ],
+          "a": "nhỏ",
+          "h": "Đúng rồi! Đáp án là \"nhỏ\".",
+          "emoji": "↔️",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C3",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 11050,
+          "sub": "Học kỳ 1",
+          "q": "Từ trái nghĩa với “nóng” là gì?",
+          "o": [
+            "lạnh",
+            "mát",
+            "khô",
+            "ấm"
+          ],
+          "a": "lạnh",
+          "h": "Đúng rồi! Đáp án là \"lạnh\".",
+          "emoji": "↔️",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C3",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 11051,
+          "sub": "Học kỳ 1",
+          "q": "Từ gần nghĩa với “xinh” là gì?",
+          "o": [
+            "xấu",
+            "cao",
+            "đẹp",
+            "nhanh"
+          ],
+          "a": "đẹp",
+          "h": "Đúng rồi! Đáp án là \"đẹp\".",
+          "emoji": "🌸",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C3",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 11052,
+          "sub": "Học kỳ 1",
+          "q": "Từ nào khác nhóm?",
+          "o": [
+            "chạy",
+            "quyển vở",
+            "bút chì",
+            "cái thước"
+          ],
+          "a": "chạy",
+          "h": "Đúng rồi! Đáp án là \"chạy\".",
+          "emoji": "🎯",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C3",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 11053,
+          "sub": "Học kỳ 1",
+          "q": "Dấu nào đặt cuối câu kể?",
+          "o": [
+            "dấu hỏi",
+            "dấu hai chấm",
+            "dấu phẩy",
+            "dấu chấm"
+          ],
+          "a": "dấu chấm",
+          "h": "Đúng rồi! Đáp án là \"dấu chấm\".",
+          "emoji": "✍️",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C4",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 11054,
+          "sub": "Học kỳ 1",
+          "q": "Dấu nào đặt cuối câu hỏi?",
+          "o": [
+            "dấu gạch ngang",
+            "dấu chấm",
+            "dấu phẩy",
+            "dấu hỏi"
+          ],
+          "a": "dấu hỏi",
+          "h": "Đúng rồi! Đáp án là \"dấu hỏi\".",
+          "emoji": "❓",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C4",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 11055,
+          "sub": "Học kỳ 1",
+          "q": "Câu nào là câu hỏi?",
+          "o": [
+            "Bé ăn cơm.",
+            "Bé ăn cơm rất ngon.",
+            "Bé đã ăn cơm chưa?",
+            "Bé hãy ăn cơm."
+          ],
+          "a": "Bé đã ăn cơm chưa?",
+          "h": "Đúng rồi! Đáp án là \"Bé đã ăn cơm chưa?\".",
+          "emoji": "❓",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C4",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 11056,
+          "sub": "Học kỳ 1",
+          "q": "Từ nào chỉ người?",
+          "o": [
+            "cô giáo",
+            "xanh",
+            "chạy",
+            "bút chì"
+          ],
+          "a": "cô giáo",
+          "h": "Đúng rồi! Đáp án là \"cô giáo\".",
+          "emoji": "👩‍🏫",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C3",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 11057,
+          "sub": "Học kỳ 1",
+          "q": "Từ nào chỉ con vật?",
+          "o": [
+            "mềm",
+            "cái ghế",
+            "con mèo",
+            "đọc sách"
+          ],
+          "a": "con mèo",
+          "h": "Đúng rồi! Đáp án là \"con mèo\".",
+          "emoji": "🐱",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C3",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 11058,
+          "sub": "Học kỳ 1",
+          "q": "Từ nào chỉ đồ vật?",
+          "o": [
+            "bơi",
+            "mẹ",
+            "ngoan",
+            "cái cặp"
+          ],
+          "a": "cái cặp",
+          "h": "Đúng rồi! Đáp án là \"cái cặp\".",
+          "emoji": "🎒",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C3",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 11059,
+          "sub": "Học kỳ 1",
+          "q": "Từ nào chỉ màu sắc?",
+          "o": [
+            "đỏ",
+            "chạy",
+            "cái bàn",
+            "hát"
+          ],
+          "a": "đỏ",
+          "h": "Đúng rồi! Đáp án là \"đỏ\".",
+          "emoji": "🔴",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C3",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 11060,
+          "sub": "Học kỳ 1",
+          "q": "Từ nào chỉ hoạt động học tập?",
+          "o": [
+            "chăm chỉ",
+            "đọc bài",
+            "bàn học",
+            "cô giáo"
+          ],
+          "a": "đọc bài",
+          "h": "Đúng rồi! Đáp án là \"đọc bài\".",
+          "emoji": "📚",
+          "week": 12,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C4",
+            "week12",
+            "roadmap",
+            "semester1"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 11061,
+          "sub": "Học kỳ 1",
+          "q": "Thỏ gặp ai?",
+          "o": [
+            "Gấu",
+            "Vịt",
+            "Sóc",
+            "Mèo"
+          ],
+          "a": "Sóc",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"Sóc\".",
+          "emoji": "🐰",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Đi học",
+          "r_passage": "Thỏ gặp Sóc trên đường đến lớp. Sóc rủ Thỏ dừng lại đá bóng. Thỏ nói nên đến trường trước, tan học rồi chơi ở sân sẽ an toàn hơn."
+        },
+        {
+          "id": 11062,
+          "sub": "Học kỳ 1",
+          "q": "Sóc rủ Thỏ làm gì?",
+          "o": [
+            "hái hoa",
+            "đá bóng",
+            "đi ngủ",
+            "đọc sách"
+          ],
+          "a": "đá bóng",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"đá bóng\".",
+          "emoji": "🐰",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Đi học",
+          "r_passage": "Thỏ gặp Sóc trên đường đến lớp. Sóc rủ Thỏ dừng lại đá bóng. Thỏ nói nên đến trường trước, tan học rồi chơi ở sân sẽ an toàn hơn."
+        },
+        {
+          "id": 11063,
+          "sub": "Học kỳ 1",
+          "q": "Thỏ muốn làm gì trước?",
+          "o": [
+            "đến trường",
+            "đá bóng",
+            "đi chợ",
+            "về nhà"
+          ],
+          "a": "đến trường",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"đến trường\".",
+          "emoji": "🐰",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Đi học",
+          "r_passage": "Thỏ gặp Sóc trên đường đến lớp. Sóc rủ Thỏ dừng lại đá bóng. Thỏ nói nên đến trường trước, tan học rồi chơi ở sân sẽ an toàn hơn."
+        },
+        {
+          "id": 11064,
+          "sub": "Học kỳ 1",
+          "q": "Bài đọc nhắc bé điều gì?",
+          "o": [
+            "mải chơi giữa đường",
+            "bỏ học",
+            "không nghe lời",
+            "đi học đúng giờ và chơi đúng chỗ"
+          ],
+          "a": "đi học đúng giờ và chơi đúng chỗ",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"đi học đúng giờ và chơi đúng chỗ\".",
+          "emoji": "🐰",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Đi học",
+          "r_passage": "Thỏ gặp Sóc trên đường đến lớp. Sóc rủ Thỏ dừng lại đá bóng. Thỏ nói nên đến trường trước, tan học rồi chơi ở sân sẽ an toàn hơn."
+        },
+        {
+          "id": 11065,
+          "sub": "Học kỳ 1",
+          "q": "Mùa đông trời thế nào?",
+          "o": [
+            "oi bức",
+            "nóng",
+            "lạnh",
+            "rất khô"
+          ],
+          "a": "lạnh",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"lạnh\".",
+          "emoji": "🌼",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Hoa cúc vàng",
+          "r_passage": "Mùa đông trời lạnh, cây cối im lìm. Khi nắng ấm trở về, những bông cúc vàng nở rực trước sân. Bé nhìn hoa và biết mùa xuân đang đến."
+        },
+        {
+          "id": 11066,
+          "sub": "Học kỳ 1",
+          "q": "Khi nào cúc vàng nở rực?",
+          "o": [
+            "khi trời tối",
+            "khi có bão",
+            "khi nắng ấm trở về",
+            "khi tuyết rơi"
+          ],
+          "a": "khi nắng ấm trở về",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"khi nắng ấm trở về\".",
+          "emoji": "🌼",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Hoa cúc vàng",
+          "r_passage": "Mùa đông trời lạnh, cây cối im lìm. Khi nắng ấm trở về, những bông cúc vàng nở rực trước sân. Bé nhìn hoa và biết mùa xuân đang đến."
+        },
+        {
+          "id": 11067,
+          "sub": "Học kỳ 1",
+          "q": "Hoa cúc có màu gì?",
+          "o": [
+            "màu xanh",
+            "màu đen",
+            "màu vàng",
+            "màu tím"
+          ],
+          "a": "màu vàng",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"màu vàng\".",
+          "emoji": "🌼",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Hoa cúc vàng",
+          "r_passage": "Mùa đông trời lạnh, cây cối im lìm. Khi nắng ấm trở về, những bông cúc vàng nở rực trước sân. Bé nhìn hoa và biết mùa xuân đang đến."
+        },
+        {
+          "id": 11068,
+          "sub": "Học kỳ 1",
+          "q": "Bé biết mùa nào đang đến?",
+          "o": [
+            "mùa hạ",
+            "mùa thu",
+            "mùa xuân",
+            "mùa đông"
+          ],
+          "a": "mùa xuân",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"mùa xuân\".",
+          "emoji": "🌼",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Hoa cúc vàng",
+          "r_passage": "Mùa đông trời lạnh, cây cối im lìm. Khi nắng ấm trở về, những bông cúc vàng nở rực trước sân. Bé nhìn hoa và biết mùa xuân đang đến."
+        },
+        {
+          "id": 11069,
+          "sub": "Học kỳ 1",
+          "q": "Thắm về quê thăm ai?",
+          "o": [
+            "bạn",
+            "cô giáo",
+            "bà",
+            "bác sĩ"
+          ],
+          "a": "bà",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"bà\".",
+          "emoji": "👵",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Thăm bà",
+          "r_passage": "Mẹ đưa Thắm về quê thăm bà. Bà chăm Thắm từ nhỏ nên em rất nhớ bà. Vừa gặp bà, Thắm chạy lại ôm thật chặt."
+        },
+        {
+          "id": 11070,
+          "sub": "Học kỳ 1",
+          "q": "Ai đưa Thắm về quê?",
+          "o": [
+            "chị",
+            "cô",
+            "bố",
+            "mẹ"
+          ],
+          "a": "mẹ",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"mẹ\".",
+          "emoji": "👵",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Thăm bà",
+          "r_passage": "Mẹ đưa Thắm về quê thăm bà. Bà chăm Thắm từ nhỏ nên em rất nhớ bà. Vừa gặp bà, Thắm chạy lại ôm thật chặt."
+        },
+        {
+          "id": 11071,
+          "sub": "Học kỳ 1",
+          "q": "Vì sao Thắm nhớ bà?",
+          "o": [
+            "bà cho đồ chơi",
+            "bà đi học cùng",
+            "bà chăm Thắm từ nhỏ",
+            "bà mua xe"
+          ],
+          "a": "bà chăm Thắm từ nhỏ",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"bà chăm Thắm từ nhỏ\".",
+          "emoji": "👵",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Thăm bà",
+          "r_passage": "Mẹ đưa Thắm về quê thăm bà. Bà chăm Thắm từ nhỏ nên em rất nhớ bà. Vừa gặp bà, Thắm chạy lại ôm thật chặt."
+        },
+        {
+          "id": 11072,
+          "sub": "Học kỳ 1",
+          "q": "Gặp bà, Thắm làm gì?",
+          "o": [
+            "khóc",
+            "quay về",
+            "đi ngủ",
+            "chạy lại ôm bà"
+          ],
+          "a": "chạy lại ôm bà",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"chạy lại ôm bà\".",
+          "emoji": "👵",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Thăm bà",
+          "r_passage": "Mẹ đưa Thắm về quê thăm bà. Bà chăm Thắm từ nhỏ nên em rất nhớ bà. Vừa gặp bà, Thắm chạy lại ôm thật chặt."
+        },
+        {
+          "id": 11073,
+          "sub": "Học kỳ 1",
+          "q": "Bé cầm quả gì?",
+          "o": [
+            "quả chuối",
+            "quả cam",
+            "quả lê",
+            "quả táo"
+          ],
+          "a": "quả lê",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"quả lê\".",
+          "emoji": "🍐",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Quả lê",
+          "r_passage": "Bé cầm quả lê và định ăn một mình. Nghĩ đến bà, bé quyết định đem quả lê biếu bà. Bà mỉm cười khen bé biết yêu thương người thân."
+        },
+        {
+          "id": 11074,
+          "sub": "Học kỳ 1",
+          "q": "Bé đem quả lê cho ai?",
+          "o": [
+            "em bé",
+            "bạn",
+            "cô giáo",
+            "bà"
+          ],
+          "a": "bà",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"bà\".",
+          "emoji": "🍐",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Quả lê",
+          "r_passage": "Bé cầm quả lê và định ăn một mình. Nghĩ đến bà, bé quyết định đem quả lê biếu bà. Bà mỉm cười khen bé biết yêu thương người thân."
+        },
+        {
+          "id": 11075,
+          "sub": "Học kỳ 1",
+          "q": "Bà làm gì?",
+          "o": [
+            "giận",
+            "bỏ đi",
+            "mỉm cười",
+            "khóc"
+          ],
+          "a": "mỉm cười",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"mỉm cười\".",
+          "emoji": "🍐",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Quả lê",
+          "r_passage": "Bé cầm quả lê và định ăn một mình. Nghĩ đến bà, bé quyết định đem quả lê biếu bà. Bà mỉm cười khen bé biết yêu thương người thân."
+        },
+        {
+          "id": 11076,
+          "sub": "Học kỳ 1",
+          "q": "Bé được khen vì điều gì?",
+          "o": [
+            "không chia sẻ",
+            "biết yêu thương người thân",
+            "giấu quả",
+            "ăn thật nhanh"
+          ],
+          "a": "biết yêu thương người thân",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"biết yêu thương người thân\".",
+          "emoji": "🍐",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Quả lê",
+          "r_passage": "Bé cầm quả lê và định ăn một mình. Nghĩ đến bà, bé quyết định đem quả lê biếu bà. Bà mỉm cười khen bé biết yêu thương người thân."
+        },
+        {
+          "id": 11077,
+          "sub": "Học kỳ 1",
+          "q": "Nhà dì Hiền có con gì?",
+          "o": [
+            "con vịt",
+            "chú cún",
+            "con mèo",
+            "con cá"
+          ],
+          "a": "chú cún",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"chú cún\".",
+          "emoji": "🐶",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Cún con",
+          "r_passage": "Nhà dì Hiền có một chú cún nhỏ rất đẹp. Bé vuốt ve chú suốt buổi. Trưa, dì làm món chả thơm ngon và bé ăn rất vui vẻ."
+        },
+        {
+          "id": 11078,
+          "sub": "Học kỳ 1",
+          "q": "Bé làm gì với chú cún?",
+          "o": [
+            "ném đồ",
+            "vuốt ve",
+            "đuổi đi",
+            "nhốt lại"
+          ],
+          "a": "vuốt ve",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"vuốt ve\".",
+          "emoji": "🐶",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Cún con",
+          "r_passage": "Nhà dì Hiền có một chú cún nhỏ rất đẹp. Bé vuốt ve chú suốt buổi. Trưa, dì làm món chả thơm ngon và bé ăn rất vui vẻ."
+        },
+        {
+          "id": 11079,
+          "sub": "Học kỳ 1",
+          "q": "Dì làm món gì?",
+          "o": [
+            "món chả",
+            "cháo",
+            "bánh mì",
+            "kem"
+          ],
+          "a": "món chả",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"món chả\".",
+          "emoji": "🐶",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Cún con",
+          "r_passage": "Nhà dì Hiền có một chú cún nhỏ rất đẹp. Bé vuốt ve chú suốt buổi. Trưa, dì làm món chả thơm ngon và bé ăn rất vui vẻ."
+        },
+        {
+          "id": 11080,
+          "sub": "Học kỳ 1",
+          "q": "Bé cảm thấy thế nào?",
+          "o": [
+            "vui vẻ",
+            "sợ",
+            "giận",
+            "buồn"
+          ],
+          "a": "vui vẻ",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"vui vẻ\".",
+          "emoji": "🐶",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Cún con",
+          "r_passage": "Nhà dì Hiền có một chú cún nhỏ rất đẹp. Bé vuốt ve chú suốt buổi. Trưa, dì làm món chả thơm ngon và bé ăn rất vui vẻ."
+        },
+        {
+          "id": 12081,
+          "sub": "Học kỳ 1",
+          "q": "Âm đầu nào có trong tiếng “trường”?",
+          "o": [
+            "tr",
+            "nh",
+            "ch",
+            "th"
+          ],
+          "a": "tr",
+          "h": "Đáp án đúng là “tr”.",
+          "emoji": "🏫",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 12082,
+          "sub": "Học kỳ 1",
+          "q": "Vần nào có trong tiếng “thuyền”?",
+          "o": [
+            "iền",
+            "uôn",
+            "uyền",
+            "uyên"
+          ],
+          "a": "uyền",
+          "h": "Đáp án đúng là “uyền”.",
+          "emoji": "⛵",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 12083,
+          "sub": "Học kỳ 1",
+          "q": "Tiếng nào có thanh huyền?",
+          "o": [
+            "mũ",
+            "bé",
+            "bà",
+            "mẹ"
+          ],
+          "a": "bà",
+          "h": "Đáp án đúng là “bà”.",
+          "emoji": "👵",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 12084,
+          "sub": "Học kỳ 1",
+          "q": "Tiếng nào có thanh hỏi?",
+          "o": [
+            "vở",
+            "bé",
+            "mẹ",
+            "bà"
+          ],
+          "a": "vở",
+          "h": "Đáp án đúng là “vở”.",
+          "emoji": "📒",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C1"
+          ],
+          "skill_tag": "C1"
+        },
+        {
+          "id": 12085,
+          "sub": "Học kỳ 1",
+          "q": "Điền c/k: “dòng ...ênh”",
+          "o": [
+            "q",
+            "c",
+            "k",
+            "g"
+          ],
+          "a": "k",
+          "h": "Đáp án đúng là “k”.",
+          "emoji": "🌊",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12086,
+          "sub": "Học kỳ 1",
+          "q": "Điền c/k: “...ái kẹo”",
+          "o": [
+            "q",
+            "c",
+            "k",
+            "g"
+          ],
+          "a": "c",
+          "h": "Đáp án đúng là “c”.",
+          "emoji": "🍬",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12087,
+          "sub": "Học kỳ 1",
+          "q": "Điền ươn/uôn: “v... cây”",
+          "o": [
+            "ươn",
+            "ương",
+            "ươm",
+            "uôn"
+          ],
+          "a": "ươn",
+          "h": "Đáp án đúng là “ươn”.",
+          "emoji": "🌳",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12088,
+          "sub": "Học kỳ 1",
+          "q": "Từ nào viết đúng?",
+          "o": [
+            "xinh tưoi",
+            "sinh tưoi",
+            "sinh tươi",
+            "xinh tươi"
+          ],
+          "a": "xinh tươi",
+          "h": "Đáp án đúng là “xinh tươi”.",
+          "emoji": "🌸",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12089,
+          "sub": "Học kỳ 1",
+          "q": "Từ nào chỉ sự vật?",
+          "o": [
+            "rơi",
+            "mát",
+            "cơn mưa",
+            "nhanh"
+          ],
+          "a": "cơn mưa",
+          "h": "Đáp án đúng là “cơn mưa”.",
+          "emoji": "🌧️",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C3"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 12090,
+          "sub": "Học kỳ 1",
+          "q": "Từ nào chỉ hoạt động?",
+          "o": [
+            "kẻ vở",
+            "quyển vở",
+            "thẳng",
+            "đẹp"
+          ],
+          "a": "kẻ vở",
+          "h": "Đáp án đúng là “kẻ vở”.",
+          "emoji": "📏",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C4"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12091,
+          "sub": "Học kỳ 1",
+          "q": "Từ nào chỉ đặc điểm?",
+          "o": [
+            "xanh tươi",
+            "cây xanh",
+            "trồng cây",
+            "tưới cây"
+          ],
+          "a": "xanh tươi",
+          "h": "Đáp án đúng là “xanh tươi”.",
+          "emoji": "🌿",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C3"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 12092,
+          "sub": "Học kỳ 1",
+          "q": "Từ trái nghĩa với “cao” là gì?",
+          "o": [
+            "thấp",
+            "dài",
+            "rộng",
+            "to"
+          ],
+          "a": "thấp",
+          "h": "Đáp án đúng là “thấp”.",
+          "emoji": "↔️",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C3"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 12093,
+          "sub": "Học kỳ 1",
+          "q": "Sắp xếp đúng: “bé / mẹ / giúp / quét nhà”",
+          "o": [
+            "Giúp mẹ nhà quét bé.",
+            "Bé giúp mẹ quét nhà.",
+            "Mẹ giúp bé nhà quét.",
+            "Quét nhà bé mẹ giúp."
+          ],
+          "a": "Bé giúp mẹ quét nhà.",
+          "h": "Đáp án đúng là “Bé giúp mẹ quét nhà.”",
+          "emoji": "🧹",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C4"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12094,
+          "sub": "Học kỳ 1",
+          "q": "Sắp xếp đúng: “trời / hôm nay / nắng”",
+          "o": [
+            "Trời hôm nay nắng.",
+            "Hôm nay nắng trời.",
+            "Hôm nay trời nắng.",
+            "Nắng hôm nay trời."
+          ],
+          "a": "Hôm nay trời nắng.",
+          "h": "Đáp án đúng là “Hôm nay trời nắng.”",
+          "emoji": "☀️",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C4"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12095,
+          "sub": "Học kỳ 1",
+          "q": "Câu nào là câu kể?",
+          "o": [
+            "Bé đọc sách chưa?",
+            "Bé đang đọc sách.",
+            "Ôi, quyển sách đẹp quá!",
+            "Bé ơi, đọc sách nhé!"
+          ],
+          "a": "Bé đang đọc sách.",
+          "h": "Đáp án đúng là “Bé đang đọc sách.”",
+          "emoji": "📖",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C4"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12096,
+          "sub": "Học kỳ 1",
+          "q": "Câu nào là câu hỏi?",
+          "o": [
+            "Bạn hãy đi học.",
+            "Bạn chăm học quá!",
+            "Bạn đi học rồi.",
+            "Bạn đi học chưa?"
+          ],
+          "a": "Bạn đi học chưa?",
+          "h": "Đáp án đúng là “Bạn đi học chưa?”",
+          "emoji": "❓",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C4"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12097,
+          "sub": "Học kỳ 1",
+          "q": "Lan đi học qua đâu?",
+          "o": [
+            "một bãi biển",
+            "một cánh đồng rộng",
+            "một con đường nhỏ",
+            "một cây cầu lớn"
+          ],
+          "a": "một con đường nhỏ",
+          "h": "Đáp án đúng là “một con đường nhỏ”.",
+          "emoji": "🐦",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Con đường đến trường",
+          "r_passage": "Sáng nào Lan cũng đi học qua một con đường nhỏ. Hai bên đường có nhiều cây xanh. Hôm trời mưa, Lan vẫn nghe tiếng chim hót trong rừng nên em thấy vui như có bạn đi cùng."
+        },
+        {
+          "id": 12098,
+          "sub": "Học kỳ 1",
+          "q": "Hai bên đường có gì?",
+          "o": [
+            "nhiều ao cá",
+            "nhiều cửa hàng",
+            "nhiều cây xanh",
+            "nhiều xe tải"
+          ],
+          "a": "nhiều cây xanh",
+          "h": "Đáp án đúng là “nhiều cây xanh”.",
+          "emoji": "🐦",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Con đường đến trường",
+          "r_passage": "Sáng nào Lan cũng đi học qua một con đường nhỏ. Hai bên đường có nhiều cây xanh. Hôm trời mưa, Lan vẫn nghe tiếng chim hót trong rừng nên em thấy vui như có bạn đi cùng."
+        },
+        {
+          "id": 12099,
+          "sub": "Học kỳ 1",
+          "q": "Khi trời mưa, Lan vẫn nghe thấy gì?",
+          "o": [
+            "tiếng chim hót",
+            "tiếng trống trường",
+            "tiếng sóng biển",
+            "tiếng còi xe"
+          ],
+          "a": "tiếng chim hót",
+          "h": "Đáp án đúng là “tiếng chim hót”.",
+          "emoji": "🐦",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Con đường đến trường",
+          "r_passage": "Sáng nào Lan cũng đi học qua một con đường nhỏ. Hai bên đường có nhiều cây xanh. Hôm trời mưa, Lan vẫn nghe tiếng chim hót trong rừng nên em thấy vui như có bạn đi cùng."
+        },
+        {
+          "id": 12100,
+          "sub": "Học kỳ 1",
+          "q": "Vì sao Lan thấy vui?",
+          "o": [
+            "vì được nghỉ học",
+            "vì trời rất nóng",
+            "vì có nhiều kẹo",
+            "vì tiếng chim như có bạn đi cùng"
+          ],
+          "a": "vì tiếng chim như có bạn đi cùng",
+          "h": "Đáp án đúng là “vì tiếng chim như có bạn đi cùng”.",
+          "emoji": "🐦",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_1",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Con đường đến trường",
+          "r_passage": "Sáng nào Lan cũng đi học qua một con đường nhỏ. Hai bên đường có nhiều cây xanh. Hôm trời mưa, Lan vẫn nghe tiếng chim hót trong rừng nên em thấy vui như có bạn đi cùng."
+        }
+      ]
+    },
+    {
+      "id": "hk2",
+      "name": "Ôn tập Học kỳ 2",
+      "question_count": 100,
+      "qs": [
+        {
+          "id": 12001,
+          "sub": "Học kỳ 2",
+          "q": "Điền oang/oăng: “vết dầu l...”",
+          "o": [
+            "ong",
+            "oăng",
+            "oang",
+            "oan"
+          ],
+          "a": "oang",
+          "h": "Đúng rồi! Đáp án là \"oang\".",
+          "emoji": "🛢️",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12002,
+          "sub": "Học kỳ 2",
+          "q": "Điền oac/oăc: “áo kh...”",
+          "o": [
+            "oác",
+            "oat",
+            "oắc",
+            "oang"
+          ],
+          "a": "oác",
+          "h": "Đúng rồi! Đáp án là \"oác\".",
+          "emoji": "👕",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12003,
+          "sub": "Học kỳ 2",
+          "q": "Điền ch/tr: “buổi ...iều”",
+          "o": [
+            "chiều",
+            "triều",
+            "xiều",
+            "siều"
+          ],
+          "a": "chiều",
+          "h": "Đúng rồi! Đáp án là \"chiều\".",
+          "emoji": "🌇",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12004,
+          "sub": "Học kỳ 2",
+          "q": "Điền ch/tr: “thủy ...iều”",
+          "o": [
+            "xiều",
+            "triều",
+            "siều",
+            "chiều"
+          ],
+          "a": "triều",
+          "h": "Đúng rồi! Đáp án là \"triều\".",
+          "emoji": "🌊",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12005,
+          "sub": "Học kỳ 2",
+          "q": "Điền s/x: “con ...âu”",
+          "o": [
+            "sâu",
+            "trâu",
+            "xâu",
+            "châu"
+          ],
+          "a": "sâu",
+          "h": "Đúng rồi! Đáp án là \"sâu\".",
+          "emoji": "🐛",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12006,
+          "sub": "Học kỳ 2",
+          "q": "Điền s/x: “...âu kim”",
+          "o": [
+            "trâu",
+            "châu",
+            "sâu",
+            "xâu"
+          ],
+          "a": "xâu",
+          "h": "Đúng rồi! Đáp án là \"xâu\".",
+          "emoji": "🪡",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12007,
+          "sub": "Học kỳ 2",
+          "q": "Điền ng/ngh: “...ón chân”",
+          "o": [
+            "ngón",
+            "gón",
+            "nghón",
+            "ghón"
+          ],
+          "a": "ngón",
+          "h": "Đúng rồi! Đáp án là \"ngón\".",
+          "emoji": "🦶",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12008,
+          "sub": "Học kỳ 2",
+          "q": "Điền ng/ngh: “...e tiếng”",
+          "o": [
+            "nghe",
+            "nge",
+            "nghê",
+            "ghê"
+          ],
+          "a": "nghe",
+          "h": "Đúng rồi! Đáp án là \"nghe\".",
+          "emoji": "👂",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12009,
+          "sub": "Học kỳ 2",
+          "q": "Điền ng/ngh: “bắp ...ô”",
+          "o": [
+            "gô",
+            "ngô",
+            "ghô",
+            "nghô"
+          ],
+          "a": "ngô",
+          "h": "Đúng rồi! Đáp án là \"ngô\".",
+          "emoji": "🌽",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12010,
+          "sub": "Học kỳ 2",
+          "q": "Điền ng/ngh: “con ...é”",
+          "o": [
+            "nghé",
+            "ghé",
+            "ngé",
+            "gé"
+          ],
+          "a": "nghé",
+          "h": "Đúng rồi! Đáp án là \"nghé\".",
+          "emoji": "🐃",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12011,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào viết đúng?",
+          "o": [
+            "lũy tre",
+            "lủy tre",
+            "lũi tre",
+            "lũy che"
+          ],
+          "a": "lũy tre",
+          "h": "Đúng rồi! Đáp án là \"lũy tre\".",
+          "emoji": "🌿",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12012,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào viết đúng?",
+          "o": [
+            "xinh nhậc",
+            "sinh nhậc",
+            "xinh nhật",
+            "sinh nhật"
+          ],
+          "a": "sinh nhật",
+          "h": "Đúng rồi! Đáp án là \"sinh nhật\".",
+          "emoji": "🎂",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12013,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào viết đúng?",
+          "o": [
+            "buổi xiều",
+            "buổi chiều",
+            "buổi siều",
+            "buổi triều"
+          ],
+          "a": "buổi chiều",
+          "h": "Đúng rồi! Đáp án là \"buổi chiều\".",
+          "emoji": "🌇",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12014,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào viết đúng?",
+          "o": [
+            "thủy xiều",
+            "thủy triều",
+            "thủy siều",
+            "thủy chiều"
+          ],
+          "a": "thủy triều",
+          "h": "Đúng rồi! Đáp án là \"thủy triều\".",
+          "emoji": "🌊",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12015,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào viết đúng?",
+          "o": [
+            "nghề ngiệp",
+            "ngề nghiệp",
+            "nghề nghiệp",
+            "ngề ngiệp"
+          ],
+          "a": "nghề nghiệp",
+          "h": "Đúng rồi! Đáp án là \"nghề nghiệp\".",
+          "emoji": "👩‍🏫",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12016,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào viết đúng?",
+          "o": [
+            "nghỉ ngơi",
+            "nghỉ nghơi",
+            "ngỉ nghơi",
+            "ngỉ ngơi"
+          ],
+          "a": "nghỉ ngơi",
+          "h": "Đúng rồi! Đáp án là \"nghỉ ngơi\".",
+          "emoji": "🛌",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12017,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào viết đúng?",
+          "o": [
+            "chiếc thuyền",
+            "triếc thuyền",
+            "chiếc thuyềng",
+            "chiếc thuyềnn"
+          ],
+          "a": "chiếc thuyền",
+          "h": "Đúng rồi! Đáp án là \"chiếc thuyền\".",
+          "emoji": "⛵",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12018,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào viết đúng?",
+          "o": [
+            "xạch sẽ",
+            "sạch sẽ",
+            "xạch xẽ",
+            "sạch xẽ"
+          ],
+          "a": "sạch sẽ",
+          "h": "Đúng rồi! Đáp án là \"sạch sẽ\".",
+          "emoji": "✨",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12019,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào viết đúng?",
+          "o": [
+            "xinh xắn",
+            "xinh sắn",
+            "sinh sắn",
+            "sinh xắn"
+          ],
+          "a": "xinh xắn",
+          "h": "Đúng rồi! Đáp án là \"xinh xắn\".",
+          "emoji": "🌸",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12020,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào viết đúng?",
+          "o": [
+            "trăm chỉ",
+            "trăm trỉ",
+            "chăm chỉ",
+            "chăm trỉ"
+          ],
+          "a": "chăm chỉ",
+          "h": "Đúng rồi! Đáp án là \"chăm chỉ\".",
+          "emoji": "📚",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12021,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào chỉ sự vật?",
+          "o": [
+            "to lớn",
+            "con trâu",
+            "chậm",
+            "kéo cày"
+          ],
+          "a": "con trâu",
+          "h": "Đúng rồi! Đáp án là \"con trâu\".",
+          "emoji": "🐃",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C3",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 12022,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào chỉ hoạt động?",
+          "o": [
+            "quét sân",
+            "cái chổi",
+            "sạch sẽ",
+            "sân trường"
+          ],
+          "a": "quét sân",
+          "h": "Đúng rồi! Đáp án là \"quét sân\".",
+          "emoji": "🧹",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12023,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào chỉ đặc điểm?",
+          "o": [
+            "cái bếp",
+            "món ăn",
+            "nấu",
+            "thơm phức"
+          ],
+          "a": "thơm phức",
+          "h": "Đúng rồi! Đáp án là \"thơm phức\".",
+          "emoji": "🍲",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C3",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 12024,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào chỉ hoạt động?",
+          "o": [
+            "bơi lội",
+            "dòng sông",
+            "con cá",
+            "mềm mại"
+          ],
+          "a": "bơi lội",
+          "h": "Đúng rồi! Đáp án là \"bơi lội\".",
+          "emoji": "🐟",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12025,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào chỉ sự vật?",
+          "o": [
+            "bà ngoại",
+            "yêu",
+            "chăm sóc",
+            "hiền hậu"
+          ],
+          "a": "bà ngoại",
+          "h": "Đúng rồi! Đáp án là \"bà ngoại\".",
+          "emoji": "👵",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C3",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 12026,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào chỉ đặc điểm?",
+          "o": [
+            "con thỏ",
+            "chạy",
+            "trắng muốt",
+            "gặm cỏ"
+          ],
+          "a": "trắng muốt",
+          "h": "Đúng rồi! Đáp án là \"trắng muốt\".",
+          "emoji": "🐰",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C3",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 12027,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào chỉ hoạt động?",
+          "o": [
+            "ngoan ngoãn",
+            "nhường nhịn",
+            "gấu con",
+            "quả lê"
+          ],
+          "a": "nhường nhịn",
+          "h": "Đúng rồi! Đáp án là \"nhường nhịn\".",
+          "emoji": "🤝",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12028,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào chỉ sự vật?",
+          "o": [
+            "nở rộ",
+            "đỏ rực",
+            "bông hoa",
+            "thơm"
+          ],
+          "a": "bông hoa",
+          "h": "Đúng rồi! Đáp án là \"bông hoa\".",
+          "emoji": "🌸",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C3",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 12029,
+          "sub": "Học kỳ 2",
+          "q": "Từ trái nghĩa với “sạch” là gì?",
+          "o": [
+            "trắng",
+            "đẹp",
+            "mới",
+            "bẩn"
+          ],
+          "a": "bẩn",
+          "h": "Đúng rồi! Đáp án là \"bẩn\".",
+          "emoji": "↔️",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C3",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 12030,
+          "sub": "Học kỳ 2",
+          "q": "Từ trái nghĩa với “nhanh” là gì?",
+          "o": [
+            "to",
+            "chậm",
+            "cao",
+            "dài"
+          ],
+          "a": "chậm",
+          "h": "Đúng rồi! Đáp án là \"chậm\".",
+          "emoji": "↔️",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C3",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 12031,
+          "sub": "Học kỳ 2",
+          "q": "Từ gần nghĩa với “chăm” là gì?",
+          "o": [
+            "lười",
+            "chậm",
+            "buồn",
+            "siêng"
+          ],
+          "a": "siêng",
+          "h": "Đúng rồi! Đáp án là \"siêng\".",
+          "emoji": "📚",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C3",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 12032,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào chỉ màu sắc?",
+          "o": [
+            "bộ lông",
+            "rỉa cánh",
+            "bay lượn",
+            "xanh lục"
+          ],
+          "a": "xanh lục",
+          "h": "Đúng rồi! Đáp án là \"xanh lục\".",
+          "emoji": "🟢",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C3",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 12033,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào chỉ mùi vị?",
+          "o": [
+            "ngọt",
+            "chạy",
+            "tròn",
+            "cao"
+          ],
+          "a": "ngọt",
+          "h": "Đúng rồi! Đáp án là \"ngọt\".",
+          "emoji": "🍯",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C3",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 12034,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào chỉ hình dáng?",
+          "o": [
+            "học bài",
+            "quả bóng",
+            "ăn cơm",
+            "tròn xoe"
+          ],
+          "a": "tròn xoe",
+          "h": "Đúng rồi! Đáp án là \"tròn xoe\".",
+          "emoji": "⚽",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C3",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 12035,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào chỉ tính nết?",
+          "o": [
+            "đi học",
+            "ngoan ngoãn",
+            "quyển vở",
+            "bé Na"
+          ],
+          "a": "ngoan ngoãn",
+          "h": "Đúng rồi! Đáp án là \"ngoan ngoãn\".",
+          "emoji": "😊",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C3",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 12036,
+          "sub": "Học kỳ 2",
+          "q": "Điền từ: “Bầy cá ... dưới ao.”",
+          "o": [
+            "đỏ rực",
+            "bơi lội",
+            "bàn học",
+            "cô giáo"
+          ],
+          "a": "bơi lội",
+          "h": "Đúng rồi! Đáp án là \"bơi lội\".",
+          "emoji": "🐟",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12037,
+          "sub": "Học kỳ 2",
+          "q": "Điền từ: “Hoa hồng ...”",
+          "o": [
+            "quét nhà",
+            "bơi lội",
+            "cái bàn",
+            "đỏ rực"
+          ],
+          "a": "đỏ rực",
+          "h": "Đúng rồi! Đáp án là \"đỏ rực\".",
+          "emoji": "🌹",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12038,
+          "sub": "Học kỳ 2",
+          "q": "Điền từ: “Bé ... giúp mẹ.”",
+          "o": [
+            "ngọt lịm",
+            "quét nhà",
+            "cái chổi",
+            "màu đỏ"
+          ],
+          "a": "quét nhà",
+          "h": "Đúng rồi! Đáp án là \"quét nhà\".",
+          "emoji": "🧹",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12039,
+          "sub": "Học kỳ 2",
+          "q": "Điền từ: “Chú thỏ có bộ lông ...”",
+          "o": [
+            "gặm cỏ",
+            "trắng muốt",
+            "chú thỏ",
+            "nhảy"
+          ],
+          "a": "trắng muốt",
+          "h": "Đúng rồi! Đáp án là \"trắng muốt\".",
+          "emoji": "🐰",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12040,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào khác nhóm?",
+          "o": [
+            "cây thước",
+            "chạy",
+            "bàn học",
+            "quyển vở"
+          ],
+          "a": "chạy",
+          "h": "Đúng rồi! Đáp án là \"chạy\".",
+          "emoji": "🎯",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C3",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 12041,
+          "sub": "Học kỳ 2",
+          "q": "Điền dấu thích hợp: “Bé đã ăn cơm chưa...”",
+          "o": [
+            "?",
+            ".",
+            "!",
+            ","
+          ],
+          "a": "?",
+          "h": "Câu hỏi kết thúc bằng dấu hỏi.",
+          "emoji": "❓",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12042,
+          "sub": "Học kỳ 2",
+          "q": "Điền dấu thích hợp: “Bố đi làm vườn...”",
+          "o": [
+            ".",
+            "?",
+            "!",
+            ","
+          ],
+          "a": ".",
+          "h": "Câu kể kết thúc bằng dấu chấm.",
+          "emoji": "✍️",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12043,
+          "sub": "Học kỳ 2",
+          "q": "Câu nào viết đúng?",
+          "o": [
+            "Hôm nay, bé đi học.",
+            "hôm nay bé đi học.",
+            "Hôm nay bé đi học",
+            "Hôm nay, Bé đi học."
+          ],
+          "a": "Hôm nay, bé đi học.",
+          "h": "Đầu câu viết hoa và cuối câu có dấu chấm.",
+          "emoji": "🏫",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12044,
+          "sub": "Học kỳ 2",
+          "q": "Câu nào là câu hỏi?",
+          "o": [
+            "Bạn rất vui.",
+            "Bạn đi học.",
+            "Bạn tên là gì?",
+            "Bạn tên là Lan."
+          ],
+          "a": "Bạn tên là gì?",
+          "h": "Đúng rồi! Đáp án là \"Bạn tên là gì?\".",
+          "emoji": "❓",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12045,
+          "sub": "Học kỳ 2",
+          "q": "Câu nào kể hoạt động?",
+          "o": [
+            "Bé quét nhà.",
+            "Bông hoa đỏ.",
+            "Cái bàn rất mới.",
+            "Bạn Lan ngoan."
+          ],
+          "a": "Bé quét nhà.",
+          "h": "Đúng rồi! Đáp án là \"Bé quét nhà.\".",
+          "emoji": "🧹",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12046,
+          "sub": "Học kỳ 2",
+          "q": "Câu nào tả đặc điểm?",
+          "o": [
+            "Mẹ nấu cơm.",
+            "Bé tưới cây.",
+            "Bông hoa rất đẹp.",
+            "Nam đá bóng."
+          ],
+          "a": "Bông hoa rất đẹp.",
+          "h": "Đúng rồi! Đáp án là \"Bông hoa rất đẹp.\".",
+          "emoji": "🌸",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12047,
+          "sub": "Học kỳ 2",
+          "q": "Sắp xếp đúng: “bé / học / chăm / rất”",
+          "o": [
+            "Học bé rất chăm.",
+            "Bé học rất chăm.",
+            "Chăm rất bé học.",
+            "Rất bé học chăm."
+          ],
+          "a": "Bé học rất chăm.",
+          "h": "Đúng rồi! Đáp án là \"Bé học rất chăm.\".",
+          "emoji": "📚",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12048,
+          "sub": "Học kỳ 2",
+          "q": "Sắp xếp đúng: “mèo / chuột / bắt / con”",
+          "o": [
+            "Chuột con mèo bắt.",
+            "Mèo chuột con bắt.",
+            "Con mèo bắt chuột.",
+            "Bắt mèo con chuột."
+          ],
+          "a": "Con mèo bắt chuột.",
+          "h": "Đúng rồi! Đáp án là \"Con mèo bắt chuột.\".",
+          "emoji": "🐱",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12049,
+          "sub": "Học kỳ 2",
+          "q": "Sắp xếp đúng: “trời / hôm nay / đẹp / rất”",
+          "o": [
+            "Đẹp trời rất hôm nay.",
+            "Trời hôm nay đẹp rất.",
+            "Rất hôm nay trời đẹp.",
+            "Hôm nay trời rất đẹp."
+          ],
+          "a": "Hôm nay trời rất đẹp.",
+          "h": "Đúng rồi! Đáp án là \"Hôm nay trời rất đẹp.\".",
+          "emoji": "🌤️",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12050,
+          "sub": "Học kỳ 2",
+          "q": "Điền từ: “Mẹ ... cơm.”",
+          "o": [
+            "tròn",
+            "nấu",
+            "đỏ",
+            "cao"
+          ],
+          "a": "nấu",
+          "h": "Đúng rồi! Đáp án là \"nấu\".",
+          "emoji": "🍚",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12051,
+          "sub": "Học kỳ 2",
+          "q": "Điền từ: “Bé ... tay trước khi ăn.”",
+          "o": [
+            "mặn",
+            "rửa",
+            "đỏ",
+            "bay"
+          ],
+          "a": "rửa",
+          "h": "Đúng rồi! Đáp án là \"rửa\".",
+          "emoji": "🧼",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12052,
+          "sub": "Học kỳ 2",
+          "q": "Điền từ: “Cô giáo ... bài.”",
+          "o": [
+            "xanh",
+            "giảng",
+            "tròn",
+            "ngọt"
+          ],
+          "a": "giảng",
+          "h": "Đúng rồi! Đáp án là \"giảng\".",
+          "emoji": "👩‍🏫",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12053,
+          "sub": "Học kỳ 2",
+          "q": "Câu nào có viết hoa đúng?",
+          "o": [
+            "Lan đi học.",
+            "lan đi học.",
+            "lan Đi học.",
+            "LAN đi học."
+          ],
+          "a": "Lan đi học.",
+          "h": "Đúng rồi! Đáp án là \"Lan đi học.\".",
+          "emoji": "👧",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12054,
+          "sub": "Học kỳ 2",
+          "q": "Câu nào có dấu chấm đúng?",
+          "o": [
+            "Bé đọc sách,",
+            "Bé đọc sách!",
+            "Bé đọc sách.",
+            "Bé đọc sách?"
+          ],
+          "a": "Bé đọc sách.",
+          "h": "Đúng rồi! Đáp án là \"Bé đọc sách.\".",
+          "emoji": "📖",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12055,
+          "sub": "Học kỳ 2",
+          "q": "Câu nào có dấu hỏi đúng?",
+          "o": [
+            "Mẹ đã về chưa.",
+            "Mẹ đã về chưa?",
+            "Mẹ đã về chưa!",
+            "Mẹ đã về chưa,"
+          ],
+          "a": "Mẹ đã về chưa?",
+          "h": "Đúng rồi! Đáp án là \"Mẹ đã về chưa?\".",
+          "emoji": "❓",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12056,
+          "sub": "Học kỳ 2",
+          "q": "Câu nào có nghĩa hợp lí?",
+          "o": [
+            "Cá bay trên trời.",
+            "Chim bay trên trời.",
+            "Ghế chạy ngoài sân.",
+            "Bút ăn cơm."
+          ],
+          "a": "Chim bay trên trời.",
+          "h": "Đúng rồi! Đáp án là \"Chim bay trên trời.\".",
+          "emoji": "🐦",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12057,
+          "sub": "Học kỳ 2",
+          "q": "Câu nào có nghĩa hợp lí?",
+          "o": [
+            "Hoa đi học.",
+            "Cá chạy trên mây.",
+            "Cá bơi dưới nước.",
+            "Bàn học biết hát."
+          ],
+          "a": "Cá bơi dưới nước.",
+          "h": "Đúng rồi! Đáp án là \"Cá bơi dưới nước.\".",
+          "emoji": "🐟",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12058,
+          "sub": "Học kỳ 2",
+          "q": "Câu nào phù hợp tranh tưởng tượng bé tưới hoa?",
+          "o": [
+            "Bé ngủ.",
+            "Bé đọc sách.",
+            "Bé đá bóng.",
+            "Bé tưới hoa."
+          ],
+          "a": "Bé tưới hoa.",
+          "h": "Đúng rồi! Đáp án là \"Bé tưới hoa.\".",
+          "emoji": "🌸",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12059,
+          "sub": "Học kỳ 2",
+          "q": "Câu nào phù hợp với việc giữ vệ sinh?",
+          "o": [
+            "Bé vứt rác ra sân.",
+            "Bé rửa tay sạch.",
+            "Bé để bàn bẩn.",
+            "Bé không đánh răng."
+          ],
+          "a": "Bé rửa tay sạch.",
+          "h": "Đúng rồi! Đáp án là \"Bé rửa tay sạch.\".",
+          "emoji": "🧼",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12060,
+          "sub": "Học kỳ 2",
+          "q": "Câu nào thể hiện lễ phép?",
+          "o": [
+            "Cháu chào bà ạ.",
+            "Cháu không chào.",
+            "Đưa cháu đi.",
+            "Bà tránh ra."
+          ],
+          "a": "Cháu chào bà ạ.",
+          "h": "Đúng rồi! Đáp án là \"Cháu chào bà ạ.\".",
+          "emoji": "👵",
+          "week": 24,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4",
+            "week24",
+            "roadmap",
+            "semester2"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12061,
+          "sub": "Học kỳ 2",
+          "q": "Cò con bị làm sao?",
+          "o": [
+            "ướt lông",
+            "đau cánh",
+            "gãy chân",
+            "mất đuôi"
+          ],
+          "a": "gãy chân",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"gãy chân\".",
+          "emoji": "🕊️",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Cò đi lò dò",
+          "r_passage": "Một chú cò con bị gãy chân sau khi rơi từ trên cao xuống. Anh nông dân đem cò về chữa trị. Khi khỏe lại, cò vẫn quanh quẩn bên nhà và trở thành người bạn thân thiết của anh."
+        },
+        {
+          "id": 12062,
+          "sub": "Học kỳ 2",
+          "q": "Ai giúp cò?",
+          "o": [
+            "anh nông dân",
+            "cô giáo",
+            "bác sĩ thú y",
+            "bé Na"
+          ],
+          "a": "anh nông dân",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"anh nông dân\".",
+          "emoji": "🕊️",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Cò đi lò dò",
+          "r_passage": "Một chú cò con bị gãy chân sau khi rơi từ trên cao xuống. Anh nông dân đem cò về chữa trị. Khi khỏe lại, cò vẫn quanh quẩn bên nhà và trở thành người bạn thân thiết của anh."
+        },
+        {
+          "id": 12063,
+          "sub": "Học kỳ 2",
+          "q": "Sau khi khỏe, cò thế nào?",
+          "o": [
+            "ở gần nhà người nông dân",
+            "bay đi mất",
+            "không quay lại",
+            "sống dưới nước"
+          ],
+          "a": "ở gần nhà người nông dân",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"ở gần nhà người nông dân\".",
+          "emoji": "🕊️",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Cò đi lò dò",
+          "r_passage": "Một chú cò con bị gãy chân sau khi rơi từ trên cao xuống. Anh nông dân đem cò về chữa trị. Khi khỏe lại, cò vẫn quanh quẩn bên nhà và trở thành người bạn thân thiết của anh."
+        },
+        {
+          "id": 12064,
+          "sub": "Học kỳ 2",
+          "q": "Câu chuyện nói về điều gì?",
+          "o": [
+            "mua bán",
+            "thi chạy",
+            "lòng tốt và tình bạn",
+            "đi học"
+          ],
+          "a": "lòng tốt và tình bạn",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"lòng tốt và tình bạn\".",
+          "emoji": "🕊️",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Cò đi lò dò",
+          "r_passage": "Một chú cò con bị gãy chân sau khi rơi từ trên cao xuống. Anh nông dân đem cò về chữa trị. Khi khỏe lại, cò vẫn quanh quẩn bên nhà và trở thành người bạn thân thiết của anh."
+        },
+        {
+          "id": 12065,
+          "sub": "Học kỳ 2",
+          "q": "Tai mèo thế nào?",
+          "o": [
+            "dài như lá",
+            "rất nặng",
+            "to như quạt",
+            "mỏng và nghe tinh"
+          ],
+          "a": "mỏng và nghe tinh",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"mỏng và nghe tinh\".",
+          "emoji": "👂",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Đôi tai",
+          "r_passage": "Mèo có đôi tai mỏng và nghe rất tinh. Tai chó thường hướng về phía có tiếng động. Tai voi to như chiếc quạt và phe phẩy liên tục."
+        },
+        {
+          "id": 12066,
+          "sub": "Học kỳ 2",
+          "q": "Tai chó hướng về đâu?",
+          "o": [
+            "phía có tiếng động",
+            "ra sau lưng",
+            "phía mặt trời",
+            "xuống đất"
+          ],
+          "a": "phía có tiếng động",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"phía có tiếng động\".",
+          "emoji": "👂",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Đôi tai",
+          "r_passage": "Mèo có đôi tai mỏng và nghe rất tinh. Tai chó thường hướng về phía có tiếng động. Tai voi to như chiếc quạt và phe phẩy liên tục."
+        },
+        {
+          "id": 12067,
+          "sub": "Học kỳ 2",
+          "q": "Tai voi giống gì?",
+          "o": [
+            "chiếc dép",
+            "cái bút",
+            "chiếc quạt",
+            "quả bóng"
+          ],
+          "a": "chiếc quạt",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"chiếc quạt\".",
+          "emoji": "👂",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Đôi tai",
+          "r_passage": "Mèo có đôi tai mỏng và nghe rất tinh. Tai chó thường hướng về phía có tiếng động. Tai voi to như chiếc quạt và phe phẩy liên tục."
+        },
+        {
+          "id": 12068,
+          "sub": "Học kỳ 2",
+          "q": "Đoạn đọc nói về gì?",
+          "o": [
+            "chân con vật",
+            "đặc điểm đôi tai con vật",
+            "màu lông con vật",
+            "thức ăn con vật"
+          ],
+          "a": "đặc điểm đôi tai con vật",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"đặc điểm đôi tai con vật\".",
+          "emoji": "👂",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Đôi tai",
+          "r_passage": "Mèo có đôi tai mỏng và nghe rất tinh. Tai chó thường hướng về phía có tiếng động. Tai voi to như chiếc quạt và phe phẩy liên tục."
+        },
+        {
+          "id": 12069,
+          "sub": "Học kỳ 2",
+          "q": "Cô giáo hỏi về điều gì?",
+          "o": [
+            "món ăn trưa",
+            "con vật nuôi",
+            "đồ chơi ở nhà",
+            "đồ mang khi đi học"
+          ],
+          "a": "đồ mang khi đi học",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"đồ mang khi đi học\".",
+          "emoji": "🍬",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Cái kẹo và cánh cam",
+          "r_passage": "Trong giờ luyện nói, cô hỏi học sinh thường mang gì khi đi học. Nam kể sách, vở, bút. Lan kể cặp và hộp bút. Bé Tí bất ngờ nói em còn mang một cái kẹo để chia cho bạn."
+        },
+        {
+          "id": 12070,
+          "sub": "Học kỳ 2",
+          "q": "Nam mang gì?",
+          "o": [
+            "bánh, kẹo, sữa",
+            "bóng, dây, cờ",
+            "mũ, dép, áo",
+            "sách, vở, bút"
+          ],
+          "a": "sách, vở, bút",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"sách, vở, bút\".",
+          "emoji": "🍬",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Cái kẹo và cánh cam",
+          "r_passage": "Trong giờ luyện nói, cô hỏi học sinh thường mang gì khi đi học. Nam kể sách, vở, bút. Lan kể cặp và hộp bút. Bé Tí bất ngờ nói em còn mang một cái kẹo để chia cho bạn."
+        },
+        {
+          "id": 12071,
+          "sub": "Học kỳ 2",
+          "q": "Tí mang thêm gì?",
+          "o": [
+            "một con cá",
+            "một quả bóng",
+            "một chiếc ô",
+            "một cái kẹo"
+          ],
+          "a": "một cái kẹo",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"một cái kẹo\".",
+          "emoji": "🍬",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Cái kẹo và cánh cam",
+          "r_passage": "Trong giờ luyện nói, cô hỏi học sinh thường mang gì khi đi học. Nam kể sách, vở, bút. Lan kể cặp và hộp bút. Bé Tí bất ngờ nói em còn mang một cái kẹo để chia cho bạn."
+        },
+        {
+          "id": 12072,
+          "sub": "Học kỳ 2",
+          "q": "Tí muốn làm gì với kẹo?",
+          "o": [
+            "chia cho bạn",
+            "ném đi",
+            "giấu đi",
+            "đổi lấy bút"
+          ],
+          "a": "chia cho bạn",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"chia cho bạn\".",
+          "emoji": "🍬",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Cái kẹo và cánh cam",
+          "r_passage": "Trong giờ luyện nói, cô hỏi học sinh thường mang gì khi đi học. Nam kể sách, vở, bút. Lan kể cặp và hộp bút. Bé Tí bất ngờ nói em còn mang một cái kẹo để chia cho bạn."
+        },
+        {
+          "id": 12073,
+          "sub": "Học kỳ 2",
+          "q": "Thời tiết thế nào?",
+          "o": [
+            "trời rất nóng",
+            "trời nắng",
+            "trời tuyết",
+            "trời mưa"
+          ],
+          "a": "trời mưa",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"trời mưa\".",
+          "emoji": "🌧️",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Bà còng đi chợ",
+          "r_passage": "Trời mưa, bà còng đi chợ. Tôm và tép thấy bà đi chậm nên cùng đưa bà qua đoạn đường trơn. Bà cảm ơn hai bạn nhỏ tốt bụng."
+        },
+        {
+          "id": 12074,
+          "sub": "Học kỳ 2",
+          "q": "Ai giúp bà còng?",
+          "o": [
+            "gà và vịt",
+            "cá và cua",
+            "tôm và tép",
+            "mèo và chó"
+          ],
+          "a": "tôm và tép",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"tôm và tép\".",
+          "emoji": "🌧️",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Bà còng đi chợ",
+          "r_passage": "Trời mưa, bà còng đi chợ. Tôm và tép thấy bà đi chậm nên cùng đưa bà qua đoạn đường trơn. Bà cảm ơn hai bạn nhỏ tốt bụng."
+        },
+        {
+          "id": 12075,
+          "sub": "Học kỳ 2",
+          "q": "Vì sao bà cần được giúp?",
+          "o": [
+            "bà ngủ quên",
+            "bà bị lạc",
+            "bà quên tiền",
+            "đường trơn và bà đi chậm"
+          ],
+          "a": "đường trơn và bà đi chậm",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"đường trơn và bà đi chậm\".",
+          "emoji": "🌧️",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Bà còng đi chợ",
+          "r_passage": "Trời mưa, bà còng đi chợ. Tôm và tép thấy bà đi chậm nên cùng đưa bà qua đoạn đường trơn. Bà cảm ơn hai bạn nhỏ tốt bụng."
+        },
+        {
+          "id": 12076,
+          "sub": "Học kỳ 2",
+          "q": "Tôm và tép là những bạn thế nào?",
+          "o": [
+            "nghịch ngợm",
+            "ích kỉ",
+            "lười biếng",
+            "tốt bụng"
+          ],
+          "a": "tốt bụng",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"tốt bụng\".",
+          "emoji": "🌧️",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Bà còng đi chợ",
+          "r_passage": "Trời mưa, bà còng đi chợ. Tôm và tép thấy bà đi chậm nên cùng đưa bà qua đoạn đường trơn. Bà cảm ơn hai bạn nhỏ tốt bụng."
+        },
+        {
+          "id": 12077,
+          "sub": "Học kỳ 2",
+          "q": "Chuồn chuồn có mấy cánh?",
+          "o": [
+            "hai cánh",
+            "sáu cánh",
+            "bốn cánh",
+            "tám cánh"
+          ],
+          "a": "bốn cánh",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"bốn cánh\".",
+          "emoji": "🪰",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Chú chuồn chuồn nước",
+          "r_passage": "Chuồn chuồn nước có bốn cánh mỏng như giấy bóng. Thân chú nhỏ, thon và vàng óng dưới nắng. Chú đậu trên cành cây sát mặt hồ rồi bất ngờ bay vút đi."
+        },
+        {
+          "id": 12078,
+          "sub": "Học kỳ 2",
+          "q": "Cánh chuồn chuồn được tả thế nào?",
+          "o": [
+            "đen như than",
+            "tròn như bóng",
+            "dày như gỗ",
+            "mỏng như giấy bóng"
+          ],
+          "a": "mỏng như giấy bóng",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"mỏng như giấy bóng\".",
+          "emoji": "🪰",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Chú chuồn chuồn nước",
+          "r_passage": "Chuồn chuồn nước có bốn cánh mỏng như giấy bóng. Thân chú nhỏ, thon và vàng óng dưới nắng. Chú đậu trên cành cây sát mặt hồ rồi bất ngờ bay vút đi."
+        },
+        {
+          "id": 12079,
+          "sub": "Học kỳ 2",
+          "q": "Thân chú có màu gì?",
+          "o": [
+            "đen",
+            "tím",
+            "vàng óng",
+            "xanh đậm"
+          ],
+          "a": "vàng óng",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"vàng óng\".",
+          "emoji": "🪰",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Chú chuồn chuồn nước",
+          "r_passage": "Chuồn chuồn nước có bốn cánh mỏng như giấy bóng. Thân chú nhỏ, thon và vàng óng dưới nắng. Chú đậu trên cành cây sát mặt hồ rồi bất ngờ bay vút đi."
+        },
+        {
+          "id": 12080,
+          "sub": "Học kỳ 2",
+          "q": "Cuối đoạn, chuồn chuồn làm gì?",
+          "o": [
+            "bay vút đi",
+            "ngủ",
+            "chui xuống đất",
+            "bơi"
+          ],
+          "a": "bay vút đi",
+          "h": "Dựa vào bài đọc, đáp án đúng là \"bay vút đi\".",
+          "emoji": "🪰",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Chú chuồn chuồn nước",
+          "r_passage": "Chuồn chuồn nước có bốn cánh mỏng như giấy bóng. Thân chú nhỏ, thon và vàng óng dưới nắng. Chú đậu trên cành cây sát mặt hồ rồi bất ngờ bay vút đi."
+        },
+        {
+          "id": 12101,
+          "sub": "Học kỳ 2",
+          "q": "Điền ch/tr: “buổi ...iều”",
+          "o": [
+            "tr",
+            "ch",
+            "s",
+            "x"
+          ],
+          "a": "ch",
+          "h": "Đáp án đúng là “ch”.",
+          "emoji": "🌇",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12102,
+          "sub": "Học kỳ 2",
+          "q": "Điền ch/tr: “thủy ...iều”",
+          "o": [
+            "tr",
+            "x",
+            "ch",
+            "s"
+          ],
+          "a": "tr",
+          "h": "Đáp án đúng là “tr”.",
+          "emoji": "🌊",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12103,
+          "sub": "Học kỳ 2",
+          "q": "Điền s/x: “con ...âu”",
+          "o": [
+            "s",
+            "ch",
+            "tr",
+            "x"
+          ],
+          "a": "s",
+          "h": "Đáp án đúng là “s”.",
+          "emoji": "🐛",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12104,
+          "sub": "Học kỳ 2",
+          "q": "Điền s/x: “...âu kim”",
+          "o": [
+            "s",
+            "x",
+            "ch",
+            "tr"
+          ],
+          "a": "x",
+          "h": "Đáp án đúng là “x”.",
+          "emoji": "🪡",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12105,
+          "sub": "Học kỳ 2",
+          "q": "Điền ng/ngh: “...ón chân”",
+          "o": [
+            "ngh",
+            "ng",
+            "gh",
+            "g"
+          ],
+          "a": "ng",
+          "h": "Đáp án đúng là “ng”.",
+          "emoji": "🦶",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12106,
+          "sub": "Học kỳ 2",
+          "q": "Điền ng/ngh: “...e tiếng”",
+          "o": [
+            "g",
+            "gh",
+            "ngh",
+            "ng"
+          ],
+          "a": "ngh",
+          "h": "Đáp án đúng là “ngh”.",
+          "emoji": "👂",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12107,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào viết đúng?",
+          "o": [
+            "sạch sẽ",
+            "sạch xẽ",
+            "xạch sẽ",
+            "xạch xẽ"
+          ],
+          "a": "sạch sẽ",
+          "h": "Đáp án đúng là “sạch sẽ”.",
+          "emoji": "✨",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12108,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào viết đúng?",
+          "o": [
+            "sinh sắn",
+            "sinh xắn",
+            "xinh sắn",
+            "xinh xắn"
+          ],
+          "a": "xinh xắn",
+          "h": "Đáp án đúng là “xinh xắn”.",
+          "emoji": "🌸",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C2"
+          ],
+          "skill_tag": "C2"
+        },
+        {
+          "id": 12109,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào chỉ hoạt động?",
+          "o": [
+            "chuồn chuồn",
+            "màu vàng",
+            "bay nhanh",
+            "mỏng"
+          ],
+          "a": "bay nhanh",
+          "h": "Đáp án đúng là “bay nhanh”.",
+          "emoji": "🪰",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12110,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào chỉ đặc điểm?",
+          "o": [
+            "bay nhanh",
+            "mỏng như giấy bóng",
+            "chuồn chuồn",
+            "đậu trên cành"
+          ],
+          "a": "mỏng như giấy bóng",
+          "h": "Đáp án đúng là “mỏng như giấy bóng”.",
+          "emoji": "🪰",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C3"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 12111,
+          "sub": "Học kỳ 2",
+          "q": "Điền từ: “Chú chuồn chuồn ... qua khóm khoai.”",
+          "o": [
+            "cành lộc vừng",
+            "màu vàng",
+            "giấy bóng",
+            "bay nhanh"
+          ],
+          "a": "bay nhanh",
+          "h": "Đáp án đúng là “bay nhanh”.",
+          "emoji": "🪰",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12112,
+          "sub": "Học kỳ 2",
+          "q": "Từ nào chỉ sự vật?",
+          "o": [
+            "bay nhanh",
+            "khóm khoai",
+            "rung rung",
+            "xanh xao"
+          ],
+          "a": "khóm khoai",
+          "h": "Đáp án đúng là “khóm khoai”.",
+          "emoji": "🌿",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C3"
+          ],
+          "skill_tag": "C3"
+        },
+        {
+          "id": 12113,
+          "sub": "Học kỳ 2",
+          "q": "Câu nào phù hợp với việc giữ đồ dùng học tập?",
+          "o": [
+            "Em xé vở chơi.",
+            "Em làm ướt sách.",
+            "Em vứt bút xuống đất.",
+            "Em xếp sách vở gọn gàng."
+          ],
+          "a": "Em xếp sách vở gọn gàng.",
+          "h": "Đáp án đúng là “Em xếp sách vở gọn gàng.”",
+          "emoji": "📚",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12114,
+          "sub": "Học kỳ 2",
+          "q": "Câu nào thể hiện trung thực?",
+          "o": [
+            "Em nhặt được bút và đưa cô giáo.",
+            "Em nói bút là của mình.",
+            "Em giấu bút vào cặp.",
+            "Em bỏ bút vào túi."
+          ],
+          "a": "Em nhặt được bút và đưa cô giáo.",
+          "h": "Đáp án đúng là “Em nhặt được bút và đưa cô giáo.”",
+          "emoji": "🖊️",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12115,
+          "sub": "Học kỳ 2",
+          "q": "Câu nào thể hiện biết chia sẻ?",
+          "o": [
+            "Em ăn hết một mình.",
+            "Em giành phần của bạn.",
+            "Em giấu bánh.",
+            "Em chia bánh cho bạn."
+          ],
+          "a": "Em chia bánh cho bạn.",
+          "h": "Đáp án đúng là “Em chia bánh cho bạn.”",
+          "emoji": "🍰",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12116,
+          "sub": "Học kỳ 2",
+          "q": "Câu nào có dấu câu đúng?",
+          "o": [
+            "Bé đã ăn cơm chưa!",
+            "Bé đã ăn cơm chưa,",
+            "Bé đã ăn cơm chưa?",
+            "Bé đã ăn cơm chưa."
+          ],
+          "a": "Bé đã ăn cơm chưa?",
+          "h": "Đáp án đúng là “Bé đã ăn cơm chưa?”",
+          "emoji": "❓",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C4"
+          ],
+          "skill_tag": "C4"
+        },
+        {
+          "id": 12117,
+          "sub": "Học kỳ 2",
+          "q": "Chuồn chuồn nước có mấy cánh?",
+          "o": [
+            "sáu cánh",
+            "hai cánh",
+            "tám cánh",
+            "bốn cánh"
+          ],
+          "a": "bốn cánh",
+          "h": "Đáp án đúng là “bốn cánh”.",
+          "emoji": "🪰",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Chú chuồn chuồn nước",
+          "r_passage": "Chuồn chuồn nước có bốn cánh rất mỏng. Lưng chú ánh vàng dưới nắng. Chú đậu trên một cành cây gần mặt hồ, rồi bất ngờ bay nhanh qua những khóm khoai ven bờ."
+        },
+        {
+          "id": 12118,
+          "sub": "Học kỳ 2",
+          "q": "Lưng chuồn chuồn có màu gì?",
+          "o": [
+            "đen tuyền",
+            "ánh vàng",
+            "đỏ thắm",
+            "xanh đậm"
+          ],
+          "a": "ánh vàng",
+          "h": "Đáp án đúng là “ánh vàng”.",
+          "emoji": "🪰",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Chú chuồn chuồn nước",
+          "r_passage": "Chuồn chuồn nước có bốn cánh rất mỏng. Lưng chú ánh vàng dưới nắng. Chú đậu trên một cành cây gần mặt hồ, rồi bất ngờ bay nhanh qua những khóm khoai ven bờ."
+        },
+        {
+          "id": 12119,
+          "sub": "Học kỳ 2",
+          "q": "Chuồn chuồn đậu ở đâu?",
+          "o": [
+            "trên mái nhà",
+            "trong lớp học",
+            "dưới đáy hồ",
+            "trên cành cây gần mặt hồ"
+          ],
+          "a": "trên cành cây gần mặt hồ",
+          "h": "Đáp án đúng là “trên cành cây gần mặt hồ”.",
+          "emoji": "🪰",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Chú chuồn chuồn nước",
+          "r_passage": "Chuồn chuồn nước có bốn cánh rất mỏng. Lưng chú ánh vàng dưới nắng. Chú đậu trên một cành cây gần mặt hồ, rồi bất ngờ bay nhanh qua những khóm khoai ven bờ."
+        },
+        {
+          "id": 12120,
+          "sub": "Học kỳ 2",
+          "q": "Cuối đoạn, chuồn chuồn làm gì?",
+          "o": [
+            "bơi dưới nước",
+            "nằm ngủ",
+            "bay nhanh qua khóm khoai",
+            "chui xuống đất"
+          ],
+          "a": "bay nhanh qua khóm khoai",
+          "h": "Đáp án đúng là “bay nhanh qua khóm khoai”.",
+          "emoji": "🪰",
+          "week": null,
+          "tags": [
+            "semester_review",
+            "học_kỳ_2",
+            "C5"
+          ],
+          "skill_tag": "C5",
+          "r_title": "Chú chuồn chuồn nước",
+          "r_passage": "Chuồn chuồn nước có bốn cánh rất mỏng. Lưng chú ánh vàng dưới nắng. Chú đậu trên một cành cây gần mặt hồ, rồi bất ngờ bay nhanh qua những khóm khoai ven bờ."
+        }
+      ]
+    }
+  ],
+  "total_questions": 200,
+  "note": "Ôn tập là module độc lập; có thể mở rộng thêm hoạt động ngoài trắc nghiệm ở các phiên bản sau."
+}
