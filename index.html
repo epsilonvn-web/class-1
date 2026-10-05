@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="referrer" content="no-referrer">
-  <meta name="theme-color" content="#FFFFFF">
+  <meta name="theme-color" content="#FEFCF1">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -26,7 +26,7 @@
   <title>Lớp 1 - Cô Thỏ Hồng | Epsilon Edu</title>
   <style>
     :root{
-      --page:#FFFFFF;
+      --page:#FEFCF1;
       --white:#FFFFFF;
       --ink:#344054;
       --muted:#667085;
@@ -67,6 +67,7 @@
       width:min(100%,var(--app-width));
       margin:0 auto;
       padding:0 .5rem max(.25rem,env(safe-area-inset-bottom));
+      background:var(--page);
     }
 
     .app-header{
@@ -206,6 +207,9 @@
       overflow:hidden;
     }
     .user-btn:hover{background:#F3E8FF!important;transform:translateY(-1px);box-shadow:0 7px 17px rgba(76,29,149,.10)}
+    .user-btn.is-guest-auth{justify-content:center;gap:0;padding-top:.45rem;padding-bottom:.45rem}
+    .guest-auth-label{font-size:14px!important;line-height:1.18!important;font-weight:950!important}
+    .guest-auth-line{display:block;width:100%}
     .user-btn-avatar{display:block;font-size:30px;line-height:1;flex:0 0 auto}
     .user-btn-name{
       display:block;
@@ -304,6 +308,24 @@
       z-index:3;
       min-height:340px;
       padding:1rem .1rem 2.2rem;
+      background:var(--page);
+    }
+
+    /* Nền tổng Lớp 1 hòa với vùng trống của ảnh footer.
+       Chỉ làm trong suốt các mặt nền cấp module; card/control vẫn giữ màu riêng. */
+    #content-stage #class1-math-runtime,
+    #content-stage #class1-vietnamese-runtime,
+    #content-stage #class1-english-runtime,
+    #content-stage #class1-math-runtime #screen-dashboard,
+    #content-stage #class1-vietnamese-runtime #screen-dashboard,
+    #content-stage #class1-english-runtime #screen-dashboard,
+    #content-stage #class1-math-runtime #app-viewport,
+    #content-stage #class1-vietnamese-runtime #app-viewport,
+    #content-stage #class1-english-runtime #app-viewport,
+    #content-stage #class1-math-runtime #view-dashboard-grid,
+    #content-stage #class1-vietnamese-runtime #view-dashboard-grid,
+    #content-stage #class1-english-runtime #view-dashboard-grid{
+      background:transparent!important;
     }
     .section-heading{
       display:flex;
@@ -343,6 +365,23 @@
       grid-template-columns:repeat(5,minmax(0,1fr));
       gap:.7rem;
     }
+
+    /* Games / Tools ngoài Trang chủ: mỗi mục là một ô nhỏ, không giãn kín cả hàng. */
+    .home-feature-grid{
+      grid-template-columns:repeat(auto-fill,minmax(220px,260px));
+      justify-content:start;
+      align-items:stretch;
+    }
+    .home-feature-grid .home-feature-card{
+      width:100%;
+      min-height:112px;
+      padding:.82rem .88rem;
+      justify-content:center;
+      gap:0;
+    }
+    .home-feature-grid .home-feature-card .card-top{align-items:center;}
+    .home-feature-grid .home-feature-card .card-title{min-height:auto;font-size:18px;}
+    .home-feature-grid .home-feature-card .card-desc{min-height:auto;font-size:14px;margin-top:.22rem;}
 
     .content-card{
       position:relative;
@@ -422,6 +461,14 @@
     }
     .arrow span{color:#fff}
     .subject-card{min-height:160px;padding:1.15rem}
+    /* Trang chủ Lớp 1: pastel rõ màu hơn nhưng vẫn giữ nền trắng tổng thể. */
+    .subject-card[data-tone="blue"]{background:#DFF3FF;border-color:#7DD3FC;color:#0369A1}
+    .subject-card[data-tone="pink"]{background:#FCE3F0;border-color:#F9A8D4;color:#BE185D}
+    .subject-card[data-tone="green"]{background:#DCFCE7;border-color:#86EFAC;color:#047857}
+    /* Toán 1 trên Trang chủ: chuyển sang tông tím để nổi bật hơn. */
+    .subject-card[data-subject="math"]{background:#F3E8FF;border-color:#C4B5FD;color:#7C3AED}
+    .subject-card[data-subject="math"] .card-desc{color:#5B21B6}
+    .subject-card[data-subject="math"] .badge{background:rgba(255,255,255,.82);color:#6D28D9}
     .subject-card .card-icon{width:52px;height:52px;flex-basis:52px;font-size:29px}
     .subject-card .card-title{font-size:21px;min-height:auto}
     .subject-card .card-desc{font-size:16px}
@@ -453,9 +500,11 @@
       box-shadow:0 7px 17px rgba(76,29,149,.09);
       filter:brightness(1.025);
     }
-    .subject-profile-card[data-tone="blue"]{background:#F5FBFF;border-color:#BAE6FD;color:#0369A1}
-    .subject-profile-card[data-tone="pink"]{background:#FFF7FB;border-color:#FBCFE8;color:#BE185D}
-    .subject-profile-card[data-tone="green"]{background:#F5FFF9;border-color:#BBF7D0;color:#047857}
+    .subject-profile-card[data-tone="blue"]{background:#EAF7FF;border-color:#7DD3FC;color:#0369A1}
+    .subject-profile-card[data-tone="pink"]{background:#FDEBF4;border-color:#F9A8D4;color:#BE185D}
+    .subject-profile-card[data-tone="green"]{background:#E8FAEF;border-color:#86EFAC;color:#047857}
+    .subject-profile-card[data-profile-subject="math"]{background:#F5F3FF;border-color:#C4B5FD;color:#6D28D9}
+    .subject-profile-card[data-profile-subject="math"] .subject-profile-note{color:#6B7280}
     .subject-profile-icon{
       width:38px;height:38px;flex:0 0 38px;border-radius:13px;
       display:flex;align-items:center;justify-content:center;
@@ -859,6 +908,8 @@
       .learning-profile-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem}
       .card-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.58rem}
       .home-link-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.58rem}
+      .home-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr));justify-content:stretch;}
+      .home-feature-grid .home-feature-card{min-height:106px;padding:.72rem .68rem;}
       .content-card{min-height:118px;padding:.78rem;border-radius:16px}
       .card-icon{width:36px;height:36px;flex-basis:36px;font-size:20px}
       .card-title{font-size:16px}
@@ -1123,6 +1174,36 @@
       .auth-card{width:min(96vw,440px);padding:.9rem .9rem 1rem}
     }
 
+
+    /* Tools/Games card compact: giam khoang trang tren/duoi, giu card gon nhu muc hoc. */
+    .card-grid.home-feature-grid .content-card.home-feature-card{
+      min-height:92px;
+      padding:.48rem .72rem;
+      gap:0;
+      justify-content:center;
+    }
+    .card-grid.home-feature-grid .content-card.home-feature-card .card-top{
+      align-items:center;
+      gap:.62rem;
+    }
+    .card-grid.home-feature-grid .content-card.home-feature-card .card-title{
+      min-height:0;
+      font-size:18px;
+      line-height:1.16;
+    }
+    .card-grid.home-feature-grid .content-card.home-feature-card .card-desc{
+      min-height:0;
+      margin-top:.12rem;
+      font-size:14px;
+      line-height:1.25;
+    }
+    @media (max-width:767px){
+      .card-grid.home-feature-grid .content-card.home-feature-card{
+        min-height:88px;
+        padding:.44rem .66rem;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1140,7 +1221,7 @@
           <span class="good">★ Đúng</span><strong class="good">0</strong>
           <span class="bad">★ Sai</span><strong class="bad">0</strong>
         </div>
-        <button id="account-button" class="tool-btn user-btn" type="button" title="Tài khoản" aria-label="Tài khoản"><span class="user-btn-avatar" aria-hidden="true">👤</span><span class="user-btn-name">Tài khoản</span></button>
+        <button id="account-button" class="tool-btn user-btn is-guest-auth" type="button" title="Đăng ký hoặc Đăng nhập" aria-label="Đăng ký hoặc Đăng nhập"><span class="user-btn-name guest-auth-label"><span class="guest-auth-line">Đăng ký</span><span class="guest-auth-line">Đăng nhập</span></span></button>
       </div>
     </header>
 
@@ -1224,7 +1305,7 @@
 
   <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
 
-  <script src="assets/js/core/class1-data.js?v=class1-data-split-1"></script>
-  <script src="assets/js/app.js?v=class1-data-split-1"></script>
+  <script src="assets/js/core/class1-data.js?v=class1-greeting-audio-2"></script>
+  <script src="assets/js/app.js?v=class1-tool-grid-3"></script>
 </body>
 </html>
