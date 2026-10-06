@@ -1088,6 +1088,11 @@
       .ee-fold-count{min-width:92px;text-align:center;color:#6D28D9;font-size:14px;font-weight:1000}
       .ee-fold-side-card{border:1px solid #E2E8F0;border-radius:20px;background:#fff;padding:.9rem;margin-bottom:.8rem;box-shadow:0 8px 18px rgba(15,23,42,.05)}
       .ee-fold-side-card h3{margin:0 0 .55rem;color:#5B21B6;font-size:17px}
+      .ee-fold-side-head{display:flex;align-items:center;justify-content:space-between;gap:.5rem;flex-wrap:wrap;margin-bottom:.45rem}
+      .ee-fold-side-head h3{margin:0}
+      .ee-fold-listen-btn{display:inline-flex;align-items:center;gap:.3rem;min-height:40px;border-radius:999px;border:2px solid #F9A8D4;background:linear-gradient(90deg,#FDF2F8,#F5F3FF);color:#9D174D;padding:.4rem .85rem;font:inherit;font-size:14px;font-weight:1000;cursor:pointer;white-space:nowrap}
+      .ee-fold-listen-btn:hover{border-color:#EC4899;background:#FCE7F3}
+      .ee-fold-listen-btn:focus-visible{outline:3px solid #F472B6;outline-offset:2px}
       .ee-fold-side-card p,.ee-fold-side-card li{color:#475569;font-size:14px;font-weight:800;line-height:1.5}
       .ee-fold-side-card p{margin:.3rem 0}
       .ee-fold-side-card ul{margin:.35rem 0 0;padding-left:1.2rem}
@@ -1521,8 +1526,8 @@
               <div><svg viewBox="0 0 60 14" aria-hidden="true"><path d="M4 7H44" stroke="#DB2777" stroke-width="3"/><path d="M44 1L58 7L44 13Z" fill="#fff" stroke="#DB2777" stroke-width="1.8"/></svg><strong>Mũi tên rỗng</strong>Ấn, đẩy vào</div>
               <div><span class="ee-fold-swatch" style="background:#F9A8D4"></span><span class="ee-fold-swatch" style="background:#FFFDF7"></span><strong>Hai mặt giấy</strong>Mặt màu và mặt trắng</div>
             </div></section>
-            <section class="ee-fold-side-card"><h3>🐰 Cô Thỏ Hồng</h3><ul>${BUNNY_RULES.map((item) => `<li><strong>${esc(item.split(":")[0])}:</strong> ${esc(item.split(":").slice(1).join(":").trim())}</li>`).join("")}</ul></section>
-            <section class="ee-fold-side-card"><h3>⭐ Thử thách sau khi gấp</h3><p>${esc(variant.challenge)}</p></section>
+            <section class="ee-fold-side-card"><div class="ee-fold-side-head"><h3>🐰 Cô Thỏ Hồng</h3><button id="ee-fold-side-rules" class="ee-fold-listen-btn" type="button" aria-label="Nghe cô đọc 4 điều của Cô Thỏ Hồng">🔊 Nghe cô đọc</button></div><ul>${BUNNY_RULES.map((item) => `<li><strong>${esc(item.split(":")[0])}:</strong> ${esc(item.split(":").slice(1).join(":").trim())}</li>`).join("")}</ul></section>
+            <section class="ee-fold-side-card"><div class="ee-fold-side-head"><h3>⭐ Thử thách sau khi gấp</h3><button id="ee-fold-side-challenge" class="ee-fold-listen-btn" type="button" aria-label="Nghe cô đọc thử thách">🔊 Nghe cô đọc</button></div><p>${esc(variant.challenge)}</p></section>
           </aside>
         </div>
       </div>`;
@@ -1616,6 +1621,12 @@
     bindCommonBreadcrumb(host, project);
     host.querySelector("#ee-fold-read-step")?.addEventListener("click", () => {
       speakNarration(stepNarrationText(variant, stepItem, currentStepIndex));
+    });
+    host.querySelector("#ee-fold-side-rules")?.addEventListener("click", () => {
+      speakNarration(bunnyRulesNarrationText());
+    });
+    host.querySelector("#ee-fold-side-challenge")?.addEventListener("click", () => {
+      speakNarration(`Thử thách sau khi gấp. ${variant.challenge}`);
     });
     host.querySelector("#ee-fold-read-rules")?.addEventListener("click", () => {
       speakNarration(bunnyRulesNarrationText());
