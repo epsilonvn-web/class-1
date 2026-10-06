@@ -38,7 +38,12 @@
     Object.freeze({ id: "spaceExplorer", icon: "🪐", title: "Khám phá vũ trụ", description: "Khám phá Hệ Mặt Trời, các hành tinh, vệ tinh và những điều kỳ thú ngoài không gian.", tone: "purple" }),
     Object.freeze({ id: "oceanExplorer", icon: "🌊", title: "Khám phá đại dương", description: "Khám phá các tầng biển, sinh vật đại dương và những bí mật dưới lòng nước.", tone: "blue" }),
     Object.freeze({ id: "earthExplorer", icon: "🌍", title: "Khám phá Trái Đất", description: "Khám phá cấu tạo Trái Đất, địa hình và những hiện tượng thiên nhiên quanh bé.", tone: "teal" }),
-    Object.freeze({ id: "humanBodyExplorer", icon: "🫀", title: "Khám phá cơ thể người", description: "Khám phá các cơ quan, giác quan và cách cơ thể bé hoạt động mỗi ngày.", tone: "pink" })
+    Object.freeze({ id: "humanBodyExplorer", icon: "🫀", title: "Khám phá cơ thể người", description: "Khám phá các cơ quan, giác quan và cách cơ thể bé hoạt động mỗi ngày.", tone: "pink" }),
+    Object.freeze({ id: "plantExplorer", icon: "🌿", title: "Khám phá thực vật", description: "Khám phá các bộ phận của cây, những loài cây quanh bé và cách thực vật sống, lớn lên.", tone: "green" }),
+    Object.freeze({ id: "weatherExplorer", icon: "🌦️", title: "Khám phá thời tiết", description: "Khám phá nắng, mây, mưa, gió, cầu vồng và vòng tuần hoàn của nước.", tone: "blue" }),
+    Object.freeze({ id: "dinosaurExplorer", icon: "🦕", title: "Khám phá khủng long", description: "Khám phá các loài khủng long, hóa thạch và thế giới cổ đại hàng triệu năm trước.", tone: "amber" }),
+    Object.freeze({ id: "insectExplorer", icon: "🐞", title: "Khám phá côn trùng", description: "Khám phá cấu tạo, vòng đời và những loài côn trùng quen thuộc quanh bé.", tone: "green" }),
+    Object.freeze({ id: "vehicleExplorer", icon: "🚗", title: "Khám phá phương tiện", description: "Khám phá phương tiện đường bộ, đường sắt, đường thủy, hàng không và cách di chuyển an toàn.", tone: "purple" })
   ]);
 
   const GAME_CATALOG = Object.freeze([
@@ -71,7 +76,12 @@
       spotDifference: "assets/js/games/spot_difference.js?v=class1-spot-difference-1",
       oceanExplorer: "assets/js/games/ocean_explorer.js?v=class1-ocean-explorer-1",
       earthExplorer: "assets/js/games/earth_explorer.js?v=class1-earth-explorer-1",
-      humanBodyExplorer: "assets/js/games/human_body_explorer.js?v=class1-human-body-explorer-1"
+      humanBodyExplorer: "assets/js/games/human_body_explorer.js?v=class1-human-body-explorer-1",
+      plantExplorer: "assets/js/games/plant_explorer.js?v=class1-plant-explorer-1",
+      weatherExplorer: "assets/js/games/weather_explorer.js?v=class1-weather-explorer-1",
+      dinosaurExplorer: "assets/js/games/dinosaur_explorer.js?v=class1-dinosaur-explorer-1",
+      insectExplorer: "assets/js/games/insect_explorer.js?v=class1-insect-explorer-1",
+      vehicleExplorer: "assets/js/games/vehicle_explorer.js?v=class1-vehicle-explorer-1"
     })
   });
   const subjectModuleLoads = new Map();
@@ -403,13 +413,14 @@
 
       if (isWorldExplorerChild) {
         const child = WORLD_EXPLORER_ITEMS.find((item) => item.id === featureId) || null;
+        const childIndex = child ? WORLD_EXPLORER_ITEMS.indexOf(child) : -1;
         const nestedItems = items.slice(1).map((item) => ({
           ...item,
           level: Math.min(4, Math.max(4, Number(item.level || 4)))
         }));
         items = [
           { level: 2, title: "1. Khám phá thế giới xung quanh bé", action: backToWorldExplorerGroup },
-          ...(child ? [{ level: 3, title: child.title, action: null }] : []),
+          ...(child ? [{ level: 3, title: `1.${childIndex + 1} ${child.title}`, action: null }] : []),
           ...nestedItems
         ];
       } else if (kind === "games" && items.length) {
@@ -457,6 +468,7 @@
       && WORLD_EXPLORER_ITEMS.some((item) => item.id === featureId)
     ) {
       const child = WORLD_EXPLORER_ITEMS.find((item) => item.id === featureId);
+      const childIndex = child ? WORLD_EXPLORER_ITEMS.indexOf(child) : -1;
       return {
         items: [
           {
@@ -472,7 +484,7 @@
               focusContent();
             }
           },
-          { level: 3, title: child ? child.title : "Khám phá", action: null }
+          { level: 3, title: child ? `1.${childIndex + 1} ${child.title}` : "Khám phá", action: null }
         ]
       };
     }
@@ -1279,12 +1291,12 @@
         <div><h1>🧭 Khám phá thế giới xung quanh bé</h1></div>
       </div>
       <div class="card-grid home-feature-grid">
-        ${WORLD_EXPLORER_ITEMS.map((item) => `
+        ${WORLD_EXPLORER_ITEMS.map((item, index) => `
           <button class="content-card home-feature-card" data-tone="${escapeHtml(item.tone || "purple")}" data-world-explorer-child="${escapeHtml(item.id)}" type="button">
             <div class="card-top">
               <span class="card-icon" aria-hidden="true">${item.icon}</span>
               <div class="card-copy">
-                <h2 class="card-title">${escapeHtml(item.title)}</h2>
+                <h2 class="card-title">${index + 1}. ${escapeHtml(item.title)}</h2>
                 <p class="card-desc">${escapeHtml(item.description || "")}</p>
               </div>
             </div>
