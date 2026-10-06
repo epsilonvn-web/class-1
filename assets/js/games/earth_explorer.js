@@ -121,7 +121,7 @@
       .ex-head h2{margin:0;color:#5B216E;font-size:28px;line-height:1.05;font-weight:950}
       .ex-head p{margin:3px 0 0;color:#667085;font-size:14px;font-weight:850}
       .ex-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:0 18px 11px}
-      .ex-tab{min-height:46px;border:1px solid;border-radius:15px;font-size:15px;font-weight:950;box-shadow:0 3px 8px rgba(76,29,149,.05);transition:.15s ease}
+      .ex-tab{min-height:46px;border:1px solid;border-radius:15px;font-size:15px;font-weight:950!important;box-shadow:0 3px 8px rgba(76,29,149,.05);transition:.15s ease}
       .ex-tab:nth-child(1){background:#FFF1F7;border-color:#F9A8D4;color:#BE185D} .ex-tab:nth-child(2){background:#F5F3FF;border-color:#C4B5FD;color:#6D28D9} .ex-tab:nth-child(3){background:#EFF8FF;border-color:#7DD3FC;color:#0369A1} .ex-tab:nth-child(4){background:#ECFDF5;border-color:#86EFAC;color:#047857}
       .ex-tab.is-active{color:#fff;border-color:transparent;transform:translateY(-1px)} .ex-tab:nth-child(1).is-active,.ex-tab:nth-child(2).is-active{background:linear-gradient(90deg,#EC4899,#8B5CF6)} .ex-tab:nth-child(3).is-active,.ex-tab:nth-child(4).is-active{background:linear-gradient(90deg,#3B82F6,#10B981)}
       .ex-stage{min-height:0;padding:0 18px 16px} .ex-panel{height:100%;min-height:0}
