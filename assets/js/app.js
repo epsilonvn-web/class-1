@@ -1290,7 +1290,26 @@
       <div class="section-heading">
         <div><h1>🧭 Khám phá thế giới xung quanh bé</h1></div>
       </div>
-      <div class="card-grid home-feature-grid">
+      <style>
+        .world-explorer-grid{
+          width:100%;
+          grid-template-columns:repeat(3,minmax(0,1fr))!important;
+          justify-content:stretch!important;
+          align-items:stretch;
+        }
+        .world-explorer-grid .home-feature-card{
+          width:100%!important;
+          max-width:none!important;
+          min-width:0;
+        }
+        @media (max-width:900px){
+          .world-explorer-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+        }
+        @media (max-width:560px){
+          .world-explorer-grid{grid-template-columns:1fr!important;}
+        }
+      </style>
+      <div class="card-grid home-feature-grid world-explorer-grid">
         ${WORLD_EXPLORER_ITEMS.map((item, index) => `
           <button class="content-card home-feature-card" data-tone="${escapeHtml(item.tone || "purple")}" data-world-explorer-child="${escapeHtml(item.id)}" type="button">
             <div class="card-top">
@@ -1337,11 +1356,34 @@
       return;
     }
 
+    const catalogGridClass = kind === "games" ? " games-catalog-grid" : "";
+    const catalogGridStyle = kind === "games" ? `
+      <style>
+        .games-catalog-grid{
+          width:100%;
+          grid-template-columns:repeat(3,minmax(0,1fr))!important;
+          justify-content:stretch!important;
+          align-items:stretch;
+        }
+        .games-catalog-grid .home-feature-card{
+          width:100%!important;
+          max-width:none!important;
+          min-width:0;
+        }
+        @media (max-width:900px){
+          .games-catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+        }
+        @media (max-width:560px){
+          .games-catalog-grid{grid-template-columns:1fr!important;}
+        }
+      </style>` : "";
+
     el.content.innerHTML = `
       <div class="section-heading">
         <div><h1>${icon} ${escapeHtml(title)}</h1><p>${escapeHtml(description)}</p></div>
       </div>
-      <div class="card-grid home-feature-grid">
+      ${catalogGridStyle}
+      <div class="card-grid home-feature-grid${catalogGridClass}">
         ${catalog.map((item, index) => `
           <button class="content-card home-feature-card" data-tone="${escapeHtml(item.tone || "purple")}" data-home-feature="${escapeHtml(item.id)}" type="button">
             <div class="card-top">
