@@ -1238,9 +1238,20 @@
         "copyright_note": "Nội dung app được biên soạn mới theo mục tiêu, trình tự nhận thức và dạng hoạt động của SGK/VBT; không sao chép dài nguyên văn."
       },
       "image_plan": {
-        "strategy": "generated_ui_only",
-        "catalog_images": [],
-        "ui_note": "Ghép/xoay/tách hình cần tương tác trực tiếp bằng SVG/HTML."
+        "strategy": "catalog_plus_generated_ui",
+        "catalog_images": [
+          {
+            "imageId": "family_10_playing_toys",
+            "role": "real_world_shape_composition",
+            "note": "Bố và em bé đang xếp các khối màu; dùng làm ngữ cảnh đời sống trước/sau hoạt động ghép hình tương tác."
+          },
+          {
+            "imageId": "ke_do_choi_nhieu_ngan",
+            "role": "shape_and_group_observation",
+            "note": "Kệ đồ chơi có nhiều ngăn và các khối xếp hình; phù hợp để bé tìm các hình quen thuộc trong đồ vật thật."
+          }
+        ],
+        "ui_note": "Ghép/xoay/tách hình vẫn phải làm bằng SVG/HTML tương tác; ảnh catalog chỉ tạo ngữ cảnh và giúp bé liên hệ hình học với đồ vật đời sống."
       }
     },
     {
@@ -1888,9 +1899,20 @@
         "copyright_note": "Nội dung app được biên soạn mới theo mục tiêu, trình tự nhận thức và dạng hoạt động của SGK/VBT; không sao chép dài nguyên văn."
       },
       "image_plan": {
-        "strategy": "generated_ui_only",
-        "catalog_images": [],
-        "ui_note": "Khối lập phương/hộp chữ nhật cần mô hình 3D/SVG có thể xoay; ảnh đồ vật đời sống chỉ dùng sau khi đã nhận dạng khối."
+        "strategy": "catalog_plus_generated_ui",
+        "catalog_images": [
+          {
+            "imageId": "family_10_playing_toys",
+            "role": "real_world_solid_shapes",
+            "note": "Các khối đồ chơi là ngữ cảnh gần gũi để bé tìm vật gần dạng khối lập phương hoặc khối hộp chữ nhật sau khi đã quan sát mô hình chuẩn."
+          },
+          {
+            "imageId": "ke_do_choi_nhieu_ngan",
+            "role": "real_world_shape_hunt",
+            "note": "Quan sát kệ và các khối đồ chơi để luyện nhận dạng hình khối trong đời sống; không dùng ảnh để suy kích thước hay đặc tính hình học chính xác."
+          }
+        ],
+        "ui_note": "Khối lập phương/hộp chữ nhật vẫn phải dạy bằng mô hình 3D/SVG có thể quan sát rõ các mặt; ảnh đời sống chỉ dùng cho bước liên hệ và nhận dạng."
       }
     },
     {
@@ -3901,6 +3923,11 @@
         "strategy": "catalog_plus_generated_ui",
         "catalog_images": [
           {
+            "imageId": "do_vat_alarm_clock",
+            "role": "clock_object_intro",
+            "note": "Đồng hồ báo thức thật giúp bé nhận biết đồ vật dùng để xem giờ; không lấy vị trí kim trong ảnh làm dữ kiện chấm đáp án."
+          },
+          {
             "imageId": "family_27_breakfast_kitchen",
             "role": "morning_activity",
             "note": "Bữa sáng là ngữ cảnh quen thuộc để ghép hoạt động với giờ."
@@ -3916,7 +3943,7 @@
             "note": "Đọc truyện trước giờ ngủ tạo ngữ cảnh buổi tối."
           }
         ],
-        "ui_note": "Mặt đồng hồ và kim phải dựng bằng UI để đọc giờ đúng chính xác."
+        "ui_note": "Ảnh catalog dùng để nhận biết đồng hồ trong đời sống; mặt đồng hồ, kim giờ và kim phút của bài học phải dựng bằng UI/SVG để đọc giờ chính xác."
       }
     },
     {
