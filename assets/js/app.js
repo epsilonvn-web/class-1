@@ -33,13 +33,24 @@
     Object.freeze({ id: "geometryArea", icon: "📏", title: "Tính diện tích", description: "Tính diện tích các hình học cơ bản.", badge: "Công cụ", tone: "pink" }),
     Object.freeze({ id: "colorMixer", icon: "🎨", title: "Phối màu", description: "Phối màu theo hệ RGB và CMYK.", badge: "Công cụ", tone: "amber" })
   ]);
+  const WORLD_EXPLORER_GROUP_ID = "worldExplorer";
+  const WORLD_EXPLORER_ITEMS = Object.freeze([
+    Object.freeze({ id: "spaceExplorer", icon: "🪐", title: "Khám phá vũ trụ", description: "Khám phá Hệ Mặt Trời, các hành tinh, vệ tinh và những điều kỳ thú ngoài không gian.", tone: "purple" }),
+    Object.freeze({ id: "oceanExplorer", icon: "🌊", title: "Khám phá đại dương", description: "Khám phá các tầng biển, sinh vật đại dương và những bí mật dưới lòng nước.", tone: "blue" }),
+    Object.freeze({ id: "earthExplorer", icon: "🌍", title: "Khám phá Trái Đất", description: "Khám phá cấu tạo Trái Đất, địa hình và những hiện tượng thiên nhiên quanh bé.", tone: "teal" }),
+    Object.freeze({ id: "humanBodyExplorer", icon: "🫀", title: "Khám phá cơ thể người", description: "Khám phá các cơ quan, giác quan và cách cơ thể bé hoạt động mỗi ngày.", tone: "pink" })
+  ]);
+
   const GAME_CATALOG = Object.freeze([
+    Object.freeze({ id: "worldExplorer", icon: "🧭", title: "Khám phá thế giới xung quanh bé", description: "", badge: "Khám phá", tone: "teal" }),
     Object.freeze({ id: "paperFolding", icon: "🛩️", title: "Xưởng Gấp Giấy", description: "Gấp từng bước cùng Cô Thỏ Hồng.", badge: "Thủ công", tone: "pink" }),
-    Object.freeze({ id: "jigsawPuzzle", icon: "🧩", title: "Xưởng Xếp Hình", description: "Ghép 36 bức tranh qua 9 cấp độ.", badge: "Quan sát", tone: "purple" }),
-    Object.freeze({ id: "rabbitDrawing", icon: "🖍️", title: "Cô Thỏ Hồng dạy vẽ", description: "Vẽ 15 bức tranh đơn giản theo từng bước.", badge: "Mỹ thuật", tone: "teal" }),
-    Object.freeze({ id: "animalWorld", icon: "🐾", title: "Thế giới động vật", description: "Khám phá 30 phòng tranh động vật cùng Cô Thỏ Hồng.", badge: "Khám phá", tone: "amber" }),
-    Object.freeze({ id: "mcHost", icon: "🎤", title: "Tập làm MC", description: "Tập dẫn 12 chương trình cùng Cô Thỏ Hồng.", badge: "Kỹ năng", tone: "pink" }),
-    Object.freeze({ id: "missingPiece", icon: "🔗", title: "Mảnh ghép còn thiếu", description: "Ghép 232 cặp liên tưởng qua 6 cấp độ.", badge: "Tư duy", tone: "purple" })
+    Object.freeze({ id: "jigsawPuzzle", icon: "🧩", title: "Xưởng Xếp Hình", description: "Ghép tranh qua nhiều cấp độ.", badge: "Quan sát", tone: "purple" }),
+    Object.freeze({ id: "rabbitDrawing", icon: "🖍️", title: "Cô Thỏ Hồng dạy vẽ", description: "Vẽ tranh đơn giản theo từng bước.", badge: "Mỹ thuật", tone: "teal" }),
+    Object.freeze({ id: "animalWorld", icon: "🐾", title: "Thế giới động vật", description: "Khám phá thế giới động vật cùng Cô Thỏ Hồng.", badge: "Khám phá", tone: "amber" }),
+    Object.freeze({ id: "mcHost", icon: "🎤", title: "Tập làm MC", description: "Tập dẫn chương trình cùng Cô Thỏ Hồng.", badge: "Kỹ năng", tone: "pink" }),
+    Object.freeze({ id: "missingPiece", icon: "🔗", title: "Mảnh ghép còn thiếu", description: "Ghép các cặp liên tưởng qua nhiều cấp độ.", badge: "Tư duy", tone: "purple" }),
+    Object.freeze({ id: "lifeCycle", icon: "🌱", title: "Vòng đời kỳ diệu", description: "Sắp xếp các giai đoạn vòng đời của sinh vật và thiên nhiên.", badge: "Khám phá", tone: "green" }),
+    Object.freeze({ id: "spotDifference", icon: "🔍", title: "Tìm điểm khác nhau", description: "Quan sát hai bức tranh và tìm những điểm khác biệt qua nhiều màn.", badge: "Quan sát", tone: "amber" })
   ]);
   const HOME_FEATURE_SCRIPTS = Object.freeze({
     tools: Object.freeze({
@@ -54,7 +65,13 @@
       rabbitDrawing: "assets/js/games/rabbit_drawing.js?v=class1-rabbit-drawing-2",
       animalWorld: "assets/js/games/animal_world.js?v=class1-animal-world-1",
       mcHost: "assets/js/games/mc_host.js?v=class1-mc-host-1",
-      missingPiece: "assets/js/games/missing_piece.js?v=class1-missing-piece-1"
+      missingPiece: "assets/js/games/missing_piece.js?v=class1-missing-piece-1",
+      spaceExplorer: "assets/js/games/space_explorer.js?v=class1-space-explorer-1",
+      lifeCycle: "assets/js/games/life_cycle.js?v=class1-life-cycle-1",
+      spotDifference: "assets/js/games/spot_difference.js?v=class1-spot-difference-1",
+      oceanExplorer: "assets/js/games/ocean_explorer.js?v=class1-ocean-explorer-1",
+      earthExplorer: "assets/js/games/earth_explorer.js?v=class1-earth-explorer-1",
+      humanBodyExplorer: "assets/js/games/human_body_explorer.js?v=class1-human-body-explorer-1"
     })
   });
   const subjectModuleLoads = new Map();
@@ -63,7 +80,9 @@
   const state = {
     screen: "home",
     homeTab: "class1",
+    contactTab: "intro",
     homeFeatureId: null,
+    homeFeatureGroupId: null,
     homeFeatureBanner: null,
     subjectId: null,
     subjectTab: "discover",
@@ -112,6 +131,7 @@
     mainBanner: document.getElementById("main-banner"),
     subBanner: document.getElementById("sub-banner"),
     subPill: document.getElementById("sub-pill"),
+    homeVipNotice: document.getElementById("home-vip-notice"),
     scoreBox: document.getElementById("score-box"),
     installButton: document.getElementById("install-button"),
     accountButton: document.getElementById("account-button"),
@@ -358,14 +378,47 @@
   }
 
   function homeFeatureContext(kind, featureId) {
+    const isWorldExplorerChild = kind === "games"
+      && state.homeFeatureGroupId === WORLD_EXPLORER_GROUP_ID
+      && WORLD_EXPLORER_ITEMS.some((item) => item.id === featureId);
+
+    const backToWorldExplorerGroup = () => {
+      destroyActiveHomeFeature();
+      state.homeFeatureId = null;
+      state.homeFeatureBanner = {
+        items: [{ level: 2, title: "1. Khám phá thế giới xung quanh bé", action: null }]
+      };
+      render();
+      focusContent();
+    };
+
     const setSubBanner = (banner) => {
       if (state.screen !== "home" || state.homeTab !== kind || state.homeFeatureId !== featureId) return;
       const rawItems = banner && Array.isArray(banner.items) ? banner.items : [];
-      const items = rawItems.map((item, index) => ({
+      let items = rawItems.map((item, index) => ({
         title: String(item && item.title || "").trim(),
         level: Math.min(4, Math.max(2, Number(item && item.level || (index + 2)) || 2)),
         action: item && typeof item.action === "function" ? item.action : null
       })).filter((item) => item.title);
+
+      if (isWorldExplorerChild) {
+        const child = WORLD_EXPLORER_ITEMS.find((item) => item.id === featureId) || null;
+        const nestedItems = items.slice(1).map((item) => ({
+          ...item,
+          level: Math.min(4, Math.max(4, Number(item.level || 4)))
+        }));
+        items = [
+          { level: 2, title: "1. Khám phá thế giới xung quanh bé", action: backToWorldExplorerGroup },
+          ...(child ? [{ level: 3, title: child.title, action: null }] : []),
+          ...nestedItems
+        ];
+      } else if (kind === "games" && items.length) {
+        const currentFeature = GAME_CATALOG.find((item) => item.id === featureId) || null;
+        if (currentFeature && items[0].level === 2) {
+          const currentIndex = GAME_CATALOG.indexOf(currentFeature);
+          items[0].title = `${currentIndex + 1}. ${currentFeature.title}`;
+        }
+      }
 
       if (!banner || (!items.length && !String(banner.title || "").trim())) {
         state.homeFeatureBanner = null;
@@ -378,6 +431,7 @@
       }
       renderBanner();
     };
+
     return {
       host: el.content,
       kind,
@@ -386,7 +440,10 @@
       back: () => {
         destroyActiveHomeFeature();
         state.homeFeatureId = null;
-        state.homeFeatureBanner = null;
+        state.homeFeatureBanner = isWorldExplorerChild
+          ? { items: [{ level: 2, title: "1. Khám phá thế giới xung quanh bé", action: null }] }
+          : null;
+        if (!isWorldExplorerChild) state.homeFeatureGroupId = null;
         render();
         focusContent();
       }
@@ -394,6 +451,32 @@
   }
 
   function defaultHomeFeatureBanner(kind, featureId) {
+    if (
+      kind === "games"
+      && state.homeFeatureGroupId === WORLD_EXPLORER_GROUP_ID
+      && WORLD_EXPLORER_ITEMS.some((item) => item.id === featureId)
+    ) {
+      const child = WORLD_EXPLORER_ITEMS.find((item) => item.id === featureId);
+      return {
+        items: [
+          {
+            level: 2,
+            title: "1. Khám phá thế giới xung quanh bé",
+            action: () => {
+              destroyActiveHomeFeature();
+              state.homeFeatureId = null;
+              state.homeFeatureBanner = {
+                items: [{ level: 2, title: "1. Khám phá thế giới xung quanh bé", action: null }]
+              };
+              render();
+              focusContent();
+            }
+          },
+          { level: 3, title: child ? child.title : "Khám phá", action: null }
+        ]
+      };
+    }
+
     const catalog = kind === "games" ? GAME_CATALOG : kind === "tools" ? TOOL_CATALOG : [];
     const feature = catalog.find((item) => item.id === featureId) || null;
     if (!feature) return null;
@@ -815,6 +898,7 @@
     if (state.screen === "home" && screen !== "home") destroyActiveHomeFeature();
     if (screen !== "home") {
       state.homeFeatureId = null;
+      state.homeFeatureGroupId = null;
       state.homeFeatureBanner = null;
     }
     state.screen = screen;
@@ -830,6 +914,7 @@
     state.screen = "home";
     state.homeTab = "class1";
     state.homeFeatureId = null;
+    state.homeFeatureGroupId = null;
     state.homeFeatureBanner = null;
     state.subjectId = null;
     state.subjectTab = "discover";
@@ -846,7 +931,9 @@
     state.account.visibleNotices = [];
     state.screen = "home";
     state.homeTab = HOME_TABS.some((t) => t.id === tabId) ? tabId : "class1";
+    if (state.homeTab === "contact") state.contactTab = "intro";
     state.homeFeatureId = null;
+    state.homeFeatureGroupId = null;
     state.homeFeatureBanner = null;
     state.subjectId = null;
     state.profileSubjectId = null;
@@ -865,6 +952,7 @@
     if (previousSubjectId && previousSubjectId !== subject.id) destroySubjectModule(previousSubjectId);
     state.screen = "subject";
     state.homeFeatureId = null;
+    state.homeFeatureGroupId = null;
     state.homeFeatureBanner = null;
     state.subjectId = subject.id;
     state.subjectTab = "discover";
@@ -928,7 +1016,9 @@
           message: "Bài học, Bài tập, Ôn tập, Đề thi và Mini games cần quyền Trial/VIP của môn này.",
           icon: "🔐",
           primaryLabel: "Đăng nhập",
-          onPrimary: () => openAuth("login")
+          secondaryLabel: "Để sau nhé",
+          onPrimary: () => openAuth("login"),
+          onSecondary: hideDialog
         });
       } else {
         showDialog({
@@ -936,7 +1026,9 @@
           message: "Tài khoản hiện là Regular ở môn này. Bạn có thể gửi yêu cầu quyền học để Admin duyệt.",
           icon: "🌟",
           primaryLabel: "Đăng ký quyền học",
-          onPrimary: () => openAuth("request")
+          secondaryLabel: "Để sau nhé",
+          onPrimary: () => openAccountPage("request"),
+          onSecondary: hideDialog
         });
       }
       return;
@@ -973,6 +1065,7 @@
     renderNav();
     renderBanner();
     renderContent();
+    updateHomeVipNoticeVisibility();
     el.scoreBox.classList.toggle("hidden", state.screen !== "subject");
     updateInstallVisibility();
     updateAccountButton();
@@ -1055,7 +1148,7 @@
     const subjectDetailMode = state.screen === "subject" && !!state.detail;
     const homeFeatureMode = state.screen === "home"
       && (state.homeTab === "games" || state.homeTab === "tools")
-      && !!state.homeFeatureId;
+      && (!!state.homeFeatureId || !!state.homeFeatureGroupId);
     const detailMode = subjectDetailMode || homeFeatureMode;
 
     el.mainBanner.classList.toggle("hidden", detailMode);
@@ -1104,6 +1197,17 @@
       return;
     }
 
+    if (state.homeTab === "games" && state.homeFeatureGroupId === WORLD_EXPLORER_GROUP_ID && !state.homeFeatureId) {
+      el.subPill.classList.add("home-sub-breadcrumbs");
+      el.subPill.setAttribute("aria-label", "Điều hướng Games");
+      const node = document.createElement("span");
+      node.className = "home-breadcrumb-tab home-breadcrumb-level2";
+      node.textContent = "1. Khám phá thế giới xung quanh bé";
+      node.title = "Khám phá thế giới xung quanh bé";
+      el.subPill.replaceChildren(node);
+      return;
+    }
+
     if (feature) {
       const featureIndex = Math.max(0, catalog.indexOf(feature));
       el.subPill.classList.add("home-sub-breadcrumbs");
@@ -1142,7 +1246,73 @@
     }
   }
 
+  function updateHomeVipNoticeVisibility() {
+    if (!el.homeVipNotice) return;
+    const isTopLevelHome = state.screen === "home" && !state.homeFeatureId && !state.homeFeatureGroupId;
+    const isAdmin = !!(state.auth.user && state.auth.user.role === "admin");
+    const hasVip = !!state.auth.user && SUBJECTS.some((subject) => accessTypeFor(subject.id) === "vip");
+
+    // Tab nhắc đăng ký chỉ dành cho Khách, Regular và Trial.
+    // Admin hoặc tài khoản đã có VIP thì ẩn vì không còn cần lời nhắc này.
+    el.homeVipNotice.classList.toggle("hidden", !isTopLevelHome || isAdmin || hasVip);
+  }
+
+  function onHomeVipNoticeClick() {
+    if (!state.auth.ready) {
+      showToast("Đang kiểm tra phiên đăng nhập…");
+      return;
+    }
+    if (!state.auth.user) {
+      openAuth("register");
+      return;
+    }
+    if (state.auth.user.role === "admin") {
+      openAccountPage("overview");
+      return;
+    }
+    openAccountPage("request");
+  }
+
+  function renderWorldExplorerGroup() {
+    el.content.innerHTML = `
+      <div class="section-heading">
+        <div><h1>🧭 Khám phá thế giới xung quanh bé</h1></div>
+      </div>
+      <div class="card-grid home-feature-grid">
+        ${WORLD_EXPLORER_ITEMS.map((item) => `
+          <button class="content-card home-feature-card" data-tone="${escapeHtml(item.tone || "purple")}" data-world-explorer-child="${escapeHtml(item.id)}" type="button">
+            <div class="card-top">
+              <span class="card-icon" aria-hidden="true">${item.icon}</span>
+              <div class="card-copy">
+                <h2 class="card-title">${escapeHtml(item.title)}</h2>
+                <p class="card-desc">${escapeHtml(item.description || "")}</p>
+              </div>
+            </div>
+          </button>`).join("")}
+      </div>`;
+
+    el.content.querySelectorAll("[data-world-explorer-child]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const featureId = String(button.dataset.worldExplorerChild || "");
+        if (!featureId || !homeFeatureScript("games", featureId)) return;
+        state.homeFeatureId = featureId;
+        state.homeFeatureBanner = null;
+        render();
+        focusContent();
+      });
+    });
+  }
+
   function renderHomeFeatureCatalog(kind, icon, title, description, catalog) {
+    if (
+      kind === "games"
+      && state.homeFeatureGroupId === WORLD_EXPLORER_GROUP_ID
+      && !state.homeFeatureId
+    ) {
+      renderWorldExplorerGroup();
+      return;
+    }
+
     if (state.homeFeatureId) {
       if (!renderHomeFeatureOrLoading(kind, state.homeFeatureId)) {
         renderEmptyHomeTab(icon, title, "Module này chưa có file JS tương ứng.");
@@ -1166,7 +1336,7 @@
               <span class="card-icon" aria-hidden="true">${item.icon}</span>
               <div class="card-copy">
                 <h2 class="card-title">${index + 1}. ${escapeHtml(item.title)}</h2>
-                <p class="card-desc">${escapeHtml(item.description)}</p>
+                ${item.description ? `<p class="card-desc">${escapeHtml(item.description)}</p>` : ""}
               </div>
             </div>
           </button>`).join("")}
@@ -1175,7 +1345,21 @@
     el.content.querySelectorAll("[data-home-feature]").forEach((button) => {
       button.addEventListener("click", () => {
         const featureId = String(button.dataset.homeFeature || "");
-        if (!featureId || !homeFeatureScript(kind, featureId)) return;
+        if (!featureId) return;
+
+        if (kind === "games" && featureId === WORLD_EXPLORER_GROUP_ID) {
+          state.homeFeatureGroupId = WORLD_EXPLORER_GROUP_ID;
+          state.homeFeatureId = null;
+          state.homeFeatureBanner = {
+            items: [{ level: 2, title: "1. Khám phá thế giới xung quanh bé", action: null }]
+          };
+          render();
+          focusContent();
+          return;
+        }
+
+        if (!homeFeatureScript(kind, featureId)) return;
+        state.homeFeatureGroupId = null;
         state.homeFeatureId = featureId;
         state.homeFeatureBanner = null;
         render();
@@ -1339,14 +1523,205 @@
   }
 
   function renderContactTab() {
+    const activeView = ["intro", "vip", "contact"].includes(state.contactTab) ? state.contactTab : "intro";
+    const gradeLinks = Array.from({ length: 9 }, (_, index) => {
+      const grade = index + 1;
+      const url = String(EE_CLASS_SITES[grade] || "").trim();
+      if (!url) {
+        return `<span class="contact-grade-link is-unavailable" aria-label="Lớp ${grade} đang cập nhật">Lớp ${grade}</span>`;
+      }
+      return `<a class="contact-grade-link${grade === 1 ? " is-current" : ""}" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" aria-label="Mở Epsilon Edu Lớp ${grade}">🏫 Lớp ${grade}</a>`;
+    }).join("");
+
+    const introPanel = `
+      <div class="contact-panel contact-intro-panel" role="tabpanel" aria-label="Giới thiệu chương trình">
+        <div class="contact-hero">
+          <div class="contact-hero-icon" aria-hidden="true">🐰</div>
+          <div class="contact-hero-copy">
+            <h2>Epsilon Edu - Tiến bộ từng ngày</h2>
+            <p>Epsilon Edu là không gian học tập và trải nghiệm dành cho học sinh. Ở Lớp 1, Cô Thỏ Hồng đồng hành cùng bé trong Toán, Tiếng Việt và Tiếng Anh; bên cạnh đó còn có Games, Tools và hệ sinh thái các lớp học được liên kết trong Epsilon Edu.</p>
+          </div>
+        </div>
+
+        <div class="contact-intro-grid">
+          <button class="contact-intro-card tone-purple" type="button" data-intro-home-tab="class1" aria-label="Khám phá chương trình học Lớp 1">
+            <span class="contact-intro-icon" aria-hidden="true">📚</span>
+            <div><strong>Chương trình học Lớp 1</strong><span>Toán, Tiếng Việt và Tiếng Anh được tổ chức theo Khám phá, Bài học, Bài tập, Ôn tập, Đề thi và Mini games để bé học từng bước rõ ràng.</span></div>
+          </button>
+          <div class="contact-intro-card tone-pink">
+            <span class="contact-intro-icon" aria-hidden="true">🌱</span>
+            <div><strong>Tự học và tiến bộ mỗi ngày</strong><span>Bé có thể luyện tập thường xuyên, xem lại quá trình học và từng bước hình thành thói quen tự học độc lập.</span></div>
+          </div>
+          <button class="contact-intro-card tone-blue" type="button" data-intro-home-tab="epsilon" aria-label="Mở hệ sinh thái Epsilon Edu">
+            <span class="contact-intro-icon" aria-hidden="true">🌐</span>
+            <div><strong>Hệ sinh thái Epsilon Edu</strong><span>Từ Lớp 1, bé có thể đi tới các chương trình Lớp 2, Lớp 3 và những lớp tiếp theo qua các liên kết của Epsilon Edu.</span></div>
+          </button>
+        </div>
+
+        <div class="contact-experience-head">
+          <div>
+            <h3>🎈 Hoạt động trải nghiệm nổi bật</h3>
+            <p>Games và Tools không chỉ là phần phụ, mà là không gian để bé chơi, khám phá, tương tác và vận dụng điều đã học theo cách tự nhiên.</p>
+          </div>
+        </div>
+
+        <div class="contact-experience-grid">
+          <button class="contact-experience-card games" type="button" data-intro-home-tab="games" aria-label="Khám phá Games">
+            <span class="contact-experience-icon" aria-hidden="true">🎮</span>
+            <span class="contact-experience-copy"><strong>Games - Học qua trải nghiệm</strong><span>Các trò chơi rèn quan sát, ghi nhớ, tư duy, sáng tạo và kỹ năng tương tác. Bé vừa chơi vừa củng cố kiến thức, tạo hứng thú và chủ động khám phá.</span></span>
+            <span class="contact-experience-go" aria-hidden="true">→</span>
+          </button>
+          <button class="contact-experience-card tools" type="button" data-intro-home-tab="tools" aria-label="Khám phá Tools">
+            <span class="contact-experience-icon" aria-hidden="true">🧰</span>
+            <span class="contact-experience-copy"><strong>Tools - Công cụ khám phá</strong><span>Các công cụ trực quan giúp bé thử nghiệm, đo lường, tính toán và khám phá những ý tưởng học tập theo cách thực hành, nhanh và thú vị.</span></span>
+            <span class="contact-experience-go" aria-hidden="true">→</span>
+          </button>
+        </div>
+
+        <div class="contact-ee-section">
+          <h3>🏫 Các chương trình trong Epsilon Edu</h3>
+          <p>Bé có thể mở trực tiếp các lớp đã triển khai bên dưới. Những lớp đang tiếp tục xây dựng sẽ được cập nhật dần trong hệ sinh thái Epsilon Edu.</p>
+          <div class="contact-grade-links" aria-label="Liên kết các lớp trong Epsilon Edu">${gradeLinks}</div>
+        </div>
+
+        <div class="contact-footer-note"><span aria-hidden="true">✨</span><span>Học kiến thức - luyện kỹ năng - trải nghiệm - khám phá cùng Epsilon Edu</span><span aria-hidden="true">✨</span></div>
+      </div>`;
+
+    const vipPanel = `
+      <div class="contact-panel contact-vip-panel" role="tabpanel" aria-label="Quyền học VIP">
+        <div class="contact-vip-hero">
+          <div class="contact-vip-hero-icon" aria-hidden="true">👑</div>
+          <div class="contact-vip-hero-copy">
+            <span class="contact-vip-kicker">EPSILON EDU VIP</span>
+            <h2>Quyền học VIP - Mở trọn trải nghiệm học tập</h2>
+            <p>Dành cho gia đình muốn bé học đầy đủ nội dung, luyện tập nhiều hơn và sử dụng trọn vẹn các hoạt động trải nghiệm của Epsilon Edu.</p>
+          </div>
+        </div>
+
+        <div class="contact-vip-benefits" aria-label="Quyền lợi VIP">
+          <div class="contact-vip-benefit tone-purple">
+            <span class="contact-vip-benefit-icon" aria-hidden="true">📚</span>
+            <div><strong>Mở đầy đủ nội dung VIP của môn</strong><span>Bé được học các phần Premium của môn đã đăng ký như Bài học, Bài tập, Ôn tập, Đề thi và Mini games.</span></div>
+          </div>
+          <div class="contact-vip-benefit tone-pink">
+            <span class="contact-vip-benefit-icon" aria-hidden="true">📈</span>
+            <div><strong>Học nhiều hơn - theo dõi tiến bộ tốt hơn</strong><span>Tài khoản được duy trì hồ sơ học tập để bé và gia đình dễ theo dõi quá trình luyện tập, kết quả và sự tiến bộ theo thời gian.</span></div>
+          </div>
+          <div class="contact-vip-benefit tone-green">
+            <span class="contact-vip-benefit-icon" aria-hidden="true">🎮</span>
+            <div><strong>Games &amp; Tools - trải nghiệm đầy đủ hơn</strong><span>Khi cơ chế giới hạn Games và Tools được áp dụng, tài khoản thường dự kiến chỉ mở mục đầu tiên; VIP sẽ được mở đầy đủ các nội dung trải nghiệm theo chính sách của chương trình.</span></div>
+          </div>
+          <div class="contact-vip-benefit tone-blue">
+            <span class="contact-vip-benefit-icon" aria-hidden="true">🌟</span>
+            <div><strong>Khám phá - quyền truy cập mở rộng</strong><span>Sắp tới, phần Khám phá của 3 môn dự kiến giới hạn tài khoản thường ở 3 mục đầu. VIP của môn đã đăng ký sẽ được mở đầy đủ phần Khám phá.</span></div>
+          </div>
+        </div>
+
+        <div class="contact-vip-pricing" aria-label="Mức giá quyền học VIP">
+          <div class="contact-vip-pricing-head">
+            <div><span class="contact-vip-pricing-icon" aria-hidden="true">💎</span><div><h3>Mức giá quyền học VIP</h3><p>Đăng ký theo năm, lựa chọn theo nhu cầu học của bé.</p></div></div>
+          </div>
+          <div class="contact-vip-price-grid">
+            <div class="contact-vip-price-card single">
+              <span class="contact-vip-price-badge">1 môn</span>
+              <strong>80.000đ</strong>
+              <span>/ môn / năm</span>
+              <small>Phù hợp khi bé tập trung vào một môn học.</small>
+            </div>
+            <div class="contact-vip-price-card bundle">
+              <span class="contact-vip-price-badge">Ưu đãi 3 môn</span>
+              <strong>210.000đ</strong>
+              <span>/ 3 môn / năm</span>
+              <small>Mở quyền VIP cho Toán, Tiếng Việt và Tiếng Anh cùng lúc.</small>
+            </div>
+          </div>
+          <button class="contact-vip-action" type="button" data-contact-vip-action>
+            <span aria-hidden="true">👑</span><span>Đăng ký quyền học VIP</span><span aria-hidden="true">→</span>
+          </button>
+        </div>
+
+        <div class="contact-vip-note"><span aria-hidden="true">🐰</span><span>VIP giúp bé học sâu hơn, luyện tập nhiều hơn và có thêm những trải nghiệm thú vị trong Epsilon Edu.</span><span aria-hidden="true">✨</span></div>
+      </div>`;
+
+    const contactPanel = `
+      <div class="contact-panel contact-info-panel" role="tabpanel" aria-label="Thông tin liên hệ">
+        <div class="contact-hero">
+          <div class="contact-hero-icon" aria-hidden="true">💌</div>
+          <div class="contact-hero-copy">
+            <h2>Thông tin liên hệ</h2>
+            <p>Kết nối với Epsilon Edu khi cần hỗ trợ tài khoản, quyền học hoặc chương trình.</p>
+          </div>
+        </div>
+
+        <div class="contact-grid">
+          <a class="contact-card email" href="mailto:epsilon.vn@gmail.com" aria-label="Gửi email tới epsilon.vn@gmail.com">
+            <span class="contact-card-icon" aria-hidden="true">📧</span>
+            <span class="contact-card-copy">
+              <span class="contact-card-label">Email</span>
+              <span class="contact-card-value">epsilon.vn@gmail.com</span>
+              <span class="contact-card-note">Nhấn để mở ứng dụng gửi email</span>
+            </span>
+            <span class="contact-card-arrow" aria-hidden="true"><span>→</span></span>
+          </a>
+
+          <a class="contact-card zalo" href="https://zalo.me/0865749402" target="_blank" rel="noopener noreferrer" aria-label="Liên hệ Zalo 0865 749 402">
+            <span class="contact-card-icon" aria-hidden="true">💬</span>
+            <span class="contact-card-copy">
+              <span class="contact-card-label">Zalo</span>
+              <span class="contact-card-value">0865.749.402</span>
+              <span class="contact-card-note">Nhấn để mở Zalo và liên hệ trực tiếp</span>
+            </span>
+            <span class="contact-card-arrow" aria-hidden="true"><span>→</span></span>
+          </a>
+        </div>
+
+        <div class="contact-footer-note"><span aria-hidden="true">✨</span><span>Cảm ơn bé và gia đình đã đồng hành cùng Epsilon Edu</span><span aria-hidden="true">✨</span></div>
+      </div>`;
+
     el.content.innerHTML = `
-      <div class="section-heading"><div><h1>💌 Liên hệ</h1><p>Khung giới thiệu và thông tin liên hệ của chương trình.</p></div></div>
-      <section class="subject-grid">
-        <div class="content-card subject-card" data-tone="purple"><div class="card-top"><span class="card-icon">🌱</span><div class="card-copy"><h2 class="card-title">Giới thiệu chương trình</h2><p class="card-desc">Nội dung giới thiệu sẽ được bổ sung ở bước nội dung.</p></div></div></div>
-        <div class="content-card subject-card" data-tone="blue"><div class="card-top"><span class="card-icon">📞</span><div class="card-copy"><h2 class="card-title">Thông tin liên hệ</h2><p class="card-desc">Thông tin liên hệ chi tiết sẽ được chốt sau.</p></div></div></div>
-        <div class="content-card subject-card" data-tone="green"><div class="card-top"><span class="card-icon">🐰</span><div class="card-copy"><h2 class="card-title">Cô Thỏ Hồng</h2><p class="card-desc">Mascot đồng hành cùng bé trong toàn bộ Lớp 1.</p></div></div></div>
+      <section class="contact-page" aria-label="Giới thiệu và liên hệ Epsilon Edu">
+        <div class="section-heading">
+          <div>
+            <h1>💌 Liên hệ</h1>
+            <p>Giới thiệu chương trình, quyền học VIP và thông tin kết nối với Epsilon Edu.</p>
+          </div>
+        </div>
+
+        <div class="contact-subtabs" role="tablist" aria-label="Giới thiệu, quyền học VIP và thông tin liên hệ">
+          <button class="contact-subtab ${activeView === "intro" ? "is-active" : ""}" type="button" role="tab" aria-selected="${activeView === "intro"}" data-contact-view="intro">
+            <span aria-hidden="true">🌟</span><span>Giới thiệu chương trình</span>
+          </button>
+          <button class="contact-subtab ${activeView === "vip" ? "is-active" : ""}" type="button" role="tab" aria-selected="${activeView === "vip"}" data-contact-view="vip">
+            <span aria-hidden="true">👑</span><span>Quyền học VIP</span>
+          </button>
+          <button class="contact-subtab ${activeView === "contact" ? "is-active" : ""}" type="button" role="tab" aria-selected="${activeView === "contact"}" data-contact-view="contact">
+            <span aria-hidden="true">💬</span><span>Thông tin liên hệ</span>
+          </button>
+        </div>
+
+        ${activeView === "contact" ? contactPanel : activeView === "vip" ? vipPanel : introPanel}
       </section>
     `;
+
+    el.content.querySelectorAll("[data-contact-view]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const requestedView = String(button.dataset.contactView || "intro");
+        const nextView = ["intro", "vip", "contact"].includes(requestedView) ? requestedView : "intro";
+        if (state.contactTab === nextView) return;
+        state.contactTab = nextView;
+        renderContactTab();
+      });
+    });
+
+    el.content.querySelector("[data-contact-vip-action]")?.addEventListener("click", onHomeVipNoticeClick);
+
+    el.content.querySelectorAll("[data-intro-home-tab]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const tabId = String(button.dataset.introHomeTab || "");
+        if (!HOME_TABS.some((tab) => tab.id === tabId)) return;
+        openHomeTab(tabId);
+      });
+    });
   }
 
   function renderSubjectContent() {
@@ -2612,6 +2987,7 @@
   }
 
   el.homeButton.addEventListener("click", goHome);
+  el.homeVipNotice?.addEventListener("click", onHomeVipNoticeClick);
   el.accountButton.addEventListener("click", () => state.auth.user ? openAccountPage() : openAuth("login"));
   el.authClose.addEventListener("click", closeAuth);
   el.authLater.addEventListener("click", closeAuth);
