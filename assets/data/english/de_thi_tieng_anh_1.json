@@ -420,18 +420,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
             "Hi, I’m Bill.",
-            "Hi Bill I’m.",
-            "I’m Hi Bill.",
-            "Bill, I’m hi."
+            "Bill I’m Hi.",
+            "I’m Bill Hi.",
+            "Bill Hi I’m."
           ],
           "answer": "Hi, I’m Bill.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'Hi, I’m Bill.'",
+          "explanation": "Câu đúng trật tự là: Hi, I’m Bill.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -439,7 +439,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 111,
@@ -862,18 +863,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "bike",
-            "ball",
             "I have a car.",
-            "Have I a car."
+            "car a have I.",
+            "have a car I.",
+            "I a car have."
           ],
           "answer": "I have a car.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'I have a car.'",
+          "explanation": "Câu đúng trật tự là: I have a car.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -881,7 +882,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 211,
@@ -1124,7 +1126,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "imageId": "do_vat_hat"
         },
         {
           "question_id": 305,
@@ -1303,18 +1306,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "ball",
-            "Is this my bag.",
-            "bike",
-            "This is my bag."
+            "bag my is This.",
+            "This is my bag.",
+            "is my bag This.",
+            "This my bag is."
           ],
           "answer": "This is my bag.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'This is my bag.'",
+          "explanation": "Câu đúng trật tự là: This is my bag.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -1322,7 +1325,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 311,
@@ -1744,18 +1748,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "This is a dog.",
-            "ball",
-            "bike",
-            "Is this a dog."
+            "dog a is This.",
+            "is a dog This.",
+            "This a dog is.",
+            "This is a dog."
           ],
           "answer": "This is a dog.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'This is a dog.'",
+          "explanation": "Câu đúng trật tự là: This is a dog.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -1763,7 +1767,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 411,
@@ -2185,18 +2190,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "Like I milk.",
-            "bike",
+            "milk like I.",
             "I like milk.",
-            "ball"
+            "like milk I.",
+            "milk I like."
           ],
           "answer": "I like milk.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'I like milk.'",
+          "explanation": "Câu đúng trật tự là: I like milk.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -2204,7 +2209,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 511,
@@ -2626,18 +2632,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "It red is a pen.",
-            "A red pen it’s.",
+            "pen red a It’s.",
+            "a red pen It’s.",
             "It’s a red pen.",
-            "Red it’s pen a."
+            "It’s red pen a."
           ],
           "answer": "It’s a red pen.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'It’s a red pen.'",
+          "explanation": "Câu đúng trật tự là: It’s a red pen.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -2645,7 +2651,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 611,
@@ -3067,18 +3074,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "Garden there is.",
-            "A garden there.",
-            "There a garden is.",
-            "There’s a garden."
+            "There’s a garden.",
+            "garden a There’s.",
+            "a garden There’s.",
+            "garden There’s a."
           ],
           "answer": "There’s a garden.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'There’s a garden.'",
+          "explanation": "Câu đúng trật tự là: There’s a garden.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -3086,7 +3093,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 711,
@@ -3508,18 +3516,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "Your hair touch.",
-            "Hair your touch.",
-            "Touch hair your.",
-            "Touch your hair."
+            "hair your Touch.",
+            "Touch your hair.",
+            "your hair Touch.",
+            "hair Touch your."
           ],
           "answer": "Touch your hair.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'Touch your hair.'",
+          "explanation": "Câu đúng trật tự là: Touch your hair.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -3527,7 +3535,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 811,
@@ -3949,18 +3958,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
             "Hi, I’m Bill.",
-            "Bill, I’m hi.",
-            "Hi Bill I’m.",
-            "I’m Hi Bill."
+            "Bill I’m Hi.",
+            "I’m Bill Hi.",
+            "Bill Hi I’m."
           ],
           "answer": "Hi, I’m Bill.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'Hi, I’m Bill.'",
+          "explanation": "Câu đúng trật tự là: Hi, I’m Bill.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -3968,7 +3977,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 911,
@@ -4391,18 +4401,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
+            "car a have I.",
             "I have a car.",
-            "ball",
-            "Have I a car.",
-            "bike"
+            "have a car I.",
+            "I a car have."
           ],
           "answer": "I have a car.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'I have a car.'",
+          "explanation": "Câu đúng trật tự là: I have a car.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -4410,7 +4420,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 1011,
@@ -4653,7 +4664,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "imageId": "tiem_banh"
         },
         {
           "question_id": 1105,
@@ -4832,18 +4844,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "ball",
-            "Is this my bag.",
+            "bag my is This.",
             "This is my bag.",
-            "bike"
+            "is my bag This.",
+            "This my bag is."
           ],
           "answer": "This is my bag.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'This is my bag.'",
+          "explanation": "Câu đúng trật tự là: This is my bag.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -4851,7 +4863,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 1111,
@@ -5094,7 +5107,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "imageId": "do_vat_cup"
         },
         {
           "question_id": 1205,
@@ -5273,18 +5287,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "Is this a dog.",
             "This is a dog.",
-            "ball",
-            "bike"
+            "dog a is This.",
+            "is a dog This.",
+            "This a dog is."
           ],
           "answer": "This is a dog.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'This is a dog.'",
+          "explanation": "Câu đúng trật tự là: This is a dog.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -5292,7 +5306,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 1211,
@@ -5535,7 +5550,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "imageId": "do_vat_can"
         },
         {
           "question_id": 1305,
@@ -5714,18 +5730,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "bike",
+            "milk like I.",
             "I like milk.",
-            "Like I milk.",
-            "ball"
+            "like milk I.",
+            "milk I like."
           ],
           "answer": "I like milk.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'I like milk.'",
+          "explanation": "Câu đúng trật tự là: I like milk.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -5733,7 +5749,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 1311,
@@ -5976,7 +5993,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "imageId": "family_08_pet_feeding"
         },
         {
           "question_id": 1405,
@@ -6155,18 +6173,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "It red is a pen.",
             "It’s a red pen.",
-            "A red pen it’s.",
-            "Red it’s pen a."
+            "pen red a It’s.",
+            "a red pen It’s.",
+            "It’s red pen a."
           ],
           "answer": "It’s a red pen.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'It’s a red pen.'",
+          "explanation": "Câu đúng trật tự là: It’s a red pen.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -6174,7 +6192,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 1411,
@@ -6596,18 +6615,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
+            "garden a There’s.",
             "There’s a garden.",
-            "Garden there is.",
-            "A garden there.",
-            "There a garden is."
+            "a garden There’s.",
+            "garden There’s a."
           ],
           "answer": "There’s a garden.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'There’s a garden.'",
+          "explanation": "Câu đúng trật tự là: There’s a garden.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -6615,7 +6634,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 1511,
@@ -7037,18 +7057,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "Touch your hair.",
-            "Touch hair your.",
-            "Hair your touch.",
-            "Your hair touch."
+            "hair your Touch.",
+            "your hair Touch.",
+            "hair Touch your.",
+            "Touch your hair."
           ],
           "answer": "Touch your hair.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'Touch your hair.'",
+          "explanation": "Câu đúng trật tự là: Touch your hair.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -7056,7 +7076,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 1611,
@@ -7479,18 +7500,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "Hi Bill I’m.",
             "Hi, I’m Bill.",
-            "I’m Hi Bill.",
-            "Bill, I’m hi."
+            "Bill I’m Hi.",
+            "I’m Bill Hi.",
+            "Bill Hi I’m."
           ],
           "answer": "Hi, I’m Bill.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'Hi, I’m Bill.'",
+          "explanation": "Câu đúng trật tự là: Hi, I’m Bill.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -7498,7 +7519,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 1711,
@@ -7920,18 +7942,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "bike",
-            "ball",
-            "Have I a car.",
+            "car a have I.",
+            "have a car I.",
+            "I a car have.",
             "I have a car."
           ],
           "answer": "I have a car.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'I have a car.'",
+          "explanation": "Câu đúng trật tự là: I have a car.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -7939,7 +7961,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 1811,
@@ -8361,18 +8384,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "bike",
-            "ball",
-            "Is this my bag.",
-            "This is my bag."
+            "bag my is This.",
+            "is my bag This.",
+            "This is my bag.",
+            "This my bag is."
           ],
           "answer": "This is my bag.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'This is my bag.'",
+          "explanation": "Câu đúng trật tự là: This is my bag.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -8380,7 +8403,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 1911,
@@ -8802,18 +8826,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
+            "dog a is This.",
+            "is a dog This.",
             "This is a dog.",
-            "ball",
-            "Is this a dog.",
-            "bike"
+            "This a dog is."
           ],
           "answer": "This is a dog.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'This is a dog.'",
+          "explanation": "Câu đúng trật tự là: This is a dog.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -8821,7 +8845,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 2011,
@@ -9244,18 +9269,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "Like I milk.",
             "I like milk.",
-            "ball",
-            "bike"
+            "milk like I.",
+            "like milk I.",
+            "milk I like."
           ],
           "answer": "I like milk.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'I like milk.'",
+          "explanation": "Câu đúng trật tự là: I like milk.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -9263,7 +9288,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 2111,
@@ -9686,18 +9712,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
+            "pen red a It’s.",
+            "a red pen It’s.",
             "It’s a red pen.",
-            "Red it’s pen a.",
-            "A red pen it’s.",
-            "It red is a pen."
+            "It’s red pen a."
           ],
           "answer": "It’s a red pen.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'It’s a red pen.'",
+          "explanation": "Câu đúng trật tự là: It’s a red pen.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -9705,7 +9731,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 2211,
@@ -10128,18 +10155,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "Garden there is.",
-            "There a garden is.",
+            "garden a There’s.",
+            "a garden There’s.",
             "There’s a garden.",
-            "A garden there."
+            "garden There’s a."
           ],
           "answer": "There’s a garden.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'There’s a garden.'",
+          "explanation": "Câu đúng trật tự là: There’s a garden.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -10147,7 +10174,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 2311,
@@ -10390,7 +10418,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "imageId": "ban_hoc"
         },
         {
           "question_id": 2405,
@@ -10569,18 +10598,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
             "Touch your hair.",
-            "Touch hair your.",
-            "Hair your touch.",
-            "Your hair touch."
+            "hair your Touch.",
+            "your hair Touch.",
+            "hair Touch your."
           ],
           "answer": "Touch your hair.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'Touch your hair.'",
+          "explanation": "Câu đúng trật tự là: Touch your hair.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -10588,7 +10617,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 2411,
@@ -11010,18 +11040,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "Bill, I’m hi.",
-            "Hi Bill I’m.",
-            "I’m Hi Bill.",
-            "Hi, I’m Bill."
+            "Hi, I’m Bill.",
+            "Bill I’m Hi.",
+            "I’m Bill Hi.",
+            "Bill Hi I’m."
           ],
           "answer": "Hi, I’m Bill.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'Hi, I’m Bill.'",
+          "explanation": "Câu đúng trật tự là: Hi, I’m Bill.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -11029,7 +11059,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 2511,
@@ -11451,18 +11482,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
+            "car a have I.",
+            "have a car I.",
             "I have a car.",
-            "Have I a car.",
-            "bike",
-            "ball"
+            "I a car have."
           ],
           "answer": "I have a car.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'I have a car.'",
+          "explanation": "Câu đúng trật tự là: I have a car.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -11470,7 +11501,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 2611,
@@ -11892,18 +11924,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "bike",
-            "Is this my bag.",
-            "ball",
-            "This is my bag."
+            "bag my is This.",
+            "is my bag This.",
+            "This is my bag.",
+            "This my bag is."
           ],
           "answer": "This is my bag.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'This is my bag.'",
+          "explanation": "Câu đúng trật tự là: This is my bag.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -11911,7 +11943,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 2711,
@@ -12333,18 +12366,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
+            "dog a is This.",
             "This is a dog.",
-            "bike",
-            "ball",
-            "Is this a dog."
+            "is a dog This.",
+            "This a dog is."
           ],
           "answer": "This is a dog.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'This is a dog.'",
+          "explanation": "Câu đúng trật tự là: This is a dog.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -12352,7 +12385,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 2811,
@@ -12774,18 +12808,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "Like I milk.",
-            "bike",
-            "ball",
-            "I like milk."
+            "milk like I.",
+            "like milk I.",
+            "I like milk.",
+            "milk I like."
           ],
           "answer": "I like milk.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'I like milk.'",
+          "explanation": "Câu đúng trật tự là: I like milk.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -12793,7 +12827,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 2911,
@@ -13215,18 +13250,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
+            "pen red a It’s.",
+            "a red pen It’s.",
             "It’s a red pen.",
-            "Red it’s pen a.",
-            "It red is a pen.",
-            "A red pen it’s."
+            "It’s red pen a."
           ],
           "answer": "It’s a red pen.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'It’s a red pen.'",
+          "explanation": "Câu đúng trật tự là: It’s a red pen.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -13234,7 +13269,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 3011,
@@ -13477,7 +13513,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "imageId": "family_11_cycling_yard"
         },
         {
           "question_id": 3105,
@@ -13656,18 +13693,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "A garden there.",
-            "Garden there is.",
-            "There a garden is.",
-            "There’s a garden."
+            "garden a There’s.",
+            "a garden There’s.",
+            "There’s a garden.",
+            "garden There’s a."
           ],
           "answer": "There’s a garden.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'There’s a garden.'",
+          "explanation": "Câu đúng trật tự là: There’s a garden.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -13675,7 +13712,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 3111,
@@ -14098,18 +14136,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
             "Touch your hair.",
-            "Touch hair your.",
-            "Hair your touch.",
-            "Your hair touch."
+            "hair your Touch.",
+            "your hair Touch.",
+            "hair Touch your."
           ],
           "answer": "Touch your hair.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'Touch your hair.'",
+          "explanation": "Câu đúng trật tự là: Touch your hair.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -14117,7 +14155,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 3211,
@@ -14540,18 +14579,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "Hi, I’m Bill.",
-            "I’m Hi Bill.",
-            "Hi Bill I’m.",
-            "Bill, I’m hi."
+            "Bill I’m Hi.",
+            "I’m Bill Hi.",
+            "Bill Hi I’m.",
+            "Hi, I’m Bill."
           ],
           "answer": "Hi, I’m Bill.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'Hi, I’m Bill.'",
+          "explanation": "Câu đúng trật tự là: Hi, I’m Bill.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -14559,7 +14598,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 3311,
@@ -14802,7 +14842,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "imageId": "do_vat_hat"
         },
         {
           "question_id": 3405,
@@ -14981,18 +15022,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
-            "bike",
-            "Have I a car.",
-            "I have a car.",
-            "ball"
+            "car a have I.",
+            "have a car I.",
+            "I a car have.",
+            "I have a car."
           ],
           "answer": "I have a car.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'I have a car.'",
+          "explanation": "Câu đúng trật tự là: I have a car.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -15000,7 +15041,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 3411,
@@ -15422,18 +15464,18 @@
           "scope": "Units 1-8 (Học kỳ I)",
           "question_type": "sentence_choice",
           "topic": "Sentence Building",
-          "question_text": "Chọn câu tiếng Anh đúng trật tự.",
+          "question_text": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai.",
           "options": [
+            "bag my is This.",
             "This is my bag.",
-            "Is this my bag.",
-            "bike",
-            "ball"
+            "is my bag This.",
+            "This my bag is."
           ],
           "answer": "This is my bag.",
           "score": 0.5,
           "diem": 0.5,
           "hint": "",
-          "explanation": "Mẫu câu đúng là 'This is my bag.'",
+          "explanation": "Câu đúng trật tự là: This is my bag.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -15441,7 +15483,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Chọn câu có trật tự từ đúng. Ba phương án còn lại dùng các từ theo thứ tự sai."
         },
         {
           "question_id": 3511,
@@ -30999,7 +31042,7 @@
           "scope": "Toàn bộ Units 1-16 - nhánh Học sinh giỏi/nâng cao",
           "question_type": "category_elimination",
           "topic": "Vocabulary Logic",
-          "question_text": "Cô cần chọn một từ thuộc nhóm đồ ăn/thức uống, không phải con vật và không phải đồ vật. Chọn từ phù hợp.",
+          "question_text": "Cô đang chọn một từ chỉ đồ ăn. Trong bốn từ dưới đây, từ nào là món ăn?",
           "options": [
             "goat",
             "pen",
@@ -31010,7 +31053,7 @@
           "score": 0.75,
           "diem": 0.75,
           "hint": "",
-          "explanation": "'cake' thuộc nhóm đồ ăn/thức uống.",
+          "explanation": "'cake' là từ chỉ đồ ăn.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -31018,7 +31061,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Cô đang chọn một từ chỉ đồ ăn. Trong bốn từ dưới đây, từ nào là món ăn?"
         },
         {
           "question_id": 7105,
@@ -31450,7 +31494,7 @@
           "scope": "Toàn bộ Units 1-16 - nhánh Học sinh giỏi/nâng cao",
           "question_type": "category_elimination",
           "topic": "Vocabulary Logic",
-          "question_text": "Cô cần chọn một từ thuộc nhóm đồ ăn/thức uống, không phải con vật và không phải đồ vật. Chọn từ phù hợp.",
+          "question_text": "Cô đang chọn một từ chỉ trái cây. Trong bốn từ dưới đây, từ nào là tên một loại quả?",
           "options": [
             "girl",
             "apple",
@@ -31461,7 +31505,7 @@
           "score": 0.75,
           "diem": 0.75,
           "hint": "",
-          "explanation": "'apple' thuộc nhóm đồ ăn/thức uống.",
+          "explanation": "'apple' là từ chỉ trái cây.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -31469,7 +31513,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Cô đang chọn một từ chỉ trái cây. Trong bốn từ dưới đây, từ nào là tên một loại quả?"
         },
         {
           "question_id": 7205,
@@ -31901,7 +31946,7 @@
           "scope": "Toàn bộ Units 1-16 - nhánh Học sinh giỏi/nâng cao",
           "question_type": "category_elimination",
           "topic": "Vocabulary Logic",
-          "question_text": "Cô cần chọn một từ thuộc nhóm đồ ăn/thức uống, không phải con vật và không phải đồ vật. Chọn từ phù hợp.",
+          "question_text": "Cô đang chọn một từ chỉ đồ ăn. Trong bốn từ dưới đây, từ nào là món ăn?",
           "options": [
             "chips",
             "hat",
@@ -31912,7 +31957,7 @@
           "score": 0.75,
           "diem": 0.75,
           "hint": "",
-          "explanation": "'chips' thuộc nhóm đồ ăn/thức uống.",
+          "explanation": "'chips' là từ chỉ đồ ăn.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -31920,7 +31965,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Cô đang chọn một từ chỉ đồ ăn. Trong bốn từ dưới đây, từ nào là món ăn?"
         },
         {
           "question_id": 7305,
@@ -32352,7 +32398,7 @@
           "scope": "Toàn bộ Units 1-16 - nhánh Học sinh giỏi/nâng cao",
           "question_type": "category_elimination",
           "topic": "Vocabulary Logic",
-          "question_text": "Cô cần chọn một từ thuộc nhóm đồ ăn/thức uống, không phải con vật và không phải đồ vật. Chọn từ phù hợp.",
+          "question_text": "Trong ngữ cảnh bữa ăn, cô cần chọn một món ăn giàu đạm; không chọn trái cây, con vật đang sống hay đồ vật. Từ nào phù hợp nhất?",
           "options": [
             "mango",
             "desk",
@@ -32363,7 +32409,7 @@
           "score": 0.75,
           "diem": 0.75,
           "hint": "",
-          "explanation": "'fish' thuộc nhóm đồ ăn/thức uống.",
+          "explanation": "Trong ngữ cảnh bữa ăn, 'fish' được dùng để gọi món ăn.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -32371,7 +32417,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Trong ngữ cảnh bữa ăn, cô cần chọn một món ăn giàu đạm; không chọn trái cây, con vật đang sống hay đồ vật. Từ nào phù hợp nhất?"
         },
         {
           "question_id": 7405,
@@ -32803,7 +32850,7 @@
           "scope": "Toàn bộ Units 1-16 - nhánh Học sinh giỏi/nâng cao",
           "question_type": "category_elimination",
           "topic": "Vocabulary Logic",
-          "question_text": "Cô cần chọn một từ thuộc nhóm đồ ăn/thức uống, không phải con vật và không phải đồ vật. Chọn từ phù hợp.",
+          "question_text": "Cô đang chọn một từ chỉ đồ uống. Trong bốn từ dưới đây, từ nào là thứ có thể uống?",
           "options": [
             "run",
             "tiger",
@@ -32814,7 +32861,7 @@
           "score": 0.75,
           "diem": 0.75,
           "hint": "",
-          "explanation": "'milk' thuộc nhóm đồ ăn/thức uống.",
+          "explanation": "'milk' là đồ uống.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -32822,7 +32869,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Cô đang chọn một từ chỉ đồ uống. Trong bốn từ dưới đây, từ nào là thứ có thể uống?"
         },
         {
           "question_id": 7505,
@@ -33254,7 +33302,7 @@
           "scope": "Toàn bộ Units 1-16 - nhánh Học sinh giỏi/nâng cao",
           "question_type": "category_elimination",
           "topic": "Vocabulary Logic",
-          "question_text": "Cô cần chọn một từ thuộc nhóm đồ ăn/thức uống, không phải con vật và không phải đồ vật. Chọn từ phù hợp.",
+          "question_text": "Trong ngữ cảnh bữa ăn, cô cần chọn một món ăn giàu đạm; không chọn trái cây, con vật đang sống hay đồ vật. Từ nào phù hợp nhất?",
           "options": [
             "turtle",
             "bell",
@@ -33265,7 +33313,7 @@
           "score": 0.75,
           "diem": 0.75,
           "hint": "",
-          "explanation": "'chicken' thuộc nhóm đồ ăn/thức uống.",
+          "explanation": "Trong ngữ cảnh bữa ăn, 'chicken' được dùng để gọi món ăn.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -33273,7 +33321,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Trong ngữ cảnh bữa ăn, cô cần chọn một món ăn giàu đạm; không chọn trái cây, con vật đang sống hay đồ vật. Từ nào phù hợp nhất?"
         },
         {
           "question_id": 7605,
@@ -33705,7 +33754,7 @@
           "scope": "Toàn bộ Units 1-16 - nhánh Học sinh giỏi/nâng cao",
           "question_type": "category_elimination",
           "topic": "Vocabulary Logic",
-          "question_text": "Cô cần chọn một từ thuộc nhóm đồ ăn/thức uống, không phải con vật và không phải đồ vật. Chọn từ phù hợp.",
+          "question_text": "Cô đang chọn một từ chỉ trái cây. Trong bốn từ dưới đây, từ nào là tên một loại quả?",
           "options": [
             "cat",
             "pen",
@@ -33716,7 +33765,7 @@
           "score": 0.75,
           "diem": 0.75,
           "hint": "",
-          "explanation": "'mango' thuộc nhóm đồ ăn/thức uống.",
+          "explanation": "'mango' là từ chỉ trái cây.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -33724,7 +33773,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Cô đang chọn một từ chỉ trái cây. Trong bốn từ dưới đây, từ nào là tên một loại quả?"
         },
         {
           "question_id": 7705,
@@ -34156,7 +34206,7 @@
           "scope": "Toàn bộ Units 1-16 - nhánh Học sinh giỏi/nâng cao",
           "question_type": "category_elimination",
           "topic": "Vocabulary Logic",
-          "question_text": "Cô cần chọn một từ thuộc nhóm đồ ăn/thức uống, không phải con vật và không phải đồ vật. Chọn từ phù hợp.",
+          "question_text": "Cô đang chọn một từ chỉ trái cây. Trong bốn từ dưới đây, từ nào là tên một loại quả?",
           "options": [
             "dog",
             "foot",
@@ -34167,7 +34217,7 @@
           "score": 0.75,
           "diem": 0.75,
           "hint": "",
-          "explanation": "'lemons' thuộc nhóm đồ ăn/thức uống.",
+          "explanation": "'lemons' là từ chỉ trái cây.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -34175,7 +34225,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Cô đang chọn một từ chỉ trái cây. Trong bốn từ dưới đây, từ nào là tên một loại quả?"
         },
         {
           "question_id": 7805,
@@ -34607,7 +34658,7 @@
           "scope": "Toàn bộ Units 1-16 - nhánh Học sinh giỏi/nâng cao",
           "question_type": "category_elimination",
           "topic": "Vocabulary Logic",
-          "question_text": "Cô cần chọn một từ thuộc nhóm đồ ăn/thức uống, không phải con vật và không phải đồ vật. Chọn từ phù hợp.",
+          "question_text": "Cô đang chọn một từ chỉ trái cây. Trong bốn từ dưới đây, từ nào là tên một loại quả?",
           "options": [
             "duck",
             "ball",
@@ -34618,7 +34669,7 @@
           "score": 0.75,
           "diem": 0.75,
           "hint": "",
-          "explanation": "'bananas' thuộc nhóm đồ ăn/thức uống.",
+          "explanation": "'bananas' là từ chỉ trái cây.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -34626,7 +34677,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Cô đang chọn một từ chỉ trái cây. Trong bốn từ dưới đây, từ nào là tên một loại quả?"
         },
         {
           "question_id": 7905,
@@ -35058,7 +35110,7 @@
           "scope": "Toàn bộ Units 1-16 - nhánh Học sinh giỏi/nâng cao",
           "question_type": "category_elimination",
           "topic": "Vocabulary Logic",
-          "question_text": "Cô cần chọn một từ thuộc nhóm đồ ăn/thức uống, không phải con vật và không phải đồ vật. Chọn từ phù hợp.",
+          "question_text": "Cô đang chọn một từ chỉ đồ ăn. Trong bốn từ dưới đây, từ nào là món ăn?",
           "options": [
             "noodles",
             "clocks",
@@ -35069,7 +35121,7 @@
           "score": 0.75,
           "diem": 0.75,
           "hint": "",
-          "explanation": "'noodles' thuộc nhóm đồ ăn/thức uống.",
+          "explanation": "'noodles' là từ chỉ đồ ăn.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -35077,7 +35129,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Cô đang chọn một từ chỉ đồ ăn. Trong bốn từ dưới đây, từ nào là món ăn?"
         },
         {
           "question_id": 8005,
@@ -35509,7 +35562,7 @@
           "scope": "Toàn bộ Units 1-16 - nhánh Học sinh giỏi/nâng cao",
           "question_type": "category_elimination",
           "topic": "Vocabulary Logic",
-          "question_text": "Cô cần chọn một từ thuộc nhóm đồ ăn/thức uống, không phải con vật và không phải đồ vật. Chọn từ phù hợp.",
+          "question_text": "Cô đang chọn một từ chỉ đồ ăn. Trong bốn từ dưới đây, từ nào là món ăn?",
           "options": [
             "hat",
             "nuts",
@@ -35520,7 +35573,7 @@
           "score": 0.75,
           "diem": 0.75,
           "hint": "",
-          "explanation": "'nuts' thuộc nhóm đồ ăn/thức uống.",
+          "explanation": "'nuts' là từ chỉ đồ ăn.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -35528,7 +35581,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Cô đang chọn một từ chỉ đồ ăn. Trong bốn từ dưới đây, từ nào là món ăn?"
         },
         {
           "question_id": 8105,
@@ -35960,7 +36014,7 @@
           "scope": "Toàn bộ Units 1-16 - nhánh Học sinh giỏi/nâng cao",
           "question_type": "category_elimination",
           "topic": "Vocabulary Logic",
-          "question_text": "Cô cần chọn một từ thuộc nhóm đồ ăn/thức uống, không phải con vật và không phải đồ vật. Chọn từ phù hợp.",
+          "question_text": "Cô đang chọn một từ chỉ đồ uống. Trong bốn từ dưới đây, từ nào là thứ có thể uống?",
           "options": [
             "chicken",
             "water",
@@ -35971,7 +36025,7 @@
           "score": 0.75,
           "diem": 0.75,
           "hint": "",
-          "explanation": "'water' thuộc nhóm đồ ăn/thức uống.",
+          "explanation": "'water' là đồ uống.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -35979,7 +36033,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Cô đang chọn một từ chỉ đồ uống. Trong bốn từ dưới đây, từ nào là thứ có thể uống?"
         },
         {
           "question_id": 8205,
@@ -36411,7 +36466,7 @@
           "scope": "Toàn bộ Units 1-16 - nhánh Học sinh giỏi/nâng cao",
           "question_type": "category_elimination",
           "topic": "Vocabulary Logic",
-          "question_text": "Cô cần chọn một từ thuộc nhóm đồ ăn/thức uống, không phải con vật và không phải đồ vật. Chọn từ phù hợp.",
+          "question_text": "Cô đang chọn một từ chỉ đồ ăn. Trong bốn từ dưới đây, từ nào là món ăn?",
           "options": [
             "mouse",
             "pots",
@@ -36422,7 +36477,7 @@
           "score": 0.75,
           "diem": 0.75,
           "hint": "",
-          "explanation": "'cake' thuộc nhóm đồ ăn/thức uống.",
+          "explanation": "'cake' là từ chỉ đồ ăn.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -36430,7 +36485,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Cô đang chọn một từ chỉ đồ ăn. Trong bốn từ dưới đây, từ nào là món ăn?"
         },
         {
           "question_id": 8305,
@@ -36862,7 +36918,7 @@
           "scope": "Toàn bộ Units 1-16 - nhánh Học sinh giỏi/nâng cao",
           "question_type": "category_elimination",
           "topic": "Vocabulary Logic",
-          "question_text": "Cô cần chọn một từ thuộc nhóm đồ ăn/thức uống, không phải con vật và không phải đồ vật. Chọn từ phù hợp.",
+          "question_text": "Cô đang chọn một từ chỉ trái cây. Trong bốn từ dưới đây, từ nào là tên một loại quả?",
           "options": [
             "bus",
             "tiger",
@@ -36873,7 +36929,7 @@
           "score": 0.75,
           "diem": 0.75,
           "hint": "",
-          "explanation": "'apple' thuộc nhóm đồ ăn/thức uống.",
+          "explanation": "'apple' là từ chỉ trái cây.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -36881,7 +36937,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Cô đang chọn một từ chỉ trái cây. Trong bốn từ dưới đây, từ nào là tên một loại quả?"
         },
         {
           "question_id": 8405,
@@ -37313,7 +37370,7 @@
           "scope": "Toàn bộ Units 1-16 - nhánh Học sinh giỏi/nâng cao",
           "question_type": "category_elimination",
           "topic": "Vocabulary Logic",
-          "question_text": "Cô cần chọn một từ thuộc nhóm đồ ăn/thức uống, không phải con vật và không phải đồ vật. Chọn từ phù hợp.",
+          "question_text": "Cô đang chọn một từ chỉ đồ ăn. Trong bốn từ dưới đây, từ nào là món ăn?",
           "options": [
             "truck",
             "turtle",
@@ -37324,7 +37381,7 @@
           "score": 0.75,
           "diem": 0.75,
           "hint": "",
-          "explanation": "'chips' thuộc nhóm đồ ăn/thức uống.",
+          "explanation": "'chips' là từ chỉ đồ ăn.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -37332,7 +37389,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Cô đang chọn một từ chỉ đồ ăn. Trong bốn từ dưới đây, từ nào là món ăn?"
         },
         {
           "question_id": 8505,
@@ -37764,7 +37822,7 @@
           "scope": "Toàn bộ Units 1-16 - nhánh Học sinh giỏi/nâng cao",
           "question_type": "category_elimination",
           "topic": "Vocabulary Logic",
-          "question_text": "Cô cần chọn một từ thuộc nhóm đồ ăn/thức uống, không phải con vật và không phải đồ vật. Chọn từ phù hợp.",
+          "question_text": "Trong ngữ cảnh bữa ăn, cô cần chọn một món ăn giàu đạm; không chọn trái cây, con vật đang sống hay đồ vật. Từ nào phù hợp nhất?",
           "options": [
             "mango",
             "cat",
@@ -37775,7 +37833,7 @@
           "score": 0.75,
           "diem": 0.75,
           "hint": "",
-          "explanation": "'fish' thuộc nhóm đồ ăn/thức uống.",
+          "explanation": "Trong ngữ cảnh bữa ăn, 'fish' được dùng để gọi món ăn.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -37783,7 +37841,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Trong ngữ cảnh bữa ăn, cô cần chọn một món ăn giàu đạm; không chọn trái cây, con vật đang sống hay đồ vật. Từ nào phù hợp nhất?"
         },
         {
           "question_id": 8605,
@@ -38215,7 +38274,7 @@
           "scope": "Toàn bộ Units 1-16 - nhánh Học sinh giỏi/nâng cao",
           "question_type": "category_elimination",
           "topic": "Vocabulary Logic",
-          "question_text": "Cô cần chọn một từ thuộc nhóm đồ ăn/thức uống, không phải con vật và không phải đồ vật. Chọn từ phù hợp.",
+          "question_text": "Cô đang chọn một từ chỉ đồ uống. Trong bốn từ dưới đây, từ nào là thứ có thể uống?",
           "options": [
             "milk",
             "dog",
@@ -38226,7 +38285,7 @@
           "score": 0.75,
           "diem": 0.75,
           "hint": "",
-          "explanation": "'milk' thuộc nhóm đồ ăn/thức uống.",
+          "explanation": "'milk' là đồ uống.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -38234,7 +38293,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Cô đang chọn một từ chỉ đồ uống. Trong bốn từ dưới đây, từ nào là thứ có thể uống?"
         },
         {
           "question_id": 8705,
@@ -38666,7 +38726,7 @@
           "scope": "Toàn bộ Units 1-16 - nhánh Học sinh giỏi/nâng cao",
           "question_type": "category_elimination",
           "topic": "Vocabulary Logic",
-          "question_text": "Cô cần chọn một từ thuộc nhóm đồ ăn/thức uống, không phải con vật và không phải đồ vật. Chọn từ phù hợp.",
+          "question_text": "Trong ngữ cảnh bữa ăn, cô cần chọn một món ăn giàu đạm; không chọn trái cây, con vật đang sống hay đồ vật. Từ nào phù hợp nhất?",
           "options": [
             "duck",
             "chicken",
@@ -38677,7 +38737,7 @@
           "score": 0.75,
           "diem": 0.75,
           "hint": "",
-          "explanation": "'chicken' thuộc nhóm đồ ăn/thức uống.",
+          "explanation": "Trong ngữ cảnh bữa ăn, 'chicken' được dùng để gọi món ăn.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -38685,7 +38745,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Trong ngữ cảnh bữa ăn, cô cần chọn một món ăn giàu đạm; không chọn trái cây, con vật đang sống hay đồ vật. Từ nào phù hợp nhất?"
         },
         {
           "question_id": 8805,
@@ -39117,7 +39178,7 @@
           "scope": "Toàn bộ Units 1-16 - nhánh Học sinh giỏi/nâng cao",
           "question_type": "category_elimination",
           "topic": "Vocabulary Logic",
-          "question_text": "Cô cần chọn một từ thuộc nhóm đồ ăn/thức uống, không phải con vật và không phải đồ vật. Chọn từ phù hợp.",
+          "question_text": "Cô đang chọn một từ chỉ trái cây. Trong bốn từ dưới đây, từ nào là tên một loại quả?",
           "options": [
             "goat",
             "tiger",
@@ -39128,7 +39189,7 @@
           "score": 0.75,
           "diem": 0.75,
           "hint": "",
-          "explanation": "'mango' thuộc nhóm đồ ăn/thức uống.",
+          "explanation": "'mango' là từ chỉ trái cây.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -39136,7 +39197,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Cô đang chọn một từ chỉ trái cây. Trong bốn từ dưới đây, từ nào là tên một loại quả?"
         },
         {
           "question_id": 8905,
@@ -39568,7 +39630,7 @@
           "scope": "Toàn bộ Units 1-16 - nhánh Học sinh giỏi/nâng cao",
           "question_type": "category_elimination",
           "topic": "Vocabulary Logic",
-          "question_text": "Cô cần chọn một từ thuộc nhóm đồ ăn/thức uống, không phải con vật và không phải đồ vật. Chọn từ phù hợp.",
+          "question_text": "Cô đang chọn một từ chỉ trái cây. Trong bốn từ dưới đây, từ nào là tên một loại quả?",
           "options": [
             "ball",
             "foot",
@@ -39579,7 +39641,7 @@
           "score": 0.75,
           "diem": 0.75,
           "hint": "",
-          "explanation": "'lemons' thuộc nhóm đồ ăn/thức uống.",
+          "explanation": "'lemons' là từ chỉ trái cây.",
           "image_url": "",
           "audio_text": "",
           "options_ipa": [
@@ -39587,7 +39649,8 @@
             "",
             "",
             ""
-          ]
+          ],
+          "q": "Cô đang chọn một từ chỉ trái cây. Trong bốn từ dưới đây, từ nào là tên một loại quả?"
         },
         {
           "question_id": 9005,

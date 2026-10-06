@@ -404,7 +404,7 @@
             "a": "b",
             "h": "Điền 'b' ta được từ 'ball'.",
             "img": "",
-            "imageId": "",
+            "imageId": "do_vat_ball",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -442,7 +442,7 @@
             "a": "b",
             "h": "Điền 'b' ta được từ 'bike'.",
             "img": "",
-            "imageId": "",
+            "imageId": "family_11_cycling_yard",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -480,7 +480,7 @@
             "a": "quả bóng",
             "h": "'ball' nghĩa là 'quả bóng'.",
             "img": "",
-            "imageId": "",
+            "imageId": "do_vat_ball",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -518,7 +518,7 @@
             "a": "xe đạp",
             "h": "'bike' nghĩa là 'xe đạp'.",
             "img": "",
-            "imageId": "",
+            "imageId": "family_11_cycling_yard",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -556,7 +556,7 @@
             "a": "quyển sách",
             "h": "'book' nghĩa là 'quyển sách'.",
             "img": "",
-            "imageId": "",
+            "imageId": "ban_hoc",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -632,7 +632,7 @@
             "a": "ball",
             "h": "Con nghe từ 'ball'.",
             "img": "",
-            "imageId": "",
+            "imageId": "do_vat_ball",
             "audio_text": "ball",
             "o_ipa": [
               "",
@@ -670,7 +670,7 @@
             "a": "bike",
             "h": "Con nghe từ 'bike'.",
             "img": "",
-            "imageId": "",
+            "imageId": "family_11_cycling_yard",
             "audio_text": "bike",
             "o_ipa": [
               "",
@@ -1213,7 +1213,7 @@
             "a": "c",
             "h": "Điền 'c' ta được từ 'car'.",
             "img": "",
-            "imageId": "",
+            "imageId": "family_03_front_yard_car",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -1289,7 +1289,7 @@
             "a": "ô tô",
             "h": "'car' nghĩa là 'ô tô'.",
             "img": "",
-            "imageId": "",
+            "imageId": "family_03_front_yard_car",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -1327,7 +1327,7 @@
             "a": "con mèo",
             "h": "'cat' nghĩa là 'con mèo'.",
             "img": "",
-            "imageId": "",
+            "imageId": "family_08_pet_feeding",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -1441,7 +1441,7 @@
             "a": "car",
             "h": "Con nghe từ 'car'.",
             "img": "",
-            "imageId": "",
+            "imageId": "family_03_front_yard_car",
             "audio_text": "car",
             "o_ipa": [
               "",
@@ -1555,7 +1555,7 @@
             "a": "have",
             "h": "Đáp án đúng: have",
             "img": "",
-            "imageId": "",
+            "imageId": "do_vat_cup",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -1631,7 +1631,7 @@
             "a": "I",
             "h": "Đáp án đúng: I",
             "img": "",
-            "imageId": "",
+            "imageId": "family_03_front_yard_car",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -1707,7 +1707,7 @@
             "a": "have",
             "h": "Điền 'have' để câu đúng.",
             "img": "",
-            "imageId": "",
+            "imageId": "family_03_front_yard_car",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -1783,7 +1783,7 @@
             "a": "cup",
             "h": "Đọc câu cho thấy đáp án là 'cup'.",
             "img": "",
-            "imageId": "",
+            "imageId": "do_vat_cup",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -1822,7 +1822,7 @@
             "a": "car",
             "h": "Chi tiết đúng là 'car'.",
             "img": "",
-            "imageId": "",
+            "imageId": "family_03_front_yard_car",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -1946,7 +1946,7 @@
             "a": "a",
             "h": "Điền 'a' ta được từ 'apple'.",
             "img": "",
-            "imageId": "",
+            "imageId": "quay_trai_cay_ro_rang",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -2022,7 +2022,7 @@
             "a": "quả táo",
             "h": "'apple' nghĩa là 'quả táo'.",
             "img": "",
-            "imageId": "",
+            "imageId": "quay_trai_cay_ro_rang",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -2060,7 +2060,7 @@
             "a": "cái túi",
             "h": "'bag' nghĩa là 'cái túi'.",
             "img": "",
-            "imageId": "",
+            "imageId": "do_vat_bag",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -2098,7 +2098,7 @@
             "a": "lon",
             "h": "'can' nghĩa là 'lon'.",
             "img": "",
-            "imageId": "",
+            "imageId": "do_vat_can",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -2174,7 +2174,7 @@
             "a": "apple",
             "h": "Con nghe từ 'apple'.",
             "img": "",
-            "imageId": "",
+            "imageId": "quay_trai_cay_ro_rang",
             "audio_text": "apple",
             "o_ipa": [
               "",
@@ -2212,7 +2212,7 @@
             "a": "bag",
             "h": "Con nghe từ 'bag'.",
             "img": "",
-            "imageId": "",
+            "imageId": "do_vat_bag",
             "audio_text": "bag",
             "o_ipa": [
               "",
@@ -2326,7 +2326,7 @@
             "a": "my",
             "h": "Đáp án đúng: my",
             "img": "",
-            "imageId": "",
+            "imageId": "do_vat_hat",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -2478,7 +2478,7 @@
             "a": "my",
             "h": "Điền 'my' để câu đúng.",
             "img": "",
-            "imageId": "",
+            "imageId": "do_vat_bag",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -2554,7 +2554,7 @@
             "a": "bag",
             "h": "Đọc câu cho thấy đáp án là 'bag'.",
             "img": "",
-            "imageId": "",
+            "imageId": "do_vat_bag",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -2593,7 +2593,7 @@
             "a": "bag",
             "h": "Chi tiết đúng là 'bag'.",
             "img": "",
-            "imageId": "",
+            "imageId": "do_vat_bag",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -2717,7 +2717,7 @@
             "a": "d",
             "h": "Điền 'd' ta được từ 'desk'.",
             "img": "",
-            "imageId": "",
+            "imageId": "ban_hoc",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -2755,7 +2755,7 @@
             "a": "d",
             "h": "Điền 'd' ta được từ 'dog'.",
             "img": "",
-            "imageId": "",
+            "imageId": "family_08_pet_feeding",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -2793,7 +2793,7 @@
             "a": "cái bàn",
             "h": "'desk' nghĩa là 'cái bàn'.",
             "img": "",
-            "imageId": "",
+            "imageId": "ban_hoc",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -2831,7 +2831,7 @@
             "a": "con chó",
             "h": "'dog' nghĩa là 'con chó'.",
             "img": "",
-            "imageId": "",
+            "imageId": "family_08_pet_feeding",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -2945,7 +2945,7 @@
             "a": "desk",
             "h": "Con nghe từ 'desk'.",
             "img": "",
-            "imageId": "",
+            "imageId": "ban_hoc",
             "audio_text": "desk",
             "o_ipa": [
               "",
@@ -2983,7 +2983,7 @@
             "a": "dog",
             "h": "Con nghe từ 'dog'.",
             "img": "",
-            "imageId": "",
+            "imageId": "family_08_pet_feeding",
             "audio_text": "dog",
             "o_ipa": [
               "",
@@ -3173,7 +3173,7 @@
             "a": "a",
             "h": "Đáp án đúng: a",
             "img": "",
-            "imageId": "",
+            "imageId": "family_08_pet_feeding",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -3249,7 +3249,7 @@
             "a": "a",
             "h": "Điền 'a' để câu đúng.",
             "img": "",
-            "imageId": "",
+            "imageId": "family_08_pet_feeding",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -3325,7 +3325,7 @@
             "a": "dog",
             "h": "Đọc câu cho thấy đáp án là 'dog'.",
             "img": "",
-            "imageId": "",
+            "imageId": "family_08_pet_feeding",
             "audio_text": "",
             "o_ipa": [
               "",
@@ -3364,7 +3364,7 @@
             "a": "dog",
             "h": "Chi tiết đúng là 'dog'.",
             "img": "",
-            "imageId": "",
+            "imageId": "family_08_pet_feeding",
             "audio_text": "",
             "o_ipa": [
               "",

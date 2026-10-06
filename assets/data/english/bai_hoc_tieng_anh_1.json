@@ -2703,7 +2703,7 @@
             "emoji": "🐸",
             "pos": "Noun",
             "ex": "Green frog hops.",
-            "imageId": "sinh_vat_ao_ho"
+            "imageId": "dong_vat_frog"
           }
         },
         {
@@ -2717,7 +2717,8 @@
             "vi": "Hươu cao cổ",
             "emoji": "🦒",
             "pos": "Noun",
-            "ex": "Giraffe has long neck."
+            "ex": "Giraffe has long neck.",
+            "imageId": "dong_vat_giraffe"
           },
           "word2": {
             "en": "Goat",
@@ -2872,7 +2873,7 @@
             "emoji": "🦁",
             "pos": "Noun",
             "ex": "Lion is strong.",
-            "imageId": "hoang_da_dong_co_1"
+            "imageId": "dong_vat_lion"
           },
           "word2": {
             "en": "Lemon",
@@ -3137,7 +3138,7 @@
             "emoji": "🌳",
             "pos": "Noun",
             "ex": "Tall green tree.",
-            "imageId": "cay_bang_san_truong"
+            "imageId": "cay_coi_apple_tree"
           }
         },
         {
@@ -3392,7 +3393,7 @@
               "emoji": "🌳",
               "pos": "Noun",
               "ex": "Tall green tree.",
-              "imageId": "cay_bang_san_truong"
+              "imageId": "cay_coi_apple_tree"
             },
             {
               "word": "Teacher",
@@ -4297,7 +4298,8 @@
               "vi": "Hươu cao cổ",
               "emoji": "🦒",
               "pos": "Noun",
-              "ex": "Giraffe has long neck."
+              "ex": "Giraffe has long neck.",
+              "imageId": "dong_vat_giraffe"
             }
           ]
         },
@@ -4332,7 +4334,7 @@
               "emoji": "🐸",
               "pos": "Noun",
               "ex": "Green frog hops.",
-              "imageId": "sinh_vat_ao_ho"
+              "imageId": "dong_vat_frog"
             }
           ]
         },
@@ -4723,7 +4725,7 @@
               "emoji": "🦁",
               "pos": "Noun",
               "ex": "Lion is strong.",
-              "imageId": "hoang_da_dong_co_1"
+              "imageId": "dong_vat_lion"
             },
             {
               "word": "Lemon",

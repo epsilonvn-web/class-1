@@ -1200,7 +1200,8 @@
               "",
               "",
               ""
-            ]
+            ],
+            "imageId": "do_choi_robot"
           },
           {
             "id": 11144,
@@ -2865,7 +2866,8 @@
               "swɪŋ",
               "tɒp",
               "ˈrəʊbɒt"
-            ]
+            ],
+            "imageId": "do_choi_robot"
           },
           {
             "id": 11245,
@@ -3521,7 +3523,8 @@
               "ˈlaɪən",
               "bɜːd",
               "maʊs"
-            ]
+            ],
+            "imageId": "dong_vat_lion"
           },
           {
             "id": 11269,
@@ -3629,7 +3632,8 @@
               "ˈkrɒkədaɪl",
               "dʌk",
               "frɒɡ"
-            ]
+            ],
+            "imageId": "dong_vat_frog"
           },
           {
             "id": 11273,
@@ -4416,7 +4420,8 @@
               "ˈtʃɪkɪn",
               "mɒp",
               "triː"
-            ]
+            ],
+            "imageId": "cay_coi_apple_tree"
           },
           {
             "id": 11302,
@@ -4553,7 +4558,8 @@
               "treɪn",
               "ˈməʊtəbaɪk",
               "pleɪn"
-            ]
+            ],
+            "imageId": "giao_thong_airplane"
           },
           {
             "id": 11307,
@@ -5868,13 +5874,13 @@
           "topic": "My School & Playtime",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'hello 👋' (xin chào):",
           "o": [
-            "h",
-            "b",
+            "i",
+            "l",
             "m",
-            "s"
+            "h"
           ],
           "a": "h",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'H'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Easy",
@@ -5901,12 +5907,12 @@
           "q": "Từ 'goodbye 👋' có nghĩa là gì?",
           "o": [
             "xin chào",
-            "bạn Bill",
-            "bạn Ba",
+            "mẹ",
+            "quả bóng",
             "tạm biệt"
           ],
           "a": "tạm biệt",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “tạm biệt”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Easy",
@@ -5932,13 +5938,13 @@
           "topic": "My School & Playtime",
           "q": "Nghe từ 'Bill 👦' và chọn nghĩa đúng:",
           "o": [
-            "tạm biệt",
             "bạn Ba",
-            "bạn Bill",
-            "xin chào"
+            "mẹ",
+            "chị/em gái",
+            "bạn Bill"
           ],
           "a": "bạn Bill",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Easy",
@@ -5962,15 +5968,15 @@
         {
           "id": 50003,
           "topic": "My School & Playtime",
-          "q": "Chọn câu đúng theo mẫu đã học: 👦",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Tạm biệt Bill.”",
           "o": [
-            "My is Ba.",
+            "I have a red hat.",
+            "I have a robot.",
             "Goodbye, Bill.",
-            "I see Ba.",
-            "Ba is I."
+            "It's a rabbit."
           ],
           "a": "Goodbye, Bill.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: Goodbye, Bill.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Easy",
@@ -5996,13 +6002,13 @@
           "topic": "My School & Playtime",
           "q": "Sắp xếp thành câu đúng: playground / the / in / am / I 📖",
           "o": [
-            "I am in the playground.",
             "playground the in am I.",
-            "I see book.",
-            "book I see."
+            "am in the playground I.",
+            "I in the playground am.",
+            "I am in the playground."
           ],
           "a": "I am in the playground.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: I am in the playground.",
           "img": "assets/images/story_book.png",
           "tag": "ENG_SYN",
           "difficulty": "Easy",
@@ -6029,13 +6035,13 @@
           "topic": "My School & Playtime",
           "q": "Đọc: 'Ba can see ball ⚽.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill",
-            "quả bóng"
+            "cái mũ",
+            "xe tải",
+            "quả bóng",
+            "ô tô"
           ],
           "a": "quả bóng",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "assets/images/blue_ball.png",
           "tag": "ENG_READ",
           "difficulty": "Easy",
@@ -6062,13 +6068,13 @@
           "topic": "My School & Playtime",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'bike 🚲' (xe đạp):",
           "o": [
-            "s",
-            "book",
-            "b",
-            "m"
+            "w",
+            "a",
+            "c",
+            "b"
           ],
           "a": "b",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'B'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Easy",
@@ -6094,13 +6100,13 @@
           "topic": "My School & Playtime",
           "q": "Từ 'bye 👋' có nghĩa là gì?",
           "o": [
-            "book",
-            "tạm biệt",
             "xin chào",
-            "bạn Bill"
+            "mẹ",
+            "tạm biệt",
+            "quả bóng"
           ],
           "a": "tạm biệt",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “tạm biệt”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Easy",
@@ -6126,13 +6132,13 @@
           "topic": "My School & Playtime",
           "q": "Nghe từ 'playground 🛝' và chọn nghĩa đúng:",
           "o": [
-            "sân chơi",
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill"
+            "khu vườn",
+            "phòng bếp",
+            "phòng tắm",
+            "sân chơi"
           ],
           "a": "sân chơi",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Easy",
@@ -6156,15 +6162,15 @@
         {
           "id": 50009,
           "topic": "Me, My Family & Home",
-          "q": "Chọn câu đúng theo mẫu đã học: 👩",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Mẹ đang ở trong bếp.”",
           "o": [
-            "I see mother.",
-            "mother is I.",
-            "My is mother.",
-            "Mom is in the kitchen."
+            "Mom is in the kitchen.",
+            "I have a red hat.",
+            "I have a robot.",
+            "It's a rabbit."
           ],
           "a": "Mom is in the kitchen.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: Mom is in the kitchen.",
           "img": "assets/images/happy_mother.png",
           "tag": "ENG_GRA",
           "difficulty": "Easy",
@@ -6191,13 +6197,13 @@
           "topic": "Me, My Family & Home",
           "q": "Sắp xếp thành câu đúng: house / my / is / This 👨",
           "o": [
-            "I see father.",
-            "father I see.",
             "This is my house.",
-            "house my is This."
+            "house my is This.",
+            "is my house This.",
+            "This my house is."
           ],
           "a": "This is my house.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: This is my house.",
           "img": "assets/images/happy_father.png",
           "tag": "ENG_SYN",
           "difficulty": "Easy",
@@ -6224,13 +6230,13 @@
           "topic": "Me, My Family & Home",
           "q": "Đọc: 'Ba can see mom 👩.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "bạn Bill",
+            "chị/em gái",
             "mẹ",
-            "xin chào",
-            "tạm biệt"
+            "giáo viên",
+            "bố"
           ],
           "a": "mẹ",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "assets/images/happy_mother.png",
           "tag": "ENG_READ",
           "difficulty": "Easy",
@@ -6257,13 +6263,13 @@
           "topic": "Me, My Family & Home",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'dad 👨' (bố):",
           "o": [
+            "w",
             "d",
-            "b",
-            "m",
-            "s"
+            "a",
+            "b"
           ],
           "a": "d",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'D'.",
           "img": "assets/images/happy_father.png",
           "tag": "ENG_PHO",
           "difficulty": "Easy",
@@ -6290,13 +6296,13 @@
           "topic": "Me, My Family & Home",
           "q": "Từ 'brother 👦' có nghĩa là gì?",
           "o": [
-            "xin chào",
-            "tạm biệt",
+            "bạn Ba",
             "bạn Bill",
+            "mẹ",
             "anh/em trai"
           ],
           "a": "anh/em trai",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “anh/em trai”.",
           "img": "assets/images/little_brother.png",
           "tag": "ENG_VOC",
           "difficulty": "Easy",
@@ -6323,13 +6329,13 @@
           "topic": "Me, My Family & Home",
           "q": "Nghe từ 'sister 👧' và chọn nghĩa đúng:",
           "o": [
-            "tạm biệt",
-            "bạn Bill",
             "chị/em gái",
-            "xin chào"
+            "giáo viên",
+            "bố",
+            "anh/em trai"
           ],
           "a": "chị/em gái",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "assets/images/little_sister.png",
           "tag": "ENG_LIS",
           "difficulty": "Easy",
@@ -6353,15 +6359,15 @@
         {
           "id": 50015,
           "topic": "Me, My Family & Home",
-          "q": "Chọn câu đúng theo mẫu đã học: 🛏️",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Mình đang ở sân chơi.”",
           "o": [
-            "My is bedroom.",
+            "I can see a bus.",
+            "I can see an elephant.",
             "I am in the playground.",
-            "I see bedroom.",
-            "bedroom is I."
+            "I can see the sun."
           ],
           "a": "I am in the playground.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: I am in the playground.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Easy",
@@ -6387,13 +6393,13 @@
           "topic": "Me, My Family & Home",
           "q": "Sắp xếp thành câu đúng: mother / my / is / This 🍳",
           "o": [
-            "This is my mother.",
             "mother my is This.",
-            "I see kitchen.",
-            "kitchen I see."
+            "is my mother This.",
+            "This my mother is.",
+            "This is my mother."
           ],
           "a": "This is my mother.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: This is my mother.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Easy",
@@ -6419,13 +6425,13 @@
           "topic": "Me, My Family & Home",
           "q": "Đọc: 'Ba can see bathroom 🛁.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill",
+            "cổng",
+            "hồ nước",
+            "khu vườn",
             "phòng tắm"
           ],
           "a": "phòng tắm",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Easy",
@@ -6451,13 +6457,13 @@
           "topic": "Me, My Family & Home",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'living room 🛋️' (phòng khách):",
           "o": [
-            "m",
-            "s",
+            "h",
             "l",
-            "b"
+            "i",
+            "m"
           ],
           "a": "l",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'L'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Easy",
@@ -6483,13 +6489,13 @@
           "topic": "Me, My Family & Home",
           "q": "Từ 'garden 🌳' có nghĩa là gì?",
           "o": [
-            "bạn Bill",
             "khu vườn",
-            "xin chào",
-            "tạm biệt"
+            "chợ",
+            "điểm dừng xe buýt",
+            "cổng"
           ],
           "a": "khu vườn",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “khu vườn”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Easy",
@@ -6515,13 +6521,13 @@
           "topic": "Me, My Family & Home",
           "q": "Nghe từ 'gate 🚪' và chọn nghĩa đúng:",
           "o": [
+            "sân chơi",
+            "chợ",
             "cổng",
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill"
+            "điểm dừng xe buýt"
           ],
           "a": "cổng",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Easy",
@@ -6545,15 +6551,15 @@
         {
           "id": 50021,
           "topic": "My School & Playtime",
-          "q": "Chọn câu đúng theo mẫu đã học: 👋",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Đây là ngôi nhà của mình.”",
           "o": [
-            "I see hello.",
-            "hello is I.",
-            "My is hello.",
-            "This is my house."
+            "This is my house.",
+            "I can see a bus.",
+            "I can see an elephant.",
+            "I can see the sun."
           ],
           "a": "This is my house.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: This is my house.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Medium",
@@ -6579,13 +6585,13 @@
           "topic": "My School & Playtime",
           "q": "Sắp xếp thành câu đúng: Bill / I'm / Hi, 👋",
           "o": [
-            "I see goodbye.",
-            "goodbye I see.",
-            "Hi, I'm Bill.",
-            "Bill I'm Hi,."
+            "Bill I'm Hi.",
+            "I'm Bill Hi.",
+            "Bill Hi I'm.",
+            "Hi, I'm Bill."
           ],
           "a": "Hi, I'm Bill.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: Hi, I'm Bill.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Medium",
@@ -6611,13 +6617,13 @@
           "topic": "My School & Playtime",
           "q": "Đọc: 'Ba can see Bill 👦.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "bạn Ba",
             "bạn Bill",
-            "xin chào",
-            "tạm biệt"
+            "mẹ",
+            "chị/em gái",
+            "giáo viên"
           ],
           "a": "bạn Bill",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Medium",
@@ -6644,12 +6650,12 @@
           "q": "Chọn chữ cái bắt đầu đúng của từ 'Ba 👦' (bạn Ba):",
           "o": [
             "b",
-            "m",
-            "s",
-            "book"
+            "i",
+            "l",
+            "m"
           ],
           "a": "b",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'B'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Medium",
@@ -6675,13 +6681,13 @@
           "topic": "My School & Playtime",
           "q": "Từ 'book 📖' có nghĩa là gì?",
           "o": [
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill",
-            "quyển sách"
+            "xe đạp",
+            "quyển sách",
+            "xà phòng",
+            "áo phông"
           ],
           "a": "quyển sách",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “quyển sách”.",
           "img": "assets/images/story_book.png",
           "tag": "ENG_VOC",
           "difficulty": "Medium",
@@ -6708,13 +6714,13 @@
           "topic": "My School & Playtime",
           "q": "Nghe từ 'ball ⚽' và chọn nghĩa đúng:",
           "o": [
-            "tạm biệt",
-            "bạn Bill",
+            "cửa",
             "quả bóng",
-            "xin chào"
+            "xe buýt",
+            "người máy"
           ],
           "a": "quả bóng",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "assets/images/blue_ball.png",
           "tag": "ENG_LIS",
           "difficulty": "Medium",
@@ -6739,15 +6745,15 @@
         {
           "id": 50027,
           "topic": "My School & Playtime",
-          "q": "Chọn câu đúng theo mẫu đã học: 🚲",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Đây là mẹ của mình.”",
           "o": [
-            "My is bike.",
+            "Clean your face.",
             "This is my mother.",
-            "I see bike.",
-            "bike is I."
+            "Close the door.",
+            "Do you want some milk? Yes, please."
           ],
           "a": "This is my mother.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: This is my mother.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Medium",
@@ -6773,13 +6779,13 @@
           "topic": "My School & Playtime",
           "q": "Sắp xếp thành câu đúng: father / my / is / This 👋",
           "o": [
-            "This is my father.",
             "father my is This.",
-            "I see bye.",
-            "bye I see."
+            "is my father This.",
+            "This my father is.",
+            "This is my father."
           ],
           "a": "This is my father.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: This is my father.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Medium",
@@ -6805,13 +6811,13 @@
           "topic": "My School & Playtime",
           "q": "Đọc: 'Ba can see playground 🛝.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill",
-            "sân chơi"
+            "điểm dừng xe buýt",
+            "cổng",
+            "sân chơi",
+            "hồ nước"
           ],
           "a": "sân chơi",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Medium",
@@ -6837,13 +6843,13 @@
           "topic": "Me, My Family & Home",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'mother 👩' (mẹ):",
           "o": [
-            "s",
-            "book",
+            "g",
+            "h",
             "m",
-            "b"
+            "i"
           ],
           "a": "m",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'M'.",
           "img": "assets/images/happy_mother.png",
           "tag": "ENG_PHO",
           "difficulty": "Medium",
@@ -6870,13 +6876,13 @@
           "topic": "Me, My Family & Home",
           "q": "Từ 'father 👨' có nghĩa là gì?",
           "o": [
-            "bạn Bill",
+            "anh/em trai",
+            "bạn Ba",
             "bố",
-            "xin chào",
-            "tạm biệt"
+            "bạn Bill"
           ],
           "a": "bố",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “bố”.",
           "img": "assets/images/happy_father.png",
           "tag": "ENG_VOC",
           "difficulty": "Medium",
@@ -6903,13 +6909,13 @@
           "topic": "Me, My Family & Home",
           "q": "Nghe từ 'mom 👩' và chọn nghĩa đúng:",
           "o": [
+            "bố",
             "mẹ",
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill"
+            "anh/em trai",
+            "bạn Ba"
           ],
           "a": "mẹ",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "assets/images/happy_mother.png",
           "tag": "ENG_LIS",
           "difficulty": "Medium",
@@ -6934,15 +6940,15 @@
         {
           "id": 50033,
           "topic": "Me, My Family & Home",
-          "q": "Chọn câu đúng theo mẫu đã học: 👨",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Chào bạn, mình là Bill.”",
           "o": [
-            "I see dad.",
-            "dad is I.",
-            "My is dad.",
-            "Hi, I'm Bill."
+            "Hi, I'm Bill.",
+            "I have a robot.",
+            "It's a rabbit.",
+            "Look at the lake."
           ],
           "a": "Hi, I'm Bill.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: Hi, I'm Bill.",
           "img": "assets/images/happy_father.png",
           "tag": "ENG_GRA",
           "difficulty": "Medium",
@@ -6969,13 +6975,13 @@
           "topic": "Me, My Family & Home",
           "q": "Sắp xếp thành câu đúng: Ba / I'm / Hello, 👦",
           "o": [
-            "I see brother.",
-            "brother I see.",
+            "Ba I'm Hello.",
+            "I'm Ba Hello.",
             "Hello, I'm Ba.",
-            "Ba I'm Hello,."
+            "Ba Hello I'm."
           ],
           "a": "Hello, I'm Ba.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: Hello, I'm Ba.",
           "img": "assets/images/little_brother.png",
           "tag": "ENG_SYN",
           "difficulty": "Medium",
@@ -7002,13 +7008,13 @@
           "topic": "Me, My Family & Home",
           "q": "Đọc: 'Ba can see sister 👧.' Hỏi: Ba nhìn thấy gì?",
           "o": [
+            "bạn Ba",
             "bạn Bill",
-            "chị/em gái",
-            "xin chào",
-            "tạm biệt"
+            "mẹ",
+            "chị/em gái"
           ],
           "a": "chị/em gái",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "assets/images/little_sister.png",
           "tag": "ENG_READ",
           "difficulty": "Medium",
@@ -7034,13 +7040,13 @@
           "topic": "Me, My Family & Home",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'bedroom 🛏️' (phòng ngủ):",
           "o": [
+            "w",
             "b",
-            "m",
-            "s",
-            "book"
+            "a",
+            "c"
           ],
           "a": "b",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'B'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Medium",
@@ -7066,13 +7072,13 @@
           "topic": "Me, My Family & Home",
           "q": "Từ 'kitchen 🍳' có nghĩa là gì?",
           "o": [
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill",
-            "phòng bếp"
+            "cổng",
+            "hồ nước",
+            "phòng bếp",
+            "khu vườn"
           ],
           "a": "phòng bếp",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “phòng bếp”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Medium",
@@ -7098,13 +7104,13 @@
           "topic": "Me, My Family & Home",
           "q": "Nghe từ 'bathroom 🛁' và chọn nghĩa đúng:",
           "o": [
-            "tạm biệt",
-            "bạn Bill",
             "phòng tắm",
-            "xin chào"
+            "hồ nước",
+            "khu vườn",
+            "phòng bếp"
           ],
           "a": "phòng tắm",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Medium",
@@ -7128,15 +7134,15 @@
         {
           "id": 50039,
           "topic": "Me, My Family & Home",
-          "q": "Chọn câu đúng theo mẫu đã học: 🛋️",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Đây là bố của mình.”",
           "o": [
-            "My is living room.",
-            "This is my father.",
-            "I see living room.",
-            "living room is I."
+            "Hi, I'm Bill.",
+            "I am in the playground.",
+            "I can see a bus.",
+            "This is my father."
           ],
           "a": "This is my father.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: This is my father.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Medium",
@@ -7162,13 +7168,13 @@
           "topic": "Me, My Family & Home",
           "q": "Sắp xếp thành câu đúng: sister / my / is / This 🌳",
           "o": [
-            "This is my sister.",
             "sister my is This.",
-            "I see garden.",
-            "garden I see."
+            "is my sister This.",
+            "This is my sister.",
+            "This my sister is."
           ],
           "a": "This is my sister.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: This is my sister.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Medium",
@@ -7194,13 +7200,13 @@
           "topic": "Me, My Family & Home",
           "q": "Đọc: 'Ba can see gate 🚪.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill",
-            "cổng"
+            "cổng",
+            "chợ",
+            "điểm dừng xe buýt",
+            "hồ nước"
           ],
           "a": "cổng",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Medium",
@@ -7226,13 +7232,13 @@
           "topic": "My School & Playtime",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'hello 👋' (xin chào):",
           "o": [
-            "m",
-            "s",
+            "u",
             "h",
-            "b"
+            "w",
+            "a"
           ],
           "a": "h",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'H'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Medium",
@@ -7258,13 +7264,13 @@
           "topic": "My School & Playtime",
           "q": "Từ 'goodbye 👋' có nghĩa là gì?",
           "o": [
-            "bạn Ba",
-            "tạm biệt",
             "xin chào",
-            "bạn Bill"
+            "mẹ",
+            "quả bóng",
+            "tạm biệt"
           ],
           "a": "tạm biệt",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “tạm biệt”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Medium",
@@ -7290,13 +7296,13 @@
           "topic": "My School & Playtime",
           "q": "Nghe từ 'Bill 👦' và chọn nghĩa đúng:",
           "o": [
+            "chị/em gái",
             "bạn Bill",
-            "xin chào",
-            "tạm biệt",
-            "bạn Ba"
+            "giáo viên",
+            "bố"
           ],
           "a": "bạn Bill",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Medium",
@@ -7320,15 +7326,15 @@
         {
           "id": 50045,
           "topic": "My School & Playtime",
-          "q": "Chọn câu đúng theo mẫu đã học: 👦",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Xin chào, mình là Ba.”",
           "o": [
-            "I see Ba.",
-            "Ba is I.",
-            "My is Ba.",
-            "Hello, I'm Ba."
+            "Look at the lake.",
+            "Hello, I'm Ba.",
+            "Mom is in the kitchen.",
+            "Sit down."
           ],
           "a": "Hello, I'm Ba.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: Hello, I'm Ba.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Hard",
@@ -7354,13 +7360,13 @@
           "topic": "My School & Playtime",
           "q": "Sắp xếp thành câu đúng: Ba / Bye, 📖",
           "o": [
-            "I see book.",
-            "book I see.",
-            "Bye, Ba.",
-            "Ba Bye,."
+            "Ba Bye.",
+            "Bye is Ba.",
+            "Ba is bye.",
+            "Bye, Ba."
           ],
           "a": "Bye, Ba.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: Bye, Ba.",
           "img": "assets/images/story_book.png",
           "tag": "ENG_SYN",
           "difficulty": "Hard",
@@ -7387,13 +7393,13 @@
           "topic": "My School & Playtime",
           "q": "Đọc: 'Ba can see ball ⚽.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "bạn Bill",
-            "quả bóng",
-            "xin chào",
-            "tạm biệt"
+            "đồng hồ",
+            "bút chì",
+            "con quay",
+            "quả bóng"
           ],
           "a": "quả bóng",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "assets/images/blue_ball.png",
           "tag": "ENG_READ",
           "difficulty": "Hard",
@@ -7420,13 +7426,13 @@
           "topic": "My School & Playtime",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'bike 🚲' (xe đạp):",
           "o": [
-            "b",
             "m",
-            "s",
-            "book"
+            "n",
+            "p",
+            "b"
           ],
           "a": "b",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'B'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Hard",
@@ -7452,13 +7458,13 @@
           "topic": "My School & Playtime",
           "q": "Từ 'bye 👋' có nghĩa là gì?",
           "o": [
+            "tạm biệt",
             "xin chào",
-            "bạn Bill",
-            "book",
-            "tạm biệt"
+            "mẹ",
+            "quả bóng"
           ],
           "a": "tạm biệt",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “tạm biệt”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Hard",
@@ -7484,13 +7490,13 @@
           "topic": "My School & Playtime",
           "q": "Nghe từ 'playground 🛝' và chọn nghĩa đúng:",
           "o": [
-            "tạm biệt",
-            "bạn Bill",
             "sân chơi",
-            "xin chào"
+            "điểm dừng xe buýt",
+            "cổng",
+            "hồ nước"
           ],
           "a": "sân chơi",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Hard",
@@ -7514,15 +7520,15 @@
         {
           "id": 50051,
           "topic": "Me, My Family & Home",
-          "q": "Chọn câu đúng theo mẫu đã học: 👩",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Đây là chị/em gái của mình.”",
           "o": [
-            "My is mother.",
             "This is my sister.",
-            "I see mother.",
-            "mother is I."
+            "I am in the playground.",
+            "I can see a bus.",
+            "I can see an elephant."
           ],
           "a": "This is my sister.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: This is my sister.",
           "img": "assets/images/happy_mother.png",
           "tag": "ENG_GRA",
           "difficulty": "Hard",
@@ -7549,13 +7555,13 @@
           "topic": "Me, My Family & Home",
           "q": "Sắp xếp thành câu đúng: kitchen / the / in / She's / Mom? / is / Where 👨",
           "o": [
-            "Where is Mom? She's in the kitchen.",
-            "kitchen the in She's Mom? is Where.",
-            "I see father.",
-            "father I see."
+            "kitchen the in She's Mom is Where.",
+            "is Mom She's in the kitchen Where.",
+            "Where Mom She's in the kitchen is.",
+            "Where is Mom? She's in the kitchen."
           ],
           "a": "Where is Mom? She's in the kitchen.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: Where is Mom? She's in the kitchen.",
           "img": "assets/images/happy_father.png",
           "tag": "ENG_SYN",
           "difficulty": "Hard",
@@ -7582,13 +7588,13 @@
           "topic": "Me, My Family & Home",
           "q": "Đọc: 'Ba can see mom 👩.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "xin chào",
-            "tạm biệt",
+            "bạn Ba",
             "bạn Bill",
+            "chị/em gái",
             "mẹ"
           ],
           "a": "mẹ",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "assets/images/happy_mother.png",
           "tag": "ENG_READ",
           "difficulty": "Hard",
@@ -7615,13 +7621,13 @@
           "topic": "Me, My Family & Home",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'dad 👨' (bố):",
           "o": [
-            "m",
-            "s",
-            "d",
-            "b"
+            "w",
+            "a",
+            "b",
+            "d"
           ],
           "a": "d",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'D'.",
           "img": "assets/images/happy_father.png",
           "tag": "ENG_PHO",
           "difficulty": "Hard",
@@ -7648,13 +7654,13 @@
           "topic": "Me, My Family & Home",
           "q": "Từ 'brother 👦' có nghĩa là gì?",
           "o": [
-            "bạn Bill",
-            "anh/em trai",
-            "xin chào",
-            "tạm biệt"
+            "mẹ",
+            "chị/em gái",
+            "giáo viên",
+            "anh/em trai"
           ],
           "a": "anh/em trai",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “anh/em trai”.",
           "img": "assets/images/little_brother.png",
           "tag": "ENG_VOC",
           "difficulty": "Hard",
@@ -7682,12 +7688,12 @@
           "q": "Nghe từ 'sister 👧' và chọn nghĩa đúng:",
           "o": [
             "chị/em gái",
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill"
+            "giáo viên",
+            "bố",
+            "anh/em trai"
           ],
           "a": "chị/em gái",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "assets/images/little_sister.png",
           "tag": "ENG_LIS",
           "difficulty": "Hard",
@@ -7711,15 +7717,15 @@
         {
           "id": 50057,
           "topic": "Me, My Family & Home",
-          "q": "Chọn câu đúng theo mẫu đã học: 🛏️",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Tạm biệt Ba.”",
           "o": [
-            "I see bedroom.",
-            "bedroom is I.",
-            "My is bedroom.",
-            "Bye, Ba."
+            "Bye, Ba.",
+            "Look at the lake.",
+            "Mom is in the kitchen.",
+            "Sit down."
           ],
           "a": "Bye, Ba.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: Bye, Ba.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Hard",
@@ -7745,13 +7751,13 @@
           "topic": "Me, My Family & Home",
           "q": "Sắp xếp thành câu đúng: Bill / Goodbye, 🍳",
           "o": [
-            "I see kitchen.",
-            "kitchen I see.",
+            "Bill Goodbye.",
             "Goodbye, Bill.",
-            "Bill Goodbye,."
+            "Goodbye is Bill.",
+            "Bill is goodbye."
           ],
           "a": "Goodbye, Bill.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: Goodbye, Bill.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Hard",
@@ -7777,13 +7783,13 @@
           "topic": "Me, My Family & Home",
           "q": "Đọc: 'Ba can see bathroom 🛁.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "bạn Bill",
+            "chợ",
             "phòng tắm",
-            "xin chào",
-            "tạm biệt"
+            "điểm dừng xe buýt",
+            "cổng"
           ],
           "a": "phòng tắm",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Hard",
@@ -7816,13 +7822,13 @@
           "topic": "My School & Playtime",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'hello 👋' (xin chào):",
           "o": [
-            "h",
-            "b",
-            "m",
-            "s"
+            "f",
+            "g",
+            "i",
+            "h"
           ],
           "a": "h",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'H'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Easy",
@@ -7849,12 +7855,12 @@
           "q": "Từ 'goodbye 👋' có nghĩa là gì?",
           "o": [
             "xin chào",
-            "bạn Bill",
-            "bạn Ba",
+            "mẹ",
+            "quả bóng",
             "tạm biệt"
           ],
           "a": "tạm biệt",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “tạm biệt”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Easy",
@@ -7880,13 +7886,13 @@
           "topic": "My School & Playtime",
           "q": "Nghe từ 'Bill 👦' và chọn nghĩa đúng:",
           "o": [
-            "tạm biệt",
-            "bạn Ba",
+            "giáo viên",
+            "bố",
             "bạn Bill",
-            "xin chào"
+            "anh/em trai"
           ],
           "a": "bạn Bill",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Easy",
@@ -7910,15 +7916,15 @@
         {
           "id": 120003,
           "topic": "My School & Playtime",
-          "q": "Chọn câu đúng theo mẫu đã học: 👦",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Tạm biệt Bill.”",
           "o": [
-            "My is Ba.",
+            "It's a rabbit.",
+            "Look at the lake.",
             "Goodbye, Bill.",
-            "I see Ba.",
-            "Ba is I."
+            "Mom is in the kitchen."
           ],
           "a": "Goodbye, Bill.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: Goodbye, Bill.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Easy",
@@ -7944,13 +7950,13 @@
           "topic": "My School & Playtime",
           "q": "Sắp xếp thành câu đúng: playground / the / in / am / I 📖",
           "o": [
-            "I am in the playground.",
             "playground the in am I.",
-            "I see book.",
-            "book I see."
+            "am in the playground I.",
+            "I am in the playground.",
+            "I in the playground am."
           ],
           "a": "I am in the playground.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: I am in the playground.",
           "img": "assets/images/story_book.png",
           "tag": "ENG_SYN",
           "difficulty": "Easy",
@@ -7977,13 +7983,13 @@
           "topic": "My School & Playtime",
           "q": "Đọc: 'Ba can see ball ⚽.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill",
-            "quả bóng"
+            "váy",
+            "quả bóng",
+            "cái mũ",
+            "xe tải"
           ],
           "a": "quả bóng",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "assets/images/blue_ball.png",
           "tag": "ENG_READ",
           "difficulty": "Easy",
@@ -8010,13 +8016,13 @@
           "topic": "My School & Playtime",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'bike 🚲' (xe đạp):",
           "o": [
-            "s",
-            "book",
+            "d",
             "b",
-            "m"
+            "e",
+            "f"
           ],
           "a": "b",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'B'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Easy",
@@ -8042,13 +8048,13 @@
           "topic": "My School & Playtime",
           "q": "Từ 'bye 👋' có nghĩa là gì?",
           "o": [
-            "book",
-            "tạm biệt",
             "xin chào",
-            "bạn Bill"
+            "tạm biệt",
+            "mẹ",
+            "quả bóng"
           ],
           "a": "tạm biệt",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “tạm biệt”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Easy",
@@ -8074,13 +8080,13 @@
           "topic": "My School & Playtime",
           "q": "Nghe từ 'playground 🛝' và chọn nghĩa đúng:",
           "o": [
+            "điểm dừng xe buýt",
             "sân chơi",
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill"
+            "cổng",
+            "hồ nước"
           ],
           "a": "sân chơi",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Easy",
@@ -8104,15 +8110,15 @@
         {
           "id": 120009,
           "topic": "Me, My Family & Home",
-          "q": "Chọn câu đúng theo mẫu đã học: 👩",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Mẹ đang ở trong bếp.”",
           "o": [
-            "I see mother.",
-            "mother is I.",
-            "My is mother.",
-            "Mom is in the kitchen."
+            "I can see an elephant.",
+            "I can see the sun.",
+            "Mom is in the kitchen.",
+            "I can see three circles."
           ],
           "a": "Mom is in the kitchen.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: Mom is in the kitchen.",
           "img": "assets/images/happy_mother.png",
           "tag": "ENG_GRA",
           "difficulty": "Easy",
@@ -8139,13 +8145,13 @@
           "topic": "Me, My Family & Home",
           "q": "Sắp xếp thành câu đúng: house / my / is / This 👨",
           "o": [
-            "I see father.",
-            "father I see.",
-            "This is my house.",
-            "house my is This."
+            "house my is This.",
+            "is my house This.",
+            "This my house is.",
+            "This is my house."
           ],
           "a": "This is my house.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: This is my house.",
           "img": "assets/images/happy_father.png",
           "tag": "ENG_SYN",
           "difficulty": "Easy",
@@ -8172,13 +8178,13 @@
           "topic": "Me, My Family & Home",
           "q": "Đọc: 'Ba can see mom 👩.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "bạn Bill",
+            "bố",
             "mẹ",
-            "xin chào",
-            "tạm biệt"
+            "anh/em trai",
+            "bạn Ba"
           ],
           "a": "mẹ",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "assets/images/happy_mother.png",
           "tag": "ENG_READ",
           "difficulty": "Easy",
@@ -8205,13 +8211,13 @@
           "topic": "Me, My Family & Home",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'dad 👨' (bố):",
           "o": [
-            "d",
-            "b",
-            "m",
-            "s"
+            "p",
+            "r",
+            "s",
+            "d"
           ],
           "a": "d",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'D'.",
           "img": "assets/images/happy_father.png",
           "tag": "ENG_PHO",
           "difficulty": "Easy",
@@ -8238,13 +8244,13 @@
           "topic": "Me, My Family & Home",
           "q": "Từ 'brother 👦' có nghĩa là gì?",
           "o": [
-            "xin chào",
-            "tạm biệt",
+            "anh/em trai",
             "bạn Bill",
-            "anh/em trai"
+            "mẹ",
+            "chị/em gái"
           ],
           "a": "anh/em trai",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “anh/em trai”.",
           "img": "assets/images/little_brother.png",
           "tag": "ENG_VOC",
           "difficulty": "Easy",
@@ -8271,13 +8277,13 @@
           "topic": "Me, My Family & Home",
           "q": "Nghe từ 'sister 👧' và chọn nghĩa đúng:",
           "o": [
-            "tạm biệt",
-            "bạn Bill",
+            "mẹ",
             "chị/em gái",
-            "xin chào"
+            "giáo viên",
+            "bố"
           ],
           "a": "chị/em gái",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "assets/images/little_sister.png",
           "tag": "ENG_LIS",
           "difficulty": "Easy",
@@ -8301,15 +8307,15 @@
         {
           "id": 120015,
           "topic": "Me, My Family & Home",
-          "q": "Chọn câu đúng theo mẫu đã học: 🛏️",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Mình có một người máy.”",
           "o": [
-            "My is bedroom.",
-            "I have a robot.",
-            "I see bedroom.",
-            "bedroom is I."
+            "Hi, I'm Bill.",
+            "I am in the playground.",
+            "I can see a bus.",
+            "I have a robot."
           ],
           "a": "I have a robot.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: I have a robot.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Easy",
@@ -8328,20 +8334,21 @@
           "skill_tag": "ENG_GRA",
           "competency": "ENG_GRA",
           "source_week_id": 12,
-          "source_week_name": "Tuần 12: Semester 1 Grand Review"
+          "source_week_name": "Tuần 12: Semester 1 Grand Review",
+          "imageId": "do_choi_robot"
         },
         {
           "id": 120016,
           "topic": "Me, My Family & Home",
           "q": "Sắp xếp thành câu đúng: doll / a / have / I 🍳",
           "o": [
-            "I have a doll.",
             "doll a have I.",
-            "I see kitchen.",
-            "kitchen I see."
+            "I have a doll.",
+            "have a doll I.",
+            "I a doll have."
           ],
           "a": "I have a doll.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: I have a doll.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Easy",
@@ -8367,13 +8374,13 @@
           "topic": "Me, My Family & Home",
           "q": "Đọc: 'Ba can see bathroom 🛁.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill",
-            "phòng tắm"
+            "khu vườn",
+            "phòng bếp",
+            "phòng tắm",
+            "sân chơi"
           ],
           "a": "phòng tắm",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Easy",
@@ -8399,13 +8406,13 @@
           "topic": "Me, My Family & Home",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'living room 🛋️' (phòng khách):",
           "o": [
-            "m",
-            "s",
+            "e",
             "l",
-            "b"
+            "f",
+            "g"
           ],
           "a": "l",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'L'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Easy",
@@ -8431,13 +8438,13 @@
           "topic": "Me, My Family & Home",
           "q": "Từ 'garden 🌳' có nghĩa là gì?",
           "o": [
-            "bạn Bill",
-            "khu vườn",
-            "xin chào",
-            "tạm biệt"
+            "phòng bếp",
+            "phòng tắm",
+            "sân chơi",
+            "khu vườn"
           ],
           "a": "khu vườn",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “khu vườn”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Easy",
@@ -8463,13 +8470,13 @@
           "topic": "Me, My Family & Home",
           "q": "Nghe từ 'gate 🚪' và chọn nghĩa đúng:",
           "o": [
+            "chợ",
             "cổng",
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill"
+            "điểm dừng xe buýt",
+            "hồ nước"
           ],
           "a": "cổng",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Easy",
@@ -8493,15 +8500,15 @@
         {
           "id": 120021,
           "topic": "Numbers, Shapes & Colors",
-          "q": "Chọn câu đúng theo mẫu đã học: 1️⃣",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Quả bóng ở bên cạnh cái hộp.”",
           "o": [
-            "I see one.",
-            "one is I.",
-            "My is one.",
-            "The ball is next to the box."
+            "The ball is next to the box.",
+            "Hi, I'm Bill.",
+            "I am in the playground.",
+            "I can see a bus."
           ],
           "a": "The ball is next to the box.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: The ball is next to the box.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Medium",
@@ -8527,13 +8534,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Sắp xếp thành câu đúng: goat / a / It's / that? / What's 2️⃣",
           "o": [
-            "I see two.",
-            "two I see.",
+            "goat a It's that What's.",
+            "that It's a goat What's.",
             "What's that? It's a goat.",
-            "goat a It's that? What's."
+            "What's It's a goat that."
           ],
           "a": "What's that? It's a goat.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: What's that? It's a goat.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Medium",
@@ -8559,13 +8566,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Đọc: 'Ba can see three 3️⃣.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "bạn Bill",
+            "hình vuông",
             "số ba",
-            "xin chào",
-            "tạm biệt"
+            "số hai",
+            "số năm"
           ],
           "a": "số ba",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Medium",
@@ -8592,12 +8599,12 @@
           "q": "Chọn chữ cái bắt đầu đúng của từ 'four 4️⃣' (số bốn):",
           "o": [
             "f",
-            "b",
-            "m",
+            "p",
+            "r",
             "s"
           ],
           "a": "f",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'F'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Medium",
@@ -8623,13 +8630,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Từ 'five 5️⃣' có nghĩa là gì?",
           "o": [
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill",
+            "hình vuông",
+            "số hai",
+            "số tám",
             "số năm"
           ],
           "a": "số năm",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “số năm”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Medium",
@@ -8655,13 +8662,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Nghe từ 'circle ⭕' và chọn nghĩa đúng:",
           "o": [
-            "tạm biệt",
-            "bạn Bill",
+            "số năm",
             "hình tròn",
-            "xin chào"
+            "số tám",
+            "số chín"
           ],
           "a": "hình tròn",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Medium",
@@ -8685,15 +8692,15 @@
         {
           "id": 120027,
           "topic": "Numbers, Shapes & Colors",
-          "q": "Chọn câu đúng theo mẫu đã học: ⬜",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Mình có thể nhìn thấy một con voi.”",
           "o": [
-            "My is square.",
             "I can see an elephant.",
-            "I see square.",
-            "square is I."
+            "Do you want some milk? Yes, please.",
+            "Goodbye, Bill.",
+            "Hello, I'm Ba."
           ],
           "a": "I can see an elephant.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: I can see an elephant.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Medium",
@@ -8719,13 +8726,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Sắp xếp thành câu đúng: Bill / I'm / Hi, 🔺",
           "o": [
-            "Hi, I'm Bill.",
-            "Bill I'm Hi,.",
-            "I see triangle.",
-            "triangle I see."
+            "Bill I'm Hi.",
+            "I'm Bill Hi.",
+            "Bill Hi I'm.",
+            "Hi, I'm Bill."
           ],
           "a": "Hi, I'm Bill.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: Hi, I'm Bill.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Medium",
@@ -8751,13 +8758,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Đọc: 'Ba can see six 6️⃣.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill",
-            "số sáu"
+            "số sáu",
+            "hình vuông",
+            "số hai",
+            "số năm"
           ],
           "a": "số sáu",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Medium",
@@ -8783,13 +8790,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'seven 7️⃣' (số bảy):",
           "o": [
-            "m",
-            "book",
             "s",
-            "b"
+            "b",
+            "c",
+            "d"
           ],
           "a": "s",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'S'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Medium",
@@ -8815,13 +8822,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Từ 'eight 8️⃣' có nghĩa là gì?",
           "o": [
-            "bạn Bill",
-            "số tám",
-            "xin chào",
-            "tạm biệt"
+            "số sáu",
+            "hình vuông",
+            "số hai",
+            "số tám"
           ],
           "a": "số tám",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “số tám”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Medium",
@@ -8847,13 +8854,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Nghe từ 'nine 9️⃣' và chọn nghĩa đúng:",
           "o": [
+            "số ba",
+            "số sáu",
             "số chín",
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill"
+            "hình vuông"
           ],
           "a": "số chín",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Medium",
@@ -8877,15 +8884,15 @@
         {
           "id": 120033,
           "topic": "Numbers, Shapes & Colors",
-          "q": "Chọn câu đúng theo mẫu đã học: 🔟",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Đây là mẹ của mình.”",
           "o": [
-            "I see ten.",
-            "ten is I.",
-            "My is ten.",
-            "This is my mother."
+            "This is my book.",
+            "This is my mother.",
+            "This is my father.",
+            "This is my house."
           ],
           "a": "This is my mother.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: This is my mother.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Medium",
@@ -8911,13 +8918,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Sắp xếp thành câu đúng: father / my / is / This ⭐",
           "o": [
-            "I see star.",
-            "star I see.",
+            "father my is This.",
+            "is my father This.",
             "This is my father.",
-            "father my is This."
+            "This my father is."
           ],
           "a": "This is my father.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: This is my father.",
           "img": "assets/images/yellow_star.png",
           "tag": "ENG_SYN",
           "difficulty": "Medium",
@@ -8943,13 +8950,13 @@
           "topic": "My School & Playtime",
           "q": "Đọc: 'Ba can see clock ⏰.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "bạn Bill",
             "đồng hồ",
-            "xin chào",
-            "tạm biệt"
+            "đôi giày",
+            "bàn tay",
+            "bút mực"
           ],
           "a": "đồng hồ",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "assets/images/cute_clock.png",
           "tag": "ENG_READ",
           "difficulty": "Medium",
@@ -8976,13 +8983,13 @@
           "topic": "My School & Playtime",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'teddy bear 🧸' (gấu bông):",
           "o": [
+            "g",
+            "h",
             "t",
-            "b",
-            "m",
-            "s"
+            "i"
           ],
           "a": "t",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'T'.",
           "img": "assets/images/teddy_bear.png",
           "tag": "ENG_PHO",
           "difficulty": "Medium",
@@ -9009,13 +9016,13 @@
           "topic": "My School & Playtime",
           "q": "Từ 'top 🪀' có nghĩa là gì?",
           "o": [
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill",
-            "con quay"
+            "bút chì",
+            "con quay",
+            "cửa",
+            "xe buýt"
           ],
           "a": "con quay",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “con quay”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Medium",
@@ -9041,13 +9048,13 @@
           "topic": "The Animal Kingdom",
           "q": "Nghe từ 'turtle 🐢' và chọn nghĩa đúng:",
           "o": [
-            "tạm biệt",
-            "bạn Bill",
+            "con chuột",
+            "con ngựa",
             "con rùa",
-            "xin chào"
+            "con chó"
           ],
           "a": "con rùa",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Medium",
@@ -9071,15 +9078,15 @@
         {
           "id": 120039,
           "topic": "My School & Playtime",
-          "q": "Chọn câu đúng theo mẫu đã học: 🪁",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Mình có thể nhìn thấy ba hình tròn.”",
           "o": [
-            "My is kite.",
             "I can see three circles.",
-            "I see kite.",
-            "kite is I."
+            "Close the door.",
+            "Do you want some milk? Yes, please.",
+            "Goodbye, Bill."
           ],
           "a": "I can see three circles.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: I can see three circles.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Medium",
@@ -9106,12 +9113,12 @@
           "q": "Sắp xếp thành câu đúng: Three / many? / How 🪆",
           "o": [
             "How many? Three.",
-            "Three many? How.",
-            "I see doll.",
-            "doll I see."
+            "Three many How.",
+            "many Three How.",
+            "Three How many."
           ],
           "a": "How many? Three.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: How many? Three.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Medium",
@@ -9137,13 +9144,13 @@
           "topic": "My School & Playtime",
           "q": "Đọc: 'Ba can see robot 🤖.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill",
-            "người máy"
+            "người máy",
+            "cặp sách",
+            "quyển sách",
+            "tất"
           ],
           "a": "người máy",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "assets/images/toy_robot.png",
           "tag": "ENG_READ",
           "difficulty": "Medium",
@@ -9162,20 +9169,21 @@
           "skill_tag": "ENG_READ",
           "competency": "ENG_READ",
           "source_week_id": 12,
-          "source_week_name": "Tuần 12: Semester 1 Grand Review"
+          "source_week_name": "Tuần 12: Semester 1 Grand Review",
+          "imageId": "do_choi_robot"
         },
         {
           "id": 120042,
           "topic": "My School & Playtime",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'box 📦' (cái hộp):",
           "o": [
-            "s",
-            "book",
+            "d",
             "b",
-            "m"
+            "e",
+            "f"
           ],
           "a": "b",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'B'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Medium",
@@ -9201,13 +9209,13 @@
           "topic": "The Animal Kingdom",
           "q": "Từ 'cat 🐱' có nghĩa là gì?",
           "o": [
-            "bạn Bill",
-            "con mèo",
-            "xin chào",
-            "tạm biệt"
+            "cá",
+            "con gà mái",
+            "gà",
+            "con mèo"
           ],
           "a": "con mèo",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “con mèo”.",
           "img": "assets/images/cute_cat.png",
           "tag": "ENG_VOC",
           "difficulty": "Medium",
@@ -9235,12 +9243,12 @@
           "q": "Nghe từ 'dog 🐶' và chọn nghĩa đúng:",
           "o": [
             "con chó",
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill"
+            "con cá",
+            "cá",
+            "con gà mái"
           ],
           "a": "con chó",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "assets/images/cute_dog.png",
           "tag": "ENG_LIS",
           "difficulty": "Medium",
@@ -9265,15 +9273,15 @@
         {
           "id": 120045,
           "topic": "The Animal Kingdom",
-          "q": "Chọn câu đúng theo mẫu đã học: 🦆",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Đây là gấu bông của mình.”",
           "o": [
-            "I see duck.",
-            "duck is I.",
-            "My is duck.",
-            "This is my teddy bear."
+            "Hello, I'm Ba.",
+            "Hi, I'm Bill.",
+            "This is my teddy bear.",
+            "I am in the playground."
           ],
           "a": "This is my teddy bear.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: This is my teddy bear.",
           "img": "assets/images/cute_duck.png",
           "tag": "ENG_GRA",
           "difficulty": "Hard",
@@ -9300,13 +9308,13 @@
           "topic": "The Animal Kingdom",
           "q": "Sắp xếp thành câu đúng: box / the / in / is / ball / The 🐦",
           "o": [
-            "I see bird.",
-            "bird I see.",
+            "box the in is ball The.",
+            "ball is in the box The.",
             "The ball is in the box.",
-            "box the in is ball The."
+            "The is in the box ball."
           ],
           "a": "The ball is in the box.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: The ball is in the box.",
           "img": "assets/images/cute_bird.png",
           "tag": "ENG_SYN",
           "difficulty": "Hard",
@@ -9333,13 +9341,13 @@
           "topic": "The Animal Kingdom",
           "q": "Đọc: 'Ba can see rabbit 🐰.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "bạn Bill",
+            "con vịt",
+            "con chuột",
             "con thỏ",
-            "xin chào",
-            "tạm biệt"
+            "con ngựa"
           ],
           "a": "con thỏ",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "assets/images/cute_rabbit.png",
           "tag": "ENG_READ",
           "difficulty": "Hard",
@@ -9366,13 +9374,13 @@
           "topic": "The Animal Kingdom",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'goat 🐐' (con dê):",
           "o": [
+            "h",
             "g",
-            "b",
-            "m",
-            "s"
+            "i",
+            "l"
           ],
           "a": "g",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'G'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Hard",
@@ -9398,13 +9406,13 @@
           "topic": "The Animal Kingdom",
           "q": "Từ 'horse 🐴' có nghĩa là gì?",
           "o": [
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill",
-            "con ngựa"
+            "con mèo",
+            "con vịt",
+            "con ngựa",
+            "con chuột"
           ],
           "a": "con ngựa",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “con ngựa”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Hard",
@@ -9430,13 +9438,13 @@
           "topic": "The Animal Kingdom",
           "q": "Nghe từ 'hen 🐔' và chọn nghĩa đúng:",
           "o": [
-            "tạm biệt",
-            "bạn Bill",
+            "con voi",
+            "con mèo",
             "con gà mái",
-            "xin chào"
+            "con vịt"
           ],
           "a": "con gà mái",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Hard",
@@ -9460,15 +9468,15 @@
         {
           "id": 120051,
           "topic": "The Animal Kingdom",
-          "q": "Chọn câu đúng theo mẫu đã học: 🐵",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Đó là một con thỏ.”",
           "o": [
-            "My is monkey.",
+            "This is my mother.",
+            "This is my sister.",
             "It's a rabbit.",
-            "I see monkey.",
-            "monkey is I."
+            "This is my teddy bear."
           ],
           "a": "It's a rabbit.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: It's a rabbit.",
           "img": "assets/images/cute_monkey.png",
           "tag": "ENG_GRA",
           "difficulty": "Hard",
@@ -9497,11 +9505,11 @@
           "o": [
             "I can see a dog.",
             "dog a see can I.",
-            "I see tiger.",
-            "tiger I see."
+            "can see a dog I.",
+            "I see a dog can."
           ],
           "a": "I can see a dog.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: I can see a dog.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Hard",
@@ -9527,13 +9535,13 @@
           "topic": "The Animal Kingdom",
           "q": "Đọc: 'Ba can see elephant 🐘.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill",
-            "con voi"
+            "gà",
+            "con voi",
+            "con rùa",
+            "con thỏ"
           ],
           "a": "con voi",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Hard",
@@ -9559,13 +9567,13 @@
           "topic": "The Animal Kingdom",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'hippo 🦛' (hà mã):",
           "o": [
-            "m",
-            "s",
             "h",
-            "b"
+            "n",
+            "p",
+            "r"
           ],
           "a": "h",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'H'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Hard",
@@ -9591,13 +9599,13 @@
           "topic": "The Animal Kingdom",
           "q": "Từ 'mouse 🐭' có nghĩa là gì?",
           "o": [
-            "bạn Bill",
-            "con chuột",
-            "xin chào",
-            "tạm biệt"
+            "con rùa",
+            "con thỏ",
+            "con voi",
+            "con chuột"
           ],
           "a": "con chuột",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “con chuột”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Hard",
@@ -9623,13 +9631,13 @@
           "topic": "The Animal Kingdom",
           "q": "Nghe từ 'fish 🐟' và chọn nghĩa đúng:",
           "o": [
-            "con cá",
-            "xin chào",
-            "tạm biệt",
-            "bạn Bill"
+            "con gà mái",
+            "gà",
+            "con rùa",
+            "con cá"
           ],
           "a": "con cá",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Hard",
@@ -9653,15 +9661,15 @@
         {
           "id": 120057,
           "topic": "My School & Playtime",
-          "q": "Chọn câu đúng theo mẫu đã học: 👋",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Xin chào, mình là Ba.”",
           "o": [
-            "I see hello.",
-            "hello is I.",
-            "My is hello.",
+            "Hi, I'm Bill.",
+            "I am in the playground.",
+            "I can see a bus.",
             "Hello, I'm Ba."
           ],
           "a": "Hello, I'm Ba.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: Hello, I'm Ba.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Hard",
@@ -9687,13 +9695,13 @@
           "topic": "My School & Playtime",
           "q": "Sắp xếp thành câu đúng: Ba / Bye, 👋",
           "o": [
-            "I see goodbye.",
-            "goodbye I see.",
-            "Bye, Ba.",
-            "Ba Bye,."
+            "Ba Bye.",
+            "Bye is Ba.",
+            "Ba is bye.",
+            "Bye, Ba."
           ],
           "a": "Bye, Ba.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: Bye, Ba.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Hard",
@@ -9719,13 +9727,13 @@
           "topic": "My School & Playtime",
           "q": "Đọc: 'Ba can see Bill 👦.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "bạn Ba",
+            "giáo viên",
+            "bố",
             "bạn Bill",
-            "xin chào",
-            "tạm biệt"
+            "anh/em trai"
           ],
           "a": "bạn Bill",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Hard",
@@ -9758,13 +9766,13 @@
           "topic": "My School & Playtime",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'hat 👒' (cái mũ):",
           "o": [
+            "s",
             "h",
-            "b",
-            "m",
-            "s"
+            "t",
+            "u"
           ],
           "a": "h",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'H'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Easy",
@@ -9790,13 +9798,13 @@
           "topic": "My School & Playtime",
           "q": "Từ 'bag 🎒' có nghĩa là gì?",
           "o": [
-            "cái mũ",
-            "đôi giày",
-            "áo phông",
+            "đồng hồ",
+            "bút chì",
+            "con quay",
             "cặp sách"
           ],
           "a": "cặp sách",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “cặp sách”.",
           "img": "assets/images/school_bag.png",
           "tag": "ENG_VOC",
           "difficulty": "Easy",
@@ -9823,13 +9831,13 @@
           "topic": "My School & Playtime",
           "q": "Nghe từ 'shoes 👟' và chọn nghĩa đúng:",
           "o": [
-            "cặp sách",
-            "áo phông",
             "đôi giày",
-            "cái mũ"
+            "bàn tay",
+            "bút mực",
+            "cặp sách"
           ],
           "a": "đôi giày",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Easy",
@@ -9853,15 +9861,15 @@
         {
           "id": 170003,
           "topic": "My School & Playtime",
-          "q": "Chọn câu đúng theo mẫu đã học: 👕",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Mình có một chiếc mũ màu đỏ.”",
           "o": [
-            "My is t-shirt.",
+            "The ball is next to the box.",
             "I have a red hat.",
-            "I see t-shirt.",
-            "t-shirt is I."
+            "This is my book.",
+            "This is my father."
           ],
           "a": "I have a red hat.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: I have a red hat.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Easy",
@@ -9888,12 +9896,12 @@
           "q": "Sắp xếp thành câu đúng: t-shirt / blue / a / wearing / He's 👗",
           "o": [
             "He's wearing a blue t-shirt.",
-            "t-shirt blue a wearing He's.",
-            "I see dress.",
-            "dress I see."
+            "shirt - t blue a wearing He's.",
+            "wearing a blue t - shirt He's.",
+            "He's a blue t - shirt wearing."
           ],
           "a": "He's wearing a blue t-shirt.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: He's wearing a blue t-shirt.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Easy",
@@ -9919,13 +9927,13 @@
           "topic": "My School & Playtime",
           "q": "Đọc: 'Ba can see socks 🧦.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "cái mũ",
-            "cặp sách",
-            "đôi giày",
-            "tất"
+            "xe buýt",
+            "tất",
+            "người máy",
+            "quả bóng"
           ],
           "a": "tất",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Easy",
@@ -9951,13 +9959,13 @@
           "topic": "My School & Playtime",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'umbrella ☂️' (ô):",
           "o": [
-            "m",
             "s",
+            "t",
             "u",
-            "b"
+            "w"
           ],
           "a": "u",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'U'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Easy",
@@ -9983,13 +9991,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Từ 'pink 🩷' có nghĩa là gì?",
           "o": [
-            "đôi giày",
-            "màu hồng",
-            "cái mũ",
-            "cặp sách"
+            "màu xanh dương",
+            "màu xanh lá",
+            "màu vàng",
+            "màu hồng"
           ],
           "a": "màu hồng",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “màu hồng”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Easy",
@@ -10015,13 +10023,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Nghe từ 'orange 🟠' và chọn nghĩa đúng:",
           "o": [
+            "màu xanh dương",
             "màu cam",
-            "cái mũ",
-            "cặp sách",
-            "đôi giày"
+            "màu xanh lá",
+            "màu vàng"
           ],
           "a": "màu cam",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Easy",
@@ -10045,15 +10053,15 @@
         {
           "id": 170009,
           "topic": "Numbers, Shapes & Colors",
-          "q": "Chọn câu đúng theo mẫu đã học: 🟢",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Em có muốn một ít sữa không? — Có ạ.”",
           "o": [
-            "I see green.",
-            "green is I.",
-            "My is green.",
-            "Do you want some milk? Yes, please."
+            "Do you want some milk? Yes, please.",
+            "Goodbye, Bill.",
+            "Hello, I'm Ba.",
+            "Hi, I'm Bill."
           ],
           "a": "Do you want some milk? Yes, please.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: Do you want some milk? Yes, please.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Easy",
@@ -10079,13 +10087,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Sắp xếp thành câu đúng: apple / an / want / I 🔴",
           "o": [
-            "I see red.",
-            "red I see.",
+            "apple an want I.",
+            "want an apple I.",
             "I want an apple.",
-            "apple an want I."
+            "I an apple want."
           ],
           "a": "I want an apple.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: I want an apple.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Easy",
@@ -10111,13 +10119,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Đọc: 'Ba can see blue 🔵.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "đôi giày",
-            "màu xanh dương",
-            "cái mũ",
-            "cặp sách"
+            "màu vàng",
+            "màu cam",
+            "màu nâu",
+            "màu xanh dương"
           ],
           "a": "màu xanh dương",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Easy",
@@ -10143,13 +10151,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'yellow 🟡' (màu vàng):",
           "o": [
+            "l",
             "y",
-            "b",
             "m",
-            "s"
+            "n"
           ],
           "a": "y",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'Y'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Easy",
@@ -10175,13 +10183,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Từ 'white ⚪' có nghĩa là gì?",
           "o": [
-            "cái mũ",
-            "cặp sách",
-            "đôi giày",
-            "màu trắng"
+            "màu trắng",
+            "màu hồng",
+            "màu xanh dương",
+            "màu xanh lá"
           ],
           "a": "màu trắng",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “màu trắng”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Easy",
@@ -10207,13 +10215,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Nghe từ 'brown 🟤' và chọn nghĩa đúng:",
           "o": [
-            "cặp sách",
-            "đôi giày",
+            "màu hồng",
             "màu nâu",
-            "cái mũ"
+            "màu trắng",
+            "màu xanh dương"
           ],
           "a": "màu nâu",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Easy",
@@ -10237,15 +10245,15 @@
         {
           "id": 170015,
           "topic": "Yummy Food & Garden",
-          "q": "Chọn câu đúng theo mẫu đã học: 🎂",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Mình có một chiếc mũ màu đỏ.”",
           "o": [
-            "My is cake.",
+            "Clean your face.",
+            "Close the door.",
             "I have a red hat.",
-            "I see cake.",
-            "cake is I."
+            "Do you want some milk? Yes, please."
           ],
           "a": "I have a red hat.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: I have a red hat.",
           "img": "assets/images/sweet_cake.png",
           "tag": "ENG_GRA",
           "difficulty": "Easy",
@@ -10273,12 +10281,12 @@
           "q": "Sắp xếp thành câu đúng: t-shirt / blue / a / wearing / He's 🐟",
           "o": [
             "He's wearing a blue t-shirt.",
-            "t-shirt blue a wearing He's.",
-            "I see fish.",
-            "fish I see."
+            "shirt - t blue a wearing He's.",
+            "wearing a blue t - shirt He's.",
+            "He's a blue t - shirt wearing."
           ],
           "a": "He's wearing a blue t-shirt.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: He's wearing a blue t-shirt.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Easy",
@@ -10304,13 +10312,13 @@
           "topic": "Yummy Food & Garden",
           "q": "Đọc: 'Ba can see chips 🍟.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "cái mũ",
-            "cặp sách",
-            "đôi giày",
-            "khoai tây chiên"
+            "quả lê",
+            "nước",
+            "khoai tây chiên",
+            "sữa"
           ],
           "a": "khoai tây chiên",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Easy",
@@ -10336,13 +10344,13 @@
           "topic": "Yummy Food & Garden",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'milk 🥛' (sữa):",
           "o": [
-            "s",
-            "book",
+            "c",
             "m",
-            "b"
+            "d",
+            "e"
           ],
           "a": "m",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'M'.",
           "img": "assets/images/milk_glass.png",
           "tag": "ENG_PHO",
           "difficulty": "Easy",
@@ -10369,13 +10377,13 @@
           "topic": "Yummy Food & Garden",
           "q": "Từ 'chicken 🍗' có nghĩa là gì?",
           "o": [
-            "đôi giày",
             "gà",
-            "cái mũ",
-            "cặp sách"
+            "con cá",
+            "cá",
+            "con gà mái"
           ],
           "a": "gà",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “gà”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Easy",
@@ -10401,13 +10409,13 @@
           "topic": "Yummy Food & Garden",
           "q": "Nghe từ 'banana 🍌' và chọn nghĩa đúng:",
           "o": [
-            "chuối",
-            "cái mũ",
-            "cặp sách",
-            "đôi giày"
+            "nước ép",
+            "bánh quy",
+            "mì sợi",
+            "chuối"
           ],
           "a": "chuối",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "assets/images/happy_banana.png",
           "tag": "ENG_LIS",
           "difficulty": "Easy",
@@ -10432,15 +10440,15 @@
         {
           "id": 170021,
           "topic": "Yummy Food & Garden",
-          "q": "Chọn câu đúng theo mẫu đã học: 🧃",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Em có muốn một ít sữa không? — Có ạ.”",
           "o": [
-            "I see juice.",
-            "juice is I.",
-            "My is juice.",
-            "Do you want some milk? Yes, please."
+            "Do you want some milk? Yes, please.",
+            "I have a robot.",
+            "It's a rabbit.",
+            "Look at the lake."
           ],
           "a": "Do you want some milk? Yes, please.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: Do you want some milk? Yes, please.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Medium",
@@ -10466,13 +10474,13 @@
           "topic": "Yummy Food & Garden",
           "q": "Sắp xếp thành câu đúng: apple / an / want / I 🍜",
           "o": [
-            "I see noodles.",
-            "noodles I see.",
             "I want an apple.",
-            "apple an want I."
+            "apple an want I.",
+            "want an apple I.",
+            "I an apple want."
           ],
           "a": "I want an apple.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: I want an apple.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Medium",
@@ -10498,13 +10506,13 @@
           "topic": "Yummy Food & Garden",
           "q": "Đọc: 'Ba can see nut 🥜.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "đôi giày",
+            "chuối",
             "hạt",
-            "cái mũ",
-            "cặp sách"
+            "mì sợi",
+            "khoai tây chiên"
           ],
           "a": "hạt",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Medium",
@@ -10530,13 +10538,13 @@
           "topic": "Yummy Food & Garden",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'apple 🍎' (quả táo):",
           "o": [
+            "t",
+            "u",
             "a",
-            "b",
-            "m",
-            "s"
+            "w"
           ],
           "a": "a",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'A'.",
           "img": "assets/images/happy_apple.png",
           "tag": "ENG_PHO",
           "difficulty": "Medium",
@@ -10563,13 +10571,13 @@
           "topic": "Yummy Food & Garden",
           "q": "Từ 'pear 🍐' có nghĩa là gì?",
           "o": [
-            "cái mũ",
-            "cặp sách",
-            "đôi giày",
-            "quả lê"
+            "bánh ngọt",
+            "kẹo mút",
+            "quả lê",
+            "nước ép"
           ],
           "a": "quả lê",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “quả lê”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Medium",
@@ -10595,13 +10603,13 @@
           "topic": "Yummy Food & Garden",
           "q": "Nghe từ 'cookie 🍪' và chọn nghĩa đúng:",
           "o": [
-            "cặp sách",
-            "đôi giày",
+            "sữa",
             "bánh quy",
-            "cái mũ"
+            "quả táo",
+            "bánh ngọt"
           ],
           "a": "bánh quy",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Medium",
@@ -10625,15 +10633,15 @@
         {
           "id": 170027,
           "topic": "Yummy Food & Garden",
-          "q": "Chọn câu đúng theo mẫu đã học: 🍭",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Mình có một chiếc mũ màu đỏ.”",
           "o": [
-            "My is lollipop.",
+            "This is my book.",
+            "This is my father.",
             "I have a red hat.",
-            "I see lollipop.",
-            "lollipop is I."
+            "This is my house."
           ],
           "a": "I have a red hat.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: I have a red hat.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Medium",
@@ -10659,13 +10667,13 @@
           "topic": "My School & Playtime",
           "q": "Sắp xếp thành câu đúng: t-shirt / blue / a / wearing / He's 👒",
           "o": [
+            "shirt - t blue a wearing He's.",
+            "wearing a blue t - shirt He's.",
             "He's wearing a blue t-shirt.",
-            "t-shirt blue a wearing He's.",
-            "I see hat.",
-            "hat I see."
+            "He's a blue t - shirt wearing."
           ],
           "a": "He's wearing a blue t-shirt.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: He's wearing a blue t-shirt.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Medium",
@@ -10691,13 +10699,13 @@
           "topic": "My School & Playtime",
           "q": "Đọc: 'Ba can see bag 🎒.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "cái mũ",
-            "đôi giày",
-            "áo phông",
-            "cặp sách"
+            "cặp sách",
+            "xe tải",
+            "ô tô",
+            "đôi giày"
           ],
           "a": "cặp sách",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "assets/images/school_bag.png",
           "tag": "ENG_READ",
           "difficulty": "Medium",
@@ -10724,13 +10732,13 @@
           "topic": "My School & Playtime",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'shoes 👟' (đôi giày):",
           "o": [
-            "m",
-            "book",
+            "n",
+            "p",
             "s",
-            "b"
+            "r"
           ],
           "a": "s",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'S'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Medium",
@@ -10756,13 +10764,13 @@
           "topic": "My School & Playtime",
           "q": "Từ 't-shirt 👕' có nghĩa là gì?",
           "o": [
+            "xe tải",
+            "ô tô",
             "đôi giày",
-            "áo phông",
-            "cái mũ",
-            "cặp sách"
+            "áo phông"
           ],
           "a": "áo phông",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “áo phông”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Medium",
@@ -10788,13 +10796,13 @@
           "topic": "My School & Playtime",
           "q": "Nghe từ 'dress 👗' và chọn nghĩa đúng:",
           "o": [
-            "váy",
-            "cái mũ",
-            "cặp sách",
-            "đôi giày"
+            "con quay",
+            "cửa",
+            "xe buýt",
+            "váy"
           ],
           "a": "váy",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Medium",
@@ -10818,15 +10826,15 @@
         {
           "id": 170033,
           "topic": "My School & Playtime",
-          "q": "Chọn câu đúng theo mẫu đã học: 🧦",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Em có muốn một ít sữa không? — Có ạ.”",
           "o": [
-            "I see socks.",
-            "socks is I.",
-            "My is socks.",
+            "I can see a bus.",
+            "I can see an elephant.",
+            "I can see the sun.",
             "Do you want some milk? Yes, please."
           ],
           "a": "Do you want some milk? Yes, please.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: Do you want some milk? Yes, please.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Medium",
@@ -10852,13 +10860,13 @@
           "topic": "My School & Playtime",
           "q": "Sắp xếp thành câu đúng: apple / an / want / I ☂️",
           "o": [
-            "I see umbrella.",
-            "umbrella I see.",
+            "apple an want I.",
+            "want an apple I.",
             "I want an apple.",
-            "apple an want I."
+            "I an apple want."
           ],
           "a": "I want an apple.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: I want an apple.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Medium",
@@ -10884,13 +10892,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Đọc: 'Ba can see pink 🩷.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "đôi giày",
+            "màu vàng",
             "màu hồng",
-            "cái mũ",
-            "cặp sách"
+            "màu cam",
+            "màu nâu"
           ],
           "a": "màu hồng",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Medium",
@@ -10916,13 +10924,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'orange 🟠' (màu cam):",
           "o": [
-            "o",
             "b",
-            "m",
-            "s"
+            "c",
+            "d",
+            "o"
           ],
           "a": "o",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'O'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Medium",
@@ -10948,13 +10956,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Từ 'green 🟢' có nghĩa là gì?",
           "o": [
-            "cái mũ",
-            "cặp sách",
-            "đôi giày",
-            "màu xanh lá"
+            "màu trắng",
+            "màu xanh dương",
+            "màu xanh lá",
+            "màu vàng"
           ],
           "a": "màu xanh lá",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “màu xanh lá”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Medium",
@@ -10980,13 +10988,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Nghe từ 'red 🔴' và chọn nghĩa đúng:",
           "o": [
-            "cặp sách",
-            "đôi giày",
+            "màu vàng",
+            "màu cam",
             "màu đỏ",
-            "cái mũ"
+            "màu nâu"
           ],
           "a": "màu đỏ",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Medium",
@@ -11010,15 +11018,15 @@
         {
           "id": 170039,
           "topic": "Numbers, Shapes & Colors",
-          "q": "Chọn câu đúng theo mẫu đã học: 🔵",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Mình có một chiếc mũ màu đỏ.”",
           "o": [
-            "My is blue.",
-            "I have a red hat.",
-            "I see blue.",
-            "blue is I."
+            "Close the door.",
+            "Do you want some milk? Yes, please.",
+            "Goodbye, Bill.",
+            "I have a red hat."
           ],
           "a": "I have a red hat.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: I have a red hat.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Medium",
@@ -11044,13 +11052,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Sắp xếp thành câu đúng: t-shirt / blue / a / wearing / He's 🟡",
           "o": [
+            "shirt - t blue a wearing He's.",
             "He's wearing a blue t-shirt.",
-            "t-shirt blue a wearing He's.",
-            "I see yellow.",
-            "yellow I see."
+            "wearing a blue t - shirt He's.",
+            "He's a blue t - shirt wearing."
           ],
           "a": "He's wearing a blue t-shirt.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: He's wearing a blue t-shirt.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Medium",
@@ -11076,13 +11084,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Đọc: 'Ba can see white ⚪.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "cái mũ",
-            "cặp sách",
-            "đôi giày",
-            "màu trắng"
+            "màu trắng",
+            "màu xanh dương",
+            "màu xanh lá",
+            "màu vàng"
           ],
           "a": "màu trắng",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Medium",
@@ -11108,13 +11116,13 @@
           "topic": "Numbers, Shapes & Colors",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'brown 🟤' (màu nâu):",
           "o": [
-            "s",
-            "book",
-            "b",
-            "m"
+            "g",
+            "h",
+            "i",
+            "b"
           ],
           "a": "b",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'B'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Medium",
@@ -11140,13 +11148,13 @@
           "topic": "Yummy Food & Garden",
           "q": "Từ 'cake 🎂' có nghĩa là gì?",
           "o": [
-            "đôi giày",
+            "chuối",
             "bánh ngọt",
-            "cái mũ",
-            "cặp sách"
+            "mì sợi",
+            "khoai tây chiên"
           ],
           "a": "bánh ngọt",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “bánh ngọt”.",
           "img": "assets/images/sweet_cake.png",
           "tag": "ENG_VOC",
           "difficulty": "Medium",
@@ -11174,12 +11182,12 @@
           "q": "Nghe từ 'fish 🐟' và chọn nghĩa đúng:",
           "o": [
             "cá",
-            "cái mũ",
-            "cặp sách",
-            "đôi giày"
+            "gà",
+            "con rùa",
+            "con thỏ"
           ],
           "a": "cá",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Medium",
@@ -11203,15 +11211,15 @@
         {
           "id": 170045,
           "topic": "Yummy Food & Garden",
-          "q": "Chọn câu đúng theo mẫu đã học: 🍟",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Em có muốn một ít sữa không? — Có ạ.”",
           "o": [
-            "I see chips.",
-            "chips is I.",
-            "My is chips.",
-            "Do you want some milk? Yes, please."
+            "Do you want some milk? Yes, please.",
+            "I can see the sun.",
+            "I can see three circles.",
+            "I have a red hat."
           ],
           "a": "Do you want some milk? Yes, please.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: Do you want some milk? Yes, please.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Hard",
@@ -11237,13 +11245,13 @@
           "topic": "Yummy Food & Garden",
           "q": "Sắp xếp thành câu đúng: apple / an / want / I 🥛",
           "o": [
-            "I see milk.",
-            "milk I see.",
-            "I want an apple.",
-            "apple an want I."
+            "apple an want I.",
+            "want an apple I.",
+            "I an apple want.",
+            "I want an apple."
           ],
           "a": "I want an apple.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: I want an apple.",
           "img": "assets/images/milk_glass.png",
           "tag": "ENG_SYN",
           "difficulty": "Hard",
@@ -11270,13 +11278,13 @@
           "topic": "Yummy Food & Garden",
           "q": "Đọc: 'Ba can see chicken 🍗.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "đôi giày",
+            "cá",
+            "con gà mái",
             "gà",
-            "cái mũ",
-            "cặp sách"
+            "con rùa"
           ],
           "a": "gà",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Hard",
@@ -11303,12 +11311,12 @@
           "q": "Chọn chữ cái bắt đầu đúng của từ 'banana 🍌' (chuối):",
           "o": [
             "b",
-            "m",
-            "s",
-            "book"
+            "w",
+            "a",
+            "c"
           ],
           "a": "b",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'B'.",
           "img": "assets/images/happy_banana.png",
           "tag": "ENG_PHO",
           "difficulty": "Hard",
@@ -11335,13 +11343,13 @@
           "topic": "Yummy Food & Garden",
           "q": "Từ 'juice 🧃' có nghĩa là gì?",
           "o": [
-            "cái mũ",
-            "cặp sách",
-            "đôi giày",
-            "nước ép"
+            "chuối",
+            "nước ép",
+            "mì sợi",
+            "khoai tây chiên"
           ],
           "a": "nước ép",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “nước ép”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Hard",
@@ -11367,13 +11375,13 @@
           "topic": "Yummy Food & Garden",
           "q": "Nghe từ 'noodles 🍜' và chọn nghĩa đúng:",
           "o": [
-            "cặp sách",
-            "đôi giày",
-            "mì sợi",
-            "cái mũ"
+            "hạt",
+            "quả lê",
+            "nước",
+            "mì sợi"
           ],
           "a": "mì sợi",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Hard",
@@ -11397,15 +11405,15 @@
         {
           "id": 170051,
           "topic": "Yummy Food & Garden",
-          "q": "Chọn câu đúng theo mẫu đã học: 🥜",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Mình có một chiếc mũ màu đỏ.”",
           "o": [
-            "My is nut.",
+            "We are at the zoo.",
             "I have a red hat.",
-            "I see nut.",
-            "nut is I."
+            "Bye, Ba.",
+            "Clean your face."
           ],
           "a": "I have a red hat.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: I have a red hat.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Hard",
@@ -11431,13 +11439,13 @@
           "topic": "Yummy Food & Garden",
           "q": "Sắp xếp thành câu đúng: t-shirt / blue / a / wearing / He's 🍎",
           "o": [
-            "He's wearing a blue t-shirt.",
-            "t-shirt blue a wearing He's.",
-            "I see apple.",
-            "apple I see."
+            "shirt - t blue a wearing He's.",
+            "wearing a blue t - shirt He's.",
+            "He's a blue t - shirt wearing.",
+            "He's wearing a blue t-shirt."
           ],
           "a": "He's wearing a blue t-shirt.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: He's wearing a blue t-shirt.",
           "img": "assets/images/happy_apple.png",
           "tag": "ENG_SYN",
           "difficulty": "Hard",
@@ -11464,13 +11472,13 @@
           "topic": "Yummy Food & Garden",
           "q": "Đọc: 'Ba can see pear 🍐.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "cái mũ",
-            "cặp sách",
-            "đôi giày",
-            "quả lê"
+            "nước",
+            "sữa",
+            "quả lê",
+            "quả táo"
           ],
           "a": "quả lê",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Hard",
@@ -11496,13 +11504,13 @@
           "topic": "Yummy Food & Garden",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'cookie 🍪' (bánh quy):",
           "o": [
-            "m",
-            "s",
+            "t",
+            "u",
             "c",
-            "b"
+            "w"
           ],
           "a": "c",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'C'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Hard",
@@ -11528,13 +11536,13 @@
           "topic": "Yummy Food & Garden",
           "q": "Từ 'lollipop 🍭' có nghĩa là gì?",
           "o": [
-            "đôi giày",
             "kẹo mút",
-            "cái mũ",
-            "cặp sách"
+            "mì sợi",
+            "khoai tây chiên",
+            "hạt"
           ],
           "a": "kẹo mút",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “kẹo mút”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Hard",
@@ -11560,13 +11568,13 @@
           "topic": "My School & Playtime",
           "q": "Nghe từ 'hat 👒' và chọn nghĩa đúng:",
           "o": [
-            "cái mũ",
-            "cặp sách",
-            "đôi giày",
-            "áo phông"
+            "bút chì",
+            "con quay",
+            "cửa",
+            "cái mũ"
           ],
           "a": "cái mũ",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Hard",
@@ -11590,15 +11598,15 @@
         {
           "id": 170057,
           "topic": "My School & Playtime",
-          "q": "Chọn câu đúng theo mẫu đã học: 🎒",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Em có muốn một ít sữa không? — Có ạ.”",
           "o": [
-            "I see bag.",
-            "bag is I.",
-            "My is bag.",
-            "Do you want some milk? Yes, please."
+            "This is my book.",
+            "Do you want some milk? Yes, please.",
+            "This is my father.",
+            "This is my house."
           ],
           "a": "Do you want some milk? Yes, please.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: Do you want some milk? Yes, please.",
           "img": "assets/images/school_bag.png",
           "tag": "ENG_GRA",
           "difficulty": "Hard",
@@ -11625,13 +11633,13 @@
           "topic": "My School & Playtime",
           "q": "Sắp xếp thành câu đúng: apple / an / want / I 👟",
           "o": [
-            "I see shoes.",
-            "shoes I see.",
+            "apple an want I.",
+            "want an apple I.",
             "I want an apple.",
-            "apple an want I."
+            "I an apple want."
           ],
           "a": "I want an apple.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: I want an apple.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Hard",
@@ -11657,13 +11665,13 @@
           "topic": "My School & Playtime",
           "q": "Đọc: 'Ba can see t-shirt 👕.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "đôi giày",
+            "người máy",
             "áo phông",
-            "cái mũ",
-            "cặp sách"
+            "quả bóng",
+            "cục tẩy"
           ],
           "a": "áo phông",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Hard",
@@ -11696,13 +11704,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'bus 🚌' (xe buýt):",
           "o": [
-            "b",
-            "m",
-            "s",
-            "book"
+            "e",
+            "f",
+            "g",
+            "b"
           ],
           "a": "b",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'B'.",
           "img": "assets/images/school_bus.png",
           "tag": "ENG_PHO",
           "difficulty": "Easy",
@@ -11729,13 +11737,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Từ 'car 🚗' có nghĩa là gì?",
           "o": [
-            "xe buýt",
+            "cái mũ",
             "xe tải",
-            "máy bay",
-            "ô tô"
+            "ô tô",
+            "đôi giày"
           ],
           "a": "ô tô",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “ô tô”.",
           "img": "assets/images/toy_car.png",
           "tag": "ENG_VOC",
           "difficulty": "Easy",
@@ -11762,13 +11770,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Nghe từ 'truck 🚚' và chọn nghĩa đúng:",
           "o": [
-            "ô tô",
-            "máy bay",
+            "con quay",
+            "cửa",
             "xe tải",
             "xe buýt"
           ],
           "a": "xe tải",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Easy",
@@ -11792,15 +11800,15 @@
         {
           "id": 240003,
           "topic": "Cool Vehicles, Action & Nature",
-          "q": "Chọn câu đúng theo mẫu đã học: ✈️",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Chúng mình đang ở sở thú.”",
           "o": [
-            "My is plane.",
+            "I have a red hat.",
             "We are at the zoo.",
-            "I see plane.",
-            "plane is I."
+            "I have a robot.",
+            "It's a rabbit."
           ],
           "a": "We are at the zoo.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: We are at the zoo.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Easy",
@@ -11827,12 +11835,12 @@
           "q": "Sắp xếp thành câu đúng: please / pencil, / a / me / Give 🚲",
           "o": [
             "Give me a pencil, please.",
-            "please pencil, a me Give.",
-            "I see bike.",
-            "bike I see."
+            "please pencil a me Give.",
+            "me a pencil please Give.",
+            "Give a pencil please me."
           ],
           "a": "Give me a pencil, please.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: Give me a pencil, please.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Easy",
@@ -11858,13 +11866,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Đọc: 'Ba can see run 🏃.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "xe buýt",
-            "ô tô",
-            "xe tải",
-            "chạy"
+            "ngồi xuống",
+            "chạy",
+            "đứng lên",
+            "mở"
           ],
           "a": "chạy",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "assets/images/kid_running.png",
           "tag": "ENG_READ",
           "difficulty": "Easy",
@@ -11891,13 +11899,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'sun ☀️' (mặt trời):",
           "o": [
+            "l",
             "m",
-            "book",
             "s",
-            "b"
+            "n"
           ],
           "a": "s",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'S'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Easy",
@@ -11923,13 +11931,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Từ 'bus stop 🚏' có nghĩa là gì?",
           "o": [
-            "xe tải",
+            "sân chơi",
             "điểm dừng xe buýt",
-            "xe buýt",
-            "ô tô"
+            "chợ",
+            "cổng"
           ],
           "a": "điểm dừng xe buýt",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “điểm dừng xe buýt”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Easy",
@@ -11955,13 +11963,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Nghe từ 'street market 🏪' và chọn nghĩa đúng:",
           "o": [
+            "điểm dừng xe buýt",
+            "cổng",
             "chợ",
-            "xe buýt",
-            "ô tô",
-            "xe tải"
+            "hồ nước"
           ],
           "a": "chợ",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Easy",
@@ -11985,15 +11993,15 @@
         {
           "id": 240009,
           "topic": "Cool Vehicles, Action & Nature",
-          "q": "Chọn câu đúng theo mẫu đã học: 🦁",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Hãy ngồi xuống.”",
           "o": [
-            "I see zoo.",
-            "zoo is I.",
-            "My is zoo.",
-            "Sit down."
+            "Hi, I'm Bill.",
+            "I am in the playground.",
+            "Sit down.",
+            "I can see a bus."
           ],
           "a": "Sit down.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: Sit down.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Easy",
@@ -12019,13 +12027,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Sắp xếp thành câu đúng: leaf / a / see / can / I / see? / you / can / What 🏞️",
           "o": [
-            "I see lake.",
-            "lake I see.",
-            "What can you see? I can see a leaf.",
-            "leaf a see can I see? you can What."
+            "leaf a see can I see you can What.",
+            "can you see I can see a leaf What.",
+            "What you see I can see a leaf can.",
+            "What can you see? I can see a leaf."
           ],
           "a": "What can you see? I can see a leaf.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: What can you see? I can see a leaf.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Easy",
@@ -12051,13 +12059,13 @@
           "topic": "My School & Playtime",
           "q": "Đọc: 'Ba can see pen 🖊️.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "xe tải",
             "bút mực",
-            "xe buýt",
-            "ô tô"
+            "quả bóng",
+            "cục tẩy",
+            "thước"
           ],
           "a": "bút mực",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Easy",
@@ -12083,13 +12091,13 @@
           "topic": "My School & Playtime",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'pencil ✏️' (bút chì):",
           "o": [
+            "g",
+            "h",
             "p",
-            "b",
-            "m",
-            "s"
+            "i"
           ],
           "a": "p",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'P'.",
           "img": "assets/images/pencil_crayon.png",
           "tag": "ENG_PHO",
           "difficulty": "Easy",
@@ -12116,13 +12124,13 @@
           "topic": "My School & Playtime",
           "q": "Từ 'ruler 📏' có nghĩa là gì?",
           "o": [
-            "xe buýt",
-            "ô tô",
-            "xe tải",
-            "thước"
+            "quyển sách",
+            "thước",
+            "tất",
+            "xe đạp"
           ],
           "a": "thước",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “thước”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Easy",
@@ -12148,13 +12156,13 @@
           "topic": "My School & Playtime",
           "q": "Nghe từ 'eraser 🧽' và chọn nghĩa đúng:",
           "o": [
-            "ô tô",
-            "xe tải",
+            "quả bóng",
+            "thước",
             "cục tẩy",
-            "xe buýt"
+            "váy"
           ],
           "a": "cục tẩy",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Easy",
@@ -12178,15 +12186,15 @@
         {
           "id": 240015,
           "topic": "My School & Playtime",
-          "q": "Chọn câu đúng theo mẫu đã học: 🖍️",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Hãy rửa sạch mặt của em.”",
           "o": [
-            "My is crayon.",
             "Clean your face.",
-            "I see crayon.",
-            "crayon is I."
+            "I have a red hat.",
+            "I have a robot.",
+            "It's a rabbit."
           ],
           "a": "Clean your face.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: Clean your face.",
           "img": "assets/images/pencil_crayon.png",
           "tag": "ENG_GRA",
           "difficulty": "Easy",
@@ -12214,12 +12222,12 @@
           "q": "Sắp xếp thành câu đúng: can / I / Yes, / plane? / the / see / you / Can 📖",
           "o": [
             "Can you see the plane? Yes, I can.",
-            "can I Yes, plane? the see you Can.",
-            "I see book.",
-            "book I see."
+            "can I Yes plane the see you Can.",
+            "you see the plane Yes I can Can.",
+            "Can see the plane Yes I can you."
           ],
           "a": "Can you see the plane? Yes, I can.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: Can you see the plane? Yes, I can.",
           "img": "assets/images/story_book.png",
           "tag": "ENG_SYN",
           "difficulty": "Easy",
@@ -12239,20 +12247,20 @@
           "competency": "ENG_SYN",
           "source_week_id": 24,
           "source_week_name": "Tuần 24: Grand Exam Arena",
-          "imageId": "ban_hoc"
+          "imageId": "giao_thong_airplane"
         },
         {
           "id": 240017,
           "topic": "My School & Playtime",
           "q": "Đọc: 'Ba can see school bag 🎒.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "xe buýt",
-            "ô tô",
-            "xe tải",
-            "cặp sách"
+            "bàn tay",
+            "bút mực",
+            "cặp sách",
+            "quyển sách"
           ],
           "a": "cặp sách",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "assets/images/school_bag.png",
           "tag": "ENG_READ",
           "difficulty": "Easy",
@@ -12279,13 +12287,13 @@
           "topic": "Me, My Family & Home",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'door 🚪' (cửa):",
           "o": [
-            "m",
-            "s",
+            "i",
+            "l",
             "d",
-            "b"
+            "m"
           ],
           "a": "d",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'D'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Easy",
@@ -12311,13 +12319,13 @@
           "topic": "My School & Playtime",
           "q": "Từ 'teacher 👩‍🏫' có nghĩa là gì?",
           "o": [
-            "xe tải",
+            "bạn Ba",
             "giáo viên",
-            "xe buýt",
-            "ô tô"
+            "bạn Bill",
+            "mẹ"
           ],
           "a": "giáo viên",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “giáo viên”.",
           "img": "assets/images/co_giao_tho_hong.png",
           "tag": "ENG_VOC",
           "difficulty": "Easy",
@@ -12343,13 +12351,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Nghe từ 'leaf 🍃' và chọn nghĩa đúng:",
           "o": [
-            "chiếc lá",
-            "xe buýt",
-            "ô tô",
-            "xe tải"
+            "hoa",
+            "bầu trời",
+            "mặt trời",
+            "chiếc lá"
           ],
           "a": "chiếc lá",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Easy",
@@ -12373,15 +12381,15 @@
         {
           "id": 240021,
           "topic": "Cool Vehicles, Action & Nature",
-          "q": "Chọn câu đúng theo mẫu đã học: 🍋",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Đây là quyển sách của mình.”",
           "o": [
-            "I see lemon.",
-            "lemon is I.",
-            "My is lemon.",
-            "This is my book."
+            "This is my book.",
+            "Sit down.",
+            "The ball is next to the box.",
+            "This is my father."
           ],
           "a": "This is my book.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: This is my book.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Medium",
@@ -12407,13 +12415,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Sắp xếp thành câu đúng: book / your / Open 🌤️",
           "o": [
-            "I see sky.",
-            "sky I see.",
+            "book your Open.",
+            "your book Open.",
             "Open your book.",
-            "book your Open."
+            "book Open your."
           ],
           "a": "Open your book.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: Open your book.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Medium",
@@ -12439,13 +12447,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Đọc: 'Ba can see water 💧.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "xe tải",
             "nước",
-            "xe buýt",
-            "ô tô"
+            "quả lê",
+            "sữa",
+            "quả táo"
           ],
           "a": "nước",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Medium",
@@ -12471,13 +12479,13 @@
           "topic": "Me, My Family & Home",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'garden 🌳' (khu vườn):",
           "o": [
+            "s",
+            "t",
             "g",
-            "b",
-            "m",
-            "s"
+            "u"
           ],
           "a": "g",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'G'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Medium",
@@ -12503,13 +12511,13 @@
           "topic": "Me, My Family & Home",
           "q": "Từ 'gate 🚪' có nghĩa là gì?",
           "o": [
-            "xe buýt",
-            "ô tô",
-            "xe tải",
-            "cổng"
+            "sân chơi",
+            "chợ",
+            "cổng",
+            "điểm dừng xe buýt"
           ],
           "a": "cổng",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “cổng”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Medium",
@@ -12535,13 +12543,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Nghe từ 'wash 🧼' và chọn nghĩa đúng:",
           "o": [
-            "ô tô",
-            "xe tải",
+            "ngồi xuống",
+            "đứng lên",
             "rửa",
-            "xe buýt"
+            "mở"
           ],
           "a": "rửa",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Medium",
@@ -12565,15 +12573,15 @@
         {
           "id": 240027,
           "topic": "Cool Vehicles, Action & Nature",
-          "q": "Chọn câu đúng theo mẫu đã học: ✨",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Mình có thể nhìn thấy mặt trời.”",
           "o": [
-            "My is clean.",
+            "I am in the playground.",
             "I can see the sun.",
-            "I see clean.",
-            "clean is I."
+            "I can see a bus.",
+            "I can see an elephant."
           ],
           "a": "I can see the sun.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: I can see the sun.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Medium",
@@ -12599,13 +12607,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Sắp xếp thành câu đúng: garden / the / is / This 🧼",
           "o": [
-            "This is the garden.",
             "garden the is This.",
-            "I see soap.",
-            "soap I see."
+            "This is the garden.",
+            "is the garden This.",
+            "This the garden is."
           ],
           "a": "This is the garden.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: This is the garden.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Medium",
@@ -12631,13 +12639,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Đọc: 'Ba can see hands 🙌.' Hỏi: Ba nhìn thấy gì?",
           "o": [
+            "bàn tay",
             "xe buýt",
-            "ô tô",
-            "xe tải",
-            "bàn tay"
+            "người máy",
+            "quả bóng"
           ],
           "a": "bàn tay",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Medium",
@@ -12663,13 +12671,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'face 🙂' (khuôn mặt):",
           "o": [
-            "m",
-            "s",
+            "n",
             "f",
-            "b"
+            "p",
+            "r"
           ],
           "a": "f",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'F'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Medium",
@@ -12695,13 +12703,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Từ 'bus 🚌' có nghĩa là gì?",
           "o": [
-            "máy bay",
+            "bàn tay",
             "xe buýt",
-            "ô tô",
-            "xe tải"
+            "bút mực",
+            "cặp sách"
           ],
           "a": "xe buýt",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “xe buýt”.",
           "img": "assets/images/school_bus.png",
           "tag": "ENG_VOC",
           "difficulty": "Medium",
@@ -12728,13 +12736,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Nghe từ 'car 🚗' và chọn nghĩa đúng:",
           "o": [
+            "thước",
+            "váy",
             "ô tô",
-            "xe buýt",
-            "xe tải",
-            "máy bay"
+            "cái mũ"
           ],
           "a": "ô tô",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "assets/images/toy_car.png",
           "tag": "ENG_LIS",
           "difficulty": "Medium",
@@ -12759,15 +12767,15 @@
         {
           "id": 240033,
           "topic": "Cool Vehicles, Action & Nature",
-          "q": "Chọn câu đúng theo mẫu đã học: 🚚",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Mình có thể nhìn thấy một chiếc xe buýt.”",
           "o": [
-            "I see truck.",
-            "truck is I.",
-            "My is truck.",
+            "This is my teddy bear.",
+            "We are at the zoo.",
+            "Bye, Ba.",
             "I can see a bus."
           ],
           "a": "I can see a bus.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: I can see a bus.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Medium",
@@ -12793,13 +12801,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Sắp xếp thành câu đúng: sun / the / in / running / is / She ✈️",
           "o": [
-            "I see plane.",
-            "plane I see.",
             "She is running in the sun.",
-            "sun the in running is She."
+            "sun the in running is She.",
+            "is running in the sun She.",
+            "She running in the sun is."
           ],
           "a": "She is running in the sun.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: She is running in the sun.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Medium",
@@ -12825,13 +12833,13 @@
           "topic": "My School & Playtime",
           "q": "Đọc: 'Ba can see bike 🚲.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "xe tải",
+            "quả bóng",
+            "cục tẩy",
             "xe đạp",
-            "xe buýt",
-            "ô tô"
+            "thước"
           ],
           "a": "xe đạp",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Medium",
@@ -12858,12 +12866,12 @@
           "q": "Chọn chữ cái bắt đầu đúng của từ 'run 🏃' (chạy):",
           "o": [
             "r",
-            "b",
-            "m",
-            "s"
+            "i",
+            "l",
+            "m"
           ],
           "a": "r",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'R'.",
           "img": "assets/images/kid_running.png",
           "tag": "ENG_PHO",
           "difficulty": "Medium",
@@ -12890,13 +12898,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Từ 'sun ☀️' có nghĩa là gì?",
           "o": [
-            "xe buýt",
-            "ô tô",
-            "xe tải",
-            "mặt trời"
+            "cây xanh",
+            "hoa",
+            "mặt trời",
+            "chiếc lá"
           ],
           "a": "mặt trời",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “mặt trời”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Medium",
@@ -12922,13 +12930,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Nghe từ 'bus stop 🚏' và chọn nghĩa đúng:",
           "o": [
-            "ô tô",
-            "xe tải",
-            "điểm dừng xe buýt",
-            "xe buýt"
+            "hồ nước",
+            "khu vườn",
+            "phòng bếp",
+            "điểm dừng xe buýt"
           ],
           "a": "điểm dừng xe buýt",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Medium",
@@ -12952,15 +12960,15 @@
         {
           "id": 240039,
           "topic": "Cool Vehicles, Action & Nature",
-          "q": "Chọn câu đúng theo mẫu đã học: 🏪",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Hãy đóng cửa lại.”",
           "o": [
-            "My is street market.",
+            "I can see an elephant.",
             "Close the door.",
-            "I see street market.",
-            "street market is I."
+            "I can see the sun.",
+            "I can see three circles."
           ],
           "a": "Close the door.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: Close the door.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Medium",
@@ -12986,13 +12994,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Sắp xếp thành câu đúng: up / Stand 🦁",
           "o": [
+            "Up stand.",
             "Stand up.",
-            "up Stand.",
-            "I see zoo.",
-            "zoo I see."
+            "Stand is up.",
+            "Up is stand."
           ],
           "a": "Stand up.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: Stand up.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Medium",
@@ -13018,13 +13026,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Đọc: 'Ba can see lake 🏞️.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "xe buýt",
-            "ô tô",
-            "xe tải",
-            "hồ nước"
+            "phòng bếp",
+            "phòng tắm",
+            "hồ nước",
+            "sân chơi"
           ],
           "a": "hồ nước",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Medium",
@@ -13050,13 +13058,13 @@
           "topic": "My School & Playtime",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'pen 🖊️' (bút mực):",
           "o": [
-            "m",
             "s",
             "p",
-            "b"
+            "t",
+            "u"
           ],
           "a": "p",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'P'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Medium",
@@ -13082,13 +13090,13 @@
           "topic": "My School & Playtime",
           "q": "Từ 'pencil ✏️' có nghĩa là gì?",
           "o": [
-            "xe tải",
-            "bút chì",
-            "xe buýt",
-            "ô tô"
+            "đôi giày",
+            "bàn tay",
+            "bút mực",
+            "bút chì"
           ],
           "a": "bút chì",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “bút chì”.",
           "img": "assets/images/pencil_crayon.png",
           "tag": "ENG_VOC",
           "difficulty": "Medium",
@@ -13115,13 +13123,13 @@
           "topic": "My School & Playtime",
           "q": "Nghe từ 'ruler 📏' và chọn nghĩa đúng:",
           "o": [
-            "thước",
-            "xe buýt",
-            "ô tô",
-            "xe tải"
+            "người máy",
+            "quả bóng",
+            "cục tẩy",
+            "thước"
           ],
           "a": "thước",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Medium",
@@ -13145,15 +13153,15 @@
         {
           "id": 240045,
           "topic": "My School & Playtime",
-          "q": "Chọn câu đúng theo mẫu đã học: 🧽",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Hãy nhìn vào hồ nước.”",
           "o": [
-            "I see eraser.",
-            "eraser is I.",
-            "My is eraser.",
-            "Look at the lake."
+            "Hello, I'm Ba.",
+            "Hi, I'm Bill.",
+            "Look at the lake.",
+            "I am in the playground."
           ],
           "a": "Look at the lake.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: Look at the lake.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Hard",
@@ -13179,13 +13187,13 @@
           "topic": "My School & Playtime",
           "q": "Sắp xếp thành câu đúng: please / hands, / your / Wash 🖍️",
           "o": [
-            "I see crayon.",
-            "crayon I see.",
-            "Wash your hands, please.",
-            "please hands, your Wash."
+            "please hands your Wash.",
+            "your hands please Wash.",
+            "Wash hands please your.",
+            "Wash your hands, please."
           ],
           "a": "Wash your hands, please.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: Wash your hands, please.",
           "img": "assets/images/pencil_crayon.png",
           "tag": "ENG_SYN",
           "difficulty": "Hard",
@@ -13212,13 +13220,13 @@
           "topic": "My School & Playtime",
           "q": "Đọc: 'Ba can see book 📖.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "xe tải",
+            "xà phòng",
+            "áo phông",
             "quyển sách",
-            "xe buýt",
-            "ô tô"
+            "đồng hồ"
           ],
           "a": "quyển sách",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "assets/images/story_book.png",
           "tag": "ENG_READ",
           "difficulty": "Hard",
@@ -13245,13 +13253,13 @@
           "topic": "My School & Playtime",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'school bag 🎒' (cặp sách):",
           "o": [
-            "s",
-            "b",
             "m",
-            "book"
+            "n",
+            "s",
+            "p"
           ],
           "a": "s",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'S'.",
           "img": "assets/images/school_bag.png",
           "tag": "ENG_PHO",
           "difficulty": "Hard",
@@ -13278,13 +13286,13 @@
           "topic": "Me, My Family & Home",
           "q": "Từ 'door 🚪' có nghĩa là gì?",
           "o": [
-            "xe buýt",
-            "ô tô",
-            "xe tải",
-            "cửa"
+            "cửa",
+            "bàn tay",
+            "bút mực",
+            "cặp sách"
           ],
           "a": "cửa",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “cửa”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Hard",
@@ -13310,13 +13318,13 @@
           "topic": "My School & Playtime",
           "q": "Nghe từ 'teacher 👩‍🏫' và chọn nghĩa đúng:",
           "o": [
-            "ô tô",
-            "xe tải",
+            "bạn Ba",
             "giáo viên",
-            "xe buýt"
+            "bạn Bill",
+            "mẹ"
           ],
           "a": "giáo viên",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "assets/images/co_giao_tho_hong.png",
           "tag": "ENG_LIS",
           "difficulty": "Hard",
@@ -13340,15 +13348,15 @@
         {
           "id": 240051,
           "topic": "Cool Vehicles, Action & Nature",
-          "q": "Chọn câu đúng theo mẫu đã học: 🍃",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Chúng mình đang ở sở thú.”",
           "o": [
-            "My is leaf.",
-            "We are at the zoo.",
-            "I see leaf.",
-            "leaf is I."
+            "I have a robot.",
+            "It's a rabbit.",
+            "Look at the lake.",
+            "We are at the zoo."
           ],
           "a": "We are at the zoo.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: We are at the zoo.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Hard",
@@ -13374,13 +13382,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Sắp xếp thành câu đúng: please / pencil, / a / me / Give 🍋",
           "o": [
+            "please pencil a me Give.",
             "Give me a pencil, please.",
-            "please pencil, a me Give.",
-            "I see lemon.",
-            "lemon I see."
+            "me a pencil please Give.",
+            "Give a pencil please me."
           ],
           "a": "Give me a pencil, please.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: Give me a pencil, please.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Hard",
@@ -13406,13 +13414,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Đọc: 'Ba can see sky 🌤️.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "xe buýt",
-            "ô tô",
-            "xe tải",
-            "bầu trời"
+            "mặt trời",
+            "bầu trời",
+            "cây xanh",
+            "hoa"
           ],
           "a": "bầu trời",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Hard",
@@ -13438,13 +13446,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Chọn chữ cái bắt đầu đúng của từ 'water 💧' (nước):",
           "o": [
+            "l",
             "m",
-            "s",
             "w",
-            "b"
+            "n"
           ],
           "a": "w",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Từ này bắt đầu bằng chữ 'W'.",
           "img": "",
           "tag": "ENG_PHO",
           "difficulty": "Hard",
@@ -13470,13 +13478,13 @@
           "topic": "Me, My Family & Home",
           "q": "Từ 'garden 🌳' có nghĩa là gì?",
           "o": [
-            "xe tải",
+            "phòng bếp",
             "khu vườn",
-            "xe buýt",
-            "ô tô"
+            "phòng tắm",
+            "sân chơi"
           ],
           "a": "khu vườn",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đáp án đúng là “khu vườn”.",
           "img": "",
           "tag": "ENG_VOC",
           "difficulty": "Hard",
@@ -13502,13 +13510,13 @@
           "topic": "Me, My Family & Home",
           "q": "Nghe từ 'gate 🚪' và chọn nghĩa đúng:",
           "o": [
-            "cổng",
-            "xe buýt",
-            "ô tô",
-            "xe tải"
+            "chợ",
+            "điểm dừng xe buýt",
+            "hồ nước",
+            "cổng"
           ],
           "a": "cổng",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Nghe từ khóa rồi đối chiếu nghĩa.",
           "img": "",
           "tag": "ENG_LIS",
           "difficulty": "Hard",
@@ -13532,15 +13540,15 @@
         {
           "id": 240057,
           "topic": "Cool Vehicles, Action & Nature",
-          "q": "Chọn câu đúng theo mẫu đã học: 🧼",
+          "q": "Chọn câu tiếng Anh đúng với ý: “Hãy ngồi xuống.”",
           "o": [
-            "I see wash.",
-            "wash is I.",
-            "My is wash.",
-            "Sit down."
+            "Sit down.",
+            "This is my book.",
+            "This is my father.",
+            "This is my house."
           ],
           "a": "Sit down.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Câu đúng là: Sit down.",
           "img": "",
           "tag": "ENG_GRA",
           "difficulty": "Hard",
@@ -13566,13 +13574,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Sắp xếp thành câu đúng: leaf / a / see / can / I / see? / you / can / What ✨",
           "o": [
-            "I see clean.",
-            "clean I see.",
+            "leaf a see can I see you can What.",
+            "can you see I can see a leaf What.",
             "What can you see? I can see a leaf.",
-            "leaf a see can I see? you can What."
+            "What you see I can see a leaf can."
           ],
           "a": "What can you see? I can see a leaf.",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Trật tự đúng là: What can you see? I can see a leaf.",
           "img": "",
           "tag": "ENG_SYN",
           "difficulty": "Hard",
@@ -13598,13 +13606,13 @@
           "topic": "Cool Vehicles, Action & Nature",
           "q": "Đọc: 'Ba can see soap 🧼.' Hỏi: Ba nhìn thấy gì?",
           "o": [
-            "xe tải",
-            "xà phòng",
+            "cửa",
             "xe buýt",
-            "ô tô"
+            "người máy",
+            "xà phòng"
           ],
           "a": "xà phòng",
-          "h": "Cô giáo Thỏ Hồng 🐰🌸 nhắc bé đọc kỹ câu hỏi rồi chọn đáp án phù hợp nhé!",
+          "h": "Đọc câu và xác định đúng từ được nhắc tới.",
           "img": "",
           "tag": "ENG_READ",
           "difficulty": "Hard",
