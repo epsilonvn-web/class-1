@@ -1218,7 +1218,6 @@ function updateExamTimerDisplay() {
 
 function openExamHub() {
     stopSpeaking();
-    if (!requirePremiumAccess('Đấu trường đề thi')) return;
     if (typeof setMainTabActive_ === 'function') setMainTabActive_('exams');
     inAlphaIpaFlow = false;
     inMiniGameFlow = false;
@@ -2185,7 +2184,6 @@ function openTopic(topicNum, topicName, icon) {
     stopSpeaking();
     if (Number(topicNum) !== 2) { activeVocabularyHubTopic = null; activeVocabularyHubQuestions = []; }
     if (![3,4,5].includes(Number(topicNum))) { activeSharedVocabActivity_ = null; activeSharedVocabMasterQuestions_ = []; }
-    if (Number(topicNum) === 11 && !requirePremiumAccess('Practice & Play')) return;
     inAlphaIpaFlow = false;
     inMiniGameFlow = false;
     activeTopicId = topicNum; activeExamContext = null; activeRoadmapContext = null;
@@ -2291,6 +2289,7 @@ function selectSubtopic(idx) {
     stopSpeaking();
     if (!pendingTopicQuiz) return;
     const { topicNum, topicName, questions, groups, groupMap, groupLabels } = pendingTopicQuiz;
+    if (currentMainTab === 'review' && !requirePremiumAccess('Review / Ôn tập')) return;
 
     if (idx === null) {
         return launchSubtopicQuiz(topicNum, topicName, questions, null, null);
@@ -4216,7 +4215,6 @@ const MINIGAME_LIST = [
 
 function openMiniGameHub() {
     stopSpeaking();
-    if (!requirePremiumAccess('Mini Game')) return;
     if (typeof setMainTabActive_ === 'function') setMainTabActive_('games');
     inAlphaIpaFlow = false;
     inMiniGameFlow = true;
@@ -4406,7 +4404,6 @@ function getBaiHocTa1CompletedSet_(){try{return new Set(JSON.parse(localStorage.
 function saveBaiHocTa1CompletedSet_(s){try{localStorage.setItem(getBaiHocTa1ProgressKey_(),JSON.stringify([...s]));}catch(e){}}
 async function openBaiHocHub(semesterNumber=1){
     stopSpeaking(); clearInterval(quizTimerInterval);
-    if(!requirePremiumAccess('Lessons / Bài học')) return;
     setMainTabActive_('lessons');
     inLessonFlow=true; inMiniGameFlow=false; inAlphaIpaFlow=false; activeExamContext=null; activeRoadmapContext=null; activeTopicId=null; pendingTopicQuiz=null;
     activeBaiHocContext={semester:Number(semesterNumber)||1,bai:null,lessonId:null,pageNo:1};
@@ -4423,6 +4420,7 @@ function renderBaiHocTa1Hub_(data,semester){
     grid.innerHTML=arr.map((l,idx)=>{const ok=done.has(`${l.lesson_id}_done`);return `<button onclick="openBaiHocTa1_(${l.bai},1)" class="text-left min-h-[112px] rounded-2xl border-2 ${ok?'border-emerald-300 bg-emerald-50/60':(idx%2?'border-purple-200 bg-gradient-to-br from-white to-purple-50':'border-pink-200 bg-gradient-to-br from-white to-pink-50')} px-3 py-3 hover:border-fuchsia-400 hover:shadow-md transition-shadow"><div class="flex items-center justify-between"><span class="font-black text-purple-700 text-[15px] md:text-base">Lesson ${l.bai}<span class="block text-[11px] font-extrabold text-slate-400 mt-0.5">Bài ${l.bai}</span></span><span>${ok?'✅':'›'}</span></div><div class="mt-1.5 text-[13px] md:text-[14px] leading-5 font-extrabold text-slate-700">${escapeHtml(l.source_title||'')}</div><div class="text-[12px] md:text-[13px] leading-4 font-extrabold text-slate-400 mt-1.5">${escapeHtml(l.source_title_vi||'')}</div></button>`}).join('');
 }
 async function openBaiHocTa1_(bai,pageNo=1){
+    if(!requirePremiumAccess('Lessons / Bài học'))return;
     stopSpeaking();const data=await loadLessonData_();const l=(data.bai_hoc||[]).find(x=>Number(x.bai)===Number(bai));if(!l)return alert('Không tìm thấy bài học.');
     const p=Math.max(1,Math.min(3,Number(pageNo)||1));activeBaiHocContext={semester:Number(l.semester),bai:Number(bai),lessonId:l.lesson_id,pageNo:p};
     setMainTabActive_('lessons');updateNavTabs('Lessons / Bài học','📖',`Lesson ${bai} / Bài ${bai}`,l.source_title||'');switchAppView('view-bai-hoc-lesson');renderBaiHocTa1Lesson_(l,p);
@@ -4469,7 +4467,7 @@ async function __legacyTa1_openRoadmap_2(semesterNumber=1){
     try{const data=await loadLessonData_();renderBaiTapTa1Grid_(data,semesterNumber);}catch(err){alert(`Không thể mở Bài tập: ${err.message}`);}finally{hideLoadingOverlay();}
 }
 function __legacyTa1_renderBaiTapTa1Grid__1(data,semester){const host=document.getElementById('roadmap-svg-container'),tabs=document.getElementById('bai-tap-semester-tabs');if(!host)return;const arr=(data.bai_tap||[]).filter(x=>Number(x.semester)===Number(semester)),unlocked=getUnlockedBaiTapTa1_();if(tabs)tabs.innerHTML=[1,2].map(s=>`<button onclick="openRoadmap(${s})" class="semester-switch-btn ${Number(s)===Number(semester)?'is-active':'is-inactive'}"><span class="block">Semester ${s}</span><span class="block text-[9px] opacity-75">Học kỳ ${s}</span></button>`).join('');host.innerHTML=`<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">${arr.map((bt,idx)=>{const open=Number(bt.bai)<=unlocked;return `<button onclick="${open?`selectBaiTapTa1_(${bt.bai})`:`showLockedBaiTapTa1_(${bt.bai})`}" class="relative text-left min-h-[105px] rounded-2xl border-2 p-3 ${open?(idx%2?'bg-purple-50 border-purple-200 hover:border-purple-400':'bg-pink-50 border-pink-200 hover:border-pink-400'):'bg-slate-50 border-slate-200 opacity-60'} hover:shadow-md transition-shadow"><div class="flex justify-between"><span class="font-black ${open?'text-purple-700':'text-slate-500'}">Exercise ${bt.bai}<span class="block text-[9px] text-slate-400">Bài tập ${bt.bai}</span></span><span>${open?'':'🔒'}</span></div><div class="text-[12px] md:text-[13px] font-bold text-slate-600 mt-1 line-clamp-2">${escapeHtml(bt.title||'')}</div><div class="text-[11px] font-extrabold text-slate-400 mt-1 line-clamp-1">${escapeHtml(bt.title_vi||'')}</div><div class="text-[10px] mt-2 ${open?'text-fuchsia-600':'text-slate-400'} font-black">${open?'20 questions · 6 skills<br><span class="text-[9px] text-slate-400">20 câu · 6 năng lực</span>':'Score ≥80% to unlock<br><span class="text-[9px] text-slate-400">Cần ≥80% bài trước</span>'}</div></button>`}).join('')}</div>`;}
-function showLockedBaiTapTa1_(bai){alert(`🔒 Bài tập ${bai} chưa mở. Bé cần đạt từ 80% ở Bài tập trước để mở khóa nhé!`);}
+function showLockedBaiTapTa1_(bai){if(!requirePremiumAccess('Exercises / Bài tập'))return;alert(`🔒 Bài tập ${bai} chưa mở. Bé cần đạt từ 80% ở Bài tập trước để mở khóa nhé!`);}
 async function __legacyTa1_selectBaiTapTa1__1(bai){stopSpeaking();showLoadingOverlay(`Đang chuẩn bị Bài tập ${bai}...`);try{const data=await loadLessonData_(),bt=(data.bai_tap||[]).find(x=>Number(x.bai)===Number(bai));if(!bt)throw new Error('Không tìm thấy Bài tập');if(Number(bai)>getUnlockedBaiTapTa1_()){showLockedBaiTapTa1_(bai);return;}await fetchAllQuestionsFlat();const qs=getQuestionsForBaiTapTa1_(bt);if(qs.length<10)throw new Error('Kho câu hỏi phù hợp Unit này chưa đủ dữ liệu để tạo lượt luyện ổn định');activeRoadmapContext={week:Number(bai),bai:Number(bai),topicId:`TA1_BT${String(bai).padStart(2,'0')}`,chuDe:`Bài tập ${bai} · ${bt.title||''}`};pendingTopicQuiz=null;activeExamContext=null;updateNavTabs('Exercises / Bài tập','✏️',`Exercise ${bai} / Bài ${bai}`,bt.title||'');startTopicQuiz(bai,activeRoadmapContext.chuDe,qs,null);}catch(err){alert(`Không thể mở Bài tập: ${err.message}`);}finally{hideLoadingOverlay();}}
 async function __legacyTa1_saveWeeklyProgressToSheet_2(percent,starCount,scoreVal){
     const bai=Number(activeRoadmapContext?.bai??activeRoadmapContext?.week??1),chuDe=activeRoadmapContext?.chuDe||`Bài tập ${bai}`,thoiGianLamBai=quizStartTime?formatDuration(Date.now()-quizStartTime):'',scoreThang10=(scoreVal??((score/activeQuestionsList.length)*10)).toFixed(1),skillCorrect={},skillTotal={};SKILL_KEYS.forEach(k=>{skillCorrect[k]=0;skillTotal[k]=0});quizAnsweredLog.forEach(item=>{let k=String(item.skill_tag||'ENG_VOC').toUpperCase();if(!SKILL_KEYS.includes(k))k='ENG_VOC';skillTotal[k]++;if(item.isCorrect)skillCorrect[k]++;});
@@ -4581,7 +4579,7 @@ function showPremiumAccessWarning(featureName='khu vực này'){
     englishModuleCtx_.hooks?.showDialog?.({title:'Nội dung Premium',message:`${featureName} cần quyền Trial hoặc VIP của môn Tiếng Anh.`,icon:'🔒'});
   }
 }
-function requirePremiumAccess(featureName){ if(hasPremiumAccess())return true; showPremiumAccessWarning(featureName); return false; }
+function requirePremiumAccess(featureName){ if(hasPremiumAccess())return true; if(typeof englishModuleCtx_?.requestPremiumAccess==='function')englishModuleCtx_.requestPremiumAccess(featureName); else showPremiumAccessWarning(featureName); return false; }
 function openAuthScreen(tab='login'){ englishModuleCtx_?.openAuth?.(tab==='register'?'register':'login'); }
 function getStoredSessionToken(){ return ''; }
 async function callAppsScript(action,payload={}){
@@ -4740,7 +4738,6 @@ async function loadExamDataFile(file){
 }
 
 async function openReviewTab(){
-  if(!requirePremiumAccess('Review / Ôn tập'))return;
   stopSpeaking();clearInterval(quizTimerInterval);setMainTabActive_('review');stopActiveMiniGame_();
   inLessonFlow=false;inAlphaIpaFlow=false;inMiniGameFlow=false;activeExamContext=null;activeRoadmapContext=null;activeTopicId=11;pendingTopicQuiz=null;
   updateNavTabs('Review / Ôn tập','🧠',null);showLoadingOverlay('Đang tải nội dung ôn tập...');
@@ -4785,10 +4782,11 @@ function getQuestionsForBaiTapTa1_(bt,data){
   let candidate=[...shuffleArray(primary),...shuffleArray(extended)].filter(q=>!recent.has(q.question_id));const target=Math.min(Number(bt.candidate_pool_target)||30,primary.length+extended.length);candidate=candidate.slice(0,target);if(candidate.length<Math.min(20,primary.length+extended.length))candidate=[...shuffleArray(primary),...shuffleArray(extended)].slice(0,target);const chosen=selectBalancedTa1_(candidate,Math.min(Number(bt.draw_count)||20,candidate.length));saveBaiTapTa1Recent_(bt.bai,chosen.map(q=>q.question_id));return chosen;
 }
 async function openRoadmap(semesterNumber=1){
-  stopSpeaking();stopActiveMiniGame_();if(!requirePremiumAccess('Exercises / Bài tập'))return;setMainTabActive_('exercises');inMiniGameFlow=false;inLessonFlow=false;activeExamContext=null;activeRoadmapContext=null;activeTopicId=null;pendingTopicQuiz=null;updateNavTabs('Exercises / Bài tập','✏️',null);switchAppView('view-roadmap');showLoadingOverlay('Đang mở Bài tập...');
+  stopSpeaking();stopActiveMiniGame_();setMainTabActive_('exercises');inMiniGameFlow=false;inLessonFlow=false;activeExamContext=null;activeRoadmapContext=null;activeTopicId=null;pendingTopicQuiz=null;updateNavTabs('Exercises / Bài tập','✏️',null);switchAppView('view-roadmap');showLoadingOverlay('Đang mở Bài tập...');
   try{try{await refreshClass1EnglishProgress_();}catch(_){console.warn('[TA1] Chưa đồng bộ được tiến độ, dùng bản gần nhất trên thiết bị.');}const data=await loadExerciseData_(semesterNumber);renderBaiTapTa1Grid_(data,semesterNumber);}catch(err){alert(`Không thể mở Bài tập: ${err.message}`);}finally{hideLoadingOverlay();}
 }
 async function selectBaiTapTa1_(bai){
+  if(!requirePremiumAccess('Exercises / Bài tập'))return;
   stopSpeaking();showLoadingOverlay(`Đang chuẩn bị Bài tập ${bai}...`);try{const sem=Number(bai)>8?2:1,data=await loadExerciseData_(sem),bt=(data.bai_tap||[]).find(x=>Number(x.bai)===Number(bai));if(!bt)throw new Error('Không tìm thấy Bài tập');if(Number(bai)>getUnlockedBaiTapTa1_()){showLockedBaiTapTa1_(bai);return;}const qs=getQuestionsForBaiTapTa1_(bt,data);if(qs.length<10)throw new Error('Kho câu hỏi phù hợp Unit này chưa đủ dữ liệu để tạo lượt luyện ổn định');activeRoadmapContext={week:Number(bai),bai:Number(bai),semester:sem,exerciseId:String(bt.exercise_id||`TA1_BT${String(bai).padStart(2,'0')}`),topicId:String(bt.exercise_id||''),chuDe:`Bài tập ${bai} · ${bt.title||''}`};activeAssessmentAttemptId_=newAssessmentAttemptId_();pendingTopicQuiz=null;activeExamContext=null;updateNavTabs('Exercises / Bài tập','✏️',`Exercise ${bai} / Bài ${bai}`,bt.title||'');startTopicQuiz(bai,activeRoadmapContext.chuDe,qs,null);}catch(err){alert(`Không thể mở Bài tập: ${err.message}`);}finally{hideLoadingOverlay();}
 }
 function renderBaiTapTa1Grid_(data,semester){
@@ -4818,6 +4816,7 @@ async function openHistoryModal(sheetName='LichSuTienTrinhTuan'){
 }
 
 async function startRandomExam(categoryKey){
+  if(!requirePremiumAccess('Exams / Đề thi'))return;
   stopSpeaking();const arrayKey=examFileMap[categoryKey]?.arrayKey||'semester_1_exams';showLoadingOverlay('Đang chuẩn bị đề thi...');try{const examData=await loadExamDataFile('de_thi_tieng_anh_1.json');hideLoadingOverlay();const pool=Array.isArray(examData?.[arrayKey])?examData[arrayKey]:[];if(!pool.length)return alert('Đang cập nhật thêm đề thi cho mục này, bé quay lại sau nhé!');const examIndex=Math.floor(Math.random()*pool.length),exam=pool[examIndex],examLabel=examFileMap[categoryKey]?.label||'Đề thi',examTitle=exam.exam_title||`${examLabel} - Đề số ${examIndex+1}`;activeExamContext={categoryKey,examIndex,examTitle,examId:String(exam.exam_id??exam.id??examIndex+1),semester:Number(exam.semester)||null};activeAssessmentAttemptId_=newAssessmentAttemptId_();activeRoadmapContext=null;pendingTopicQuiz=null;const questions=Array.isArray(exam.questions)?exam.questions:[];if(!questions.length)return alert('Đề thi này chưa có câu hỏi, bé chọn đề khác nhé!');updateNavTabs('Đấu trường đề thi','🏆',examTitle);startTopicQuiz(0,examTitle,shuffleArray(questions),null);}catch(err){hideLoadingOverlay();alert(`Không thể tải đề thi: ${err.message}`);}
 }
 
@@ -4844,6 +4843,7 @@ function stopActiveMiniGame_(){
   if(f&&typeof window[f]==='function'){try{window[f]();}catch(_){}}englishActiveGameId_='';const box=document.getElementById('game-play-container');if(box)box.innerHTML='';
 }
 async function openGamePlay(gameId){
+  if(!requirePremiumAccess('Mini Game'))return;
   stopSpeaking();stopActiveMiniGame_();ensureMiniGameThemeStyles();inMiniGameFlow=true;const game=MINIGAME_LIST.find(g=>g.id===gameId);if(!game)return;if(!game.ready){alert(`Game "${game.title}" đang được xây dựng.`);return;}englishActiveGameId_=gameId;document.getElementById('game-play-title').innerHTML=`<span>${game.icon}</span><span>${game.title}</span>`;updateNavTabs('Mini Game','🎮',game.title);switchAppView('view-game-play');const src=GAME_SCRIPT_MAP[gameId];if(src){document.getElementById('game-play-container').innerHTML='<p class="text-center text-gray-400 font-bold py-8">Đang tải game...</p>';try{await loadGameScript(src);}catch(_){document.getElementById('game-play-container').innerHTML='<p class="text-center text-rose-500 font-bold py-8">Không tải được game, bé thử lại nhé!</p>';return;}}
   const starts={'word-search':'startWordSearchGame','word-scramble':'startWordScrambleGame','bingo':'startBingoGame','fishing-game':'startFishingGame','sentence-train':'startSentenceTrainGame','grammar-river':'startGrammarRiverGame','qa-bridge':'startQABridgeGame','sentence-doctor':'startSentenceDoctorGame','action-race':'startActionRaceGame','feeling-detective':'startFeelingDetectiveGame','a-or-an-factory':'startAOrAnFactoryGame','teacher-says':'startTeacherSaysGame'};const fn=window[starts[gameId]];if(typeof fn==='function')fn();
 }
