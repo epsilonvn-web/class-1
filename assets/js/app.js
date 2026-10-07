@@ -205,7 +205,8 @@
     },
     account: {
       view: "overview",
-      visibleNotices: []
+      visibleNotices: [],
+      requestSubjectId: ""
     },
     admin: {
       loading: false,
@@ -1020,7 +1021,7 @@
     state.auth.notices = [];
     state.auth.ready = true;
     state.profile = { subjectId: null, loading: false, data: null, failed: false };
-    state.account = { view: "overview", visibleNotices: [] };
+    state.account = { view: "overview", visibleNotices: [], requestSubjectId: "" };
     state.admin = {
       loading: false,
       loaded: false,
@@ -1487,6 +1488,21 @@
     renderSubjectContent();
   }
 
+
+  function updateHomeVipNoticeVisibility() {
+    if (!el.homeVipNotice) return;
+    const isTopLevelHome = state.screen === "home" && !state.homeFeatureId && !state.homeFeatureGroupId;
+    const isAdmin = !!(state.auth.user && state.auth.user.role === "admin");
+    const vipCount = state.auth.user
+      ? SUBJECTS.reduce((count, subject) => count + (accessTypeFor(subject.id) === "vip" ? 1 : 0), 0)
+      : 0;
+    const hasAllThreeVip = vipCount >= SUBJECTS.length;
+
+    // Đây chỉ là thông báo tĩnh. Vẫn hiện nếu mới có VIP 1-2 môn hoặc đang Trial/Regular.
+    // Chỉ ẩn khi Admin hoặc đã có đủ VIP ở cả ba môn.
+    el.homeVipNotice.classList.toggle("hidden", !isTopLevelHome || isAdmin || hasAllThreeVip);
+  }
+
   function renderHomeContent() {
     switch (state.homeTab) {
       case "epsilon": renderEpsilonTab(); break;
@@ -1499,18 +1515,7 @@
     }
   }
 
-  function updateHomeVipNoticeVisibility() {
-    if (!el.homeVipNotice) return;
-    const isTopLevelHome = state.screen === "home" && !state.homeFeatureId && !state.homeFeatureGroupId;
-    const isAdmin = !!(state.auth.user && state.auth.user.role === "admin");
-    const hasVip = !!state.auth.user && SUBJECTS.some((subject) => accessTypeFor(subject.id) === "vip");
-
-    // Tab nhắc đăng ký chỉ dành cho Khách, Regular và Trial.
-    // Admin hoặc tài khoản đã có VIP thì ẩn vì không còn cần lời nhắc này.
-    el.homeVipNotice.classList.toggle("hidden", !isTopLevelHome || isAdmin || hasVip);
-  }
-
-  function onHomeVipNoticeClick() {
+  function onVipRegisterAction() {
     if (!state.auth.ready) {
       showToast("Đang kiểm tra phiên đăng nhập…");
       return;
@@ -1841,18 +1846,28 @@
   }
 
   function renderClass1Tab() {
-    const cards = SUBJECTS.map((subject) => `
+    const pendingApiIds = new Set();
+    (state.auth.requests || []).forEach((request) => (request.subjectIds || []).forEach((id) => pendingApiIds.add(String(id))));
+
+    const cards = SUBJECTS.map((subject) => {
+      const accessType = accessTypeFor(subject.id);
+      const accessLabel = accessBadge(subject.id);
+      const isAdmin = !!(state.auth.user && state.auth.user.role === "admin");
+      const isVip = accessType === "vip";
+      const hasPendingVip = pendingApiIds.has(subject.apiId);
+      const showVipRequest = !isAdmin && !isVip;
+      const badgeTone = accessType === "vip" ? "vip" : accessType === "trial" ? "trial" : accessType === "admin" ? "admin" : "regular";
+
+      return `
       <div class="subject-column">
-        <button class="content-card subject-card" data-tone="${subject.tone}" data-subject="${subject.id}" type="button">
+        <button class="content-card subject-card class1-subject-card" data-tone="${subject.tone}" data-subject="${subject.id}" type="button">
+          <span class="subject-access-badge ${badgeTone}">${escapeHtml(accessLabel)}</span>
           <div class="card-top">
             <span class="card-icon" aria-hidden="true">${subject.icon}</span>
             <div class="card-copy">
               <h2 class="card-title">${escapeHtml(subject.fullLabel)}</h2>
               <p class="card-desc">${escapeHtml(subject.description)}</p>
             </div>
-          </div>
-          <div class="card-foot">
-            <span class="badge">${escapeHtml(accessBadge(subject.id))}</span>
           </div>
         </button>
 
@@ -1863,10 +1878,37 @@
             <span class="subject-profile-note">${state.auth.user ? "Xem tiến trình của bé" : "Đăng nhập để xem"}</span>
           </span>
         </button>
-      </div>
-    `).join("");
+
+        ${showVipRequest ? `<button class="subject-vip-request-button${hasPendingVip ? " has-pending" : ""}" data-vip-subject="${subject.id}" type="button">${hasPendingVip ? "Đang chờ duyệt VIP" : "Đăng ký quyền học VIP"}</button>` : ""}
+      </div>`;
+    }).join("");
 
     el.content.innerHTML = `
+      <style>
+        .class1-subject-card{position:relative;min-height:128px!important;padding:.95rem 1rem!important;}
+        .class1-subject-card .card-top{padding-right:84px;}
+        .subject-access-badge{
+          position:absolute;top:11px;right:11px;z-index:2;min-height:28px;padding:3px 10px;border:1px solid;border-radius:999px;
+          display:inline-flex;align-items:center;justify-content:center;background:#fff;font-size:15px;line-height:1;font-weight:950;white-space:nowrap;
+          box-shadow:0 3px 8px rgba(76,29,149,.07);
+        }
+        .subject-access-badge.vip{color:#6d28d9;border-color:#c4b5fd;background:#f5f3ff;}
+        .subject-access-badge.trial{color:#0369a1;border-color:#7dd3fc;background:#eff8ff;}
+        .subject-access-badge.regular{color:#047857;border-color:#86efac;background:#f0fdf4;}
+        .subject-access-badge.admin{color:#be185d;border-color:#f9a8d4;background:#fff1f7;}
+        .subject-vip-request-button{
+          width:100%;min-height:42px;border:0;border-radius:14px;padding:.55rem .75rem;color:#fff;
+          background:linear-gradient(90deg,#ec4899,#a855f7,#7c3aed);font-size:16px;font-weight:950;line-height:1.2;
+          box-shadow:0 5px 13px rgba(139,92,246,.16);
+        }
+        .subject-vip-request-button.has-pending{background:linear-gradient(90deg,#94a3b8,#64748b);}
+        @media(max-width:767px){
+          .class1-subject-card{min-height:118px!important;padding:.82rem .85rem!important;}
+          .class1-subject-card .card-top{padding-right:72px;}
+          .subject-access-badge{top:9px;right:9px;min-height:26px;padding:3px 8px;font-size:14px;}
+          .subject-vip-request-button{min-height:40px;font-size:15px;}
+        }
+      </style>
       <div class="section-heading">
         <div>
           <h1>🌟 Lớp 1</h1>
@@ -1881,6 +1923,21 @@
     });
     el.content.querySelectorAll("[data-profile-subject]").forEach((card) => {
       card.addEventListener("click", () => openLearningProfile(card.dataset.profileSubject));
+    });
+    el.content.querySelectorAll("[data-vip-subject]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const subjectId = String(button.dataset.vipSubject || "");
+        if (!subjectId) return;
+        if (!state.auth.ready) {
+          showToast("Đang kiểm tra phiên đăng nhập…");
+          return;
+        }
+        if (!state.auth.user) {
+          openAuth("register");
+          return;
+        }
+        openAccountPage("request", subjectId);
+      });
     });
   }
 
@@ -2169,7 +2226,7 @@
       });
     });
 
-    el.content.querySelector("[data-contact-vip-action]")?.addEventListener("click", onHomeVipNoticeClick);
+    el.content.querySelector("[data-contact-vip-action]")?.addEventListener("click", onVipRegisterAction);
 
     el.content.querySelectorAll("[data-intro-home-tab]").forEach((button) => {
       button.addEventListener("click", () => {
@@ -2339,7 +2396,7 @@
     el.accountButton.replaceChildren(avatar, label);
   }
 
-  async function openAccountPage(view = "overview") {
+  async function openAccountPage(view = "overview", requestSubjectId = "") {
     if (state.screen === "subject" && state.subjectId) destroySubjectModule(state.subjectId);
     if (!state.auth.user) {
       openAuth("login");
@@ -2347,6 +2404,9 @@
     }
     state.screen = "account";
     state.account.view = view === "request" ? "request" : "overview";
+    state.account.requestSubjectId = state.account.view === "request" && SUBJECTS.some((subject) => subject.id === requestSubjectId)
+      ? String(requestSubjectId)
+      : "";
     state.homeTab = "class1";
     state.subjectId = null;
     state.profileSubjectId = null;
@@ -2588,20 +2648,33 @@
 
     const pendingApiIds = new Set();
     state.auth.requests.forEach((r) => (r.subjectIds || []).forEach((id) => pendingApiIds.add(id)));
+    const requestedSubjectId = String(state.account.requestSubjectId || "");
     let eligibleCount = 0;
     const choices = SUBJECTS.map((subject) => {
       const type = accessTypeFor(subject.id);
-      const active = type === "trial" || type === "vip" || type === "admin";
+      const alreadyVip = type === "vip" || type === "admin";
       const pending = pendingApiIds.has(subject.apiId);
-      if (!active && !pending) eligibleCount += 1;
-      return `<label class="subject-choice${active || pending ? " is-disabled" : ""}"><input type="checkbox" name="subject-choice" value="${escapeHtml(subject.apiId)}"${active || pending ? " disabled" : ""}><span><strong>${escapeHtml(subject.fullLabel)}</strong><small>${active ? "Đang có quyền học" : pending ? "Đang chờ duyệt" : "Có thể đăng ký VIP"}</small></span></label>`;
+      const disabled = alreadyVip || pending;
+      const checked = !disabled && requestedSubjectId === subject.id;
+      if (!disabled) eligibleCount += 1;
+      const note = alreadyVip
+        ? "Đang có VIP"
+        : pending
+          ? "Đang chờ duyệt"
+          : type === "trial"
+            ? "Đang Trial · Có thể đăng ký VIP"
+            : "Có thể đăng ký VIP";
+      return `<label class="subject-choice${disabled ? " is-disabled" : ""}"><input type="checkbox" name="subject-choice" value="${escapeHtml(subject.apiId)}"${disabled ? " disabled" : ""}${checked ? " checked" : ""}><span><strong>${escapeHtml(subject.fullLabel)}</strong><small>${note}</small></span></label>`;
     }).join("");
 
     const body = eligibleCount > 0 ? `
-        <p class="access-request-note">Chọn 1/3, 2/3 hoặc 3/3 môn. Gửi yêu cầu không tự mở quyền; Admin sẽ duyệt đúng các môn đã chọn.</p>
+        <p class="access-request-note">Bạn cần liên hệ với admin để thanh toán biểu phí quyền học VIP và được duyệt</p>
         <form id="access-request-form" class="form-stack" novalidate>
           <div class="subject-choice-list">${choices}</div>
-          <div id="access-request-summary" class="access-request-summary">Chưa chọn môn nào.</div>
+          <div class="access-request-summary-grid" role="status" aria-live="polite">
+            <div id="access-request-selection-summary" class="access-request-summary-card selection">Bạn chưa chọn môn nào</div>
+            <div id="access-request-price-summary" class="access-request-summary-card price">Tổng tiền thanh toán 0k/năm</div>
+          </div>
           <div class="vip-request-actions" role="group" aria-label="Tùy chọn đăng ký quyền học VIP">
             <button id="access-request-vip-info" class="vip-request-action vip-request-info" type="button">Biểu phí và quyền lợi VIP</button>
             <button id="access-request-admin-contact" class="vip-request-action vip-request-contact" type="button">Liên hệ admin</button>
@@ -2617,13 +2690,17 @@
         .account-request-page .access-request-note{font-size:16px!important;line-height:1.55!important;font-weight:850!important;}
         .account-request-page .subject-choice strong{font-size:17px!important;line-height:1.3!important;font-weight:900!important;}
         .account-request-page .subject-choice small{font-size:16px!important;line-height:1.4!important;font-weight:800!important;}
-        .account-request-page .access-request-summary{font-size:16px!important;line-height:1.4!important;font-weight:900!important;}
+        .access-request-summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem;margin-top:.05rem}
+        .access-request-summary-card{min-height:48px;display:flex;align-items:center;justify-content:center;padding:.65rem .8rem;border:1px solid;border-radius:14px;font-size:16px!important;line-height:1.35!important;font-weight:900!important;text-align:center}
+        .access-request-summary-card.selection{border-color:#d8b4fe;background:linear-gradient(90deg,#faf5ff,#fdf2f8);color:#6d28d9}
+        .access-request-summary-card.price{border-color:#67e8f9;background:linear-gradient(90deg,#eff6ff,#ecfdf5);color:#0369a1}
         .vip-request-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem;margin-top:.1rem}
         .vip-request-actions button{width:100%;min-width:0;min-height:52px;margin:0!important;border-radius:14px;padding:.7rem .8rem;font-family:inherit;font-size:16px!important;font-weight:950;line-height:1.25}
-        .vip-request-info{border:1px solid #d8b4fe;color:#6d28d9;background:linear-gradient(90deg,#faf5ff,#fdf2f8);box-shadow:0 4px 12px rgba(109,40,217,.08)}
-        .vip-request-contact{border:1px solid #67e8f9;color:#0369a1;background:linear-gradient(90deg,#eff6ff,#ecfdf5);box-shadow:0 4px 12px rgba(3,105,161,.08)}
-        .vip-request-submit{box-shadow:0 6px 16px rgba(139,92,246,.18)}
+        .vip-request-info{border:0;color:#fff;background:linear-gradient(90deg,#38bdf8,#3b82f6);box-shadow:0 6px 16px rgba(59,130,246,.20)}
+        .vip-request-contact{border:0;color:#fff;background:linear-gradient(90deg,#34d399,#10b981);box-shadow:0 6px 16px rgba(16,185,129,.20)}
+        .vip-request-submit{border:0!important;color:#fff!important;background:linear-gradient(90deg,#a855f7,#7c3aed)!important;box-shadow:0 6px 16px rgba(124,58,237,.22)}
         @media(max-width:720px){
+          .access-request-summary-grid{grid-template-columns:1fr}
           .vip-request-actions{grid-template-columns:1fr}
           .account-request-page .subject-choice strong{font-size:16px!important}
           .account-request-page .subject-choice small{font-size:16px!important}
@@ -2648,9 +2725,12 @@
     const updateSummary = () => {
       if (!form) return;
       const count = form.querySelectorAll('input[name="subject-choice"]:checked').length;
-      const summary = document.getElementById("access-request-summary");
+      const selectionSummary = document.getElementById("access-request-selection-summary");
+      const priceSummary = document.getElementById("access-request-price-summary");
       const submit = document.getElementById("access-request-submit");
-      if (summary) summary.textContent = count ? `Đã chọn ${count}/3 môn.` : "Chưa chọn môn nào.";
+      const priceByCount = { 0: "0k/năm", 1: "80k/năm", 2: "160k/năm", 3: "210k/năm" };
+      if (selectionSummary) selectionSummary.textContent = count ? `Bạn đã chọn ${count} môn` : "Bạn chưa chọn môn nào";
+      if (priceSummary) priceSummary.textContent = `Tổng tiền thanh toán ${priceByCount[count] || "0k/năm"}`;
       if (submit) submit.textContent = count ? `Gửi yêu cầu VIP · ${count} môn` : "Gửi yêu cầu VIP";
     };
     form?.querySelectorAll('input[name="subject-choice"]').forEach((input) => input.addEventListener("change", updateSummary));
@@ -2800,6 +2880,7 @@
       await apiRequest("accessRequestCreate", { subjectIds, accessType: "vip" });
       await refreshAccessState(false);
       state.account.view = "overview";
+      state.account.requestSubjectId = "";
       render();
       showToast("Đã gửi yêu cầu. Vui lòng chờ Admin duyệt.");
     } catch (err) {
@@ -3560,7 +3641,6 @@
   }
 
   el.homeButton.addEventListener("click", goHome);
-  el.homeVipNotice?.addEventListener("click", onHomeVipNoticeClick);
   el.accountButton.addEventListener("click", () => state.auth.user ? openAccountPage() : openAuth("login"));
   el.authClose.addEventListener("click", closeAuth);
   el.authLater.addEventListener("click", closeAuth);
