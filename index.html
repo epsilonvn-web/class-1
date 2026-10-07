@@ -322,6 +322,7 @@
       background:var(--page);
     }
 
+
     .home-vip-notice{
       width:max-content;
       max-width:calc(100% - 1rem);
@@ -339,17 +340,9 @@
       gap:.16rem;
       text-align:center;
       line-height:1.3;
-      transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,filter .16s ease;
-    }
-    .home-vip-notice:hover{
-      transform:translateY(-1px);
-      border-color:#EC4899;
-      box-shadow:0 8px 20px rgba(124,58,237,.14);
-      filter:brightness(1.012);
-    }
-    .home-vip-notice:focus-visible{
-      outline:3px solid rgba(59,130,246,.24);
-      outline-offset:2px;
+      cursor:default;
+      user-select:text;
+      -webkit-user-select:text;
     }
     .home-vip-notice-title{
       display:flex;
@@ -375,6 +368,7 @@
       font-size:16px;
       font-weight:850;
     }
+
 
     /* Trang Liên hệ */
     .contact-page{
@@ -1749,14 +1743,15 @@
       </div>
     </section>
 
-    <button id="home-vip-notice" class="home-vip-notice" type="button" aria-label="Đăng ký tài khoản hoặc đăng ký quyền học VIP">
+
+    <div id="home-vip-notice" class="home-vip-notice" role="note" aria-label="Thông báo về tài khoản và quyền học VIP">
       <span class="home-vip-notice-title">
         <span class="home-vip-notice-deco" aria-hidden="true">🐰 ✨</span>
         <span>Bé hãy đăng ký tài khoản và đăng ký quyền học VIP</span>
         <span class="home-vip-notice-deco" aria-hidden="true">✨ 🌸</span>
       </span>
       <span class="home-vip-notice-copy">Để được ghi nhớ lịch sử học, được học nhiều hơn và có những trải nghiệm tuyệt vời nhé!</span>
-    </button>
+    </div>
 
     <main id="content-stage" class="content-stage" tabindex="-1"></main>
 
