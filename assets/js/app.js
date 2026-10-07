@@ -19,6 +19,18 @@
     EE_CLASS_SITES
   } = CLASS1_DATA;
 
+  // AI Lab là module giá trị gia tăng dùng chung, đặt ngay bên phải Tools.
+  const AI_LAB_HOME_TAB = Object.freeze({ id: "aiLab", icon: "🤖", label: "AI Lab", tone: "blue", badge: "AI" });
+  const HOME_TABS_WITH_AI = Object.freeze((() => {
+    if (HOME_TABS.some((tab) => tab.id === AI_LAB_HOME_TAB.id)) return [...HOME_TABS];
+    const tabs = [...HOME_TABS];
+    const toolsIndex = tabs.findIndex((tab) => tab.id === "tools");
+    const contactIndex = tabs.findIndex((tab) => tab.id === "contact");
+    const insertAt = toolsIndex >= 0 ? toolsIndex + 1 : (contactIndex >= 0 ? contactIndex : tabs.length);
+    tabs.splice(insertAt, 0, AI_LAB_HOME_TAB);
+    return tabs;
+  })());
+
 
   // Module học theo môn: chỉ nạp khi người dùng thực sự mở môn đó.
   const SUBJECT_MODULE_SCRIPTS = Object.freeze({
@@ -26,7 +38,7 @@
     vietnamese: "assets/js/vietnamese/tv_app.js?v=class1-tv-1",
     english: "assets/js/english/ta_app.js?v=class1-ta-1"
   });
-  // Games/Tools ngoài Trang chủ: mỗi tool/game là một file JS độc lập và chỉ tải khi mở.
+  // Games/Tools/AI Lab ngoài Trang chủ: mỗi module con là một file JS độc lập và chỉ tải khi mở.
   const TOOL_CATALOG = Object.freeze([
     Object.freeze({ id: "calculator", icon: "🧮", title: "Calculator", description: "Máy tính khoa học Epsilon Edu.", badge: "Công cụ", tone: "purple" }),
     Object.freeze({ id: "converter", icon: "📐", title: "Đổi đơn vị đo", description: "Đổi nhanh các đơn vị đo thông dụng.", badge: "Công cụ", tone: "teal" }),
@@ -35,8 +47,45 @@
     Object.freeze({ id: "calendarRoman", icon: "📅", title: "Lịch, khoảng ngày và số La Mã", description: "Xem lịch, tính khoảng ngày và đổi số La Mã.", badge: "Công cụ", tone: "blue" }),
     Object.freeze({ id: "mathTables", icon: "🔢", title: "Bảng cộng trừ nhân chia", description: "Xem bảng tính và luyện tập phép tính.", badge: "Công cụ", tone: "teal" }),
     Object.freeze({ id: "learningClock", icon: "🕐", title: "Đồng hồ học xem giờ", description: "Học đọc giờ, quay kim và luyện tập.", badge: "Công cụ", tone: "purple" }),
-    Object.freeze({ id: "solarSystem", icon: "🪐", title: "Hệ Mặt Trời", description: "Khám phá Hệ Mặt Trời, ngày - đêm và các mùa bằng mô phỏng tương tác.", badge: "Khoa học", tone: "blue" })
+    Object.freeze({ id: "solarSystem", icon: "🪐", title: "Hệ Mặt Trời", description: "Khám phá Hệ Mặt Trời, ngày - đêm và các mùa bằng mô phỏng tương tác.", badge: "Khoa học", tone: "blue" }),
+    Object.freeze({ id: "vietnamMap", icon: "🗺️", title: "Bản đồ Việt Nam", description: "Khám phá tỉnh thành, vùng miền và luyện tập trực tiếp trên bản đồ Việt Nam.", badge: "Địa lý", tone: "green" }),
+    Object.freeze({ id: "bunnyCoding", icon: "🐰", title: "Lập trình cùng Thỏ Hồng", description: "Xếp khối lệnh đưa Thỏ Hồng tới cà rốt và làm quen tư duy lập trình.", badge: "Lập trình", tone: "purple" }),
+    Object.freeze({ id: "circuitLab", icon: "💡", title: "Mạch điện vui", description: "Lắp mạch điện, bật sáng bóng đèn và khám phá vật dẫn điện - cách điện.", badge: "Khoa học", tone: "amber" }),
+    Object.freeze({ id: "trafficSafety", icon: "🚦", title: "An toàn giao thông", description: "Khám phá biển báo, đèn tín hiệu và luyện cách tham gia giao thông an toàn.", badge: "Kỹ năng", tone: "green" }),
+    Object.freeze({ id: "virtualPiano", icon: "🎹", title: "Đàn ảo - Bé học nốt nhạc", description: "Chơi đàn, học nốt nhạc, luyện nghe và gõ nhịp bằng tương tác trực tiếp.", badge: "Âm nhạc", tone: "pink" }),
+    Object.freeze({ id: "typingTenFingers", icon: "⌨️", title: "Luyện gõ 10 ngón", description: "Luyện đặt đúng ngón tay, tăng độ chính xác và tốc độ gõ bàn phím.", badge: "Tin học", tone: "blue" }),
+    Object.freeze({ id: "lineDiagram", icon: "📏", title: "Sơ đồ đoạn thẳng", description: "Vẽ sơ đồ và giải từng bước các dạng toán có lời văn.", badge: "Toán học", tone: "teal" })
   ]);
+  const AI_LAB_CATALOG = Object.freeze([
+    Object.freeze({ id: "aiSafety", icon: "🛡️", title: "AI là gì? Dùng AI an toàn", description: "Tìm hiểu AI ở quanh ta và luyện các nguyên tắc sử dụng AI an toàn, có trách nhiệm.", tone: "blue" }),
+    Object.freeze({ id: "teachAI", icon: "🤖", title: "Bé dạy AI nhận hình", description: "Tự tạo dữ liệu mẫu, huấn luyện và thử xem AI nhận ra hình mới như thế nào.", badge: "AI", tone: "blue" }),
+    Object.freeze({ id: "aiBias", icon: "⚖️", title: "AI có thiên vị không?", description: "Thay đổi dữ liệu huấn luyện và quan sát cách dữ liệu lệch có thể làm mô hình đưa ra kết quả lệch.", badge: "AI", tone: "pink" }),
+    Object.freeze({ id: "aiClustering", icon: "🍬", title: "Máy tự chia nhóm", description: "Rắc kẹo lên bàn và quan sát máy tự gom những viên giống nhau thành nhóm mà không cần ai dạy trước.", badge: "AI", tone: "purple" }),
+    Object.freeze({ id: "aiPrediction", icon: "🔮", title: "Máy dự đoán", description: "Cho máy xem dữ liệu, tìm quy luật và thử dự đoán điều chưa xảy ra từ những gì đã quan sát.", badge: "AI", tone: "blue" }),
+    Object.freeze({ id: "aiBunnyLearns", icon: "🐰", title: "Thỏ Hồng tự học tìm đường", description: "Quan sát Thỏ Hồng học bằng thử và sai, ghi nhớ phần thưởng và tự tìm đường tốt hơn.", badge: "AI", tone: "purple" }),
+    Object.freeze({ id: "aiNeuralMini", icon: "🧠", title: "Mạng nơ-ron mini", description: "Quan sát tín hiệu đi qua mạng nhỏ, thay đổi đầu vào và dạy mạng bằng từng ví dụ tương tác.", badge: "AI", tone: "amber" }),
+    Object.freeze({ id: "aiPixelVision", icon: "👁️", title: "AI nhìn bằng pixel", description: "Vẽ trên lưới pixel, thêm nhiễu và xem mô hình nhận dạng mẫu từ dữ liệu hình ảnh đơn giản.", badge: "AI", tone: "teal" }),
+    Object.freeze({ id: "aiSound", icon: "🎧", title: "AI nghe âm thanh", description: "Nghe âm tổng hợp, xem dạng sóng và khám phá cách đặc trưng âm thanh giúp máy phân loại tín hiệu.", badge: "AI", tone: "green" }),
+    Object.freeze({ id: "aiKindWords", icon: "💬", title: "Dạy AI hiểu lời nói tử tế", description: "Dạy máy phân biệt lời nói tử tế và lời nói làm bạn buồn từ các ví dụ.", badge: "AI", tone: "green" }),
+    Object.freeze({ id: "aiRecommender", icon: "🎯", title: "AI gợi ý cho bạn", description: "Chấm điểm sở thích rồi xem hệ gợi ý tìm nội dung phù hợp từ các tín hiệu bạn cung cấp.", badge: "AI", tone: "purple" }),
+    Object.freeze({ id: "aiPathfinding", icon: "🗺️", title: "AI chỉ đường", description: "Vẽ khu phố rồi so sánh cách máy tìm mò và tìm thông minh để chọn đường đi ngắn nhất.", badge: "AI", tone: "green" }),
+    Object.freeze({ id: "aiTicTacToe", icon: "⭕", title: "Cờ caro với AI", description: "Đấu cờ caro 3×3 và quan sát cách AI tính trước các nước đi để ra quyết định.", badge: "AI", tone: "teal" }),
+    Object.freeze({ id: "aiAnimalGuess", icon: "🐾", title: "Máy đoán con vật", description: "Nghĩ về một con vật, trả lời câu hỏi và dạy máy thêm kiến thức khi máy đoán sai.", badge: "AI", tone: "amber" }),
+    Object.freeze({ id: "aiMusicComposer", icon: "🎵", title: "AI sáng tác nhạc", description: "Cho máy học các giai điệu rồi quan sát cách AI tự tạo một bản nhạc mới.", badge: "AI", tone: "pink" }),
+    Object.freeze({ id: "aiAnomaly", icon: "🔍", title: "AI tìm điều bất thường", description: "Quan sát dữ liệu cảm biến và thử cách mô hình khoanh vùng những điểm khác xa phần lớn dữ liệu.", badge: "AI", tone: "blue" }),
+    Object.freeze({ id: "aiRealOrMachine", icon: "🕵️", title: "Thật hay do máy tạo?", description: "Làm thám tử phân biệt nội dung do người viết và do máy tạo, rồi học cách kiểm tra thông tin.", badge: "AI", tone: "amber" }),
+    // Giấy chứng nhận AI luôn là mục cuối. Khi thêm lab mới, đặt trước mục này.
+    Object.freeze({ id: "aiCertificate", icon: "🏅", title: "Giấy chứng nhận AI", description: "Hoàn thành hoạt động, vượt thử thách và tạo giấy chứng nhận Nhà khoa học AI nhí.", tone: "purple" })
+  ]);
+
+  const AI_LAB_GROUPS = Object.freeze([
+    Object.freeze({ id: "intro", icon: "🚪", title: "Nhập môn", tone: "blue", ids: Object.freeze(["aiSafety", "teachAI"]) }),
+    Object.freeze({ id: "learning", icon: "🧠", title: "Máy học thế nào", tone: "purple", ids: Object.freeze(["aiBias", "aiClustering", "aiPrediction", "aiBunnyLearns", "aiNeuralMini"]) }),
+    Object.freeze({ id: "perception", icon: "👁️", title: "Máy nhìn, nghe, hiểu", tone: "teal", ids: Object.freeze(["aiPixelVision", "aiSound", "aiKindWords"]) }),
+    Object.freeze({ id: "aroundUs", icon: "🎮", title: "AI quanh ta", tone: "green", ids: Object.freeze(["aiRecommender", "aiPathfinding", "aiTicTacToe", "aiAnimalGuess", "aiMusicComposer", "aiAnomaly"]) }),
+    Object.freeze({ id: "responsibility", icon: "🛡️", title: "AI và trách nhiệm", tone: "amber", ids: Object.freeze(["aiRealOrMachine", "aiCertificate"]) })
+  ]);
+
   const WORLD_EXPLORER_GROUP_ID = "worldExplorer";
   const WORLD_EXPLORER_ITEMS = Object.freeze([
     Object.freeze({ id: "spaceExplorer", icon: "🪐", title: "Khám phá vũ trụ", description: "Khám phá Hệ Mặt Trời, các hành tinh, vệ tinh và những điều kỳ thú ngoài không gian.", tone: "purple" }),
@@ -65,6 +114,26 @@
     Object.freeze({ id: "wasteSorting", icon: "♻️", title: "Phân loại rác", description: "Phân loại rác đúng thùng qua nhiều cấp độ.", badge: "Môi trường", tone: "green" })
   ]);
   const HOME_FEATURE_SCRIPTS = Object.freeze({
+    aiLab: Object.freeze({
+      teachAI: "assets/js/ai-lab/be-day-ai.js?v=class1-be-day-ai-2",
+      aiKindWords: "assets/js/ai-lab/ai-loi-noi-tu-te.js?v=class1-ai-kind-words-1",
+      aiMusicComposer: "assets/js/ai-lab/ai-sang-tac-nhac.js?v=class1-ai-music-1",
+      aiBunnyLearns: "assets/js/ai-lab/tho-hong-tu-hoc.js?v=class1-ai-bunny-learns-1",
+      aiAnimalGuess: "assets/js/ai-lab/may-doan-con-vat.js?v=class1-ai-animal-guess-1",
+      aiTicTacToe: "assets/js/ai-lab/co-caro-ai.js?v=class1-ai-tic-tac-toe-1",
+      aiClustering: "assets/js/ai-lab/may-tu-chia-nhom.js?v=class1-ai-clustering-1",
+      aiPrediction: "assets/js/ai-lab/may-du-doan.js?v=class1-ai-prediction-1",
+      aiPathfinding: "assets/js/ai-lab/ai-chi-duong.js?v=class1-ai-pathfinding-1",
+      aiRealOrMachine: "assets/js/ai-lab/that-hay-may-tao.js?v=class1-ai-real-or-machine-1",
+      aiBias: "assets/js/ai-lab/ai-thien-vi.js?v=class1-ai-bias-1",
+      aiRecommender: "assets/js/ai-lab/ai-goi-y.js?v=class1-ai-recommender-1",
+      aiAnomaly: "assets/js/ai-lab/ai-tim-bat-thuong.js?v=class1-ai-anomaly-2",
+      aiPixelVision: "assets/js/ai-lab/ai-nhin-pixel.js?v=class1-ai-pixel-vision-1",
+      aiSound: "assets/js/ai-lab/ai-nghe-am-thanh.js?v=class1-ai-sound-1",
+      aiNeuralMini: "assets/js/ai-lab/mang-no-ron-mini.js?v=class1-ai-neural-mini-1",
+      aiSafety: "assets/js/ai-lab/ai-an-toan.js?v=class1-ai-safety-1",
+      aiCertificate: "assets/js/ai-lab/giay-chung-nhan-ai.js?v=class1-ai-certificate-2"
+    }),
     tools: Object.freeze({
       calculator: "assets/js/tools/calculator.js?v=class1-calculator-2",
       converter: "assets/js/tools/converter.js?v=class1-converter-1",
@@ -73,7 +142,14 @@
       calendarRoman: "assets/js/tools/lich-la-ma.js?v=class1-lich-la-ma-1",
       mathTables: "assets/js/tools/bang-tinh.js?v=class1-bang-tinh-1",
       learningClock: "assets/js/tools/dong-ho.js?v=class1-dong-ho-1",
-      solarSystem: "assets/js/tools/he-mat-troi.js?v=class1-he-mat-troi-1"
+      solarSystem: "assets/js/tools/he-mat-troi.js?v=class1-he-mat-troi-1",
+      vietnamMap: "assets/js/tools/ban-do-viet-nam.js?v=class1-ban-do-viet-nam-1",
+      bunnyCoding: "assets/js/tools/lap-trinh-tho-hong.js?v=class1-lap-trinh-tho-hong-1",
+      circuitLab: "assets/js/tools/mach-dien.js?v=class1-mach-dien-1",
+      trafficSafety: "assets/js/tools/an-toan-giao-thong.js?v=class1-an-toan-giao-thong-1",
+      virtualPiano: "assets/js/tools/dan-ao.js?v=class1-dan-ao-1",
+      typingTenFingers: "assets/js/tools/luyen-go-10-ngon.js?v=class1-luyen-go-10-ngon-1",
+      lineDiagram: "assets/js/tools/so-do-doan-thang.js?v=class1-so-do-doan-thang-1"
     }),
     games: Object.freeze({
       paperFolding: "assets/js/games/paper_folding.js?v=class1-paper-folding-6",
@@ -284,7 +360,7 @@
 
 
   function homeFeatureRegistry(kind) {
-    if (kind === "tools") return window.CLASS1_TOOL_MODULES || null;
+    if (kind === "tools" || kind === "aiLab") return window.CLASS1_TOOL_MODULES || null;
     if (kind === "games") return window.CLASS1_GAME_MODULES || null;
     return null;
   }
@@ -507,7 +583,7 @@
       };
     }
 
-    const catalog = kind === "games" ? GAME_CATALOG : kind === "tools" ? TOOL_CATALOG : [];
+    const catalog = kind === "games" ? GAME_CATALOG : kind === "tools" ? TOOL_CATALOG : kind === "aiLab" ? AI_LAB_CATALOG : [];
     const feature = catalog.find((item) => item.id === featureId) || null;
     if (!feature) return null;
     const index = Math.max(0, catalog.indexOf(feature));
@@ -1124,7 +1200,7 @@
     if (state.screen === "home") destroyActiveHomeFeature();
     state.account.visibleNotices = [];
     state.screen = "home";
-    state.homeTab = HOME_TABS.some((t) => t.id === tabId) ? tabId : "class1";
+    state.homeTab = HOME_TABS_WITH_AI.some((t) => t.id === tabId) ? tabId : "class1";
     if (state.homeTab === "contact") state.contactTab = "intro";
     state.homeFeatureId = null;
     state.homeFeatureGroupId = null;
@@ -1240,13 +1316,13 @@
   }
 
   function homeTabsForCurrentUser() {
-    if (!state.auth.user || state.auth.user.role !== "admin") return HOME_TABS;
-    const contactIndex = HOME_TABS.findIndex((tab) => tab.id === "contact");
-    if (contactIndex < 0) return [...HOME_TABS, ADMIN_HOME_TAB];
+    if (!state.auth.user || state.auth.user.role !== "admin") return HOME_TABS_WITH_AI;
+    const contactIndex = HOME_TABS_WITH_AI.findIndex((tab) => tab.id === "contact");
+    if (contactIndex < 0) return [...HOME_TABS_WITH_AI, ADMIN_HOME_TAB];
     return [
-      ...HOME_TABS.slice(0, contactIndex + 1),
+      ...HOME_TABS_WITH_AI.slice(0, contactIndex + 1),
       ADMIN_HOME_TAB,
-      ...HOME_TABS.slice(contactIndex + 1)
+      ...HOME_TABS_WITH_AI.slice(contactIndex + 1)
     ];
   }
 
@@ -1280,6 +1356,14 @@
       const label = document.createElement("span");
       label.textContent = displayLabel;
       button.append(icon, label);
+
+      if (tab.badge) {
+        const badge = document.createElement("span");
+        badge.className = "nav-ai-badge";
+        badge.textContent = String(tab.badge);
+        badge.setAttribute("aria-label", `Nhãn ${tab.badge}`);
+        button.appendChild(badge);
+      }
 
       if (tab.id === "admin" && state.auth.user && state.auth.user.role === "admin" && Number(state.admin.pendingCount || 0) > 0) {
         const badge = document.createElement("span");
@@ -1315,7 +1399,7 @@
 
     const subjectDetailMode = state.screen === "subject" && !!state.detail;
     const homeFeatureMode = state.screen === "home"
-      && (state.homeTab === "games" || state.homeTab === "tools")
+      && (state.homeTab === "games" || state.homeTab === "tools" || state.homeTab === "aiLab")
       && (!!state.homeFeatureId || !!state.homeFeatureGroupId);
     const detailMode = subjectDetailMode || homeFeatureMode;
 
@@ -1328,9 +1412,9 @@
       return;
     }
 
-    const catalog = state.homeTab === "games" ? GAME_CATALOG : TOOL_CATALOG;
+    const catalog = state.homeTab === "games" ? GAME_CATALOG : state.homeTab === "tools" ? TOOL_CATALOG : AI_LAB_CATALOG;
     const feature = catalog.find((item) => item.id === state.homeFeatureId) || null;
-    const fallback = state.homeTab === "games" ? "Games" : "Tools";
+    const fallback = state.homeTab === "games" ? "Games" : state.homeTab === "tools" ? "Tools" : "AI Lab";
     const nested = state.homeFeatureBanner;
 
     if (nested && Array.isArray(nested.items) && nested.items.length) {
@@ -1388,7 +1472,7 @@
       return;
     }
 
-    const icon = nested && nested.icon ? nested.icon : (state.homeTab === "games" ? "🎮" : "🧰");
+    const icon = nested && nested.icon ? nested.icon : (state.homeTab === "games" ? "🎮" : state.homeTab === "tools" ? "🧰" : "🤖");
     const title = nested && nested.title ? nested.title : fallback;
     el.subPill.textContent = `${icon} ${title}`;
   }
@@ -1408,6 +1492,7 @@
       case "epsilon": renderEpsilonTab(); break;
       case "games": renderGamesTab(); break;
       case "tools": renderToolsTab(); break;
+      case "aiLab": renderAILabTab(); break;
       case "contact": renderContactTab(); break;
       case "class1":
       default: renderClass1Tab(); break;
@@ -1523,7 +1608,7 @@
       return;
     }
 
-    const useFullWidthCatalogGrid = kind === "games" || kind === "tools";
+    const useFullWidthCatalogGrid = kind === "games" || kind === "tools" || kind === "aiLab";
     const catalogGridClass = useFullWidthCatalogGrid ? " games-catalog-grid" : "";
     const catalogGridStyle = useFullWidthCatalogGrid ? `
       <style>
@@ -1538,31 +1623,165 @@
           max-width:none!important;
           min-width:0;
         }
+        .home-feature-title-row{
+          display:flex;
+          align-items:center;
+          gap:8px;
+          min-width:0;
+        }
+        .home-feature-title-row .card-title{
+          min-width:0;
+        }
+        .home-feature-card .card-desc{
+          font-weight:400!important;
+        }
+        .home-feature-ai-badge{
+          display:inline-flex;
+          align-items:center;
+          justify-content:center;
+          flex:0 0 auto;
+          min-height:24px;
+          padding:2px 9px;
+          border:1px solid #bfdbfe;
+          border-radius:999px;
+          background:linear-gradient(90deg,#ec4899 0%,#8b5cf6 55%,#3b82f6 100%);
+          color:#fff;
+          font-size:12px;
+          line-height:1;
+          font-weight:900;
+          box-shadow:0 3px 9px rgba(99,102,241,.18);
+          white-space:nowrap;
+        }
+        .home-feature-access-note{
+          margin:5px 0 0!important;
+          color:#7c3aed!important;
+          font-size:15px!important;
+          line-height:1.35;
+          font-weight:900!important;
+        }
+        .ai-lab-groups{
+          display:grid;
+          gap:18px;
+          width:100%;
+        }
+        .ai-lab-group{
+          display:grid;
+          gap:8px;
+          min-width:0;
+        }
+        .ai-lab-group-head{
+          min-height:42px;
+          padding:7px 12px;
+          border:1px solid #e9d5ff;
+          border-radius:14px;
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          gap:10px;
+          background:#faf5ff;
+          color:#6d28d9;
+          box-shadow:0 3px 9px rgba(76,29,149,.05);
+        }
+        .ai-lab-group-head h2{
+          margin:0;
+          font-size:18px;
+          line-height:1.2;
+          font-weight:950;
+          color:currentColor;
+        }
+        .ai-lab-group-head span{
+          flex:0 0 auto;
+          min-height:25px;
+          padding:3px 9px;
+          border-radius:999px;
+          background:rgba(255,255,255,.82);
+          color:currentColor;
+          font-size:13px;
+          line-height:1;
+          font-weight:900;
+          display:inline-flex;
+          align-items:center;
+          justify-content:center;
+        }
+        .ai-lab-group[data-group-tone="blue"] .ai-lab-group-head{background:#eff8ff;border-color:#bae6fd;color:#0369a1;}
+        .ai-lab-group[data-group-tone="purple"] .ai-lab-group-head{background:#faf5ff;border-color:#d8b4fe;color:#6d28d9;}
+        .ai-lab-group[data-group-tone="teal"] .ai-lab-group-head{background:#f0fdfa;border-color:#99f6e4;color:#0f766e;}
+        .ai-lab-group[data-group-tone="green"] .ai-lab-group-head{background:#ecfdf5;border-color:#a7f3d0;color:#047857;}
+        .ai-lab-group[data-group-tone="amber"] .ai-lab-group-head{background:#fffbeb;border-color:#fde68a;color:#a16207;}
+        .ai-lab-group-grid{
+          margin:0;
+        }
         @media (max-width:900px){
           .games-catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;}
+        }
+        @media (max-width:560px){
+          .ai-lab-groups{gap:14px;}
+          .ai-lab-group-head{min-height:38px;padding:6px 10px;border-radius:12px;}
+          .ai-lab-group-head h2{font-size:16px;}
+          .ai-lab-group-head span{font-size:12px;min-height:23px;padding:2px 8px;}
         }
         @media (max-width:560px){
           .games-catalog-grid{grid-template-columns:1fr!important;}
         }
       </style>` : "";
 
+    const requiredVipCount = kind === "games" ? 1 : kind === "tools" ? 2 : kind === "aiLab" ? 3 : 0;
+    const currentVipCount = state.auth.user && state.auth.user.role === "admin"
+      ? SUBJECTS.length
+      : SUBJECTS.reduce((count, subject) => count + (accessTypeFor(subject.id) === "vip" ? 1 : 0), 0);
+    const accessNote = requiredVipCount > 0 && currentVipCount < requiredVipCount
+      ? (kind === "games"
+        ? "Bé cần có 1 quyền học VIP để vào nội dung này"
+        : kind === "tools"
+          ? "Bé cần có 2 quyền học VIP để vào nội dung này"
+          : "Bé cần có đủ 3 quyền học VIP để vào nội dung này")
+      : "";
+
+    const catalogIndex = new Map(catalog.map((item, index) => [item.id, { item, index }]));
+    const featureCardHtml = (item, index) => `
+      <button class="content-card home-feature-card" data-tone="${escapeHtml(item.tone || "purple")}" data-home-feature="${escapeHtml(item.id)}" type="button">
+        <div class="card-top">
+          <span class="card-icon" aria-hidden="true">${item.icon}</span>
+          <div class="card-copy">
+            <div class="home-feature-title-row">
+              <h2 class="card-title">${index + 1}. ${escapeHtml(item.title)}</h2>
+              ${item.badge ? `<span class="home-feature-ai-badge">✨ ${escapeHtml(item.badge)}</span>` : ""}
+            </div>
+            ${item.description ? `<p class="card-desc">${escapeHtml(item.description)}</p>` : ""}
+          </div>
+        </div>
+      </button>`;
+
+    const catalogMarkup = kind === "aiLab"
+      ? `<div class="ai-lab-groups">
+          ${AI_LAB_GROUPS.map((group) => {
+            const groupItems = group.ids.map((id) => catalogIndex.get(id)).filter(Boolean);
+            return `
+              <section class="ai-lab-group" data-group-tone="${escapeHtml(group.tone)}" aria-labelledby="ai-lab-group-${escapeHtml(group.id)}">
+                <div class="ai-lab-group-head">
+                  <h2 id="ai-lab-group-${escapeHtml(group.id)}">${group.icon} ${escapeHtml(group.title)}</h2>
+                  <span>${groupItems.length} ${groupItems.length === 1 ? "lab" : "lab"}</span>
+                </div>
+                <div class="card-grid home-feature-grid games-catalog-grid ai-lab-group-grid">
+                  ${groupItems.map(({ item, index }) => featureCardHtml(item, index)).join("")}
+                </div>
+              </section>`;
+          }).join("")}
+        </div>`
+      : `<div class="card-grid home-feature-grid${catalogGridClass}">
+          ${catalog.map((item, index) => featureCardHtml(item, index)).join("")}
+        </div>`;
+
     el.content.innerHTML = `
       <div class="section-heading">
-        <div><h1>${icon} ${escapeHtml(title)}</h1><p>${escapeHtml(description)}</p></div>
+        <div>
+          <h1>${icon} ${escapeHtml(title)}</h1>
+          <p>${escapeHtml(description)}</p>
+          ${accessNote ? `<p class="home-feature-access-note">🔐 ${escapeHtml(accessNote)}</p>` : ""}
+        </div>
       </div>
       ${catalogGridStyle}
-      <div class="card-grid home-feature-grid${catalogGridClass}">
-        ${catalog.map((item, index) => `
-          <button class="content-card home-feature-card" data-tone="${escapeHtml(item.tone || "purple")}" data-home-feature="${escapeHtml(item.id)}" type="button">
-            <div class="card-top">
-              <span class="card-icon" aria-hidden="true">${item.icon}</span>
-              <div class="card-copy">
-                <h2 class="card-title">${index + 1}. ${escapeHtml(item.title)}</h2>
-                ${item.description ? `<p class="card-desc">${escapeHtml(item.description)}</p>` : ""}
-              </div>
-            </div>
-          </button>`).join("")}
-      </div>`;
+      ${catalogMarkup}`;
 
     el.content.querySelectorAll("[data-home-feature]").forEach((button) => {
       button.addEventListener("click", () => {
@@ -1603,6 +1822,10 @@
 
   function renderToolsTab() {
     renderHomeFeatureCatalog("tools", "🧰", "Tools", "Các công cụ tiện ích của Epsilon Edu.", TOOL_CATALOG);
+  }
+
+  function renderAILabTab() {
+    renderHomeFeatureCatalog("aiLab", "🤖", "AI Lab", "Khám phá AI bằng trải nghiệm: tự tạo dữ liệu, huấn luyện, thử nghiệm và quan sát cách AI học.", AI_LAB_CATALOG);
   }
 
   function renderGamesTab() {
@@ -1951,7 +2174,7 @@
     el.content.querySelectorAll("[data-intro-home-tab]").forEach((button) => {
       button.addEventListener("click", () => {
         const tabId = String(button.dataset.introHomeTab || "");
-        if (!HOME_TABS.some((tab) => tab.id === tabId)) return;
+        if (!HOME_TABS_WITH_AI.some((tab) => tab.id === tabId)) return;
         openHomeTab(tabId);
       });
     });
