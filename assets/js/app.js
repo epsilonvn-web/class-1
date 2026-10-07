@@ -366,12 +366,12 @@
       }
       #sub-pill.home-sub-breadcrumbs::-webkit-scrollbar{display:none!important}
       #sub-pill.home-sub-breadcrumbs .home-breadcrumb-sep{
-        flex:0 0 auto;color:#c084fc;font-size:15px;font-weight:900;
+        flex:0 0 auto;color:#c084fc;font-size:16px;font-weight:900;
       }
       #sub-pill.home-sub-breadcrumbs .home-breadcrumb-tab{
         flex:0 0 auto;height:38px;max-width:min(430px,42vw);padding:0 16px;border-radius:13px;
         display:inline-flex;align-items:center;justify-content:center;overflow:hidden;text-overflow:ellipsis;
-        white-space:nowrap;font-size:15px;font-weight:900;line-height:1;box-shadow:0 2px 7px rgba(76,29,149,.08);
+        white-space:nowrap;font-size:16px;font-weight:900;line-height:1;box-shadow:0 2px 7px rgba(76,29,149,.08);
         cursor:default;font-family:inherit;
       }
       #sub-pill.home-sub-breadcrumbs button.home-breadcrumb-tab{
@@ -391,8 +391,8 @@
       }
       @media(max-width:767px){
         #sub-pill.home-sub-breadcrumbs{max-width:calc(100% - .35rem)!important;gap:.22rem!important}
-        #sub-pill.home-sub-breadcrumbs .home-breadcrumb-tab{height:32px;max-width:68vw;padding:0 11px;font-size:12px;border-radius:11px}
-        #sub-pill.home-sub-breadcrumbs .home-breadcrumb-sep{font-size:12px}
+        #sub-pill.home-sub-breadcrumbs .home-breadcrumb-tab{height:32px;max-width:68vw;padding:0 11px;font-size:16px;border-radius:11px}
+        #sub-pill.home-sub-breadcrumbs .home-breadcrumb-sep{font-size:16px}
       }
     `;
     document.head.appendChild(style);
@@ -622,9 +622,9 @@
         #class1-premium-learning-gate .premium-gate-body{padding:24px 24px 18px;text-align:center;background:linear-gradient(145deg,#fff7fb,#faf5ff 55%,#effcf8)}
         #class1-premium-learning-gate .premium-gate-icon{width:64px;height:64px;margin:0 auto 12px;border-radius:20px;display:flex;align-items:center;justify-content:center;border:1px solid #f9a8d4;background:#fff;font-size:32px;box-shadow:0 6px 18px rgba(236,72,153,.12)}
         #class1-premium-learning-gate .premium-gate-title{margin:0;color:#7e22ce;font-size:21px;line-height:1.25;font-weight:950}
-        #class1-premium-learning-gate .premium-gate-message{margin:10px auto 0;max-width:590px;color:#475467;font-size:15px;line-height:1.65;font-weight:850;white-space:pre-line}
+        #class1-premium-learning-gate .premium-gate-message{margin:10px auto 0;max-width:590px;color:#475467;font-size:16px;line-height:1.65;font-weight:850;white-space:pre-line}
         #class1-premium-learning-gate .premium-gate-actions{display:grid;grid-template-columns:1.2fr 1fr .8fr;gap:9px;padding:14px 16px 16px;border-top:1px solid #fce7f3;background:#fff}
-        #class1-premium-learning-gate .premium-gate-btn{min-height:46px;border-radius:14px;padding:8px 12px;font-size:13px;line-height:1.25;font-weight:950;transition:transform .15s ease,box-shadow .15s ease,filter .15s ease}
+        #class1-premium-learning-gate .premium-gate-btn{min-height:46px;border-radius:14px;padding:8px 12px;font-size:16px;line-height:1.25;font-weight:950;transition:transform .15s ease,box-shadow .15s ease,filter .15s ease}
         #class1-premium-learning-gate .premium-gate-btn:active{transform:translateY(1px)}
         #class1-premium-learning-gate .premium-gate-vip{border:0;color:#fff;background:linear-gradient(90deg,#ec4899,#8b5cf6);box-shadow:0 6px 16px rgba(139,92,246,.2)}
         #class1-premium-learning-gate .premium-gate-contact{border:1px solid #67e8f9;color:#0369a1;background:linear-gradient(90deg,#eff6ff,#ecfdf5)}
@@ -2275,7 +2275,7 @@
         <button id="account-back" class="back-btn" type="button">← Lớp 1</button>
       </div>
       <style>
-        .account-pending-contact{width:100%;min-height:48px;margin-top:.8rem;font-size:15px!important;font-weight:950!important;}
+        .account-pending-contact{width:100%;min-height:48px;margin-top:.8rem;font-size:16px!important;font-weight:950!important;}
       </style>
       <section class="account-page" aria-label="Tài khoản đang đăng nhập">
         <div class="account-page-hero">
@@ -2391,19 +2391,19 @@
       <style>
         .vip-request-heading h1{font-size:clamp(24px,2.2vw,30px)!important;}
         .vip-request-heading p{font-size:16px!important;line-height:1.45!important;font-weight:800!important;}
-        .account-request-page .access-request-note{font-size:15.5px!important;line-height:1.55!important;font-weight:850!important;}
+        .account-request-page .access-request-note{font-size:16px!important;line-height:1.55!important;font-weight:850!important;}
         .account-request-page .subject-choice strong{font-size:17px!important;line-height:1.3!important;font-weight:900!important;}
-        .account-request-page .subject-choice small{font-size:14.5px!important;line-height:1.4!important;font-weight:800!important;}
-        .account-request-page .access-request-summary{font-size:15.5px!important;line-height:1.4!important;font-weight:900!important;}
+        .account-request-page .subject-choice small{font-size:16px!important;line-height:1.4!important;font-weight:800!important;}
+        .account-request-page .access-request-summary{font-size:16px!important;line-height:1.4!important;font-weight:900!important;}
         .vip-request-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem;margin-top:.1rem}
-        .vip-request-actions button{width:100%;min-width:0;min-height:52px;margin:0!important;border-radius:14px;padding:.7rem .8rem;font-family:inherit;font-size:15px!important;font-weight:950;line-height:1.25}
+        .vip-request-actions button{width:100%;min-width:0;min-height:52px;margin:0!important;border-radius:14px;padding:.7rem .8rem;font-family:inherit;font-size:16px!important;font-weight:950;line-height:1.25}
         .vip-request-info{border:1px solid #d8b4fe;color:#6d28d9;background:linear-gradient(90deg,#faf5ff,#fdf2f8);box-shadow:0 4px 12px rgba(109,40,217,.08)}
         .vip-request-contact{border:1px solid #67e8f9;color:#0369a1;background:linear-gradient(90deg,#eff6ff,#ecfdf5);box-shadow:0 4px 12px rgba(3,105,161,.08)}
         .vip-request-submit{box-shadow:0 6px 16px rgba(139,92,246,.18)}
         @media(max-width:720px){
           .vip-request-actions{grid-template-columns:1fr}
           .account-request-page .subject-choice strong{font-size:16px!important}
-          .account-request-page .subject-choice small{font-size:14px!important}
+          .account-request-page .subject-choice small{font-size:16px!important}
         }
       </style>
       <div class="section-heading vip-request-heading">
