@@ -137,6 +137,8 @@ let currentUser = null;
 let starGreenCount = 0;
 let starRedCount = 0;
 let activeTopicId = null;
+let currentTopicKey = '';
+let currentTopicName = '';
 let activeExamContext = null;
 let activeRoadmapContext = null;
 let activeQuestionsList = [];
@@ -405,7 +407,11 @@ function showPremiumAccessPopup(featureName = 'chức năng này', accessState =
 
 function requirePremiumAccess(featureName) {
     if (hasPremiumAccess()) return true;
-    showPremiumAccessPopup(featureName);
+    if (typeof tvModuleCtx_?.requestPremiumAccess === 'function') {
+        tvModuleCtx_.requestPremiumAccess(featureName);
+    } else {
+        showPremiumAccessPopup(featureName);
+    }
     return false;
 }
 
@@ -770,7 +776,7 @@ async function renderDashboardGrid() {
 }
 
 async function startRandomExam(categoryKey) {
-    if (!requirePremiumAccess('Đấu trường đề thi')) return;
+    if (!requirePremiumAccess('Đề thi')) return;
     setAppShellRootMode_(false);
     stopSpeaking();
     const catKeywords = {
@@ -847,7 +853,6 @@ function updateExamTimerDisplay() {
 }
 
 function openExamHub() {
-    if (!requirePremiumAccess('Đấu trường đề thi')) return;
     setAppShellRootMode_(true);
     setMainTabActive_('exams');
     stopSpeaking();
@@ -1730,7 +1735,6 @@ function clickProgressOrExam(type) {
 // ==========================================
 function openTopic(topicNum, topicName, icon) {
     setAppShellRootMode_(false);
-    if (PREMIUM_TOPIC_IDS.has(Number(topicNum)) && !requirePremiumAccess(topicName)) return;
     stopSpeaking();
     activeTopicId = topicNum; activeExamContext = null; activeRoadmapContext = null;
     if (Number(topicNum) !== 12) {
@@ -2541,6 +2545,7 @@ function selectSubtopic(idx) {
     if (!pendingTopicQuiz) return;
     setAppShellRootMode_(false);
     const { topicNum, topicName, questions, groups, groupMap } = pendingTopicQuiz;
+    if (Number(topicNum) === 13 && !requirePremiumAccess('Ôn tập')) return;
     const subLabel = idx !== null ? groups[idx] : null;
     const pool = idx !== null ? groupMap[subLabel] : questions;
     const isTopic10Random = Number(topicNum) === 11 && subLabel === '__TOPIC10_RANDOM_ALL__';
@@ -2559,7 +2564,6 @@ function selectSubtopic(idx) {
 // Hàm openBaiHocHub thực tế nằm ở module TV1_BH_BT phía cuối file.
 // ==========================================
 function openBaiHocHubLegacyStub_() {
-    if (!requirePremiumAccess('Bài học')) return;
     stopSpeaking();
     clearInterval(quizTimerInterval);
     inBaiHocFlow = true;
@@ -4735,7 +4739,6 @@ function openMiniGameHub() {
     setMainTabActive_('games');
     inBaiHocFlow = false;
     stopSpeaking();
-    if (!requirePremiumAccess('Mini Game')) return;
     inMiniGameFlow = true;
     activeExamContext = null;
     activeRoadmapContext = null;
@@ -4843,7 +4846,6 @@ function setMainTabActive_(tabName) {
 }
 function refreshMainTabLocks_() { updatePremiumUI(); }
 function openReviewTab() {
-    if (!requirePremiumAccess('Ôn tập')) return;
     stopSpeaking();
     clearInterval(quizTimerInterval);
     setMainTabActive_('review');
@@ -4953,7 +4955,6 @@ function saveBaiHocCompletedSetTV1_(setObj) {
 }
 
 async function openBaiHocHub(semesterNumber = 1) {
-    if (!requirePremiumAccess('Bài học')) return;
     setAppShellRootMode_(true);
     setMainTabActive_('lessons');
     stopSpeaking();
@@ -5011,6 +5012,7 @@ function renderBaiHocHubTV1_(data, semesterNumber) {
 }
 
 async function openBaiHocByNumberTV1_(bai, pageNo = 1) {
+    if (!requirePremiumAccess('Bài học')) return;
     setAppShellRootMode_(false);
     stopSpeaking();
     inBaiHocFlow = true;
@@ -5164,7 +5166,6 @@ function saveRecentBaiTapIdsTV1_(bai, ids) {
 }
 
 async function openRoadmap(semesterNumber = 1) {
-    if (!requirePremiumAccess('Bài tập')) return;
     setAppShellRootMode_(true);
     setMainTabActive_('exercises');
     inBaiHocFlow = false;
@@ -5205,6 +5206,7 @@ function renderBaiTapGridTV1_(data, semesterNumber) {
 }
 
 function showLockedBaiTapTV1_(bai) {
+    if (!requirePremiumAccess('Bài tập')) return;
     showAppDialog(`Bài tập ${bai} chưa mở. Bé cần đạt từ 80% ở Bài tập trước để mở khóa nhé!`, { type:'warning', title:'Bài tập đang khóa', icon:'🔒' });
 }
 
@@ -5249,6 +5251,7 @@ function getQuestionsForBaiTapTV1_(bt) {
 }
 
 async function selectBaiTapTV1_(bai) {
+    if (!requirePremiumAccess('Bài tập')) return;
     setAppShellRootMode_(false);
     stopSpeaking();
     showLoadingOverlay(`Đang chuẩn bị Bài tập ${bai}...`);
