@@ -1633,7 +1633,7 @@
           min-width:0;
         }
         .home-feature-card .card-desc{
-          font-weight:400!important;
+          font-weight:750!important;
         }
         .home-feature-ai-badge{
           display:inline-flex;
