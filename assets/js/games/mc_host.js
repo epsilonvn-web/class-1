@@ -2,7 +2,7 @@
   "use strict";
 
   const MODULE_KEY = "mcHost";
-  const STYLE_ID = "class1-games-mc-host-style";
+  const STYLE_ID = "class1-games-mc-host-style-v2";
   const GAME_NUMBER = 5;
 
   let activeContext = null;
@@ -181,6 +181,29 @@
     })
   ]);
 
+  /* =====================================================================
+     Giao diện mới: tập từng câu, chữ to, cô đọc mẫu, bé thu giọng và nghe lại.
+     ===================================================================== */
+  const DONE_KEY = "class1-mc-host-done";
+  let sentenceIndex = 0;
+  let mediaRecorder = null;
+  let recordChunks = [];
+  let recordUrl = "";
+  let recordStream = null;
+  let recording = false;
+
+  const doneSet = (() => { try { return new Set(JSON.parse(window.localStorage.getItem(DONE_KEY) || "[]")); } catch (_) { return new Set(); } })();
+  function markDone(id) {
+    doneSet.add(id);
+    try { window.localStorage.setItem(DONE_KEY, JSON.stringify([...doneSet])); } catch (_) {}
+  }
+
+  /* Tách đoạn dẫn thành từng câu để bé tập */
+  function sentencesOf(text) {
+    return String(text || "").replace(/\s+/g, " ").trim().match(/[^.!?…]+(?:[.!?…]+["”']?|$)/g)?.map((s) => s.trim()).filter(Boolean) || [String(text || "")];
+  }
+  const cuesOf = (cue) => String(cue || "").split("·").map((c) => c.trim()).filter(Boolean);
+
   function programById(id) {
     return PROGRAMS.find((item) => item.id === id) || null;
   }
@@ -192,18 +215,58 @@
     stageTimer = 0;
   }
 
+  /* ---------- Thu giọng của bé ---------- */
+  const canRecord = () => typeof window !== "undefined" && typeof window.MediaRecorder === "function" && navigator.mediaDevices && typeof navigator.mediaDevices.getUserMedia === "function";
+  function clearRecording() {
+    if (recordUrl) { try { URL.revokeObjectURL(recordUrl); } catch (_) {} }
+    recordUrl = "";
+  }
+  function stopRecording() {
+    if (mediaRecorder && mediaRecorder.state !== "inactive") { try { mediaRecorder.stop(); } catch (_) {} }
+    if (recordStream) { recordStream.getTracks().forEach((t) => { try { t.stop(); } catch (_) {} }); }
+    recordStream = null;
+    recording = false;
+  }
+  async function toggleRecording(onChange) {
+    if (recording) { stopRecording(); return; }
+    stopNarration();
+    try {
+      recordStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (_) {
+      setVoiceStatus("Chưa mở được micro. Con nhờ người lớn cho phép dùng micro nhé.");
+      return;
+    }
+    clearRecording();
+    recordChunks = [];
+    try { mediaRecorder = new MediaRecorder(recordStream); } catch (_) { setVoiceStatus("Máy này chưa thu được âm thanh."); stopRecording(); return; }
+    mediaRecorder.ondataavailable = (e) => { if (e.data && e.data.size) recordChunks.push(e.data); };
+    mediaRecorder.onstop = () => {
+      if (recordChunks.length) recordUrl = URL.createObjectURL(new Blob(recordChunks, { type: mediaRecorder.mimeType || "audio/webm" }));
+      recording = false;
+      onChange();
+    };
+    mediaRecorder.start();
+    recording = true;
+    onChange();
+    /* Tự dừng sau 30 giây để không thu quá dài */
+    window.setTimeout(() => { if (recording) stopRecording(); }, 30000);
+  }
+  function playRecording() {
+    if (!recordUrl) return;
+    stopNarration();
+    try { const a = new Audio(recordUrl); a.play().catch(() => {}); } catch (_) {}
+  }
+
+  /* ---------- Giọng đọc mẫu ---------- */
   function stopNarration() {
     audioNonce += 1;
     speechUtterance = null;
     fallbackQueue = [];
     fallbackQueueIndex = 0;
-    try {
-      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-    } catch (_) {}
+    try { if ("speechSynthesis" in window) window.speechSynthesis.cancel(); } catch (_) {}
     try {
       if (narrationAudio) {
         narrationAudio.pause();
-        narrationAudio.currentTime = 0;
         narrationAudio.removeAttribute("src");
         narrationAudio.load();
       }
@@ -213,28 +276,22 @@
   function stopEverything() {
     stopTimers();
     stopNarration();
+    stopRecording();
     stageRunning = false;
     stagePaused = false;
   }
 
   function cleanSpeechText(value) {
-    return String(value || "")
-      .replace(/[🎒🎂🎵📚🎨🐘⚽🌳🧧👩‍🏫🌟🏆😊👀🔊⏸🙌👉🎤🎉🕯️🔢🎁⭐👏✨🧠❤️⚡🤝🏃🏅🌱🗑️💧🌿❓🙏🌸🎲📸🌷🐾🦁🌊👂]/gu, " ")
-      .replace(/\s+/g, " ")
-      .trim();
+    return String(value || "").replace(/[\p{Extended_Pictographic}\u{FE0F}\u{200D}]/gu, " ").replace(/\s+/g, " ").trim();
   }
 
-  function banMaiVoice() {
+  /* Ưu tiên giọng Ban Mai, nếu không có thì dùng bất kỳ giọng tiếng Việt nào trong máy */
+  function deviceVoice() {
     if (!("speechSynthesis" in window) || typeof window.speechSynthesis.getVoices !== "function") return null;
     const voices = window.speechSynthesis.getVoices() || [];
-    return voices.find((voice) => /ban\s*mai/i.test(String(voice.name || ""))) || null;
+    return voices.find((v) => /ban\s*mai/i.test(String(v.name || ""))) || voices.find((v) => /^vi(?:[-_]|$)/i.test(String(v.lang || ""))) || null;
   }
-
-  function vietnameseVoice() {
-    if (!("speechSynthesis" in window) || typeof window.speechSynthesis.getVoices !== "function") return null;
-    const voices = window.speechSynthesis.getVoices() || [];
-    return voices.find((voice) => /^vi(?:-|$)/i.test(String(voice.lang || ""))) || null;
-  }
+  if ("speechSynthesis" in window) { try { window.speechSynthesis.getVoices(); } catch (_) {} }
 
   function ttsFallbackUrl(text) {
     return `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent(text)}`;
@@ -243,108 +300,82 @@
   function setVoiceStatus(message) {
     const host = activeContext && activeContext.host;
     const node = host && host.querySelector("#ee-mc-voice-status");
-    if (node) node.textContent = message;
+    if (node) { node.hidden = !message; node.textContent = message || ""; }
   }
 
-  function speak(text) {
+  function splitSpeechChunks(text, maxLength = 170) {
+    const out = [];
+    let cur = "";
+    sentencesOf(text).forEach((s) => {
+      if (!cur) cur = s;
+      else if ((cur + " " + s).length <= maxLength) cur += " " + s;
+      else { out.push(cur); cur = s; }
+    });
+    if (cur) out.push(cur);
+    return out.flatMap((c) => {
+      if (c.length <= maxLength) return [c];
+      const parts = []; let buf = "";
+      c.split(" ").forEach((w) => { if (!buf || (buf + " " + w).length <= maxLength) buf = buf ? buf + " " + w : w; else { parts.push(buf); buf = w; } });
+      if (buf) parts.push(buf);
+      return parts;
+    });
+  }
+
+  /* speak(text, onEnd): onEnd được gọi khi cô đọc xong */
+  function speak(text, onEnd) {
     const clean = cleanSpeechText(text);
     if (!clean) return;
     stopNarration();
     const nonce = audioNonce;
-    const preferred = banMaiVoice();
-    if (preferred && "speechSynthesis" in window && typeof window.SpeechSynthesisUtterance === "function") {
-      try {
-        const utterance = new window.SpeechSynthesisUtterance(clean);
-        utterance.lang = "vi-VN";
-        utterance.voice = preferred;
-        utterance.rate = 0.96;
-        utterance.pitch = 1.06;
-        utterance.volume = 1;
-        utterance.onend = () => { if (nonce === audioNonce) speechUtterance = null; };
-        utterance.onerror = () => {
-          if (nonce !== audioNonce) return;
-          speakFallback(clean, nonce);
-        };
-        speechUtterance = utterance;
-        setVoiceStatus("Đang dùng giọng Ban Mai trên thiết bị.");
-        window.speechSynthesis.speak(utterance);
-        return;
-      } catch (_) {}
+    const done = () => { if (nonce === audioNonce && typeof onEnd === "function") onEnd(); };
+    const voice = deviceVoice();
+    if (voice && typeof window.SpeechSynthesisUtterance === "function") {
+      const chunks = splitSpeechChunks(clean);
+      let i = 0;
+      const next = () => {
+        if (nonce !== audioNonce) return;
+        if (i >= chunks.length) { done(); return; }
+        try {
+          const u = new window.SpeechSynthesisUtterance(chunks[i++]);
+          u.lang = voice.lang || "vi-VN"; u.voice = voice; u.rate = 0.92; u.pitch = 1.06;
+          u.onend = next;
+          u.onerror = (e) => { if (nonce === audioNonce && e.error !== "interrupted" && e.error !== "canceled") speakFallback(clean, nonce, done); };
+          speechUtterance = u;
+          window.speechSynthesis.speak(u);
+        } catch (_) { speakFallback(clean, nonce, done); }
+      };
+      next();
+      return;
     }
-    speakFallback(clean, nonce);
+    speakFallback(clean, nonce, done);
   }
 
-function splitSpeechChunks(text, maxLength = 170) {
-    const source = String(text || "").replace(/\s+/g, " ").trim();
-    if (!source) return [];
-    const sentences = source.match(/[^.!?]+[.!?]?/g) || [source];
-    const chunks = [];
-    let current = "";
-    const pushCurrent = () => {
-      const value = current.trim();
-      if (value) chunks.push(value);
-      current = "";
-    };
-    sentences.forEach((sentence) => {
-      const cleanSentence = sentence.trim();
-      if (!cleanSentence) return;
-      if (cleanSentence.length <= maxLength) {
-        const joined = current ? `${current} ${cleanSentence}` : cleanSentence;
-        if (joined.length <= maxLength) current = joined;
-        else { pushCurrent(); current = cleanSentence; }
-        return;
-      }
-      pushCurrent();
-      const words = cleanSentence.split(/\s+/);
-      let part = "";
-      words.forEach((word) => {
-        const joined = part ? `${part} ${word}` : word;
-        if (joined.length > maxLength && part) {
-          chunks.push(part);
-          part = word;
-        } else {
-          part = joined;
-        }
-      });
-      if (part) chunks.push(part);
-    });
-    pushCurrent();
-    return chunks;
-  }
-
-  function speakFallback(text, nonce) {
+  function speakFallback(text, nonce, done) {
     if (!narrationAudio || nonce !== audioNonce) return;
     fallbackQueue = splitSpeechChunks(text);
     fallbackQueueIndex = 0;
     if (!fallbackQueue.length) return;
-    setVoiceStatus("Thiết bị chưa có giọng Ban Mai — đang dùng giọng tiếng Việt dự phòng.");
-    playNextFallbackChunk(nonce);
+    playNextFallbackChunk(nonce, done);
   }
 
-  function playNextFallbackChunk(nonce) {
+  function playNextFallbackChunk(nonce, done) {
     if (!narrationAudio || nonce !== audioNonce) return;
     const chunk = fallbackQueue[fallbackQueueIndex];
     if (!chunk) return;
+    const fail = () => { if (nonce === audioNonce) setVoiceStatus("Chưa phát được giọng đọc. Con nhờ người lớn kiểm tra loa và mạng nhé."); };
     try {
-      narrationAudio.pause();
-      narrationAudio.currentTime = 0;
       narrationAudio.src = ttsFallbackUrl(chunk);
       narrationAudio.playbackRate = 0.96;
       narrationAudio.onended = () => {
         if (nonce !== audioNonce) return;
         fallbackQueueIndex += 1;
-        if (fallbackQueueIndex < fallbackQueue.length) playNextFallbackChunk(nonce);
+        if (fallbackQueueIndex < fallbackQueue.length) playNextFallbackChunk(nonce, done);
+        else if (done) done();
       };
-      narrationAudio.onerror = () => {
-        if (nonce === audioNonce) setVoiceStatus("Chưa phát được âm thanh. Bé vẫn có thể đọc theo phần chữ.");
-      };
+      narrationAudio.onerror = fail;
       const promise = narrationAudio.play();
-      if (promise && typeof promise.catch === "function") promise.catch(() => {
-        if (nonce === audioNonce) setVoiceStatus("Chưa phát được âm thanh. Bé vẫn có thể đọc theo phần chữ.");
-      });
-    } catch (_) {
-      setVoiceStatus("Chưa phát được âm thanh. Bé vẫn có thể đọc theo phần chữ.");
-    }
+      if (promise && typeof promise.catch === "function") promise.catch(fail);
+    } catch (_) { fail(); }
   }
 
   function setBanner(program = null, segmentItem = null) {
@@ -362,49 +393,116 @@ function splitSpeechChunks(text, maxLength = 170) {
   }
 
   function ensureStyles() {
+    if (!document.getElementById("class1-game-explorer-font")) {
+      const link = document.createElement("link");
+      link.id = "class1-game-explorer-font";
+      link.rel = "stylesheet";
+      link.href = "https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap&subset=vietnamese";
+      document.head.appendChild(link);
+    }
     if (document.getElementById(STYLE_ID)) return;
     const style = document.createElement("style");
     style.id = STYLE_ID;
     style.textContent = `
-      .ee-mc-page{width:100%;max-width:82rem;margin:0 auto;color:#334155;font-family:inherit}
-      .ee-mc-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1rem}
-      .ee-mc-head h1{margin:0;font-size:clamp(24px,3vw,36px);line-height:1.1;color:#7e22ce;font-weight:1000}
-      .ee-mc-head p{margin:.35rem 0 0;font-size:16px;font-weight:800;color:#64748b;line-height:1.5}
-      .ee-mc-back,.ee-mc-btn{min-height:44px;border:1px solid #e9d5ff;border-radius:14px;background:#fff;padding:.72rem 1rem;font:inherit;font-size:15px;font-weight:1000;color:#6d28d9;cursor:pointer;box-shadow:0 3px 10px rgba(76,29,149,.08)}
-      .ee-mc-btn.primary{border:0;color:#fff;background:linear-gradient(90deg,#ec4899,#8b5cf6);box-shadow:0 6px 16px rgba(139,92,246,.22)}
-      .ee-mc-btn.teal{border:0;color:#fff;background:linear-gradient(90deg,#3b82f6,#10b981)}
-      .ee-mc-btn:disabled{opacity:.45;cursor:not-allowed}
+      .ee-mc-page{width:100%;max-width:82rem;margin:0 auto;color:#344054;font-family:"Baloo 2","Nunito","Segoe UI",system-ui,sans-serif}
+      .ee-mc-page button{font-family:inherit}
+      .ee-mc-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.8rem;flex-wrap:wrap}
+      .ee-mc-head h1{margin:0;font-size:clamp(26px,3vw,36px);line-height:1.15;color:#5B216E;font-weight:800}
+      .ee-mc-head p{margin:.2rem 0 0;font-size:17px;font-weight:600;color:#667085}
+      .ee-mc-btn{min-height:52px;border:2px solid #E9D5FF;border-radius:16px;background:#fff;padding:.4rem 1rem;font-size:18px;font-weight:700;color:#5B216E;cursor:pointer}
+      .ee-mc-btn:hover:not(:disabled){border-color:#C4B5FD}
+      .ee-mc-btn.primary{border:0;color:#fff;background:linear-gradient(90deg,#EC4899,#8B5CF6);box-shadow:0 6px 16px rgba(139,92,246,.22)}
+      .ee-mc-btn.teal{border:0;color:#fff;background:linear-gradient(90deg,#3B82F6,#10B981)}
+      .ee-mc-btn.soft{border-color:#6EE7B7;background:linear-gradient(90deg,#ECFDF5,#E0F2FE);color:#047857}
+      .ee-mc-btn.rec{border-color:#FDA4AF;background:#FFF1F2;color:#BE123C}
+      .ee-mc-btn.rec.on{border-color:#E11D48;background:#E11D48;color:#fff;animation:eeMcPulse 1.2s infinite}
+      @keyframes eeMcPulse{50%{box-shadow:0 0 0 8px rgba(225,29,72,.18)}}
+      .ee-mc-btn:disabled{opacity:.4;cursor:not-allowed}
+      .ee-mc-btn:focus-visible,.ee-mc-card:focus-visible,.ee-mc-part:focus-visible,.ee-mc-sent:focus-visible{outline:3px solid #F472B6;outline-offset:2px}
+      .ee-mc-voice{margin:.5rem 0 0;padding:.4rem .7rem;border-radius:12px;background:#FFF7ED;color:#C2410C;font-size:16px;font-weight:600}
       .ee-mc-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.8rem}
-      .ee-mc-card{min-width:0;border:1px solid var(--mc-border);background:var(--mc-bg);border-radius:18px;padding:1rem;text-align:left;cursor:pointer;font:inherit;color:#334155;box-shadow:0 5px 14px rgba(76,29,149,.07);transition:transform .16s,box-shadow .16s}
+      .ee-mc-card{position:relative;min-width:0;border:2px solid var(--mc-border);background:var(--mc-bg);border-radius:20px;padding:.9rem;text-align:left;cursor:pointer;color:#344054;transition:transform .16s,box-shadow .16s}
       .ee-mc-card:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(76,29,149,.12)}
-      .ee-mc-card .icon{font-size:34px;line-height:1}
-      .ee-mc-card h2{margin:.65rem 0 .35rem;font-size:18px;line-height:1.25;font-weight:1000;color:var(--mc-title);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-      .ee-mc-card p{margin:0;color:#64748b;font-size:14px;font-weight:800;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-      .ee-mc-badge{display:inline-flex;margin-top:.65rem;border:1px solid var(--mc-border);background:rgba(255,255,255,.72);color:var(--mc-title);border-radius:999px;padding:.3rem .55rem;font-size:12px;font-weight:1000}
-      .ee-mc-tone-pink{--mc-bg:#fff1f7;--mc-border:#f9a8d4;--mc-title:#be185d}.ee-mc-tone-purple{--mc-bg:#f7f1ff;--mc-border:#d8b4fe;--mc-title:#7e22ce}.ee-mc-tone-teal{--mc-bg:#effcf8;--mc-border:#99f6e4;--mc-title:#0f766e}.ee-mc-tone-amber{--mc-bg:#fff9e8;--mc-border:#fde68a;--mc-title:#b45309}
-      .ee-mc-intro{border:1px solid #eadcff;border-radius:22px;background:linear-gradient(135deg,#fff7fb,#f6f1ff);padding:1.05rem;box-shadow:0 6px 18px rgba(76,29,149,.08)}
-      .ee-mc-intro-top{display:grid;grid-template-columns:minmax(220px,.82fr) minmax(0,1.4fr);gap:1rem;align-items:stretch}
-      .ee-mc-stage-preview{border:1px solid #f9a8d4;border-radius:18px;min-height:260px;background:linear-gradient(#fff8fb,#f8edff);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;padding:1rem}
-      .ee-mc-curtain{position:absolute;top:0;bottom:0;width:26%;background:linear-gradient(90deg,#be185d,#ec4899);opacity:.9}.ee-mc-curtain.left{left:0;clip-path:polygon(0 0,100% 0,70% 100%,0 100%)}.ee-mc-curtain.right{right:0;clip-path:polygon(0 0,100% 0,100% 100%,30% 100%)}
-      .ee-mc-stage-core{position:relative;z-index:2}.ee-mc-stage-core .big{font-size:64px}.ee-mc-stage-core strong{display:block;margin-top:.45rem;font-size:22px;color:#7e22ce}.ee-mc-stage-core span{display:block;margin-top:.25rem;font-size:14px;font-weight:900;color:#64748b}
-      .ee-mc-guide{border:1px solid #d8b4fe;border-radius:18px;background:#fff;padding:1rem}.ee-mc-guide h2{margin:0 0 .55rem;color:#7e22ce;font-size:22px;font-weight:1000}.ee-mc-guide p{margin:0;color:#475569;font-size:16px;font-weight:800;line-height:1.65}.ee-mc-guide-actions{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}.ee-mc-voice{margin-top:.65rem;color:#64748b;font-size:13px;font-weight:900}
-      .ee-mc-skills{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.55rem;margin-top:1rem}.ee-mc-skill{border:1px solid #e9d5ff;border-radius:14px;background:#fff;padding:.75rem;text-align:center;font-size:13px;font-weight:1000;color:#6d28d9}
-      .ee-mc-outline{margin-top:1rem;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem}.ee-mc-outline button{border:1px solid #e2e8f0;background:#fff;border-radius:14px;padding:.75rem;text-align:left;font:inherit;cursor:pointer}.ee-mc-outline strong{display:block;color:#334155;font-size:14px}.ee-mc-outline span{display:block;margin-top:.2rem;color:#64748b;font-size:12px;font-weight:800}
-      .ee-mc-practice{display:grid;grid-template-columns:minmax(280px,.8fr) minmax(0,1.35fr);gap:1rem;align-items:stretch}
-      .ee-mc-stage{border:1px solid #f9a8d4;border-radius:22px;background:linear-gradient(180deg,#fff7fb,#f3e8ff);min-height:430px;position:relative;overflow:hidden;padding:1rem;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}.ee-mc-stage:after{content:"";position:absolute;left:10%;right:10%;bottom:38px;height:14px;border-radius:50%;background:rgba(124,58,237,.12)}
-      .ee-mc-stage .spot{position:absolute;top:-60px;width:190px;height:260px;background:linear-gradient(rgba(255,255,255,.9),rgba(255,255,255,0));clip-path:polygon(40% 0,60% 0,100% 100%,0 100%);opacity:.65}.ee-mc-stage .spot.a{left:5%;transform:rotate(10deg)}.ee-mc-stage .spot.b{right:5%;transform:rotate(-10deg)}
-      .ee-mc-stage-icon{font-size:82px;position:relative;z-index:2}.ee-mc-stage h2{position:relative;z-index:2;margin:.5rem 0 .25rem;color:#7e22ce;font-size:24px}.ee-mc-stage p{position:relative;z-index:2;margin:0;color:#64748b;font-size:15px;font-weight:900}.ee-mc-focus{position:relative;z-index:2;margin-top:1rem;border:1px solid #d8b4fe;border-radius:999px;background:#fff;padding:.5rem .75rem;color:#6d28d9;font-size:13px;font-weight:1000}
-      .ee-mc-script{border:1px solid #e9d5ff;border-radius:22px;background:#fff;padding:1rem;box-shadow:0 5px 16px rgba(76,29,149,.07);display:flex;flex-direction:column;min-width:0}.ee-mc-progress{display:flex;align-items:center;gap:.65rem}.ee-mc-progress strong{font-size:14px;color:#7e22ce;white-space:nowrap}.ee-mc-track{height:10px;background:#f1e8ff;border-radius:999px;overflow:hidden;flex:1}.ee-mc-track span{display:block;height:100%;background:linear-gradient(90deg,#ec4899,#8b5cf6);border-radius:inherit}.ee-mc-script h2{margin:.9rem 0 .35rem;color:#334155;font-size:clamp(22px,2.7vw,32px);font-weight:1000}.ee-mc-cue{display:inline-flex;align-self:flex-start;border:1px solid #fde68a;background:#fffbeb;color:#92400e;border-radius:999px;padding:.4rem .65rem;font-size:13px;font-weight:1000}.ee-mc-copy{margin:.9rem 0 0;font-size:clamp(20px,2.35vw,29px);font-weight:900;line-height:1.65;color:#1f2937}.ee-mc-tip{margin-top:1rem;border:1px solid #99f6e4;background:#f0fdfa;border-radius:15px;padding:.75rem .85rem;color:#0f766e;font-size:14px;font-weight:900;line-height:1.5}.ee-mc-script-actions{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1rem}.ee-mc-nav{display:grid;grid-template-columns:1fr auto 1fr;gap:.6rem;align-items:center;margin-top:auto;padding-top:1rem}.ee-mc-nav .count{height:44px;min-width:72px;border:1px solid #e9d5ff;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:1000;color:#7e22ce;background:#faf5ff}.ee-mc-nav .ee-mc-btn:last-child{justify-self:stretch}.ee-mc-nav .ee-mc-btn:first-child{justify-self:stretch}
-      .ee-mc-stage-mode{border:1px solid #d8b4fe;border-radius:24px;background:linear-gradient(180deg,#1e1b4b,#312e81);color:#fff;padding:1rem;overflow:hidden;position:relative;min-height:520px}.ee-mc-stage-mode .lights{position:absolute;inset:0;background:radial-gradient(circle at 20% 0,rgba(251,207,232,.32),transparent 30%),radial-gradient(circle at 80% 0,rgba(167,243,208,.26),transparent 30%);pointer-events:none}.ee-mc-live-head,.ee-mc-live-body,.ee-mc-live-controls{position:relative;z-index:2}.ee-mc-live-head{display:flex;align-items:center;justify-content:space-between;gap:.8rem;flex-wrap:wrap}.ee-mc-live-head h2{margin:0;font-size:22px}.ee-mc-live-badge{border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:.4rem .65rem;font-size:13px;font-weight:1000;background:rgba(255,255,255,.1)}.ee-mc-live-body{max-width:900px;margin:2.1rem auto 1.5rem;text-align:center}.ee-mc-live-icon{font-size:72px}.ee-mc-live-title{margin:.5rem 0 .35rem;font-size:18px;font-weight:1000;color:#fbcfe8}.ee-mc-live-text{font-size:clamp(26px,3.3vw,42px);font-weight:900;line-height:1.55;text-wrap:balance}.ee-mc-live-cue{margin-top:1rem;font-size:14px;font-weight:900;color:#fde68a}.ee-mc-live-controls{display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap}.ee-mc-stage-mode .ee-mc-btn{background:rgba(255,255,255,.95)}.ee-mc-countdown{font-size:96px;font-weight:1000;color:#f9a8d4;text-shadow:0 0 32px rgba(236,72,153,.45)}
-      .ee-mc-finish{border:1px solid #d8b4fe;border-radius:24px;background:linear-gradient(135deg,#fff7fb,#f4f0ff);padding:1.2rem;text-align:center}.ee-mc-finish .big{font-size:64px}.ee-mc-finish h2{margin:.35rem 0;color:#7e22ce;font-size:30px}.ee-mc-finish p{margin:.35rem auto;color:#475569;max-width:760px;font-size:16px;font-weight:800;line-height:1.6}.ee-mc-selfcheck{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.6rem;max-width:900px;margin:1rem auto}.ee-mc-check{border:1px solid #e9d5ff;background:#fff;border-radius:15px;padding:.75rem;font:inherit;font-size:13px;font-weight:1000;color:#6d28d9;cursor:pointer}.ee-mc-check.done{background:#ecfdf5;border-color:#6ee7b7;color:#047857}.ee-mc-finish-actions{display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
-      @media(max-width:1000px){.ee-mc-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.ee-mc-intro-top,.ee-mc-practice{grid-template-columns:1fr}.ee-mc-stage{min-height:300px}.ee-mc-skills{grid-template-columns:repeat(3,minmax(0,1fr))}}
-      @media(max-width:767px){.ee-mc-head{align-items:center}.ee-mc-head h1{font-size:24px}.ee-mc-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem}.ee-mc-card{padding:.8rem}.ee-mc-card h2{font-size:16px}.ee-mc-outline{grid-template-columns:1fr}.ee-mc-skills,.ee-mc-selfcheck{grid-template-columns:repeat(2,minmax(0,1fr))}.ee-mc-copy{font-size:20px;line-height:1.6}.ee-mc-stage-mode{min-height:440px}.ee-mc-live-text{font-size:26px}.ee-mc-nav{gap:.4rem}.ee-mc-nav .ee-mc-btn{padding:.65rem .55rem;font-size:13px}}
+      .ee-mc-card .icon{font-size:40px;line-height:1}
+      .ee-mc-card h2{margin:.5rem 0 .2rem;font-size:20px;line-height:1.25;font-weight:800;color:var(--mc-title)}
+      .ee-mc-card p{margin:0;color:#667085;font-size:15.5px;font-weight:600;line-height:1.35}
+      .ee-mc-card .done{position:absolute;right:10px;top:10px;padding:0 .55rem;border-radius:999px;background:#10B981;color:#fff;font-size:14px;font-weight:700}
+      .ee-mc-tone-pink{--mc-bg:#FFF1F7;--mc-border:#F9A8D4;--mc-title:#BE185D}.ee-mc-tone-purple{--mc-bg:#F5F3FF;--mc-border:#D8B4FE;--mc-title:#6D28D9}.ee-mc-tone-teal{--mc-bg:#ECFDF5;--mc-border:#99F6E4;--mc-title:#0F766E}.ee-mc-tone-amber{--mc-bg:#FFFBEB;--mc-border:#FDE68A;--mc-title:#B45309}
+      .ee-mc-intro{display:grid;grid-template-columns:minmax(220px,.7fr) minmax(0,1.3fr);gap:1rem;align-items:stretch}
+      .ee-mc-preview{border:2px solid #F9A8D4;border-radius:22px;min-height:240px;background:linear-gradient(#FFF8FB,#F8EDFF);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;padding:1rem}
+      .ee-mc-curtain{position:absolute;top:0;bottom:0;width:24%;background:linear-gradient(90deg,#BE185D,#EC4899);opacity:.9}.ee-mc-curtain.left{left:0;clip-path:polygon(0 0,100% 0,70% 100%,0 100%)}.ee-mc-curtain.right{right:0;clip-path:polygon(0 0,100% 0,100% 100%,30% 100%)}
+      .ee-mc-preview .core{position:relative;z-index:2;font-size:70px;line-height:1}
+      .ee-mc-guide{border:2px solid #E9D5FF;border-radius:22px;background:#fff;padding:1rem;display:flex;flex-direction:column;gap:.7rem}
+      .ee-mc-bubble{display:flex;align-items:center;gap:.6rem;border:2px solid #F9A8D4;border-radius:18px;background:#FFF1F7;padding:.55rem .8rem;color:#BE185D;font-size:19px;font-weight:700;line-height:1.4}
+      .ee-mc-bubble .ico{font-size:30px}.ee-mc-bubble .txt{flex:1}
+      .ee-mc-say{flex:0 0 auto;min-width:50px;min-height:50px;border-radius:14px;border:2px solid #F9A8D4;background:#fff;cursor:pointer;font-size:22px}
+      .ee-mc-skills{display:flex;flex-wrap:wrap;gap:.4rem}
+      .ee-mc-skill{border:2px solid #E9D5FF;border-radius:999px;background:#FAF5FF;padding:.15rem .75rem;font-size:16px;font-weight:700;color:#6D28D9}
+      .ee-mc-actions{display:flex;flex-wrap:wrap;gap:.6rem}
+      .ee-mc-parts{margin-top:1rem;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.6rem}
+      .ee-mc-part{display:flex;flex-direction:column;align-items:center;gap:.15rem;border:2px solid #E9D5FF;border-radius:18px;background:#fff;padding:.6rem .4rem;cursor:pointer;text-align:center;color:#5B216E}
+      .ee-mc-part:hover{border-color:#C4B5FD}
+      .ee-mc-part .n{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#EC4899,#8B5CF6);color:#fff;font-size:18px;font-weight:800}
+      .ee-mc-part .e{font-size:24px;line-height:1.2}
+      .ee-mc-part strong{font-size:16px;font-weight:700;line-height:1.2}
+      .ee-mc-prac{border:2px solid #E9D5FF;border-radius:24px;background:#fff;padding:1rem;display:flex;flex-direction:column;gap:.8rem}
+      .ee-mc-prac-top{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+      .ee-mc-prac-top h2{margin:0;font-size:26px;font-weight:800;color:#5B216E;flex:1;min-width:200px}
+      .ee-mc-dots{display:flex;gap:6px}
+      .ee-mc-dots span{width:22px;height:22px;border-radius:50%;background:#EDE9FE}
+      .ee-mc-dots span.on{background:linear-gradient(135deg,#EC4899,#8B5CF6)}
+      .ee-mc-dots span.past{background:#10B981}
+      .ee-mc-cues{display:flex;flex-wrap:wrap;gap:.4rem}
+      .ee-mc-cue{border:2px solid #FDE68A;border-radius:999px;background:#FFFBEB;color:#B45309;padding:.1rem .8rem;font-size:17px;font-weight:700}
+      .ee-mc-sents{display:flex;flex-direction:column;gap:.5rem}
+      .ee-mc-sent{display:flex;align-items:flex-start;gap:.6rem;border:2px solid transparent;border-radius:18px;background:#FAFAFA;padding:.5rem .8rem;text-align:left;cursor:pointer;color:#98A2B3;font-size:19px;font-weight:600;line-height:1.45;transition:background .15s,color .15s}
+      .ee-mc-sent .k{flex:0 0 30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#EDE9FE;color:#6D28D9;font-size:16px;font-weight:800;margin-top:.15rem}
+      .ee-mc-sent.done{color:#475467;background:#F0FDF4}.ee-mc-sent.done .k{background:#10B981;color:#fff}
+      .ee-mc-sent.now{border-color:#EC4899;background:#FFF1F7;color:#3B0764;font-size:clamp(22px,2.6vw,30px);font-weight:800;line-height:1.4}
+      .ee-mc-sent.now .k{background:linear-gradient(135deg,#EC4899,#8B5CF6);color:#fff;flex-basis:36px;height:36px;font-size:19px}
+      .ee-mc-sent.speaking{background:#FEF9C3;border-color:#FACC15}
+      .ee-mc-tip{border:2px solid #7DD3FC;border-radius:16px;background:#F0F9FF;padding:.5rem .8rem;color:#0369A1;font-size:17px;font-weight:700}
+      .ee-mc-tools{display:flex;flex-wrap:wrap;gap:.5rem}
+      .ee-mc-nav{display:flex;gap:.6rem;justify-content:space-between;flex-wrap:wrap;border-top:2px dashed #EDE9FE;padding-top:.7rem}
+      .ee-mc-stage-mode{border-radius:26px;background:linear-gradient(180deg,#1E1B4B,#312E81);color:#fff;padding:1rem 1.2rem;position:relative;overflow:hidden;min-height:520px;display:flex;flex-direction:column}
+      .ee-mc-stage-mode .lights{position:absolute;inset:0;background:radial-gradient(circle at 20% 0,rgba(251,207,232,.32),transparent 30%),radial-gradient(circle at 80% 0,rgba(165,243,252,.25),transparent 30%);pointer-events:none}
+      .ee-mc-live-head{position:relative;display:flex;align-items:center;justify-content:space-between;gap:.8rem;flex-wrap:wrap}
+      .ee-mc-live-head h2{margin:0;font-size:24px;font-weight:800}
+      .ee-mc-live-badge{border:2px solid rgba(255,255,255,.35);border-radius:999px;padding:.1rem .8rem;font-size:16px;font-weight:700;background:rgba(255,255,255,.1)}
+      .ee-mc-live-body{position:relative;flex:1;max-width:980px;margin:1.2rem auto;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:.6rem}
+      .ee-mc-live-title{font-size:20px;font-weight:800;color:#FBCFE8}
+      .ee-mc-live-text{font-size:clamp(24px,3vw,38px);font-weight:700;line-height:1.5}
+      .ee-mc-live-text span{color:rgba(255,255,255,.35);transition:color .3s}
+      .ee-mc-live-text span.now{color:#FDE68A}
+      .ee-mc-live-text span.past{color:rgba(255,255,255,.6)}
+      .ee-mc-live-cue{font-size:18px;font-weight:700;color:#FDE68A}
+      .ee-mc-countdown{font-size:120px;font-weight:800;line-height:1;color:#FDE68A}
+      .ee-mc-live-controls{position:relative;display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap}
+      .ee-mc-stage-mode .ee-mc-btn{background:#fff;color:#3B0764;border-color:#fff}
+      .ee-mc-stage-mode .ee-mc-btn.primary{background:linear-gradient(90deg,#EC4899,#8B5CF6);color:#fff}
+      .ee-mc-speed{display:inline-flex;border-radius:16px;overflow:hidden;border:2px solid #fff}
+      .ee-mc-speed button{min-height:48px;border:0;background:rgba(255,255,255,.12);color:#fff;padding:0 .9rem;font-size:17px;font-weight:700;cursor:pointer}
+      .ee-mc-speed button.on{background:#fff;color:#3B0764}
+      .ee-mc-finish{border:2px solid #FBCFE8;border-radius:24px;background:linear-gradient(135deg,#FFF1F7,#F5F3FF);padding:1.2rem;text-align:center}
+      .ee-mc-finish .big{font-size:64px;line-height:1.1}
+      .ee-mc-finish h2{margin:.3rem 0;color:#BE185D;font-size:32px;font-weight:800}
+      .ee-mc-finish p{margin:.2rem 0 .8rem;color:#5B216E;font-size:19px;font-weight:700}
+      .ee-mc-selfcheck{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.6rem;max-width:900px;margin:0 auto 1rem}
+      .ee-mc-check{border:2px solid #E9D5FF;background:#fff;border-radius:18px;padding:.6rem .4rem;font-size:17px;font-weight:700;color:#6D28D9;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.1rem}
+      .ee-mc-check .e{font-size:32px;line-height:1.1}
+      .ee-mc-check.done{background:#ECFDF5;border-color:#6EE7B7;color:#047857}
+      .ee-mc-finish-actions{display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap}
+      @media(max-width:1000px){.ee-mc-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.ee-mc-intro{grid-template-columns:1fr}.ee-mc-preview{min-height:160px}.ee-mc-parts{grid-template-columns:repeat(3,minmax(0,1fr))}}
+      @media(max-width:700px){.ee-mc-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem}.ee-mc-card h2{font-size:17px}.ee-mc-card p{display:none}.ee-mc-parts{grid-template-columns:repeat(2,minmax(0,1fr))}.ee-mc-selfcheck{grid-template-columns:repeat(3,minmax(0,1fr))}.ee-mc-sent{font-size:17px}.ee-mc-stage-mode{min-height:440px;padding:.8rem}}
+      @media(prefers-reduced-motion:reduce){.ee-mc-btn.rec.on{animation:none}.ee-mc-live-text span{transition:none}}
     `;
     document.head.appendChild(style);
   }
 
+  /* ---------- Danh sách chương trình ---------- */
   function renderRegistry() {
     stopEverything();
+    clearRecording();
     currentProgramId = "";
     currentSegmentIndex = 0;
     stageMode = false;
@@ -413,14 +511,14 @@ function splitSpeechChunks(text, maxLength = 170) {
     if (!host) return;
     host.innerHTML = `
       <div class="ee-mc-page">
-        <div class="ee-mc-head"><div><h1>🎤 Tập làm MC</h1><p>12 chương trình để bé luyện nói rõ, biết dẫn dắt và tự tin trước khán giả.</p></div></div>
+        <div class="ee-mc-head"><div><h1>🎤 Tập làm MC</h1><p>12 chương trình • ${doneSet.size} đã hoàn thành</p></div></div>
         <div class="ee-mc-grid">
           ${PROGRAMS.map((program, index) => `
             <button class="ee-mc-card ee-mc-tone-${esc(program.tone)}" data-mc-program="${esc(program.id)}" type="button">
+              ${doneSet.has(program.id) ? `<span class="done">✓ Đã dẫn</span>` : ""}
               <span class="icon" aria-hidden="true">${program.icon}</span>
               <h2>${index + 1}. ${esc(program.title)}</h2>
               <p>${esc(program.focus)}</p>
-              <span class="ee-mc-badge">6 phần dẫn</span>
             </button>`).join("")}
         </div>
       </div>`;
@@ -432,6 +530,7 @@ function splitSpeechChunks(text, maxLength = 170) {
     });
   }
 
+  /* ---------- Trang chuẩn bị ---------- */
   function renderProgramIntro(program) {
     stopEverything();
     currentProgramId = program.id;
@@ -440,84 +539,106 @@ function splitSpeechChunks(text, maxLength = 170) {
     setBanner(program);
     const host = activeContext && activeContext.host;
     if (!host) return;
-    const index = PROGRAMS.indexOf(program) + 1;
+    const firstSentence = sentencesOf(program.guide)[0];
     host.innerHTML = `
       <div class="ee-mc-page">
-        <div class="ee-mc-head"><div><h1>${program.icon} ${esc(program.title)}</h1><p>Chương trình ${GAME_NUMBER}.${index} · ${program.segments.length} phần dẫn.</p></div><button id="ee-mc-back" class="ee-mc-back" type="button">← 12 chương trình</button></div>
+        <div class="ee-mc-head"><div><h1>${program.icon} ${esc(program.title)}</h1><p>${program.segments.length} phần dẫn</p></div><button id="ee-mc-back" class="ee-mc-btn" type="button">← 12 chương trình</button></div>
         <section class="ee-mc-intro">
-          <div class="ee-mc-intro-top">
-            <div class="ee-mc-stage-preview"><div class="ee-mc-curtain left"></div><div class="ee-mc-curtain right"></div><div class="ee-mc-stage-core"><div class="big">🎤🐰</div><strong>${esc(program.title)}</strong><span>MC nhí cùng Cô Thỏ Hồng</span></div></div>
-            <div class="ee-mc-guide">
-              <h2>🐰 Cô Thỏ hướng dẫn</h2>
-              <p>${esc(program.guide)}</p>
-              <div class="ee-mc-guide-actions"><button id="ee-mc-listen-guide" class="ee-mc-btn" type="button">🔊 Nghe Cô Thỏ hướng dẫn</button><button id="ee-mc-start" class="ee-mc-btn primary" type="button">🎤 Bắt đầu tập dẫn</button><button id="ee-mc-stage-now" class="ee-mc-btn teal" type="button">🎭 Lên sân khấu</button></div>
-              <div id="ee-mc-voice-status" class="ee-mc-voice">Ưu tiên giọng Ban Mai khi thiết bị có sẵn.</div>
-            </div>
+          <div class="ee-mc-preview"><div class="ee-mc-curtain left"></div><div class="ee-mc-curtain right"></div><div class="core" aria-hidden="true">🎤🐰</div></div>
+          <div class="ee-mc-guide">
+            <div class="ee-mc-bubble"><span class="ico" aria-hidden="true">🐰</span><span class="txt">${esc(firstSentence)}</span><button id="ee-mc-listen-guide" class="ee-mc-say" type="button" aria-label="Nghe Cô Thỏ hướng dẫn">🔊</button></div>
+            <div class="ee-mc-skills"><span class="ee-mc-skill">😊 Nụ cười</span><span class="ee-mc-skill">🔊 Giọng rõ</span><span class="ee-mc-skill">⏸ Nghỉ đúng chỗ</span><span class="ee-mc-skill">👀 Nhìn khán giả</span><span class="ee-mc-skill">🙌 Tự tin</span></div>
+            <div class="ee-mc-actions"><button id="ee-mc-start" class="ee-mc-btn primary" type="button">🎤 Tập từng câu</button><button id="ee-mc-stage-now" class="ee-mc-btn teal" type="button">🎭 Lên sân khấu</button></div>
+            <p id="ee-mc-voice-status" class="ee-mc-voice" hidden></p>
           </div>
-          <div class="ee-mc-skills"><div class="ee-mc-skill">😊 Nụ cười</div><div class="ee-mc-skill">🔊 Giọng rõ</div><div class="ee-mc-skill">⏸ Nghỉ đúng chỗ</div><div class="ee-mc-skill">👀 Nhìn khán giả</div><div class="ee-mc-skill">🙌 Tự tin</div></div>
-          <div class="ee-mc-outline">${program.segments.map((item, segIndex) => `<button data-mc-segment="${segIndex}" type="button"><strong>${segIndex + 1}. ${esc(item.title)}</strong><span>${esc(item.cue)}</span></button>`).join("")}</div>
         </section>
+        <div class="ee-mc-parts">${program.segments.map((item, i) => `<button class="ee-mc-part" data-mc-segment="${i}" type="button"><span class="n">${i + 1}</span><span class="e" aria-hidden="true">${esc(cuesOf(item.cue)[0] || "").split(" ")[0]}</span><strong>${esc(item.title)}</strong></button>`).join("")}</div>
       </div>`;
     host.querySelector("#ee-mc-back")?.addEventListener("click", renderRegistry);
     host.querySelector("#ee-mc-listen-guide")?.addEventListener("click", () => speak(program.guide));
-    host.querySelector("#ee-mc-start")?.addEventListener("click", () => { currentSegmentIndex = 0; renderPractice(program); });
+    host.querySelector("#ee-mc-start")?.addEventListener("click", () => { currentSegmentIndex = 0; sentenceIndex = 0; renderPractice(program); });
     host.querySelector("#ee-mc-stage-now")?.addEventListener("click", () => { currentSegmentIndex = 0; renderStage(program); });
-    host.querySelectorAll("[data-mc-segment]").forEach((button) => {
-      button.addEventListener("click", () => {
-        currentSegmentIndex = Math.max(0, Math.min(program.segments.length - 1, Number(button.dataset.mcSegment) || 0));
-        renderPractice(program);
-      });
-    });
+    host.querySelectorAll("[data-mc-segment]").forEach((button) => button.addEventListener("click", () => {
+      currentSegmentIndex = Math.max(0, Math.min(program.segments.length - 1, Number(button.dataset.mcSegment) || 0));
+      sentenceIndex = 0;
+      renderPractice(program);
+    }));
   }
 
+  /* ---------- Tập từng câu ---------- */
   function renderPractice(program) {
     stopEverything();
     stageMode = false;
     const item = program.segments[currentSegmentIndex] || program.segments[0];
+    const sents = sentencesOf(item.text);
+    sentenceIndex = Math.max(0, Math.min(sents.length - 1, sentenceIndex));
     setBanner(program, item);
     const host = activeContext && activeContext.host;
     if (!host) return;
-    const progress = Math.round(((currentSegmentIndex + 1) / program.segments.length) * 100);
+    const last = currentSegmentIndex === program.segments.length - 1;
+    const lastSent = sentenceIndex === sents.length - 1;
     host.innerHTML = `
       <div class="ee-mc-page">
-        <div class="ee-mc-head"><div><h1>🎤 ${esc(program.title)}</h1><p>Tập từng đoạn trước khi lên sân khấu.</p></div><button id="ee-mc-practice-back" class="ee-mc-back" type="button">← Chuẩn bị</button></div>
-        <div class="ee-mc-practice">
-          <section class="ee-mc-stage"><div class="spot a"></div><div class="spot b"></div><div class="ee-mc-stage-icon">${program.icon} 🎤</div><h2>MC nhí đang tập</h2><p>${esc(program.title)}</p><div class="ee-mc-focus">Kỹ năng: ${esc(program.focus)}</div></section>
-          <section class="ee-mc-script">
-            <div class="ee-mc-progress"><strong>Phần ${currentSegmentIndex + 1}/${program.segments.length}</strong><div class="ee-mc-track"><span style="width:${progress}%"></span></div></div>
-            <h2>${esc(item.title)}</h2>
-            <div class="ee-mc-cue">${esc(item.cue)}</div>
-            <p class="ee-mc-copy">${esc(item.text)}</p>
-            <div class="ee-mc-tip">🐰 <strong>Cô Thỏ mách bé:</strong> ${esc(item.tip)}</div>
-            <div class="ee-mc-script-actions"><button id="ee-mc-listen" class="ee-mc-btn" type="button">🔊 Cô Thỏ đọc mẫu</button><button id="ee-mc-stop" class="ee-mc-btn" type="button">⏹ Dừng âm thanh</button><button id="ee-mc-go-stage" class="ee-mc-btn teal" type="button">🎭 Lên sân khấu</button><span id="ee-mc-voice-status" class="ee-mc-voice">Ưu tiên giọng Ban Mai khi thiết bị có sẵn.</span></div>
-            <div class="ee-mc-nav"><button id="ee-mc-prev" class="ee-mc-btn" type="button" ${currentSegmentIndex === 0 ? "disabled" : ""}>← Đoạn trước</button><div class="count">${currentSegmentIndex + 1}/${program.segments.length}</div><button id="ee-mc-next" class="ee-mc-btn primary" type="button">${currentSegmentIndex === program.segments.length - 1 ? "Luyện xong ✓" : "Đoạn tiếp →"}</button></div>
-          </section>
-        </div>
+        <div class="ee-mc-head"><div><h1>${program.icon} ${esc(program.title)}</h1></div><button id="ee-mc-practice-back" class="ee-mc-btn" type="button">← Chuẩn bị</button></div>
+        <section class="ee-mc-prac">
+          <div class="ee-mc-prac-top"><h2>${currentSegmentIndex + 1}. ${esc(item.title)}</h2>
+            <div class="ee-mc-dots" aria-label="Phần ${currentSegmentIndex + 1} trên ${program.segments.length}">${program.segments.map((_, i) => `<span class="${i === currentSegmentIndex ? "on" : i < currentSegmentIndex ? "past" : ""}"></span>`).join("")}</div></div>
+          <div class="ee-mc-cues">${cuesOf(item.cue).map((c) => `<span class="ee-mc-cue">${esc(c)}</span>`).join("")}</div>
+          <div class="ee-mc-sents">${sents.map((s, i) => `<button type="button" class="ee-mc-sent ${i === sentenceIndex ? "now" : i < sentenceIndex ? "done" : ""}" data-sent="${i}"><span class="k">${i + 1}</span><span>${esc(s)}</span></button>`).join("")}</div>
+          <div class="ee-mc-tools">
+            <button id="ee-mc-listen" class="ee-mc-btn soft" type="button">🔊 Cô đọc câu này</button>
+            ${canRecord() ? `<button id="ee-mc-rec" class="ee-mc-btn rec${recording ? " on" : ""}" type="button">${recording ? "⏹ Dừng thu" : "🎙️ Bé nói thử"}</button>
+            <button id="ee-mc-play" class="ee-mc-btn" type="button" ${recordUrl ? "" : "disabled"}>▶ Nghe lại giọng bé</button>` : ""}
+            <button id="ee-mc-next-sent" class="ee-mc-btn primary" type="button">${lastSent ? "✓ Xong đoạn này" : "Câu tiếp →"}</button>
+          </div>
+          <div class="ee-mc-tip">🐰 ${esc(item.tip)}</div>
+          <p id="ee-mc-voice-status" class="ee-mc-voice" hidden></p>
+          <div class="ee-mc-nav">
+            <button id="ee-mc-prev" class="ee-mc-btn" type="button" ${currentSegmentIndex === 0 ? "disabled" : ""}>← Đoạn trước</button>
+            <button id="ee-mc-listen-all" class="ee-mc-btn soft" type="button">🔊 Nghe cả đoạn</button>
+            <button id="ee-mc-next" class="ee-mc-btn ${last ? "teal" : ""}" type="button">${last ? "🎭 Lên sân khấu" : "Đoạn tiếp →"}</button>
+          </div>
+        </section>
       </div>`;
+    const markSpeaking = (i, on) => host.querySelector(`[data-sent="${i}"]`)?.classList.toggle("speaking", on);
+    const readSentence = (i) => { markSpeaking(i, true); speak(sents[i], () => markSpeaking(i, false)); };
+    const goSentence = (i) => { stopNarration(); stopRecording(); clearRecording(); sentenceIndex = i; renderPractice(program); };
     host.querySelector("#ee-mc-practice-back")?.addEventListener("click", () => renderProgramIntro(program));
-    host.querySelector("#ee-mc-listen")?.addEventListener("click", () => speak(`${item.title}. ${item.text}. ${item.tip}`));
-    host.querySelector("#ee-mc-stop")?.addEventListener("click", stopNarration);
-    host.querySelector("#ee-mc-go-stage")?.addEventListener("click", () => renderStage(program));
-    host.querySelector("#ee-mc-prev")?.addEventListener("click", () => { if (currentSegmentIndex > 0) { currentSegmentIndex -= 1; renderPractice(program); } });
+    host.querySelector("#ee-mc-listen")?.addEventListener("click", () => readSentence(sentenceIndex));
+    host.querySelector("#ee-mc-listen-all")?.addEventListener("click", () => speak(item.text));
+    host.querySelectorAll("[data-sent]").forEach((b) => b.addEventListener("click", () => {
+      const i = Number(b.dataset.sent);
+      if (i === sentenceIndex) readSentence(i); else goSentence(i);
+    }));
+    host.querySelector("#ee-mc-rec")?.addEventListener("click", () => toggleRecording(() => {
+      const rec = host.querySelector("#ee-mc-rec");
+      const play = host.querySelector("#ee-mc-play");
+      if (rec) { rec.classList.toggle("on", recording); rec.textContent = recording ? "⏹ Dừng thu" : "🎙️ Bé nói thử"; }
+      if (play) play.disabled = !recordUrl;
+    }));
+    host.querySelector("#ee-mc-play")?.addEventListener("click", playRecording);
+    host.querySelector("#ee-mc-next-sent")?.addEventListener("click", () => {
+      if (!lastSent) goSentence(sentenceIndex + 1);
+      else if (!last) { currentSegmentIndex += 1; goSentence(0); }
+      else renderStage(program);
+    });
+    host.querySelector("#ee-mc-prev")?.addEventListener("click", () => { if (currentSegmentIndex > 0) { currentSegmentIndex -= 1; goSentence(0); } });
     host.querySelector("#ee-mc-next")?.addEventListener("click", () => {
-      if (currentSegmentIndex < program.segments.length - 1) {
-        currentSegmentIndex += 1;
-        renderPractice(program);
-      } else {
-        renderStage(program);
-      }
+      if (!last) { currentSegmentIndex += 1; goSentence(0); } else renderStage(program);
     });
   }
 
-  function stageDelay(text) {
+  /* ---------- Sân khấu: chữ chạy theo từng câu ---------- */
+  function sentenceDelay(text) {
     const words = cleanSpeechText(text).split(/\s+/).filter(Boolean).length;
-    const rates = { slow: 620, medium: 500, fast: 390 };
-    return Math.max(7000, Math.min(19000, words * (rates[stageSpeed] || rates.medium)));
+    const rates = { slow: 720, medium: 560, fast: 430 };
+    return Math.max(2600, words * (rates[stageSpeed] || rates.medium) + 900);
   }
 
-function renderStage(program) {
+  function renderStage(program) {
     stopEverything();
     stageMode = true;
+    sentenceIndex = 0;
     currentSegmentIndex = Math.max(0, Math.min(program.segments.length - 1, currentSegmentIndex));
     const item = program.segments[currentSegmentIndex];
     setBanner(program, item);
@@ -525,37 +646,39 @@ function renderStage(program) {
     if (!host) return;
     host.innerHTML = `
       <div class="ee-mc-page">
-        <div class="ee-mc-head"><div><h1>🎭 Sân khấu MC nhí</h1><p>${esc(program.title)} · Cô Thỏ sẽ không đọc khi bé đang biểu diễn.</p></div><button id="ee-mc-stage-back" class="ee-mc-back" type="button">← Tập dẫn</button></div>
+        <div class="ee-mc-head"><div><h1>🎭 Sân khấu MC nhí</h1><p>Cô Thỏ không đọc khi bé biểu diễn. Câu màu vàng là câu bé đang nói.</p></div><button id="ee-mc-stage-back" class="ee-mc-btn" type="button">← Tập dẫn</button></div>
         <section class="ee-mc-stage-mode">
           <div class="lights"></div>
-          <div class="ee-mc-live-head"><h2>${program.icon} ${esc(program.title)}</h2><div id="ee-mc-live-badge" class="ee-mc-live-badge">Teleprompter · ${currentSegmentIndex + 1}/${program.segments.length}</div></div>
-          <div class="ee-mc-live-body"><div class="ee-mc-live-icon">🎤</div><div id="ee-mc-live-title" class="ee-mc-live-title">${esc(item.title)}</div><div id="ee-mc-live-text" class="ee-mc-live-text">${esc(item.text)}</div><div id="ee-mc-live-cue" class="ee-mc-live-cue">${esc(item.cue)}</div></div>
-          <div class="ee-mc-live-controls"><select id="ee-mc-speed" class="ee-mc-btn" aria-label="Tốc độ teleprompter"><option value="slow" ${stageSpeed === "slow" ? "selected" : ""}>Chậm</option><option value="medium" ${stageSpeed === "medium" ? "selected" : ""}>Vừa</option><option value="fast" ${stageSpeed === "fast" ? "selected" : ""}>Nhanh</option></select><button id="ee-mc-countdown" class="ee-mc-btn primary" type="button">3–2–1 Bắt đầu</button><button id="ee-mc-live-prev" class="ee-mc-btn" type="button" ${currentSegmentIndex === 0 ? "disabled" : ""}>← Đoạn trước</button><button id="ee-mc-live-next" class="ee-mc-btn" type="button">Đoạn tiếp →</button></div>
+          <div class="ee-mc-live-head"><h2>${program.icon} ${esc(program.title)}</h2><div id="ee-mc-live-badge" class="ee-mc-live-badge"></div></div>
+          <div class="ee-mc-live-body"></div>
+          <div class="ee-mc-live-controls">
+            <div class="ee-mc-speed" role="group" aria-label="Tốc độ chữ chạy">${[["slow", "🐢 Chậm"], ["medium", "Vừa"], ["fast", "🐇 Nhanh"]].map(([k, l]) => `<button type="button" data-speed="${k}" class="${stageSpeed === k ? "on" : ""}">${l}</button>`).join("")}</div>
+            <button id="ee-mc-live-prev" class="ee-mc-btn" type="button">← Đoạn trước</button>
+            <button id="ee-mc-countdown" class="ee-mc-btn primary" type="button">▶ Bắt đầu</button>
+            <button id="ee-mc-live-next" class="ee-mc-btn" type="button">Đoạn tiếp →</button>
+          </div>
         </section>
       </div>`;
-    host.querySelector("#ee-mc-stage-back")?.addEventListener("click", () => renderPractice(program));
-    host.querySelector("#ee-mc-speed")?.addEventListener("change", (event) => {
-      stageSpeed = event.target.value || "medium";
+    updateStageView(program);
+    host.querySelector("#ee-mc-stage-back")?.addEventListener("click", () => { sentenceIndex = 0; renderPractice(program); });
+    host.querySelectorAll("[data-speed]").forEach((b) => b.addEventListener("click", () => {
+      stageSpeed = b.dataset.speed;
+      host.querySelectorAll("[data-speed]").forEach((x) => x.classList.toggle("on", x === b));
       if (stageRunning && !stagePaused) scheduleStageAdvance(program);
-    });
-    host.querySelector("#ee-mc-countdown")?.addEventListener("click", () => {
-      if (stageRunning) toggleStagePause(program);
-      else startCountdown(program);
-    });
+    }));
+    host.querySelector("#ee-mc-countdown")?.addEventListener("click", () => { if (stageRunning) toggleStagePause(program); else startCountdown(program); });
     host.querySelector("#ee-mc-live-prev")?.addEventListener("click", () => {
       if (currentSegmentIndex <= 0) return;
-      currentSegmentIndex -= 1;
+      currentSegmentIndex -= 1; sentenceIndex = 0;
       updateStageView(program);
       if (stageRunning && !stagePaused) scheduleStageAdvance(program);
     });
     host.querySelector("#ee-mc-live-next")?.addEventListener("click", () => {
       if (currentSegmentIndex < program.segments.length - 1) {
-        currentSegmentIndex += 1;
+        currentSegmentIndex += 1; sentenceIndex = 0;
         updateStageView(program);
         if (stageRunning && !stagePaused) scheduleStageAdvance(program);
-      } else {
-        renderFinish(program);
-      }
+      } else renderFinish(program);
     });
   }
 
@@ -565,16 +688,15 @@ function renderStage(program) {
     const item = program.segments[currentSegmentIndex];
     if (!item) return;
     setBanner(program, item);
-    const title = host.querySelector("#ee-mc-live-title");
-    const text = host.querySelector("#ee-mc-live-text");
-    const cue = host.querySelector("#ee-mc-live-cue");
+    const sents = sentencesOf(item.text);
+    const body = host.querySelector(".ee-mc-live-body");
+    if (body) body.innerHTML = `<div class="ee-mc-live-title">${currentSegmentIndex + 1}. ${esc(item.title)}</div>
+      <div class="ee-mc-live-text">${sents.map((s, i) => `<span class="${stageRunning ? (i === sentenceIndex ? "now" : i < sentenceIndex ? "past" : "") : "now"}">${esc(s)}</span>`).join(" ")}</div>
+      <div class="ee-mc-live-cue">${esc(item.cue)}</div>`;
     const badge = host.querySelector("#ee-mc-live-badge");
+    if (badge) badge.textContent = `Phần ${currentSegmentIndex + 1}/${program.segments.length}`;
     const prev = host.querySelector("#ee-mc-live-prev");
     const next = host.querySelector("#ee-mc-live-next");
-    if (title) title.textContent = item.title;
-    if (text) text.textContent = item.text;
-    if (cue) cue.textContent = item.cue;
-    if (badge) badge.textContent = `Teleprompter · ${currentSegmentIndex + 1}/${program.segments.length}`;
     if (prev) prev.disabled = currentSegmentIndex === 0;
     if (next) next.textContent = currentSegmentIndex === program.segments.length - 1 ? "Hoàn thành 🎉" : "Đoạn tiếp →";
   }
@@ -596,9 +718,9 @@ function renderStage(program) {
         countdownTimer = window.setTimeout(tick, 900);
         return;
       }
-      body.innerHTML = `<div class="ee-mc-live-icon">🎤</div><div id="ee-mc-live-title" class="ee-mc-live-title"></div><div id="ee-mc-live-text" class="ee-mc-live-text"></div><div id="ee-mc-live-cue" class="ee-mc-live-cue"></div>`;
       stageRunning = true;
       stagePaused = false;
+      sentenceIndex = 0;
       button.disabled = false;
       button.textContent = "⏸ Tạm dừng";
       updateStageView(program);
@@ -613,16 +735,15 @@ function renderStage(program) {
     if (!stageRunning || stagePaused || !stageMode) return;
     const item = program.segments[currentSegmentIndex];
     if (!item) return;
+    const sents = sentencesOf(item.text);
     stageTimer = window.setTimeout(() => {
       if (!activeContext || !stageMode || !stageRunning || stagePaused) return;
-      if (currentSegmentIndex < program.segments.length - 1) {
-        currentSegmentIndex += 1;
-        updateStageView(program);
-        scheduleStageAdvance(program);
-      } else {
-        renderFinish(program);
-      }
-    }, stageDelay(item.text));
+      if (sentenceIndex < sents.length - 1) sentenceIndex += 1;
+      else if (currentSegmentIndex < program.segments.length - 1) { currentSegmentIndex += 1; sentenceIndex = 0; }
+      else { renderFinish(program); return; }
+      updateStageView(program);
+      scheduleStageAdvance(program);
+    }, sentenceDelay(sents[sentenceIndex] || item.text));
   }
 
   function toggleStagePause(program) {
@@ -632,26 +753,33 @@ function renderStage(program) {
     stagePaused = !stagePaused;
     window.clearTimeout(stageTimer);
     stageTimer = 0;
-    if (stagePaused) {
-      button.textContent = "▶ Tiếp tục";
-    } else {
-      button.textContent = "⏸ Tạm dừng";
-      scheduleStageAdvance(program);
-    }
+    button.textContent = stagePaused ? "▶ Tiếp tục" : "⏸ Tạm dừng";
+    if (!stagePaused) scheduleStageAdvance(program);
   }
+
+  /* ---------- Hoàn thành ---------- */
   function renderFinish(program) {
     stopEverything();
     stageMode = false;
+    markDone(program.id);
     setBanner(program);
     const host = activeContext && activeContext.host;
     if (!host) return;
+    const checks = [["😊", "Mỉm cười"], ["🔊", "Nói rõ"], ["⏸", "Biết nghỉ"], ["👀", "Nhìn khán giả"], ["🙌", "Tự tin"]];
     host.innerHTML = `
       <div class="ee-mc-page">
-        <div class="ee-mc-head"><div><h1>🏆 Hoàn thành chương trình</h1><p>${esc(program.title)}</p></div></div>
-        <section class="ee-mc-finish"><div class="big">🎤🐰✨</div><h2>MC nhí đã hoàn thành!</h2><p>Cô Thỏ Hồng rất vui vì bé đã dẫn hết chương trình. Bé không cần nói giống hệt Cô Thỏ; điều quan trọng là nói rõ, biết nghỉ, nhìn khán giả và giữ sự tự tin.</p><div class="ee-mc-selfcheck"><button class="ee-mc-check" type="button">😊 Em đã mỉm cười</button><button class="ee-mc-check" type="button">🔊 Em nói rõ</button><button class="ee-mc-check" type="button">⏸ Em biết nghỉ</button><button class="ee-mc-check" type="button">👀 Em nhìn khán giả</button><button class="ee-mc-check" type="button">🙌 Em tự tin</button></div><div class="ee-mc-finish-actions"><button id="ee-mc-again" class="ee-mc-btn primary" type="button">Dẫn lại chương trình</button><button id="ee-mc-other" class="ee-mc-btn" type="button">Chọn chương trình khác</button></div></section>
+        <section class="ee-mc-finish"><div class="big" aria-hidden="true">🎤🐰✨</div><h2>MC nhí giỏi quá!</h2>
+          <p>Hôm nay bé đã làm được những gì? Chạm để tô sáng nhé!</p>
+          <div class="ee-mc-selfcheck">${checks.map(([e, t]) => `<button class="ee-mc-check" type="button" aria-pressed="false"><span class="e" aria-hidden="true">${e}</span>${t}</button>`).join("")}</div>
+          <div class="ee-mc-finish-actions"><button id="ee-mc-again" class="ee-mc-btn primary" type="button">🔄 Dẫn lại</button><button id="ee-mc-other" class="ee-mc-btn" type="button">📚 Chương trình khác</button></div>
+        </section>
       </div>`;
-    host.querySelectorAll(".ee-mc-check").forEach((button) => button.addEventListener("click", () => button.classList.toggle("done")));
-    host.querySelector("#ee-mc-again")?.addEventListener("click", () => { currentSegmentIndex = 0; renderPractice(program); });
+    speak("MC nhí giỏi quá! Hôm nay bé đã làm được những gì? Chạm để tô sáng nhé!");
+    host.querySelectorAll(".ee-mc-check").forEach((button) => button.addEventListener("click", () => {
+      const on = button.classList.toggle("done");
+      button.setAttribute("aria-pressed", String(on));
+    }));
+    host.querySelector("#ee-mc-again")?.addEventListener("click", () => { currentSegmentIndex = 0; sentenceIndex = 0; renderPractice(program); });
     host.querySelector("#ee-mc-other")?.addEventListener("click", renderRegistry);
   }
 
@@ -667,6 +795,7 @@ function renderStage(program) {
 
   function destroy() {
     stopEverything();
+    clearRecording();
     activeContext = null;
     currentProgramId = "";
     currentSegmentIndex = 0;

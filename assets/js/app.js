@@ -31,7 +31,11 @@
     Object.freeze({ id: "calculator", icon: "🧮", title: "Calculator", description: "Máy tính khoa học Epsilon Edu.", badge: "Công cụ", tone: "purple" }),
     Object.freeze({ id: "converter", icon: "📐", title: "Đổi đơn vị đo", description: "Đổi nhanh các đơn vị đo thông dụng.", badge: "Công cụ", tone: "teal" }),
     Object.freeze({ id: "geometryArea", icon: "📏", title: "Tính diện tích", description: "Tính diện tích các hình học cơ bản.", badge: "Công cụ", tone: "pink" }),
-    Object.freeze({ id: "colorMixer", icon: "🎨", title: "Phối màu", description: "Phối màu theo hệ RGB và CMYK.", badge: "Công cụ", tone: "amber" })
+    Object.freeze({ id: "colorMixer", icon: "🎨", title: "Phối màu", description: "Phối màu theo hệ RGB và CMYK.", badge: "Công cụ", tone: "amber" }),
+    Object.freeze({ id: "calendarRoman", icon: "📅", title: "Lịch, khoảng ngày và số La Mã", description: "Xem lịch, tính khoảng ngày và đổi số La Mã.", badge: "Công cụ", tone: "blue" }),
+    Object.freeze({ id: "mathTables", icon: "🔢", title: "Bảng cộng trừ nhân chia", description: "Xem bảng tính và luyện tập phép tính.", badge: "Công cụ", tone: "teal" }),
+    Object.freeze({ id: "learningClock", icon: "🕐", title: "Đồng hồ học xem giờ", description: "Học đọc giờ, quay kim và luyện tập.", badge: "Công cụ", tone: "purple" }),
+    Object.freeze({ id: "solarSystem", icon: "🪐", title: "Hệ Mặt Trời", description: "Khám phá Hệ Mặt Trời, ngày - đêm và các mùa bằng mô phỏng tương tác.", badge: "Khoa học", tone: "blue" })
   ]);
   const WORLD_EXPLORER_GROUP_ID = "worldExplorer";
   const WORLD_EXPLORER_ITEMS = Object.freeze([
@@ -47,22 +51,29 @@
   ]);
 
   const GAME_CATALOG = Object.freeze([
-    Object.freeze({ id: "worldExplorer", icon: "🧭", title: "Khám phá thế giới xung quanh bé", description: "", badge: "Khám phá", tone: "teal" }),
     Object.freeze({ id: "paperFolding", icon: "🛩️", title: "Xưởng Gấp Giấy", description: "Gấp từng bước cùng Cô Thỏ Hồng.", badge: "Thủ công", tone: "pink" }),
     Object.freeze({ id: "jigsawPuzzle", icon: "🧩", title: "Xưởng Xếp Hình", description: "Ghép tranh qua nhiều cấp độ.", badge: "Quan sát", tone: "purple" }),
+    Object.freeze({ id: "worldExplorer", icon: "🧭", title: "Bé khám phá", description: "", badge: "Khám phá", tone: "teal" }),
     Object.freeze({ id: "rabbitDrawing", icon: "🖍️", title: "Cô Thỏ Hồng dạy vẽ", description: "Vẽ tranh đơn giản theo từng bước.", badge: "Mỹ thuật", tone: "teal" }),
     Object.freeze({ id: "animalWorld", icon: "🐾", title: "Thế giới động vật", description: "Khám phá thế giới động vật cùng Cô Thỏ Hồng.", badge: "Khám phá", tone: "amber" }),
     Object.freeze({ id: "mcHost", icon: "🎤", title: "Tập làm MC", description: "Tập dẫn chương trình cùng Cô Thỏ Hồng.", badge: "Kỹ năng", tone: "pink" }),
     Object.freeze({ id: "missingPiece", icon: "🔗", title: "Mảnh ghép còn thiếu", description: "Ghép các cặp liên tưởng qua nhiều cấp độ.", badge: "Tư duy", tone: "purple" }),
     Object.freeze({ id: "lifeCycle", icon: "🌱", title: "Vòng đời kỳ diệu", description: "Sắp xếp các giai đoạn vòng đời của sinh vật và thiên nhiên.", badge: "Khám phá", tone: "green" }),
-    Object.freeze({ id: "spotDifference", icon: "🔍", title: "Tìm điểm khác nhau", description: "Quan sát hai bức tranh và tìm những điểm khác biệt qua nhiều màn.", badge: "Quan sát", tone: "amber" })
+    Object.freeze({ id: "spotDifference", icon: "🔍", title: "Tìm điểm khác nhau", description: "Quan sát hai bức tranh và tìm những điểm khác biệt qua nhiều màn.", badge: "Quan sát", tone: "amber" }),
+    Object.freeze({ id: "tinyLab", icon: "🔬", title: "Phòng thí nghiệm tí hon", description: "Đoán trước kết quả, quan sát thí nghiệm và nghe Cô Thỏ giải thích.", badge: "Khoa học", tone: "blue" }),
+    Object.freeze({ id: "littleEngineer", icon: "🛠️", title: "Kỹ sư nhí", description: "Lắp ráp, chạy thử và sửa thiết kế qua các thử thách.", badge: "Kỹ thuật", tone: "purple" }),
+    Object.freeze({ id: "wasteSorting", icon: "♻️", title: "Phân loại rác", description: "Phân loại rác đúng thùng qua nhiều cấp độ.", badge: "Môi trường", tone: "green" })
   ]);
   const HOME_FEATURE_SCRIPTS = Object.freeze({
     tools: Object.freeze({
       calculator: "assets/js/tools/calculator.js?v=class1-calculator-2",
       converter: "assets/js/tools/converter.js?v=class1-converter-1",
       geometryArea: "assets/js/tools/geometry_area.js?v=class1-geometry-area-1",
-      colorMixer: "assets/js/tools/color_mixer.js?v=class1-color-mixer-1"
+      colorMixer: "assets/js/tools/color_mixer.js?v=class1-color-mixer-1",
+      calendarRoman: "assets/js/tools/lich-la-ma.js?v=class1-lich-la-ma-1",
+      mathTables: "assets/js/tools/bang-tinh.js?v=class1-bang-tinh-1",
+      learningClock: "assets/js/tools/dong-ho.js?v=class1-dong-ho-1",
+      solarSystem: "assets/js/tools/he-mat-troi.js?v=class1-he-mat-troi-1"
     }),
     games: Object.freeze({
       paperFolding: "assets/js/games/paper_folding.js?v=class1-paper-folding-6",
@@ -74,6 +85,9 @@
       spaceExplorer: "assets/js/games/space_explorer.js?v=class1-space-explorer-1",
       lifeCycle: "assets/js/games/life_cycle.js?v=class1-life-cycle-1",
       spotDifference: "assets/js/games/spot_difference.js?v=class1-spot-difference-1",
+      tinyLab: "assets/js/games/tiny_lab.js?v=class1-tiny-lab-1",
+      littleEngineer: "assets/js/games/little_engineer.js?v=class1-little-engineer-1",
+      wasteSorting: "assets/js/games/waste_sorting.js?v=class1-waste-sorting-1",
       oceanExplorer: "assets/js/games/ocean_explorer.js?v=class1-ocean-explorer-1",
       earthExplorer: "assets/js/games/earth_explorer.js?v=class1-earth-explorer-1",
       humanBodyExplorer: "assets/js/games/human_body_explorer.js?v=class1-human-body-explorer-1",
@@ -134,6 +148,8 @@
     }
   };
 
+  const adminRequestBusy = new Map();
+
   const el = {
     nav: document.getElementById("primary-nav"),
     homeButton: document.getElementById("home-button"),
@@ -166,6 +182,8 @@
 
   let dialogPrimaryHandler = null;
   let dialogSecondaryHandler = null;
+  let dialogTertiaryHandler = null;
+  let dialogTertiaryButton = null;
   let toastTimer = 0;
 
   const class1GreetingAudio = new Audio();
@@ -396,7 +414,7 @@
       destroyActiveHomeFeature();
       state.homeFeatureId = null;
       state.homeFeatureBanner = {
-        items: [{ level: 2, title: "1. Khám phá thế giới xung quanh bé", action: null }]
+        items: [{ level: 2, title: "3. Bé khám phá", action: null }]
       };
       render();
       focusContent();
@@ -419,8 +437,8 @@
           level: Math.min(4, Math.max(4, Number(item.level || 4)))
         }));
         items = [
-          { level: 2, title: "1. Khám phá thế giới xung quanh bé", action: backToWorldExplorerGroup },
-          ...(child ? [{ level: 3, title: `1.${childIndex + 1} ${child.title}`, action: null }] : []),
+          { level: 2, title: "3. Bé khám phá", action: backToWorldExplorerGroup },
+          ...(child ? [{ level: 3, title: `3.${childIndex + 1} ${child.title}`, action: null }] : []),
           ...nestedItems
         ];
       } else if (kind === "games" && items.length) {
@@ -452,7 +470,7 @@
         destroyActiveHomeFeature();
         state.homeFeatureId = null;
         state.homeFeatureBanner = isWorldExplorerChild
-          ? { items: [{ level: 2, title: "1. Khám phá thế giới xung quanh bé", action: null }] }
+          ? { items: [{ level: 2, title: "3. Bé khám phá", action: null }] }
           : null;
         if (!isWorldExplorerChild) state.homeFeatureGroupId = null;
         render();
@@ -473,18 +491,18 @@
         items: [
           {
             level: 2,
-            title: "1. Khám phá thế giới xung quanh bé",
+            title: "3. Bé khám phá",
             action: () => {
               destroyActiveHomeFeature();
               state.homeFeatureId = null;
               state.homeFeatureBanner = {
-                items: [{ level: 2, title: "1. Khám phá thế giới xung quanh bé", action: null }]
+                items: [{ level: 2, title: "3. Bé khám phá", action: null }]
               };
               render();
               focusContent();
             }
           },
-          { level: 3, title: child ? `1.${childIndex + 1} ${child.title}` : "Khám phá", action: null }
+          { level: 3, title: child ? `3.${childIndex + 1} ${child.title}` : "Khám phá", action: null }
         ]
       };
     }
@@ -588,6 +606,112 @@
     if (strong[1]) strong[1].textContent = String(Number(wrong || 0));
   }
 
+  const PREMIUM_HELP_ZALO_URL_ = "https://zalo.me/0865749402";
+
+  function ensurePremiumLearningGate_() {
+    let modal = document.getElementById("class1-premium-learning-gate");
+    if (modal) return modal;
+
+    if (!document.getElementById("class1-premium-learning-gate-style")) {
+      const style = document.createElement("style");
+      style.id = "class1-premium-learning-gate-style";
+      style.textContent = `
+        #class1-premium-learning-gate{position:fixed;inset:0;z-index:240;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(15,23,42,.52);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+        #class1-premium-learning-gate.hidden{display:none!important}
+        #class1-premium-learning-gate .premium-gate-card{width:min(94vw,640px);overflow:hidden;border:1px solid #f9a8d4;border-radius:26px;background:#fff;box-shadow:0 26px 78px rgba(76,29,149,.28)}
+        #class1-premium-learning-gate .premium-gate-body{padding:24px 24px 18px;text-align:center;background:linear-gradient(145deg,#fff7fb,#faf5ff 55%,#effcf8)}
+        #class1-premium-learning-gate .premium-gate-icon{width:64px;height:64px;margin:0 auto 12px;border-radius:20px;display:flex;align-items:center;justify-content:center;border:1px solid #f9a8d4;background:#fff;font-size:32px;box-shadow:0 6px 18px rgba(236,72,153,.12)}
+        #class1-premium-learning-gate .premium-gate-title{margin:0;color:#7e22ce;font-size:21px;line-height:1.25;font-weight:950}
+        #class1-premium-learning-gate .premium-gate-message{margin:10px auto 0;max-width:590px;color:#475467;font-size:15px;line-height:1.65;font-weight:850;white-space:pre-line}
+        #class1-premium-learning-gate .premium-gate-actions{display:grid;grid-template-columns:1.2fr 1fr .8fr;gap:9px;padding:14px 16px 16px;border-top:1px solid #fce7f3;background:#fff}
+        #class1-premium-learning-gate .premium-gate-btn{min-height:46px;border-radius:14px;padding:8px 12px;font-size:13px;line-height:1.25;font-weight:950;transition:transform .15s ease,box-shadow .15s ease,filter .15s ease}
+        #class1-premium-learning-gate .premium-gate-btn:active{transform:translateY(1px)}
+        #class1-premium-learning-gate .premium-gate-vip{border:0;color:#fff;background:linear-gradient(90deg,#ec4899,#8b5cf6);box-shadow:0 6px 16px rgba(139,92,246,.2)}
+        #class1-premium-learning-gate .premium-gate-contact{border:1px solid #67e8f9;color:#0369a1;background:linear-gradient(90deg,#eff6ff,#ecfdf5)}
+        #class1-premium-learning-gate .premium-gate-later{border:1px solid #e2e8f0;color:#64748b;background:#f8fafc}
+        @media(max-width:680px){#class1-premium-learning-gate .premium-gate-actions{grid-template-columns:1fr}#class1-premium-learning-gate .premium-gate-card{width:min(94vw,430px)}#class1-premium-learning-gate .premium-gate-message{max-width:100%}}
+      `;
+      document.head.appendChild(style);
+    }
+
+    modal = document.createElement("div");
+    modal.id = "class1-premium-learning-gate";
+    modal.className = "hidden";
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+    modal.setAttribute("aria-labelledby", "premium-gate-title");
+    modal.innerHTML = `
+      <div class="premium-gate-card">
+        <div class="premium-gate-body">
+          <div class="premium-gate-icon" aria-hidden="true">🐰</div>
+          <h3 class="premium-gate-title" id="premium-gate-title">Quyền học VIP</h3>
+          <p class="premium-gate-message" id="premium-gate-message"></p>
+        </div>
+        <div class="premium-gate-actions">
+          <button class="premium-gate-btn premium-gate-vip" id="premium-gate-vip" type="button">Đăng ký quyền học VIP</button>
+          <button class="premium-gate-btn premium-gate-contact" id="premium-gate-contact" type="button">Liên hệ Admin</button>
+          <button class="premium-gate-btn premium-gate-later" id="premium-gate-later" type="button">Để sau nhé</button>
+        </div>
+      </div>`;
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) hidePremiumLearningGate_();
+    });
+    document.body.appendChild(modal);
+    return modal;
+  }
+
+  function hidePremiumLearningGate_() {
+    document.getElementById("class1-premium-learning-gate")?.classList.add("hidden");
+  }
+
+  function openPremiumAdminZalo_() {
+    const popup = window.open(PREMIUM_HELP_ZALO_URL_, "_blank", "noopener,noreferrer");
+    if (popup) popup.opener = null;
+  }
+
+  function configurePremiumLearningGate_(mode = "premium") {
+    const modal = ensurePremiumLearningGate_();
+    const title = modal.querySelector("#premium-gate-title");
+    const message = modal.querySelector("#premium-gate-message");
+    const vip = modal.querySelector("#premium-gate-vip");
+    const contact = modal.querySelector("#premium-gate-contact");
+    const later = modal.querySelector("#premium-gate-later");
+
+    if (mode === "need-id") {
+      title.textContent = "Bé cần có ID trước nhé";
+      message.textContent = "Trước hết bé cần đăng kí ID để đăng ký quyền học VIP.\nSau khi có ID, bé có thể gửi yêu cầu quyền học ngay trong tài khoản.";
+      vip.textContent = "Đăng ký ID";
+      vip.onclick = () => { hidePremiumLearningGate_(); openAuth("register"); };
+    } else {
+      title.textContent = "Quyền học VIP";
+      message.textContent = "Bé hãy đăng kí quyền học VIP để được trải nghiệm nội dung\u00A0này\nHãy liên hệ admin để được hỗ trợ";
+      vip.textContent = "Đăng ký quyền học VIP";
+      vip.onclick = () => {
+        if (!state.auth.ready) {
+          showToast("Đang kiểm tra phiên đăng nhập…");
+          return;
+        }
+        if (!state.auth.user) {
+          configurePremiumLearningGate_("need-id");
+          return;
+        }
+        hidePremiumLearningGate_();
+        openAccountPage("request");
+      };
+    }
+
+    contact.onclick = () => openPremiumAdminZalo_();
+    later.onclick = () => hidePremiumLearningGate_();
+    modal.classList.remove("hidden");
+    window.requestAnimationFrame(() => vip.focus());
+    return false;
+  }
+
+  function showPremiumLearningGate(featureName = "nội dung này") {
+    if (hasPremiumAccess(state.subjectId)) return true;
+    return configurePremiumLearningGate_("premium");
+  }
+
   function subjectModuleContext() {
     const user = state.auth.user ? Object.freeze({
       userId: String(state.auth.user.userId || ""),
@@ -611,6 +735,9 @@
       },
       openAccount(view = "overview") {
         return openAccountPage(view === "request" ? "request" : "overview");
+      },
+      requestPremiumAccess(featureName = "nội dung này") {
+        return showPremiumLearningGate(featureName);
       },
       hooks: {
         setDetail(title) {
@@ -701,6 +828,60 @@
     return type === "admin" || type === "trial" || type === "vip";
   }
 
+  // Games dùng chung tài khoản Lớp 1. Hai game đầu là Free;
+  // các game Premium được mở khi tài khoản có Trial/VIP còn hiệu lực ở ít nhất một môn.
+  function hasGamesPremiumAccess() {
+    if (state.auth.user && state.auth.user.role === "admin") return true;
+    return SUBJECTS.some((subject) => hasPremiumAccess(subject.id));
+  }
+
+  function isFreeGameFeature(featureId) {
+    const index = GAME_CATALOG.findIndex((item) => item.id === featureId);
+    return index >= 0 && index < 2;
+  }
+
+  function openAdminZalo() {
+    const win = window.open("https://zalo.me/0865749402", "_blank", "noopener,noreferrer");
+    if (win) win.opener = null;
+  }
+
+  function onPremiumVipRegister() {
+    if (!state.auth.ready) {
+      showToast("Đang kiểm tra phiên đăng nhập…");
+      return;
+    }
+    if (!state.auth.user) {
+      showDialog({
+        title: "Bé cần có tài khoản trước nhé!",
+        message: "Trước hết bé cần đăng kí ID Lớp 1, sau đó mới có thể đăng ký quyền học VIP.",
+        icon: "🐰",
+        primaryLabel: "Đăng ký ID",
+        secondaryLabel: "Để sau nhé",
+        onPrimary: () => openAuth("register"),
+        onSecondary: hideDialog
+      });
+      return;
+    }
+    openAccountPage("request");
+  }
+
+  function showPremiumLockedDialog() {
+    showDialog({
+      title: "Nội dung dành cho Trial / VIP",
+      message: "Bé hãy đăng kí quyền học VIP để được trải nghiệm nội dung\u00A0này\nHãy liên hệ admin để được hỗ trợ",
+      icon: "🔒",
+      primaryLabel: "Đăng ký quyền học VIP",
+      secondaryLabel: "Liên hệ Admin",
+      tertiaryLabel: "Để sau nhé",
+      onPrimary: onPremiumVipRegister,
+      onSecondary: () => {
+        hideDialog();
+        openAdminZalo();
+      },
+      onTertiary: hideDialog
+    });
+  }
+
   function readStoredToken() {
     try {
       const token = String(window.localStorage.getItem(TOKEN_STORAGE_KEY) || "").trim();
@@ -779,6 +960,7 @@
       userSort: "id-asc",
       accessQuery: ""
     };
+    adminRequestBusy.clear();
     updateAccountButton();
   }
 
@@ -1017,35 +1199,9 @@
   function openSubjectTab(tabId) {
     stopWelcomeGreeting();
     if (!SUBJECT_TABS.some((t) => t.id === tabId)) return;
-    if (tabId !== "discover" && !hasPremiumAccess(state.subjectId)) {
-      if (!state.auth.ready) {
-        showToast("Đang kiểm tra phiên đăng nhập…");
-        return;
-      }
-      if (!state.auth.user) {
-        showDialog({
-          title: "Cần đăng nhập",
-          message: "Bài học, Bài tập, Ôn tập, Đề thi và Mini games cần quyền Trial/VIP của môn này.",
-          icon: "🔐",
-          primaryLabel: "Đăng nhập",
-          secondaryLabel: "Để sau nhé",
-          onPrimary: () => openAuth("login"),
-          onSecondary: hideDialog
-        });
-      } else {
-        showDialog({
-          title: "Cần quyền học",
-          message: "Tài khoản hiện là Regular ở môn này. Bạn có thể gửi yêu cầu quyền học để Admin duyệt.",
-          icon: "🌟",
-          primaryLabel: "Đăng ký quyền học",
-          secondaryLabel: "Để sau nhé",
-          onPrimary: () => openAccountPage("request"),
-          onSecondary: hideDialog
-        });
-      }
-      return;
-    }
 
+    // Regular/Khách được mở catalog để xem nội dung có gì.
+    // Trial/VIP chỉ kiểm tra khi bắt đầu học/chơi/thi nội dung thực tế.
     state.screen = "subject";
     state.subjectTab = tabId;
     state.detail = null;
@@ -1214,8 +1370,8 @@
       el.subPill.setAttribute("aria-label", "Điều hướng Games");
       const node = document.createElement("span");
       node.className = "home-breadcrumb-tab home-breadcrumb-level2";
-      node.textContent = "1. Khám phá thế giới xung quanh bé";
-      node.title = "Khám phá thế giới xung quanh bé";
+      node.textContent = "3. Bé khám phá";
+      node.title = "Bé khám phá";
       el.subPill.replaceChildren(node);
       return;
     }
@@ -1288,7 +1444,7 @@
   function renderWorldExplorerGroup() {
     el.content.innerHTML = `
       <div class="section-heading">
-        <div><h1>🧭 Khám phá thế giới xung quanh bé</h1></div>
+        <div><h1>🧭 Bé khám phá</h1></div>
       </div>
       <style>
         .world-explorer-grid{
@@ -1310,22 +1466,33 @@
         }
       </style>
       <div class="card-grid home-feature-grid world-explorer-grid">
-        ${WORLD_EXPLORER_ITEMS.map((item, index) => `
-          <button class="content-card home-feature-card" data-tone="${escapeHtml(item.tone || "purple")}" data-world-explorer-child="${escapeHtml(item.id)}" type="button">
+        ${WORLD_EXPLORER_ITEMS.map((item, index) => {
+          const locked = !hasGamesPremiumAccess();
+          return `
+          <button class="content-card home-feature-card${locked ? " is-premium-locked" : ""}" data-tone="${escapeHtml(item.tone || "purple")}" data-world-explorer-child="${escapeHtml(item.id)}" type="button" aria-label="${escapeHtml(`${index + 1}. ${item.title}${locked ? ", nội dung Trial hoặc VIP" : ""}`)}">
             <div class="card-top">
               <span class="card-icon" aria-hidden="true">${item.icon}</span>
               <div class="card-copy">
-                <h2 class="card-title">${index + 1}. ${escapeHtml(item.title)}</h2>
+                <h2 class="card-title">${index + 1}. ${escapeHtml(item.title)}${locked ? ` <span aria-hidden="true">🔒</span>` : ""}</h2>
                 <p class="card-desc">${escapeHtml(item.description || "")}</p>
               </div>
             </div>
-          </button>`).join("")}
+          </button>`;
+        }).join("")}
       </div>`;
 
     el.content.querySelectorAll("[data-world-explorer-child]").forEach((button) => {
       button.addEventListener("click", () => {
         const featureId = String(button.dataset.worldExplorerChild || "");
         if (!featureId || !homeFeatureScript("games", featureId)) return;
+        if (!state.auth.ready) {
+          showToast("Đang kiểm tra phiên đăng nhập…");
+          return;
+        }
+        if (!hasGamesPremiumAccess()) {
+          showPremiumLockedDialog();
+          return;
+        }
         state.homeFeatureId = featureId;
         state.homeFeatureBanner = null;
         render();
@@ -1356,8 +1523,9 @@
       return;
     }
 
-    const catalogGridClass = kind === "games" ? " games-catalog-grid" : "";
-    const catalogGridStyle = kind === "games" ? `
+    const useFullWidthCatalogGrid = kind === "games" || kind === "tools";
+    const catalogGridClass = useFullWidthCatalogGrid ? " games-catalog-grid" : "";
+    const catalogGridStyle = useFullWidthCatalogGrid ? `
       <style>
         .games-catalog-grid{
           width:100%;
@@ -1405,11 +1573,22 @@
           state.homeFeatureGroupId = WORLD_EXPLORER_GROUP_ID;
           state.homeFeatureId = null;
           state.homeFeatureBanner = {
-            items: [{ level: 2, title: "1. Khám phá thế giới xung quanh bé", action: null }]
+            items: [{ level: 2, title: "3. Bé khám phá", action: null }]
           };
           render();
           focusContent();
           return;
+        }
+
+        if (kind === "games" && !isFreeGameFeature(featureId)) {
+          if (!state.auth.ready) {
+            showToast("Đang kiểm tra phiên đăng nhập…");
+            return;
+          }
+          if (!hasGamesPremiumAccess()) {
+            showPremiumLockedDialog();
+            return;
+          }
         }
 
         if (!homeFeatureScript(kind, featureId)) return;
@@ -1663,17 +1842,17 @@
           </div>
           <div class="contact-vip-benefit tone-green">
             <span class="contact-vip-benefit-icon" aria-hidden="true">🎮</span>
-            <div><strong>Games &amp; Tools - trải nghiệm đầy đủ hơn</strong><span>Khi cơ chế giới hạn Games và Tools được áp dụng, tài khoản thường dự kiến chỉ mở mục đầu tiên; VIP sẽ được mở đầy đủ các nội dung trải nghiệm theo chính sách của chương trình.</span></div>
+            <div><strong>Games &amp; Tools - trải nghiệm đầy đủ hơn</strong><span>Khi cơ chế giới hạn Games và Tools được áp dụng, tài khoản thường mở 2 mục đầu tiên; VIP sẽ được mở đầy đủ các nội dung trải nghiệm theo chính sách của chương trình.</span></div>
           </div>
           <div class="contact-vip-benefit tone-blue">
             <span class="contact-vip-benefit-icon" aria-hidden="true">🌟</span>
-            <div><strong>Khám phá - quyền truy cập mở rộng</strong><span>Sắp tới, phần Khám phá của 3 môn dự kiến giới hạn tài khoản thường ở 3 mục đầu. VIP của môn đã đăng ký sẽ được mở đầy đủ phần Khám phá.</span></div>
+            <div><strong>Khám phá - quyền truy cập mở rộng</strong><span>Sắp tới, phần Khám phá của 3 môn dự kiến giới hạn tài khoản thường ở 2 mục đầu. VIP của môn đã đăng ký sẽ được mở đầy đủ phần Khám phá.</span></div>
           </div>
         </div>
 
-        <div class="contact-vip-pricing" aria-label="Mức giá quyền học VIP">
+        <div class="contact-vip-pricing" aria-label="Biểu phí quyền học VIP">
           <div class="contact-vip-pricing-head">
-            <div><span class="contact-vip-pricing-icon" aria-hidden="true">💎</span><div><h3>Mức giá quyền học VIP</h3><p>Đăng ký theo năm, lựa chọn theo nhu cầu học của bé.</p></div></div>
+            <div><span class="contact-vip-pricing-icon" aria-hidden="true">💎</span><div><h3>Biểu phí quyền học VIP</h3><p>Đăng ký theo năm, lựa chọn theo nhu cầu học của bé.</p></div></div>
           </div>
           <div class="contact-vip-price-grid">
             <div class="contact-vip-price-card single">
@@ -2082,10 +2261,12 @@
     const createdText = formatDate(user.createdAt);
     const adminButtonClass = isAdmin ? "secondary-action" : "secondary-action hidden";
     const requestButtonClass = isAdmin ? "primary-action hidden" : "primary-action";
+    const hasPendingRequests = Array.isArray(state.auth.requests) && state.auth.requests.length > 0;
     const requestSection = isAdmin ? "" : `
         <section class="account-section">
           <h2>Yêu cầu đang chờ</h2>
           <div class="account-requests">${accountRequestsHtml()}</div>
+          ${hasPendingRequests ? `<button id="account-pending-contact" class="primary-action account-pending-contact" type="button">💬 Liên hệ admin để được duyệt ngay</button>` : ""}
         </section>`;
 
     el.content.innerHTML = `
@@ -2093,6 +2274,9 @@
         <div><h1>👤 Tài khoản</h1><p>Thông tin cá nhân và quyền học của Lớp 1.</p></div>
         <button id="account-back" class="back-btn" type="button">← Lớp 1</button>
       </div>
+      <style>
+        .account-pending-contact{width:100%;min-height:48px;margin-top:.8rem;font-size:15px!important;font-weight:950!important;}
+      </style>
       <section class="account-page" aria-label="Tài khoản đang đăng nhập">
         <div class="account-page-hero">
           <div class="account-page-avatar" aria-hidden="true">${escapeHtml(user.avatarEmoji || "🐰")}</div>
@@ -2148,6 +2332,7 @@
       showToast(copied ? "Đã sao chép ID đăng nhập." : `ID đăng nhập: ${user.userId || ""}`);
     });
     document.getElementById("account-request-button")?.addEventListener("click", () => openAccountPage("request"));
+    document.getElementById("account-pending-contact")?.addEventListener("click", openAdminZalo);
     document.getElementById("account-admin-button")?.addEventListener("click", openAdmin);
     document.getElementById("account-logout-button")?.addEventListener("click", onLogout);
     el.content.querySelectorAll("[data-account-avatar]").forEach((button) => {
@@ -2194,18 +2379,47 @@
         <form id="access-request-form" class="form-stack" novalidate>
           <div class="subject-choice-list">${choices}</div>
           <div id="access-request-summary" class="access-request-summary">Chưa chọn môn nào.</div>
-          <button id="access-request-submit" class="primary-action" type="submit">Gửi yêu cầu VIP</button>
+          <div class="vip-request-actions" role="group" aria-label="Tùy chọn đăng ký quyền học VIP">
+            <button id="access-request-vip-info" class="vip-request-action vip-request-info" type="button">Biểu phí và quyền lợi VIP</button>
+            <button id="access-request-admin-contact" class="vip-request-action vip-request-contact" type="button">Liên hệ admin</button>
+            <button id="access-request-submit" class="primary-action vip-request-submit" type="submit">Gửi yêu cầu VIP</button>
+          </div>
         </form>` : `
         <div class="account-request-empty">Hiện không còn môn nào có thể gửi yêu cầu mới. Môn đã có quyền hoặc đang chờ duyệt sẽ không gửi trùng.</div>`;
 
     el.content.innerHTML = `
-      <div class="section-heading">
+      <style>
+        .vip-request-heading h1{font-size:clamp(24px,2.2vw,30px)!important;}
+        .vip-request-heading p{font-size:16px!important;line-height:1.45!important;font-weight:800!important;}
+        .account-request-page .access-request-note{font-size:15.5px!important;line-height:1.55!important;font-weight:850!important;}
+        .account-request-page .subject-choice strong{font-size:17px!important;line-height:1.3!important;font-weight:900!important;}
+        .account-request-page .subject-choice small{font-size:14.5px!important;line-height:1.4!important;font-weight:800!important;}
+        .account-request-page .access-request-summary{font-size:15.5px!important;line-height:1.4!important;font-weight:900!important;}
+        .vip-request-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem;margin-top:.1rem}
+        .vip-request-actions button{width:100%;min-width:0;min-height:52px;margin:0!important;border-radius:14px;padding:.7rem .8rem;font-family:inherit;font-size:15px!important;font-weight:950;line-height:1.25}
+        .vip-request-info{border:1px solid #d8b4fe;color:#6d28d9;background:linear-gradient(90deg,#faf5ff,#fdf2f8);box-shadow:0 4px 12px rgba(109,40,217,.08)}
+        .vip-request-contact{border:1px solid #67e8f9;color:#0369a1;background:linear-gradient(90deg,#eff6ff,#ecfdf5);box-shadow:0 4px 12px rgba(3,105,161,.08)}
+        .vip-request-submit{box-shadow:0 6px 16px rgba(139,92,246,.18)}
+        @media(max-width:720px){
+          .vip-request-actions{grid-template-columns:1fr}
+          .account-request-page .subject-choice strong{font-size:16px!important}
+          .account-request-page .subject-choice small{font-size:14px!important}
+        }
+      </style>
+      <div class="section-heading vip-request-heading">
         <div><h1>🌟 Đăng ký quyền học</h1><p>Đăng ký VIP theo từng môn.</p></div>
         <button id="access-request-back" class="back-btn" type="button">← Tài khoản</button>
       </div>
       <section class="account-request-page account-section">${body}</section>`;
 
     document.getElementById("access-request-back")?.addEventListener("click", () => openAccountPage("overview"));
+    document.getElementById("access-request-vip-info")?.addEventListener("click", () => {
+      openHomeTab("contact");
+      state.contactTab = "vip";
+      render();
+      focusContent();
+    });
+    document.getElementById("access-request-admin-contact")?.addEventListener("click", openAdminZalo);
     const form = document.getElementById("access-request-form");
     form?.addEventListener("submit", onAccessRequestSubmit);
     const updateSummary = () => {
@@ -2623,14 +2837,24 @@
       : "Hiện không có yêu cầu nào đang chờ duyệt.";
     const requests = rows.length ? rows.map((request) => {
       const subjectsHtml = renderAdminRequestSubjects(request.subjectIds);
-      return `<div class="admin-request pending" data-request-id="${escapeHtml(request.requestId)}">
+      const busyDecision = adminRequestBusy.get(String(request.requestId || "")) || "";
+      const isBusy = !!busyDecision;
+      const disabledAttr = isBusy ? ' disabled aria-disabled="true"' : "";
+      const vipLabel = busyDecision === "approve-vip" ? '<span class="spinner" aria-hidden="true"></span><span>Đang duyệt VIP…</span>' : "Duyệt VIP";
+      const trialLabel = busyDecision === "approve-trial" ? '<span class="spinner" aria-hidden="true"></span><span>Đang duyệt Trial…</span>' : "Duyệt Trial";
+      const rejectLabel = busyDecision === "reject" ? '<span class="spinner" aria-hidden="true"></span><span>Đang từ chối…</span>' : "Từ chối";
+      return `<div class="admin-request pending${isBusy ? " is-busy" : ""}" data-request-id="${escapeHtml(request.requestId)}"${isBusy ? ' aria-busy="true"' : ""}>
         <div class="admin-request-main">
           <div class="admin-request-title"><strong>${escapeHtml(request.name || request.userId)}</strong><span class="admin-chip pending">CHỜ DUYỆT</span></div>
           <div class="admin-muted admin-request-meta"><span>${escapeHtml(request.userId)}</span><span class="admin-request-dot">·</span>${subjectsHtml || `<span>Chưa xác định môn</span>`}</div>
           <div class="admin-muted">Yêu cầu ${escapeHtml(String(request.accessType || "vip").toUpperCase())} · gửi ${escapeHtml(formatDateTime(request.createdAt) || "")}</div>
           ${request.note ? `<div class="admin-muted">Ghi chú: ${escapeHtml(request.note)}</div>` : ""}
         </div>
-        <div class="admin-request-actions"><button class="mini-action positive" data-request-decision="approve" type="button">Duyệt</button><button class="mini-action danger" data-request-decision="reject" type="button">Từ chối</button></div>
+        <div class="admin-request-actions">
+          <button class="mini-action approve-vip" data-request-decision="approve-vip" type="button"${disabledAttr}>${vipLabel}</button>
+          <button class="mini-action approve-trial" data-request-decision="approve-trial" type="button"${disabledAttr}>${trialLabel}</button>
+          <button class="mini-action danger" data-request-decision="reject" type="button"${disabledAttr}>${rejectLabel}</button>
+        </div>
       </div>`;
     }).join("") : `<div class="admin-empty">Không có yêu cầu chờ xử lý.</div>`;
 
@@ -2772,16 +2996,42 @@
   }
 
   async function resolveAccessRequest(requestId, decision, button) {
-    if (!requestId || !["approve", "reject"].includes(decision)) return;
-    const label = decision === "approve" ? "Đang duyệt…" : "Đang từ chối…";
+    requestId = String(requestId || "");
+    if (!requestId || !["approve-vip", "approve-trial", "reject"].includes(decision)) return;
+    if (adminRequestBusy.has(requestId)) return;
+
+    const isApprove = decision !== "reject";
+    const grantAccessType = decision === "approve-trial" ? "trial" : (decision === "approve-vip" ? "vip" : "");
+    const label = decision === "approve-vip"
+      ? "Đang duyệt VIP…"
+      : decision === "approve-trial"
+        ? "Đang duyệt Trial…"
+        : "Đang từ chối…";
+
+    adminRequestBusy.set(requestId, decision);
+    const card = button?.closest("[data-request-id]");
+    card?.setAttribute("aria-busy", "true");
+    card?.querySelectorAll("[data-request-decision]").forEach((actionButton) => {
+      actionButton.disabled = true;
+      actionButton.setAttribute("aria-disabled", "true");
+    });
     setButtonBusy(button, true, label);
+
     try {
-      const data = await apiRequest("adminAccessRequestResolve", { requestId, decision });
+      const payload = isApprove
+        ? { requestId, decision: "approve", grantAccessType }
+        : { requestId, decision: "reject" };
+      const data = await apiRequest("adminAccessRequestResolve", payload);
       if (data.orphaned) showToast("Tài khoản đã bị xóa; yêu cầu đã được đóng.");
-      else showToast(decision === "approve" ? "Đã duyệt yêu cầu." : "Đã từ chối yêu cầu.");
+      else if (isApprove) showToast(grantAccessType === "trial" ? "Đã duyệt Trial 30 ngày." : "Đã duyệt VIP 1 năm.");
+      else showToast("Đã từ chối yêu cầu.");
+
+      // Giữ khóa cho tới khi trạng thái yêu cầu được tải lại từ backend.
       await loadAdminData();
+      adminRequestBusy.delete(requestId);
     } catch (err) {
-      setButtonBusy(button, false);
+      adminRequestBusy.delete(requestId);
+      if (state.screen === "admin" && state.admin.tab === "requests") renderAdmin();
       showToast(friendlyError(err));
     }
   }
@@ -2843,6 +3093,38 @@
     }
   }
 
+  function ensureDialogTertiaryButton() {
+    if (dialogTertiaryButton && dialogTertiaryButton.isConnected) return dialogTertiaryButton;
+    const actions = el.dialogOk && el.dialogOk.parentElement;
+    if (!actions) return null;
+    const button = document.createElement("button");
+    button.id = "dialog-tertiary";
+    button.className = "secondary-action hidden";
+    button.type = "button";
+    button.addEventListener("click", async () => {
+      const handler = dialogTertiaryHandler;
+      if (handler) await handler();
+      else hideDialog();
+    });
+    actions.appendChild(button);
+    dialogTertiaryButton = button;
+
+    if (!document.getElementById("class1-dialog-three-actions-style")) {
+      const style = document.createElement("style");
+      style.id = "class1-dialog-three-actions-style";
+      style.textContent = `
+        .dialog-actions.has-three-actions{grid-template-columns:repeat(3,minmax(0,1fr));}
+        .dialog-actions.has-three-actions #dialog-ok{order:1;}
+        .dialog-actions.has-three-actions #dialog-secondary{order:2;border-color:#BAE6FD;background:#EFF8FF;color:#0369A1;}
+        .dialog-actions.has-three-actions #dialog-tertiary{order:3;}
+        .dialog-actions.has-three-actions button{min-width:0;padding-left:.5rem;padding-right:.5rem;}
+        @media(max-width:640px){.dialog-actions.has-three-actions{grid-template-columns:1fr;}}
+      `;
+      document.head.appendChild(style);
+    }
+    return button;
+  }
+
   function showDialog(options) {
     const opts = typeof options === "string" ? { title: options } : (options || {});
     el.dialogTitle.textContent = opts.title || "Thông báo";
@@ -2851,10 +3133,20 @@
     el.dialogOk.textContent = opts.primaryLabel || "OK";
     dialogPrimaryHandler = typeof opts.onPrimary === "function" ? opts.onPrimary : null;
     dialogSecondaryHandler = typeof opts.onSecondary === "function" ? opts.onSecondary : null;
+    dialogTertiaryHandler = typeof opts.onTertiary === "function" ? opts.onTertiary : null;
 
     const hasSecondary = !!opts.secondaryLabel;
     el.dialogSecondary.classList.toggle("hidden", !hasSecondary);
     el.dialogSecondary.textContent = opts.secondaryLabel || "";
+
+    const tertiary = ensureDialogTertiaryButton();
+    const hasTertiary = !!opts.tertiaryLabel;
+    if (tertiary) {
+      tertiary.classList.toggle("hidden", !hasTertiary);
+      tertiary.textContent = opts.tertiaryLabel || "";
+      tertiary.parentElement?.classList.toggle("has-three-actions", hasTertiary);
+    }
+
     el.dialog.classList.remove("hidden");
   }
 
@@ -2862,6 +3154,10 @@
     el.dialog.classList.add("hidden");
     dialogPrimaryHandler = null;
     dialogSecondaryHandler = null;
+    dialogTertiaryHandler = null;
+    if (dialogTertiaryButton) dialogTertiaryButton.classList.add("hidden");
+    const actions = el.dialogOk && el.dialogOk.parentElement;
+    actions?.classList.remove("has-three-actions");
   }
 
   function showToast(message) {

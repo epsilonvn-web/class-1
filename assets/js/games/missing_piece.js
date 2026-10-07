@@ -2,7 +2,7 @@
   "use strict";
 
   const MODULE_KEY = "missingPiece";
-  const STYLE_ID = "class1-games-missing-piece-style";
+  const STYLE_ID = "class1-games-missing-piece-style-v3";
   const GAME_NUMBER = 6;
 
   let activeContext = null;
@@ -1201,7 +1201,7 @@
             },
             "right": {
               "text": "Rời nơi nguy hiểm theo hướng dẫn",
-              "icon": "🚪"
+              "icon": "🏃"
             },
             "why": "Chuông báo cháy là tín hiệu cần sơ tán theo hướng dẫn của người lớn."
           },
@@ -1417,7 +1417,7 @@
             },
             "right": {
               "text": "Đất ẩm hơn",
-              "icon": "🌱"
+              "icon": "💦"
             },
             "why": "Nước tưới thấm vào đất làm đất bớt khô."
           }
@@ -1603,7 +1603,7 @@
             },
             "right": {
               "text": "Lên giường",
-              "icon": "🛏️"
+              "icon": "🛌"
             },
             "why": "Thay đồ ngủ là bước chuẩn bị ngay trước khi lên giường nghỉ."
           }
@@ -2045,7 +2045,7 @@
             },
             "right": {
               "text": "Bao bọc hạt",
-              "icon": "🌰"
+              "icon": "🥜"
             },
             "why": "Quả của nhiều cây chứa và bảo vệ hạt bên trong."
           }
@@ -2081,11 +2081,11 @@
           {
             "left": {
               "text": "Ngăn kéo",
-              "icon": "🗄️"
+              "icon": "📥"
             },
             "right": {
               "text": "Tủ",
-              "icon": "🚪"
+              "icon": "🗄️"
             },
             "why": "Ngăn kéo là phần chứa đồ kéo ra vào trong một số loại tủ."
           },
@@ -2278,7 +2278,7 @@
           {
             "left": {
               "text": "Lưỡi",
-              "icon": "✂️"
+              "icon": "🔪"
             },
             "right": {
               "text": "Kéo",
@@ -2596,7 +2596,7 @@
           {
             "left": {
               "text": "Có kim hoặc số để chỉ giờ",
-              "icon": "🕐"
+              "icon": "🔍"
             },
             "right": {
               "text": "Đồng hồ",
@@ -2607,7 +2607,7 @@
           {
             "left": {
               "text": "Có nhiều trang và có thể đọc",
-              "icon": "📄"
+              "icon": "🔍"
             },
             "right": {
               "text": "Quyển sách",
@@ -2618,7 +2618,7 @@
           {
             "left": {
               "text": "Có hai lưỡi mở khép để cắt",
-              "icon": "✂️"
+              "icon": "🔍"
             },
             "right": {
               "text": "Kéo",
@@ -2629,7 +2629,7 @@
           {
             "left": {
               "text": "Có tay cầm và dùng để che mưa",
-              "icon": "🤚"
+              "icon": "🔍"
             },
             "right": {
               "text": "Ô",
@@ -2640,7 +2640,7 @@
           {
             "left": {
               "text": "Có vạch chia để đo chiều dài",
-              "icon": "📐"
+              "icon": "🔍"
             },
             "right": {
               "text": "Thước",
@@ -2651,7 +2651,7 @@
           {
             "left": {
               "text": "Có quai, dùng để mang sách đến trường",
-              "icon": "🎒"
+              "icon": "🔍"
             },
             "right": {
               "text": "Cặp sách",
@@ -2957,12 +2957,18 @@
   }
 ];
 
+  /* =====================================================================
+     Giao diện mới: ít chữ, hình to, có giọng đọc.
+     Bé chạm vào thẻ nào, cô đọc tên thẻ đó.
+     ===================================================================== */
+  const STARS_KEY = "class1-missing-piece-stars";
+  let pairOrder = new Map(); /* thứ tự cặp đã ghép, để đánh số giống nhau ở hai bên */
+  let hintStep = new Map(); /* số lần gợi ý của từng cặp */
+  let muted = false;
+  let finishTimer = 0;
+
   const esc = (value) => String(value == null ? "" : value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/\"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#39;");
 
   function shuffle(values) {
     const out = values.slice();
@@ -2973,31 +2979,108 @@
     return out;
   }
 
+  const stars = (() => { try { return JSON.parse(window.localStorage.getItem(STARS_KEY) || "{}") || {}; } catch (_) { return {}; } })();
+  function saveStars(key, n) {
+    stars[key] = Math.max(stars[key] || 0, n);
+    try { window.localStorage.setItem(STARS_KEY, JSON.stringify(stars)); } catch (_) {}
+  }
+  const roundKey = (li, ri) => `${li}-${ri}`;
+  const shortLevel = (l) => l.title.replace(/^Cấp\s*\d+\s*·\s*/, "");
+  const starRow = (n, cls = "ee-mp-stars") => `<span class="${cls}" aria-label="${n} sao">${[1, 2, 3].map((i) => `<span class="${i <= n ? "" : "off"}">★</span>`).join("")}</span>`;
+
   function host() { return activeContext && activeContext.host; }
   function level() { return LEVELS[currentLevelIndex] || null; }
   function round() { const l = level(); return l && l.rounds[currentRoundIndex] ? l.rounds[currentRoundIndex] : null; }
 
+  /* ---------- Giọng đọc: ưu tiên giọng Việt có sẵn trong máy, không có thì dùng Google ---------- */
+  const ttsAudio = new Audio();
+  ttsAudio.referrerPolicy = "no-referrer";
+  ttsAudio.preload = "none";
+  let ttsNonce = 0;
+  let ttsQueue = [];
+  const synth = typeof window !== "undefined" && "speechSynthesis" in window ? window.speechSynthesis : null;
+  if (synth) { try { synth.getVoices(); } catch (_) {} }
+  function viVoice() {
+    if (!synth) return null;
+    try { return synth.getVoices().find((v) => /^vi([-_]|$)/i.test(v.lang)) || null; } catch (_) { return null; }
+  }
+  function ttsUrl(text) {
+    return `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent(String(text || ""))}`;
+  }
+  function splitTtsText(text, maxLength = 170) {
+    const clean = String(text || "").replace(/\s+/g, " ").trim();
+    if (!clean) return [];
+    const pieces = clean.match(/[^.!?;:]+[.!?;:]?/g) || [clean];
+    const out = [];
+    let buf = "";
+    pieces.forEach((p) => {
+      const part = p.trim();
+      if (!part) return;
+      if (!buf) buf = part;
+      else if ((buf + " " + part).length <= maxLength) buf += " " + part;
+      else { out.push(buf); buf = part; }
+    });
+    if (buf) out.push(buf);
+    return out;
+  }
+  function stopSpeak() {
+    ttsNonce += 1;
+    ttsQueue = [];
+    try { if (synth) synth.cancel(); } catch (_) {}
+    try { ttsAudio.pause(); ttsAudio.removeAttribute("src"); ttsAudio.load(); } catch (_) {}
+  }
+  function showVoiceNote() {
+    const n = host() && host().querySelector("#ee-mp-voice-note");
+    if (n) { n.hidden = false; n.textContent = "Chưa phát được giọng đọc. Con nhờ người lớn kiểm tra loa và mạng nhé."; }
+  }
+  function playNext(nonce, quiet) {
+    if (nonce !== ttsNonce || !ttsQueue.length) return;
+    const chunk = ttsQueue.shift();
+    const voice = viVoice();
+    if (voice) {
+      try {
+        const u = new SpeechSynthesisUtterance(chunk);
+        u.voice = voice; u.lang = voice.lang; u.rate = 0.92; u.pitch = 1.08;
+        u.onend = () => playNext(nonce, true);
+        u.onerror = (e) => { if (nonce === ttsNonce && !quiet && e.error !== "interrupted" && e.error !== "canceled") showVoiceNote(); };
+        synth.speak(u);
+        return;
+      } catch (_) { /* dùng Google bên dưới */ }
+    }
+    try {
+      ttsAudio.src = ttsUrl(chunk);
+      ttsAudio.playbackRate = 0.96;
+      const p = ttsAudio.play();
+      if (p && typeof p.catch === "function") p.catch(() => { if (nonce === ttsNonce && !quiet) showVoiceNote(); });
+    } catch (_) { if (!quiet) showVoiceNote(); }
+  }
+  ttsAudio.addEventListener("ended", () => { if (ttsQueue.length) playNext(ttsNonce, true); });
+  /* quiet = true: tự đọc (không báo lỗi); force = true: đọc cả khi đang tắt tiếng tự động */
+  function speak(text, quiet = false, force = false) {
+    if (muted && !force) return;
+    const chunks = splitTtsText(text);
+    if (!chunks.length) return;
+    stopSpeak();
+    const nonce = ++ttsNonce;
+    ttsQueue = chunks;
+    playNext(nonce, quiet);
+  }
+
+  /* ---------- Thanh điều hướng ---------- */
   function setBanner(items) {
     const fn = activeContext && activeContext.hooks && activeContext.hooks.setSubBanner;
     if (typeof fn === "function") fn({ items });
   }
-
   function setRegistryBanner() {
     setBanner([{ level: 2, title: `${GAME_NUMBER}. Mảnh ghép còn thiếu`, action: null }]);
   }
-
   function setLevelBanner(levelIndex) {
-    const l = LEVELS[levelIndex];
-    if (!l) return;
     setBanner([
       { level: 2, title: `${GAME_NUMBER}. Mảnh ghép còn thiếu`, action: renderLevelRegistry },
       { level: 3, title: `${GAME_NUMBER}.${levelIndex + 1} Cấp ${levelIndex + 1}`, action: null }
     ]);
   }
-
   function setRoundBanner(levelIndex, roundIndex) {
-    const l = LEVELS[levelIndex];
-    if (!l) return;
     setBanner([
       { level: 2, title: `${GAME_NUMBER}. Mảnh ghép còn thiếu`, action: renderLevelRegistry },
       { level: 3, title: `${GAME_NUMBER}.${levelIndex + 1} Cấp ${levelIndex + 1}`, action: () => renderRoundRegistry(levelIndex) },
@@ -3006,42 +3089,91 @@
   }
 
   function ensureStyles() {
+    if (!document.getElementById("class1-game-explorer-font")) {
+      const link = document.createElement("link");
+      link.id = "class1-game-explorer-font";
+      link.rel = "stylesheet";
+      link.href = "https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap&subset=vietnamese";
+      document.head.appendChild(link);
+    }
     if (document.getElementById(STYLE_ID)) return;
     const style = document.createElement("style");
     style.id = STYLE_ID;
     style.textContent = `
-      .ee-mp-page{padding:.15rem .1rem 1rem;color:#334155}
-      .ee-mp-hero{display:grid;grid-template-columns:1.2fr .8fr;gap:.8rem;padding:1rem;border:1px solid #e9d5ff;border-radius:22px;background:linear-gradient(135deg,#fff7ed,#fdf2f8,#f5f3ff);margin-bottom:.9rem}
-      .ee-mp-hero h2{margin:0 0 .35rem;color:#6d28d9;font-size:22px}.ee-mp-hero p{margin:0;color:#475569;font-weight:800;line-height:1.55}
-      .ee-mp-bunny{border:1px solid #bae6fd;border-radius:18px;background:#f0f9ff;padding:.8rem;display:flex;gap:.7rem;align-items:center}.ee-mp-bunny .ico{font-size:38px}.ee-mp-bunny strong{display:block;color:#0369a1}.ee-mp-bunny span{display:block;font-size:13px;line-height:1.45;font-weight:800;color:#334155}
-      .ee-mp-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem}.ee-mp-card{min-width:0;border:1px solid #e5e7eb;border-radius:19px;padding:.85rem;background:#fff;text-align:left;cursor:pointer;font:inherit;box-shadow:0 7px 16px rgba(15,23,42,.05);transition:transform .16s,box-shadow .16s}.ee-mp-card:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(15,23,42,.09)}
-      .ee-mp-card[data-tone=pink]{background:#fff1f7;border-color:#fbcfe8}.ee-mp-card[data-tone=teal]{background:#ecfdf5;border-color:#99f6e4}.ee-mp-card[data-tone=purple]{background:#f5f3ff;border-color:#ddd6fe}.ee-mp-card[data-tone=amber]{background:#fffbeb;border-color:#fde68a}
-      .ee-mp-card .num{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:#fff;border:1px solid rgba(148,163,184,.35);font-weight:1000;color:#7e22ce}.ee-mp-card h3{margin:.55rem 0 .25rem;color:#5b21b6;font-size:18px}.ee-mp-card p{margin:0;color:#475569;font-size:13px;font-weight:800;line-height:1.45}.ee-mp-meta{margin-top:.55rem;display:flex;gap:.35rem;flex-wrap:wrap}.ee-mp-chip{border:1px solid #ddd6fe;background:#fff;border-radius:999px;padding:.24rem .48rem;color:#6d28d9;font-size:11px;font-weight:1000}
-      .ee-mp-round-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem}.ee-mp-round{border:1px solid #e5e7eb;border-radius:18px;background:#fff;padding:.8rem;text-align:left;cursor:pointer;font:inherit;transition:.16s}.ee-mp-round:hover{border-color:#c4b5fd;box-shadow:0 8px 18px rgba(109,40,217,.08)}.ee-mp-round strong{display:block;color:#5b21b6;font-size:17px}.ee-mp-round span{display:block;margin-top:.3rem;color:#64748b;font-size:13px;font-weight:800;line-height:1.4}
-      .ee-mp-game-head{display:flex;align-items:flex-start;justify-content:space-between;gap:.7rem;flex-wrap:wrap;margin-bottom:.7rem}.ee-mp-game-head h2{margin:0;color:#5b21b6;font-size:23px}.ee-mp-game-head p{margin:.3rem 0 0;color:#475569;font-size:15px;font-weight:850;line-height:1.5;max-width:850px}.ee-mp-progress{display:flex;gap:.35rem;align-items:center;flex-wrap:wrap}.ee-mp-progress span{border:1px solid #e2e8f0;border-radius:999px;background:#fff;padding:.3rem .55rem;color:#475569;font-size:12px;font-weight:1000}
-      .ee-mp-board{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2rem;padding:.8rem;border:1px solid #e9d5ff;border-radius:22px;background:linear-gradient(180deg,#fff,#fffaff)}
-      .ee-mp-column{display:flex;flex-direction:column;gap:.55rem;min-width:0}.ee-mp-col-title{text-align:center;color:#7e22ce;font-size:12px;font-weight:1000;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.05rem}
-      .ee-mp-piece{position:relative;min-height:66px;width:100%;border:1px solid #d8b4fe;border-radius:16px;background:#fff;padding:.55rem .7rem;display:flex;align-items:center;gap:.65rem;text-align:left;font:inherit;cursor:pointer;color:#334155;box-shadow:0 3px 9px rgba(76,29,149,.05);transition:transform .14s,border-color .14s,background .14s,box-shadow .14s;overflow:hidden}.ee-mp-piece:hover{border-color:#a78bfa}.ee-mp-piece .ico{font-size:29px;flex:0 0 34px;text-align:center}.ee-mp-piece .txt{font-size:15px;line-height:1.28;font-weight:950;min-width:0}.ee-mp-piece.left:after{content:"";position:absolute;right:-11px;top:50%;width:22px;height:22px;border:1px solid #d8b4fe;border-left:0;border-bottom:0;background:#fff;border-radius:50%;transform:translateY(-50%) rotate(45deg)}.ee-mp-piece.right:before{content:"";position:absolute;left:-11px;top:50%;width:22px;height:22px;border:1px solid #d8b4fe;border-right:0;border-top:0;background:#fff;border-radius:50%;transform:translateY(-50%) rotate(45deg)}
-      .ee-mp-piece.selected{border-color:#ec4899;background:#fff1f7;box-shadow:0 0 0 3px rgba(236,72,153,.12)}.ee-mp-piece.hint{border-color:#0ea5e9;background:#f0f9ff;box-shadow:0 0 0 3px rgba(14,165,233,.10)}.ee-mp-piece.dim{opacity:.28;filter:grayscale(.45)}.ee-mp-piece.matched{border-color:#34d399;background:#ecfdf5;color:#065f46;cursor:default;box-shadow:none}.ee-mp-piece.revealed{border-color:#f59e0b;background:#fffbeb}.ee-mp-piece.wrong{animation:eeMpShake .3s linear}@keyframes eeMpShake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
-      .ee-mp-help{margin-top:.7rem;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.6rem;align-items:stretch}.ee-mp-why{border:1px solid #bae6fd;border-radius:17px;background:#f0f9ff;padding:.75rem .85rem;color:#334155;font-size:14px;font-weight:800;line-height:1.5;min-height:62px}.ee-mp-why strong{color:#0369a1}.ee-mp-actions{display:flex;gap:.45rem;flex-wrap:wrap;justify-content:flex-end;align-items:center}.ee-mp-btn{min-height:44px;border-radius:13px;border:1px solid #d8b4fe;background:#fff;color:#6d28d9;padding:.6rem .85rem;font:inherit;font-size:13px;font-weight:1000;cursor:pointer}.ee-mp-btn.primary{border:0;color:#fff;background:linear-gradient(90deg,#ec4899,#8b5cf6);box-shadow:0 7px 15px rgba(168,85,247,.18)}.ee-mp-btn.blue{border-color:#7dd3fc;color:#0369a1;background:#f0f9ff}.ee-mp-btn.amber{border-color:#fde68a;color:#92400e;background:#fffbeb}.ee-mp-btn:disabled{opacity:.45;cursor:not-allowed}
-      .ee-mp-status{margin-top:.65rem;border:1px solid #e2e8f0;border-radius:15px;background:#f8fafc;padding:.65rem .75rem;display:flex;justify-content:space-between;gap:.6rem;align-items:center;flex-wrap:wrap}.ee-mp-status b{color:#7e22ce}.ee-mp-status span{color:#64748b;font-size:12px;font-weight:900}
-      .ee-mp-finish{border:1px solid #fbcfe8;border-radius:23px;background:linear-gradient(135deg,#fdf2f8,#f5f3ff);padding:1rem;text-align:center}.ee-mp-finish .big{font-size:54px}.ee-mp-finish h2{margin:.2rem 0;color:#be185d;font-size:26px}.ee-mp-finish p{margin:.45rem auto;color:#475569;font-weight:800;line-height:1.5;max-width:720px}.ee-mp-finish-actions{display:flex;justify-content:center;gap:.5rem;flex-wrap:wrap;margin-top:.8rem}
-      .ee-mp-toast{position:sticky;bottom:.6rem;margin:.6rem auto 0;width:max-content;max-width:92%;padding:.55rem .8rem;border-radius:999px;background:#312e81;color:#fff;font-size:13px;font-weight:950;box-shadow:0 8px 18px rgba(49,46,129,.2);z-index:4}.ee-mp-toast.hidden{display:none}
-      @media(max-width:900px){.ee-mp-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ee-mp-help{grid-template-columns:1fr}.ee-mp-actions{justify-content:flex-start}}
-      @media(max-width:680px){.ee-mp-hero{grid-template-columns:1fr}.ee-mp-board{gap:.9rem;padding:.55rem}.ee-mp-piece{min-height:72px;padding:.48rem .55rem}.ee-mp-piece .ico{font-size:25px;flex-basis:28px}.ee-mp-piece .txt{font-size:13px}.ee-mp-piece.left:after,.ee-mp-piece.right:before{display:none}.ee-mp-round-grid{grid-template-columns:1fr}.ee-mp-game-head h2{font-size:20px}}
-      @media(max-width:480px){.ee-mp-grid{grid-template-columns:1fr}.ee-mp-board{grid-template-columns:1fr;gap:.7rem}.ee-mp-column{gap:.42rem}.ee-mp-col-title{margin-top:.15rem}.ee-mp-piece{min-height:56px}.ee-mp-actions{display:grid;grid-template-columns:1fr 1fr;width:100%}.ee-mp-actions .ee-mp-btn{width:100%}}
+      .ee-mp-page{padding:.15rem .1rem 1rem;color:#344054;font-family:"Baloo 2","Nunito","Segoe UI",system-ui,sans-serif}
+      .ee-mp-page button{font-family:inherit}
+      .ee-mp-bubble{display:flex;align-items:center;gap:.6rem;border:2px solid #F9A8D4;border-radius:18px;background:#FFF1F7;padding:.55rem .8rem;margin:0 0 .9rem;color:#BE185D;font-size:19px;font-weight:700;line-height:1.35}
+      .ee-mp-bubble .ico{font-size:30px;line-height:1}
+      .ee-mp-bubble .txt{flex:1}
+      .ee-mp-say{flex:0 0 auto;min-width:48px;min-height:48px;border-radius:14px;border:2px solid #F9A8D4;background:#fff;cursor:pointer;font-size:22px}
+      .ee-mp-say:hover{border-color:#EC4899}
+      .ee-mp-say.mute{opacity:.55}
+      .ee-mp-levels{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem}
+      .ee-mp-level{display:flex;flex-direction:column;gap:.35rem;align-items:flex-start;border:2px solid #E9D5FF;border-radius:20px;background:#fff;padding:.8rem .9rem;cursor:pointer;text-align:left;transition:transform .14s,box-shadow .14s}
+      .ee-mp-level:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(139,92,246,.12)}
+      .ee-mp-level[data-tone=pink]{background:#FFF1F7;border-color:#FBCFE8}.ee-mp-level[data-tone=teal]{background:#ECFDF5;border-color:#A7F3D0}.ee-mp-level[data-tone=purple]{background:#F5F3FF;border-color:#DDD6FE}.ee-mp-level[data-tone=amber]{background:#FFFBEB;border-color:#FDE68A}
+      .ee-mp-level .top{display:flex;align-items:center;gap:.6rem;width:100%}
+      .ee-mp-level .num{width:46px;height:46px;flex:0 0 46px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#EC4899,#8B5CF6);color:#fff;font-size:24px;font-weight:800}
+      .ee-mp-level h3{margin:0;color:#5B216E;font-size:21px;font-weight:800;line-height:1.2}
+      .ee-mp-level .icons{font-size:30px;letter-spacing:4px;line-height:1.3}
+      .ee-mp-level .prog{display:flex;align-items:center;gap:.4rem;color:#6D28D9;font-size:15px;font-weight:700}
+      .ee-mp-bar{width:110px;height:10px;border-radius:999px;background:#EDE9FE;overflow:hidden}.ee-mp-bar span{display:block;height:100%;background:linear-gradient(90deg,#EC4899,#8B5CF6)}
+      .ee-mp-rounds{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.7rem}
+      .ee-mp-round{position:relative;display:flex;flex-direction:column;align-items:center;gap:.25rem;border:2px solid #E9D5FF;border-radius:18px;background:#fff;padding:.75rem .5rem .6rem;cursor:pointer;text-align:center;transition:transform .14s,border-color .14s}
+      .ee-mp-round:hover{transform:translateY(-2px);border-color:#C4B5FD}
+      .ee-mp-round.done{background:#F0FDF4;border-color:#A7F3D0}
+      .ee-mp-round .n{position:absolute;left:8px;top:8px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#EC4899,#8B5CF6);color:#fff;font-size:19px;font-weight:800}
+      .ee-mp-round .pair{font-size:38px;line-height:1.2}
+      .ee-mp-round .pair i{font-style:normal;font-size:20px;color:#C4B5FD;margin:0 .2rem;vertical-align:middle}
+      .ee-mp-round strong{color:#5B216E;font-size:22px;font-weight:800;line-height:1.25}
+      .ee-mp-stars{color:#F59E0B;font-size:22px;letter-spacing:2px}.ee-mp-round .ee-mp-stars{margin-top:auto}.ee-mp-stars .off{color:#E5E7EB}
+      .ee-mp-head{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-bottom:.6rem}
+      .ee-mp-head h2{margin:0;color:#5B216E;font-size:26px;font-weight:800;line-height:1.2;flex:1;min-width:200px}
+      .ee-mp-dots{display:flex;gap:6px}
+      .ee-mp-dots span{width:20px;height:20px;border-radius:50%;background:#EDE9FE}
+      .ee-mp-dots span.on{background:#10B981}
+      .ee-mp-dots span.peek{background:#FBBF24}
+      .ee-mp-board{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1.4rem;padding:.8rem;border:2px solid #E9D5FF;border-radius:22px;background:linear-gradient(180deg,#fff,#FAF5FF)}
+      .ee-mp-col{display:flex;flex-direction:column;gap:.6rem;min-width:0}
+      .ee-mp-piece{position:relative;min-height:74px;width:100%;border:3px solid #E9D5FF;border-radius:18px;background:#fff;padding:.45rem .7rem;display:flex;align-items:center;gap:.7rem;text-align:left;cursor:pointer;color:#344054;transition:transform .12s,border-color .12s,background .12s,opacity .12s}
+      .ee-mp-piece:hover{border-color:#C4B5FD;transform:translateY(-1px)}
+      .ee-mp-piece .ico{font-size:40px;line-height:1;flex:0 0 48px;text-align:center}
+      .ee-mp-piece .txt{font-size:19px;font-weight:700;line-height:1.25;color:#3B0764}
+      .ee-mp-piece.selected{border-color:#EC4899;background:#FFF1F7;box-shadow:0 0 0 4px rgba(236,72,153,.15)}
+      .ee-mp-piece.hint{border-color:#38BDF8;background:#F0F9FF}
+      .ee-mp-piece.dim{opacity:.25}
+      .ee-mp-piece.matched{border-color:#34D399;background:#ECFDF5;cursor:default}
+      .ee-mp-piece.revealed{border-color:#FBBF24;background:#FFFBEB}
+      .ee-mp-piece .badge{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#10B981;color:#fff;font-size:17px;font-weight:800}
+      .ee-mp-piece.revealed .badge{background:#F59E0B}
+      .ee-mp-piece.wrong{animation:eeMpShake .45s}
+      @keyframes eeMpShake{0%,100%{transform:translateX(0);border-color:#F87171}25%{transform:translateX(-6px);border-color:#F87171}75%{transform:translateX(6px);border-color:#F87171}}
+      .ee-mp-foot{margin-top:.7rem;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.6rem;align-items:stretch}
+      .ee-mp-fb{display:flex;align-items:center;gap:.6rem;border:2px solid #E9D5FF;border-radius:18px;background:#fff;padding:.5rem .8rem;color:#5B216E;font-size:18px;font-weight:700;line-height:1.35;min-height:62px}
+      .ee-mp-fb .ico{font-size:28px}
+      .ee-mp-fb.good{border-color:#6EE7B7;background:#ECFDF5;color:#047857}
+      .ee-mp-fb.bad{border-color:#FDA4AF;background:#FFF1F2;color:#BE123C}
+      .ee-mp-fb.tip{border-color:#7DD3FC;background:#F0F9FF;color:#0369A1}
+      .ee-mp-acts{display:flex;gap:.5rem}
+      .ee-mp-btn{min-height:62px;padding:0 1rem;border-radius:18px;border:2px solid #6EE7B7;background:linear-gradient(90deg,#ECFDF5,#E0F2FE);color:#047857;font-size:18px;font-weight:700;cursor:pointer;white-space:nowrap}
+      .ee-mp-btn.amber{border-color:#FCD34D;background:#FFFBEB;color:#B45309}
+      .ee-mp-btn.primary{border:none;background:linear-gradient(90deg,#EC4899,#8B5CF6);color:#fff;box-shadow:0 8px 16px rgba(139,92,246,.22)}
+      .ee-mp-btn:focus-visible,.ee-mp-piece:focus-visible,.ee-mp-level:focus-visible,.ee-mp-round:focus-visible,.ee-mp-say:focus-visible{outline:3px solid #F472B6;outline-offset:2px}
+      .ee-mp-voice-note{margin:0 0 .6rem;padding:.4rem .7rem;border-radius:12px;background:#FFF7ED;color:#C2410C;font-size:16px;font-weight:600}
+      .ee-mp-finish{border:2px solid #FBCFE8;border-radius:24px;background:linear-gradient(135deg,#FFF1F7,#F5F3FF);padding:1rem;text-align:center}
+      .ee-mp-finish .big{font-size:54px;line-height:1.1}
+      .ee-mp-finish h2{margin:.2rem 0;color:#BE185D;font-size:30px;font-weight:800}
+      .ee-mp-finish .bigstars{font-size:46px;color:#F59E0B;letter-spacing:6px}.ee-mp-finish .bigstars .off{color:#E5E7EB}
+      .ee-mp-recap{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem;margin:.9rem 0;text-align:left}
+      .ee-mp-recap button{display:flex;align-items:center;gap:.5rem;border:2px solid #E9D5FF;border-radius:16px;background:#fff;padding:.45rem .6rem;cursor:pointer;color:#3B0764;font-size:16px;font-weight:700;line-height:1.25}
+      .ee-mp-recap .e{font-size:28px;white-space:nowrap}
+      .ee-mp-finish-actions{display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap}
+      @media(max-width:1000px){.ee-mp-rounds{grid-template-columns:repeat(3,minmax(0,1fr))}.ee-mp-levels{grid-template-columns:repeat(2,minmax(0,1fr))}}
+      @media(max-width:700px){.ee-mp-rounds{grid-template-columns:repeat(2,minmax(0,1fr))}.ee-mp-round strong{font-size:18px}.ee-mp-round .n{width:28px;height:28px;font-size:16px}.ee-mp-round .pair{font-size:32px;padding-left:18px}.ee-mp-board{gap:.6rem;padding:.5rem}.ee-mp-piece{min-height:66px;padding:.4rem .45rem;gap:.4rem}.ee-mp-piece .ico{font-size:30px;flex-basis:34px}.ee-mp-piece .txt{font-size:16px}.ee-mp-foot{grid-template-columns:1fr}.ee-mp-acts .ee-mp-btn{flex:1}.ee-mp-piece .badge{width:26px;height:26px;font-size:14px;right:4px}}
+      @media(max-width:480px){.ee-mp-levels{grid-template-columns:1fr}}
+      @media(prefers-reduced-motion:reduce){.ee-mp-piece.wrong{animation:none}}
     `;
     document.head.appendChild(style);
-  }
-
-  function showLocalToast(message) {
-    const h = host();
-    const node = h && h.querySelector("#ee-mp-toast");
-    if (!node) return;
-    window.clearTimeout(toastTimer);
-    node.textContent = String(message || "");
-    node.classList.remove("hidden");
-    toastTimer = window.setTimeout(() => node.classList.add("hidden"), 1800);
   }
 
   function resetRoundState(r) {
@@ -3051,11 +3183,17 @@
     hinted = new Set();
     revealed = new Set();
     secondHintChoices = new Set();
+    pairOrder = new Map();
+    hintStep = new Map();
     wrongAttempts = 0;
     rightOrder = shuffle(r.pairs.map((_, i) => String(i)));
   }
 
+  /* ---------- Trang chọn cấp ---------- */
+  const INTRO = "Chạm một mảnh bên trái, rồi chạm mảnh hợp với nó bên phải!";
   function renderLevelRegistry() {
+    stopSpeak();
+    window.clearTimeout(finishTimer);
     currentLevelIndex = -1;
     currentRoundIndex = -1;
     setRegistryBanner();
@@ -3063,22 +3201,32 @@
     if (!h) return;
     h.innerHTML = `
       <div class="ee-mp-page">
-        <div class="section-heading"><div><h1>🔗 Mảnh ghép còn thiếu</h1><p>6 cấp độ • 48 màn • 232 cặp liên tưởng có giải thích.</p></div><button id="ee-mp-back-games" class="back-btn" type="button">← Games</button></div>
-        <div class="ee-mp-hero">
-          <div><h2>Tìm đúng mối liên hệ, không đoán mò</h2><p>Mỗi màn nêu rõ loại quan hệ cần tìm. Hai cột có nhiều phương án gần nhau nhưng chỉ có một cách ghép hợp lý. Ghép đúng sẽ hiện “Vì sao?”, còn khi bí bé có thể xin gợi ý từng tầng.</p></div>
-          <div class="ee-mp-bunny"><span class="ico" aria-hidden="true">🐰</span><div><strong>Cô Thỏ Hồng nhắc bé</strong><span>Gợi ý không bị tính là sai. Nếu xem đáp án, Cô Thỏ vẫn giải thích để bé hiểu vì sao hai mảnh thuộc về nhau.</span></div></div>
-        </div>
-        <div class="ee-mp-grid">
-          ${LEVELS.map((l, i) => `<button class="ee-mp-card" data-level="${i}" data-tone="${esc(l.tone)}" type="button"><span class="num">${i + 1}</span><h3>${esc(l.title)}</h3><p>${esc(l.summary)}</p><div class="ee-mp-meta"><span class="ee-mp-chip">8 màn</span><span class="ee-mp-chip">${l.rounds[0].pairs.length} cặp/màn</span></div></button>`).join("")}
+        <div class="section-heading"><div><h1>🔗 Mảnh ghép còn thiếu</h1><p>6 cấp • 48 màn</p></div><button id="ee-mp-back-games" class="back-btn" type="button">← Games</button></div>
+        <div class="ee-mp-bubble"><span class="ico" aria-hidden="true">🐰</span><span class="txt">${INTRO}</span><button class="ee-mp-say" id="ee-mp-say-intro" type="button" aria-label="Nghe cô đọc">🔊</button></div>
+        <p id="ee-mp-voice-note" class="ee-mp-voice-note" hidden></p>
+        <div class="ee-mp-levels">
+          ${LEVELS.map((l, i) => {
+            const done = l.rounds.filter((_, ri) => stars[roundKey(i, ri)]).length;
+            const sample = l.rounds.slice(0, 2).map((r) => `${r.pairs[0].left.icon}${r.pairs[0].right.icon}`).join(" ");
+            return `<button class="ee-mp-level" data-level="${i}" data-tone="${esc(l.tone)}" type="button" aria-label="Cấp ${i + 1}: ${esc(shortLevel(l))}">
+              <span class="top"><span class="num">${i + 1}</span><h3>${esc(shortLevel(l))}</h3></span>
+              <span class="icons" aria-hidden="true">${sample}</span>
+              <span class="prog"><span class="ee-mp-bar"><span style="width:${(done / l.rounds.length) * 100}%"></span></span>${done}/${l.rounds.length} màn</span>
+            </button>`;
+          }).join("")}
         </div>
       </div>`;
     h.querySelector("#ee-mp-back-games")?.addEventListener("click", () => activeContext && activeContext.back && activeContext.back());
+    h.querySelector("#ee-mp-say-intro")?.addEventListener("click", () => speak(INTRO, false, true));
     h.querySelectorAll("[data-level]").forEach((button) => button.addEventListener("click", () => renderRoundRegistry(Number(button.dataset.level))));
   }
 
+  /* ---------- Trang chọn màn ---------- */
   function renderRoundRegistry(levelIndex) {
     const l = LEVELS[levelIndex];
     if (!l) return renderLevelRegistry();
+    stopSpeak();
+    window.clearTimeout(finishTimer);
     currentLevelIndex = levelIndex;
     currentRoundIndex = -1;
     setLevelBanner(levelIndex);
@@ -3086,9 +3234,16 @@
     if (!h) return;
     h.innerHTML = `
       <div class="ee-mp-page">
-        <div class="section-heading"><div><h1>🔗 ${esc(l.title)}</h1><p>${esc(l.summary)}</p></div><button id="ee-mp-back-levels" class="back-btn" type="button">← 6 cấp độ</button></div>
-        <div class="ee-mp-round-grid">
-          ${l.rounds.map((r, i) => `<button class="ee-mp-round" data-round="${i}" type="button"><strong>${i + 1}. ${esc(r.title)}</strong><span>${esc(r.prompt)} · ${r.pairs.length} cặp</span></button>`).join("")}
+        <div class="section-heading"><div><h1>🔗 Cấp ${levelIndex + 1}: ${esc(shortLevel(l))}</h1><p>${l.rounds.length} màn</p></div><button id="ee-mp-back-levels" class="back-btn" type="button">← 6 cấp</button></div>
+        <div class="ee-mp-rounds">
+          ${l.rounds.map((r, i) => {
+            const st = stars[roundKey(levelIndex, i)] || 0;
+            return `<button class="ee-mp-round${st ? " done" : ""}" data-round="${i}" type="button" aria-label="Màn ${i + 1}: ${esc(r.title)}">
+              <span class="n">${i + 1}</span>
+              <span class="pair" aria-hidden="true">${r.pairs[0].left.icon}<i>➜</i>${r.pairs[0].right.icon}</span>
+              <strong>${esc(r.title)}</strong>${starRow(st)}
+            </button>`;
+          }).join("")}
         </div>
       </div>`;
     h.querySelector("#ee-mp-back-levels")?.addEventListener("click", renderLevelRegistry);
@@ -3099,20 +3254,24 @@
     const l = LEVELS[levelIndex];
     const r = l && l.rounds[roundIndex];
     if (!r) return renderRoundRegistry(levelIndex);
+    window.clearTimeout(finishTimer);
     currentLevelIndex = levelIndex;
     currentRoundIndex = roundIndex;
     resetRoundState(r);
     renderRound();
+    speak(r.prompt, true);
   }
 
+  /* ---------- Màn chơi ---------- */
   function pieceHtml(side, pairIndex, item) {
     const key = String(pairIndex);
     const isMatched = matched.has(key);
     const isSelected = side === "left" ? leftSelected === key : rightSelected === key;
-    const isHint = secondHintChoices.has(key) && side === "right";
-    const dim = secondHintChoices.size > 0 && side === "right" && !secondHintChoices.has(key) && !isMatched;
+    const isHint = side === "right" && secondHintChoices.has(key);
+    const dim = side === "right" && secondHintChoices.size > 0 && !secondHintChoices.has(key) && !isMatched;
     const cls = ["ee-mp-piece", side, isMatched ? "matched" : "", isSelected ? "selected" : "", isHint ? "hint" : "", dim ? "dim" : "", revealed.has(key) ? "revealed" : ""].filter(Boolean).join(" ");
-    return `<button class="${cls}" type="button" data-side="${side}" data-pair="${key}" ${isMatched ? "disabled" : ""}><span class="ico" aria-hidden="true">${esc(item.icon)}</span><span class="txt">${esc(item.text)}</span></button>`;
+    const badge = isMatched ? `<span class="badge" aria-hidden="true">${pairOrder.get(key)}</span>` : "";
+    return `<button class="${cls}" type="button" data-side="${side}" data-pair="${key}" ${isMatched ? "aria-disabled=\"true\"" : ""}><span class="ico" aria-hidden="true">${esc(item.icon)}</span><span class="txt">${esc(item.text)}</span>${badge}</button>`;
   }
 
   function renderRound() {
@@ -3121,23 +3280,54 @@
     const h = host();
     if (!l || !r || !h) return;
     setRoundBanner(currentLevelIndex, currentRoundIndex);
-    const lastWhy = h.querySelector("#ee-mp-why")?.dataset.lastWhy || "";
+    const dots = r.pairs.map((_, i) => `<span class="${matched.has(String(i)) ? (revealed.has(String(i)) ? "peek" : "on") : ""}"></span>`).join("");
     h.innerHTML = `
       <div class="ee-mp-page">
-        <div class="ee-mp-game-head"><div><h2>${esc(r.title)}</h2><p>${esc(r.prompt)}</p></div><div class="ee-mp-progress"><span>Cấp ${currentLevelIndex + 1}/6</span><span>Màn ${currentRoundIndex + 1}/8</span><span>${r.pairs.length} cặp</span></div></div>
+        <div class="ee-mp-head"><h2>${esc(r.title)}</h2><div class="ee-mp-dots" aria-label="Đã ghép ${matched.size} trên ${r.pairs.length}">${dots}</div>
+          <button id="ee-mp-mute" class="ee-mp-say${muted ? " mute" : ""}" type="button" aria-label="${muted ? "Bật" : "Tắt"} giọng đọc tự động" title="${muted ? "Bật" : "Tắt"} giọng đọc tự động">${muted ? "🔇" : "🔈"}</button></div>
+        <div class="ee-mp-bubble"><span class="ico" aria-hidden="true">🐰</span><span class="txt">${esc(r.prompt)}</span><button class="ee-mp-say" id="ee-mp-say-prompt" type="button" aria-label="Nghe cô đọc">🔊</button></div>
+        <p id="ee-mp-voice-note" class="ee-mp-voice-note" hidden></p>
         <div class="ee-mp-board">
-          <div class="ee-mp-column"><div class="ee-mp-col-title">Mảnh bên trái</div>${r.pairs.map((p, i) => pieceHtml("left", i, p.left)).join("")}</div>
-          <div class="ee-mp-column"><div class="ee-mp-col-title">Mảnh bên phải</div>${rightOrder.map((key) => { const i = Number(key); return pieceHtml("right", i, r.pairs[i].right); }).join("")}</div>
+          <div class="ee-mp-col">${r.pairs.map((p, i) => pieceHtml("left", i, p.left)).join("")}</div>
+          <div class="ee-mp-col">${rightOrder.map((key) => pieceHtml("right", Number(key), r.pairs[Number(key)].right)).join("")}</div>
         </div>
-        <div class="ee-mp-help">
-          <div id="ee-mp-why" class="ee-mp-why" data-last-why="${esc(lastWhy)}"><strong>🐰 Cô Thỏ:</strong> ${lastWhy ? esc(lastWhy) : "Chọn một mảnh bên trái rồi chọn mảnh bên phải mà bé nghĩ có liên quan đúng theo yêu cầu của màn."}</div>
-          <div class="ee-mp-actions"><button id="ee-mp-hint1" class="ee-mp-btn blue" type="button">💡 Gợi ý 1</button><button id="ee-mp-hint2" class="ee-mp-btn blue" type="button">💡 Gợi ý 2</button><button id="ee-mp-answer" class="ee-mp-btn amber" type="button">👀 Xem đáp án</button></div>
+        <div class="ee-mp-foot">
+          <div id="ee-mp-fb" class="ee-mp-fb" aria-live="polite"><span class="ico" aria-hidden="true">👆</span><span>Chạm một mảnh bên trái trước nhé!</span></div>
+          <div class="ee-mp-acts"><button id="ee-mp-hint" class="ee-mp-btn" type="button">💡 Gợi ý</button><button id="ee-mp-answer" class="ee-mp-btn amber" type="button">👀 Đáp án</button></div>
         </div>
-        <div class="ee-mp-status"><div><b>Đã ghép ${matched.size}/${r.pairs.length}</b> · Sai ${wrongAttempts} lần</div><span>Gợi ý không tính là sai.</span></div>
-        <div id="ee-mp-toast" class="ee-mp-toast hidden" aria-live="polite"></div>
       </div>`;
-
     bindRound();
+  }
+
+  function feedback(kind, icon, text, speakText) {
+    const node = host() && host().querySelector("#ee-mp-fb");
+    if (node) {
+      node.className = `ee-mp-fb ${kind}`;
+      node.innerHTML = `<span class="ico" aria-hidden="true">${icon}</span><span>${esc(text)}</span>`;
+    }
+    if (speakText) speak(speakText, true);
+  }
+
+  function refresh() {
+    const h = host();
+    const r = round();
+    if (!h || !r) return;
+    h.querySelectorAll(".ee-mp-piece").forEach((node) => {
+      const side = node.dataset.side;
+      const key = String(node.dataset.pair || "");
+      const isMatched = matched.has(key);
+      node.classList.toggle("selected", !isMatched && (side === "left" ? leftSelected === key : rightSelected === key));
+      node.classList.toggle("hint", side === "right" && secondHintChoices.has(key) && !isMatched);
+      node.classList.toggle("dim", side === "right" && secondHintChoices.size > 0 && !secondHintChoices.has(key) && !isMatched);
+      node.classList.toggle("matched", isMatched);
+      node.classList.toggle("revealed", revealed.has(key));
+      if (isMatched && !node.querySelector(".badge")) {
+        node.insertAdjacentHTML("beforeend", `<span class="badge" aria-hidden="true">${pairOrder.get(key)}</span>`);
+        node.setAttribute("aria-disabled", "true");
+      }
+    });
+    const dots = h.querySelector(".ee-mp-dots");
+    if (dots) dots.innerHTML = r.pairs.map((_, i) => `<span class="${matched.has(String(i)) ? (revealed.has(String(i)) ? "peek" : "on") : ""}"></span>`).join("");
   }
 
   function bindRound() {
@@ -3148,40 +3338,46 @@
       const side = button.dataset.side;
       const key = String(button.dataset.pair || "");
       if (!key || matched.has(key)) return;
+      const item = side === "left" ? r.pairs[Number(key)].left : r.pairs[Number(key)].right;
       if (side === "left") {
         leftSelected = leftSelected === key ? "" : key;
         rightSelected = "";
         secondHintChoices = new Set();
+        if (leftSelected) {
+          feedback("", "👉", `Bây giờ chạm mảnh bên phải hợp với “${item.text}”.`);
+          speak(item.text, true);
+        }
       } else {
-        rightSelected = rightSelected === key ? "" : key;
+        if (!leftSelected) {
+          feedback("tip", "👈", "Bé chạm một mảnh bên trái trước nhé!");
+          speak(item.text, true);
+          refresh();
+          return;
+        }
+        rightSelected = key;
       }
       if (leftSelected && rightSelected) tryMatch(leftSelected, rightSelected);
-      else refreshSelectionClasses();
+      else refresh();
     }));
-    h.querySelector("#ee-mp-hint1")?.addEventListener("click", useHint1);
-    h.querySelector("#ee-mp-hint2")?.addEventListener("click", useHint2);
+    h.querySelector("#ee-mp-hint")?.addEventListener("click", useHint);
     h.querySelector("#ee-mp-answer")?.addEventListener("click", revealAnswer);
-  }
-
-  function refreshSelectionClasses() {
-    const h = host();
-    if (!h) return;
-    h.querySelectorAll(".ee-mp-piece").forEach((node) => {
-      const side = node.dataset.side;
-      const key = String(node.dataset.pair || "");
-      node.classList.toggle("selected", side === "left" ? leftSelected === key : rightSelected === key);
-      node.classList.toggle("hint", side === "right" && secondHintChoices.has(key));
-      node.classList.toggle("dim", side === "right" && secondHintChoices.size > 0 && !secondHintChoices.has(key) && !matched.has(key));
+    h.querySelector("#ee-mp-say-prompt")?.addEventListener("click", () => speak(r.prompt, false, true));
+    h.querySelector("#ee-mp-mute")?.addEventListener("click", (e) => {
+      muted = !muted;
+      if (muted) stopSpeak();
+      e.currentTarget.textContent = muted ? "🔇" : "🔈";
+      e.currentTarget.classList.toggle("mute", muted);
+      e.currentTarget.setAttribute("aria-label", `${muted ? "Bật" : "Tắt"} giọng đọc tự động`);
     });
   }
 
-  function updateWhy(text) {
-    const h = host();
-    const node = h && h.querySelector("#ee-mp-why");
-    if (!node) return;
-    const clean = String(text || "");
-    node.dataset.lastWhy = clean;
-    node.innerHTML = `<strong>🐰 Cô Thỏ:</strong> ${esc(clean)}`;
+  function markMatched(key, isReveal) {
+    matched.add(key);
+    pairOrder.set(key, matched.size);
+    if (isReveal) revealed.add(key);
+    leftSelected = "";
+    rightSelected = "";
+    secondHintChoices = new Set();
   }
 
   function tryMatch(leftKey, rightKey) {
@@ -3189,28 +3385,22 @@
     const r = round();
     if (!h || !r) return;
     if (leftKey === rightKey) {
-      matched.add(leftKey);
-      leftSelected = "";
-      rightSelected = "";
-      secondHintChoices = new Set();
-      updateWhy(`Đúng rồi! ${r.pairs[Number(leftKey)].why}`);
-      h.querySelectorAll(`[data-pair="${leftKey}"]`).forEach((node) => { node.classList.add("matched"); node.classList.remove("selected","hint","dim"); node.disabled = true; });
-      const stat = h.querySelector(".ee-mp-status b");
-      if (stat) stat.textContent = `Đã ghép ${matched.size}/${r.pairs.length}`;
-      showLocalToast("Khớp rồi! ✨");
-      if (matched.size === r.pairs.length) window.setTimeout(renderFinish, 650);
+      const p = r.pairs[Number(leftKey)];
+      markMatched(leftKey, false);
+      refresh();
+      feedback("good", "🎉", p.why, `Đúng rồi! ${p.why}`);
+      if (matched.size === r.pairs.length) finishTimer = window.setTimeout(renderFinish, 1600);
       return;
     }
     wrongAttempts += 1;
-    const left = h.querySelector(`[data-side="left"][data-pair="${leftKey}"]`);
-    const right = h.querySelector(`[data-side="right"][data-pair="${rightKey}"]`);
-    [left,right].forEach((node) => { if (!node) return; node.classList.remove("wrong"); void node.offsetWidth; node.classList.add("wrong"); });
+    [h.querySelector(`[data-side="left"][data-pair="${leftKey}"]`), h.querySelector(`[data-side="right"][data-pair="${rightKey}"]`)].forEach((node) => {
+      if (!node) return;
+      node.classList.remove("wrong"); void node.offsetWidth; node.classList.add("wrong");
+      window.setTimeout(() => node.classList.remove("wrong"), 500);
+    });
     rightSelected = "";
-    updateWhy("Hai mảnh này có liên quan theo một cách nào đó, nhưng chưa đúng loại quan hệ mà màn đang hỏi. Bé đọc lại câu yêu cầu nhé!");
-    const stat = h.querySelector(".ee-mp-status div");
-    if (stat) stat.innerHTML = `<b>Đã ghép ${matched.size}/${r.pairs.length}</b> · Sai ${wrongAttempts} lần`;
-    showLocalToast("Chưa khớp, thử lại nhé 🐰");
-    refreshSelectionClasses();
+    refresh();
+    feedback("bad", "🤔", "Chưa đúng rồi. Bé thử mảnh khác nhé!", "Chưa đúng rồi. Bé thử mảnh khác nhé!");
   }
 
   function unresolvedKey() {
@@ -3221,70 +3411,66 @@
     return idx >= 0 ? String(idx) : "";
   }
 
-  function useHint1() {
-    const r = round();
-    const key = unresolvedKey();
-    if (!r || !key) return;
-    leftSelected = key;
-    rightSelected = "";
-    secondHintChoices = new Set();
-    hinted.add(key);
-    updateWhy(`Gợi ý 1: ${r.tip} Bé đang tìm mảnh phù hợp với “${r.pairs[Number(key)].left.text}”.`);
-    refreshSelectionClasses();
-    showLocalToast("Cô Thỏ đã nhắc loại quan hệ 💡");
-  }
-
-  function useHint2() {
+  /* Gợi ý: chọn sẵn mảnh bên trái, chỉ để sáng 2 mảnh bên phải, cô đọc mẹo của màn */
+  function useHint() {
     const r = round();
     const key = unresolvedKey();
     if (!r || !key) return;
     leftSelected = key;
     rightSelected = "";
     hinted.add(key);
-    const unresolvedWrong = r.pairs.map((_, i) => String(i)).filter((k) => k !== key && !matched.has(k));
-    const keepWrongCount = Math.min(1, unresolvedWrong.length);
-    const keep = shuffle(unresolvedWrong).slice(0, keepWrongCount);
-    secondHintChoices = new Set([key, ...keep]);
-    updateWhy(`Gợi ý 2: Cô Thỏ đã làm mờ những phương án không phù hợp. Bé chỉ cần cân nhắc ${secondHintChoices.size} mảnh còn sáng.`);
-    refreshSelectionClasses();
-    showLocalToast("Đã thu hẹp lựa chọn 🔎");
+    hintStep.set(key, (hintStep.get(key) || 0) + 1);
+    const others = r.pairs.map((_, i) => String(i)).filter((k) => k !== key && !matched.has(k));
+    secondHintChoices = new Set([key, ...shuffle(others).slice(0, Math.min(1, others.length))]);
+    refresh();
+    const left = r.pairs[Number(key)].left.text;
+    feedback("tip", "💡", `“${left}” đi với một trong ${secondHintChoices.size} mảnh còn sáng.`, `${r.tip} ${left} đi với một trong ${secondHintChoices.size} mảnh còn sáng.`);
   }
 
   function revealAnswer() {
     const r = round();
     const key = unresolvedKey();
     if (!r || !key) return;
-    matched.add(key);
-    revealed.add(key);
+    const p = r.pairs[Number(key)];
     hinted.add(key);
-    leftSelected = "";
-    rightSelected = "";
-    secondHintChoices = new Set();
-    updateWhy(`Đáp án: “${r.pairs[Number(key)].left.text}” ↔ “${r.pairs[Number(key)].right.text}”. ${r.pairs[Number(key)].why}`);
-    const h = host();
-    if (h) {
-      h.querySelectorAll(`[data-pair="${key}"]`).forEach((node) => { node.classList.add("matched","revealed"); node.classList.remove("selected","hint","dim"); node.disabled = true; });
-      const stat = h.querySelector(".ee-mp-status b");
-      if (stat) stat.textContent = `Đã ghép ${matched.size}/${r.pairs.length}`;
-    }
-    showLocalToast("Đã hiện 1 đáp án và lời giải 👀");
-    if (matched.size === r.pairs.length) window.setTimeout(renderFinish, 850);
+    markMatched(key, true);
+    refresh();
+    feedback("tip", "👀", `${p.left.text} ➜ ${p.right.text}. ${p.why}`, `${p.left.text} đi với ${p.right.text}. ${p.why}`);
+    if (matched.size === r.pairs.length) finishTimer = window.setTimeout(renderFinish, 1800);
   }
 
+  /* ---------- Màn kết thúc ---------- */
   function renderFinish() {
     const l = level();
     const r = round();
     const h = host();
     if (!l || !r || !h) return;
     setRoundBanner(currentLevelIndex, currentRoundIndex);
-    const helpCount = hinted.size;
-    const answerCount = revealed.size;
+    const mistakes = wrongAttempts + hinted.size + revealed.size;
+    const n = mistakes === 0 ? 3 : mistakes <= 2 ? 2 : 1;
+    saveStars(roundKey(currentLevelIndex, currentRoundIndex), n);
+    const hasNext = currentRoundIndex < l.rounds.length - 1 || currentLevelIndex < LEVELS.length - 1;
     h.innerHTML = `
-      <div class="ee-mp-page"><section class="ee-mp-finish"><div class="big">🔗🐰✨</div><h2>Ghép xong rồi!</h2><p>Bé đã hoàn thành <strong>${esc(r.title)}</strong>. Có ${r.pairs.length} cặp, dùng gợi ý cho ${helpCount} cặp và xem đáp án ${answerCount} cặp. Gợi ý không phải lỗi — điều quan trọng là bé hiểu vì sao mỗi cặp đi với nhau.</p><div class="ee-mp-finish-actions"><button id="ee-mp-replay" class="ee-mp-btn primary" type="button">Chơi lại màn này</button><button id="ee-mp-next" class="ee-mp-btn" type="button">${currentRoundIndex < l.rounds.length - 1 ? "Màn tiếp theo →" : "Chọn màn khác"}</button><button id="ee-mp-rounds" class="ee-mp-btn" type="button">Danh sách màn</button></div></section></div>`;
+      <div class="ee-mp-page"><section class="ee-mp-finish">
+        <div class="big" aria-hidden="true">🎉🐰</div>
+        <h2>Ghép xong rồi!</h2>
+        <div class="bigstars" aria-label="${n} sao">${[1, 2, 3].map((i) => `<span class="${i <= n ? "" : "off"}">★</span>`).join("")}</div>
+        <div class="ee-mp-recap">${r.pairs.map((p, i) => `<button type="button" data-say-pair="${i}" aria-label="Nghe: ${esc(p.left.text)} đi với ${esc(p.right.text)}"><span class="e" aria-hidden="true">${p.left.icon}➜${p.right.icon}</span><span>${esc(p.left.text)} – ${esc(p.right.text)}</span></button>`).join("")}</div>
+        <div class="ee-mp-finish-actions">
+          ${hasNext ? `<button id="ee-mp-next" class="ee-mp-btn primary" type="button">▶ Màn tiếp theo</button>` : ""}
+          <button id="ee-mp-replay" class="ee-mp-btn" type="button">🔄 Chơi lại</button>
+          <button id="ee-mp-rounds" class="ee-mp-btn" type="button">📚 Chọn màn</button>
+        </div>
+      </section></div>`;
+    speak(n === 3 ? "Giỏi quá! Bé ghép đúng hết mà không cần gợi ý!" : "Ghép xong rồi! Bé giỏi lắm!", true);
+    h.querySelectorAll("[data-say-pair]").forEach((b) => b.addEventListener("click", () => {
+      const p = r.pairs[Number(b.dataset.sayPair)];
+      speak(`${p.left.text} đi với ${p.right.text}. ${p.why}`, false, true);
+    }));
     h.querySelector("#ee-mp-replay")?.addEventListener("click", () => startRound(currentLevelIndex, currentRoundIndex));
     h.querySelector("#ee-mp-next")?.addEventListener("click", () => {
       if (currentRoundIndex < l.rounds.length - 1) startRound(currentLevelIndex, currentRoundIndex + 1);
-      else renderRoundRegistry(currentLevelIndex);
+      else if (currentLevelIndex < LEVELS.length - 1) startRound(currentLevelIndex + 1, 0);
     });
     h.querySelector("#ee-mp-rounds")?.addEventListener("click", () => renderRoundRegistry(currentLevelIndex));
   }
@@ -3297,6 +3483,8 @@
 
   function destroy() {
     window.clearTimeout(toastTimer);
+    window.clearTimeout(finishTimer);
+    stopSpeak();
     activeContext = null;
     currentLevelIndex = -1;
     currentRoundIndex = -1;
