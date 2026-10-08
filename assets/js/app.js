@@ -905,17 +905,7 @@
     return type === "admin" || type === "trial" || type === "vip";
   }
 
-  // Games dùng chung tài khoản Lớp 1. Hai game đầu là Free;
-  // các game Premium được mở khi tài khoản có Trial/VIP còn hiệu lực ở ít nhất một môn.
-  function hasGamesPremiumAccess() {
-    if (state.auth.user && state.auth.user.role === "admin") return true;
-    return SUBJECTS.some((subject) => hasPremiumAccess(subject.id));
-  }
-
-  function isFreeGameFeature(featureId) {
-    const index = GAME_CATALOG.findIndex((item) => item.id === featureId);
-    return index >= 0 && index < 2;
-  }
+  // Games ở Trang chủ đang mở miễn phí cho mọi người; chỉ thay đổi khi có quyết định phát hành mới.
 
   function openAdminZalo() {
     const win = window.open("https://zalo.me/0865749402", "_blank", "noopener,noreferrer");
@@ -1557,13 +1547,12 @@
       </style>
       <div class="card-grid home-feature-grid world-explorer-grid">
         ${WORLD_EXPLORER_ITEMS.map((item, index) => {
-          const locked = !hasGamesPremiumAccess();
           return `
-          <button class="content-card home-feature-card${locked ? " is-premium-locked" : ""}" data-tone="${escapeHtml(item.tone || "purple")}" data-world-explorer-child="${escapeHtml(item.id)}" type="button" aria-label="${escapeHtml(`${index + 1}. ${item.title}${locked ? ", nội dung Trial hoặc VIP" : ""}`)}">
+          <button class="content-card home-feature-card" data-tone="${escapeHtml(item.tone || "purple")}" data-world-explorer-child="${escapeHtml(item.id)}" type="button" aria-label="${escapeHtml(`${index + 1}. ${item.title}`)}">
             <div class="card-top">
               <span class="card-icon" aria-hidden="true">${item.icon}</span>
               <div class="card-copy">
-                <h2 class="card-title">${index + 1}. ${escapeHtml(item.title)}${locked ? ` <span aria-hidden="true">🔒</span>` : ""}</h2>
+                <h2 class="card-title">${index + 1}. ${escapeHtml(item.title)}</h2>
                 <p class="card-desc">${escapeHtml(item.description || "")}</p>
               </div>
             </div>
@@ -1575,14 +1564,6 @@
       button.addEventListener("click", () => {
         const featureId = String(button.dataset.worldExplorerChild || "");
         if (!featureId || !homeFeatureScript("games", featureId)) return;
-        if (!state.auth.ready) {
-          showToast("Đang kiểm tra phiên đăng nhập…");
-          return;
-        }
-        if (!hasGamesPremiumAccess()) {
-          showPremiumLockedDialog();
-          return;
-        }
         state.homeFeatureId = featureId;
         state.homeFeatureBanner = null;
         render();
@@ -1730,18 +1711,6 @@
         }
       </style>` : "";
 
-    const requiredVipCount = kind === "games" ? 1 : kind === "tools" ? 2 : kind === "aiLab" ? 3 : 0;
-    const currentVipCount = state.auth.user && state.auth.user.role === "admin"
-      ? SUBJECTS.length
-      : SUBJECTS.reduce((count, subject) => count + (accessTypeFor(subject.id) === "vip" ? 1 : 0), 0);
-    const accessNote = requiredVipCount > 0 && currentVipCount < requiredVipCount
-      ? (kind === "games"
-        ? "Bé cần có 1 quyền học VIP để vào nội dung này"
-        : kind === "tools"
-          ? "Bé cần có 2 quyền học VIP để vào nội dung này"
-          : "Bé cần có đủ 3 quyền học VIP để vào nội dung này")
-      : "";
-
     const catalogIndex = new Map(catalog.map((item, index) => [item.id, { item, index }]));
     const featureCardHtml = (item, index) => `
       <button class="content-card home-feature-card" data-tone="${escapeHtml(item.tone || "purple")}" data-home-feature="${escapeHtml(item.id)}" type="button">
@@ -1782,7 +1751,6 @@
         <div>
           <h1>${icon} ${escapeHtml(title)}</h1>
           <p>${escapeHtml(description)}</p>
-          ${accessNote ? `<p class="home-feature-access-note">🔐 ${escapeHtml(accessNote)}</p>` : ""}
         </div>
       </div>
       ${catalogGridStyle}
@@ -1802,17 +1770,6 @@
           render();
           focusContent();
           return;
-        }
-
-        if (kind === "games" && !isFreeGameFeature(featureId)) {
-          if (!state.auth.ready) {
-            showToast("Đang kiểm tra phiên đăng nhập…");
-            return;
-          }
-          if (!hasGamesPremiumAccess()) {
-            showPremiumLockedDialog();
-            return;
-          }
         }
 
         if (!homeFeatureScript(kind, featureId)) return;

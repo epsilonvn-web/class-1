@@ -36,6 +36,12 @@
 @media(max-width:960px){.solar-grid-main{grid-template-columns:1fr;align-items:start}.solar-side-col{grid-template-columns:1fr;grid-template-rows:auto auto;height:auto}.control-grid{grid-template-columns:1fr}.toggle-row{justify-content:flex-start}}
 @media(max-width:620px){.solar-hero{padding:12px}.solar-hero-icon{width:48px;height:48px;flex-basis:48px;font-size:27px}.solar-tabs{grid-template-columns:1fr}.solar-tabs .tab{min-height:40px}.solar-card{padding:11px;border-radius:18px}.card-head{align-items:flex-start;flex-direction:column}.card-head .btn{width:100%}.solar-head-actions{width:100%;justify-content:space-between;flex-wrap:nowrap}.solar-head-actions .segmented{flex:1;min-width:0}.solar-head-actions .segmented button{flex:1;padding:0 8px}.card-head .solar-head-actions .btn{width:auto!important;flex:0 0 auto;padding:0 10px}.qopts{grid-template-columns:1fr}.facts>div{grid-template-columns:1fr}.season-summary{grid-template-columns:1fr}.preset-row button,.city-row button{flex:1 1 auto}}
 @media(prefers-reduced-motion:reduce){.solar-tool *{scroll-behavior:auto!important;transition:none!important}}
+.solar-lang{margin-left:auto;align-self:flex-start;display:inline-flex;gap:4px;padding:3px;border:1px solid #bfdbfe;border-radius:14px;background:#fff;box-shadow:0 3px 9px rgba(59,130,246,.08);flex:none}
+.solar-lang button{border:0;border-radius:10px;min-height:38px;padding:0 13px;background:transparent;color:#475569;font-weight:900;font-size:14px;white-space:nowrap;transition:.15s}
+.solar-lang button[aria-pressed="true"]{color:#fff;background:linear-gradient(90deg,#3b82f6,#10b981);box-shadow:0 3px 9px rgba(16,185,129,.16)}
+.solar-lang button:focus-visible{outline:2px solid #8b5cf6;outline-offset:2px}
+.solar-audio-notice{margin:0 0 12px;padding:9px 12px;border:1px solid #bfdbfe;border-radius:13px;background:#eff6ff;color:#1e40af;font-size:14px;font-weight:800}
+@media (max-width:640px){.solar-hero{flex-wrap:wrap}.solar-lang{margin-left:auto;width:auto;justify-content:flex-end}}
 </style><section class="solar-tool" data-solar-tool>
   <div class="solar-hero">
     <div class="solar-hero-icon" aria-hidden="true">🪐</div>
@@ -44,7 +50,12 @@
       <h1>Hệ Mặt Trời</h1>
       <p>Quan sát chuyển động, tự tay kéo – chỉnh – so sánh để hiểu Hệ Mặt Trời, ngày đêm và các mùa.</p>
     </div>
+    <div class="solar-lang" role="group" aria-label="Ngôn ngữ / Language">
+      <button type="button" data-lang="vi" aria-pressed="true">Tiếng Việt</button>
+      <button type="button" data-lang="en" aria-pressed="false">English</button>
+    </div>
   </div>
+  <div id="solarAudioNotice" class="solar-audio-notice hidden" role="status" aria-live="polite"></div>
 
   <div class="solar-tabs" role="tablist" aria-label="Các nội dung Hệ Mặt Trời">
     <button class="tab" type="button" role="tab" aria-selected="true" data-p="solar">🪐 Hệ Mặt Trời</button>
@@ -175,46 +186,105 @@
     const cleanupFns = [];
     let destroyed = false;
     let rafId = 0;
+    let lang = (context && context.lang === "en") ? "en" : "vi";
+    const T = (vi, en) => (lang === "en" ? en : vi);
 
     const DG = ["không","một","hai","ba","bốn","năm","sáu","bảy","tám","chín"];
     function readNum(n) { const t=Math.floor(n/10),u=n%10;if(n<10)return DG[n];let s=t===1?'mười':DG[t]+' mươi';if(u===0)return s;if(u===5)return s+' lăm';if(u===1&&t>1)return s+' mốt';if(u===4&&t>1)return s+' tư';return s+' '+DG[u]; }
 
-    let viVoice = null;
-    const speech = window.speechSynthesis || null;
-    function loadVoice() {
-      if (!speech) return;
+    // Google Translate TTS, matching the approved Class 1 tools in both languages.
+    // It does not expose a verified fixed female/US voice ID.
+    const googleTtsUrl = (text, language) =>
+      `https://translate.google.com/translate_tts?ie=UTF-8&tl=${language === 'en' ? 'en' : 'vi'}&client=tw-ob&q=${encodeURIComponent(text)}`;
+    let audio = null, speechVersion = 0, lastSpeech = null;
+    const audioNotice = $('solarAudioNotice');
+    function noticeAudio(message = '') {
+      audioNotice.textContent = message;
+      audioNotice.classList.toggle('hidden', !message);
+    }
+    function stopAudioElement() {
+      if (!audio) return;
+      const old = audio;
+      audio = null;
       try {
-        const voices = speech.getVoices();
-        viVoice = voices.find((v) => /^vi/i.test(v.lang) && /ban mai/i.test(v.name || ""))
-          || voices.find((v) => /^vi/i.test(v.lang))
-          || null;
-      } catch (_) { viVoice = null; }
+        old.onerror = null;
+        old.onplaying = null;
+        old.onended = null;
+        old.pause();
+        old.currentTime = 0;
+        old.removeAttribute('src');
+        old.load();
+      } catch (_) {}
     }
-    if (speech) {
-      loadVoice();
-      if (typeof speech.addEventListener === "function") {
-        speech.addEventListener("voiceschanged", loadVoice);
-        cleanupFns.push(() => speech.removeEventListener("voiceschanged", loadVoice));
+    function cancelSpeech() {
+      ++speechVersion;
+      lastSpeech = null;
+      stopAudioElement();
+      noticeAudio();
+    }
+    // The Translate TTS endpoint can reject long phrases, so use a short sequential queue.
+    function splitSpeech(text) {
+      let rest = text.replace(/\s+/g, ' ').trim();
+      const parts = [];
+      const limit = 175;
+      while (rest.length > limit) {
+        const piece = rest.slice(0, limit);
+        let cut = -1;
+        for (const marker of ['. ', '! ', '? ', '; ', ', ']) {
+          const at = piece.lastIndexOf(marker);
+          if (at >= 90) cut = Math.max(cut, at + marker.length);
+        }
+        if (cut < 0) cut = piece.lastIndexOf(' ');
+        if (cut < 1) cut = limit;
+        parts.push(rest.slice(0, cut).trim());
+        rest = rest.slice(cut).trim();
       }
+      if (rest) parts.push(rest);
+      return parts;
     }
-    let ttsNoticeShown = false;
-    function speak(text) {
-      if (!speech) {
-        if (context.hooks && typeof context.hooks.showToast === "function") context.hooks.showToast("Thiết bị chưa hỗ trợ giọng đọc tiếng Việt.");
+    function speak(value) {
+      const text = String(value || '').replace(/\s+/g, ' ').trim();
+      if (!text || destroyed) return;
+      const time = Date.now();
+      if (lastSpeech && lastSpeech.text === text && lastSpeech.lang === lang && time - lastSpeech.time < 260) return;
+      cancelSpeech();
+      const version = speechVersion, language = lang;
+      lastSpeech = { text, lang: language, time };
+      if (typeof window.Audio !== 'function') {
+        lastSpeech = null;
+        noticeAudio(T('Trình duyệt này chưa hỗ trợ phát âm thanh.', 'Audio is unavailable in this browser.'));
         return;
       }
-      try {
-        speech.cancel();
-        const u = new SpeechSynthesisUtterance(String(text || ""));
-        u.lang = "vi-VN";
-        if (viVoice) u.voice = viVoice;
-        u.rate = .92;
-        speech.speak(u);
-        if (!ttsNoticeShown && (!viVoice || !/ban mai/i.test(viVoice.name || ""))) {
-          ttsNoticeShown = true;
-          if (context.hooks && typeof context.hooks.showToast === "function") context.hooks.showToast("Tool đang dùng giọng Việt có sẵn trên thiết bị; chưa xác nhận được Google TTS Ban Mai.");
-        }
-      } catch (_) {}
+      const parts = splitSpeech(text);
+      const current = () => !destroyed && version === speechVersion && lang === language;
+      const failed = (player) => {
+        if (!current() || (player && audio !== player)) return;
+        lastSpeech = null;
+        stopAudioElement();
+        noticeAudio(language === 'en'
+          ? 'Google English audio is unavailable. Please try listening again.'
+          : 'Chưa phát được Google TTS tiếng Việt. Bé hãy bấm nghe lại nhé!');
+      };
+      function playPart(index) {
+        if (!current()) return;
+        stopAudioElement();
+        if (index >= parts.length) { noticeAudio(); return; }
+        try {
+          const player = new window.Audio();
+          audio = player;
+          player.referrerPolicy = 'no-referrer';
+          player.preload = 'none';
+          player.onerror = () => failed(player);
+          player.onplaying = () => { if (current() && audio === player) noticeAudio(); };
+          player.onended = () => { if (current() && audio === player) playPart(index + 1); };
+          player.src = googleTtsUrl(parts[index], language);
+          player.playbackRate = language === 'en' ? 1 : .96;
+          noticeAudio(language === 'en' ? 'Loading Google voice…' : 'Đang tải giọng đọc…');
+          const pending = player.play();
+          if (pending && typeof pending.catch === 'function') pending.catch(() => failed(player));
+        } catch (_) { failed(); }
+      }
+      playPart(0);
     }
 
     function makeCanvas(id, ratio, onResize) {
@@ -265,26 +335,33 @@ function drawStars(ctx,w,h,stars,alpha=1){for(const s of stars){ctx.globalAlpha=
 function arrowHead(ctx,x,y,ang,size){ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-size*Math.cos(ang-.45),y-size*Math.sin(ang-.45));ctx.lineTo(x-size*Math.cos(ang+.45),y-size*Math.sin(ang+.45));ctx.closePath();ctx.fill();}
 
 /* ---------- đố vui ---------- */
-function makeQuiz(el,list){let order=[],i=0,ok=0,total=0,done=false;
+function makeQuiz(el,lists){let order=[],i=0,ok=0,total=0,done=false,picked=null,choiceOrder=[];
   const shuffle=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);
-  function render(){if(i>=order.length){order=shuffle(list.map((_,k)=>k));i=0;}
-    const q=list[order[i]];done=false;
-    el.innerHTML=`<h2>🎯 Đố vui</h2><p class="qtext">${q.q}</p><div class="qopts"></div>
-      <div class="qfoot"><span class="qfb" aria-live="assertive"></span><span class="score">Đúng ${ok} / ${total}</span></div>`;
+  const list=()=>lists[lang]||lists.vi;
+  function render(preserve=false){if(i>=order.length){order=shuffle(list().map((_,k)=>k));i=0;}
+    if(!preserve){done=false;picked=null;choiceOrder=shuffle([0,1,2,3]);}
+    const q=list()[order[i]];
+    el.innerHTML=`<h2>🎯 ${T('Đố vui','Quiz')}</h2><p class="qtext">${q.q}</p><div class="qopts"></div>
+      <div class="qfoot"><span class="qfb" aria-live="assertive"></span><span class="score">${T('Đúng','Correct')} ${ok} / ${total}</span></div>`;
     const box=el.querySelector('.qopts'),fb=el.querySelector('.qfb');
-    shuffle(q.a.map((t,k)=>({t,k}))).forEach((o,idx)=>{const b=document.createElement('button');b.className='qopt opt-'+(idx+1);b.textContent=o.t;
-      b.onclick=()=>{if(done)return;done=true;total++;const right=o.k===0;if(right)ok++;b.classList.add(right?'ok':'no');
-        if(!right)[...box.children].find(x=>x.textContent===q.a[0]).classList.add('ok');
-        fb.textContent=right?'Đúng rồi! 🎉':'Chưa đúng rồi.';fb.className='qfb '+(right?'ok':'no');
-        el.querySelector('.score').textContent=`Đúng ${ok} / ${total}`;
-        const p=document.createElement('p');p.className='muted';p.style.margin='8px 0 0';p.textContent='💡 '+q.why;el.appendChild(p);
-        const nx=document.createElement('button');nx.className='btn main';nx.style.marginTop='10px';nx.textContent='Câu tiếp theo';nx.onclick=()=>{i++;render()};el.appendChild(nx);};
-      box.appendChild(b);});}
-  render();}
+    const showAnswer=()=>{
+      [...box.children].forEach(b=>{const k=+b.dataset.answer;if(k===picked)b.classList.add(k===0?'ok':'no');if(k===0&&picked!==0)b.classList.add('ok');});
+      fb.textContent=picked===0?T('Đúng rồi! 🎉','Correct! 🎉'):T('Chưa đúng rồi.','Not quite.');
+      fb.className='qfb '+(picked===0?'ok':'no');
+      const p=document.createElement('p');p.className='muted';p.style.margin='8px 0 0';p.textContent='💡 '+q.why;el.appendChild(p);
+      const nx=document.createElement('button');nx.className='btn main';nx.style.marginTop='10px';nx.textContent=T('Câu tiếp theo','Next question');
+      nx.onclick=()=>{cancelSpeech();i++;render();};el.appendChild(nx);
+    };
+    choiceOrder.forEach((k,idx)=>{const b=document.createElement('button');b.className='qopt opt-'+(idx+1);b.textContent=q.a[k];b.dataset.answer=k;
+      b.onclick=()=>{if(done)return;cancelSpeech();done=true;picked=k;total++;if(k===0)ok++;el.querySelector('.score').textContent=`${T('Đúng','Correct')} ${ok} / ${total}`;showAnswer();};
+      box.appendChild(b);});
+    if(done)showAnswer();
+  }
+  render();return{refresh:()=>render(true)};}
 
 /* ---------- tabs & vòng lặp ---------- */
 let tab='solar';
-root.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{tab=b.dataset.p;
+root.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{cancelSpeech();tab=b.dataset.p;
   root.querySelectorAll('.tab').forEach(x=>{x.setAttribute('aria-selected',x===b);$('p-'+x.dataset.p).classList.toggle('hidden',x!==b)});
   [solarC,earthC,skyC,seasonC,raysC].forEach(o=>o.fit());dirty=true;});
 let dirty=true,last=performance.now();
@@ -309,11 +386,24 @@ const PLANETS=[
 PLANETS.forEach((p,i)=>p.phase=[.6,2.1,3.6,5.0,1.2,4.2,2.8,0.2][i]);
 const SUN={id:'sun',name:'Mặt Trời',color:'#ffc93c'};
 const MOON={id:'moon',name:'Mặt Trăng',color:'#d8d8de'};
+const NAME_EN={sun:'Sun',moon:'Moon',mercury:'Mercury',venus:'Venus',earth:'Earth',mars:'Mars',jupiter:'Jupiter',saturn:'Saturn',uranus:'Uranus',neptune:'Neptune'};
+const PLANET_EN={
+ mercury:{km:'about 58 million km',year:'88 days',type:'Rocky planet',size:'The smallest, only about 1/3 the size of Earth',fact:'Mercury is closest to the Sun, so it moves the fastest: it goes all the way around in just 88 days.'},
+ venus:{km:'about 108 million km',year:'225 days',type:'Rocky planet',size:'Almost the same size as Earth',fact:'Venus is the hottest planet because its thick air traps heat. People call it the Morning Star and the Evening Star.'},
+ earth:{km:'about 150 million km',year:'365 days',type:'Rocky planet',size:'5th largest of the 8 planets',fact:'Earth is the only planet where we know there is life. About 3/4 of its surface is covered by water.'},
+ mars:{km:'about 228 million km',year:'687 days (almost 2 years)',type:'Rocky planet',size:'About half the size of Earth',fact:'Mars looks red because its rocks and soil contain lots of rust. It is called "the Red Planet".'},
+ jupiter:{km:'about 778 million km',year:'almost 12 years',type:'Gas giant',size:'The largest, about 11 times wider than Earth',fact:'Jupiter has a giant storm called the Great Red Spot. It is wider than Earth and has lasted for hundreds of years.'},
+ saturn:{km:'about 1.4 billion km',year:'almost 30 years',type:'Gas giant',size:'About 9 times wider than Earth',fact:'Saturn has beautiful rings made of countless small pieces of ice and rock circling around it.'},
+ uranus:{km:'about 2.9 billion km',year:'about 84 years',type:'Ice giant',size:'About 4 times wider than Earth',fact:'Uranus is tipped over on its side, as if it rolls around the Sun.'},
+ neptune:{km:'about 4.5 billion km',year:'about 165 years',type:'Ice giant',size:'About 4 times wider than Earth',fact:'Neptune is the farthest planet from the Sun. It is very cold and has the strongest winds in the Solar System.'}};
+const nmOf=p=>lang==='en'?(NAME_EN[p.id]||p.name):p.name;
+const PV=p=>lang==='en'?Object.assign({},p,PLANET_EN[p.id]||{},{name:nmOf(p)}):p;
+const ORD_EN=['','1st','2nd','3rd','4th','5th','6th','7th','8th'];
 let simDays=0,sPlaying=!reduceMotion,sView='orbit',sReal=false,sLabels=true,sSel='earth',hits=[];
 const solarStars=makeStars(160);
 const solarC=makeCanvas('cSolar',w=>clamp(w*.72,320,640),()=>dirty=true);
 const daysPerSec=()=>Math.round(Math.pow(10,+$('sSpeed').value/100*2.7));
-function updSpeedTxt(){$('sSpeedTxt').textContent=`1 giây = ${daysPerSec()} ngày`}
+function updSpeedTxt(){const n=daysPerSec();$('sSpeedTxt').textContent=T(`1 giây = ${n} ngày`,`1 second = ${n} day${n===1?'':'s'}`)}
 function drawSolar(){const{ctx,w,h}=solarC;if(!w)return;ctx.clearRect(0,0,w,h);
   ctx.fillStyle='#0b0f2e';ctx.fillRect(0,0,w,h);drawStars(ctx,w,h,solarStars);hits=[];
   const k=clamp(w/720,.62,1.25);
@@ -334,72 +424,75 @@ function drawSolar(){const{ctx,w,h}=solarC;if(!w)return;ctx.clearRect(0,0,w,h);
         shadeBall(ctx,mx,my,2.4*k,'#d8d8de',dx/d,dy/d);hits.push({id:'moon',x:mx,y:my,r:2.4*k});
         if(sSel==='moon'){ctx.strokeStyle='#ffd34d';ctx.setLineDash([3,3]);ctx.beginPath();ctx.arc(mx,my,2.4*k+5,0,TAU);ctx.stroke();ctx.setLineDash([]);}}
       if(p.id===sSel){ctx.strokeStyle='#ffd34d';ctx.lineWidth=2;ctx.setLineDash([4,4]);ctx.beginPath();ctx.arc(x,y,r+6,0,TAU);ctx.stroke();ctx.setLineDash([]);}
-      if(sLabels){ctx.fillStyle='rgba(235,238,255,.92)';ctx.font=`700 ${Math.round(11.5*k+1)}px Nunito, sans-serif`;ctx.textAlign='center';const tw=ctx.measureText(p.name).width/2+4;ctx.fillText(p.name,clamp(x,tw,w-tw),y+r+14*k);}
+      if(sLabels){ctx.fillStyle='rgba(235,238,255,.92)';ctx.font=`700 ${Math.round(11.5*k+1)}px Nunito, sans-serif`;ctx.textAlign='center';const tw=ctx.measureText(nmOf(p)).width/2+4;ctx.fillText(nmOf(p),clamp(x,tw,w-tw),y+r+14*k);}
       hits.push({id:p.id,x,y,r});};
     pos.filter(o=>o.y<cy).forEach(drawP);
     drawSun(ctx,cx,cy,sunR,true);hits.push({id:'sun',x:cx,y:cy,r:sunR});
     if(sSel==='sun'){ctx.strokeStyle='#ffd34d';ctx.lineWidth=2;ctx.setLineDash([4,4]);ctx.beginPath();ctx.arc(cx,cy,sunR+7,0,TAU);ctx.stroke();ctx.setLineDash([]);}
     pos.filter(o=>o.y>=cy).forEach(drawP);
     if(sReal){ctx.fillStyle='rgba(255,211,77,.95)';ctx.font=`800 ${Math.round(13*k)}px Nunito, sans-serif`;ctx.textAlign='left';
-      ctx.fillText('Bốn hành tinh đầu ở rất gần nhau, còn các hành tinh sau ở rất xa!',12,22);}
+      ctx.fillText(T('Bốn hành tinh đầu ở rất gần nhau, còn các hành tinh sau ở rất xa!','The first four planets are close together, the rest are very far away!'),12,22);}
   }else{
     const sum=PLANETS.reduce((s,p)=>s+p.dia,0),gap=12*k,left=w*.13;
     const u=Math.min((w-left-40-7*gap)/(2*sum),h*.32/11.2),cy=h*.48;
     const sunR=109*u;drawSun(ctx,left-sunR,cy,sunR,false,false);hits.push({id:'sun',x:left-20,y:cy,r:40});
     ctx.fillStyle='#7a3b00';ctx.font=`800 ${Math.round(13*k)}px Nunito, sans-serif`;ctx.textAlign='left';
-    ctx.save();ctx.translate(left*.42,cy);ctx.rotate(-Math.PI/2);ctx.textAlign='center';ctx.fillText('Một phần nhỏ của Mặt Trời',0,0);ctx.restore();
+    ctx.save();ctx.translate(left*.42,cy);ctx.rotate(-Math.PI/2);ctx.textAlign='center';ctx.fillText(T('Một phần nhỏ của Mặt Trời','A small part of the Sun'),0,0);ctx.restore();
     let x=left+8;
     PLANETS.forEach((p,i)=>{const r=Math.max(1.2,p.dia*u);x+=r;
       if(p.id==='saturn'){ctx.strokeStyle='rgba(240,220,160,.85)';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(x,cy,r*1.9,r*.55,-.3,0,TAU);ctx.stroke();}
       shadeBall(ctx,x,cy,r,p.color,-1,0);
       if(p.id===sSel){ctx.strokeStyle='#ffd34d';ctx.lineWidth=2;ctx.setLineDash([4,4]);ctx.beginPath();ctx.arc(x,cy,r+6,0,TAU);ctx.stroke();ctx.setLineDash([]);}
       ctx.fillStyle='rgba(235,238,255,.95)';ctx.font=`700 ${Math.round(11*k+1)}px Nunito, sans-serif`;ctx.textAlign='center';
-      const ly=cy+11.2*u+(i<4?14+i*16:14+(i%2)*16)*k;const tw=ctx.measureText(p.name).width/2+4;ctx.fillText(p.name,clamp(x,tw,w-tw),ly);
+      const ly=cy+11.2*u+(i<4?14+i*16:14+(i%2)*16)*k;const tw=ctx.measureText(nmOf(p)).width/2+4;ctx.fillText(nmOf(p),clamp(x,tw,w-tw),ly);
       ctx.strokeStyle='rgba(235,238,255,.25)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,cy+r+3);ctx.lineTo(x,ly-11*k);ctx.stroke();
       hits.push({id:p.id,x,y:cy,r:Math.max(r,10)});x+=r+gap;});
     ctx.fillStyle='rgba(255,211,77,.95)';ctx.font=`800 ${Math.round(13*k)}px Nunito, sans-serif`;ctx.textAlign='left';
-    ctx.fillText('Kích thước đúng tỉ lệ: Mặt Trời to gấp 109 lần Trái Đất!',left+8,22);}
+    ctx.fillText(T('Kích thước đúng tỉ lệ: Mặt Trời to gấp 109 lần Trái Đất!','True sizes: the Sun is 109 times wider than Earth!'),left+8,22);}
   const yrs=Math.floor(simDays/365.25),dd=Math.floor(simDays-yrs*365.25);
-  $('sHud').textContent=sView==='orbit'?`Trái Đất đã đi được ${yrs} vòng quanh Mặt Trời, tức là ${yrs} năm ${dd} ngày.`:'Bấm vào hành tinh để xem thông tin. Đây là kích thước, không phải khoảng cách.';}
+  $('sHud').textContent=sView==='orbit'?T(`Trái Đất đã đi được ${yrs} vòng quanh Mặt Trời, tức là ${yrs} năm ${dd} ngày.`,`Earth has gone around the Sun ${yrs} time${yrs===1?'':'s'}: that is ${yrs} year${yrs===1?'':'s'} and ${dd} day${dd===1?'':'s'}.`):T('Bấm vào hành tinh để xem thông tin. Đây là kích thước, không phải khoảng cách.','Tap a planet to learn about it. This view shows sizes, not distances.');}
 function solarInfo(id){sSel=id;dirty=true;root.querySelectorAll('#pChips .pchip').forEach(b=>b.setAttribute('aria-pressed',b.dataset.id===id));
-  const el=$('pInfo');let html,say;
-  if(id==='sun'){html=`<div class="title"><div class="planet-title-main"><span class="dot" style="background:radial-gradient(circle at 35% 35%,#fff6b0,#ffd23f 60%,#ff9f1c)"></span><h2>Mặt Trời</h2></div><button class="btn main" id="pSay" type="button">🔊 Đọc to</button></div>
-    <p class="sub">Ngôi sao ở giữa hệ Mặt Trời</p>
-    <div class="facts"><div><b>Là gì?</b><span>Một ngôi sao, tự phát ra ánh sáng và nhiệt</span></div>
-    <div><b>Kích thước</b><span>To gấp khoảng 109 lần Trái Đất</span></div>
-    <div><b>Ánh sáng</b><span>Đi từ Mặt Trời đến Trái Đất mất khoảng 8 phút</span></div></div>
-    <p class="fun">Mặt Trời giữ cho 8 hành tinh quay quanh nó, và cho Trái Đất ánh sáng, hơi ấm để cây cối, con người sống được.</p>
-    <p class="warn">⚠️ Không bao giờ nhìn thẳng vào Mặt Trời, kể cả khi đeo kính râm, vì có thể làm hỏng mắt.</p>`;
-    say='Mặt Trời là một ngôi sao, tự phát ra ánh sáng và nhiệt. Mặt Trời to gấp khoảng một trăm lẻ chín lần Trái Đất. Không bao giờ nhìn thẳng vào Mặt Trời.';}
-  else if(id==='moon'){html=`<div class="title"><div class="planet-title-main"><span class="dot" style="background:radial-gradient(circle at 35% 35%,#fff,#c9c9d2 60%,#8d8d99)"></span><h2>Mặt Trăng</h2></div><button class="btn main" id="pSay" type="button">🔊 Đọc to</button></div>
-    <p class="sub">Vệ tinh tự nhiên của Trái Đất</p>
-    <div class="facts"><div><b>Quay quanh</b><span>Trái Đất, mỗi vòng khoảng 27 ngày (gần 1 tháng)</span></div>
-    <div><b>Kích thước</b><span>Bằng khoảng 1/4 Trái Đất</span></div>
-    <div><b>Ánh sáng</b><span>Không tự phát sáng, mà phản chiếu ánh sáng Mặt Trời</span></div></div>
-    <p class="fun">Vì Mặt Trăng chỉ phản chiếu ánh sáng nên ta thấy nó lúc tròn, lúc khuyết tùy vị trí của nó so với Mặt Trời và Trái Đất.</p>`;
-    say='Mặt Trăng là vệ tinh tự nhiên của Trái Đất. Mặt Trăng không tự phát sáng mà phản chiếu ánh sáng của Mặt Trời.';}
-  else{const p=PLANETS.find(x=>x.id===id);
-    html=`<div class="title"><div class="planet-title-main"><span class="dot" style="background:radial-gradient(circle at 35% 35%,#fff8,${p.color} 45%,#0006)"></span><h2>${p.name}</h2></div><button class="btn main" id="pSay" type="button">🔊 Đọc to</button></div>
-    <p class="sub">Hành tinh thứ ${p.order} tính từ Mặt Trời</p>
-    <div class="facts"><div><b>Kích thước</b><span>${p.size}</span></div>
-    <div><b>Cách Mặt Trời</b><span>${p.km}</span></div>
-    <div><b>Một năm dài</b><span>${p.year}</span></div>
-    <div><b>Loại</b><span>${p.type}</span></div></div>
+  const el=$('pInfo');let html,say;const sayBtn=`<button class="btn main" id="pSay" type="button">🔊 ${T('Đọc to','Read aloud')}</button>`;
+  if(id==='sun'){html=`<div class="title"><div class="planet-title-main"><span class="dot" style="background:radial-gradient(circle at 35% 35%,#fff6b0,#ffd23f 60%,#ff9f1c)"></span><h2>${T('Mặt Trời','The Sun')}</h2></div>${sayBtn}</div>
+    <p class="sub">${T('Ngôi sao ở giữa hệ Mặt Trời','The star at the center of the Solar System')}</p>
+    <div class="facts"><div><b>${T('Là gì?','What is it?')}</b><span>${T('Một ngôi sao, tự phát ra ánh sáng và nhiệt','A star that makes its own light and heat')}</span></div>
+    <div><b>${T('Kích thước','Size')}</b><span>${T('To gấp khoảng 109 lần Trái Đất','About 109 times wider than Earth')}</span></div>
+    <div><b>${T('Ánh sáng','Light')}</b><span>${T('Đi từ Mặt Trời đến Trái Đất mất khoảng 8 phút','Takes about 8 minutes to travel from the Sun to Earth')}</span></div></div>
+    <p class="fun">${T('Mặt Trời giữ cho 8 hành tinh quay quanh nó, và cho Trái Đất ánh sáng, hơi ấm để cây cối, con người sống được.','The Sun keeps the 8 planets moving around it, and gives Earth the light and warmth that plants and people need to live.')}</p>
+    <p class="warn">⚠️ ${T('Không bao giờ nhìn thẳng vào Mặt Trời, kể cả khi đeo kính râm, vì có thể làm hỏng mắt.','Never look straight at the Sun, even with sunglasses. It can hurt your eyes.')}</p>`;
+    say=T('Mặt Trời là một ngôi sao, tự phát ra ánh sáng và nhiệt. Mặt Trời to gấp khoảng một trăm lẻ chín lần Trái Đất. Không bao giờ nhìn thẳng vào Mặt Trời.','The Sun is a star that makes its own light and heat. It is about 109 times wider than Earth. Never look straight at the Sun.');}
+  else if(id==='moon'){html=`<div class="title"><div class="planet-title-main"><span class="dot" style="background:radial-gradient(circle at 35% 35%,#fff,#c9c9d2 60%,#8d8d99)"></span><h2>${T('Mặt Trăng','The Moon')}</h2></div>${sayBtn}</div>
+    <p class="sub">${T('Vệ tinh tự nhiên của Trái Đất','Earth\'s natural satellite')}</p>
+    <div class="facts"><div><b>${T('Quay quanh','Goes around')}</b><span>${T('Trái Đất, mỗi vòng khoảng 27 ngày (gần 1 tháng)','Earth, about once every 27 days (almost a month)')}</span></div>
+    <div><b>${T('Kích thước','Size')}</b><span>${T('Bằng khoảng 1/4 Trái Đất','About 1/4 the size of Earth')}</span></div>
+    <div><b>${T('Ánh sáng','Light')}</b><span>${T('Không tự phát sáng, mà phản chiếu ánh sáng Mặt Trời','It does not glow by itself, it reflects sunlight')}</span></div></div>
+    <p class="fun">${T('Vì Mặt Trăng chỉ phản chiếu ánh sáng nên ta thấy nó lúc tròn, lúc khuyết tùy vị trí của nó so với Mặt Trời và Trái Đất.','Because the Moon only reflects light, it looks full or partly hidden depending on where it is compared with the Sun and Earth.')}</p>`;
+    say=T('Mặt Trăng là vệ tinh tự nhiên của Trái Đất. Mặt Trăng không tự phát sáng mà phản chiếu ánh sáng của Mặt Trời.','The Moon is Earth\'s natural satellite. It does not make its own light, it reflects light from the Sun.');}
+  else{const p=PV(PLANETS.find(x=>x.id===id));
+    html=`<div class="title"><div class="planet-title-main"><span class="dot" style="background:radial-gradient(circle at 35% 35%,#fff8,${p.color} 45%,#0006)"></span><h2>${p.name}</h2></div>${sayBtn}</div>
+    <p class="sub">${T(`Hành tinh thứ ${p.order} tính từ Mặt Trời`,`The ${ORD_EN[p.order]} planet from the Sun`)}</p>
+    <div class="facts"><div><b>${T('Kích thước','Size')}</b><span>${p.size}</span></div>
+    <div><b>${T('Cách Mặt Trời','Distance from the Sun')}</b><span>${p.km}</span></div>
+    <div><b>${T('Một năm dài','One year lasts')}</b><span>${p.year}</span></div>
+    <div><b>${T('Loại','Type')}</b><span>${p.type}</span></div></div>
     <p class="fun">${p.fact}</p>`;
-    say=`${p.name}, hành tinh thứ ${readNum(p.order)} tính từ Mặt Trời. ${p.fact}`;}
+    say=T(`${p.name}, hành tinh thứ ${readNum(p.order)} tính từ Mặt Trời. ${p.fact}`,`${p.name}, the ${ORD_EN[p.order]} planet from the Sun. ${p.fact}`);}
   el.innerHTML=html;$('pSay').onclick=()=>speak(say);}
-[SUN,...PLANETS,MOON].forEach(p=>{const b=document.createElement('button');b.className='pchip';b.dataset.id=p.id;
-  b.innerHTML=`<i style="background:${p.color}"></i>${p.name}`;b.onclick=()=>solarInfo(p.id);$('pChips').appendChild(b);});
-$('cSolar').addEventListener('pointerdown',e=>{const r=$('cSolar').getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
+function buildChips(){$('pChips').innerHTML='';[SUN,...PLANETS,MOON].forEach(p=>{const b=document.createElement('button');b.className='pchip';b.dataset.id=p.id;
+  b.setAttribute('aria-pressed',p.id===sSel);b.innerHTML=`<i style="background:${p.color}"></i>${nmOf(p)}`;b.onclick=()=>{cancelSpeech();solarInfo(p.id);};$('pChips').appendChild(b);});}
+buildChips();
+function setPlayTexts(){$('sPlay').textContent=sPlaying?T('⏸ Tạm dừng','⏸ Pause'):T('▶ Chạy tiếp','▶ Play');
+  $('dPlay').textContent=dPlaying?T('⏸ Tạm dừng','⏸ Pause'):T('▶ Cho quay','▶ Spin');
+  $('yPlay').textContent=yPlaying?T('⏸ Tạm dừng','⏸ Pause'):T('▶ Chạy cả năm','▶ Play the year');}
+$('cSolar').addEventListener('pointerdown',e=>{cancelSpeech();const r=$('cSolar').getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;
   let best=null,bd=1e9;for(const h of hits){const d=Math.hypot(h.x-x,h.y-y)-h.r;if(d<bd){bd=d;best=h}}if(best&&bd<16)solarInfo(best.id);});
-$('sPlay').onclick=()=>{sPlaying=!sPlaying;$('sPlay').textContent=sPlaying?'⏸ Tạm dừng':'▶ Chạy tiếp';};
-$('sSpeed').oninput=updSpeedTxt;
-function setView(v){sView=v;$('vOrbit').setAttribute('aria-pressed',v==='orbit');$('vSize').setAttribute('aria-pressed',v==='size');
+$('sPlay').onclick=()=>{cancelSpeech();sPlaying=!sPlaying;setPlayTexts();};
+$('sSpeed').oninput=()=>{cancelSpeech();updSpeedTxt();};
+function setView(v){cancelSpeech();sView=v;$('vOrbit').setAttribute('aria-pressed',v==='orbit');$('vSize').setAttribute('aria-pressed',v==='size');
   $('sReal').classList.toggle('hidden',v!=='orbit');$('sLabels').classList.toggle('hidden',v!=='orbit');dirty=true;}
 $('vOrbit').onclick=()=>setView('orbit');$('vSize').onclick=()=>setView('size');
-$('sReal').onclick=()=>{sReal=!sReal;$('sReal').setAttribute('aria-pressed',sReal);dirty=true;};
-$('sLabels').onclick=()=>{sLabels=!sLabels;$('sLabels').setAttribute('aria-pressed',sLabels);dirty=true;};
-if(!sPlaying)$('sPlay').textContent='▶ Chạy tiếp';
+$('sReal').onclick=()=>{cancelSpeech();sReal=!sReal;$('sReal').setAttribute('aria-pressed',sReal);dirty=true;};
+$('sLabels').onclick=()=>{cancelSpeech();sLabels=!sLabels;$('sLabels').setAttribute('aria-pressed',sLabels);dirty=true;};
 updSpeedTxt();solarInfo('earth');
 
 /* =====================================================================
@@ -432,15 +525,15 @@ function drawEarth(){const{ctx,w,h}=earthC;if(!w)return;ctx.clearRect(0,0,w,h);c
   ctx.beginPath();ctx.arc(ex,ey,ar,-.3*Math.PI,-.72*Math.PI,true);ctx.stroke();
   const ea=-.72*Math.PI;arrowHead(ctx,ex+ar*Math.cos(ea),ey+ar*Math.sin(ea),Math.atan2(-Math.cos(ea),Math.sin(ea)),11);
   const fs=Math.round(clamp(w/48,11,15));ctx.font=`800 ${fs}px Nunito, sans-serif`;ctx.textAlign='center';
-  ctx.fillText('Chiều quay',ex+ar*Math.cos(-.5*Math.PI),ey+ar*Math.sin(-.5*Math.PI)-8);
-  ctx.fillStyle='#ffe58a';ctx.fillText('Ban ngày',ex-R*.55,ey+R+fs+6);ctx.fillStyle='#a9b4ff';ctx.fillText('Ban đêm',ex+R*.55,ey+R+fs+6);
-  ctx.fillStyle='#1e2a5a';ctx.font=`800 ${Math.max(9,fs-3)}px Nunito, sans-serif`;ctx.fillText('Bắc Cực',ex,ey+3);
+  ctx.fillText(T('Chiều quay','Spin direction'),ex+ar*Math.cos(-.5*Math.PI),ey+ar*Math.sin(-.5*Math.PI)-8);
+  ctx.fillStyle='#ffe58a';ctx.fillText(T('Ban ngày','Day'),ex-R*.55,ey+R+fs+6);ctx.fillStyle='#a9b4ff';ctx.fillText(T('Ban đêm','Night'),ex+R*.55,ey+R+fs+6);
+  ctx.fillStyle='#1e2a5a';ctx.font=`800 ${Math.max(9,fs-3)}px Nunito, sans-serif`;ctx.fillText(T('Bắc Cực','North Pole'),ex,ey+3);
   const marker=(ang,rf,col,label)=>{const x=ex+R*rf*Math.cos(ang),y=ey-R*rf*Math.sin(ang);
     ctx.fillStyle=col;ctx.strokeStyle='#fff';ctx.lineWidth=3;ctx.beginPath();ctx.arc(x,y,8,0,TAU);ctx.fill();ctx.stroke();
     ctx.font=`800 ${fs}px Nunito, sans-serif`;const tw=ctx.measureText(label).width+14;const lx=x+(Math.cos(ang)>0?14:-14-tw),ly=y-12;
     ctx.fillStyle='rgba(255,255,255,.92)';ctx.beginPath();ctx.roundRect?ctx.roundRect(lx,ly,tw,fs+10,8):ctx.rect(lx,ly,tw,fs+10);ctx.fill();
     ctx.fillStyle=col;ctx.textAlign='left';ctx.fillText(label,lx+7,ly+fs+2);ctx.textAlign='center';};
-  marker(base,.8,'#f0508e','Việt Nam');marker(base+Math.PI,.62,'#7c4dff','Mỹ');}
+  marker(base,.8,'#f0508e',T('Việt Nam','Vietnam'));marker(base+Math.PI,.62,'#7c4dff',T('Mỹ','USA'));}
 function skyFactor(h){return h>=6&&h<=18?Math.sin((h-6)/12*Math.PI):-Math.sin((((h-18)+24)%24)/12*Math.PI);}
 function drawSky(){const{ctx,w,h}=skyC;if(!w)return;ctx.clearRect(0,0,w,h);
   const s=skyFactor(hour);const DAY=[[74,168,255],[191,230,255]],TW=[[96,98,190],[255,177,130]],NI=[[11,16,48],[38,48,107]];
@@ -457,24 +550,33 @@ function drawSky(){const{ctx,w,h}=skyC;if(!w)return;ctx.clearRect(0,0,w,h);
   ctx.fillStyle=night>.5?'#ffd34d':mix('#7fb7e6','#ffd34d',night);ctx.fillRect(hx-hs*.2,hy-hs*.55,hs*.3,hs*.25);
   ctx.font=`${Math.round(hs)}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`;ctx.textAlign='center';ctx.fillText('🧍',w*.55,gy+4);
   const fs=Math.round(clamp(w/30,11,14));ctx.font=`800 ${fs}px Nunito, sans-serif`;
-  ctx.fillStyle='#ffffff';ctx.textAlign='left';ctx.fillText('← Tây',8,h-10);ctx.textAlign='right';ctx.fillText('Đông →',w-8,h-10);ctx.textAlign='center';ctx.fillText('Bắc (trước mặt)',w*.55,h-10);}
+  ctx.fillStyle='#ffffff';ctx.textAlign='left';ctx.fillText(T('← Tây','← West'),8,h-10);ctx.textAlign='right';ctx.fillText(T('Đông →','East →'),w-8,h-10);ctx.textAlign='center';ctx.fillText(T('Bắc (trước mặt)','North (in front)'),w*.55,h-10);}
 function buoi(H){return H<4?'đêm':H<11?'sáng':H<13?'trưa':H<18?'chiều':H<22?'tối':'đêm';}
-function fmt(h){const H=Math.floor(h),m=Math.round((h-H)*60);const hh=H%12||12;return{H,m,txt:`${hh} giờ${m?' '+m+' phút':''} ${buoi(H)}`,say:`${readNum(hh)} giờ${m?' '+readNum(m)+' phút':''} ${buoi(H)}`}}
+function partEn(H){return H<4?'at night':H<11?'in the morning':H<13?'around noon':H<18?'in the afternoon':H<22?'in the evening':'at night';}
+function fmt(h){const H=Math.floor(h),m=Math.round((h-H)*60)%60;const hh=H%12||12;
+  if(lang==='en'){const t=`${hh}:${String(m).padStart(2,'0')} ${H<12?'AM':'PM'}`;return{H,m,txt:t,say:`${t} ${partEn(H)}`,part:partEn(H)};}
+  return{H,m,txt:`${hh} giờ${m?' '+m+' phút':''} ${buoi(H)}`,say:`${readNum(hh)} giờ${m?' '+readNum(m)+' phút':''} ${buoi(H)}`};}
 function dayInfo(){const s=skyFactor(hour),vn=fmt(hour),us=fmt((hour+12)%24);
-  const state=s>.08?'ban ngày ☀️':s<-.08?'ban đêm 🌙':(hour<12?'lúc bình minh 🌅':'lúc hoàng hôn 🌇');
-  const usState=-s>.08?'ban ngày ☀️':-s<-.08?'ban đêm 🌙':'lúc trời chạng vạng';
-  $('dInfo').innerHTML=`<p class="muted" style="margin:0">Ở Việt Nam bây giờ là</p><p class="big">${vn.txt}</p>
+  const state=s>.08?T('ban ngày ☀️','daytime ☀️'):s<-.08?T('ban đêm 🌙','nighttime 🌙'):(hour<12?T('lúc bình minh 🌅','sunrise 🌅'):T('lúc hoàng hôn 🌇','sunset 🌇'));
+  const usState=-s>.08?T('ban ngày ☀️','daytime ☀️'):-s<-.08?T('ban đêm 🌙','nighttime 🌙'):T('lúc trời chạng vạng','twilight');
+  $('dInfo').innerHTML=lang==='en'?`<p class="muted" style="margin:0">In Vietnam it is now</p><p class="big">${vn.txt}</p>
+    <p class="lead">It is ${state} in Vietnam</p>
+    <p class="muted" style="margin:0 0 10px">In the eastern United States (on the other side of Earth) it is about ${us.txt}: ${usState}.</p>
+    <div class="tip"><b>Why do we have day and night?</b> Earth is a ball that keeps spinning. The half facing the Sun gets sunlight, so it is daytime there. The other half is in darkness, so it is night. One full spin takes 24 hours: one day and one night.</div>
+    <button class="btn main" style="margin-top:10px" id="dSay">🔊 Read aloud</button>`
+  :`<p class="muted" style="margin:0">Ở Việt Nam bây giờ là</p><p class="big">${vn.txt}</p>
     <p class="lead">Việt Nam đang ${state}</p>
     <p class="muted" style="margin:0 0 10px">Ở miền Đông nước Mỹ (phía bên kia Trái Đất) khoảng ${us.txt}, đang ${usState}.</p>
     <div class="tip"><b>Vì sao có ngày và đêm?</b> Trái Đất hình cầu và luôn tự quay quanh mình nó. Nửa quay về phía Mặt Trời được chiếu sáng là ban ngày, nửa kia là ban đêm. Trái Đất quay một vòng hết 24 giờ, tức là một ngày đêm.</div>
     <button class="btn main" style="margin-top:10px" id="dSay">🔊 Đọc to</button>`;
-  $('dSay').onclick=()=>speak(`Ở Việt Nam bây giờ là ${vn.say}. Việt Nam đang ${state.replace(/[^\p{L}\s]/gu,'')}.`);}
-$('dHour').oninput=e=>{setHour(+e.target.value)};
-$('dPlay').onclick=()=>{dPlaying=!dPlaying;$('dPlay').textContent=dPlaying?'⏸ Tạm dừng':'▶ Cho quay';};
-root.querySelectorAll('#p-day [data-h]').forEach(b=>b.onclick=()=>{setHour(+b.dataset.h);const f=fmt(hour);speak(f.say);});
+  const clean=state.replace(/[^\p{L}\s]/gu,'').trim();
+  $('dSay').onclick=()=>speak(T(`Ở Việt Nam bây giờ là ${vn.say}. Việt Nam đang ${clean}.`,`In Vietnam it is now ${vn.say}. It is ${clean} in Vietnam.`));}
+$('dHour').oninput=e=>{cancelSpeech();setHour(+e.target.value)};
+$('dPlay').onclick=()=>{cancelSpeech();dPlaying=!dPlaying;setPlayTexts();};
+root.querySelectorAll('#p-day [data-h]').forEach(b=>b.onclick=()=>{cancelSpeech();setHour(+b.dataset.h);const f=fmt(hour);speak(f.say);});
 (function(){const c=$('cEarth');let drag=null;
   const ang=e=>{const r=c.getBoundingClientRect(),x=e.clientX-r.left-earthC.w*.62,y=e.clientY-r.top-earthC.h/2;return Math.atan2(-y,x)};
-  c.addEventListener('pointerdown',e=>{drag={a:ang(e),h:hour};c.setPointerCapture(e.pointerId);if(dPlaying)$('dPlay').click();});
+  c.addEventListener('pointerdown',e=>{cancelSpeech();drag={a:ang(e),h:hour};c.setPointerCapture(e.pointerId);if(dPlaying)$('dPlay').click();});
   c.addEventListener('pointermove',e=>{if(!drag)return;let d=ang(e)-drag.a;setHour(drag.h+d/TAU*24);});
   const end=()=>{drag=null};c.addEventListener('pointerup',end);c.addEventListener('pointercancel',end);})();
 dayInfo();
@@ -493,47 +595,53 @@ function dayLength(lat,d){const p=lat*RAD,dl=decl(d)*RAD,c=(Math.sin(-.833*RAD)-
 const distMkm=d=>149.6*(1-.0167*Math.cos(TAU*(d-4)/365.25));
 const dateOf=d=>{const t=new Date(Date.UTC(2026,0,Math.round(d)));return{day:t.getUTCDate(),m:t.getUTCMonth()+1}};
 function setDay(d,fromPlay){yDay=((d-1)%365+365)%365+1;$('yDay').value=Math.round(yDay);dirty=true;seasonInfo();}
-function seasonOf(m){const n=m>=2&&m<=4?'Mùa xuân 🌸':m>=5&&m<=7?'Mùa hạ ☀️':m>=8&&m<=10?'Mùa thu 🍂':'Mùa đông ❄️';
+function seasonOf(m){if(lang==='en'){const n=m>=2&&m<=4?'Spring 🌸':m>=5&&m<=7?'Summer ☀️':m>=8&&m<=10?'Autumn 🍂':'Winter ❄️';
+    const s=m>=5&&m<=11?'Rainy season 🌧️':'Dry season 🌤️';const a=m===12||m<=2?'Summer ☀️':m<=5?'Autumn 🍂':m<=8?'Winter ❄️':'Spring 🌸';return{n,s,a};}
+  const n=m>=2&&m<=4?'Mùa xuân 🌸':m>=5&&m<=7?'Mùa hạ ☀️':m>=8&&m<=10?'Mùa thu 🍂':'Mùa đông ❄️';
   const s=m>=5&&m<=11?'Mùa mưa 🌧️':'Mùa khô 🌤️';
   const a=m===12||m<=2?'Mùa hè ☀️':m<=5?'Mùa thu 🍂':m<=8?'Mùa đông ❄️':'Mùa xuân 🌸';return{n,s,a};}
+const MONTH_EN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MON_SHORT_EN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const CITY_EN={'Hà Nội':'Hanoi','Đà Nẵng':'Da Nang','TP. Hồ Chí Minh':'Ho Chi Minh City'};
+const cityOf=()=>lang==='en'?(CITY_EN[cityName]||cityName):cityName;
 let lastSeasonKey='';
 function seasonInfo(){const{day,m}=dateOf(yDay),se=seasonOf(m);
-  $('yDate').textContent=`Ngày ${day} tháng ${m}`;$('ySN').textContent=se.n;$('ySS').textContent=se.s;$('ySA').textContent=se.a;
+  $('yDate').textContent=T(`Ngày ${day} tháng ${m}`,`${MONTH_EN[m-1]} ${day}`);$('ySN').textContent=se.n;$('ySS').textContent=se.s;$('ySA').textContent=se.a;
   const d=Math.round(yDay),dist=distMkm(d),el=noonElev(cityLat,d),dl=dayLength(cityLat,d);
   const co=$('yCallout');let key,html;
-  if(d>=335||d<=45){key='near';html='💡 <b>Bất ngờ chưa!</b> Lúc này Trái Đất ở <b>gần</b> Mặt Trời nhất trong năm, vậy mà miền Bắc lại đang mùa đông. Vậy mùa <b>không</b> phải do Trái Đất ở gần hay xa Mặt Trời.';}
-  else if(d>=160&&d<=215){key='far';html='💡 <b>Bất ngờ chưa!</b> Lúc này Trái Đất ở <b>xa</b> Mặt Trời nhất trong năm, vậy mà miền Bắc lại đang mùa hạ nóng nực.';}
-  else{key='tilt';html='💡 <b>Vì sao có các mùa?</b> Trục Trái Đất luôn nghiêng về một phía. Nửa nào của Trái Đất ngả về phía Mặt Trời thì được nắng chiếu thẳng hơn, ngày dài hơn, nên là mùa hè. Nửa kia là mùa đông.';}
-  if(key!==lastSeasonKey){co.innerHTML=html;co.classList.toggle('hot',key!=='tilt');lastSeasonKey=key;}
-  const word=el>=80?'gần như thẳng đứng':el>=65?'hơi xiên':'xiên nhiều';
-  $('yRayTxt').textContent=`${cityName}: nắng trưa chiếu ${word} (góc ${Math.round(el)}°).`;
+  if(d>=335||d<=45){key='near';html=T('💡 <b>Bất ngờ chưa!</b> Lúc này Trái Đất ở <b>gần</b> Mặt Trời nhất trong năm, vậy mà miền Bắc lại đang mùa đông. Vậy mùa <b>không</b> phải do Trái Đất ở gần hay xa Mặt Trời.','💡 <b>Surprise!</b> Right now Earth is at its <b>closest</b> to the Sun all year, yet it is winter in northern Vietnam. So seasons are <b>not</b> caused by Earth being closer to or farther from the Sun.');}
+  else if(d>=160&&d<=215){key='far';html=T('💡 <b>Bất ngờ chưa!</b> Lúc này Trái Đất ở <b>xa</b> Mặt Trời nhất trong năm, vậy mà miền Bắc lại đang mùa hạ nóng nực.','💡 <b>Surprise!</b> Right now Earth is at its <b>farthest</b> from the Sun all year, yet it is hot summer in northern Vietnam.');}
+  else{key='tilt';html=T('💡 <b>Vì sao có các mùa?</b> Trục Trái Đất luôn nghiêng về một phía. Nửa nào của Trái Đất ngả về phía Mặt Trời thì được nắng chiếu thẳng hơn, ngày dài hơn, nên là mùa hè. Nửa kia là mùa đông.','💡 <b>Why are there seasons?</b> Earth\'s axis is always tilted the same way. The half leaning toward the Sun gets more direct sunlight and longer days, so it has summer. The other half has winter.');}
+  key+=lang;if(key!==lastSeasonKey){co.innerHTML=html;co.classList.toggle('hot',!key.startsWith('tilt'));lastSeasonKey=key;}
+  const word=el>=80?T('gần như thẳng đứng','almost straight down'):el>=65?T('hơi xiên','a little slanted'):T('xiên nhiều','very slanted');
+  $('yRayTxt').textContent=T(`${cityOf()}: nắng trưa chiếu ${word} (góc ${Math.round(el)}°).`,`${cityOf()}: midday sunlight comes in ${word} (angle ${Math.round(el)}°).`);
   const dh=Math.floor(dl),dm=Math.round((dl-dh)*60),nl=24-dl,nh=Math.floor(nl),nm=Math.round((nl-nh)*60);
-  $('yDayBar').innerHTML=`<div class="dd" style="width:${dl/24*100}%">☀️ ${dh} giờ ${dm} phút</div><div class="nn" style="width:${nl/24*100}%">🌙 ${nh} giờ ${nm} phút</div>`;
-  $('yDayTxt').textContent=`Ở ${cityName}, ban ngày ${dl>12.15?'dài hơn':dl<11.85?'ngắn hơn':'gần bằng'} ban đêm.`;
-  $('yDist').textContent=`${dist.toFixed(1).replace('.',',')} triệu km`;
+  $('yDayBar').innerHTML=`<div class="dd" style="width:${dl/24*100}%">☀️ ${T(`${dh} giờ ${dm} phút`,`${dh} h ${dm} min`)}</div><div class="nn" style="width:${nl/24*100}%">🌙 ${T(`${nh} giờ ${nm} phút`,`${nh} h ${nm} min`)}</div>`;
+  $('yDayTxt').textContent=T(`Ở ${cityOf()}, ban ngày ${dl>12.15?'dài hơn':dl<11.85?'ngắn hơn':'gần bằng'} ban đêm.`,`In ${cityOf()}, daytime is ${dl>12.15?'longer than':dl<11.85?'shorter than':'about as long as'} nighttime.`);
+  $('yDist').textContent=T(`${dist.toFixed(1).replace('.',',')} triệu km`,`${dist.toFixed(1)} million km`);
   $('yMeter').style.left=clamp((dist-147.1)/5*100,0,100)+'%';}
 function drawSeason(){const{ctx,w,h}=seasonC;if(!w)return;ctx.clearRect(0,0,w,h);ctx.fillStyle='#0b0f2e';ctx.fillRect(0,0,w,h);drawStars(ctx,w,h,seasonStars,.9);
   const cx=w/2,cy=h*.5,a=w*.37,b=Math.min(h*.3,a*.42),k=clamp(w/720,.65,1.2),fs=Math.round(12*k+1);
   ctx.strokeStyle='rgba(170,180,255,.35)';ctx.lineWidth=1.5;ctx.setLineDash([5,6]);ctx.beginPath();ctx.ellipse(cx,cy,a,b,0,0,TAU);ctx.stroke();ctx.setLineDash([]);
   const thetaOf=d=>Math.PI+TAU*(d-172)/365.25;
   const posOf=d=>{const t=thetaOf(d);return{x:cx+a*Math.cos(t),y:cy-b*Math.sin(t)}};
-  [[80,'21/3'],[172,'21/6'],[266,'23/9'],[356,'22/12']].forEach(([d,l])=>{const p=posOf(d);ctx.fillStyle='rgba(200,206,255,.75)';ctx.font=`700 ${fs}px Nunito, sans-serif`;ctx.textAlign='center';
+  [[80,T('21/3','Mar 21')],[172,T('21/6','Jun 21')],[266,T('23/9','Sep 23')],[356,T('22/12','Dec 22')]].forEach(([d,l])=>{const p=posOf(d);ctx.fillStyle='rgba(200,206,255,.75)';ctx.font=`700 ${fs}px Nunito, sans-serif`;ctx.textAlign='center';
     ctx.beginPath();ctx.arc(p.x,p.y,3,0,TAU);ctx.fill();const side=Math.abs(p.y-cy)<10,oy=side?4:p.y<cy?-16:26,ox=side?(p.x<cx?-1:1)*(34*k+12):0;ctx.fillText(l,p.x+ox,p.y+oy);});
   for(let mm=0;mm<12;mm++){const d=dnum(mm)+15,p=posOf(d),dx=p.x-cx,dy=p.y-cy,n=Math.hypot(dx,dy);ctx.fillStyle='rgba(255,211,77,.55)';ctx.font=`800 ${Math.round(fs*.85)}px Nunito, sans-serif`;
-    ctx.fillText('T'+(mm+1),p.x-dx/n*20*k,p.y-dy/n*14*k+4);}
+    ctx.fillText(lang==='en'?MON_SHORT_EN[mm]:'T'+(mm+1),p.x-dx/n*20*k,p.y-dy/n*14*k+4);}
   const E=posOf(yDay),sunR=30*k,depth=(E.y-cy)/b,er=25*k*(1+.12*depth);
   const drawE=()=>{const dx=cx-E.x,dy=cy-E.y,n=Math.hypot(dx,dy)||1,lx=dx/n,ly=dy/n;
     shadeBall(ctx,E.x,E.y,er,'#3b8ef0',lx,ly);
     const ax=Math.sin(TILT*RAD),ay=-Math.cos(TILT*RAD),px=-ay,py=ax;
     ctx.strokeStyle='rgba(255,255,255,.55)';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(E.x-px*er,E.y-py*er);ctx.lineTo(E.x+px*er,E.y+py*er);ctx.stroke();
     ctx.strokeStyle='#ffffff';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(E.x-ax*er*1.5,E.y-ay*er*1.5);ctx.lineTo(E.x+ax*er*1.5,E.y+ay*er*1.5);ctx.stroke();
-    ctx.fillStyle='#fff';ctx.font=`800 ${fs}px Nunito, sans-serif`;ctx.textAlign='center';ctx.fillText('B',E.x+ax*er*1.5+ax*9,E.y+ay*er*1.5+ay*9+4);
+    ctx.fillStyle='#fff';ctx.font=`800 ${fs}px Nunito, sans-serif`;ctx.textAlign='center';ctx.fillText(T('B','N'),E.x+ax*er*1.5+ax*9,E.y+ay*er*1.5+ay*9+4);
     const lat=16*RAD,side=Math.sign(px*lx+py*ly)||1,vx=E.x+ax*er*Math.sin(lat)+px*side*er*Math.cos(lat)*.75,vy=E.y+ay*er*Math.sin(lat)+py*side*er*Math.cos(lat)*.75;
     ctx.fillStyle='#f0508e';ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.beginPath();ctx.arc(vx,vy,4.5*k,0,TAU);ctx.fill();ctx.stroke();
-    const lab='Trái Đất';ctx.fillStyle='rgba(235,238,255,.95)';ctx.fillText(lab,E.x,E.y+er+18*k);};
+    const lab=T('Trái Đất','Earth');ctx.fillStyle='rgba(235,238,255,.95)';ctx.fillText(lab,E.x,E.y+er+18*k);};
   if(E.y<cy)drawE();drawSun(ctx,cx,cy,sunR,true);if(E.y>=cy)drawE();
   ctx.fillStyle='rgba(235,238,255,.85)';ctx.font=`700 ${fs}px Nunito, sans-serif`;ctx.textAlign='left';
-  ctx.fillText('B: Bắc Cực',12,h-30);ctx.fillStyle='#ff8fb6';ctx.fillText('● Việt Nam',12,h-12);
+  ctx.fillText(T('B: Bắc Cực','N: North Pole'),12,h-30);ctx.fillStyle='#ff8fb6';ctx.fillText(T('● Việt Nam','● Vietnam'),12,h-12);
   drawRays();}
 function dnum(m){return Math.round(Date.UTC(2026,m,1)/864e5-Date.UTC(2026,0,0)/864e5);}
 function drawRays(){const{ctx,w,h}=raysC;if(!w)return;ctx.clearRect(0,0,w,h);
@@ -552,44 +660,102 @@ function drawRays(){const{ctx,w,h}=raysC;if(!w)return;ctx.clearRect(0,0,w,h);
   ctx.strokeStyle='#5b4a3a';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(px,gy);ctx.lineTo(px,gy-ph);ctx.stroke();
   ctx.fillStyle='#e5404f';ctx.beginPath();ctx.moveTo(px,gy-ph);ctx.lineTo(px+22,gy-ph+7);ctx.lineTo(px,gy-ph+14);ctx.fill();
   ctx.fillStyle='#ffd34d';ctx.beginPath();ctx.arc(px+8,gy-ph+7,2.2,0,TAU);ctx.fill();
-  ctx.fillStyle='#24402a';ctx.font='800 12px Nunito, sans-serif';ctx.textAlign='center';ctx.fillText('Vệt nắng',hitX,h-9);ctx.fillText('Bóng cột cờ',px+Math.max(sl,30)/2,h-9);}
-$('yDay').oninput=e=>{setDay(+e.target.value)};
-$('yPlay').onclick=()=>{yPlaying=!yPlaying;$('yPlay').textContent=yPlaying?'⏸ Tạm dừng':'▶ Chạy cả năm';};
-root.querySelectorAll('#p-season [data-d]').forEach(b=>b.onclick=()=>setDay(+b.dataset.d));
-$('yToday').onclick=()=>{const n=new Date();setDay(Math.round((Date.UTC(2026,n.getMonth(),n.getDate())-Date.UTC(2026,0,0))/864e5));};
-$('yCities').addEventListener('click',e=>{const b=e.target.closest('[data-lat]');if(!b)return;cityLat=+b.dataset.lat;cityName=b.dataset.n;
+  ctx.fillStyle='#24402a';ctx.font='800 12px Nunito, sans-serif';ctx.textAlign='center';ctx.fillText(T('Vệt nắng','Sunlit patch'),hitX,h-9);ctx.fillText(T('Bóng cột cờ','Flagpole shadow'),px+Math.max(sl,30)/2,h-9);}
+$('yDay').oninput=e=>{cancelSpeech();setDay(+e.target.value)};
+$('yPlay').onclick=()=>{cancelSpeech();yPlaying=!yPlaying;setPlayTexts();};
+root.querySelectorAll('#p-season [data-d]').forEach(b=>b.onclick=()=>{cancelSpeech();setDay(+b.dataset.d);});
+$('yToday').onclick=()=>{cancelSpeech();const n=new Date();setDay(Math.round((Date.UTC(2026,n.getMonth(),n.getDate())-Date.UTC(2026,0,0))/864e5));};
+$('yCities').addEventListener('click',e=>{const b=e.target.closest('[data-lat]');if(!b)return;cancelSpeech();cityLat=+b.dataset.lat;cityName=b.dataset.n;
   root.querySelectorAll('#yCities [data-lat]').forEach(x=>x.setAttribute('aria-pressed',x===b));seasonInfo();dirty=true;});
 seasonInfo();
 
 /* ---------- câu hỏi ---------- */
-makeQuiz($('qSolar'),[
+const QZ_SOLAR_VI=[
  {q:'Hành tinh nào ở gần Mặt Trời nhất?',a:['Sao Thủy','Sao Kim','Trái Đất','Sao Hỏa'],why:'Thứ tự từ gần đến xa: Thủy, Kim, Trái Đất, Hỏa, Mộc, Thổ, Thiên Vương, Hải Vương.'},
  {q:'Hành tinh nào lớn nhất trong hệ Mặt Trời?',a:['Sao Mộc','Sao Thổ','Trái Đất','Sao Hải Vương'],why:'Sao Mộc to gấp khoảng 11 lần Trái Đất.'},
  {q:'Trái Đất là hành tinh thứ mấy tính từ Mặt Trời?',a:['Thứ ba','Thứ nhất','Thứ hai','Thứ tư'],why:'Trái Đất đứng sau Sao Thủy và Sao Kim.'},
  {q:'Mặt Trời là gì?',a:['Một ngôi sao','Một hành tinh','Một vệ tinh','Một sao chổi'],why:'Mặt Trời là ngôi sao tự phát ra ánh sáng và nhiệt.'},
  {q:'Mặt Trăng quay quanh thiên thể nào?',a:['Trái Đất','Mặt Trời','Sao Hỏa','Sao Mộc'],why:'Mặt Trăng là vệ tinh tự nhiên của Trái Đất, mỗi vòng khoảng 27 ngày.'},
- {q:'Hành tinh nào có vành đai đẹp, dễ nhận ra nhất?',a:['Sao Thổ','Sao Hỏa','Sao Kim','Sao Thủy'],why:'Vành đai Sao Thổ gồm vô số mảnh băng và đá nhỏ.'}]);
-makeQuiz($('qDay'),[
+ {q:'Hành tinh nào có vành đai đẹp, dễ nhận ra nhất?',a:['Sao Thổ','Sao Hỏa','Sao Kim','Sao Thủy'],why:'Vành đai Sao Thổ gồm vô số mảnh băng và đá nhỏ.'}];
+const QZ_DAY_VI=[
  {q:'Vì sao có ngày và đêm?',a:['Vì Trái Đất tự quay quanh mình nó','Vì Mặt Trời quay quanh Trái Đất','Vì mây che Mặt Trời','Vì Mặt Trăng che Mặt Trời'],why:'Nửa Trái Đất quay về phía Mặt Trời là ban ngày, nửa kia là ban đêm.'},
  {q:'Trái Đất tự quay một vòng hết bao lâu?',a:['24 giờ','12 giờ','7 ngày','1 năm'],why:'Một vòng tự quay là một ngày đêm, dài 24 giờ.'},
  {q:'Mặt Trời mọc ở phía nào?',a:['Phía Đông','Phía Tây','Phía Nam','Phía Bắc'],why:'Mặt Trời mọc ở phía Đông và lặn ở phía Tây.'},
  {q:'Khi Việt Nam đang ban ngày thì nước Mỹ ở phía bên kia Trái Đất thường đang là gì?',a:['Ban đêm','Ban ngày','Giữa trưa','Không xác định được'],why:'Hai nơi ở hai phía đối diện của Trái Đất nên một nơi sáng thì nơi kia tối.'},
- {q:'Em đứng giang tay, tay phải chỉ phía Mặt Trời mọc. Trước mặt em là phía nào?',a:['Phía Bắc','Phía Nam','Phía Đông','Phía Tây'],why:'Tay phải chỉ Đông, tay trái chỉ Tây, trước mặt là Bắc, sau lưng là Nam.'}]);
-makeQuiz($('qSeason'),[
+ {q:'Em đứng giang tay, tay phải chỉ phía Mặt Trời mọc. Trước mặt em là phía nào?',a:['Phía Bắc','Phía Nam','Phía Đông','Phía Tây'],why:'Tay phải chỉ Đông, tay trái chỉ Tây, trước mặt là Bắc, sau lưng là Nam.'}];
+const QZ_SEASON_VI=[
  {q:'Trái Đất đi hết một vòng quanh Mặt Trời mất khoảng bao lâu?',a:['Một năm','Một ngày','Một tháng','Một tuần'],why:'Trái Đất đi một vòng quanh Mặt Trời mất khoảng 365 ngày, tức là một năm.'},
  {q:'Vì sao có các mùa trong năm?',a:['Vì trục Trái Đất nghiêng','Vì Trái Đất lúc gần lúc xa Mặt Trời','Vì Mặt Trời lúc to lúc nhỏ','Vì Mặt Trăng che bớt nắng'],why:'Trục nghiêng làm mỗi nửa Trái Đất lần lượt được nắng chiếu thẳng hơn hoặc xiên hơn.'},
  {q:'Miền Nam nước ta có mấy mùa rõ rệt?',a:['Hai mùa: mưa và khô','Bốn mùa','Một mùa','Ba mùa'],why:'Miền Nam có mùa mưa (khoảng tháng 5 đến 11) và mùa khô.'},
  {q:'Đầu tháng 1, Trái Đất ở gần Mặt Trời nhất. Khi đó miền Bắc nước ta đang mùa gì?',a:['Mùa đông','Mùa hạ','Mùa xuân','Mùa thu'],why:'Điều này cho thấy mùa không phải do Trái Đất gần hay xa Mặt Trời.'},
- {q:'Khi nắng buổi trưa chiếu càng thẳng thì sao?',a:['Trời nóng hơn, bóng ngắn hơn','Trời lạnh hơn, bóng dài hơn','Trời tối hơn','Không có gì thay đổi'],why:'Nắng chiếu thẳng dồn nhiệt vào vùng nhỏ hơn nên nóng hơn, bóng cũng ngắn lại.'}]);
+ {q:'Khi nắng buổi trưa chiếu càng thẳng thì sao?',a:['Trời nóng hơn, bóng ngắn hơn','Trời lạnh hơn, bóng dài hơn','Trời tối hơn','Không có gì thay đổi'],why:'Nắng chiếu thẳng dồn nhiệt vào vùng nhỏ hơn nên nóng hơn, bóng cũng ngắn lại.'}];
 
 
+const QZ_SOLAR_EN=[
+ {q:'Which planet is closest to the Sun?',a:['Mercury','Venus','Earth','Mars'],why:'From closest to farthest: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune.'},
+ {q:'Which planet is the largest in the Solar System?',a:['Jupiter','Saturn','Earth','Neptune'],why:'Jupiter is about 11 times wider than Earth.'},
+ {q:'Which planet from the Sun is Earth?',a:['The 3rd','The 1st','The 2nd','The 4th'],why:'Earth comes after Mercury and Venus.'},
+ {q:'What is the Sun?',a:['A star','A planet','A moon','A comet'],why:'The Sun is a star that makes its own light and heat.'},
+ {q:'What does the Moon travel around?',a:['Earth','The Sun','Mars','Jupiter'],why:'The Moon is Earth\'s natural satellite. It goes around Earth about every 27 days.'},
+ {q:'Which planet has the most beautiful, easy-to-see rings?',a:['Saturn','Mars','Venus','Mercury'],why:'Saturn\'s rings are made of countless small pieces of ice and rock.'}];
+const QZ_DAY_EN=[
+ {q:'Why do we have day and night?',a:['Because Earth spins around','Because the Sun goes around Earth','Because clouds cover the Sun','Because the Moon blocks the Sun'],why:'The half of Earth facing the Sun has day, the other half has night.'},
+ {q:'How long does Earth take to spin around once?',a:['24 hours','12 hours','7 days','1 year'],why:'One full spin is one day and one night: 24 hours.'},
+ {q:'Where does the Sun rise?',a:['In the East','In the West','In the South','In the North'],why:'The Sun rises in the East and sets in the West.'},
+ {q:'When it is daytime in Vietnam, what is it usually like in the USA, on the other side of Earth?',a:['Nighttime','Daytime','Noon','We cannot tell'],why:'The two places are on opposite sides of Earth, so when one is light, the other is dark.'},
+ {q:'You stretch out your arms with your right hand pointing to where the Sun rises. Which way are you facing?',a:['North','South','East','West'],why:'Right hand East, left hand West, in front of you North, behind you South.'}];
+const QZ_SEASON_EN=[
+ {q:'About how long does Earth take to go around the Sun once?',a:['One year','One day','One month','One week'],why:'Earth takes about 365 days, one year, to go around the Sun.'},
+ {q:'Why are there seasons?',a:['Because Earth\'s axis is tilted','Because Earth is sometimes closer, sometimes farther from the Sun','Because the Sun gets bigger and smaller','Because the Moon blocks some sunlight'],why:'The tilt makes each half of Earth take turns getting more direct or more slanted sunlight.'},
+ {q:'How many clear seasons does southern Vietnam have?',a:['Two: rainy and dry','Four','One','Three'],why:'Southern Vietnam has a rainy season (about May to November) and a dry season.'},
+ {q:'In early January, Earth is closest to the Sun. What season is it then in northern Vietnam?',a:['Winter','Summer','Spring','Autumn'],why:'This shows seasons are not caused by Earth being closer to or farther from the Sun.'},
+ {q:'What happens when the midday Sun shines more directly?',a:['It gets hotter and shadows get shorter','It gets colder and shadows get longer','It gets darker','Nothing changes'],why:'Direct sunlight packs its heat into a smaller area, so it is hotter, and shadows are shorter.'}];
+const quizzes=[makeQuiz($('qSolar'),{vi:QZ_SOLAR_VI,en:QZ_SOLAR_EN}),makeQuiz($('qDay'),{vi:QZ_DAY_VI,en:QZ_DAY_EN}),makeQuiz($('qSeason'),{vi:QZ_SEASON_VI,en:QZ_SEASON_EN})];
+
+/* ---------- song ngữ: chữ cố định trên giao diện ---------- */
+const I18N={
+ 'Epsilon Edu · Khoa học trực quan':'Epsilon Edu · Visual Science','Hệ Mặt Trời':'The Solar System',
+ 'Quan sát chuyển động, tự tay kéo – chỉnh – so sánh để hiểu Hệ Mặt Trời, ngày đêm và các mùa.':'Watch, drag, adjust and compare to understand the Solar System, day and night, and the seasons.',
+ '🪐 Hệ Mặt Trời':'🪐 Solar System','🌍 Ngày & đêm':'🌍 Day & night','☀️ Các mùa':'☀️ Seasons',
+ 'Mô phỏng':'Simulation','8 hành tinh quanh Mặt Trời':'8 planets around the Sun','Quỹ đạo':'Orbits','Kích thước':'Sizes',
+ 'Tốc độ mô phỏng':'Simulation speed','Khoảng cách thật':'Real distances','Tên hành tinh':'Planet names',
+ 'Chạm để khám phá':'Tap to explore','Thông tin thiên thể':'About this object',
+ 'Tự tay xoay Trái Đất':'Spin the Earth yourself','Vì sao có ngày và đêm?':'Why do we have day and night?','Giờ ở Việt Nam':'Time in Vietnam',
+ '6 giờ':'6:00','9 giờ':'9:00','12 giờ':'12:00','18 giờ':'18:00','21 giờ':'21:00',
+ 'Bầu trời trong ngày':'The sky through the day','Mặt Trời mọc – lặn':'Sunrise and sunset',
+ 'Một vòng quanh Mặt Trời':'One trip around the Sun','Vì sao có các mùa?':'Why are there seasons?',
+ '21/3':'Mar 21','21/6':'Jun 21','23/9':'Sep 23','22/12':'Dec 22','Hôm nay':'Today',
+ 'Miền Bắc':'Northern Vietnam','Miền Nam':'Southern Vietnam','Nam bán cầu':'Southern Hemisphere',
+ 'Nắng và độ dài ngày':'Sunlight and day length','Quan sát tại Việt Nam':'Observe in Vietnam',
+ 'Hà Nội':'Hanoi','Đà Nẵng':'Da Nang','TP.HCM':'HCMC',
+ 'Khoảng cách đến Mặt Trời':'Distance to the Sun','147,1':'147.1','152,1 triệu km':'152.1 million km',
+ 'Các nội dung Hệ Mặt Trời':'Solar System sections','Chế độ hiển thị':'Display mode','Mô phỏng Hệ Mặt Trời':'Solar System simulation','Chọn thiên thể':'Choose an object',
+ 'Trái Đất và tia sáng Mặt Trời':'Earth and sunlight','Chọn nhanh thời điểm':'Quick time picks','Bầu trời theo giờ trong ngày':'The sky at different times of day',
+ 'Mô phỏng Trái Đất chuyển động quanh Mặt Trời':'Earth moving around the Sun','Các mốc mùa':'Season milestones','Chọn địa điểm':'Choose a place',
+ 'Góc chiếu của tia nắng':'Angle of sunlight','Độ dài ban ngày và ban đêm':'Length of day and night'};
+const DYNAMIC=new Set(['solarAudioNotice','pInfo','pChips','qSolar','qDay','qSeason','dInfo','sHud','sSpeedTxt','yDate','ySN','ySS','ySA','yRayTxt','yDayBar','yDayTxt','yDist','yCallout','sPlay','dPlay','yPlay']);
+function applyStatic(){const walk=el=>{if(el.id&&DYNAMIC.has(el.id))return;
+    for(const a of ['aria-label','title']){if(el.hasAttribute&&el.hasAttribute(a)){const k='__vi_'+a;if(el[k]===undefined)el[k]=el.getAttribute(a);const vi=el[k];el.setAttribute(a,lang==='en'&&I18N[vi]?I18N[vi]:vi);}}
+    for(const n of el.childNodes){if(n.nodeType===3){if(n.__vi===undefined)n.__vi=n.nodeValue;const raw=n.__vi,tr=raw.trim();if(tr&&I18N[tr])n.nodeValue=lang==='en'?raw.replace(tr,I18N[tr]):raw;}else if(n.nodeType===1)walk(n);}};
+  walk(root);}
+function setLang(l){lang=l==='en'?'en':'vi';root.setAttribute('lang',lang);
+  root.querySelectorAll('.solar-lang [data-lang]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lang===lang));
+  cancelSpeech();
+  applyStatic();buildChips();solarInfo(sSel);setPlayTexts();updSpeedTxt();dayInfo();lastSeasonKey='';seasonInfo();quizzes.forEach(q=>q.refresh());dirty=true;}
+root.querySelectorAll('.solar-lang [data-lang]').forEach(b=>b.onclick=()=>{if(b.dataset.lang!==lang)setLang(b.dataset.lang);});
+setPlayTexts();if(lang==='en')setLang('en');
+
+    // A hidden tab/window must not continue speaking an old lesson.
+    const onHidden=()=>{if(document.hidden)cancelSpeech();};
+    document.addEventListener('visibilitychange',onHidden);
+    cleanupFns.push(()=>document.removeEventListener('visibilitychange',onHidden));
     rafId = window.requestAnimationFrame(loop);
 
     return () => {
       destroyed = true;
       if (rafId) window.cancelAnimationFrame(rafId);
       cleanupFns.splice(0).forEach((fn) => { try { fn(); } catch (_) {} });
-      try { if (speech) speech.cancel(); } catch (_) {}
+      cancelSpeech();
     };
   }
 })();

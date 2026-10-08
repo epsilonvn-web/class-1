@@ -8,6 +8,9 @@
   const timers = new Set();
   let active = false;
   let ctx = null;
+  let disposeSpeech = null;
+  // Shared single Google TTS audio stream, for Vietnamese and English alike.
+  let googleAudio = null;
 
   function scopedDocument(host) {
     const real = window.document;
@@ -37,7 +40,17 @@
   }
 
   function stopSpeech() {
-    try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (_) {}
+    // Stop playing AND abort pending media downloads from the previous context.
+    if (!googleAudio) return;
+    try {
+      googleAudio.onerror = null;
+      googleAudio.onplaying = null;
+      googleAudio.onended = null;
+      googleAudio.pause();
+      googleAudio.currentTime = 0;
+      googleAudio.removeAttribute('src');
+      googleAudio.load();
+    } catch (_) {}
   }
 
   function ensureStyle() {
@@ -82,27 +95,117 @@
     #class1-tool-learning-clock .level-row{display:flex;gap:7px;flex-wrap:wrap}#class1-tool-learning-clock .explore-controls{display:grid;gap:9px}#class1-tool-learning-clock .step-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}#class1-tool-learning-clock .step-row button{padding:9px}#class1-tool-learning-clock .options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}#class1-tool-learning-clock .opt{min-height:48px;padding:9px}#class1-tool-learning-clock .prompt{font-size:20px;font-weight:950;color:#5b217a}#class1-tool-learning-clock .score-row{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-weight:900}#class1-tool-learning-clock .set-controls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
     @media(max-width:820px){#class1-tool-learning-clock .clock-layout{grid-template-columns:1fr}#class1-tool-learning-clock .clock-svg{max-width:330px}}
     @media(max-width:520px){#class1-tool-learning-clock .options{grid-template-columns:1fr}}
+    /* Language control: matching the approved Blue-to-Green pill */
+    #class1-tool-learning-clock .tool-head>div:first-child{min-width:0;flex:1 1 auto}
+    #class1-tool-learning-clock .head-actions{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:8px;flex:0 0 auto}
+    #class1-tool-learning-clock .lang-switch{display:inline-flex;align-items:center;gap:4px;padding:3px;border:1px solid #bfdbfe;border-radius:14px;background:#fff;box-shadow:0 3px 9px rgba(59,130,246,.08)}
+    #class1-tool-learning-clock .lang-switch button{min-height:38px;padding:0 13px;border:0;border-radius:10px;background:transparent;color:#475569;font-size:14px;font-weight:900;white-space:nowrap;box-shadow:none}
+    #class1-tool-learning-clock .lang-switch button[aria-pressed="true"]{color:#fff;background:linear-gradient(90deg,#3b82f6,#10b981);box-shadow:0 3px 9px rgba(16,185,129,.16)}
+    #class1-tool-learning-clock .lang-switch button:hover{filter:brightness(1.045);transform:none}
+    #class1-tool-learning-clock .audio-note{padding:7px 10px;border:1px solid #fde68a;border-radius:12px;background:#fffbeb;color:#92400e;font-size:14px;font-weight:750;line-height:1.35}
+    #class1-tool-learning-clock .clock-layout>*{min-width:0}
+    @media(max-width:620px){#class1-tool-learning-clock .tool-head{flex-wrap:wrap}#class1-tool-learning-clock .head-actions{width:100%;justify-content:space-between}#class1-tool-learning-clock .lang-switch{order:2}#class1-tool-learning-clock .back-btn{order:1}#class1-tool-learning-clock .lang-switch button{padding:0 10px}}
+    @media(max-width:380px){#class1-tool-learning-clock .lang-switch button{padding:0 8px;font-size:13px}#class1-tool-learning-clock .back-btn{padding:9px}}
 `;
     window.document.head.appendChild(style);
   }
 
   function toolHtml() { return `<div id="class1-tool-learning-clock" class="tool-shell">
-  <div class="tool-head"><div><h2>🕐 Đồng hồ học xem giờ</h2><p>Quay kim, đọc giờ và luyện tập theo từng mức.</p></div><button class="back-btn" data-tool-back type="button">← Tools</button></div>
-  <div class="tabs"><button class="tab" data-mode="explore" aria-selected="true" type="button">🧭 Khám phá</button><button class="tab" data-mode="read" aria-selected="false" type="button">👀 Đọc giờ</button><button class="tab" data-mode="set" aria-selected="false" type="button">🖐️ Quay kim</button></div>
-  <div class="clock-layout"><div class="panel clock-wrap"><svg id="clock" class="clock-svg" viewBox="0 0 320 320" aria-label="Đồng hồ kim"><circle class="clock-face" cx="160" cy="160" r="145"></circle><g id="minLabels"></g><g id="ticks"></g><g id="numbers"></g><line id="hourHand" class="clock-hour" x1="160" y1="160" x2="160" y2="88"></line><line id="minHand" class="clock-min" x1="160" y1="160" x2="160" y2="52"></line><circle class="clock-center" cx="160" cy="160" r="9"></circle></svg><div><span id="digital" class="digital"></span><span id="period" class="period"></span></div><div id="reading" class="reading"></div><div id="reading2" class="reading2"></div></div><div class="panel"><div id="levels" class="level-row"><button class="chip" data-step="60" aria-pressed="true" type="button">Tròn giờ</button><button class="chip" data-step="30" aria-pressed="false" type="button">30 phút</button><button class="chip" data-step="15" aria-pressed="false" type="button">15 phút</button><button class="chip" data-step="5" aria-pressed="false" type="button">5 phút</button></div><p id="hint" class="muted"></p><section id="explorePanel" class="explore-controls"><div class="step-row"><button id="minusStep" class="btn" data-add="-step" type="button"></button><button id="plusStep" class="btn" data-add="step" type="button"></button></div><div class="row"><button class="btn" data-add="-60" type="button">− 1 giờ</button><button class="btn" data-add="60" type="button">+ 1 giờ</button><button id="ampm" class="btn" type="button">+ 12 giờ</button><button id="now" class="btn" type="button">Giờ hiện tại</button><button id="say" class="btn main" type="button">🔊 Đọc giờ</button></div><label class="row"><input id="showMin" type="checkbox"> Hiện số phút quanh mặt đồng hồ</label></section><section id="practicePanel" class="hidden"><div class="score-row"><span id="pScore">Đúng 0 / 0</span><span id="pStreak"></span></div><p id="pPrompt" class="prompt"></p><div id="setControls" class="set-controls hidden"><button id="checkBtn" class="btn main" type="button">✓ Kiểm tra</button><button id="skipBtn" class="btn" type="button">Bỏ qua</button></div><div id="options" class="options"></div><div id="fb" class="feedback"></div></section></div></div>
-</div>`; }
+    <div class="tool-head">
+      <div><h2 data-i18n="title">🕐 Đồng hồ học xem giờ</h2><p data-i18n="subtitle">Quay kim, đọc giờ và luyện tập theo từng mức.</p></div>
+      <div class="head-actions">
+        <button class="back-btn" data-tool-back type="button">← Tools</button>
+        <div class="lang-switch" role="group" aria-label="Language / Ngôn ngữ">
+          <button type="button" data-lang="vi" aria-pressed="true">Tiếng Việt</button>
+          <button type="button" data-lang="en" aria-pressed="false">English</button>
+        </div>
+      </div>
+    </div>
+    <div class="tabs"><button class="tab" data-mode="explore" data-i18n="explore" aria-selected="true" type="button">🧭 Khám phá</button><button class="tab" data-mode="read" data-i18n="read" aria-selected="false" type="button">👀 Đọc giờ</button><button class="tab" data-mode="set" data-i18n="set" aria-selected="false" type="button">🖐️ Quay kim</button></div>
+    <div class="clock-layout">
+      <div class="panel clock-wrap">
+        <svg id="clock" class="clock-svg" viewBox="0 0 320 320" role="img" aria-label="Đồng hồ kim"><circle class="clock-face" cx="160" cy="160" r="145"></circle><g id="minLabels"></g><g id="ticks"></g><g id="numbers"></g><line id="hourHand" class="clock-hour" x1="160" y1="160" x2="160" y2="88"></line><line id="minHand" class="clock-min" x1="160" y1="160" x2="160" y2="52"></line><circle class="clock-center" cx="160" cy="160" r="9"></circle></svg>
+        <div id="clockAnswer"><div><span id="digital" class="digital"></span><span id="period" class="period"></span></div><div id="reading" class="reading"></div><div id="reading2" class="reading2"></div></div>
+      </div>
+      <div class="panel">
+        <div id="levels" class="level-row"><button class="chip" data-step="60" data-i18n="wholeHour" aria-pressed="true" type="button">Tròn giờ</button><button class="chip" data-step="30" data-i18n="halfHour" aria-pressed="false" type="button">30 phút</button><button class="chip" data-step="15" data-i18n="quarterHour" aria-pressed="false" type="button">15 phút</button><button class="chip" data-step="5" data-i18n="fiveMinutes" aria-pressed="false" type="button">5 phút</button></div>
+        <p id="hint" class="muted"></p>
+        <section id="explorePanel" class="explore-controls">
+          <div class="step-row"><button id="minusStep" class="btn" data-add="-step" type="button"></button><button id="plusStep" class="btn" data-add="step" type="button"></button></div>
+          <div class="row"><button class="btn" data-add="-60" data-i18n="minusHour" type="button">− 1 giờ</button><button class="btn" data-add="60" data-i18n="plusHour" type="button">+ 1 giờ</button><button id="ampm" class="btn" data-i18n="plus12" type="button">+ 12 giờ</button><button id="now" class="btn" data-i18n="now" type="button">Giờ hiện tại</button><button id="say" class="btn main" data-i18n="say" type="button">🔊 Đọc giờ</button></div>
+          <label class="row"><input id="showMin" type="checkbox"><span data-i18n="showMin">Hiện số phút quanh mặt đồng hồ</span></label>
+        </section>
+        <section id="practicePanel" class="hidden"><div class="score-row"><span id="pScore">Đúng 0 / 0</span><span id="pStreak"></span></div><p id="pPrompt" class="prompt"></p><div id="setControls" class="set-controls hidden"><button id="checkBtn" class="btn main" data-i18n="check" type="button">✓ Kiểm tra</button><button id="skipBtn" class="btn" data-i18n="skip" type="button">Bỏ qua</button></div><div id="options" class="options"></div><div id="fb" class="feedback"></div></section>
+        <div id="toolAudioNotice" class="audio-note hidden" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>`; }
 
   function initTool(host) {
     const document = scopedDocument(host);
-    const speechSynthesis = window.speechSynthesis;
-    const SpeechSynthesisUtterance = window.SpeechSynthesisUtterance;
     const setTimeoutLocal = schedule;
+    /* All visible UI strings have a full English equivalent. */
+    let language='vi';
+    const labels={
+      vi:{title:'🕐 Đồng hồ học xem giờ',subtitle:'Quay kim, đọc giờ và luyện tập theo từng mức.',explore:'🧭 Khám phá',read:'👀 Đọc giờ',set:'🖐️ Quay kim',wholeHour:'Tròn giờ',halfHour:'30 phút',quarterHour:'15 phút',fiveMinutes:'5 phút',minusHour:'− 1 giờ',plusHour:'+ 1 giờ',plus12:'+ 12 giờ',now:'Giờ hiện tại',say:'🔊 Đọc giờ',showMin:'Hiện số phút quanh mặt đồng hồ',check:'✓ Kiểm tra',skip:'Bỏ qua'},
+      en:{title:'🕐 Learn to Tell Time',subtitle:'Move the clock hands, tell the time, and practise step by step.',explore:'🧭 Explore',read:'👀 Read the time',set:'🖐️ Set the clock',wholeHour:'Whole hours',halfHour:'30 minutes',quarterHour:'15 minutes',fiveMinutes:'5 minutes',minusHour:'− 1 hour',plusHour:'+ 1 hour',plus12:'+ 12 hours',now:'Current time',say:'🔊 Read aloud',showMin:'Show minute numbers around the clock face',check:'✓ Check',skip:'Skip'}
+    };
+    const L=(vi,en)=>language==='en'?en:vi;
     const DG=['không','một','hai','ba','bốn','năm','sáu','bảy','tám','chín'];
-    function readNum(n){const t=Math.floor(n/10),u=n%10;if(n<10)return DG[n];let s=t===1?'mười':DG[t]+' mươi';if(u===0)return s;
-      if(u===5)return s+' lăm';if(u===1&&t>1)return s+' mốt';if(u===4&&t>1)return s+' tư';return s+' '+DG[u];}
-    let viVoice=null;function loadVoice(){try{viVoice=speechSynthesis.getVoices().find(v=>/^vi/i.test(v.lang))||null}catch(e){}}
-    try{loadVoice();speechSynthesis.onvoiceschanged=loadVoice}catch(e){}
-    function speak(t){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='vi-VN';if(viVoice)u.voice=viVoice;u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
+    function readNum(n){const ten=Math.floor(n/10),u=n%10;if(n<10)return DG[n];let s=ten===1?'mười':DG[ten]+' mươi';if(u===0)return s;
+      if(u===5)return s+' lăm';if(u===1&&ten>1)return s+' mốt';if(u===4&&ten>1)return s+' tư';return s+' '+DG[u];}
+    const EN_NUM=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+    const EN_TENS=['','','twenty','thirty','forty','fifty'];
+    const enNum=n=>n<20?EN_NUM[n]:(EN_TENS[Math.floor(n/10)]+(n%10?' '+EN_NUM[n%10]:''));
+    // Same Google Translate TTS source as the approved math-table and calendar tools.
+    // The public endpoint does not guarantee a named voice or female US voice ID.
+    const googleTtsUrl = (text, lang) =>
+      `https://translate.google.com/translate_tts?ie=UTF-8&tl=${lang==='en'?'en':'vi'}&client=tw-ob&q=${encodeURIComponent(text)}`;
+    let soundVersion=0,lastSpeech={text:'',language:'',time:0},alive=true;
+    const audioNotice=document.getElementById('toolAudioNotice');
+    function notifyAudio(message=''){audioNotice.textContent=message;audioNotice.classList.toggle('hidden',!message);}
+    function cancelSpeech(){
+      soundVersion++;
+      stopSpeech();
+      lastSpeech={text:'',language:'',time:0};
+      notifyAudio();
+    }
+    disposeSpeech=()=>{alive=false;cancelSpeech();};
+    function speak(value){
+      const text=String(value||'').replace(/\s+/g,' ').trim();
+      if(!text||!alive||!active)return;
+      const now=Date.now();
+      if(lastSpeech.text===text&&lastSpeech.language===language&&now-lastSpeech.time<280)return;
+      const version=++soundVersion,lang=language;
+      stopSpeech();notifyAudio();
+      lastSpeech={text,language:lang,time:now};
+      if(typeof window.Audio!=='function'){
+        notifyAudio(lang==='en'?'Audio is unavailable in this browser.':'Trình duyệt này chưa hỗ trợ phát âm thanh.');
+        lastSpeech={text:'',language:'',time:0};
+        return;
+      }
+      const current=()=>alive&&active&&version===soundVersion&&language===lang;
+      const failed=()=>{
+        if(!current())return;
+        lastSpeech={text:'',language:'',time:0};
+        notifyAudio(lang==='en'
+          ?'Google English audio is unavailable. Please try listening again.'
+          :'Chưa phát được Google TTS tiếng Việt. Bé hãy bấm nghe lại nhé!');
+      };
+      try{
+        const audio=googleAudio||(googleAudio=new window.Audio());
+        audio.referrerPolicy='no-referrer';
+        audio.preload='none';
+        audio.onerror=failed;
+        audio.onplaying=()=>{if(current())notifyAudio();};
+        audio.onended=()=>{if(current())notifyAudio();};
+        audio.src=googleTtsUrl(text,lang);
+        audio.playbackRate=lang==='en'?1:.96;
+        notifyAudio(lang==='en'?'Loading Google voice…':'Đang tải giọng đọc…');
+        const playing=audio.play();
+        if(playing&&typeof playing.catch==='function')playing.catch(failed);
+      }catch(_){failed();}
+    }
 
     const NS='http://www.w3.org/2000/svg',C=160;
     const el=(tag,attrs,txt)=>{const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(txt!=null)e.textContent=txt;return e;};
@@ -123,21 +226,44 @@
       document.getElementById('minHand').setAttribute('transform',`rotate(${(t%60)*6} ${C} ${C})`);
       if(mode==='explore')updateText();}
     const h12=x=>Math.floor(x/60)%12||12;
-    function buoi(H){return H<4?'đêm':H<11?'sáng':H<13?'trưa':H<18?'chiều':H<22?'tối':'đêm';}
+    function buoi(H){
+      if(language==='en')return H<4?'night':H<11?'morning':H<13?'noon':H<18?'afternoon':H<22?'evening':'night';
+      return H<4?'đêm':H<11?'sáng':H<13?'trưa':H<18?'chiều':H<22?'tối':'đêm';
+    }
+    function enPeriod(H){return H<4||H>=22?'at night':H<11?'in the morning':H<13?'at noon':H<18?'in the afternoon':'in the evening';}
     function reading(x,withMore=true){const h=h12(x),m=x%60;
+      if(language==='en'){
+        if(m===0)return `${h} o'clock`;
+        const clock=`${h}:${String(m).padStart(2,'0')}`;
+        if(m===15&&withMore)return `${clock} (quarter past ${h})`;
+        if(m===30&&withMore)return `${clock} (half past ${h})`;
+        if(m===45&&withMore)return `${clock} (quarter to ${h%12+1})`;
+        return clock;
+      }
       if(m===0)return `${h} giờ`;
       if(m===30&&withMore)return `${h} giờ 30 phút (${h} giờ rưỡi)`;
-      return `${h} giờ ${m} phút`;}
-    function reading2(x){const h=h12(x),m=x%60;return m>30?`hay ${h%12+1} giờ kém ${60-m} phút`:'';}
+      return `${h} giờ ${m} phút`;
+    }
+    function reading2(x){const h=h12(x),m=x%60;
+      if(m<=30)return '';
+      return language==='en'
+        ?`or ${m===45?'a quarter':`${60-m} minute${60-m===1?'':'s'}`} to ${h%12+1}`
+        :`hay ${h%12+1} giờ kém ${60-m} phút`;
+    }
     function updateText(){const H=Math.floor(t/60),m=t%60;
       document.getElementById('digital').textContent=String(H).padStart(2,'0')+':'+String(m).padStart(2,'0');
       document.getElementById('period').textContent=buoi(H);
-      document.getElementById('reading').textContent=reading(t)+' '+buoi(H);
+      document.getElementById('reading').textContent=reading(t)+' '+(language==='en'?enPeriod(H):buoi(H));
       const extra=[];const r2=reading2(t);if(r2)extra.push(r2);
-      if(H>=13)extra.push(`Cách nói khác: ${H} giờ${m?' '+m+' phút':''}`);
-      if(H===0)extra.push('Cách nói khác: 0 giờ (nửa đêm)');
-      document.getElementById('reading2').textContent=extra.join(' · ');}
-    function speakTime(){const h=h12(t),m=t%60;let s=readNum(h)+' giờ';if(m)s+=' '+readNum(m)+' phút';s+=' '+buoi(Math.floor(t/60));speak(s);}
+      if(H>=13)extra.push(language==='en'?`24-hour time: ${H}:${String(m).padStart(2,'0')}`:`Cách nói khác: ${H} giờ${m?' '+m+' phút':''}`);
+      if(H===0)extra.push(language==='en'?'Another way: 00:00 (midnight)':'Cách nói khác: 0 giờ (nửa đêm)');
+      document.getElementById('reading2').textContent=extra.join(' · ');
+    }
+    function speakTime(){const h=h12(t),m=t%60,H=Math.floor(t/60);
+      if(language==='en'){
+        const words=m===0?`${enNum(h)} o'clock`:`${enNum(h)} ${m<10?'oh '+enNum(m):enNum(m)}`;
+        speak(`It is ${words} ${enPeriod(H)}.`);
+      }else{let words=readNum(h)+' giờ';if(m)words+=' '+readNum(m)+' phút';words+=' '+buoi(H);speak(words);}}
 
     /* dragging */
     let drag=null,startT=0;
@@ -145,7 +271,7 @@
       const dx=q.x-C,dy=q.y-C;let a=Math.atan2(dx,-dy)*180/Math.PI;if(a<0)a+=360;return{a,d:Math.hypot(dx,dy)};}
     const locked=()=>mode==='read';
     svg.addEventListener('pointerdown',e=>{if(locked())return;const{d}=angleOf(e);if(d<18)return;
-      drag=(step===60||d<78)?'hour':'min';svg.setPointerCapture(e.pointerId);move(e);e.preventDefault();});
+      cancelSpeech();drag=(step===60||d<78)?'hour':'min';svg.setPointerCapture(e.pointerId);move(e);e.preventDefault();});
     svg.addEventListener('pointermove',e=>{if(drag)move(e)});
     const end=()=>{if(!drag)return;drag=null;t=snap(t);draw();if(mode==='explore')speakTime();};
     svg.addEventListener('pointerup',end);svg.addEventListener('pointercancel',end);
@@ -157,57 +283,87 @@
       draw();}
 
     /* explore controls */
-    document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{const v=b.dataset.add;
+    document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{cancelSpeech();const v=b.dataset.add;
       const add=v==='step'?Math.max(step,1)===60?60:step:v==='-step'?-(step===60?60:step):+v;t=snap((t+add+1440)%1440);draw();});
-    document.getElementById('ampm').onclick=()=>{t=(t+720)%1440;draw();};
-    document.getElementById('now').onclick=()=>{const d=new Date();t=snap(d.getHours()*60+d.getMinutes());draw();speakTime();};
+    document.getElementById('ampm').onclick=()=>{cancelSpeech();t=(t+720)%1440;draw();};
+    document.getElementById('now').onclick=()=>{cancelSpeech();const d=new Date();t=snap(d.getHours()*60+d.getMinutes());draw();speakTime();};
     document.getElementById('say').onclick=speakTime;
     document.getElementById('showMin').onchange=e=>{mins.style.display=e.target.checked?'':'none'};
-    function updStepButtons(){const s=step===60?'1 giờ':step+' phút';
+    function updStepButtons(){const s=step===60?L('1 giờ','1 hour'):L(step+' phút',step+' minutes');
       document.getElementById('minusStep').textContent='− '+s;document.getElementById('plusStep').textContent='+ '+s;
-      document.getElementById('hint').innerHTML=locked()?'Nhìn kim đồng hồ rồi chọn cách đọc đúng.':step===60
-        ?'Kéo <span style="color:var(--pink)">kim ngắn (kim giờ)</span> để đổi giờ.'
-        :'Kéo <span style="color:var(--blue)">kim dài (kim phút)</span> ở vòng ngoài, <span style="color:var(--pink)">kim ngắn</span> ở vòng trong.';}
-    document.getElementById('levels').addEventListener('click',e=>{const b=e.target.closest('[data-step]');if(!b)return;step=+b.dataset.step;
+      document.getElementById('hint').innerHTML=locked()
+        ?L('Nhìn kim đồng hồ rồi chọn cách đọc đúng.','Look at the clock hands and choose the correct time.')
+        :step===60
+          ?L('Kéo <span style="color:var(--pink)">kim ngắn (kim giờ)</span> để đổi giờ.','Drag the <span style="color:var(--pink)">short hand (hour hand)</span> to change the hour.')
+          :L('Kéo <span style="color:var(--blue)">kim dài (kim phút)</span> ở vòng ngoài, <span style="color:var(--pink)">kim ngắn</span> ở vòng trong.','Drag the <span style="color:var(--blue)">long hand (minute hand)</span> around the outer ring and the <span style="color:var(--pink)">short hand</span> inside.');}
+    document.getElementById('levels').addEventListener('click',e=>{const b=e.target.closest('[data-step]');if(!b)return;
+      cancelSpeech();clearTimers();step=+b.dataset.step;
       document.querySelectorAll('#levels [data-step]').forEach(x=>x.setAttribute('aria-pressed',x===b));t=snap(t);updStepButtons();
       if(mode!=='explore'){correct=total=streak=0;newQ();}draw();});
 
     /* practice */
     const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
     function randTime(){const h=rnd(0,11);const m=step===60?0:step===5?rnd(0,11)*5:rnd(0,59);return h*60+m;}
-    function setMode(m){mode=m;svg.classList.toggle('locked',locked());
+    function setMode(m){cancelSpeech();clearTimers();mode=m;lastResult=null;svg.classList.toggle('locked',locked());
+      // Do not show the time readout while the child is solving a question.
+      document.getElementById('clockAnswer').classList.toggle('hidden',m!=='explore');
       document.getElementById('explorePanel').classList.toggle('hidden',m!=='explore');
       document.getElementById('practicePanel').classList.toggle('hidden',m==='explore');
       correct=total=streak=0;updStepButtons();if(m==='explore'){t=snap(t);draw();}else newQ();}
     document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===b));setMode(b.dataset.mode);});
-    function updScore(){document.getElementById('pScore').textContent=`Đúng ${correct} / ${total}`;
-      document.getElementById('pStreak').textContent=streak>=2?`🔥 ${streak} câu liên tiếp`:'';}
-    function newQ(){answered=false;const fb=document.getElementById('fb');fb.textContent='';fb.className='feedback';
+    function updScore(){document.getElementById('pScore').textContent=L(`Đúng ${correct} / ${total}`,`Correct ${correct} / ${total}`);
+      document.getElementById('pStreak').textContent=streak>=2?L(`🔥 ${streak} câu liên tiếp`,`🔥 ${streak} in a row`):'';}
+    let lastResult=null;
+    function newQ(){cancelSpeech();answered=false;lastResult=null;const fb=document.getElementById('fb');fb.textContent='';fb.className='feedback';
       let tg;do{tg=randTime()}while((target!==null&&tg===target)||(mode==="set"&&tg===0));target=tg;
       const opts=document.getElementById('options');opts.innerHTML='';
       if(mode==='set'){t=0;draw();document.getElementById('setControls').classList.remove('hidden');
-        document.getElementById('pPrompt').textContent='Hãy quay kim chỉ: '+reading(target,false);}
+        document.getElementById('pPrompt').textContent=L('Hãy quay kim chỉ: ','Set the clock to: ')+reading(target,false);}
       else{t=target;draw();document.getElementById('setControls').classList.add('hidden');
-        document.getElementById('pPrompt').textContent='Đồng hồ đang chỉ mấy giờ?';
+        document.getElementById('pPrompt').textContent=L('Đồng hồ đang chỉ mấy giờ?','What time does the clock show?');
         const set=new Set([target]);const h=Math.floor(target/60),m=target%60;
         const cands=[((h+1)%12)*60+m,((h+11)%12)*60+m];
         if(m!==0){const swapH=Math.round(m/5)%12,swapM=(h===0?12:h)*5%60;cands.push(swapH*60+swapM);cands.push(h*60+(60-m)%60);}
         else{cands.push(h*60+30,((h+6)%12)*60);}
         for(const c of cands){if(set.size>=4)break;if(step===60&&c%60)continue;set.add((c+720)%720);}
         while(set.size<4)set.add(randTime());
-        [...set].sort(()=>Math.random()-.5).forEach(v=>{const b=document.createElement('button');b.className='opt';b.textContent=reading(v,false);
+        [...set].sort(()=>Math.random()-.5).forEach(v=>{const b=document.createElement('button');b.className='opt';b.dataset.minutes=String(v);b.textContent=reading(v,false);
           b.onclick=()=>answerRead(b,v);opts.appendChild(b);});}
       updScore();}
-    function result(ok){const fb=document.getElementById('fb');total++;
-      if(ok){correct++;streak++;fb.textContent=['Giỏi quá! 🎉','Chính xác! 🌟','Tuyệt vời! 👏'][rnd(0,2)];fb.className='feedback ok';}
-      else{streak=0;fb.textContent='Chưa đúng. Đáp án: '+reading(target,false);fb.className='feedback no';}
-      updScore();answered=true;setTimeoutLocal(newQ,ok?1200:2600);}
+    const praises={vi:['Giỏi quá! 🎉','Chính xác! 🌟','Tuyệt vời! 👏'],en:['Great job! 🎉','Exactly right! 🌟','Wonderful! 👏']};
+    function showResult(){if(!lastResult)return;
+      const fb=document.getElementById('fb');
+      fb.textContent=lastResult.ok?praises[language][lastResult.praise]:L('Chưa đúng. Đáp án: ','Not quite. Correct answer: ')+reading(target,false);
+      fb.className='feedback '+(lastResult.ok?'ok':'no');
+    }
+    function result(ok){cancelSpeech();total++;
+      if(ok){correct++;streak++;}else streak=0;
+      lastResult={ok,praise:rnd(0,2)};
+      updScore();answered=true;showResult();setTimeoutLocal(newQ,ok?1200:2600);
+    }
     document.getElementById('checkBtn').onclick=()=>{if(answered)return;const ok=t%720===target%720;if(!ok){t=target;draw();}result(ok);};
-    document.getElementById('skipBtn').onclick=()=>{if(!answered)newQ();};
+    document.getElementById('skipBtn').onclick=()=>{if(!answered){cancelSpeech();newQ();}};
     function answerRead(btn,v){if(answered)return;const ok=v===target;btn.classList.add(ok?'ok':'no');
-      if(!ok)[...document.querySelectorAll('.opt')].find(b=>b.textContent===reading(target,false))?.classList.add('ok');result(ok);}
+      if(!ok)[...document.querySelectorAll('.opt')].find(b=>Number(b.dataset.minutes)===target)?.classList.add('ok');result(ok);}
 
-    updStepButtons();draw();
+    /* Translate existing controls and the CURRENT question without recreating any state. */
+    function updateLanguage(next){if(next!==language){cancelSpeech();language=next;}
+      host.setAttribute('lang',language==='en'?'en':'vi');
+      document.querySelectorAll('[data-lang]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===language)));
+      document.querySelectorAll('[data-i18n]').forEach(el=>{const value=labels[language][el.dataset.i18n];if(value!=null)el.textContent=value;});
+      svg.setAttribute('aria-label',L('Đồng hồ kim','Analog clock'));
+      updStepButtons();updateText();updScore();
+      if(mode==='read'||mode==='set'){
+        if(target!=null)document.getElementById('pPrompt').textContent=mode==='set'
+          ?L('Hãy quay kim chỉ: ','Set the clock to: ')+reading(target,false)
+          :L('Đồng hồ đang chỉ mấy giờ?','What time does the clock show?');
+        document.querySelectorAll('.opt').forEach(b=>{b.textContent=reading(Number(b.dataset.minutes),false);});
+        showResult();
+      }
+    }
+    document.querySelectorAll('[data-lang]').forEach(button=>button.addEventListener('click',()=>updateLanguage(button.dataset.lang)));
+
+    updateLanguage(language);draw();
   }
 
   function render(context) {
@@ -219,7 +375,7 @@
     ensureStyle();
     host.innerHTML = toolHtml();
     host.setAttribute("tabindex", "0");
-    host.querySelector("[data-tool-back]")?.addEventListener("click", () => ctx && typeof ctx.back === "function" && ctx.back());
+    host.querySelector("[data-tool-back]")?.addEventListener("click", () => {if(disposeSpeech)disposeSpeech();clearTimers();if(ctx && typeof ctx.back === "function")ctx.back();});
     initTool(host);
     try { host.focus({preventScroll:true}); } catch (_) {}
   }
@@ -227,8 +383,8 @@
   function destroy() {
     active = false;
     clearTimers();
+    if(disposeSpeech){disposeSpeech();disposeSpeech=null;}
     stopSpeech();
-    try { if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = null; } catch (_) {}
     ctx = null;
   }
 

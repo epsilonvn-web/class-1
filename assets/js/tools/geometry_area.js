@@ -5,6 +5,7 @@
   const STYLE_ID = "class1-tools-geometry-area-style";
   let activeContext = null;
   let currentShape = "rectangle";
+  let activeLanguage = "vi";
 
   const LENGTH_UNITS = Object.freeze([
     { id: "mm", label: "Milimét", symbol: "mm", factor: 0.001 },
@@ -139,12 +140,180 @@
     })
   });
 
+
+  // All translations are local static content; original shape data and formulas stay unchanged.
+  const UI_TEXT = Object.freeze({
+    vi: Object.freeze({
+      heading: "📏 Tính diện tích",
+      description: "Tính diện tích các hình học cơ bản và quy đổi đơn vị diện tích.",
+      toolLabel: "Công cụ tính diện tích hình học cơ bản",
+      shapesLabel: "Chọn hình",
+      dimensionUnit: "Đơn vị tham số",
+      areaUnit: "Đơn vị diện tích",
+      formula: "Công thức",
+      result: "Kết quả diện tích",
+      displayIn: "Hiển thị theo",
+      invalid: "Giá trị chưa hợp lệ",
+      retry: "Nhập lại",
+      innerDimensions: "Kích thước trong phải > 0",
+      note: "Mặc định nhập theo <strong>mm</strong>. Dùng dấu chấm cho phần thập phân và dấu phẩy cho hàng nghìn, ví dụ 1,234.5."
+    }),
+    en: Object.freeze({
+      heading: "📏 Area Calculator",
+      description: "Calculate the area of common shapes and convert between area units.",
+      toolLabel: "Geometry area calculator",
+      shapesLabel: "Choose a shape",
+      dimensionUnit: "Dimension unit",
+      areaUnit: "Area unit",
+      formula: "Formula",
+      result: "Calculated area",
+      displayIn: "Display in",
+      invalid: "Invalid value",
+      retry: "Try again",
+      innerDimensions: "Inner dimensions must be > 0",
+      note: "Dimensions are in <strong>mm</strong> by default. Use a period for decimals and a comma for thousands, e.g., 1,234.5."
+    })
+  });
+
+  const LENGTH_LABEL_EN = Object.freeze({
+    mm: "Millimeter", cm: "Centimeter", dm: "Decimeter", m: "Meter",
+    km: "Kilometer", in: "Inch", ft: "Foot"
+  });
+  const AREA_LABEL_EN = Object.freeze({
+    mm2: "Square millimeter", cm2: "Square centimeter", dm2: "Square decimeter",
+    m2: "Square meter", km2: "Square kilometer", in2: "Square inch",
+    ft2: "Square foot", yd2: "Square yard", ha: "Hectare"
+  });
+
+  const SHAPE_TEXT_EN = Object.freeze({
+    square: {
+      title: "Square",
+      description: "Enter side length a. You can round the corners with radius r.",
+      svg: "Square showing side a and corner radius r",
+      params: { a: ["Side length a"], r: ["Corner radius r", "r = 0: square corners. r ≤ a/2."] }
+    },
+    rectangle: {
+      title: "Rectangle",
+      description: "Enter length a, width b, and corner radius r.",
+      svg: "Rectangle showing a, b and corner radius r",
+      params: { a: ["Length a"], b: ["Width b"], r: ["Corner radius r", "r = 0: square corners. r ≤ min(a,b)/2."] }
+    },
+    triangle: {
+      title: "Triangle",
+      description: "Enter base a and height h.",
+      svg: "Triangle showing base a and height h",
+      params: { a: ["Base a"], h: ["Height h"] }
+    },
+    parallelogram: {
+      title: "Parallelogram",
+      description: "Enter base a and height h.",
+      svg: "Parallelogram showing base a and height h",
+      params: { a: ["Base a"], h: ["Height h"] }
+    },
+    trapezoid: {
+      title: "Trapezoid",
+      description: "Enter both bases a and b, and the height h.",
+      svg: "Trapezoid showing bases a, b and height h",
+      params: { a: ["Longer base a"], b: ["Shorter base b"], h: ["Height h"] }
+    },
+    circle: {
+      title: "Circle",
+      description: "Enter radius r.",
+      svg: "Circle showing radius r",
+      params: { r: ["Radius r"] }
+    },
+    semicircle: {
+      title: "Semicircle",
+      description: "Enter radius r of the semicircle.",
+      svg: "Semicircle showing radius r",
+      params: { r: ["Radius r"] }
+    },
+    ellipse: {
+      title: "Ellipse",
+      description: "Enter horizontal axis length a and vertical axis length b.",
+      svg: "Ellipse showing axes a and b",
+      params: { a: ["Horizontal axis a"], b: ["Vertical axis b"] }
+    },
+    capsule: {
+      title: "Capsule shape",
+      description: "Enter total length a and width b. Condition: a ≥ b.",
+      svg: "Capsule shape showing total length a and width b",
+      params: { a: ["Total length a"], b: ["Width b", "a ≥ b to form two semicircular ends."] }
+    },
+    roundTube: {
+      title: "Round steel tube",
+      description: "Enter outer diameter D and wall thickness t.",
+      formula: "S = π ÷ 4 × (D² − d²), where d = D − 2t",
+      svg: "Round steel tube cross-section showing outer diameter D and wall thickness t",
+      params: { D: ["Outer diameter D"], t: ["Wall thickness t", "0 < t < D/2."] }
+    },
+    boxTube: {
+      title: "Rectangular steel tube",
+      description: "Enter outer dimensions a and b, wall thickness t, and outer corner radius r.",
+      formula: "S = outer area − inner area",
+      svg: "Rectangular steel tube cross-section showing a, b, t and r",
+      params: {
+        a: ["Outer width a"], b: ["Outer height b"],
+        t: ["Wall thickness t", "0 < t < min(a,b)/2."],
+        r: ["Outer corner radius r", "r = 0: square corners. r ≤ min(a,b)/2."]
+      }
+    }
+  });
+
+  const SVG_LABEL_VI = Object.freeze({
+    square: "Hình vuông minh hoạ cạnh a và bán kính bo góc r",
+    rectangle: "Hình chữ nhật minh hoạ a, b và bán kính bo góc r",
+    triangle: "Hình tam giác minh hoạ a và h",
+    parallelogram: "Hình bình hành minh hoạ a và h",
+    trapezoid: "Hình thang minh hoạ a, b và h",
+    circle: "Hình tròn minh hoạ bán kính r",
+    semicircle: "Hình bán nguyệt minh hoạ bán kính r",
+    ellipse: "Hình elip minh hoạ a và b",
+    capsule: "Hình hạt đậu minh hoạ a và b",
+    roundTube: "Ống thép tròn minh hoạ đường kính ngoài D và độ dày t",
+    boxTube: "Ống thép hộp minh hoạ a, b, t và r"
+  });
+
+  function currentUi() { return UI_TEXT[activeLanguage]; }
+  function localizedShape(shapeId) {
+    const original = SHAPES[shapeId] || SHAPES.rectangle;
+    if (activeLanguage !== "en") return original;
+    const en = SHAPE_TEXT_EN[shapeId];
+    if (!en) return original;
+    return {
+      ...original,
+      title: en.title,
+      description: en.description,
+      formula: en.formula || original.formula,
+      params: original.params.map((param) => ({
+        ...param,
+        label: (en.params[param.key] || [param.label])[0],
+        note: (en.params[param.key] || [param.label, param.note])[1] || ""
+      }))
+    };
+  }
+  function svgLabel(shapeId) {
+    return activeLanguage === "en" ? SHAPE_TEXT_EN[shapeId].svg : SVG_LABEL_VI[shapeId];
+  }
+  function localizedUnitLabel(unit, type) {
+    if (activeLanguage === "vi") return unit.label;
+    return (type === "length" ? LENGTH_LABEL_EN : AREA_LABEL_EN)[unit.id] || unit.label;
+  }
+
   function ensureStyles() {
     if (document.getElementById(STYLE_ID)) return;
     const style = document.createElement("style");
     style.id = STYLE_ID;
     style.textContent = `
       .ee-geo-page{max-width:1040px;margin:0 auto}
+      .ee-geo-heading{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:.7rem}
+      .ee-geo-heading-copy{min-width:0;flex:1 1 280px}
+      .ee-geo-heading-actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:.55rem;margin-left:auto}
+      .ee-geo-page .lang-switch{display:inline-flex;gap:4px;padding:3px;border:1px solid #BFDBFE;border-radius:14px;background:#fff;box-shadow:0 3px 9px rgba(59,130,246,.08);flex:0 0 auto}
+      .ee-geo-page .lang-switch button{min-height:38px;padding:0 13px;border:0;border-radius:10px;background:transparent;color:#475569;font-size:14px;font-weight:900;line-height:1.15;white-space:nowrap;cursor:pointer}
+      .ee-geo-page .lang-switch button[aria-pressed="true"]{color:#fff;background:linear-gradient(90deg,#3B82F6,#10B981);box-shadow:0 3px 9px rgba(16,185,129,.16)}
+      .ee-geo-page .lang-switch button:focus-visible{outline:3px solid rgba(59,130,246,.25);outline-offset:2px}
+      .ee-geo-page .ee-geo-input,.ee-geo-page .ee-geo-select,.ee-geo-page .ee-geo-result-value{box-sizing:border-box;min-width:0;max-width:100%}
       .ee-geo-shell{border:1px solid #C4B5FD;border-radius:24px;background:linear-gradient(145deg,#FFFDFE,#F8F5FF);box-shadow:0 10px 26px rgba(76,29,149,.08);padding:1rem}
       .ee-geo-top{display:grid;grid-template-columns:1.08fr .92fr;gap:1rem;align-items:start}
       .ee-geo-panel{border:1px solid #E9D5FF;border-radius:22px;background:rgba(255,255,255,.88);padding:.95rem}
@@ -197,6 +366,12 @@
         .ee-geo-convert-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
         .ee-geo-figure-box{min-height:240px}
       }
+      @media(max-width:620px){
+        .ee-geo-heading-copy{flex-basis:100%}
+        .ee-geo-heading-actions{width:100%;margin-left:0;justify-content:space-between}
+        .ee-geo-page .lang-switch{min-width:0}
+        .ee-geo-page .lang-switch button{padding:0 10px}
+      }
     `;
     document.head.appendChild(style);
   }
@@ -212,37 +387,47 @@
     return SHAPES[currentShape] || SHAPES.rectangle;
   }
 
-  function optionHtml(list, selectedId) {
-    return list.map((item) => `<option value="${item.id}"${item.id === selectedId ? " selected" : ""}>${item.label} (${item.symbol})</option>`).join("");
+  function optionHtml(list, selectedId, type) {
+    return list.map((item) => `<option value="${item.id}"${item.id === selectedId ? " selected" : ""}>${localizedUnitLabel(item, type)} (${item.symbol})</option>`).join("");
   }
 
-  function renderPage() {
+  function renderPage(preserved = null) {
     const host = activeContext.host;
-    const shape = currentShapeConfig();
+    const shape = localizedShape(currentShape);
+    const ui = currentUi();
+    const lengthId = lengthUnitById(preserved?.lengthUnitId || "mm").id;
+    const areaId = areaUnitById(preserved?.areaUnitId || "mm2").id;
+    const unitSymbol = lengthUnitById(lengthId).symbol;
     host.innerHTML = `
-      <div class="ee-geo-page">
-        <div class="section-heading">
-          <div><h1>📏 Tính diện tích</h1><p>Tính diện tích các hình học cơ bản và quy đổi đơn vị diện tích.</p></div>
-          <button id="ee-geo-back" class="back-btn" type="button">← Tools</button>
+      <div class="ee-geo-page" lang="${activeLanguage}">
+        <div class="section-heading ee-geo-heading">
+          <div class="ee-geo-heading-copy"><h1>${ui.heading}</h1><p>${ui.description}</p></div>
+          <div class="ee-geo-heading-actions">
+            <div class="lang-switch" role="group" aria-label="Language / Ngôn ngữ">
+              <button type="button" data-lang="vi" aria-pressed="${activeLanguage === "vi"}">Tiếng Việt</button>
+              <button type="button" data-lang="en" aria-pressed="${activeLanguage === "en"}">English</button>
+            </div>
+            <button id="ee-geo-back" class="back-btn" type="button">← Tools</button>
+          </div>
         </div>
-        <section class="ee-geo-shell" aria-label="Công cụ tính diện tích hình học cơ bản">
-          <div id="ee-geo-tabs" class="ee-geo-tabs">${renderShapeTabs()}</div>
+        <section class="ee-geo-shell" aria-label="${ui.toolLabel}">
+          <div id="ee-geo-tabs" class="ee-geo-tabs" role="group" aria-label="${ui.shapesLabel}">${renderShapeTabs()}</div>
           <div class="ee-geo-top">
             <div class="ee-geo-panel">
               <div class="ee-geo-unit-row">
                 <div>
-                  <label class="ee-geo-label" for="ee-geo-length-unit">Đơn vị tham số</label>
-                  <select id="ee-geo-length-unit" class="ee-geo-select">${optionHtml(LENGTH_UNITS, "mm")}</select>
+                  <label class="ee-geo-label" for="ee-geo-length-unit">${ui.dimensionUnit}</label>
+                  <select id="ee-geo-length-unit" class="ee-geo-select">${optionHtml(LENGTH_UNITS, lengthId, "length")}</select>
                 </div>
                 <div>
-                  <label class="ee-geo-label" for="ee-geo-area-unit">Đơn vị diện tích</label>
-                  <select id="ee-geo-area-unit" class="ee-geo-select">${optionHtml(AREA_UNITS, "mm2")}</select>
+                  <label class="ee-geo-label" for="ee-geo-area-unit">${ui.areaUnit}</label>
+                  <select id="ee-geo-area-unit" class="ee-geo-select">${optionHtml(AREA_UNITS, areaId, "area")}</select>
                 </div>
               </div>
-              <div id="ee-geo-params" class="ee-geo-params">${renderParamFields(shape, "mm")}</div>
+              <div id="ee-geo-params" class="ee-geo-params">${renderParamFields(shape, unitSymbol)}</div>
               <div class="ee-geo-help">
                 <div><strong>${shape.title}</strong> — ${shape.description}</div>
-                <div>Công thức: <strong>${shape.formula}</strong></div>
+                <div>${ui.formula}: <strong>${shape.formula}</strong></div>
               </div>
             </div>
             <div class="ee-geo-panel ee-geo-preview">
@@ -256,19 +441,27 @@
           </div>
           <div class="ee-geo-result">
             <div class="ee-geo-result-card">
-              <label class="ee-geo-result-label">Kết quả diện tích</label>
+              <label class="ee-geo-result-label">${ui.result}</label>
               <div id="ee-geo-result" class="ee-geo-result-value" aria-live="polite">—</div>
             </div>
             <div>
-              <label class="ee-geo-result-label" for="ee-geo-area-unit-2">Hiển thị theo</label>
-              <select id="ee-geo-area-unit-2" class="ee-geo-select">${optionHtml(AREA_UNITS, "mm2")}</select>
+              <label class="ee-geo-result-label" for="ee-geo-area-unit-2">${ui.displayIn}</label>
+              <select id="ee-geo-area-unit-2" class="ee-geo-select">${optionHtml(AREA_UNITS, areaId, "area")}</select>
             </div>
           </div>
           <div id="ee-geo-convert" class="ee-geo-convert-grid"></div>
-          <p class="ee-geo-note">Mặc định nhập theo <strong>mm</strong>. Dùng dấu chấm cho phần thập phân và dấu phẩy cho hàng nghìn, ví dụ 1,234.5.</p>
+          <p class="ee-geo-note">${ui.note}</p>
         </section>
       </div>`;
 
+    // Preserve raw input text through re-rendering without injecting user values into HTML.
+    if (preserved?.inputValues) {
+      for (const [key, raw] of Object.entries(preserved.inputValues)) {
+        const input = host.querySelector(`#ee-geo-param-${key}`);
+        if (input && typeof raw === "string") input.value = raw;
+      }
+    }
+    host.querySelector(".lang-switch")?.addEventListener("click", handleLanguageClick);
     host.querySelector("#ee-geo-back")?.addEventListener("click", () => {
       if (activeContext && typeof activeContext.back === "function") activeContext.back();
     });
@@ -283,9 +476,9 @@
 
   function renderShapeTabs() {
     return Object.entries(SHAPES).map(([id, shape]) => `
-      <button class="ee-geo-tab${id === currentShape ? " is-active" : ""}" type="button" data-shape="${id}">
+      <button class="ee-geo-tab${id === currentShape ? " is-active" : ""}" type="button" data-shape="${id}" aria-pressed="${id === currentShape}">
         <span class="ee-geo-tab-icon" aria-hidden="true">${shape.icon}</span>
-        <span>${shape.title}</span>
+        <span>${localizedShape(id).title}</span>
       </button>`).join("");
   }
 
@@ -301,6 +494,27 @@
       </div>`).join("");
   }
 
+  function handleLanguageClick(event) {
+    const button = event.target.closest("button[data-lang]");
+    if (!button) return;
+    const next = button.dataset.lang;
+    if (!UI_TEXT[next] || next === activeLanguage || !activeContext?.host) return;
+    const host = activeContext.host;
+    const inputValues = {};
+    host.querySelectorAll("input[data-param]").forEach((input) => {
+      if (Object.prototype.hasOwnProperty.call(currentShapeConfig().params.find((p) => p.key === input.dataset.param) || {}, "key")) {
+        inputValues[input.dataset.param] = input.value;
+      }
+    });
+    const preserved = {
+      lengthUnitId: host.querySelector("#ee-geo-length-unit")?.value,
+      areaUnitId: host.querySelector("#ee-geo-area-unit")?.value,
+      inputValues
+    };
+    activeLanguage = next;
+    renderPage(preserved);
+  }
+
   function handleShapeTabClick(event) {
     const button = event.target.closest("button[data-shape]");
     if (!button) return;
@@ -314,7 +528,7 @@
     const host = activeContext && activeContext.host;
     if (!host) return;
     const unit = lengthUnitById(host.querySelector("#ee-geo-length-unit")?.value || "mm");
-    host.querySelector("#ee-geo-params").innerHTML = renderParamFields(currentShapeConfig(), unit.symbol);
+    host.querySelector("#ee-geo-params").innerHTML = renderParamFields(localizedShape(currentShape), unit.symbol);
     updateResult();
   }
 
@@ -378,7 +592,7 @@
       const input = host?.querySelector(`#ee-geo-param-${param.key}`);
       const value = parseInput(input?.value ?? "");
       if (value === null) return { status: "empty" };
-      if (Number.isNaN(value) || value < 0 || (!param.allowZero && value === 0)) return { status: "invalid", message: "Giá trị chưa hợp lệ" };
+      if (Number.isNaN(value) || value < 0 || (!param.allowZero && value === 0)) return { status: "invalid", message: currentUi().invalid };
       values[param.key] = value * lengthUnit.factor;
     }
 
@@ -406,7 +620,7 @@
         if (values.r > Math.min(values.a, values.b) / 2) return "r ≤ min(a,b)/2";
         const innerA = values.a - 2 * values.t;
         const innerB = values.b - 2 * values.t;
-        if (innerA <= 0 || innerB <= 0) return "Kích thước trong phải > 0";
+        if (innerA <= 0 || innerB <= 0) return currentUi().innerDimensions;
         return "";
       }
       default:
@@ -505,7 +719,7 @@
       return;
     }
     if (paramRead.status === "invalid") {
-      resultEl.textContent = paramRead.message || "Nhập lại";
+      resultEl.textContent = paramRead.message || currentUi().retry;
       convertEl.innerHTML = renderConversionCards(null);
       return;
     }
@@ -548,7 +762,7 @@
       case "square": {
         const rx = Math.max(0, Math.min(48, Number(options.radiusPx) || 0));
         return `
-          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="Hình vuông minh hoạ cạnh a và bán kính bo góc r">
+          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="${svgLabel(shapeId)}">
             <rect class="shape-fill" x="90" y="40" width="120" height="120"${rx > 0 ? ` rx="${rx}" ry="${rx}"` : ""}></rect>
             ${arrowHeads(90, 180, 210, 180)}
             <text x="150" y="201" text-anchor="middle" font-size="22">a</text>
@@ -560,7 +774,7 @@
       case "rectangle": {
         const rx = Math.max(0, Math.min(48, Number(options.radiusPx) || 0));
         return `
-          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="Hình chữ nhật minh hoạ a, b và bán kính bo góc r">
+          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="${svgLabel(shapeId)}">
             <rect class="shape-fill" x="55" y="55" width="190" height="100"${rx > 0 ? ` rx="${rx}" ry="${rx}"` : ""}></rect>
             ${arrowHeads(55, 176, 245, 176)}
             <text x="150" y="198" text-anchor="middle" font-size="22">a</text>
@@ -571,7 +785,7 @@
       }
       case "triangle":
         return `
-          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="Hình tam giác minh hoạ a và h">
+          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="${svgLabel(shapeId)}">
             <polygon class="shape-fill" points="55,165 255,165 105,60"></polygon>
             <path class="guide" d="M105 60 V165"></path>
             ${arrowHeads(55, 186, 255, 186)}
@@ -581,7 +795,7 @@
           </svg>`;
       case "parallelogram":
         return `
-          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="Hình bình hành minh hoạ a và h">
+          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="${svgLabel(shapeId)}">
             <polygon class="shape-fill" points="90,50 240,50 200,160 50,160"></polygon>
             <path class="guide" d="M240 50 V160"></path>
             ${arrowHeads(50, 182, 200, 182)}
@@ -591,7 +805,7 @@
           </svg>`;
       case "trapezoid":
         return `
-          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="Hình thang minh hoạ a, b và h">
+          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="${svgLabel(shapeId)}">
             <polygon class="shape-fill" points="70,160 250,160 210,70 110,70"></polygon>
             <path class="guide" d="M210 70 V160"></path>
             ${arrowHeads(70, 184, 250, 184)}
@@ -603,7 +817,7 @@
           </svg>`;
       case "circle":
         return `
-          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="Hình tròn minh hoạ bán kính r">
+          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="${svgLabel(shapeId)}">
             <circle class="shape-fill" cx="160" cy="110" r="65"></circle>
             <path class="arrow" d="M160 110 L225 110"></path>
             <circle cx="160" cy="110" r="4" fill="#EC4899"></circle>
@@ -611,7 +825,7 @@
           </svg>`;
       case "semicircle":
         return `
-          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="Hình bán nguyệt minh hoạ bán kính r">
+          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="${svgLabel(shapeId)}">
             <path class="shape-fill" d="M70 150 A90 90 0 0 1 250 150 L70 150 Z"></path>
             <path class="guide" d="M160 150 V60"></path>
             <path class="arrow" d="M160 150 L230 150"></path>
@@ -620,7 +834,7 @@
           </svg>`;
       case "ellipse":
         return `
-          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="Hình elip minh hoạ a và b">
+          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="${svgLabel(shapeId)}">
             <ellipse class="shape-fill" cx="160" cy="110" rx="95" ry="58"></ellipse>
             ${arrowHeads(65, 183, 255, 183)}
             <text x="160" y="205" text-anchor="middle" font-size="22">a</text>
@@ -629,7 +843,7 @@
           </svg>`;
       case "capsule":
         return `
-          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="Hình hạt đậu minh hoạ a và b">
+          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="${svgLabel(shapeId)}">
             <rect class="shape-fill" x="55" y="72" width="210" height="76" rx="38" ry="38"></rect>
             ${arrowHeads(55, 176, 265, 176)}
             <text x="160" y="198" text-anchor="middle" font-size="22">a</text>
@@ -640,7 +854,7 @@
         const innerRatio = Math.max(0.1, Math.min(0.88, Number(options.innerRatio) || 0.55));
         const innerR = 58 * innerRatio;
         return `
-          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="Ống thép tròn minh hoạ đường kính ngoài D và độ dày t">
+          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="${svgLabel(shapeId)}">
             <circle class="shape-fill" cx="160" cy="110" r="58"></circle>
             <circle class="shape-fill-2" cx="160" cy="110" r="${innerR.toFixed(2)}"></circle>
             ${arrowHeads(102, 185, 218, 185)}
@@ -656,7 +870,7 @@
         const innerX = outerX + wall, innerY = outerY + wall, innerW = outerW - wall * 2, innerH = outerH - wall * 2;
         const innerR = Math.max(rx - wall, 0);
         return `
-          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="Ống thép hộp minh hoạ a, b, t và r">
+          <svg class="ee-geo-svg" viewBox="0 0 320 220" aria-label="${svgLabel(shapeId)}">
             <rect class="shape-fill" x="${outerX}" y="${outerY}" width="${outerW}" height="${outerH}"${rx > 0 ? ` rx="${rx}" ry="${rx}"` : ""}></rect>
             <rect class="shape-fill-2" x="${innerX}" y="${innerY}" width="${innerW}" height="${innerH}"${innerR > 0 ? ` rx="${innerR}" ry="${innerR}"` : ""}></rect>
             ${arrowHeads(55, 184, 260, 184)}
@@ -676,6 +890,7 @@
   function destroy() {
     activeContext = null;
     currentShape = "rectangle";
+    activeLanguage = "vi";
   }
 
   window.CLASS1_TOOL_MODULES = window.CLASS1_TOOL_MODULES || {};
