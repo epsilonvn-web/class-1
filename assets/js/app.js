@@ -2272,7 +2272,7 @@
           <div class="contact-hero-icon" aria-hidden="true">🐰</div>
           <div class="contact-hero-copy">
             <h2>Epsilon Edu - Tiến bộ từng ngày</h2>
-            <p>Epsilon Edu là không gian học tập và trải nghiệm dành cho học sinh. Ở Lớp 1, Cô Thỏ Hồng đồng hành cùng bé trong Toán, Tiếng Việt và Tiếng Anh; bên cạnh đó còn có Games, Tools và hệ sinh thái các lớp học được liên kết trong Epsilon Edu.</p>
+            <p>Epsilon Edu là không gian học tập và trải nghiệm dành cho học sinh. Ở Lớp 1, Cô Thỏ Hồng đồng hành cùng bé trong Toán, Tiếng Việt và Tiếng Anh; bên cạnh đó còn có Games, Tools, AI Lab và hệ sinh thái các lớp học được liên kết trong Epsilon Edu.</p>
           </div>
         </div>
 
@@ -2294,7 +2294,7 @@
         <div class="contact-experience-head">
           <div>
             <h3>🎈 Hoạt động trải nghiệm nổi bật</h3>
-            <p>Games và Tools không chỉ là phần phụ, mà là không gian để bé chơi, khám phá, tương tác và vận dụng điều đã học theo cách tự nhiên.</p>
+            <p>Games, Tools và AI Lab là không gian để bé chơi, khám phá, thực hành và làm quen với trí tuệ nhân tạo một cách trực quan, phù hợp lứa tuổi.</p>
           </div>
         </div>
 
@@ -2307,6 +2307,11 @@
           <button class="contact-experience-card tools" type="button" data-intro-home-tab="tools" aria-label="Khám phá Tools">
             <span class="contact-experience-icon" aria-hidden="true">🧰</span>
             <span class="contact-experience-copy"><strong>Tools - Công cụ khám phá</strong><span>Các công cụ trực quan giúp bé thử nghiệm, đo lường, tính toán và khám phá những ý tưởng học tập theo cách thực hành, nhanh và thú vị.</span></span>
+            <span class="contact-experience-go" aria-hidden="true">→</span>
+          </button>
+          <button class="contact-experience-card ai-lab" type="button" data-intro-home-tab="aiLab" aria-label="Khám phá AI Lab">
+            <span class="contact-experience-icon" aria-hidden="true">🤖</span>
+            <span class="contact-experience-copy"><strong>AI Lab - Khám phá AI</strong><span>Bé tìm hiểu AI hoạt động ra sao qua các thí nghiệm tương tác: dạy máy nhận hình, quan sát cách máy học và sử dụng AI an toàn.</span></span>
             <span class="contact-experience-go" aria-hidden="true">→</span>
           </button>
         </div>
