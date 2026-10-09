@@ -181,6 +181,41 @@
     })
   ]);
 
+  // English copy is authored locally, never machine-translated at runtime.
+  const EN_PROGRAMS = Object.freeze({"morning":{"title":"A cheerful morning at school","focus":"Speak clearly and smile","guide":"Smile as you greet your class. Pause gently and look at your friends.","segments":[{"title":"Welcome","text":"Hello, teacher and friends! I am happy to see you this lovely morning. Let us begin our day with a big smile!","tip":"Smile and speak clearly."},{"title":"Our school day","text":"Today we will learn new things, explore together, and help one another. Every answer is a brave try. Please raise your hand and share your ideas!","tip":"Pause after “Today”."},{"title":"Warm up","text":"Before we start, let us warm up! Sit up straight, take a deep breath, and stretch your arms high. Are you ready?","tip":"Stretch with your friends."},{"title":"Invite the teacher","text":"We are ready to learn now. Dear teacher, please begin today’s lesson. Everyone, let us give our teacher a big round of applause!","tip":"Use a polite and respectful voice."},{"title":"Next activity","text":"We have finished our first activity. Now it is time to try something new. Please get your things ready and keep your desks tidy.","tip":"Emphasize “something new”."},{"title":"Goodbye","text":"Our class is coming to an end. Thank you, teacher and friends, for a wonderful time together. Have a happy day of learning!","tip":"Finish slowly with a smile."}]},"birthday":{"title":"A friend’s birthday","focus":"A happy, friendly voice","guide":"Make the birthday child feel special. Invite everyone to clap and share kind wishes.","segments":[{"title":"Welcome, everyone","text":"Hello, everyone! Today is a very special day. Can you guess why? Yes! We are celebrating our wonderful friend’s birthday!","tip":"Pause before the answer."},{"title":"Welcome our friend","text":"Here comes our special birthday star! Please give our friend a big hand. We wish you happiness, good health, and many exciting adventures!","tip":"Look toward your friend."},{"title":"Blow out candles","text":"The birthday cake is ready. Close your eyes and make a lovely wish. Everyone, count with me: three, two, one! Blow out the candles!","tip":"Count slowly together."},{"title":"Time to sing","text":"Now it is time for a birthday song! Everyone, please sing along and send our friend your happiest wishes.","tip":"Clap along to the rhythm."},{"title":"Give the gifts","text":"We have some lovely gifts for our friend. Every gift carries a warm wish. Please come forward one by one and smile for a photo!","tip":"Speak warmly and gently."},{"title":"End the party","text":"Thank you for making this birthday so special. We hope our friend keeps smiling all year long. Now let us enjoy the cake and have fun together!","tip":"End with a cheerful invitation."}]},"music":{"title":"Our music show","focus":"Introduce acts with excitement","guide":"Help your audience look forward to every performance. Say each performer’s name clearly.","segments":[{"title":"Opening","text":"Dear teachers and friends, welcome to our music show! Today we will share songs, dances, and lots of happy smiles. Let the show begin!","tip":"Start clearly and politely."},{"title":"First performance","text":"Our first performance will be full of joy! Please welcome our young performers with a huge round of applause. Enjoy the show!","tip":"Sound excited as you invite applause."},{"title":"Thank you and next act","text":"What a wonderful performance! Thank you to our talented friends. Next, we have another exciting act waiting for you!","tip":"Pause before “Next”."},{"title":"Second performance","text":"Our next song is soft and beautiful. Please sit comfortably, listen carefully, and give our performer a warm welcome!","tip":"Slow down to build excitement."},{"title":"Audience time","text":"Hello, everyone! Are you enjoying the show? If you are happy, raise your hands and clap together. Thank you for cheering us on!","tip":"Let the audience answer."},{"title":"Closing","text":"Our music show is coming to an end. Thank you to our teachers, performers, and lovely audience. Goodbye, and see you again soon!","tip":"Speak slowly at the end."}]},"books":{"title":"Book festival","focus":"Tell stories with wonder","guide":"Use your voice to open the door to exciting worlds inside books.","segments":[{"title":"Welcome to the festival","text":"Hello, teachers and friends! Welcome to our book festival. Every book is like a little door to an amazing new world.","tip":"Stress “little door”."},{"title":"Explore stories","text":"Some books take us deep into the ocean. Other books bring us to the stars. Every story has something wonderful to discover!","tip":"Give each idea a different feeling."},{"title":"Reading corners","text":"On the left, we have picture books and fairy tales. On the right, we have books about nature and science. Please choose a book and enjoy reading!","tip":"Look left and right as you speak."},{"title":"Invite a reader","text":"Now let us hear from a friend about a favorite book. Please come up and tell us what makes your book special!","tip":"Pause and make room for the speaker."},{"title":"Little challenge","text":"Before we finish, here is a fun challenge. Remember your favorite character from today. Can you tell a friend why you like that character?","tip":"Make it sound like a secret mission."},{"title":"Goodbye","text":"Our book festival is ending, but the stories can stay with us. Read a little every day and let your imagination fly. See you next time!","tip":"End gently and warmly."}]},"art":{"title":"Our art exhibition","focus":"Describe with imagination","guide":"Help visitors notice colors and shapes. Every artist has a different way to create.","segments":[{"title":"Welcome to the gallery","text":"Welcome to our young artists’ exhibition! Each picture has its own colors, ideas, and story. Let us look carefully and enjoy the art.","tip":"Pause to create curiosity."},{"title":"Look closely","text":"Look at the colors, lines, and tiny details. Some artists love bright colors. Others use soft colors. Every picture is special in its own way!","tip":"Emphasize “every picture”."},{"title":"Our first picture","text":"Here is a colorful picture. What do you think is happening? Look closely and imagine the story the artist wants to share.","tip":"Let everyone look at the picture."},{"title":"Meet the artist","text":"Please welcome our young artist! Can you tell us how you got your idea? What is your favorite part of your picture?","tip":"Ask kindly and slowly."},{"title":"Celebrate creativity","text":"Thank you for sharing your artwork! A great picture does not have to look exactly like real life. Our imagination makes every creation special.","tip":"Sound encouraging."},{"title":"Closing the gallery","text":"Our art exhibition is ending. Thank you to our young artists and everyone who visited today. We hope to see you at our next exhibition!","tip":"Finish with a warm invitation."}]},"animals":{"title":"Exploring the animal world","focus":"Tell exciting stories","guide":"You are guiding a tour through nature. Share amazing animal facts and ask curious questions.","segments":[{"title":"Welcome, explorers","text":"Hello, young explorers! Today we are visiting the animal world. We will meet animals that fly, swim, run, and sleep in surprising ways.","tip":"Sound curious and mysterious."},{"title":"The grasslands","text":"Our first stop is the grassland. Look at the strong lions, tall giraffes, and striped zebras! Every animal has a special way to survive.","tip":"Say animal names clearly."},{"title":"The ocean","text":"Now let us dive into the blue ocean. Dolphins swim and play, sea turtles glide along, and colorful fish swim around coral reefs. What can you see?","tip":"Use a gentle ocean voice."},{"title":"The forest","text":"Let us walk quietly through the forest. Can you hear the birds? A squirrel may be hiding in a tree. There are many little sounds to discover.","tip":"Lower your voice for the question."},{"title":"Question for everyone","text":"Which animal would you choose as a friend? Think for a moment and tell someone next to you why you picked it!","tip":"Pause for answers."},{"title":"End our trip","text":"Our animal adventure is ending. Every animal is important to nature. Let us love animals and protect their homes. Goodbye, explorers!","tip":"End with a warm, confident voice."}]},"sports":{"title":"Sports day","focus":"Bring energy and rhythm","guide":"Cheer loudly but speak clearly. Slow down to explain the rules and safety.","segments":[{"title":"Opening ceremony","text":"Hello, young athletes! Welcome to sports day! We will run, play, laugh, and work together. Let the fun begin!","tip":"Be energetic without shouting."},{"title":"Play fairly","text":"Before we play, remember this: always try your best and be kind. Winning is fun, but being brave and respectful matters even more.","tip":"Slow down for the key message."},{"title":"First event","text":"Our first event is the running race. Runners, please take your places, check your shoes, and listen for the signal. Audience, are you ready?","tip":"Emphasize the event name."},{"title":"Cheer together","text":"Go, go, go! Our friends are running so well! Everyone deserves a big clap for trying hard and crossing the finish line.","tip":"Cheer with a steady rhythm."},{"title":"Congratulations","text":"Well done, everyone! We saw fast running, big smiles, and great teamwork. Your courage and effort made today special.","tip":"Stress “great teamwork”."},{"title":"Closing ceremony","text":"Sports day has come to an end. Thank you, athletes and audience, for a wonderful day. Stay healthy and keep moving every day!","tip":"Finish with a strong, happy voice."}]},"green":{"title":"Our green planet day","focus":"Speak with care and hope","guide":"Show how small actions, like saving water and planting trees, can help nature.","segments":[{"title":"Welcome to green day","text":"Hello, friends! Welcome to Green Day! Today we will discover small ways to keep our school, our homes, and our planet clean and beautiful.","tip":"Emphasize “small ways”."},{"title":"A little piece of litter","text":"One tiny piece of paper on the ground may look small. But if everyone leaves litter behind, our playground becomes dirty. Let us pick it up!","tip":"End in an encouraging voice."},{"title":"Save water","text":"Water is precious. Turn off the tap while brushing your teeth. Give plants the water they need, but do not waste it. Every drop matters!","tip":"Pause after each example."},{"title":"Care for trees","text":"A tree needs time to grow. We can water it, protect its branches, and take care of the flowers. One day, its shade will keep us cool.","tip":"Speak slowly and warmly."},{"title":"Green challenge","text":"Choose one green action for today! You could pick up litter, switch off an unused light, or water a little plant. What will you do?","tip":"Wait for the audience to think."},{"title":"Our promise","text":"Let us make a simple promise: do one good thing for nature every day. Many small actions can make a big difference. Thank you, everyone!","tip":"Emphasize “big difference”."}]},"tet":{"title":"Happy Lunar New Year","focus":"Warm and polite wishes","guide":"Speak warmly to your family. Slow down for wishes and brighten your voice for games.","segments":[{"title":"Happy new year","text":"Dear grandparents, parents, and family, happy Lunar New Year! A new year brings family time, kind wishes, and many smiles. I wish everyone good health and joy!","tip":"Speak politely and clearly."},{"title":"The New Year holiday","text":"During Tet, we see bright flowers and share special meals. We visit our loved ones and spend time together. These moments make our family happy.","tip":"Use a warm family voice."},{"title":"Share your wishes","text":"Now it is time to share our New Year wishes. Let us wish our grandparents and parents good health and happiness. Thank you for always loving us!","tip":"Look at the people you wish well."},{"title":"Family game","text":"After those lovely wishes, let us play a fun family game! Please make your teams and get ready to laugh and cheer together!","tip":"Use a playful voice."},{"title":"Family photo","text":"Before we finish, let us take a family photo. Stand close together, look at the camera, and smile! Ready? One, two, three!","tip":"Count clearly before the photo."},{"title":"Happy ending","text":"Thank you, everyone, for this wonderful time together. May the new year bring love, health, and many happy memories. Happy New Year!","tip":"Make the last wish bright and cheerful."}]},"teachers":{"title":"A thank-you to teachers","focus":"Speak sincerely and politely","guide":"Look at your teachers and speak from the heart. Say thank you clearly.","segments":[{"title":"Welcome","text":"Dear teachers and friends, hello! Today we are happy to say thank you to our wonderful teachers.","tip":"Speak slowly and politely."},{"title":"Our classroom","text":"Every day at school, we learn something new. Some lessons are easy, and some are hard. Our teachers help us understand, little by little.","tip":"Emphasize “little by little”."},{"title":"Thank you","text":"Thank you, teachers, for your patience, kind words, and encouraging smiles. You help us keep trying and make school a happy place.","tip":"Pause after “Thank you”."},{"title":"Present flowers","text":"Now, please welcome our friends to present these beautiful flowers to our teachers. They are a small gift to show our great thanks.","tip":"Step back after inviting the students."},{"title":"Our wishes","text":"We wish our teachers good health, happiness, and many wonderful school days. We hope you smile as much as we do!","tip":"Keep your voice soft and warm."},{"title":"Closing","text":"Once again, thank you to all our teachers. Our little program is coming to an end. Have a lovely day, everyone!","tip":"Bow gently if you wish."}]},"friend":{"title":"Introducing a friend","focus":"Speak like a friendly chat","guide":"Share kind, true details about a friend in a natural voice.","segments":[{"title":"Hello, everyone","text":"Hello, everyone! Today I want to introduce a very special friend. There is so much we can learn about each other!","tip":"Speak naturally."},{"title":"A lovely smile","text":"The first thing I notice about my friend is a bright smile. My friend likes to greet people and help everyone feel welcome.","tip":"Use a real detail about your own friend."},{"title":"A fun hobby","text":"My friend has a hobby that is very interesting. When doing this favorite activity, my friend feels happy and excited. What do you love to do?","tip":"Emphasize what makes your friend special."},{"title":"A kind action","text":"One day, I needed some help and my friend was there for me. Even a small act of kindness can mean a lot. I still remember it.","tip":"Speak slowly and sincerely."},{"title":"Say hello","text":"Now I would like to invite my friend to say hello. Please welcome my friend with a big round of applause!","tip":"Leave room for your friend to speak."},{"title":"Thank you","text":"Thank you, everyone, for listening. Let us notice the good in our friends and make more happy memories together. Goodbye!","tip":"End in a friendly voice."}]},"talent":{"title":"Young MC talent show","focus":"Use all your MC skills","guide":"Greet, introduce, invite, and close confidently. Remember to smile and make eye contact.","segments":[{"title":"Opening","text":"Hello, everyone! Welcome to our Young MC Talent Show! Today we have stories, music, and fun surprises for our audience.","tip":"Begin confidently, but not too fast."},{"title":"Today’s program","text":"Our show has three parts. First, a short story. Next, a fun performance. Finally, a surprise question for everyone. Are you ready?","tip":"Make all three parts clear."},{"title":"Next performance","text":"Our story has come to an end, but a new surprise is waiting! Please look toward the stage and get ready for our next performance.","tip":"Pause before “but”."},{"title":"Talk to the audience","text":"Hello, audience! Are you still full of energy? Which part of the show did you enjoy the most? Raise your hand and tell us!","tip":"Wait for answers."},{"title":"Thank everyone","text":"Thank you for listening, cheering, and joining us. A happy show needs a wonderful audience like you. We are glad you are here!","tip":"Sound sincere."},{"title":"Closing","text":"Our Young MC Talent Show is ending. Keep speaking bravely, listening kindly, and sharing your smiles with others. Goodbye, and see you soon!","tip":"Finish slowly and look at the audience."}]}});
+  let language = "vi";
+  const isEn = () => language === "en";
+  const tr = (vi, en) => isEn() ? en : vi;
+  const displayProgram = (p) => {
+    if (!p || !isEn() || !EN_PROGRAMS[p.id]) return p;
+    const e = EN_PROGRAMS[p.id];
+    return { ...p, ...e, segments: p.segments.map((seg, i) => ({ ...seg,
+      title: e.segments[i]?.title || seg.title,
+      text: e.segments[i]?.text || seg.text,
+      tip: e.segments[i]?.tip || seg.tip,
+      cue: "😊 Smile · 👀 Eye contact" })) };
+  };
+  function languageControls() {
+    return `<div class="ee-mc-header-actions"><div class="ee-mc-languages" role="group" aria-label="Language"><button type="button" data-mc-lang="vi" class="${!isEn() ? "on" : ""}" aria-pressed="${!isEn()}">Tiếng Việt</button><button type="button" data-mc-lang="en" class="${isEn() ? "on" : ""}" aria-pressed="${isEn()}">English</button></div><button type="button" class="ee-mc-btn primary" data-mc-exit>← Games</button></div>`;
+  }
+  function bindLanguages() {
+    const host = activeContext && activeContext.host;
+    if (!host) return;
+    host.querySelectorAll("[data-mc-lang]").forEach((button) => button.addEventListener("click", () => {
+      const next = button.dataset.mcLang;
+      if (!/^(vi|en)$/.test(next) || next === language) return;
+      stopEverything(); clearRecording(); language = next;
+      const program = programById(currentProgramId);
+      if (!program) renderRegistry();
+      else if (stageMode) renderStage(program);
+      else if (host.querySelector(".ee-mc-prac")) renderPractice(program);
+      else if (host.querySelector(".ee-mc-finish")) renderFinish(program, false);
+      else renderProgramIntro(program);
+    }));
+    host.querySelector("[data-mc-exit]")?.addEventListener("click", () => {
+      stopEverything(); clearRecording(); activeContext?.back?.();
+    });
+  }
   /* =====================================================================
      Giao diện mới: tập từng câu, chữ to, cô đọc mẫu, bé thu giọng và nghe lại.
      ===================================================================== */
@@ -191,6 +226,7 @@
   let recordUrl = "";
   let recordStream = null;
   let recording = false;
+  let playbackAudio = null;
 
   const doneSet = (() => { try { return new Set(JSON.parse(window.localStorage.getItem(DONE_KEY) || "[]")); } catch (_) { return new Set(); } })();
   function markDone(id) {
@@ -222,6 +258,7 @@
     recordUrl = "";
   }
   function stopRecording() {
+    if (playbackAudio) { try { playbackAudio.pause(); playbackAudio.src = ""; } catch (_) {} playbackAudio = null; }
     if (mediaRecorder && mediaRecorder.state !== "inactive") { try { mediaRecorder.stop(); } catch (_) {} }
     if (recordStream) { recordStream.getTracks().forEach((t) => { try { t.stop(); } catch (_) {} }); }
     recordStream = null;
@@ -233,12 +270,12 @@
     try {
       recordStream = await navigator.mediaDevices.getUserMedia({ audio: true });
     } catch (_) {
-      setVoiceStatus("Chưa mở được micro. Con nhờ người lớn cho phép dùng micro nhé.");
+      setVoiceStatus(tr("Chưa mở được micro. Con nhờ người lớn cho phép dùng micro nhé.", "Microphone unavailable. Please ask an adult for permission."));
       return;
     }
     clearRecording();
     recordChunks = [];
-    try { mediaRecorder = new MediaRecorder(recordStream); } catch (_) { setVoiceStatus("Máy này chưa thu được âm thanh."); stopRecording(); return; }
+    try { mediaRecorder = new MediaRecorder(recordStream); } catch (_) { setVoiceStatus(tr("Máy này chưa thu được âm thanh.", "Recording is not supported on this device.")); stopRecording(); return; }
     mediaRecorder.ondataavailable = (e) => { if (e.data && e.data.size) recordChunks.push(e.data); };
     mediaRecorder.onstop = () => {
       if (recordChunks.length) recordUrl = URL.createObjectURL(new Blob(recordChunks, { type: mediaRecorder.mimeType || "audio/webm" }));
@@ -254,7 +291,7 @@
   function playRecording() {
     if (!recordUrl) return;
     stopNarration();
-    try { const a = new Audio(recordUrl); a.play().catch(() => {}); } catch (_) {}
+    try { if (playbackAudio) { playbackAudio.pause(); playbackAudio.src = ""; } playbackAudio = new Audio(recordUrl); playbackAudio.play().catch(() => {}); } catch (_) {}
   }
 
   /* ---------- Giọng đọc mẫu ---------- */
@@ -263,7 +300,7 @@
     speechUtterance = null;
     fallbackQueue = [];
     fallbackQueueIndex = 0;
-    try { if ("speechSynthesis" in window) window.speechSynthesis.cancel(); } catch (_) {}
+
     try {
       if (narrationAudio) {
         narrationAudio.pause();
@@ -285,16 +322,9 @@
     return String(value || "").replace(/[\p{Extended_Pictographic}\u{FE0F}\u{200D}]/gu, " ").replace(/\s+/g, " ").trim();
   }
 
-  /* Ưu tiên giọng Ban Mai, nếu không có thì dùng bất kỳ giọng tiếng Việt nào trong máy */
-  function deviceVoice() {
-    if (!("speechSynthesis" in window) || typeof window.speechSynthesis.getVoices !== "function") return null;
-    const voices = window.speechSynthesis.getVoices() || [];
-    return voices.find((v) => /ban\s*mai/i.test(String(v.name || ""))) || voices.find((v) => /^vi(?:[-_]|$)/i.test(String(v.lang || ""))) || null;
-  }
-  if ("speechSynthesis" in window) { try { window.speechSynthesis.getVoices(); } catch (_) {} }
-
+  // Google TTS only. Browser speechSynthesis is not used.
   function ttsFallbackUrl(text) {
-    return `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent(text)}`;
+    return `https://translate.google.com/translate_tts?ie=UTF-8&tl=${isEn() ? "en" : "vi"}&client=tw-ob&q=${encodeURIComponent(text)}`;
   }
 
   function setVoiceStatus(message) {
@@ -321,32 +351,16 @@
     });
   }
 
-  /* speak(text, onEnd): onEnd được gọi khi cô đọc xong */
+  let lastSpeechKey = "", lastSpeechAt = 0;
   function speak(text, onEnd) {
     const clean = cleanSpeechText(text);
-    if (!clean) return;
+    if (!clean || !narrationAudio) return;
+    const key = language + ":" + clean;
+    if (key === lastSpeechKey && Date.now() - lastSpeechAt < 280) return;
+    lastSpeechKey = key; lastSpeechAt = Date.now();
     stopNarration();
     const nonce = audioNonce;
     const done = () => { if (nonce === audioNonce && typeof onEnd === "function") onEnd(); };
-    const voice = deviceVoice();
-    if (voice && typeof window.SpeechSynthesisUtterance === "function") {
-      const chunks = splitSpeechChunks(clean);
-      let i = 0;
-      const next = () => {
-        if (nonce !== audioNonce) return;
-        if (i >= chunks.length) { done(); return; }
-        try {
-          const u = new window.SpeechSynthesisUtterance(chunks[i++]);
-          u.lang = voice.lang || "vi-VN"; u.voice = voice; u.rate = 0.92; u.pitch = 1.06;
-          u.onend = next;
-          u.onerror = (e) => { if (nonce === audioNonce && e.error !== "interrupted" && e.error !== "canceled") speakFallback(clean, nonce, done); };
-          speechUtterance = u;
-          window.speechSynthesis.speak(u);
-        } catch (_) { speakFallback(clean, nonce, done); }
-      };
-      next();
-      return;
-    }
     speakFallback(clean, nonce, done);
   }
 
@@ -362,7 +376,7 @@
     if (!narrationAudio || nonce !== audioNonce) return;
     const chunk = fallbackQueue[fallbackQueueIndex];
     if (!chunk) return;
-    const fail = () => { if (nonce === audioNonce) setVoiceStatus("Chưa phát được giọng đọc. Con nhờ người lớn kiểm tra loa và mạng nhé."); };
+    const fail = () => { if (nonce === audioNonce) setVoiceStatus(tr("Chưa phát được giọng đọc. Con nhờ người lớn kiểm tra loa và mạng nhé.", "Audio is unavailable. Please ask an adult to check your connection.")); };
     try {
       narrationAudio.src = ttsFallbackUrl(chunk);
       narrationAudio.playbackRate = 0.96;
@@ -381,10 +395,10 @@
   function setBanner(program = null, segmentItem = null) {
     const setSubBanner = activeContext && activeContext.hooks && activeContext.hooks.setSubBanner;
     if (typeof setSubBanner !== "function") return;
-    const items = [{ level: 2, title: `${GAME_NUMBER}. Tập làm MC`, action: program ? renderRegistry : null }];
+    const items = [{ level: 2, title: `${GAME_NUMBER}. ${tr("Tập làm MC", "Be a Young MC")}`, action: program ? renderRegistry : null }];
     if (program) {
       const index = Math.max(0, PROGRAMS.indexOf(program));
-      items.push({ level: 3, title: `${GAME_NUMBER}.${index + 1} ${program.title}`, action: segmentItem ? () => renderProgramIntro(program) : null });
+      items.push({ level: 3, title: `${GAME_NUMBER}.${index + 1} ${displayProgram(program).title}`, action: segmentItem ? () => renderProgramIntro(program) : null });
     }
     if (program && segmentItem) {
       items.push({ level: 4, title: `${GAME_NUMBER}.${PROGRAMS.indexOf(program) + 1}.${currentSegmentIndex + 1} ${segmentItem.title}` });
@@ -409,6 +423,11 @@
       .ee-mc-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.8rem;flex-wrap:wrap}
       .ee-mc-head h1{margin:0;font-size:clamp(26px,3vw,36px);line-height:1.15;color:#5B216E;font-weight:800}
       .ee-mc-head p{margin:.2rem 0 0;font-size:17px;font-weight:600;color:#667085}
+      .ee-mc-header-actions{display:flex;justify-content:flex-end;align-items:center;gap:.8rem;flex-wrap:wrap;margin:0 0 1rem}
+      .ee-mc-languages{display:inline-flex;align-items:center;gap:0;padding:4px;border:2px solid #BFDBFE;border-radius:18px;background:#fff;box-shadow:0 6px 16px rgba(59,130,246,.12)}
+      .ee-mc-languages button{min-height:40px;border:0;background:transparent;padding:.45rem 1rem;border-radius:14px;font-size:17px;font-weight:800;color:#1E3A8A;cursor:pointer;white-space:nowrap;font-family:inherit}
+      .ee-mc-languages button.on{background:linear-gradient(90deg,#60A5FA,#14B8A6);color:#fff;box-shadow:0 4px 10px rgba(20,184,166,.22)}
+      .ee-mc-languages button:focus-visible{outline:3px solid #93C5FD;outline-offset:2px}
       .ee-mc-btn{min-height:52px;border:2px solid #E9D5FF;border-radius:16px;background:#fff;padding:.4rem 1rem;font-size:18px;font-weight:700;color:#5B216E;cursor:pointer}
       .ee-mc-btn:hover:not(:disabled){border-color:#C4B5FD}
       .ee-mc-btn.primary{border:0;color:#fff;background:linear-gradient(90deg,#EC4899,#8B5CF6);box-shadow:0 6px 16px rgba(139,92,246,.22)}
@@ -510,18 +529,19 @@
     const host = activeContext && activeContext.host;
     if (!host) return;
     host.innerHTML = `
-      <div class="ee-mc-page">
-        <div class="ee-mc-head"><div><h1>🎤 Tập làm MC</h1><p>12 chương trình • ${doneSet.size} đã hoàn thành</p></div></div>
+      <div class="ee-mc-page">${languageControls()}
+        <div class="ee-mc-head"><div><h1>🎤 ${tr("Tập làm MC", "Be a Young MC")}</h1><p>${tr("12 chương trình", "12 programs")} • ${doneSet.size} ${tr("đã hoàn thành", "completed")}</p></div></div>
         <div class="ee-mc-grid">
           ${PROGRAMS.map((program, index) => `
             <button class="ee-mc-card ee-mc-tone-${esc(program.tone)}" data-mc-program="${esc(program.id)}" type="button">
-              ${doneSet.has(program.id) ? `<span class="done">✓ Đã dẫn</span>` : ""}
+              ${doneSet.has(program.id) ? `<span class="done">${tr("✓ Đã dẫn", "✓ Completed")}</span>` : ""}
               <span class="icon" aria-hidden="true">${program.icon}</span>
-              <h2>${index + 1}. ${esc(program.title)}</h2>
-              <p>${esc(program.focus)}</p>
+              <h2>${index + 1}. ${esc(displayProgram(program).title)}</h2>
+              <p>${esc(displayProgram(program).focus)}</p>
             </button>`).join("")}
         </div>
       </div>`;
+    bindLanguages();
     host.querySelectorAll("[data-mc-program]").forEach((button) => {
       button.addEventListener("click", () => {
         const program = programById(button.dataset.mcProgram);
@@ -539,27 +559,28 @@
     setBanner(program);
     const host = activeContext && activeContext.host;
     if (!host) return;
-    const firstSentence = sentencesOf(program.guide)[0];
+    const firstSentence = sentencesOf(displayProgram(program).guide)[0];
     host.innerHTML = `
-      <div class="ee-mc-page">
-        <div class="ee-mc-head"><div><h1>${program.icon} ${esc(program.title)}</h1><p>${program.segments.length} phần dẫn</p></div><button id="ee-mc-back" class="ee-mc-btn" type="button">← 12 chương trình</button></div>
+      <div class="ee-mc-page">${languageControls()}
+        <div class="ee-mc-head"><div><h1>${program.icon} ${esc(displayProgram(program).title)}</h1><p>${displayProgram(program).segments.length} ${tr("phần dẫn", "segments")}</p></div><button id="ee-mc-back" class="ee-mc-btn" type="button">← ${tr("12 chương trình", "12 programs")}</button></div>
         <section class="ee-mc-intro">
           <div class="ee-mc-preview"><div class="ee-mc-curtain left"></div><div class="ee-mc-curtain right"></div><div class="core" aria-hidden="true">🎤🐰</div></div>
           <div class="ee-mc-guide">
-            <div class="ee-mc-bubble"><span class="ico" aria-hidden="true">🐰</span><span class="txt">${esc(firstSentence)}</span><button id="ee-mc-listen-guide" class="ee-mc-say" type="button" aria-label="Nghe Cô Thỏ hướng dẫn">🔊</button></div>
-            <div class="ee-mc-skills"><span class="ee-mc-skill">😊 Nụ cười</span><span class="ee-mc-skill">🔊 Giọng rõ</span><span class="ee-mc-skill">⏸ Nghỉ đúng chỗ</span><span class="ee-mc-skill">👀 Nhìn khán giả</span><span class="ee-mc-skill">🙌 Tự tin</span></div>
-            <div class="ee-mc-actions"><button id="ee-mc-start" class="ee-mc-btn primary" type="button">🎤 Tập từng câu</button><button id="ee-mc-stage-now" class="ee-mc-btn teal" type="button">🎭 Lên sân khấu</button></div>
+            <div class="ee-mc-bubble"><span class="ico" aria-hidden="true">🐰</span><span class="txt">${esc(firstSentence)}</span><button id="ee-mc-listen-guide" class="ee-mc-say" type="button" aria-label="${tr("Nghe Cô Thỏ hướng dẫn", "Listen to Bunny’s instructions")}">🔊</button></div>
+            <div class="ee-mc-skills"><span class="ee-mc-skill">😊 ${tr("Nụ cười", "Smile")}</span><span class="ee-mc-skill">🔊 ${tr("Giọng rõ", "Clear voice")}</span><span class="ee-mc-skill">⏸ ${tr("Nghỉ đúng chỗ", "Pause")}</span><span class="ee-mc-skill">👀 ${tr("Nhìn khán giả", "Eye contact")}</span><span class="ee-mc-skill">🙌 ${tr("Tự tin", "Confidence")}</span></div>
+            <div class="ee-mc-actions"><button id="ee-mc-start" class="ee-mc-btn primary" type="button">🎤 ${tr("Tập từng câu", "Practice sentences")}</button><button id="ee-mc-stage-now" class="ee-mc-btn teal" type="button">🎭 ${tr("Lên sân khấu", "On stage")}</button></div>
             <p id="ee-mc-voice-status" class="ee-mc-voice" hidden></p>
           </div>
         </section>
-        <div class="ee-mc-parts">${program.segments.map((item, i) => `<button class="ee-mc-part" data-mc-segment="${i}" type="button"><span class="n">${i + 1}</span><span class="e" aria-hidden="true">${esc(cuesOf(item.cue)[0] || "").split(" ")[0]}</span><strong>${esc(item.title)}</strong></button>`).join("")}</div>
+        <div class="ee-mc-parts">${displayProgram(program).segments.map((item, i) => `<button class="ee-mc-part" data-mc-segment="${i}" type="button"><span class="n">${i + 1}</span><span class="e" aria-hidden="true">${esc(cuesOf(item.cue)[0] || "").split(" ")[0]}</span><strong>${esc(item.title)}</strong></button>`).join("")}</div>
       </div>`;
+    bindLanguages();
     host.querySelector("#ee-mc-back")?.addEventListener("click", renderRegistry);
-    host.querySelector("#ee-mc-listen-guide")?.addEventListener("click", () => speak(program.guide));
+    host.querySelector("#ee-mc-listen-guide")?.addEventListener("click", () => speak(displayProgram(program).guide));
     host.querySelector("#ee-mc-start")?.addEventListener("click", () => { currentSegmentIndex = 0; sentenceIndex = 0; renderPractice(program); });
     host.querySelector("#ee-mc-stage-now")?.addEventListener("click", () => { currentSegmentIndex = 0; renderStage(program); });
     host.querySelectorAll("[data-mc-segment]").forEach((button) => button.addEventListener("click", () => {
-      currentSegmentIndex = Math.max(0, Math.min(program.segments.length - 1, Number(button.dataset.mcSegment) || 0));
+      currentSegmentIndex = Math.max(0, Math.min(displayProgram(program).segments.length - 1, Number(button.dataset.mcSegment) || 0));
       sentenceIndex = 0;
       renderPractice(program);
     }));
@@ -569,43 +590,44 @@
   function renderPractice(program) {
     stopEverything();
     stageMode = false;
-    const item = program.segments[currentSegmentIndex] || program.segments[0];
-    const sents = sentencesOf(item.text);
+    const item = displayProgram(program).segments[currentSegmentIndex] || displayProgram(program).segments[0];
+    const sents = sentencesOf(displayProgram(program).segments[currentSegmentIndex].text);
     sentenceIndex = Math.max(0, Math.min(sents.length - 1, sentenceIndex));
     setBanner(program, item);
     const host = activeContext && activeContext.host;
     if (!host) return;
-    const last = currentSegmentIndex === program.segments.length - 1;
+    const last = currentSegmentIndex === displayProgram(program).segments.length - 1;
     const lastSent = sentenceIndex === sents.length - 1;
     host.innerHTML = `
-      <div class="ee-mc-page">
-        <div class="ee-mc-head"><div><h1>${program.icon} ${esc(program.title)}</h1></div><button id="ee-mc-practice-back" class="ee-mc-btn" type="button">← Chuẩn bị</button></div>
+      <div class="ee-mc-page">${languageControls()}
+        <div class="ee-mc-head"><div><h1>${program.icon} ${esc(displayProgram(program).title)}</h1></div><button id="ee-mc-practice-back" class="ee-mc-btn" type="button">${tr("← Chuẩn bị","\u2190 Prepare")}</button></div>
         <section class="ee-mc-prac">
-          <div class="ee-mc-prac-top"><h2>${currentSegmentIndex + 1}. ${esc(item.title)}</h2>
-            <div class="ee-mc-dots" aria-label="Phần ${currentSegmentIndex + 1} trên ${program.segments.length}">${program.segments.map((_, i) => `<span class="${i === currentSegmentIndex ? "on" : i < currentSegmentIndex ? "past" : ""}"></span>`).join("")}</div></div>
-          <div class="ee-mc-cues">${cuesOf(item.cue).map((c) => `<span class="ee-mc-cue">${esc(c)}</span>`).join("")}</div>
+          <div class="ee-mc-prac-top"><h2>${currentSegmentIndex + 1}. ${esc(displayProgram(program).segments[currentSegmentIndex].title)}</h2>
+            <div class="ee-mc-dots" aria-label="Phần ${currentSegmentIndex + 1} trên ${displayProgram(program).segments.length}">${displayProgram(program).segments.map((_, i) => `<span class="${i === currentSegmentIndex ? "on" : i < currentSegmentIndex ? "past" : ""}"></span>`).join("")}</div></div>
+          <div class="ee-mc-cues">${cuesOf(displayProgram(program).segments[currentSegmentIndex].cue).map((c) => `<span class="ee-mc-cue">${esc(c)}</span>`).join("")}</div>
           <div class="ee-mc-sents">${sents.map((s, i) => `<button type="button" class="ee-mc-sent ${i === sentenceIndex ? "now" : i < sentenceIndex ? "done" : ""}" data-sent="${i}"><span class="k">${i + 1}</span><span>${esc(s)}</span></button>`).join("")}</div>
           <div class="ee-mc-tools">
-            <button id="ee-mc-listen" class="ee-mc-btn soft" type="button">🔊 Cô đọc câu này</button>
-            ${canRecord() ? `<button id="ee-mc-rec" class="ee-mc-btn rec${recording ? " on" : ""}" type="button">${recording ? "⏹ Dừng thu" : "🎙️ Bé nói thử"}</button>
-            <button id="ee-mc-play" class="ee-mc-btn" type="button" ${recordUrl ? "" : "disabled"}>▶ Nghe lại giọng bé</button>` : ""}
-            <button id="ee-mc-next-sent" class="ee-mc-btn primary" type="button">${lastSent ? "✓ Xong đoạn này" : "Câu tiếp →"}</button>
+            <button id="ee-mc-listen" class="ee-mc-btn soft" type="button">${tr("🔊 Cô đọc câu này","\ud83d\udd0a Listen to this sentence")}</button>
+            ${canRecord() ? `<button id="ee-mc-rec" class="ee-mc-btn rec${recording ? " on" : ""}" type="button">${recording ? tr("⏹ Dừng thu","\u23f9 Stop recording") : tr("🎙️ Bé nói thử","\ud83c\udf99\ufe0f Record my voice")}</button>
+            <button id="ee-mc-play" class="ee-mc-btn" type="button" ${recordUrl ? "" : "disabled"}>${tr("▶ Nghe lại giọng bé","\u25b6 Play my recording")}</button>` : ""}
+            <button id="ee-mc-next-sent" class="ee-mc-btn primary" type="button">${lastSent ? tr("✓ Xong đoạn này","\u2713 Finish this part") : tr("Câu tiếp →","Next sentence \u2192")}</button>
           </div>
-          <div class="ee-mc-tip">🐰 ${esc(item.tip)}</div>
+          <div class="ee-mc-tip">🐰 ${esc(displayProgram(program).segments[currentSegmentIndex].tip)}</div>
           <p id="ee-mc-voice-status" class="ee-mc-voice" hidden></p>
           <div class="ee-mc-nav">
-            <button id="ee-mc-prev" class="ee-mc-btn" type="button" ${currentSegmentIndex === 0 ? "disabled" : ""}>← Đoạn trước</button>
-            <button id="ee-mc-listen-all" class="ee-mc-btn soft" type="button">🔊 Nghe cả đoạn</button>
-            <button id="ee-mc-next" class="ee-mc-btn ${last ? "teal" : ""}" type="button">${last ? "🎭 Lên sân khấu" : "Đoạn tiếp →"}</button>
+            <button id="ee-mc-prev" class="ee-mc-btn" type="button" ${currentSegmentIndex === 0 ? "disabled" : ""}>${tr("← Đoạn trước","\u2190 Previous part")}</button>
+            <button id="ee-mc-listen-all" class="ee-mc-btn soft" type="button">${tr("🔊 Nghe cả đoạn","\ud83d\udd0a Listen to the whole part")}</button>
+            <button id="ee-mc-next" class="ee-mc-btn ${last ? "teal" : ""}" type="button">${last ? tr("🎭 Lên sân khấu","\ud83c\udfad On stage") : tr("Đoạn tiếp →","Next part \u2192")}</button>
           </div>
         </section>
       </div>`;
     const markSpeaking = (i, on) => host.querySelector(`[data-sent="${i}"]`)?.classList.toggle("speaking", on);
     const readSentence = (i) => { markSpeaking(i, true); speak(sents[i], () => markSpeaking(i, false)); };
     const goSentence = (i) => { stopNarration(); stopRecording(); clearRecording(); sentenceIndex = i; renderPractice(program); };
+    bindLanguages();
     host.querySelector("#ee-mc-practice-back")?.addEventListener("click", () => renderProgramIntro(program));
     host.querySelector("#ee-mc-listen")?.addEventListener("click", () => readSentence(sentenceIndex));
-    host.querySelector("#ee-mc-listen-all")?.addEventListener("click", () => speak(item.text));
+    host.querySelector("#ee-mc-listen-all")?.addEventListener("click", () => speak(displayProgram(program).segments[currentSegmentIndex].text));
     host.querySelectorAll("[data-sent]").forEach((b) => b.addEventListener("click", () => {
       const i = Number(b.dataset.sent);
       if (i === sentenceIndex) readSentence(i); else goSentence(i);
@@ -613,7 +635,7 @@
     host.querySelector("#ee-mc-rec")?.addEventListener("click", () => toggleRecording(() => {
       const rec = host.querySelector("#ee-mc-rec");
       const play = host.querySelector("#ee-mc-play");
-      if (rec) { rec.classList.toggle("on", recording); rec.textContent = recording ? "⏹ Dừng thu" : "🎙️ Bé nói thử"; }
+      if (rec) { rec.classList.toggle("on", recording); rec.textContent = recording ? tr("⏹ Dừng thu","\u23f9 Stop recording") : tr("🎙️ Bé nói thử","\ud83c\udf99\ufe0f Record my voice"); }
       if (play) play.disabled = !recordUrl;
     }));
     host.querySelector("#ee-mc-play")?.addEventListener("click", playRecording);
@@ -639,27 +661,28 @@
     stopEverything();
     stageMode = true;
     sentenceIndex = 0;
-    currentSegmentIndex = Math.max(0, Math.min(program.segments.length - 1, currentSegmentIndex));
-    const item = program.segments[currentSegmentIndex];
+    currentSegmentIndex = Math.max(0, Math.min(displayProgram(program).segments.length - 1, currentSegmentIndex));
+    const item = displayProgram(program).segments[currentSegmentIndex];
     setBanner(program, item);
     const host = activeContext && activeContext.host;
     if (!host) return;
     host.innerHTML = `
-      <div class="ee-mc-page">
-        <div class="ee-mc-head"><div><h1>🎭 Sân khấu MC nhí</h1><p>Cô Thỏ không đọc khi bé biểu diễn. Câu màu vàng là câu bé đang nói.</p></div><button id="ee-mc-stage-back" class="ee-mc-btn" type="button">← Tập dẫn</button></div>
+      <div class="ee-mc-page">${languageControls()}
+        <div class="ee-mc-head"><div><h1>${tr("🎭 Sân khấu MC nhí","\ud83c\udfad Young MC stage")}</h1><p>${tr("Cô Thỏ không đọc khi bé biểu diễn. Câu màu vàng là câu bé đang nói.","Bunny stays quiet while you perform. Yellow shows your current sentence.")}</p></div><button id="ee-mc-stage-back" class="ee-mc-btn" type="button">${tr("← Tập dẫn","\u2190 Practice")}</button></div>
         <section class="ee-mc-stage-mode">
           <div class="lights"></div>
-          <div class="ee-mc-live-head"><h2>${program.icon} ${esc(program.title)}</h2><div id="ee-mc-live-badge" class="ee-mc-live-badge"></div></div>
+          <div class="ee-mc-live-head"><h2>${program.icon} ${esc(displayProgram(program).title)}</h2><div id="ee-mc-live-badge" class="ee-mc-live-badge"></div></div>
           <div class="ee-mc-live-body"></div>
           <div class="ee-mc-live-controls">
-            <div class="ee-mc-speed" role="group" aria-label="Tốc độ chữ chạy">${[["slow", "🐢 Chậm"], ["medium", "Vừa"], ["fast", "🐇 Nhanh"]].map(([k, l]) => `<button type="button" data-speed="${k}" class="${stageSpeed === k ? "on" : ""}">${l}</button>`).join("")}</div>
-            <button id="ee-mc-live-prev" class="ee-mc-btn" type="button">← Đoạn trước</button>
-            <button id="ee-mc-countdown" class="ee-mc-btn primary" type="button">▶ Bắt đầu</button>
-            <button id="ee-mc-live-next" class="ee-mc-btn" type="button">Đoạn tiếp →</button>
+            <div class="ee-mc-speed" role="group" aria-label="${tr("Tốc độ chữ chạy","Reading pace")}">${[["slow", tr("🐢 Chậm","🐢 Slow")], ["medium", tr("Vừa","Medium")], ["fast", tr("🐇 Nhanh","🐇 Fast")]].map(([k, l]) => `<button type="button" data-speed="${k}" class="${stageSpeed === k ? "on" : ""}">${l}</button>`).join("")}</div>
+            <button id="ee-mc-live-prev" class="ee-mc-btn" type="button">${tr("← Đoạn trước","\u2190 Previous part")}</button>
+            <button id="ee-mc-countdown" class="ee-mc-btn primary" type="button">${tr("▶ Bắt đầu","\u25b6 Start")}</button>
+            <button id="ee-mc-live-next" class="ee-mc-btn" type="button">${tr("Đoạn tiếp →","Next part \u2192")}</button>
           </div>
         </section>
       </div>`;
     updateStageView(program);
+    bindLanguages();
     host.querySelector("#ee-mc-stage-back")?.addEventListener("click", () => { sentenceIndex = 0; renderPractice(program); });
     host.querySelectorAll("[data-speed]").forEach((b) => b.addEventListener("click", () => {
       stageSpeed = b.dataset.speed;
@@ -674,7 +697,7 @@
       if (stageRunning && !stagePaused) scheduleStageAdvance(program);
     });
     host.querySelector("#ee-mc-live-next")?.addEventListener("click", () => {
-      if (currentSegmentIndex < program.segments.length - 1) {
+      if (currentSegmentIndex < displayProgram(program).segments.length - 1) {
         currentSegmentIndex += 1; sentenceIndex = 0;
         updateStageView(program);
         if (stageRunning && !stagePaused) scheduleStageAdvance(program);
@@ -685,20 +708,20 @@
   function updateStageView(program) {
     const host = activeContext && activeContext.host;
     if (!host || !stageMode) return;
-    const item = program.segments[currentSegmentIndex];
+    const item = displayProgram(program).segments[currentSegmentIndex];
     if (!item) return;
     setBanner(program, item);
-    const sents = sentencesOf(item.text);
+    const sents = sentencesOf(displayProgram(program).segments[currentSegmentIndex].text);
     const body = host.querySelector(".ee-mc-live-body");
-    if (body) body.innerHTML = `<div class="ee-mc-live-title">${currentSegmentIndex + 1}. ${esc(item.title)}</div>
+    if (body) body.innerHTML = `<div class="ee-mc-live-title">${currentSegmentIndex + 1}. ${esc(displayProgram(program).segments[currentSegmentIndex].title)}</div>
       <div class="ee-mc-live-text">${sents.map((s, i) => `<span class="${stageRunning ? (i === sentenceIndex ? "now" : i < sentenceIndex ? "past" : "") : "now"}">${esc(s)}</span>`).join(" ")}</div>
-      <div class="ee-mc-live-cue">${esc(item.cue)}</div>`;
+      <div class="ee-mc-live-cue">${esc(displayProgram(program).segments[currentSegmentIndex].cue)}</div>`;
     const badge = host.querySelector("#ee-mc-live-badge");
-    if (badge) badge.textContent = `Phần ${currentSegmentIndex + 1}/${program.segments.length}`;
+    if (badge) badge.textContent = `${tr("Phần", "Part")} ${currentSegmentIndex + 1}/${displayProgram(program).segments.length}`;
     const prev = host.querySelector("#ee-mc-live-prev");
     const next = host.querySelector("#ee-mc-live-next");
     if (prev) prev.disabled = currentSegmentIndex === 0;
-    if (next) next.textContent = currentSegmentIndex === program.segments.length - 1 ? "Hoàn thành 🎉" : "Đoạn tiếp →";
+    if (next) next.textContent = currentSegmentIndex === displayProgram(program).segments.length - 1 ? tr("Hoàn thành 🎉", "Completed 🎉") : tr("Đoạn tiếp →", "Next part →");
   }
 
   function startCountdown(program) {
@@ -713,7 +736,7 @@
     const tick = () => {
       if (!activeContext || !stageMode) return;
       if (number > 0) {
-        body.innerHTML = `<div class="ee-mc-countdown">${number}</div><div class="ee-mc-live-cue">Hít một hơi · Mỉm cười · Nhìn khán giả</div>`;
+        body.innerHTML = `<div class="ee-mc-countdown">${number}</div><div class="ee-mc-live-cue">${tr("Hít một hơi · Mỉm cười · Nhìn khán giả", "Take a breath · Smile · Look at your audience")}</div>`;
         number -= 1;
         countdownTimer = window.setTimeout(tick, 900);
         return;
@@ -722,7 +745,7 @@
       stagePaused = false;
       sentenceIndex = 0;
       button.disabled = false;
-      button.textContent = "⏸ Tạm dừng";
+      button.textContent = tr("⏸ Tạm dừng", "⏸ Pause");
       updateStageView(program);
       scheduleStageAdvance(program);
     };
@@ -733,13 +756,13 @@
     window.clearTimeout(stageTimer);
     stageTimer = 0;
     if (!stageRunning || stagePaused || !stageMode) return;
-    const item = program.segments[currentSegmentIndex];
+    const item = displayProgram(program).segments[currentSegmentIndex];
     if (!item) return;
     const sents = sentencesOf(item.text);
     stageTimer = window.setTimeout(() => {
       if (!activeContext || !stageMode || !stageRunning || stagePaused) return;
       if (sentenceIndex < sents.length - 1) sentenceIndex += 1;
-      else if (currentSegmentIndex < program.segments.length - 1) { currentSegmentIndex += 1; sentenceIndex = 0; }
+      else if (currentSegmentIndex < displayProgram(program).segments.length - 1) { currentSegmentIndex += 1; sentenceIndex = 0; }
       else { renderFinish(program); return; }
       updateStageView(program);
       scheduleStageAdvance(program);
@@ -753,28 +776,29 @@
     stagePaused = !stagePaused;
     window.clearTimeout(stageTimer);
     stageTimer = 0;
-    button.textContent = stagePaused ? "▶ Tiếp tục" : "⏸ Tạm dừng";
+    button.textContent = stagePaused ? tr("▶ Tiếp tục", "▶ Resume") : tr("⏸ Tạm dừng", "⏸ Pause");
     if (!stagePaused) scheduleStageAdvance(program);
   }
 
   /* ---------- Hoàn thành ---------- */
-  function renderFinish(program) {
+  function renderFinish(program, celebrate = true) {
     stopEverything();
     stageMode = false;
-    markDone(program.id);
+    if (celebrate) markDone(program.id);
     setBanner(program);
     const host = activeContext && activeContext.host;
     if (!host) return;
-    const checks = [["😊", "Mỉm cười"], ["🔊", "Nói rõ"], ["⏸", "Biết nghỉ"], ["👀", "Nhìn khán giả"], ["🙌", "Tự tin"]];
+    const checks = [["😊", tr("Mỉm cười","Smile")], ["🔊", tr("Nói rõ","Speak clearly")], ["⏸", tr("Biết nghỉ","Pause well")], ["👀", tr("Nhìn khán giả","Eye contact")], ["🙌", tr("Tự tin","Confidence")]];
     host.innerHTML = `
-      <div class="ee-mc-page">
-        <section class="ee-mc-finish"><div class="big" aria-hidden="true">🎤🐰✨</div><h2>MC nhí giỏi quá!</h2>
-          <p>Hôm nay bé đã làm được những gì? Chạm để tô sáng nhé!</p>
+      <div class="ee-mc-page">${languageControls()}
+        <section class="ee-mc-finish"><div class="big" aria-hidden="true">🎤🐰✨</div><h2>${tr("MC nhí giỏi quá!", "Wonderful job, young MC!")}</h2>
+          <p>${tr("Hôm nay bé đã làm được những gì? Chạm để tô sáng nhé!", "What did you do well today? Tap to celebrate!")}</p>
           <div class="ee-mc-selfcheck">${checks.map(([e, t]) => `<button class="ee-mc-check" type="button" aria-pressed="false"><span class="e" aria-hidden="true">${e}</span>${t}</button>`).join("")}</div>
-          <div class="ee-mc-finish-actions"><button id="ee-mc-again" class="ee-mc-btn primary" type="button">🔄 Dẫn lại</button><button id="ee-mc-other" class="ee-mc-btn" type="button">📚 Chương trình khác</button></div>
+          <div class="ee-mc-finish-actions"><button id="ee-mc-again" class="ee-mc-btn primary" type="button">${tr("🔄 Dẫn lại","\ud83d\udd04 Try again")}</button><button id="ee-mc-other" class="ee-mc-btn" type="button">${tr("📚 Chương trình khác","\ud83d\udcda Other programs")}</button></div>
         </section>
       </div>`;
-    speak("MC nhí giỏi quá! Hôm nay bé đã làm được những gì? Chạm để tô sáng nhé!");
+    if (celebrate) speak(tr("MC nhí giỏi quá! Hôm nay bé đã làm được những gì? Chạm để tô sáng nhé!", "Wonderful job, young MC! What did you do well today?"));
+    bindLanguages();
     host.querySelectorAll(".ee-mc-check").forEach((button) => button.addEventListener("click", () => {
       const on = button.classList.toggle("done");
       button.setAttribute("aria-pressed", String(on));

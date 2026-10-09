@@ -51,27 +51,76 @@
     try { window.localStorage.setItem(DONE_KEY, JSON.stringify([...completed])); } catch (_) {}
   }
 
-  /* ---------- giọng đọc Cô Thỏ Hồng (chỉ dùng giọng tiếng Việt) ---------- */
-  function vietVoice() {
-    try {
-      const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
-      return voices.find((v) => /^vi/i.test(String(v.lang || ""))) || null;
-    } catch (_) { return null; }
+  // Stable local bilingual UI. No external translation service required.
+  let language = "vi";
+  let audioNonce = 0;
+  let speechQueue = [];
+  const googleAudio = typeof Audio === "function" ? new Audio() : null;
+  if (googleAudio) googleAudio.preload = "none";
+  const UI_EN = {"🖍️ Cô Thỏ Hồng dạy vẽ": "🖍️ Pink Bunny Drawing Studio", "Cô Thỏ Hồng dạy vẽ": "Pink Bunny Drawing Studio", "bức tranh": "pictures", "tranh": "pictures", "bước": "steps", "Bước": "Step", "Đã vẽ": "Completed", "Dễ": "Easy", "Vừa": "Medium", "Khéo tay": "Creative", "Thử thách": "Challenge", "Nhìn – vẽ từng bước – tô màu": "Look – draw step by step – color", "Mỗi bước, nét màu hồng là phần bé vẽ thêm. Bé có thể vẽ trên giấy hoặc vẽ ngay trên bảng vẽ, có nét mờ để vẽ theo. Tranh xếp từ dễ đến khó.": "The pink lines show what to draw at each step. Draw on paper or on the drawing board with a faint guide. Start with easy pictures and progress to harder ones.", "Cô Thỏ Hồng nhắc bé": "Pink Bunny says", "Không cần vẽ giống hệt tranh mẫu. Đúng hình cơ bản, thêm nét riêng của bé là bức tranh đã rất đẹp rồi!": "Your picture does not need to be identical. Draw the basic shapes and add your own creativity!", "Chuẩn bị trước khi vẽ": "Get ready to draw", "Cô Thỏ Hồng sẽ hướng dẫn từ hình lớn đến chi tiết nhỏ, bước cuối cùng mới tô màu.": "Pink Bunny will guide you from large shapes to small details, then color in the final step.", "Dụng cụ": "Supplies", "Bút chì + tẩy": "Pencil + eraser", "Giấy": "Paper", "A4 hoặc giấy vẽ": "A4 paper or drawing paper", "Màu của tranh": "Picture colors", "màu khác để bé tự sáng tạo": "more colors for your creativity", "Quy trình": "Steps", "bước vẽ + 1 bước tô màu": "drawing steps + 1 coloring step", "Bắt đầu vẽ →": "Start drawing →", "Tranh mẫu": "Example picture", "Cô Thỏ Hồng hướng dẫn từng nét một.": "Pink Bunny guides every stroke.", "← Chuẩn bị": "← Preparation", "← Bước trước": "← Previous", "Hoàn thành 🎉": "Finish 🎉", "Em vẽ xong →": "I’m done →", "🔊 Nghe": "🔊 Listen", "Nghe Cô Thỏ đọc": "Listen to Pink Bunny", "Cô Thỏ mách bé:": "Pink Bunny tip:", "Bước cuối: bé tô màu theo tranh mẫu, hoặc chọn màu bé thích nhất.": "Final step: color the picture using the example or your favorite colors.", "Nét màu hồng là phần bé vẽ thêm ở bước này. Nét xám là những gì bé đã vẽ ở các bước trước.": "Pink lines show the new strokes. Gray lines show the previous steps.", "✏️ Bảng vẽ của bé": "✏️ Your drawing board", "Màu thêm": "Extra colors", "Màu tranh": "Picture color", "Cỡ bút": "Brush size", "Cục tẩy": "Eraser", "Tẩy": "Erase", "Hoàn tác nét vừa vẽ": "Undo last stroke", "Hoàn tác": "Undo", "Xoá hết bảng vẽ": "Clear drawing board", "Xoá hết": "Clear all", "Nét mờ để bé vẽ theo": "Faint tracing guide", "Bảng vẽ của bé": "Your drawing board", "Bé vẽ bằng chuột hoặc ngón tay, đè lên nét mờ cho dễ. Bảng vẽ không gửi dữ liệu ra ngoài.": "Draw with your mouse or finger. Trace the faint guide if helpful. Your drawing stays on this device.", "👻 Tắt nét mờ": "👻 Hide guide", "👻 Bật nét mờ": "👻 Show guide", "👁 Hiện / ẩn tranh mẫu": "👁 Show / hide example", "Hoàn thành bức tranh.": "Picture completed.", "Bé vẽ xong rồi!": "You finished drawing!", "Cô Thỏ Hồng rất thích bức tranh của bé. Hai bức tranh không cần giống hệt nhau, quan trọng là bé đã biết đi từ hình lớn đến từng chi tiết nhỏ.": "Pink Bunny loves your picture! It does not have to be identical. You learned how to draw big shapes first, then small details.", "Tranh của bé": "Your drawing", "Bức vẽ của bé": "Your drawing", "Bé đã chọn vẽ trên giấy thật.": "You chose to draw on paper.", "Vẽ lại từ đầu": "Draw again", "Tranh tiếp theo:": "Next picture:", "Chọn tranh khác": "Choose another picture", "Đang mở Cô Thỏ Hồng dạy vẽ…": "Opening Pink Bunny Drawing Studio…", "Đang tải…": "Loading…", "Tô màu": "Color the picture"};
+  const LESSON_EN = {"turtle": "Little Turtle", "elephant": "Baby Elephant", "bee": "Busy Bee", "butterfly": "Pretty Butterfly", "sunflower": "Sunflower", "mushroom_house": "Mushroom House", "owl": "Owl on a Branch", "cactus": "Potted Cactus", "rooster": "Rooster", "birthday_cake": "Birthday Cake", "car": "Car", "alarm_clock": "Alarm Clock", "teapot": "Flower Teapot", "goldfish": "Goldfish", "ice_cream": "Ice Cream Cone", "train": "Choo-Choo Train", "kitten": "Kitten", "puppy": "Floppy-Eared Puppy", "teddy_bear": "Teddy Bear", "pink_rabbit": "Pink Bunny", "airplane": "Airplane", "castle": "Fairy-Tale Castle", "apple_tree": "Apple Tree", "lion": "Brave Lion", "penguin": "Penguin with Scarf", "giraffe": "Giraffe", "frog": "Frog on a Lotus Leaf", "astronaut": "Astronaut", "dinosaur": "Baby Dinosaur", "robot": "Toy Robot"};
+  const TITLE_EN = {};
+  function tr(value) { return language === "en" ? (UI_EN[String(value)] || String(value)) : String(value); }
+  function lessonTitle(lesson) { return language === "en" ? (LESSON_EN[lesson.id] || lesson.title) : lesson.title; }
+  function partEnglish(stepItem) {
+    const dictionary = STEP_EN[stepItem.title];
+    return dictionary && !/[À-ỹ]/u.test(dictionary) ? dictionary : "Draw the highlighted details";
   }
-  try { if (window.speechSynthesis) window.speechSynthesis.getVoices(); } catch (_) {}
+  const STEP_EN = {"Vẽ mai rùa": "Draw Mai rùa", "Vẽ viền mai": "Draw Viền mai", "Vẽ đầu": "Draw Head", "Vẽ mắt và miệng": "Draw Eyes and mouth", "Vẽ bốn chân": "Draw Four legs", "Vẽ đuôi": "Draw Earsl", "Vẽ hoa văn trên mai": "Draw Patterns trên mai", "Tô màu": "Color your drawing", "Vẽ hai tai": "Draw Ears", "Vẽ vòi": "Draw Trunk or spout", "Vẽ mắt và má": "Draw Eyes and cheeks", "Vẽ thân": "Draw Body", "Vẽ mặt": "Draw Mặt", "Vẽ râu": "Draw Antennae", "Vẽ sọc": "Draw Stripes", "Vẽ cánh": "Draw Wings", "Vẽ ngòi": "Draw Ngòi", "Vẽ hai cánh trên": "Draw Upper wings", "Vẽ hai cánh dưới": "Draw Lower wings", "Vẽ hoa văn": "Draw Patterns", "Vẽ nhụy hoa": "Draw Nhụy flowers", "Vẽ cánh hoa": "Draw Wings flowers", "Vẽ mặt cười": "Draw Smiley face", "Vẽ hạt hoa": "Draw Hạt flowers", "Vẽ thân cây": "Draw Tree trunk", "Vẽ lá": "Draw Leaves", "Vẽ cỏ": "Draw Grass", "Vẽ mũ nấm": "Draw Hat nấm", "Vẽ thân nấm": "Draw Body nấm", "Vẽ cửa ra vào": "Draw Door", "Vẽ cửa sổ": "Draw Windows", "Vẽ chấm bi": "Draw Spots", "Vẽ bãi cỏ": "Draw Bãi grass", "Vẽ hoa": "Draw Flowers", "Vẽ đôi mắt to": "Draw Đôi eyes to", "Vẽ mỏ": "Draw Beak", "Vẽ bụng": "Draw Belly", "Vẽ hai cánh": "Draw Wings", "Vẽ chân": "Draw Legs", "Vẽ cành cây": "Draw Tree branch", "Vẽ hai nhánh": "Draw Hai nhánh", "Vẽ miệng chậu": "Draw Mouth pot", "Vẽ chậu": "Draw Pot", "Vẽ gai": "Draw Spikes", "Vẽ bông hoa": "Draw Bông flowers", "Trang trí chậu": "Add decorations", "Vẽ đầu và cổ": "Draw Head and neck", "Vẽ mào": "Draw Comb", "Vẽ mỏ và yếm": "Draw Beak và yếm", "Vẽ tầng dưới": "Draw Tầng dưới", "Vẽ tầng trên": "Draw Tầng trên", "Vẽ kem tầng dưới": "Draw Kem tầng dưới", "Vẽ kem tầng trên": "Draw Kem tầng trên", "Vẽ đĩa": "Draw Đĩa", "Vẽ ba cây nến": "Draw Ba cây nến", "Vẽ ngọn lửa": "Draw Ngọn lửa", "Trang trí": "Add decorations", "Vẽ thân xe": "Draw Car body", "Vẽ cửa kính": "Draw Windows", "Vẽ bánh xe": "Draw Wheels", "Vẽ mâm xe": "Draw Mâm xe", "Vẽ cản xe": "Draw Cản xe", "Vẽ cửa xe": "Draw Door xe", "Vẽ đèn": "Draw Lights", "Vẽ con đường": "Draw Path", "Vẽ vỏ đồng hồ": "Draw Vỏ đồng hồ", "Vẽ mặt số": "Draw Mặt số", "Vẽ hai chuông": "Draw Hai chuông", "Vẽ núm chuông": "Draw Núm chuông", "Vẽ vạch giờ": "Draw Hour marks", "Vẽ kim": "Draw Clock hands", "Vẽ thân ấm": "Draw Teapot body", "Vẽ nắp ấm": "Draw Nắp ấm", "Vẽ đế": "Draw Đế", "Vẽ quai": "Draw Handle", "Vẽ hơi nóng": "Draw Hơi nóng", "Vẽ thân cá": "Draw Fish body", "Vẽ vây lưng": "Draw Fins lưng", "Vẽ vây bụng": "Draw Fins belly", "Vẽ mang": "Draw Mang", "Vẽ vảy": "Draw Scales", "Vẽ vây bên": "Draw Fins bên", "Vẽ bong bóng": "Draw Bubbles", "Vẽ ốc quế": "Draw Ốc quế", "Vẽ viên kem dưới": "Draw Viên kem dưới", "Vẽ viên kem giữa": "Draw Viên kem giữa", "Vẽ viên kem trên": "Draw Viên kem trên", "Vẽ kem chảy": "Draw Kem chảy", "Vẽ quả anh đào": "Draw Quả anh đào", "Vẽ ô kẻ ốc quế": "Draw Ô kẻ ốc quế", "Vẽ cốm": "Draw Cốm", "Vẽ đầu tàu": "Draw Locomotive", "Vẽ buồng lái": "Draw Buồng leavesi", "Vẽ ống khói": "Draw Ống smoke", "Vẽ toa tàu": "Draw Toa tàu", "Vẽ móc nối": "Draw Móc nối", "Vẽ khói": "Draw Smoke", "Vẽ đường ray": "Draw Railway tracks", "Vẽ mũi và miệng": "Draw Nose and mouth", "Vẽ ria": "Draw Whiskers", "Vẽ vằn trán": "Draw Vằn trán", "Vẽ tai cụp": "Draw Floppy ears", "Vẽ mõm": "Draw Muzzle", "Vẽ đốm lông": "Draw Spots lông", "Vẽ vòng cổ": "Draw Collar", "Vẽ hai tay": "Draw Arms", "Vẽ hai chân": "Draw Two legs", "Vẽ nơ": "Draw Bow", "Vẽ đôi tai dài": "Draw Long ears", "Vẽ váy": "Draw Dress", "Vẽ đuôi bông": "Draw Earsl bông", "Vẽ củ cà rốt": "Draw Củ cà rốt", "Vẽ thân máy bay": "Draw Airplane body", "Vẽ động cơ": "Draw Động cơ", "Vẽ cánh phía sau": "Draw Rear wing", "Vẽ sọc thân": "Draw Stripes body", "Vẽ mây": "Draw Clouds", "Vẽ vệt bay": "Draw Flight trails", "Vẽ tường thành": "Draw Castle wall", "Vẽ tháp bên trái": "Draw Tower bên trái", "Vẽ tháp bên phải": "Draw Tower bên phải", "Vẽ tháp giữa": "Draw Tower giữa", "Vẽ mái nhọn": "Draw Cheeksi nhọn", "Vẽ cờ": "Draw Flags", "Vẽ cổng": "Draw Gate", "Vẽ viên gạch": "Draw Bricks", "Vẽ tán lá": "Draw Tán leaves", "Vẽ quả táo": "Draw Apples", "Vẽ cuống và lá": "Draw Cuống và leaves", "Vẽ hốc cây": "Draw Hốc cây", "Vẽ vân gỗ": "Draw Vân gỗ", "Vẽ giỏ": "Draw Giỏ", "Vẽ táo trong giỏ": "Draw Táo trong giỏ", "Vẽ chú chim": "Draw Chú chim", "Vẽ khuôn mặt": "Draw Face", "Vẽ chỏm lông trán": "Draw Chỏm lông trán", "Vẽ bờm": "Draw Mane", "Vẽ bụng trắng": "Draw White belly", "Vẽ khăn quàng": "Draw Scarf", "Vẽ sọc khăn": "Draw Stripes khăn", "Vẽ mũ len": "Draw Hat len", "Vẽ quả bông": "Draw Quả bông", "Vẽ nền tuyết": "Draw Nền tuyết", "Vẽ bông tuyết": "Draw Bông tuyết", "Vẽ cái cổ dài": "Draw Cái cổ dài", "Vẽ sừng": "Draw Horns", "Vẽ tai": "Draw Ears", "Vẽ móng": "Draw Móng", "Vẽ đốm": "Draw Spots", "Vẽ hai mắt lồi": "Draw Hai eyes lồi", "Vẽ con ngươi": "Draw Con ngươi", "Vẽ miệng": "Draw Mouth", "Vẽ chân trước": "Draw Front feet", "Vẽ chân sau": "Draw Back feet", "Vẽ lá sen": "Draw Leaves sen", "Vẽ hoa sen": "Draw Flowers sen", "Vẽ mặt nước": "Draw Water", "Vẽ chuồn chuồn": "Draw Chuồn chuồn", "Vẽ mũ bảo hiểm": "Draw Helmet", "Vẽ kính mũ": "Draw Kính hat", "Vẽ huy hiệu": "Draw Huy hiệu", "Vẽ găng tay": "Draw Gloves", "Vẽ giày": "Draw Shoes", "Vẽ ba lô": "Draw Backpack", "Vẽ ống thở": "Draw Air hose", "Vẽ ngôi sao": "Draw Stars", "Vẽ thân và cổ": "Draw Body và cổ", "Vẽ bàn chân": "Draw Feet", "Vẽ tay": "Draw Tay", "Vẽ gai lưng": "Draw Spikes lưng", "Vẽ màn hình": "Draw Màn hình", "Vẽ mắt": "Draw Eyes", "Vẽ ăng-ten": "Draw Ăng-ten", "Vẽ bảng nút": "Draw Control panel", "Vẽ đèn trái tim": "Draw Lights trái tim", "Vẽ cổ": "Draw Cổ", "Vẽ kẹp tay": "Draw Kẹp tay"};
+  function translatedStepTitle(item) { return language === "en" ? partEnglish(item) : item.title; }
+  function translatedInstruction(item) {
+    if (language !== "en") return item.instruction;
+    if (item.color) return "Color your picture to match the example, or choose your favorite colors. Start with large areas and then color the small details.";
+    return partEnglish(item) + ". Look at the pink strokes in the example and draw the same shapes carefully, one stroke at a time.";
+  }
+  function translatedTip(item) {
+    if (language !== "en") return item.tip;
+    return item.tip ? "Tip: Follow the example carefully. Start with simple shapes and work slowly." : "";
+  }
   function stopSpeak() {
-    try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (_) {}
+    audioNonce++;
+    speechQueue = [];
+    if (googleAudio) { try { googleAudio.pause(); googleAudio.removeAttribute("src"); googleAudio.load(); } catch (_) {} }
   }
   function speak(text) {
     stopSpeak();
-    const voice = vietVoice();
-    if (!voice || typeof window.SpeechSynthesisUtterance !== "function") return false;
-    try {
-      const u = new window.SpeechSynthesisUtterance(text);
-      u.lang = "vi-VN"; u.voice = voice; u.rate = 0.95; u.pitch = 1.08;
-      window.speechSynthesis.speak(u);
-      return true;
-    } catch (_) { return false; }
+    if (!googleAudio || !text) return false;
+    const nonce = audioNonce;
+    const words = String(text).match(/\S+/g) || [];
+    let buffer = "";
+    for (const word of words) {
+      if ((buffer + " " + word).length > 145 && buffer) { speechQueue.push(buffer); buffer = word; }
+      else buffer = buffer ? buffer + " " + word : word;
+    }
+    if (buffer) speechQueue.push(buffer);
+    const next = () => {
+      if (nonce !== audioNonce || !speechQueue.length || !activeContext) return;
+      const part = speechQueue.shift();
+      googleAudio.src = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${language === "en" ? "en" : "vi"}&q=${encodeURIComponent(part)}`;
+      const playing = googleAudio.play();
+      if (playing && playing.catch) playing.catch(() => { if (nonce === audioNonce) showVoiceError(); });
+    };
+    googleAudio.onended = next;
+    googleAudio.onerror = () => { if (nonce === audioNonce) showVoiceError(); };
+    next();
+    return true;
+  }
+  function showVoiceError() {
+    stopSpeak();
+    const n = activeContext && activeContext.host && activeContext.host.querySelector("#ee-draw-voice-note");
+    if (n) { n.hidden = false; n.textContent = language === "en" ? "Google TTS is currently unavailable. Please try again later." : "Chưa phát được Google TTS. Bé hãy thử lại khi có mạng nhé."; }
+  }
+  function localeControls() {
+    return `<div class="ee-draw-header-actions"><div class="ee-draw-language" role="group" aria-label="Language"><button type="button" data-draw-lang="vi" class="${language === "vi" ? "active" : ""}" aria-pressed="${language === "vi"}">Tiếng Việt</button><button type="button" data-draw-lang="en" class="${language === "en" ? "active" : ""}" aria-pressed="${language === "en"}">English</button></div>`;
+  }
+  function bindLocale(host, reRender) {
+    host.querySelectorAll("[data-draw-lang]").forEach((button) => button.addEventListener("click", () => {
+      const next = button.dataset.drawLang;
+      if (next === language || !["vi", "en"].includes(next)) return;
+      stopSpeak();
+      language = next;
+      reRender();
+    }));
   }
 
   function lessonById(id) {
@@ -139,6 +188,14 @@
     const style = document.createElement("style");
     style.id = STYLE_ID;
     style.textContent = `
+      .ee-draw-page .section-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.65rem}
+      .ee-draw-header-actions{display:flex;align-items:center;justify-content:flex-end;gap:.55rem;flex-wrap:wrap;margin-left:auto}
+      .ee-draw-header-actions .back-btn{margin:0;min-height:43px}
+      .ee-draw-language{display:inline-flex;align-items:center;padding:3px;border:1px solid #bfdbfe;border-radius:15px;background:#fff;box-shadow:0 3px 10px rgba(15,23,42,.04);white-space:nowrap}
+      .ee-draw-language button{border:0;background:transparent;color:#334155;border-radius:11px;font:inherit;font-size:14px;font-weight:800;min-height:36px;padding:.4rem .82rem;cursor:pointer}
+      .ee-draw-language button.active{background:linear-gradient(90deg,#3b82f6,#14b8a6);color:#fff;box-shadow:0 4px 12px rgba(20,184,166,.19)}
+      .ee-draw-language button:focus-visible{outline:2px solid #7c3aed;outline-offset:2px}
+      @media(max-width:560px){.ee-draw-header-actions{width:100%}.ee-draw-language button{padding:.4rem .62rem}}
       .ee-draw-page{padding:.2rem .15rem .8rem;color:#334155}
       .ee-draw-hero{display:grid;grid-template-columns:1.15fr .85fr;gap:.8rem;border:1px solid #e9d5ff;border-radius:22px;background:linear-gradient(135deg,#fff7ed,#fdf2f8,#f5f3ff);padding:1rem;margin:.2rem 0 .9rem}
       .ee-draw-hero h2{margin:0 0 .3rem;color:#6d28d9;font-size:22px}.ee-draw-hero p{margin:0;color:#475569;font-weight:800;line-height:1.5}
@@ -303,21 +360,22 @@
     host.innerHTML = `
       <div class="ee-draw-page">
         <div class="section-heading">
-          <div><h1>🖍️ Cô Thỏ Hồng dạy vẽ</h1><p>${LESSONS.length} bức tranh • mỗi tranh ${minS}–${maxS} bước • đi từ hình lớn đến chi tiết nhỏ.</p></div>
-          <button id="ee-draw-back-games" class="back-btn" type="button">← Games</button>
+          <div><h1>${esc(tr("🖍️ Cô Thỏ Hồng dạy vẽ"))}</h1><p>${LESSONS.length} bức tranh • mỗi tranh ${minS}–${maxS} ${esc(tr("bước"))} • ${language === "en" ? "from big shapes to small details." : "đi từ hình lớn đến chi tiết nhỏ."}</p></div>
+          ${localeControls()}<button id="ee-draw-back-games" class="back-btn" type="button">← Games</button></div>
         </div>
         <div class="ee-draw-hero">
-          <div><h2>Nhìn – vẽ từng bước – tô màu</h2><p>Mỗi bước, nét màu hồng là phần bé vẽ thêm. Bé có thể vẽ trên giấy hoặc vẽ ngay trên bảng vẽ, có nét mờ để vẽ theo. Tranh xếp từ dễ đến khó.</p></div>
-          <div class="ee-draw-bunny"><span class="icon" aria-hidden="true">🐰</span><div><strong>Cô Thỏ Hồng nhắc bé</strong><span>Không cần vẽ giống hệt tranh mẫu. Đúng hình cơ bản, thêm nét riêng của bé là bức tranh đã rất đáng yêu rồi!</span></div></div>
+          <div><h2>${esc(tr("Nhìn – vẽ từng bước – tô màu"))}</h2><p>${esc(tr("Mỗi bước, nét màu hồng là phần bé vẽ thêm. Bé có thể vẽ trên giấy hoặc vẽ ngay trên bảng vẽ, có nét mờ để vẽ theo. Tranh xếp từ dễ đến khó."))}</p></div>
+          <div class="ee-draw-bunny"><span class="icon" aria-hidden="true">🐰</span><div><strong>${esc(tr("Cô Thỏ Hồng nhắc bé"))}</strong><span>${language === "en" ? "Your drawing does not need to look identical. Add your own creative touch!" : "Không cần vẽ giống hệt tranh mẫu. Đúng hình cơ bản, thêm nét riêng của bé là bức tranh đã rất đáng yêu rồi!"}</span></div></div>
         </div>
         <div class="ee-draw-grid">
           ${LESSONS.map((lesson, index) => `<button class="ee-draw-card" data-tone="${esc(lesson.tone)}" data-lesson="${esc(lesson.id)}" type="button">
               ${cardArt(lesson)}
-              <h3>${index + 1}. ${esc(lesson.title)}</h3>
-              <div class="ee-draw-meta"><span class="ee-draw-chip">${lesson.steps.length} bước</span><span class="ee-draw-chip">${esc(lesson.difficulty)}</span>${completed.has(lesson.id) ? `<span class="ee-draw-card-done">✓ Đã vẽ</span>` : ""}</div>
+              <h3>${index + 1}. ${esc(lessonTitle(lesson))}</h3>
+              <div class="ee-draw-meta"><span class="ee-draw-chip">${lesson.steps.length} ${esc(tr("bước"))}</span><span class="ee-draw-chip">${esc(tr(lesson.difficulty))}</span>${completed.has(lesson.id) ? `<span class="ee-draw-card-done">${esc(tr("Đã vẽ"))}</span>` : ""}</div>
             </button>`).join("")}
         </div>
       </div>`;
+    bindLocale(host, renderRegistry);
     host.querySelector("#ee-draw-back-games")?.addEventListener("click", () => activeContext && activeContext.back && activeContext.back());
     host.querySelectorAll("[data-lesson]").forEach((button) => button.addEventListener("click", () => {
       const lesson = lessonById(button.dataset.lesson);
@@ -337,24 +395,25 @@
     host.innerHTML = `
       <div class="ee-draw-page">
         <div class="section-heading">
-          <div><h1>🖍️ ${esc(lesson.title)}</h1><p>${lesson.steps.length} bước • ${esc(lesson.difficulty)}.</p></div>
-          <button id="ee-draw-back-list" class="back-btn" type="button">← ${LESSONS.length} tranh</button>
+          <div><h1>🖍️ ${esc(lessonTitle(lesson))}</h1><p>${lesson.steps.length} ${esc(tr("bước"))} • ${esc(tr(lesson.difficulty))}.</p></div>
+          ${localeControls()}<button id="ee-draw-back-list" class="back-btn" type="button">← ${LESSONS.length} ${esc(tr("tranh"))}</button></div>
         </div>
         <div class="ee-draw-prep">
           <section class="ee-draw-prep-card">
-            <h2>Chuẩn bị trước khi vẽ</h2>
-            <p>Cô Thỏ Hồng sẽ hướng dẫn từ hình lớn đến chi tiết nhỏ, bước cuối cùng mới tô màu.</p>
+            <h2>${esc(tr("Chuẩn bị trước khi vẽ"))}</h2>
+            <p>${esc(tr("Cô Thỏ Hồng sẽ hướng dẫn từ hình lớn đến chi tiết nhỏ, bước cuối cùng mới tô màu."))}</p>
             <div class="ee-draw-prep-list">
-              <div class="ee-draw-prep-item"><span>Dụng cụ</span><strong>Bút chì + tẩy</strong></div>
-              <div class="ee-draw-prep-item"><span>Giấy</span><strong>A4 hoặc giấy vẽ</strong></div>
-              <div class="ee-draw-prep-item"><span>Màu của tranh</span><strong>${swatches}</strong><em class="ee-draw-prep-note">+ ${extraColors(lesson).length} màu khác để bé tự sáng tạo</em></div>
-              <div class="ee-draw-prep-item"><span>Quy trình</span><strong>${lesson.steps.length - 1} bước vẽ + 1 bước tô màu</strong></div>
+              <div class="ee-draw-prep-item"><span>${esc(tr("Dụng cụ"))}</span><strong>${esc(tr("Bút chì + tẩy"))}</strong></div>
+              <div class="ee-draw-prep-item"><span>${esc(tr("Giấy"))}</span><strong>${esc(tr("A4 hoặc giấy vẽ"))}</strong></div>
+              <div class="ee-draw-prep-item"><span>${esc(tr("Màu của tranh"))}</span><strong>${swatches}</strong><em class="ee-draw-prep-note">+ ${extraColors(lesson).length} ${esc(tr("màu khác để bé tự sáng tạo"))}</em></div>
+              <div class="ee-draw-prep-item"><span>${esc(tr("Quy trình"))}</span><strong>${lesson.steps.length - 1} ${esc(tr("bước vẽ + 1 bước tô màu"))}</strong></div>
             </div>
-            <div class="ee-draw-intro-actions"><button id="ee-draw-start" class="ee-draw-btn primary" type="button">Bắt đầu vẽ →</button></div>
+            <div class="ee-draw-intro-actions"><button id="ee-draw-start" class="ee-draw-btn primary" type="button">${esc(tr("Bắt đầu vẽ →"))}</button></div>
           </section>
-          <aside class="ee-draw-ref">${referenceImageHtml(lesson)}<p>Tranh mẫu • ${esc(lesson.title)}</p></aside>
+          <aside class="ee-draw-ref">${referenceImageHtml(lesson)}<p>${esc(tr("Tranh mẫu"))} • ${esc(lessonTitle(lesson))}</p></aside>
         </div>
       </div>`;
+    bindLocale(host, () => renderLessonIntro(lesson));
     host.querySelector("#ee-draw-back-list")?.addEventListener("click", renderRegistry);
     host.querySelector("#ee-draw-start")?.addEventListener("click", () => {
       currentStepIndex = 0;
@@ -460,12 +519,12 @@
     host.querySelector("#ee-draw-guide-toggle")?.addEventListener("click", (event) => {
       guideOn = !guideOn;
       host.querySelector(".ee-draw-guide")?.classList.toggle("off", !guideOn);
-      event.currentTarget.textContent = guideOn ? "👻 Tắt nét mờ" : "👻 Bật nét mờ";
+      event.currentTarget.textContent = tr(guideOn ? "👻 Tắt nét mờ" : "👻 Bật nét mờ");
     });
   }
 
   function stepSpeech(lesson, item) {
-    return `Bước ${currentStepIndex + 1}. ${item.title}. ${item.instruction}${item.tip ? " Cô Thỏ mách bé: " + item.tip : ""}`;
+    return `${tr("Bước")} ${currentStepIndex + 1}. ${translatedStepTitle(item)}. ${translatedInstruction(item)}${item.tip ? " " + tr("Cô Thỏ mách bé:") + " " + translatedTip(item) : ""}`;
   }
 
   function renderStep(lesson, fresh = false) {
@@ -480,48 +539,48 @@
     const note = isColor
       ? "Bước cuối: bé tô màu theo tranh mẫu, hoặc chọn màu bé thích nhất."
       : "Nét màu hồng là phần bé vẽ thêm ở bước này. Nét xám là những gì bé đã vẽ ở các bước trước.";
-    const dots = lesson.steps.map((s, i) => `<button type="button" class="ee-draw-dot${i === currentStepIndex ? " is-on" : i < currentStepIndex ? " is-done" : ""}" data-step="${i}" aria-label="Bước ${i + 1}: ${esc(s.title)}">${i + 1}</button>`).join("");
+    const dots = lesson.steps.map((s, i) => `<button type="button" class="ee-draw-dot${i === currentStepIndex ? " is-on" : i < currentStepIndex ? " is-done" : ""}" data-step="${i}" aria-label="${esc(tr("Bước"))} ${i + 1}: ${esc(translatedStepTitle(s))}">${i + 1}</button>`).join("");
     const swatch = (c, label) => `<button class="ee-draw-color${c.toUpperCase() === currentColor.toUpperCase() ? " active" : ""}" data-draw-color="${c}" type="button" aria-label="${label}" title="${label}" style="background:${c}"></button>`;
     const lessonCols = lesson.palette.slice();
     const extraCols = extraColors(lesson);
     if (![...lessonCols, ...extraCols].some((c) => c.toUpperCase() === currentColor.toUpperCase())) extraCols.unshift(currentColor);
-    const colors = `<div class="ee-draw-palette-label">Màu của tranh</div><div class="ee-draw-row">${lessonCols.map((c, i) => swatch(c, "Màu tranh " + (i + 1))).join("")}</div>
-      <div class="ee-draw-palette-label">Màu thêm</div><div class="ee-draw-row">${extraCols.map((c, i) => swatch(c, "Màu thêm " + (i + 1))).join("")}</div>`;
+    const colors = `<div class="ee-draw-palette-label">${esc(tr("Màu của tranh"))}</div><div class="ee-draw-row">${lessonCols.map((c, i) => swatch(c, tr("Màu tranh") + " " + (i + 1))).join("")}</div>
+      <div class="ee-draw-palette-label">${esc(tr("Màu thêm"))}</div><div class="ee-draw-row">${extraCols.map((c, i) => swatch(c, tr("Màu thêm") + " " + (i + 1))).join("")}</div>`;
     const sizes = [[4, 6], [7, 10], [14, 16]].map(([w, d]) => `<button class="ee-draw-size${w === brushWidth ? " active" : ""}" data-size="${w}" type="button" aria-label="Cỡ bút ${w}"><span style="width:${d}px;height:${d}px"></span></button>`).join("");
 
     host.innerHTML = `
       <div class="ee-draw-page ee-draw-current">
         <div class="section-heading">
-          <div><h1>🖍️ ${esc(lesson.title)}</h1><p>Cô Thỏ Hồng hướng dẫn từng nét một.</p></div>
-          <button id="ee-draw-back-lesson" class="back-btn" type="button">← Chuẩn bị</button>
+          <div><h1>🖍️ ${esc(lessonTitle(lesson))}</h1><p>${esc(tr("Cô Thỏ Hồng hướng dẫn từng nét một."))}</p></div>
+          ${localeControls()}<button id="ee-draw-back-lesson" class="back-btn" type="button">${esc(tr("← Chuẩn bị"))}</button></div>
         </div>
         <div class="ee-draw-work">
           <section class="ee-draw-step-card">
             <div class="ee-draw-col-head">
-            <div class="ee-draw-progress"><strong>Bước ${currentStepIndex + 1}/${lesson.steps.length}</strong></div>
+            <div class="ee-draw-progress"><strong>${esc(tr("Bước"))} ${currentStepIndex + 1}/${lesson.steps.length}</strong></div>
             <div class="ee-draw-dots">${dots}</div>
-            <div class="ee-draw-step-copy"><h2>${esc(item.title)}</h2><p>${esc(item.instruction)}</p></div>
+            <div class="ee-draw-step-copy"><h2>${esc(translatedStepTitle(item))}</h2><p>${esc(translatedInstruction(item))}</p></div>
             <div class="ee-draw-actions">
-              <button id="ee-draw-speak" class="ee-draw-btn secondary" type="button" title="Nghe Cô Thỏ đọc">🔊 Nghe</button>
-              <button id="ee-draw-prev" class="ee-draw-btn secondary" type="button" ${currentStepIndex === 0 ? "disabled" : ""}>← Bước trước</button>
+              <button id="ee-draw-speak" class="ee-draw-btn secondary" type="button" title="${esc(tr("Nghe Cô Thỏ đọc"))}">${esc(tr("🔊 Nghe"))}</button>
+              <button id="ee-draw-prev" class="ee-draw-btn secondary" type="button" ${currentStepIndex === 0 ? "disabled" : ""}>${esc(tr("← Bước trước"))}</button>
               <div class="ee-draw-count">${currentStepIndex + 1} / ${lesson.steps.length}</div>
-              <button id="ee-draw-next" class="ee-draw-btn primary" type="button">${currentStepIndex === lesson.steps.length - 1 ? "Hoàn thành 🎉" : "Em vẽ xong →"}</button>
+              <button id="ee-draw-next" class="ee-draw-btn primary" type="button">${esc(tr(currentStepIndex === lesson.steps.length - 1 ? "Hoàn thành 🎉" : "Em vẽ xong →"))}</button>
             </div>
             <p id="ee-draw-voice-note" class="ee-draw-voice-note" hidden></p>
             </div>
             <div class="ee-draw-svg-wrap ee-draw-frame">${stepDiagramHtml(lesson, currentStepIndex)}</div>
             <div class="ee-draw-col-foot">
-            <div class="ee-draw-current-note">🐰 <strong>Cô Thỏ mách bé:</strong> ${esc(note)}</div>
-            ${item.tip ? `<div class="ee-draw-tip">💡 ${esc(item.tip)}</div>` : ""}
+            <div class="ee-draw-current-note">🐰 <strong>${esc(tr("Cô Thỏ mách bé:"))}</strong> ${esc(tr(note))}</div>
+            ${item.tip ? `<div class="ee-draw-tip">💡 ${esc(translatedTip(item))}</div>` : ""}
             </div>
           </section>
           <section class="ee-draw-pad-card">
-            <div class="ee-draw-pad-head ee-draw-col-head"><h3>✏️ Bảng vẽ của bé</h3>
+            <div class="ee-draw-pad-head ee-draw-col-head"><h3>${esc(tr("✏️ Bảng vẽ của bé"))}</h3>
               ${colors}
               <div class="ee-draw-row ee-draw-toolrow">${sizes}
-                <button id="ee-draw-eraser" class="ee-draw-tool" type="button" title="Cục tẩy" aria-label="Cục tẩy">${ICON_ERASER}<span>Tẩy</span></button>
-                <button id="ee-draw-undo" class="ee-draw-tool" type="button" title="Hoàn tác nét vừa vẽ" aria-label="Hoàn tác">${ICON_UNDO}<span>Hoàn tác</span></button>
-                <button id="ee-draw-clear" class="ee-draw-tool" type="button" title="Xoá hết bảng vẽ" aria-label="Xoá hết">${ICON_TRASH}<span>Xoá hết</span></button>
+                <button id="ee-draw-eraser" class="ee-draw-tool" type="button" title="Cục tẩy" aria-label="Cục tẩy">${ICON_ERASER}<span>${esc(tr("Tẩy"))}</span></button>
+                <button id="ee-draw-undo" class="ee-draw-tool" type="button" title="Hoàn tác nét vừa vẽ" aria-label="Hoàn tác">${ICON_UNDO}<span>${esc(tr("Hoàn tác"))}</span></button>
+                <button id="ee-draw-clear" class="ee-draw-tool" type="button" title="Xoá hết bảng vẽ" aria-label="Xoá hết">${ICON_TRASH}<span>${esc(tr("Xoá hết"))}</span></button>
               </div>
             </div>
             <div class="ee-draw-canvas-shell ee-draw-frame">
@@ -529,10 +588,10 @@
               <canvas id="ee-draw-canvas" class="ee-draw-canvas" width="720" height="540" aria-label="Bảng vẽ của bé"></canvas>
             </div>
             <div class="ee-draw-col-foot">
-            <p class="ee-draw-pad-help">Bé vẽ bằng chuột hoặc ngón tay, đè lên nét mờ cho dễ. Bảng vẽ không gửi dữ liệu ra ngoài.</p>
+            <p class="ee-draw-pad-help">${esc(tr("Bé vẽ bằng chuột hoặc ngón tay, đè lên nét mờ cho dễ. Bảng vẽ không gửi dữ liệu ra ngoài."))}</p>
             <div class="ee-draw-ref-toggle" style="gap:.45rem;flex-wrap:wrap">
-              <button id="ee-draw-guide-toggle" class="ee-draw-btn secondary" type="button">${guideOn ? "👻 Tắt nét mờ" : "👻 Bật nét mờ"}</button>
-              <button id="ee-draw-toggle-ref" class="ee-draw-btn secondary" type="button">👁 Hiện / ẩn tranh mẫu</button>
+              <button id="ee-draw-guide-toggle" class="ee-draw-btn secondary" type="button">${esc(tr(guideOn ? "👻 Tắt nét mờ" : "👻 Bật nét mờ"))}</button>
+              <button id="ee-draw-toggle-ref" class="ee-draw-btn secondary" type="button">${esc(tr("👁 Hiện / ẩn tranh mẫu"))}</button>
             </div>
             <div id="ee-draw-mini-ref" class="ee-draw-mini-ref hidden">${referenceImageHtml(lesson)}</div>
             </div>
@@ -543,12 +602,14 @@
     bindDrawingTools(host);
     if (oldDrawing && padState) {
       const img = new Image();
-      img.onload = () => { if (padState && padState.ctx) padState.ctx.drawImage(img, 0, 0, padState.canvas.width, padState.canvas.height); };
+      const destination = padState;
+      img.onload = () => { if (padState === destination && destination.ctx) destination.ctx.drawImage(img, 0, 0, destination.canvas.width, destination.canvas.height); };
       img.src = oldDrawing;
     }
 
     const go = (index) => { currentStepIndex = index; renderStep(lesson); };
     host.querySelectorAll("[data-step]").forEach((b) => b.addEventListener("click", () => go(Number(b.dataset.step) || 0)));
+    bindLocale(host, () => renderStep(lesson));
     host.querySelector("#ee-draw-back-lesson")?.addEventListener("click", () => renderLessonIntro(lesson));
     host.querySelector("#ee-draw-prev")?.addEventListener("click", () => { if (currentStepIndex > 0) go(currentStepIndex - 1); });
     host.querySelector("#ee-draw-next")?.addEventListener("click", () => {
@@ -561,7 +622,7 @@
     host.querySelector("#ee-draw-speak")?.addEventListener("click", () => {
       if (!speak(stepSpeech(lesson, item))) {
         const n = host.querySelector("#ee-draw-voice-note");
-        if (n) { n.hidden = false; n.textContent = "Máy này chưa có giọng đọc tiếng Việt. Người lớn có thể cài thêm giọng Tiếng Việt trong Cài đặt › Giọng nói của máy."; }
+        if (n) { n.hidden = false; n.textContent = language === "en" ? "Google TTS is unavailable." : "Google TTS tạm thời không khả dụng."; }
       }
     });
   }
@@ -582,11 +643,11 @@
     } catch (_) { return ""; }
   }
 
-  function renderFinish(lesson) {
+  function renderFinish(lesson, savedDrawing = null) {
     const host = activeContext && activeContext.host;
     if (!host) return;
     stopSpeak();
-    const drawing = drawingWithWhite();
+    const drawing = savedDrawing === null ? drawingWithWhite() : savedDrawing;
     cleanupPad();
     markDone(lesson);
     setLessonBanner(lesson);
@@ -594,22 +655,23 @@
     const next = LESSONS[idx + 1];
     host.innerHTML = `
       <div class="ee-draw-page">
-        <div class="section-heading"><div><h1>🖍️ ${esc(lesson.title)}</h1><p>Hoàn thành bức tranh.</p></div><button id="ee-draw-finish-back" class="back-btn" type="button">← ${LESSONS.length} tranh</button></div>
+        <div class="section-heading"><div><h1>🖍️ ${esc(lessonTitle(lesson))}</h1><p>${esc(tr("Hoàn thành bức tranh."))}</p></div>${localeControls()}<button id="ee-draw-finish-back" class="back-btn" type="button">← ${LESSONS.length} ${esc(tr("tranh"))}</button></div></div>
         <section class="ee-draw-finish">
           <div style="font-size:56px" aria-hidden="true">🎉🐰</div>
-          <h2>Bé vẽ xong rồi!</h2>
-          <p>Cô Thỏ Hồng rất thích bức tranh của bé. Hai bức tranh không cần giống hệt nhau, quan trọng là bé đã biết đi từ hình lớn đến từng chi tiết nhỏ.</p>
+          <h2>${esc(tr("Bé vẽ xong rồi!"))}</h2>
+          <p>${esc(tr("Cô Thỏ Hồng rất thích bức tranh của bé. Hai bức tranh không cần giống hệt nhau, quan trọng là bé đã biết đi từ hình lớn đến từng chi tiết nhỏ."))}</p>
           <div class="ee-draw-finish-grid">
-            <div class="ee-draw-finish-panel"><strong>Tranh của bé</strong>${drawing ? `<img src="${drawing}" alt="Bức vẽ của bé">` : `<div class="ee-draw-empty">Bé đã chọn vẽ trên giấy thật.</div>`}</div>
-            <div class="ee-draw-finish-panel"><strong>Tranh mẫu</strong>${referenceImageHtml(lesson)}</div>
+            <div class="ee-draw-finish-panel"><strong>${esc(tr("Tranh của bé"))}</strong>${drawing ? `<img src="${drawing}" alt="Bức vẽ của bé">` : `<div class="ee-draw-empty">${esc(tr("Bé đã chọn vẽ trên giấy thật."))}</div>`}</div>
+            <div class="ee-draw-finish-panel"><strong>${esc(tr("Tranh mẫu"))}</strong>${referenceImageHtml(lesson)}</div>
           </div>
           <div class="ee-draw-finish-actions">
-            <button id="ee-draw-again" class="ee-draw-btn secondary" type="button">Vẽ lại từ đầu</button>
-            ${next ? `<button id="ee-draw-next-lesson" class="ee-draw-btn primary" type="button">Tranh tiếp theo: ${esc(next.title)} →</button>` : ""}
-            <button id="ee-draw-other" class="ee-draw-btn secondary" type="button">Chọn tranh khác</button>
+            <button id="ee-draw-again" class="ee-draw-btn secondary" type="button">${esc(tr("Vẽ lại từ đầu"))}</button>
+            ${next ? `<button id="ee-draw-next-lesson" class="ee-draw-btn primary" type="button">Tranh tiếp theo: ${esc(lessonTitle(next))} →</button>` : ""}
+            <button id="ee-draw-other" class="ee-draw-btn secondary" type="button">${esc(tr("Chọn tranh khác"))}</button>
           </div>
         </section>
       </div>`;
+    bindLocale(host, () => renderFinish(lesson, drawing));
     host.querySelector("#ee-draw-finish-back")?.addEventListener("click", renderRegistry);
     host.querySelector("#ee-draw-other")?.addEventListener("click", renderRegistry);
     host.querySelector("#ee-draw-next-lesson")?.addEventListener("click", () => renderLessonIntro(next));

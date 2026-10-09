@@ -35,12 +35,175 @@
     .replace(/\"/g, "&quot;")
     .replace(/'/g, "&#39;");
 
+  // Shared Vietnamese / English presentation (image IDs remain unchanged).
+  let language = "vi";
+  let languageObserver = null;
+  let voiceNonce = 0;
+  let voiceAudio = null;
+  let lastVoiceKey = "";
+  let lastVoiceAt = 0;
+  const localizedNodes = new WeakMap();
+  const EN = Object.freeze({
+    "Xưởng Xếp Hình":"Jigsaw Puzzle Workshop", "Tranh":"Picture", "Xếp hình":"Jigsaw puzzle",
+    "Cấp":"Level", "9 cấp":"9 levels", "9 cấp độ":"9 levels", "36 bức tranh • 9 cấp độ • kéo thả các mảnh ghép thật.":"36 pictures • 9 levels • drag and drop real jigsaw pieces.",
+    "9 cấp × 4 tranh":"9 levels × 4 pictures", "Mỗi cấp tăng dần số mảnh. Bé có thể bật hình mẫu khi cần, hoặc tắt hình mẫu để rèn quan sát và trí nhớ.":"Each level has more pieces. Turn the guide picture on when you need help, or turn it off to practice observation and memory.",
+    "Cô Thỏ Hồng nhắc bé":"Miss Pink Bunny's tip", "Nhìn màu sắc, đường nét và góc ảnh trước; ghép từ những mảnh dễ nhận ra nhất nhé!":"Look at colors, shapes, and corners first. Start with the easiest pieces!",
+    "Làm quen":"Getting started", "Rất dễ":"Very easy", "Dễ":"Easy", "Dễ +":"Easy +", "Vừa":"Medium", "Vừa +":"Medium +", "Khá":"Hard", "Khá +":"Hard +", "Thử thách":"Challenge",
+    "mảnh":"pieces", "4 tranh →":"4 pictures →", "Chọn 1 trong 4 bức tranh.":"Choose one of the four pictures.",
+    "Kéo mảnh vào đúng vị trí.":"Drag each piece into the correct place.",
+    "Chọn tranh":"Choose picture", "Ẩn hình mẫu":"Hide guide", "Hiện hình mẫu":"Show guide", "Xáo mảnh":"Shuffle pieces", "Làm lại":"Restart",
+    "Các mảnh ghép":"Puzzle pieces", "mảnh còn lại":"pieces left", "Cách chơi:":"How to play:",
+    "kéo mảnh vào gần đúng vị trí để mảnh tự khớp. Trên màn hình cảm ứng, bé cũng có thể chạm chọn một mảnh rồi chạm vào đúng ô trên bảng.":"Drag a piece near its matching spot and it will snap into place. On a touchscreen, you can also select a piece and tap the right square on the board.",
+    "Hình mẫu đang bật để bé dễ làm quen.":"The guide picture is on to help you get started.", "Thử thách bắt đầu! Bé có thể bật hình mẫu nếu cần.":"Challenge started! Turn on the guide picture if you need help.",
+    "Đã bật hình mẫu mờ.":"Guide picture is on.", "Đã tắt hình mẫu. Bé thử nhớ bức tranh nhé!":"Guide picture is off. Try to remember the picture!",
+    "Cô Thỏ đã xáo lại các mảnh chưa ghép.":"Miss Bunny shuffled the remaining pieces.", "Các mảnh đã được xáo lại. Bé bắt đầu nhé!":"Pieces reshuffled. Have fun!",
+    "Đã chọn một mảnh. Bé có thể kéo vào bảng hoặc chạm đúng ô cần đặt.":"Piece selected. Drag it to the board or tap its matching square.",
+    "Đúng rồi! Mảnh ghép đã khớp ✨":"That's right! The piece fits! ✨", "Chưa khớp rồi. Bé thử nhìn màu và vị trí của mảnh nhé!":"Not quite! Look at the piece's color and position.",
+    "Ô này chưa đúng với mảnh đang chọn. Bé thử chỗ khác nhé!":"This is not the right spot. Try another square!",
+    "Tất cả mảnh đã vào đúng vị trí 🎉":"All pieces are in the right place! 🎉", "Hoàn thành bức tranh.":"Picture completed.",
+    "Bé ghép xong rồi!":"You did it!", "Ghép lại":"Play again", "Chọn tranh khác":"Choose another picture", "Tranh hoàn chỉnh":"Completed picture",
+    "Chưa đọc được kho ảnh dùng chung.":"Unable to load the shared picture catalog.",
+    "Anh kiểm tra file ":"Please check the file ", " rồi thử lại nhé.":" and try again.",
+    "Chưa tải được ảnh từ kho dùng chung.":"Unable to load this picture.",
+    "Game chỉ tham chiếu đúng ":"This game only uses ", " trong catalog. Anh kiểm tra file ảnh tại đường dẫn catalog rồi thử lại nhé.":" from the catalog. Please check the picture file path and try again.",
+    "Đang đọc 36 tranh từ kho ảnh dùng chung…":"Loading 36 pictures from the shared catalog…", "Đang chuẩn bị các mảnh ghép…":"Preparing puzzle pieces…", "Đang tải…":"Loading…",
+    "Bảng xếp hình":"Puzzle board", "Tranh xếp hình":"Puzzle picture", "Thiếu imageId:":"Missing imageId:",
+    "Mảnh ghép":"Piece", "Ẩn":"Hide", "Hiện":"Show", "hình mẫu":"guide", "Kéo mảnh vào đúng vị trí.":"Drag pieces to the correct positions.", "Cô Thỏ Hồng khen bé quan sát rất giỏi.":"Miss Pink Bunny is proud of your observation skills.", "Đọc hướng dẫn":"Read instructions", "Nghe hướng dẫn":"Listen to instructions", "Dừng đọc":"Stop audio"
+  });
+  const EN_PATTERNS = [
+    [/^(.+) • Chọn 1 trong 4 bức tranh\.$/, (_,a)=>`${translateVi(a)} • Choose one of four pictures.`],
+    [/^Cấp (\d+) — (\d+) mảnh$/, (_,a,b)=>`Level ${a} — ${b} pieces`],
+    [/^Cấp (\d+)$/,(_,a)=>`Level ${a}`],
+    [/^← Cấp (\d+)$/,(_,a)=>`← Level ${a}`],
+    [/^← 9 cấp$/,()=>"← 9 levels"],
+    [/^← Chọn tranh$/,()=>"← Choose picture"],
+    [/^👁 (Ẩn|Hiện) hình mẫu$/,(_,a)=>`👁 ${a === "Ẩn" ? "Hide" : "Show"} guide`],
+    [/^🔀 Xáo mảnh$/,()=>"🔀 Shuffle pieces"],
+    [/^↻ Làm lại$/,()=>"↻ Restart"],
+    [/^↻ Ghép lại$/,()=>"↻ Play again"],
+    [/^🖼 Chọn tranh khác$/,()=>"🖼 Choose another picture"],
+    [/^🧩 Các mảnh ghép$/,()=>"🧩 Puzzle pieces"],
+    [/^(\d+) mảnh$/,(_,a)=>`${a} pieces`],
+    [/^(\d+) mảnh còn lại$/,(_,a)=>`${a} pieces left`],
+    [/^(\d+) mảnh • (.+)$/,(_,a,b)=>`${a} pieces • ${translateVi(b)}`],
+    [/^Cấp (\d+) • (\d+) mảnh • Kéo mảnh vào đúng vị trí\.$/,(_,a,b)=>`Level ${a} • ${b} pieces • Drag each piece into place.`],
+    [/^(.+) • Chọn 1 trong 4 bức tranh\.$/,(_,a)=>`${translateVi(a)} • Choose one of four pictures.`],
+    [/^Mảnh ghép (\d+)$/,(_,a)=>`Puzzle piece ${a}`],
+    [/^Bé đã hoàn thành (\d+) mảnh trong (.+)\.$/,(_,a,b)=>`You completed ${a} pieces in ${b}.`],
+  ];
+  function translateVi(value) {
+    const txt = String(value || "");
+    if (Object.prototype.hasOwnProperty.call(EN, txt)) return EN[txt];
+    for (const [pattern, callback] of EN_PATTERNS) if (pattern.test(txt)) return txt.replace(pattern, callback);
+    return txt;
+  }
+  function syncLanguage() {
+    const host = activeContext && activeContext.host;
+    if (!host) return;
+    const walker = document.createTreeWalker(host, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    for (const node of nodes) {
+      if (node.parentElement && node.parentElement.closest("script,style,.ee-jig-language-toggle")) continue;
+      const existing = localizedNodes.get(node);
+      const baseline = existing && node.nodeValue === existing.last ? existing.original : (node.nodeValue || "");
+      const out = language === "en" ? translateVi(baseline) : baseline;
+      if (node.nodeValue !== out) node.nodeValue = out;
+      localizedNodes.set(node, { original: baseline, last: out });
+    }
+    host.querySelectorAll("[data-jig-language]").forEach((button) => {
+      button.setAttribute("aria-pressed", button.dataset.jigLanguage === language ? "true" : "false");
+    });
+    host.querySelectorAll("[data-jig-speech]").forEach((button) => {
+      const original = button.dataset.jigSpeech || "";
+      const wanted = `🔊 ${language === "en" ? "Listen to instructions" : "Nghe hướng dẫn"}`;
+      if (button.textContent !== wanted) button.textContent = wanted;
+      button.setAttribute("aria-label", language === "en" ? "Listen to instructions" : "Nghe hướng dẫn");
+      button.dataset.jigSpeech = original;
+    });
+    // Prefer catalog English metadata instead of translating educational picture names.
+    host.querySelectorAll("[data-jig-image-title]").forEach((node) => {
+      const id = node.dataset.jigImageTitle;
+      const meta = imageMeta(id);
+      if (!meta) return;
+      const index = node.dataset.jigImageNumber || "";
+      const title = language === "en" ? (meta.name_en || meta.nameEn || meta.title_en || (index ? `Picture ${index}` : "Picture")) : (meta.name_vi || "Tranh");
+      const wanted = `${index ? index + " " : ""}${title}`;
+      if (node.textContent !== wanted) node.textContent = wanted;
+    });
+  }
+  function stopSpeech() {
+    voiceNonce++;
+    if (voiceAudio) { try { voiceAudio.pause(); voiceAudio.removeAttribute("src"); voiceAudio.load(); } catch (_) {} }
+    voiceAudio = null;
+  }
+  function speakInstructions(text) {
+    const message = String(text || "").trim();
+    if (!message || typeof Audio !== "function") return;
+    const key = `${language}:${message}`;
+    if (lastVoiceKey === key && Date.now() - lastVoiceAt < 300) return;
+    lastVoiceKey = key; lastVoiceAt = Date.now();
+    stopSpeech();
+    const nonce = voiceNonce;
+    const audio = new Audio();
+    voiceAudio = audio;
+    audio.preload = "none";
+    audio.referrerPolicy = "no-referrer";
+    audio.src = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${language === "en" ? "en-US" : "vi"}&q=${encodeURIComponent(message)}`;
+    audio.onerror = () => {
+      if (nonce === voiceNonce && activeContext && activeContext.host) showStatus(language === "en" ? "Audio is unavailable. Please try again later." : "Chưa phát được âm thanh. Bé thử lại sau nhé!");
+    };
+    audio.play().catch(() => {
+      if (nonce === voiceNonce && activeContext && activeContext.host) showStatus(language === "en" ? "Tap Listen again to play audio." : "Bé bấm Nghe hướng dẫn lần nữa nhé!");
+    });
+  }
+  function languageTools() {
+    return `<div class="ee-jig-language-toggle" role="group" aria-label="Language / Ngôn ngữ"><button type="button" data-jig-language="vi" aria-pressed="${language === "vi"}">Tiếng Việt</button><button type="button" data-jig-language="en" aria-pressed="${language === "en"}">English</button></div>`;
+  }
+  function connectLanguageControls() {
+    const host = activeContext && activeContext.host;
+    if (!host) return;
+    host.querySelectorAll("[data-jig-language]").forEach((button) => button.addEventListener("click", () => {
+      if (button.dataset.jigLanguage === language) return;
+      stopSpeech(); language = button.dataset.jigLanguage;
+      syncLanguage();
+      setCurrentBanner();
+    }));
+    host.querySelectorAll("[data-jig-speech]").forEach((button) => button.addEventListener("click", () => {
+      speakInstructions(language === "en" ? (button.dataset.jigSpeechEn || "") : (button.dataset.jigSpeech || ""));
+    }));
+    syncLanguage();
+  }
+  function setCurrentBanner() {
+    if (currentLevelId && currentImageId) {
+      const lvl = levelById(currentLevelId); if (lvl) setImageBanner(lvl, currentImageId);
+    } else if (currentLevelId) {
+      const lvl = levelById(currentLevelId); if (lvl) setLevelBanner(lvl);
+    } else setRegistryBanner();
+  }
+  function observeLanguage() {
+    if (languageObserver) languageObserver.disconnect();
+    if (!activeContext || !activeContext.host || typeof MutationObserver !== "function") return;
+    languageObserver = new MutationObserver(() => syncLanguage());
+    languageObserver.observe(activeContext.host, {childList:true, subtree:true, characterData:true});
+  }
+
   function ensureStyles() {
-    if (document.getElementById(STYLE_ID)) return;
+    const previousStyle = document.getElementById(STYLE_ID);
+    if (previousStyle) previousStyle.remove();
     const style = document.createElement("style");
     style.id = STYLE_ID;
     style.textContent = `
       .ee-jig-page{color:#1f2937}
+      .ee-jig-page .section-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+      .ee-jig-heading-actions{display:flex;align-items:center;justify-content:flex-end;gap:12px;flex:0 0 auto;margin-left:auto;flex-wrap:nowrap}
+      .ee-jig-language-toggle{display:flex;align-items:center;gap:3px;padding:3px;border:1px solid #bfdbfe;border-radius:15px;background:#fff;box-shadow:0 4px 12px rgba(79,70,229,.08);white-space:nowrap}
+      .ee-jig-language-toggle button{appearance:none;-webkit-appearance:none;border:0;background:transparent;color:#334155;border-radius:11px;min-height:36px;padding:8px 13px;font-family:inherit;font-size:14px;line-height:1.2;font-weight:800;cursor:pointer;transition:background .15s ease,color .15s ease}
+      .ee-jig-language-toggle button[aria-pressed="true"]{color:#fff;background:linear-gradient(90deg,#3b82f6,#14b8a6);box-shadow:0 3px 10px rgba(20,184,166,.17)}
+      .ee-jig-language-toggle button:focus-visible{outline:2px solid #7c3aed;outline-offset:2px}
+      .ee-jig-heading-actions>.back-btn{margin:0;white-space:nowrap}
+      @media(max-width:650px){.ee-jig-heading-actions{width:100%;justify-content:flex-end;gap:8px}.ee-jig-language-toggle button{padding:7px 10px;font-size:13px}}
+
       .ee-jig-hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem;align-items:center;margin:.7rem 0 1rem;padding:1rem 1.1rem;border:1px solid #e9d5ff;border-radius:22px;background:linear-gradient(135deg,#fdf2f8,#f5f3ff)}
       .ee-jig-hero h2{margin:0 0 .35rem;color:#5b21b6;font-size:22px}
       .ee-jig-hero p{margin:0;color:#475569;font-size:16px;font-weight:800;line-height:1.5}
@@ -134,6 +297,7 @@
   }
 
   function cleanupGame() {
+    stopSpeech();
     clearTimer();
     clearResize();
     if (game && game.resizeHandler) window.removeEventListener("resize", game.resizeHandler);
@@ -208,9 +372,10 @@
     if (!host) return;
     host.innerHTML = `
       <div class="ee-jig-page">
-        <div class="section-heading"><div><h1>🧩 Xưởng Xếp Hình</h1><p>Chưa đọc được kho ảnh dùng chung.</p></div><button id="ee-jig-back-games" class="back-btn" type="button">← Games</button></div>
+        <div class="section-heading"><div><h1>🧩 Xưởng Xếp Hình</h1><p>Chưa đọc được kho ảnh dùng chung.</p></div><div class="ee-jig-heading-actions">${languageTools()}<button id="ee-jig-back-games" class="back-btn" type="button">← Games</button></div></div>
         <div class="ee-jig-empty">Anh kiểm tra file <strong>assets/data/shared_image_catalog.json</strong> rồi thử lại nhé.</div>
       </div>`;
+    connectLanguageControls();
     host.querySelector("#ee-jig-back-games")?.addEventListener("click", () => activeContext && activeContext.back && activeContext.back());
   }
 
@@ -231,11 +396,11 @@
       <div class="ee-jig-page">
         <div class="section-heading">
           <div><h1>🧩 Xưởng Xếp Hình</h1><p>36 bức tranh • 9 cấp độ • kéo thả các mảnh ghép thật.</p></div>
-          <button id="ee-jig-back-games" class="back-btn" type="button">← Games</button>
+          <div class="ee-jig-heading-actions">${languageTools()}<button id="ee-jig-back-games" class="back-btn" type="button">← Games</button></div>
         </div>
         <div class="ee-jig-hero">
           <div><h2>9 cấp × 4 tranh</h2><p>Mỗi cấp tăng dần số mảnh. Bé có thể bật hình mẫu khi cần, hoặc tắt hình mẫu để rèn quan sát và trí nhớ.</p></div>
-          <div class="ee-jig-bunny"><span class="icon" aria-hidden="true">🐰</span><div><strong>Cô Thỏ Hồng nhắc bé</strong><span>Nhìn màu sắc, đường nét và góc ảnh trước; ghép từ những mảnh dễ nhận ra nhất nhé!</span></div></div>
+          <div class="ee-jig-bunny"><span class="icon" aria-hidden="true">🐰</span><div><strong>Cô Thỏ Hồng nhắc bé</strong><span>Nhìn màu sắc, đường nét và góc ảnh trước; ghép từ những mảnh dễ nhận ra nhất nhé!</span><button class="ee-jig-btn teal" type="button" data-jig-speech="Nhìn màu sắc, đường nét và góc ảnh trước; ghép từ những mảnh dễ nhận ra nhất nhé!" data-jig-speech-en="Look at colors, shapes, and corners first. Start with the easiest pieces!">🔊 Nghe hướng dẫn</button></div></div>
         </div>
         <div class="ee-jig-level-grid">
           ${LEVELS.map((level) => `
@@ -246,6 +411,7 @@
             </button>`).join("")}
         </div>
       </div>`;
+    connectLanguageControls();
     host.querySelector("#ee-jig-back-games")?.addEventListener("click", () => activeContext && activeContext.back && activeContext.back());
     host.querySelectorAll("[data-level]").forEach((button) => button.addEventListener("click", () => {
       const level = levelById(button.dataset.level);
@@ -264,7 +430,7 @@
       <div class="ee-jig-page">
         <div class="section-heading">
           <div><h1>🧩 Cấp ${level.id} — ${level.pieces} mảnh</h1><p>${esc(level.label)} • Chọn 1 trong 4 bức tranh.</p></div>
-          <button id="ee-jig-back-levels" class="back-btn" type="button">← 9 cấp</button>
+          <div class="ee-jig-heading-actions">${languageTools()}<button id="ee-jig-back-levels" class="back-btn" type="button">← 9 cấp</button></div>
         </div>
         <div class="ee-jig-image-grid">
           ${level.images.map((imageId, index) => {
@@ -274,12 +440,13 @@
             }
             return `<button class="ee-jig-image-card" data-image="${esc(imageId)}" type="button">
               <img src="${esc(meta.src)}" alt="${esc(meta.alt_vi || meta.name_vi || "Tranh xếp hình")}" loading="lazy">
-              <h3>${GAME_NUMBER}.${level.id}.${index + 1} ${esc(meta.name_vi || "Tranh")}</h3>
+              <h3 data-jig-image-title="${esc(imageId)}" data-jig-image-number="${GAME_NUMBER}.${level.id}.${index + 1}">${GAME_NUMBER}.${level.id}.${index + 1} ${esc(meta.name_vi || "Tranh")}</h3>
               <p>${level.pieces} mảnh • ${esc(level.label)}</p>
             </button>`;
           }).join("")}
         </div>
       </div>`;
+    connectLanguageControls();
     host.querySelector("#ee-jig-back-levels")?.addEventListener("click", renderRegistry);
     host.querySelectorAll("[data-image]").forEach((button) => button.addEventListener("click", () => {
       const imageId = String(button.dataset.image || "");
@@ -678,11 +845,11 @@
     setImageBanner(snapshot.level, snapshot.imageId);
     host.innerHTML = `
       <div class="ee-jig-page">
-        <div class="section-heading"><div><h1>🧩 ${esc(snapshot.meta.name_vi || "Xếp hình")}</h1><p>Hoàn thành bức tranh.</p></div><button id="ee-jig-finish-level" class="back-btn" type="button">← Cấp ${snapshot.level.id}</button></div>
+        <div class="section-heading"><div><h1>🧩 <span data-jig-image-title="${esc(snapshot.imageId)}">${esc(snapshot.meta.name_vi || "Xếp hình")}</span></h1><p>Hoàn thành bức tranh.</p></div><div class="ee-jig-heading-actions">${languageTools()}<button id="ee-jig-finish-level" class="back-btn" type="button">← Cấp ${snapshot.level.id}</button></div></div>
         <div class="ee-jig-finish">
           <div style="font-size:54px;line-height:1">🎉</div>
           <h2>Bé ghép xong rồi!</h2>
-          <p>Cô Thỏ Hồng khen bé quan sát rất giỏi. Bé đã hoàn thành <strong>${snapshot.level.pieces} mảnh</strong> trong <strong>${formatTime(snapshot.elapsed)}</strong>.</p>
+          <p>${language === "en" ? "Miss Pink Bunny is proud of your keen eyes! You completed" : "Cô Thỏ Hồng khen bé quan sát rất giỏi. Bé đã hoàn thành"} <strong>${snapshot.level.pieces} ${language === "en" ? "pieces" : "mảnh"}</strong> ${language === "en" ? "in" : "trong"} <strong>${formatTime(snapshot.elapsed)}</strong>.</p>
           <img src="${esc(snapshot.meta.src)}" alt="${esc(snapshot.meta.alt_vi || snapshot.meta.name_vi || "Tranh hoàn chỉnh")}">
           <div class="ee-jig-actions">
             <button id="ee-jig-play-again" class="ee-jig-btn primary" type="button">↻ Ghép lại</button>
@@ -691,6 +858,7 @@
           </div>
         </div>
       </div>`;
+    connectLanguageControls();
     host.querySelector("#ee-jig-finish-level")?.addEventListener("click", () => renderLevel(snapshot.level));
     host.querySelector("#ee-jig-play-again")?.addEventListener("click", () => startPuzzle(snapshot.level, snapshot.imageId));
     host.querySelector("#ee-jig-other-image")?.addEventListener("click", () => renderLevel(snapshot.level));
@@ -709,14 +877,16 @@
     host.innerHTML = `
       <div class="ee-jig-page">
         <div class="ee-jig-game-head">
-          <div class="ee-jig-title"><h1>🧩 ${esc(meta.name_vi || "Xếp hình")}</h1><p>Cấp ${level.id} • ${level.pieces} mảnh • Kéo mảnh vào đúng vị trí.</p></div>
+          <div class="ee-jig-title"><h1>🧩 <span data-jig-image-title="${esc(imageId)}">${esc(meta.name_vi || "Xếp hình")}</span></h1><p>Cấp ${level.id} • ${level.pieces} mảnh • Kéo mảnh vào đúng vị trí.</p></div>
           <div class="ee-jig-stats">
             <div class="ee-jig-stat">✅ <span id="ee-jig-progress">0/${level.pieces}</span></div>
             <div class="ee-jig-stat">⏱ <span id="ee-jig-time">0:00</span></div>
           </div>
         </div>
         <div class="ee-jig-toolbar">
-          <button id="ee-jig-back-images" class="ee-jig-btn" type="button">← Chọn tranh</button>
+          <div class="ee-jig-heading-actions">${languageTools()}<button id="ee-jig-back-images" class="ee-jig-btn" type="button">← Chọn tranh</button></div>
+        </div>
+        <div class="ee-jig-toolbar">
           <button id="ee-jig-guide-toggle" class="ee-jig-btn teal" type="button">👁 ${level.id <= 4 ? "Ẩn" : "Hiện"} hình mẫu</button>
           <button id="ee-jig-shuffle" class="ee-jig-btn" type="button">🔀 Xáo mảnh</button>
           <button id="ee-jig-reset" class="ee-jig-btn primary" type="button">↻ Làm lại</button>
@@ -734,7 +904,7 @@
           <aside class="ee-jig-tray-card">
             <div class="ee-jig-tray-title"><strong>🧩 Các mảnh ghép</strong><span id="ee-jig-remaining">${level.pieces} mảnh còn lại</span></div>
             <div id="ee-jig-tray" class="ee-jig-tray"></div>
-            <div class="ee-jig-help">🐰 <strong>Cách chơi:</strong> kéo mảnh vào gần đúng vị trí để mảnh tự khớp. Trên màn hình cảm ứng, bé cũng có thể chạm chọn một mảnh rồi chạm vào đúng ô trên bảng.</div>
+            <div class="ee-jig-help">🐰 <strong>Cách chơi:</strong> kéo mảnh vào gần đúng vị trí để mảnh tự khớp. Trên màn hình cảm ứng, bé cũng có thể chạm chọn một mảnh rồi chạm vào đúng ô trên bảng.<div style="margin-top:8px"><button class="ee-jig-btn teal" type="button" data-jig-speech="Kéo mảnh vào gần đúng vị trí để mảnh tự khớp. Trên màn hình cảm ứng, bé cũng có thể chạm chọn một mảnh rồi chạm vào đúng ô trên bảng." data-jig-speech-en="Drag a piece near its matching spot and it will snap into place. On a touchscreen, select a piece and tap the matching square on the board.">🔊 Nghe hướng dẫn</button></div></div>
           </aside>
         </div>
       </div>`;
@@ -766,6 +936,7 @@
     showStatus(level.id <= 4 ? "Hình mẫu đang bật để bé dễ làm quen." : "Thử thách bắt đầu! Bé có thể bật hình mẫu nếu cần.");
 
     game.boardEl.addEventListener("click", boardClick);
+    connectLanguageControls();
     host.querySelector("#ee-jig-back-images")?.addEventListener("click", () => renderLevel(level));
     host.querySelector("#ee-jig-guide-toggle")?.addEventListener("click", (event) => {
       if (!game) return;
@@ -810,10 +981,11 @@
       if (!host || currentLevelId !== level.id || currentImageId !== imageId) return;
       host.innerHTML = `
         <div class="ee-jig-page">
-          <div class="section-heading"><div><h1>🧩 ${esc(meta.name_vi || "Xếp hình")}</h1><p>Chưa tải được ảnh từ kho dùng chung.</p></div><button id="ee-jig-image-back" class="back-btn" type="button">← Cấp ${level.id}</button></div>
+          <div class="section-heading"><div><h1>🧩 <span data-jig-image-title="${esc(imageId)}">${esc(meta.name_vi || "Xếp hình")}</span></h1><p>Chưa tải được ảnh từ kho dùng chung.</p></div><div class="ee-jig-heading-actions">${languageTools()}<button id="ee-jig-image-back" class="back-btn" type="button">← Cấp ${level.id}</button></div></div>
           <div class="ee-jig-empty">Game chỉ tham chiếu đúng <strong>imageId</strong> trong catalog. Anh kiểm tra file ảnh tại đường dẫn catalog rồi thử lại nhé.</div>
         </div>`;
-      host.querySelector("#ee-jig-image-back")?.addEventListener("click", () => renderLevel(level));
+      connectLanguageControls();
+    host.querySelector("#ee-jig-image-back")?.addEventListener("click", () => renderLevel(level));
     };
     image.src = meta.src;
   }
@@ -822,6 +994,7 @@
     activeContext = context || null;
     ensureStyles();
     cleanupGame();
+    observeLanguage();
     currentLevelId = 0;
     currentImageId = "";
     setRegistryBanner();
@@ -837,6 +1010,9 @@
   }
 
   function destroy() {
+    stopSpeech();
+    if (languageObserver) languageObserver.disconnect();
+    languageObserver = null;
     cleanupGame();
     if (catalogAbort) {
       try { catalogAbort.abort(); } catch (_) {}

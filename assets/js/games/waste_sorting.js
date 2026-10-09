@@ -10,7 +10,7 @@
   const MODULE_KEY = "wasteSorting";
   const GAME_NUMBER = 12;
   const GAME_TITLE = "Phân loại rác";
-  const STYLE_ID = "class1-games-waste-sorting-style-v1";
+  const STYLE_ID = "class1-games-waste-sorting-style-v3";
   const STARS_KEY = "class1-waste-sorting-stars";
   const PER_BATCH = 4;
 
@@ -130,59 +130,65 @@
   ttsAudio.preload = "none";
   let ttsNonce = 0;
   let ttsQueue = [];
-  const synth = typeof window !== "undefined" && "speechSynthesis" in window ? window.speechSynthesis : null;
-  if (synth) { try { synth.getVoices(); } catch (_) {} }
-  function viVoice() { if (!synth) return null; try { return synth.getVoices().find((v) => /^vi([-_]|$)/i.test(v.lang)) || null; } catch (_) { return null; } }
+  // Google TTS only; no implicit browser-voice substitution.
   function splitText(text, max = 170) {
-    const parts = String(text || "").replace(/\s+/g, " ").trim().match(/[^.!?]+[.!?]?/g) || [];
-    const out = []; let buf = "";
-    parts.forEach((p) => { const s = p.trim(); if (!s) return; if (!buf) buf = s; else if ((buf + " " + s).length <= max) buf += " " + s; else { out.push(buf); buf = s; } });
-    if (buf) out.push(buf);
-    return out;
+    const sentences = String(text || "").replace(/\s+/g, " ").trim().match(/[^.!?]+[.!?]?/g) || [];
+    const units = [];
+    for (const sentence of sentences) {
+      const clean = sentence.trim();
+      if (!clean) continue;
+      if (clean.length <= max) { units.push(clean); continue; }
+      let part = "";
+      for (const word of clean.split(" ")) {
+        if (!word) continue;
+        if (part && (part + " " + word).length > max) { units.push(part); part = ""; }
+        if (word.length > max) {
+          if (part) { units.push(part); part = ""; }
+          for (let j = 0; j < word.length; j += max) units.push(word.slice(j, j + max));
+        } else part = part ? part + " " + word : word;
+      }
+      if (part) units.push(part);
+    }
+    const result = []; let buffer = "";
+    for (const unit of units) {
+      if (buffer && (buffer + " " + unit).length > max) { result.push(buffer); buffer = ""; }
+      buffer = buffer ? buffer + " " + unit : unit;
+    }
+    if (buffer) result.push(buffer);
+    return result;
   }
   function stopSpeak() {
     ttsNonce += 1; ttsQueue = [];
-    try { if (synth) synth.cancel(); } catch (_) {}
+    ttsAudio.onended = null; ttsAudio.onerror = null;
     try { ttsAudio.pause(); ttsAudio.removeAttribute("src"); ttsAudio.load(); } catch (_) {}
   }
   function voiceFail(quiet) {
-    if (quiet) return;
-    const n = host() && host().querySelector("#ws-voice");
-    if (n) { n.hidden = false; n.textContent = "Chưa phát được giọng đọc. Con nhờ người lớn kiểm tra loa và mạng nhé."; }
+    const n = host()?.querySelector("#ws-voice");
+    if (n) { n.hidden = false; n.textContent = tr("Chưa phát được giọng đọc. Con nhờ người lớn kiểm tra loa và mạng nhé.", "Audio isn't available right now. Please ask an adult to check the connection."); }
   }
   function playNext(nonce, quiet) {
     if (nonce !== ttsNonce || !ttsQueue.length) return;
     const chunk = ttsQueue.shift();
-    const voice = viVoice();
-    if (voice) {
-      try {
-        const u = new SpeechSynthesisUtterance(chunk);
-        u.voice = voice; u.lang = voice.lang; u.rate = 0.92; u.pitch = 1.08;
-        u.onend = () => playNext(nonce, true);
-        u.onerror = (e) => { if (nonce === ttsNonce && e.error !== "interrupted" && e.error !== "canceled") voiceFail(quiet); };
-        synth.speak(u); return;
-      } catch (_) { /* dùng Google */ }
-    }
+    ttsAudio.onended = () => { if (nonce === ttsNonce) playNext(nonce, quiet); };
+    ttsAudio.onerror = () => { if (nonce === ttsNonce) { ttsQueue = []; voiceFail(quiet); } };
     try {
-      ttsAudio.src = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent(chunk)}`;
+      ttsAudio.src = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${isEn() ? "en-US" : "vi"}&client=tw-ob&q=${encodeURIComponent(chunk)}`;
       ttsAudio.playbackRate = 0.96;
       const p = ttsAudio.play();
-      if (p && p.catch) p.catch(() => { if (nonce === ttsNonce) voiceFail(quiet); });
-    } catch (_) { voiceFail(quiet); }
+      if (p?.catch) p.catch(() => { if (nonce === ttsNonce) { ttsQueue = []; voiceFail(quiet); } });
+    } catch (_) { if (nonce === ttsNonce) { ttsQueue = []; voiceFail(quiet); } }
   }
-  ttsAudio.addEventListener("ended", () => { if (ttsQueue.length) playNext(ttsNonce, true); });
   function speak(text, quiet = true, force = false) {
     if (muted && !force) return;
     const chunks = splitText(text); if (!chunks.length) return;
-    stopSpeak();
-    const nonce = ++ttsNonce; ttsQueue = chunks; playNext(nonce, quiet);
+    stopSpeak(); ttsQueue = chunks; playNext(ttsNonce, quiet);
   }
 
   function setBanner(withLevel) {
     const fn = activeContext && activeContext.hooks && activeContext.hooks.setSubBanner;
     if (typeof fn !== "function") return;
-    const items = [{ level: 2, title: `${GAME_NUMBER}. ${GAME_TITLE}`, action: withLevel ? renderHome : null }];
-    if (withLevel && level) items.push({ level: 3, title: `${GAME_NUMBER}.${LEVELS.indexOf(level) + 1} ${level.title.replace(/^Cấp \d+: /, "")}`, action: null });
+    const items = [{ level: 2, title: `${GAME_NUMBER}. ${tr(GAME_TITLE, "Waste Sorting")}`, action: withLevel ? renderHome : null }];
+    if (withLevel && level) items.push({ level: 3, title: `${GAME_NUMBER}.${LEVELS.indexOf(level) + 1} ${viewLevel(level).title.replace(/^Cấp \d+: /, "")}`, action: null });
     fn({ items });
   }
 
@@ -197,6 +203,17 @@
     const style = document.createElement("style");
     style.id = STYLE_ID;
     style.textContent = `
+      .ws-toolbar{display:flex;justify-content:flex-end;align-items:center;gap:.65rem;flex-wrap:nowrap;margin:0}
+      .ws-langs{display:inline-flex;gap:0;padding:3px;border:1px solid #BFDBFE;border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(59,130,246,.11)}
+      .ws-langs button{font:inherit;min-height:39px;padding:.4rem .9rem;border:0;border-radius:13px;background:transparent;color:#1D4ED8;font-weight:800;font-size:16px;cursor:pointer;white-space:nowrap}
+      .ws-langs button.on{background:linear-gradient(90deg,#3B82F6,#14B8A6);color:#fff;box-shadow:0 3px 8px rgba(20,184,166,.18)}
+      .ws-exit{min-height:46px;padding:.6rem .95rem;border:0;border-radius:15px;background:linear-gradient(90deg,#EC4899,#8B5CF6);box-shadow:0 5px 12px rgba(139,92,246,.18);color:#fff;font:inherit;font-size:16px;font-weight:800;cursor:pointer;white-space:nowrap}
+      .ws-langs button:focus-visible,.ws-exit:focus-visible{outline:3px solid #93C5FD;outline-offset:2px}
+      @media(max-width:390px){.ws-toolbar{gap:.4rem}.ws-langs button{padding:.35rem .65rem;font-size:14px}.ws-exit{font-size:14px;min-height:42px;padding:.5rem .75rem}}
+      .ws-page .ws-topline{display:flex;align-items:center;justify-content:space-between;gap:.6rem 1rem;flex-wrap:wrap;margin:0 0 .65rem}
+      .ws-page .ws-topline>.ws-toolbar{margin-left:auto}
+      .ws-page .ws-head>.ws-toolbar{margin-left:auto}
+      .ws-page .ws-finish>.ws-toolbar{margin:0 0 .35rem}
       .ws-page{color:#344054;font-family:"Baloo 2","Nunito","Segoe UI",system-ui,sans-serif;padding:.1rem .1rem 1rem}
       .ws-page button{font-family:inherit}
       .ws-bubble{display:flex;align-items:center;gap:.6rem;border:2px solid #F9A8D4;border-radius:18px;background:#FFF1F7;padding:.55rem .8rem;margin:0 0 .9rem;color:#BE185D;font-size:19px;font-weight:700;line-height:1.4}
@@ -264,7 +281,40 @@
   }
 
   /* ---------- Trang chọn cấp ---------- */
+  let language = "vi";
+  const isEn = () => language === "en";
+  const tr = (vi, en) => isEn() ? en : vi;
+  function languageBar() {
+    return `<div class="ws-toolbar"><div class="ws-langs" role="group" aria-label="Language"><button type="button" data-ws-lang="vi" class="${isEn() ? "" : "on"}" aria-pressed="${!isEn()}">Tiếng Việt</button><button type="button" data-ws-lang="en" class="${isEn() ? "on" : ""}" aria-pressed="${isEn()}">English</button></div><button type="button" data-ws-exit class="ws-exit">← Games</button></div>`;
+  }
+  function bindLanguageBar() {
+    const h = host(); if (!h) return;
+    h.querySelectorAll("[data-ws-lang]").forEach((b) => b.addEventListener("click", () => {
+      const next = b.dataset.wsLang;
+      if (next === language || !["vi", "en"].includes(next)) return;
+      clearTimers(); stopSpeak();
+      language = next;
+      if (busy) { busy = false; selected = ""; onField = onField.filter((id) => !sorted.includes(id)); refill(); }
+      if (!level) renderHome();
+      else if (host().querySelector(".ws-finish") || (!onField.length && !queue.length)) renderFinish(false);
+      else renderLevel(false);
+    }));
+    h.querySelector("[data-ws-exit]")?.addEventListener("click", () => { clearTimers(); stopSpeak(); activeContext?.back?.(); });
+  }
+
   const HOME_TIP = "Phân loại rác giúp rác được tái chế thành đồ mới, rác hữu cơ thành phân bón, và giữ cho đất, nước luôn sạch. Mình cùng tập nhé!";
+  const EN_BINS = Object.freeze({"huu_co":{"label":"Organic waste","short":"organic","hint":"food scraps, fruit peels, leaves"},"tai_che":{"label":"Recyclables","short":"recyclable","hint":"paper, plastic bottles, cans, glass"},"con_lai":{"label":"Other waste","short":"other","hint":"dirty or non-recyclable items"},"nguy_hai":{"label":"Hazardous waste","short":"hazardous","hint":"batteries, broken bulbs, spray cans"}});
+  const EN_ITEMS = Object.freeze({"vo_chuoi":{"name":"Banana peel","why":"A banana peel is organic waste. It can become compost that helps plants grow."},"loi_tao":{"name":"Apple core","why":"An apple core is a fruit scrap. It belongs with organic waste."},"vo_trung":{"name":"Eggshell","why":"Eggshells are organic waste. They can be added to compost."},"la_kho":{"name":"Dry leaves","why":"Dry leaves break down naturally and make the soil healthier."},"com_thua":{"name":"Leftover rice","why":"Leftover rice belongs with organic waste. Taking only what we can eat helps reduce food waste!"},"xuong_ca":{"name":"Fish bones","why":"Fish bones are food scraps. They belong in the organic waste bin in this game."},"chai_nhua":{"name":"Plastic bottle","why":"Plastic bottles can be recycled into new plastic items or even fabric fibers."},"lon_nhom":{"name":"Aluminum can","why":"Aluminum can be melted and made into new cans many times."},"bao_cu":{"name":"Old newspaper","why":"Old newspaper can be recycled into new paper."},"thung_carton":{"name":"Cardboard box","why":"Cardboard is recyclable paper. Flatten the box to save space."},"chai_thuy_tinh":{"name":"Glass bottle","why":"Glass bottles can become new glass containers. Ask an adult to handle broken glass."},"hop_sua":{"name":"Drink carton","why":"Drink cartons can be recycled where collection is available. Empty and flatten the carton first."},"giay_an":{"name":"Used tissue","why":"A dirty used tissue does not belong in paper recycling. Put it in the other-waste bin."},"goi_bimbim":{"name":"Snack wrapper","why":"Many snack wrappers contain layers of different materials and are difficult to recycle."},"tui_nilon_ban":{"name":"Dirty plastic bag","why":"A dirty plastic bag is hard to recycle. A reusable shopping bag is a better choice."},"ong_hut":{"name":"Plastic straw","why":"A small used plastic straw goes in other waste. A reusable cup or no straw can reduce waste."},"ban_chai":{"name":"Old toothbrush","why":"A toothbrush contains several materials joined together, so it goes in other waste."},"pin":{"name":"Used battery","why":"Batteries may contain harmful substances. Take them to a special collection point with an adult."},"bong_den":{"name":"Broken light bulb","why":"Broken bulbs need special handling. Ask an adult to take them to the right collection point."},"binh_xit":{"name":"Empty insect-spray can","why":"Spray cans may contain chemicals or pressure. They need special collection. Never put them in a fire."}});
+  const EN_LEVELS = Object.freeze({"l1":{"title":"Level 1: Two bins","intro":"The green bin is for organic waste, like fruit peels and food scraps. The blue bin is for recyclables, like paper, plastic bottles, and cans. Tap an item, then the correct bin!"},"l2":{"title":"Level 2: Three bins","intro":"We have added a gray bin for other waste: dirty items and things we cannot recycle. Think carefully before choosing!"},"l3":{"title":"Level 3: Four bins","intro":"We have added a red bin for batteries and hazardous items. They need special collection so they do not harm our soil or water."}});
+  const EN_AFTER = Object.freeze(["Plastic bottles can become fibers for clothes","Aluminum cans can become new cans","Old paper can become new paper","Organic waste can become compost for plants","Used batteries need safe collection to protect soil and water"]);
+  const viewBin = (id) => isEn() ? { ...BINS[id], ...EN_BINS[id] } : BINS[id];
+  const viewItem = (id) => isEn() ? { ...ITEMS[id], ...EN_ITEMS[id] } : ITEMS[id];
+  const viewLevel = (l) => isEn() ? { ...l, ...EN_LEVELS[l.id] } : l;
+  const homeTip = () => tr(HOME_TIP, "Sorting waste helps us recycle new things, make compost for plants, and keep our earth and water clean. Let's practice!");
+  const afterHeading = () => tr("🌍 Rác sau khi phân loại sẽ đi đâu?", "🌍 What happens to our sorted waste?");
+  const chooseMessage = (id) => tr(`Bé chọn thùng cho “${ITEMS[id].name}” nhé!`, `Choose a bin for “${viewItem(id).name}”!`);
+  const touchMessage = () => tr("Bé chạm vào một món rác trước nhé!", "Tap a waste item first!");
+
   function renderHome() {
     clearTimers(); stopSpeak();
     level = null;
@@ -272,19 +322,19 @@
     const h = host(); if (!h) return;
     h.innerHTML = `
       <div class="ws-page">
-        <div class="section-heading"><div><h1>♻️ ${GAME_TITLE}</h1><p>${LEVELS.length} cấp</p></div><button id="ws-back-games" class="back-btn" type="button">← Games</button></div>
-        <div class="ws-bubble"><span class="ico" aria-hidden="true">🐰</span><span class="txt">${HOME_TIP}</span><button class="ws-say" id="ws-say-home" type="button" aria-label="Nghe cô đọc">🔊</button></div>
+        <div class="section-heading ws-topline"><div><h1>♻️ ${tr(GAME_TITLE, "Waste Sorting")}</h1><p>${LEVELS.length} ${tr("cấp", "levels")}</p></div>${languageBar()}</div>
+        <div class="ws-bubble"><span class="ico" aria-hidden="true">🐰</span><span class="txt">${esc(homeTip())}</span><button class="ws-say" id="ws-say-home" type="button" aria-label="${tr("Nghe cô đọc", "Listen to Bunny")}">🔊</button></div>
         <p id="ws-voice" class="ws-voice" hidden></p>
         <div class="ws-levels">${LEVELS.map((l, i) => `
           <button class="ws-level" type="button" data-level="${i}">
             <div class="mini" aria-hidden="true">${l.bins.map((b) => binSvg(BINS[b].color, BINS[b].dark, BINS[b].symbol)).join("")}</div>
-            <h3>${esc(l.title)}</h3>${starRow(stars[l.id] || 0)}
+            <h3>${esc(viewLevel(l).title)}</h3>${starRow(stars[l.id] || 0)}
           </button>`).join("")}</div>
-        <section class="ws-after"><h3>🌍 Rác sau khi phân loại sẽ đi đâu?</h3>
-          <div class="ws-after-row">${AFTER.map((a) => `<div class="ws-after-card"><span class="pair">${iconSvg(a.from)}<span aria-hidden="true">➜</span><span>${a.to}</span></span>${esc(a.text)}</div>`).join("")}</div></section>
+        <section class="ws-after"><h3>${afterHeading()}</h3>
+          <div class="ws-after-row">${AFTER.map((a) => `<div class="ws-after-card"><span class="pair">${iconSvg(a.from)}<span aria-hidden="true">➜</span><span>${a.to}</span></span>${esc(isEn() ? EN_AFTER[AFTER.indexOf(a)] : a.text)}</div>`).join("")}</div></section>
       </div>`;
-    h.querySelector("#ws-back-games")?.addEventListener("click", () => activeContext && activeContext.back && activeContext.back());
-    h.querySelector("#ws-say-home")?.addEventListener("click", () => speak(HOME_TIP, false, true));
+    bindLanguageBar();
+    h.querySelector("#ws-say-home")?.addEventListener("click", () => speak(homeTip(), false, true));
     h.querySelectorAll("[data-level]").forEach((b) => b.addEventListener("click", () => startLevel(LEVELS[Number(b.dataset.level)])));
   }
 
@@ -297,23 +347,24 @@
   function refill() { while (onField.length < PER_BATCH && queue.length) onField.push(queue.shift()); }
 
   function renderLevel(readIntro) {
+    stopSpeak();
     const h = host(); if (!h || !level) return;
     setBanner(true);
     const total = level.items.length;
     h.innerHTML = `
       <div class="ws-page">
-        <div class="ws-head"><h2>♻️ ${esc(level.title)}</h2>
+        <div class="ws-head"><h2>♻️ ${esc(viewLevel(level).title)}</h2>
           <div class="ws-progress"><div class="ws-bar"><span style="width:${(sorted.length / total) * 100}%"></span></div>${sorted.length}/${total}</div>
-          <button id="ws-mute" class="ws-say${muted ? " mute" : ""}" type="button" aria-label="${muted ? "Bật" : "Tắt"} giọng đọc tự động">${muted ? "🔇" : "🔈"}</button>
-          <button id="ws-home" class="back-btn" type="button">← ${LEVELS.length} cấp</button></div>
-        ${readIntro ? `<div class="ws-bubble"><span class="ico" aria-hidden="true">🐰</span><span class="txt">${esc(level.intro)}</span><button class="ws-say" id="ws-say-intro" type="button" aria-label="Nghe cô đọc">🔊</button></div>` : ""}
+          <button id="ws-mute" class="ws-say${muted ? " mute" : ""}" type="button" aria-label="${muted ? tr("Bật", "Enable") : tr("Tắt", "Disable")} ${tr("giọng đọc tự động", "automatic voice")}">${muted ? "🔇" : "🔈"}</button>
+          <button id="ws-home" class="back-btn" type="button">← ${LEVELS.length} ${tr("cấp", "levels")}</button>${languageBar()}</div>
+        ${readIntro ? `<div class="ws-bubble"><span class="ico" aria-hidden="true">🐰</span><span class="txt">${esc(viewLevel(level).intro)}</span><button class="ws-say" id="ws-say-intro" type="button" aria-label="${tr("Nghe cô đọc", "Listen to Bunny")}">🔊</button></div>` : ""}
         <p id="ws-voice" class="ws-voice" hidden></p>
-        <div class="ws-field" aria-label="Các món rác cần phân loại">${onField.map((id) => `<button type="button" class="ws-item${selected === id ? " sel" : ""}" data-item="${id}" aria-pressed="${selected === id}">${iconSvg(id)}${esc(ITEMS[id].name)}</button>`).join("")}</div>
-        <div class="ws-bins" style="--n:${level.bins.length}">${level.bins.map((b) => `<button type="button" class="ws-bin${selected ? " ready" : ""}" data-bin="${b}">${binSvg(BINS[b].color, BINS[b].dark, BINS[b].symbol)}<strong>${esc(BINS[b].label)}</strong><small>${esc(BINS[b].hint)}</small></button>`).join("")}</div>
-        <div id="ws-fb" class="ws-fb" aria-live="polite"><span class="ico" aria-hidden="true">👆</span><span>${selected ? `Bé chọn thùng cho “${esc(ITEMS[selected].name)}” nhé!` : "Bé chạm vào một món rác trước nhé!"}</span></div>
+        <div class="ws-field" aria-label="${tr("Các món rác cần phân loại", "Items to sort")}">${onField.map((id) => `<button type="button" class="ws-item${selected === id ? " sel" : ""}" data-item="${id}" aria-pressed="${selected === id}">${iconSvg(id)}${esc(viewItem(id).name)}</button>`).join("")}</div>
+        <div class="ws-bins" style="--n:${level.bins.length}">${level.bins.map((b) => `<button type="button" class="ws-bin${selected ? " ready" : ""}" data-bin="${b}">${binSvg(BINS[b].color, BINS[b].dark, BINS[b].symbol)}<strong>${esc(viewBin(b).label)}</strong><small>${esc(viewBin(b).hint)}</small></button>`).join("")}</div>
+        <div id="ws-fb" class="ws-fb" aria-live="polite"><span class="ico" aria-hidden="true">👆</span><span>${esc(selected ? chooseMessage(selected) : touchMessage())}</span></div>
       </div>`;
-    bind();
-    if (readIntro) speak(level.intro);
+    bindLanguageBar(); bind();
+    if (readIntro) speak(viewLevel(level).intro);
   }
 
   function feedback(kind, icon, text) {
@@ -324,7 +375,7 @@
   function bind() {
     const h = host(); if (!h) return;
     h.querySelector("#ws-home")?.addEventListener("click", renderHome);
-    h.querySelector("#ws-say-intro")?.addEventListener("click", () => speak(level.intro, false, true));
+    h.querySelector("#ws-say-intro")?.addEventListener("click", () => speak(viewLevel(level).intro, false, true));
     h.querySelector("#ws-mute")?.addEventListener("click", (ev) => {
       muted = !muted; if (muted) stopSpeak();
       ev.currentTarget.textContent = muted ? "🔇" : "🔈"; ev.currentTarget.classList.toggle("mute", muted);
@@ -334,15 +385,15 @@
       selected = selected === b.dataset.item ? "" : b.dataset.item;
       h.querySelectorAll("[data-item]").forEach((x) => { const on = x.dataset.item === selected; x.classList.toggle("sel", on); x.setAttribute("aria-pressed", String(on)); });
       h.querySelectorAll("[data-bin]").forEach((x) => x.classList.toggle("ready", !!selected));
-      if (selected) { feedback("", "👇", `Bé chọn thùng cho “${ITEMS[selected].name}” nhé!`); speak(ITEMS[selected].name); }
-      else feedback("", "👆", "Bé chạm vào một món rác trước nhé!");
+      if (selected) { feedback("", "👇", chooseMessage(selected)); speak(viewItem(selected).name); }
+      else feedback("", "👆", touchMessage());
     }));
     h.querySelectorAll("[data-bin]").forEach((b) => b.addEventListener("click", () => dropInto(b.dataset.bin)));
   }
 
   function dropInto(binId) {
     const h = host(); if (!h || busy) return;
-    if (!selected) { feedback("bad", "👆", "Bé chạm vào một món rác trước, rồi mới chọn thùng nhé!"); speak("Bé chạm vào một món rác trước nhé!"); return; }
+    if (!selected) { feedback("bad", "👆", tr("Bé chạm vào một món rác trước, rồi mới chọn thùng nhé!", "Tap an item before choosing a bin!")); speak(touchMessage()); return; }
     const id = selected, it = ITEMS[id];
     const itemEl = h.querySelector(`[data-item="${id}"]`);
     const binEl = h.querySelector(`[data-bin="${binId}"]`);
@@ -350,8 +401,8 @@
       busy = true;
       itemEl?.classList.add("gone");
       binEl?.classList.add("eat");
-      feedback("good", "🎉", `Đúng rồi! ${it.why}`);
-      speak(`Đúng rồi! ${it.why}`);
+      feedback("good", "🎉", tr(`Đúng rồi! ${it.why}`, `Correct! ${viewItem(id).why}`));
+      speak(tr(`Đúng rồi! ${it.why}`, `Correct! ${viewItem(id).why}`));
       sorted.push(id);
       later(() => {
         onField = onField.filter((x) => x !== id);
@@ -359,7 +410,7 @@
         refill();
         if (!onField.length) { renderFinish(); return; }
         renderLevel(false);
-        feedback("good", "🎉", `Đúng rồi! ${it.why}`);
+        feedback("good", "🎉", tr(`Đúng rồi! ${it.why}`, `Correct! ${viewItem(id).why}`));
       }, 900);
     } else {
       mistakes += 1;
@@ -367,14 +418,15 @@
       itemEl?.classList.remove("bounce"); void (itemEl && itemEl.offsetWidth); itemEl?.classList.add("bounce");
       later(() => { binEl?.classList.remove("no"); itemEl?.classList.remove("bounce"); }, 550);
       const right = BINS[it.bin];
-      const msg = `Chưa đúng rồi. ${it.name} là rác ${right.short}, bỏ vào thùng ${right.label.toLowerCase()} nhé!`;
+      const msg = tr(`Chưa đúng rồi. ${it.name} là rác ${right.short}, bỏ vào thùng ${right.label.toLowerCase()} nhé!`, `Not quite. ${viewItem(id).name} is ${viewBin(it.bin).short} waste. Choose the ${viewBin(it.bin).label} bin!`);
       feedback("bad", "🤔", msg);
       speak(msg);
     }
   }
 
-  function renderFinish() {
+  function renderFinish(announce = true) {
     clearTimers();
+    stopSpeak();
     const h = host(); if (!h || !level) return;
     setBanner(true);
     const n = mistakes === 0 ? 3 : mistakes <= 2 ? 2 : 1;
@@ -382,21 +434,22 @@
     const next = LEVELS[LEVELS.indexOf(level) + 1];
     h.innerHTML = `
       <div class="ws-page">
-        <section class="ws-finish"><div class="big" aria-hidden="true">♻️🐰🌍</div>
-          <h2>${mistakes === 0 ? "Phân loại đúng hết, giỏi quá!" : "Bé đã phân loại xong!"}</h2>
+        <section class="ws-finish">${languageBar()}<div class="big" aria-hidden="true">♻️🐰🌍</div>
+          <h2>${mistakes === 0 ? tr("Phân loại đúng hết, giỏi quá!", "Perfect sorting! Great job!") : tr("Bé đã phân loại xong!", "You finished sorting!")}</h2>
           <div class="bigstars" aria-label="${n} sao">${[1, 2, 3].map((i) => `<span class="${i <= n ? "" : "off"}">★</span>`).join("")}</div>
-          <div class="ws-sortcols" style="--n:${level.bins.length}">${level.bins.map((b) => `<div class="ws-sortcol"><h4 style="color:${BINS[b].dark}">${BINS[b].symbol} ${esc(BINS[b].label)}</h4><div class="row">${level.items.filter((id) => ITEMS[id].bin === b).map((id) => `<span title="${esc(ITEMS[id].name)}">${iconSvg(id)}</span>`).join("")}</div></div>`).join("")}</div>
+          <div class="ws-sortcols" style="--n:${level.bins.length}">${level.bins.map((b) => `<div class="ws-sortcol"><h4 style="color:${BINS[b].dark}">${BINS[b].symbol} ${esc(viewBin(b).label)}</h4><div class="row">${level.items.filter((id) => ITEMS[id].bin === b).map((id) => `<span title="${esc(viewItem(id).name)}">${iconSvg(id)}</span>`).join("")}</div></div>`).join("")}</div>
           <div class="ws-actions">
-            ${next ? `<button id="ws-next" class="ws-btn primary" type="button">▶ ${esc(next.title)}</button>` : ""}
-            <button id="ws-replay" class="ws-btn" type="button">🔄 Chơi lại</button>
-            <button id="ws-list" class="ws-btn" type="button">♻️ Chọn cấp khác</button>
+            ${next ? `<button id="ws-next" class="ws-btn primary" type="button">▶ ${esc(viewLevel(next).title)}</button>` : ""}
+            <button id="ws-replay" class="ws-btn" type="button">🔄 ${tr("Chơi lại", "Play again")}</button>
+            <button id="ws-list" class="ws-btn" type="button">♻️ ${tr("Chọn cấp khác", "Choose level")}</button>
           </div>
         </section>
-        <section class="ws-after"><h3>🌍 Rác sau khi phân loại sẽ đi đâu?</h3>
-          <div class="ws-after-row">${AFTER.map((a) => `<div class="ws-after-card"><span class="pair">${iconSvg(a.from)}<span aria-hidden="true">➜</span><span>${a.to}</span></span>${esc(a.text)}</div>`).join("")}</div></section>
+        <section class="ws-after"><h3>${afterHeading()}</h3>
+          <div class="ws-after-row">${AFTER.map((a) => `<div class="ws-after-card"><span class="pair">${iconSvg(a.from)}<span aria-hidden="true">➜</span><span>${a.to}</span></span>${esc(isEn() ? EN_AFTER[AFTER.indexOf(a)] : a.text)}</div>`).join("")}</div></section>
         <p id="ws-voice" class="ws-voice" hidden></p>
       </div>`;
-    speak(mistakes === 0 ? "Phân loại đúng hết, giỏi quá! Nhờ bé phân loại, rác sẽ được tái chế thành đồ mới." : "Bé đã phân loại xong! Nhờ bé phân loại, rác sẽ được tái chế thành đồ mới.");
+    bindLanguageBar();
+    if (announce) speak(tr("Bé đã phân loại xong! Nhờ bé phân loại, rác sẽ được tái chế thành đồ mới.", "Well done sorting! Thanks to you, some waste can be recycled into new things!"));
     h.querySelector("#ws-next")?.addEventListener("click", () => startLevel(next));
     h.querySelector("#ws-replay")?.addEventListener("click", () => startLevel(level));
     h.querySelector("#ws-list")?.addEventListener("click", renderHome);
@@ -404,6 +457,7 @@
 
   function render(context) {
     activeContext = context || null;
+    language = "vi";
     ensureStyles();
     renderHome();
   }

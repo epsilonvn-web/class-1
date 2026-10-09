@@ -10,7 +10,7 @@
   const MODULE_KEY = "tinyLab";
   const GAME_NUMBER = 10;
   const GAME_TITLE = "Phòng thí nghiệm tí hon";
-  const STYLE_ID = "class1-games-tiny-lab-style-v1";
+  const STYLE_ID = "class1-games-tiny-lab-style-v3";
   const STARS_KEY = "class1-tiny-lab-stars";
 
   /* ---------- Hình đồ vật (khung 100 x 100, nét viền nâu đậm) ---------- */
@@ -152,59 +152,65 @@
   ttsAudio.preload = "none";
   let ttsNonce = 0;
   let ttsQueue = [];
-  const synth = typeof window !== "undefined" && "speechSynthesis" in window ? window.speechSynthesis : null;
-  if (synth) { try { synth.getVoices(); } catch (_) {} }
-  function viVoice() { if (!synth) return null; try { return synth.getVoices().find((v) => /^vi([-_]|$)/i.test(v.lang)) || null; } catch (_) { return null; } }
+  // Google TTS only; no implicit browser-voice substitution.
   function splitText(text, max = 170) {
-    const parts = String(text || "").replace(/\s+/g, " ").trim().match(/[^.!?]+[.!?]?/g) || [];
-    const out = []; let buf = "";
-    parts.forEach((p) => { const s = p.trim(); if (!s) return; if (!buf) buf = s; else if ((buf + " " + s).length <= max) buf += " " + s; else { out.push(buf); buf = s; } });
-    if (buf) out.push(buf);
-    return out;
+    const sentences = String(text || "").replace(/\s+/g, " ").trim().match(/[^.!?]+[.!?]?/g) || [];
+    const units = [];
+    for (const sentence of sentences) {
+      const clean = sentence.trim();
+      if (!clean) continue;
+      if (clean.length <= max) { units.push(clean); continue; }
+      let part = "";
+      for (const word of clean.split(" ")) {
+        if (!word) continue;
+        if (part && (part + " " + word).length > max) { units.push(part); part = ""; }
+        if (word.length > max) {
+          if (part) { units.push(part); part = ""; }
+          for (let j = 0; j < word.length; j += max) units.push(word.slice(j, j + max));
+        } else part = part ? part + " " + word : word;
+      }
+      if (part) units.push(part);
+    }
+    const result = []; let buffer = "";
+    for (const unit of units) {
+      if (buffer && (buffer + " " + unit).length > max) { result.push(buffer); buffer = ""; }
+      buffer = buffer ? buffer + " " + unit : unit;
+    }
+    if (buffer) result.push(buffer);
+    return result;
   }
   function stopSpeak() {
     ttsNonce += 1; ttsQueue = [];
-    try { if (synth) synth.cancel(); } catch (_) {}
+    ttsAudio.onended = null; ttsAudio.onerror = null;
     try { ttsAudio.pause(); ttsAudio.removeAttribute("src"); ttsAudio.load(); } catch (_) {}
   }
   function voiceFail(quiet) {
-    if (quiet) return;
-    const n = host() && host().querySelector("#lab-voice");
-    if (n) { n.hidden = false; n.textContent = "Chưa phát được giọng đọc. Con nhờ người lớn kiểm tra loa và mạng nhé."; }
+    const n = host()?.querySelector("#lab-voice");
+    if (n) { n.hidden = false; n.textContent = tr("Chưa phát được giọng đọc. Con nhờ người lớn kiểm tra loa và mạng nhé.", "Audio isn't available right now. Please ask an adult to check the connection."); }
   }
   function playNext(nonce, quiet) {
     if (nonce !== ttsNonce || !ttsQueue.length) return;
     const chunk = ttsQueue.shift();
-    const voice = viVoice();
-    if (voice) {
-      try {
-        const u = new SpeechSynthesisUtterance(chunk);
-        u.voice = voice; u.lang = voice.lang; u.rate = 0.92; u.pitch = 1.08;
-        u.onend = () => playNext(nonce, true);
-        u.onerror = (e) => { if (nonce === ttsNonce && e.error !== "interrupted" && e.error !== "canceled") voiceFail(quiet); };
-        synth.speak(u); return;
-      } catch (_) { /* dùng Google */ }
-    }
+    ttsAudio.onended = () => { if (nonce === ttsNonce) playNext(nonce, quiet); };
+    ttsAudio.onerror = () => { if (nonce === ttsNonce) { ttsQueue = []; voiceFail(quiet); } };
     try {
-      ttsAudio.src = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent(chunk)}`;
+      ttsAudio.src = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${isEn() ? "en-US" : "vi"}&client=tw-ob&q=${encodeURIComponent(chunk)}`;
       ttsAudio.playbackRate = 0.96;
       const p = ttsAudio.play();
-      if (p && p.catch) p.catch(() => { if (nonce === ttsNonce) voiceFail(quiet); });
-    } catch (_) { voiceFail(quiet); }
+      if (p?.catch) p.catch(() => { if (nonce === ttsNonce) { ttsQueue = []; voiceFail(quiet); } });
+    } catch (_) { if (nonce === ttsNonce) { ttsQueue = []; voiceFail(quiet); } }
   }
-  ttsAudio.addEventListener("ended", () => { if (ttsQueue.length) playNext(ttsNonce, true); });
   function speak(text, quiet = true, force = false) {
     if (muted && !force) return;
     const chunks = splitText(text); if (!chunks.length) return;
-    stopSpeak();
-    const nonce = ++ttsNonce; ttsQueue = chunks; playNext(nonce, quiet);
+    stopSpeak(); ttsQueue = chunks; playNext(ttsNonce, quiet);
   }
 
   function setBanner(withExp) {
     const fn = activeContext && activeContext.hooks && activeContext.hooks.setSubBanner;
     if (typeof fn !== "function") return;
-    const items = [{ level: 2, title: `${GAME_NUMBER}. ${GAME_TITLE}`, action: withExp ? renderHome : null }];
-    if (withExp && exp) items.push({ level: 3, title: `${GAME_NUMBER}.${EXPERIMENTS.indexOf(exp) + 1} ${exp.title}`, action: null });
+    const items = [{ level: 2, title: `${GAME_NUMBER}. ${tr(GAME_TITLE, "Tiny Science Lab")}`, action: withExp ? renderHome : null }];
+    if (withExp && exp) items.push({ level: 3, title: `${GAME_NUMBER}.${EXPERIMENTS.indexOf(exp) + 1} ${viewExp(exp).title}`, action: null });
     fn({ items });
   }
 
@@ -219,6 +225,17 @@
     const style = document.createElement("style");
     style.id = STYLE_ID;
     style.textContent = `
+      .lab-toolbar{display:flex;justify-content:flex-end;align-items:center;gap:.65rem;flex-wrap:nowrap;margin:0}
+      .lab-langs{display:inline-flex;gap:0;padding:3px;border:1px solid #BFDBFE;border-radius:17px;background:#fff;box-shadow:0 4px 12px rgba(59,130,246,.11)}
+      .lab-langs button{font:inherit;min-height:39px;padding:.4rem .9rem;border:0;border-radius:13px;background:transparent;color:#1D4ED8;font-weight:800;font-size:16px;cursor:pointer;white-space:nowrap}
+      .lab-langs button.on{background:linear-gradient(90deg,#3B82F6,#14B8A6);color:#fff;box-shadow:0 3px 8px rgba(20,184,166,.18)}
+      .lab-exit{min-height:46px;padding:.6rem .95rem;border:0;border-radius:15px;background:linear-gradient(90deg,#EC4899,#8B5CF6);box-shadow:0 5px 12px rgba(139,92,246,.18);color:#fff;font:inherit;font-size:16px;font-weight:800;cursor:pointer;white-space:nowrap}
+      .lab-langs button:focus-visible,.lab-exit:focus-visible{outline:3px solid #93C5FD;outline-offset:2px}
+      @media(max-width:390px){.lab-toolbar{gap:.4rem}.lab-langs button{padding:.35rem .65rem;font-size:14px}.lab-exit{font-size:14px;min-height:42px;padding:.5rem .75rem}}
+      .lab-page .lab-topline{display:flex;align-items:center;justify-content:space-between;gap:.6rem 1rem;flex-wrap:wrap;margin:0 0 .65rem}
+      .lab-page .lab-topline>.lab-toolbar{margin-left:auto}
+      .lab-page .lab-head>.lab-toolbar{margin-left:auto}
+      .lab-page .lab-finish>.lab-toolbar{margin:0 0 .35rem}
       .lab-page{color:#344054;font-family:"Baloo 2","Nunito","Segoe UI",system-ui,sans-serif;padding:.1rem .1rem 1rem}
       .lab-page button{font-family:inherit}
       .lab-bubble{display:flex;align-items:center;gap:.6rem;border:2px solid #F9A8D4;border-radius:18px;background:#FFF1F7;padding:.55rem .8rem;margin:0 0 .9rem;color:#BE185D;font-size:19px;font-weight:700;line-height:1.4}
@@ -313,7 +330,35 @@
   }
 
   /* ---------- Trang chọn thí nghiệm ---------- */
+  let language = "vi";
+  const isEn = () => language === "en";
+  const tr = (vi, en) => isEn() ? en : vi;
+  function languageBar() {
+    return `<div class="lab-toolbar"><div class="lab-langs" role="group" aria-label="Language"><button type="button" data-lab-lang="vi" class="${isEn() ? "" : "on"}" aria-pressed="${!isEn()}">Tiếng Việt</button><button type="button" data-lab-lang="en" class="${isEn() ? "on" : ""}" aria-pressed="${isEn()}">English</button></div><button type="button" data-lab-exit class="lab-exit">← Games</button></div>`;
+  }
+  function bindLanguageBar() {
+    const h = host(); if (!h) return;
+    h.querySelectorAll("[data-lab-lang]").forEach((b) => b.addEventListener("click", () => {
+      const next = b.dataset.labLang;
+      if (next === language || !["vi", "en"].includes(next)) return;
+      clearTimers(); stopSpeak();
+      language = next;
+      if (phase === "test") { phase = "predict"; guess = ""; }
+      if (!exp) renderHome();
+      else if (host().querySelector(".lab-finish")) renderFinish(false);
+      else renderExp(false);
+    }));
+    h.querySelector("[data-lab-exit]")?.addEventListener("click", () => { clearTimers(); stopSpeak(); activeContext?.back?.(); });
+  }
+
   const HOME_TIP = "Nhà khoa học luôn đoán trước, rồi làm thử, rồi giải thích. Đoán sai cũng không sao, mình học được điều mới!";
+  const EN_EXPERIMENTS = Object.freeze({"float":{"title":"Sink or float?","desc":"Drop objects into a water tank","intro":"Bunny has a big tank of water. We will drop an object in. Can you guess if it will sink or float?","remember":"Things that are less dense than water, or contain enough trapped air, often float. Denser objects usually sink.","ask":"Do you think {name} will sink or float?","choices":{"sink":"Sink","float":"Float"},"items":{"da":["a rock","The rock sinks to the bottom because it is denser than water."],"la":["a leaf","This thin, light leaf stays on top of the water."],"tao":["an apple","An apple floats because it has many tiny air spaces inside."],"chia_khoa":["a key","This metal key is denser than water, so it sinks."],"but_chi":["a pencil","A wooden pencil floats because this wood is less dense than water."],"trung":["an egg","This egg sinks in plain water. It may float if enough salt is mixed into the water!"],"bong":["a plastic ball","The ball has air inside, so it floats back up when pushed down."],"thia":["a metal spoon","The metal spoon is denser than water, so it sinks."]}},"magnet":{"title":"What sticks to a magnet?","desc":"Bring a magnet close to different objects","intro":"Here is a magnet. It attracts some things but not everything. Make a guess, then let us test it!","remember":"Magnets attract iron and many types of steel. They do not attract wood, paper, rubber, plastic, or aluminum.","ask":"Will the magnet attract {name}?","choices":{"yes":"Attracts","no":"Does not attract"},"items":{"kep_giay":["a paper clip","This paper clip contains iron, so the magnet attracts it."],"but_chi":["a pencil","The wooden pencil does not stick to the magnet."],"dinh":["an iron nail","The iron nail is strongly attracted to the magnet."],"cuc_tay":["an eraser","Rubber is not attracted to a magnet."],"lon_nhom":["an aluminum can","Surprise! This can is metal, but aluminum is not attracted to an ordinary magnet."],"oc_vit":["an iron screw","This iron screw sticks to the magnet."],"giay":["a sheet of paper","Paper is not attracted to a magnet."],"nap_chai":["a steel bottle cap","This steel cap contains iron, so the magnet attracts it."]}},"dissolve":{"title":"Does it dissolve?","desc":"Stir different things into water","intro":"Bunny has a glass of clear water. Let us add something and stir it. Will it dissolve? Make a guess first!","remember":"Salt and sugar dissolve in water. Sand, pebbles, and rice do not. Oil does not dissolve and forms a layer on top.","ask":"Will {name} dissolve in water?","choices":{"yes":"Dissolves","no":"Does not dissolve"},"items":{"muoi":["salt","The salt dissolves and becomes invisible, but it is still in the water. Never taste lab materials without an adult saying it is safe!"],"cat":["sand","Sand does not dissolve. After stirring, it settles at the bottom."],"duong":["sugar","Sugar dissolves in water. It usually dissolves faster in warmer water."],"soi":["pebbles","Pebbles do not dissolve. They stay at the bottom of the glass."],"ca_phe":["instant coffee","Instant coffee dissolves and turns the water brown."],"dau_an":["cooking oil","Oil does not dissolve in water. It is less dense, so it forms a layer on top."],"gao":["rice","Rice does not dissolve. The grains sink to the bottom."]}},"light":{"title":"Can light pass through?","desc":"Shine a flashlight through objects","intro":"Bunny is shining a flashlight at a wall. Let us put objects in its path. Can light pass through them?","remember":"Transparent materials let most light pass through. Translucent materials let some light through. Opaque materials block light and cast shadows.","ask":"Can light pass through {name}?","choices":{"all":"Most light","some":"Some light","none":"No light"},"items":{"kinh":["a glass pane","Clear glass lets almost all light pass through. That is why windows let sunlight inside."],"bia":["cardboard","Cardboard blocks light and makes a shadow on the wall."],"giay_nen":["wax paper","Wax paper lets some light through, but objects behind it look blurry. It is translucent."],"nilon":["a clear plastic bag","Clear plastic lets most light pass through."],"go":["a wooden board","Wood blocks the light, leaving a shadow behind it."],"vai":["thin fabric","Thin fabric lets some light pass through, like a light curtain in the morning."]}}});
+  const viewExp = (e) => isEn() ? { ...e, ...EN_EXPERIMENTS[e.id] } : e;
+  const viewItem = (it) => isEn() ? { ...it, name: EN_EXPERIMENTS[exp.id].items[it.id]?.[0] || it.name, why: EN_EXPERIMENTS[exp.id].items[it.id]?.[1] || it.why } : it;
+  const viewChoice = (choice) => isEn() ? { ...choice, label: EN_EXPERIMENTS[exp.id].choices[choice.id] || choice.label } : choice;
+  const ask = (it) => isEn() ? EN_EXPERIMENTS[exp.id].ask.replace("{name}", viewItem(it).name) : exp.ask(it.name);
+  const homeTip = () => tr(HOME_TIP, "Scientists make predictions, try experiments, and explain what happened. A wrong guess helps us learn something new!");
+
   function renderHome() {
     clearTimers(); stopSpeak();
     exp = null;
@@ -321,18 +366,18 @@
     const h = host(); if (!h) return;
     h.innerHTML = `
       <div class="lab-page">
-        <div class="section-heading"><div><h1>🔬 ${GAME_TITLE}</h1><p>${EXPERIMENTS.length} thí nghiệm</p></div><button id="lab-back-games" class="back-btn" type="button">← Games</button></div>
-        <div class="lab-bubble"><span class="ico" aria-hidden="true">🐰</span><span class="txt">${HOME_TIP}</span><button class="lab-say" id="lab-say-home" type="button" aria-label="Nghe cô đọc">🔊</button></div>
-        <div class="lab-steps"><span class="lab-step"><b>1</b>🤔 Đoán</span><span class="lab-step"><b>2</b>🧪 Làm thử</span><span class="lab-step"><b>3</b>📒 Ghi vào sổ</span></div>
+        <div class="section-heading lab-topline"><div><h1>🔬 ${tr(GAME_TITLE, "Tiny Science Lab")}</h1><p>${EXPERIMENTS.length} ${tr("thí nghiệm", "experiments")}</p></div>${languageBar()}</div>
+        <div class="lab-bubble"><span class="ico" aria-hidden="true">🐰</span><span class="txt">${esc(homeTip())}</span><button class="lab-say" id="lab-say-home" type="button" aria-label="${tr("Nghe cô đọc", "Listen to Bunny")}">🔊</button></div>
+        <div class="lab-steps"><span class="lab-step"><b>1</b>🤔 ${tr("Đoán", "Predict")}</span><span class="lab-step"><b>2</b>🧪 ${tr("Làm thử", "Test")}</span><span class="lab-step"><b>3</b>📒 ${tr("Ghi vào sổ", "Record")}</span></div>
         <p id="lab-voice" class="lab-voice" hidden></p>
         <div class="lab-grid">${EXPERIMENTS.map((e, i) => `
           <button class="lab-card lab-tone-${e.tone}" type="button" data-exp="${i}">
             <span class="big" aria-hidden="true">${e.emoji}</span>
-            <h3>${i + 1}. ${esc(e.title)}</h3><p>${esc(e.desc)}</p>${starRow(stars[e.id] || 0)}
+            <h3>${i + 1}. ${esc(viewExp(e).title)}</h3><p>${esc(viewExp(e).desc)}</p>${starRow(stars[e.id] || 0)}
           </button>`).join("")}</div>
       </div>`;
-    h.querySelector("#lab-back-games")?.addEventListener("click", () => activeContext && activeContext.back && activeContext.back());
-    h.querySelector("#lab-say-home")?.addEventListener("click", () => speak(HOME_TIP, false, true));
+    bindLanguageBar();
+    h.querySelector("#lab-say-home")?.addEventListener("click", () => speak(homeTip(), false, true));
     h.querySelectorAll("[data-exp]").forEach((b) => b.addEventListener("click", () => startExp(EXPERIMENTS[Number(b.dataset.exp)])));
   }
 
@@ -425,46 +470,48 @@
 
   /* ---------- Màn thí nghiệm ---------- */
   function notebookHtml() {
-    return `<section class="lab-note"><h3>📒 Sổ thí nghiệm của bé</h3>
-      <div class="lab-cols" style="--n:${exp.choices.length}">${exp.choices.map((c) => `<div class="lab-col"><h4>${c.icon} ${esc(c.label)}</h4><div class="row">${results.filter((r) => r.item.answer === c.id).map((r) => `<span title="${esc(r.item.name)}">${iconSvg(r.item.id, r.ok ? "" : "miss")}</span>`).join("")}</div></div>`).join("")}</div></section>`;
+    return `<section class="lab-note"><h3>📒 ${tr("Sổ thí nghiệm của bé", "My science notebook")}</h3>
+      <div class="lab-cols" style="--n:${exp.choices.length}">${exp.choices.map((c) => `<div class="lab-col"><h4>${c.icon} ${esc(viewChoice(c).label)}</h4><div class="row">${results.filter((r) => r.item.answer === c.id).map((r) => `<span title="${esc(viewItem(r.item).name)}">${iconSvg(r.item.id, r.ok ? "" : "miss")}</span>`).join("")}</div></div>`).join("")}</div></section>`;
   }
 
   function renderExp(readIntro) {
+    stopSpeak();
     const h = host(); if (!h || !exp) return;
     setBanner(true);
     const it = item();
     const dots = order.map((_, k) => `<span class="${k < results.length ? (results[k].ok ? "ok" : "bad") : k === step ? "now" : ""}"></span>`).join("");
     let panel = "";
     if (phase === "predict") {
-      panel = `<div class="lab-item">${iconSvg(it.id)}<strong>${esc(cap(it.name))}</strong></div>
-        <p class="lab-q">🤔 ${esc(exp.ask(it.name))}</p>
-        <div class="lab-choices" style="--n:${exp.choices.length}">${exp.choices.map((c) => `<button type="button" class="lab-choice" data-choice="${c.id}"><span class="i" aria-hidden="true">${c.icon}</span>${esc(c.label)}</button>`).join("")}</div>`;
+      panel = `<div class="lab-item">${iconSvg(it.id)}<strong>${esc(cap(viewItem(it).name))}</strong></div>
+        <p class="lab-q">🤔 ${esc(ask(it))}</p>
+        <div class="lab-choices" style="--n:${exp.choices.length}">${exp.choices.map((c) => `<button type="button" class="lab-choice" data-choice="${c.id}"><span class="i" aria-hidden="true">${c.icon}</span>${esc(viewChoice(c).label)}</button>`).join("")}</div>`;
     } else if (phase === "test") {
-      panel = `<div class="lab-item">${iconSvg(it.id)}<strong>${esc(cap(it.name))}</strong></div>
-        <p class="lab-q">Bé đoán: <b>${choiceOf(guess).icon} ${esc(choiceOf(guess).label)}</b></p>
-        <p class="lab-wait">🧪 Cô Thỏ đang làm thử… bé nhìn kỹ nhé!</p>`;
+      panel = `<div class="lab-item">${iconSvg(it.id)}<strong>${esc(cap(viewItem(it).name))}</strong></div>
+        <p class="lab-q">${tr("Bé đoán:", "Your guess:")} <b>${choiceOf(guess).icon} ${esc(viewChoice(choiceOf(guess)).label)}</b></p>
+        <p class="lab-wait">🧪 ${tr("Cô Thỏ đang làm thử… bé nhìn kỹ nhé!", "Bunny is testing it. Watch closely!")}</p>`;
     } else {
       const ok = guess === it.answer;
       const res = choiceOf(it.answer);
-      panel = `<div class="lab-item">${iconSvg(it.id)}<strong>${esc(cap(it.name))}</strong></div>
-        <div class="lab-res ${ok ? "good" : "try"}"><span class="title">${res.icon} ${esc(res.label)}!</span>${ok ? "🎉 Bé đoán đúng rồi!" : "🤔 Chưa đúng rồi. Nhà khoa học cũng hay đoán sai, rồi thử để biết đấy!"}<br>${esc(it.why)}</div>
-        <div class="lab-actions"><button id="lab-again-say" class="lab-btn" type="button">🔊 Nghe lại</button><button id="lab-next" class="lab-btn primary" type="button">${step < order.length - 1 ? "Đồ vật tiếp theo →" : "Xem sổ thí nghiệm 📒"}</button></div>`;
+      panel = `<div class="lab-item">${iconSvg(it.id)}<strong>${esc(cap(viewItem(it).name))}</strong></div>
+        <div class="lab-res ${ok ? "good" : "try"}"><span class="title">${res.icon} ${esc(viewChoice(res).label)}!</span>${ok ? tr("🎉 Bé đoán đúng rồi!", "🎉 Great guess!") : tr("🤔 Chưa đúng rồi. Nhà khoa học cũng hay đoán sai, rồi thử để biết đấy!", "🤔 Not quite. Scientists learn by testing their guesses!")}<br>${esc(viewItem(it).why)}</div>
+        <div class="lab-actions"><button id="lab-again-say" class="lab-btn" type="button">🔊 ${tr("Nghe lại", "Listen again")}</button><button id="lab-next" class="lab-btn primary" type="button">${step < order.length - 1 ? tr("Đồ vật tiếp theo →", "Next object →") : tr("Xem sổ thí nghiệm 📒", "View notebook 📒")}</button></div>`;
     }
     h.innerHTML = `
       <div class="lab-page">
-        <div class="lab-head"><h2>${exp.emoji} ${esc(exp.title)}</h2><div class="lab-dots" aria-label="Đồ vật ${step + 1} trên ${order.length}">${dots}</div>
-          <button id="lab-mute" class="lab-say${muted ? " mute" : ""}" type="button" aria-label="${muted ? "Bật" : "Tắt"} giọng đọc tự động">${muted ? "🔇" : "🔈"}</button>
-          <button id="lab-home" class="back-btn" type="button">← ${EXPERIMENTS.length} thí nghiệm</button></div>
-        ${readIntro ? `<div class="lab-bubble"><span class="ico" aria-hidden="true">🐰</span><span class="txt">${esc(exp.intro)}</span><button class="lab-say" id="lab-say-intro" type="button" aria-label="Nghe cô đọc">🔊</button></div>` : ""}
+        <div class="lab-head"><h2>${exp.emoji} ${esc(viewExp(exp).title)}</h2><div class="lab-dots" aria-label="${tr("Đồ vật", "Object")} ${step + 1} ${tr("trên", "of")} ${order.length}">${dots}</div>
+          <button id="lab-mute" class="lab-say${muted ? " mute" : ""}" type="button" aria-label="${muted ? tr("Bật", "Enable") : tr("Tắt", "Disable")} ${tr("giọng đọc tự động", "automatic voice")}">${muted ? "🔇" : "🔈"}</button>
+          <button id="lab-home" class="back-btn" type="button">← ${EXPERIMENTS.length} ${tr("thí nghiệm", "experiments")}</button>${languageBar()}</div>
+        ${readIntro ? `<div class="lab-bubble"><span class="ico" aria-hidden="true">🐰</span><span class="txt">${esc(viewExp(exp).intro)}</span><button class="lab-say" id="lab-say-intro" type="button" aria-label="${tr("Nghe cô đọc", "Listen to Bunny")}">🔊</button></div>` : ""}
         <p id="lab-voice" class="lab-voice" hidden></p>
         <div class="lab-main">
-          <div class="lab-stage" id="lab-stage"><span class="tag">${esc(cap(it.name))}</span>${stageHtml(it)}</div>
+          <div class="lab-stage" id="lab-stage"><span class="tag">${esc(cap(viewItem(it).name))}</span>${stageHtml(it)}</div>
           <div class="lab-panel" aria-live="polite">${panel}</div>
         </div>
         ${results.length ? notebookHtml() : ""}
       </div>`;
+    bindLanguageBar();
     h.querySelector("#lab-home")?.addEventListener("click", renderHome);
-    h.querySelector("#lab-say-intro")?.addEventListener("click", () => speak(exp.intro, false, true));
+    h.querySelector("#lab-say-intro")?.addEventListener("click", () => speak(viewExp(exp).intro, false, true));
     h.querySelector("#lab-mute")?.addEventListener("click", (ev) => {
       muted = !muted; if (muted) stopSpeak();
       ev.currentTarget.textContent = muted ? "🔇" : "🔈"; ev.currentTarget.classList.toggle("mute", muted);
@@ -479,7 +526,8 @@
         renderResultKeepStage(it);
       });
     }));
-    if (phase === "predict") speak(readIntro ? `${exp.intro} ${exp.ask(it.name)}` : exp.ask(it.name));
+    if (phase === "result") bindResultActions(it);
+    if (phase === "predict") speak(readIntro ? `${viewExp(exp).intro} ${ask(it)}` : ask(it));
   }
 
   /* Hiện kết quả nhưng giữ nguyên sân khấu đang ở trạng thái cuối của thí nghiệm */
@@ -491,17 +539,20 @@
     const st = h.querySelector("#lab-stage");
     if (st && keep) st.innerHTML = keep;
     const ok = guess === it.answer;
-    speak(`${ok ? "Bé đoán đúng rồi!" : "Chưa đúng rồi."} ${cap(it.name)}: ${choiceOf(it.answer).label}. ${it.why}`);
-    h.querySelector("#lab-again-say")?.addEventListener("click", () => speak(it.why, false, true));
+    speak(`${ok ? tr("Bé đoán đúng rồi!", "Great guess!") : tr("Chưa đúng rồi.", "Not quite.")} ${cap(viewItem(it).name)}: ${viewChoice(choiceOf(it.answer)).label}. ${viewItem(it).why}`);
+  }
+  function bindResultActions(it) {
+    const h = host(); if (!h) return;
+    h.querySelector("#lab-again-say")?.addEventListener("click", () => speak(viewItem(it).why, false, true));
     h.querySelector("#lab-next")?.addEventListener("click", () => {
-      clearTimers();
+      clearTimers(); stopSpeak();
       if (step < order.length - 1) { step += 1; phase = "predict"; guess = ""; renderExp(false); }
       else renderFinish();
     });
   }
 
-  function renderFinish() {
-    clearTimers();
+  function renderFinish(announce = true) {
+    clearTimers(); stopSpeak();
     const h = host(); if (!h || !exp) return;
     setBanner(true);
     const right = results.filter((r) => r.ok).length;
@@ -511,20 +562,21 @@
     const next = EXPERIMENTS[idx + 1];
     h.innerHTML = `
       <div class="lab-page">
-        <section class="lab-finish"><div class="big" aria-hidden="true">🔬🐰✨</div>
-          <h2>Bé đoán đúng ${right}/${results.length} lần!</h2>
+        <section class="lab-finish">${languageBar()}<div class="big" aria-hidden="true">🔬🐰✨</div>
+          <h2>${tr("Bé đoán đúng", "You guessed correctly")} ${right}/${results.length} ${tr("lần!", "times!")}</h2>
           <div class="bigstars" aria-label="${n} sao">${[1, 2, 3].map((i) => `<span class="${i <= n ? "" : "off"}">★</span>`).join("")}</div>
-          <div class="lab-remember">🐰 <b>Bé nhớ nhé:</b> ${esc(exp.remember)}</div>
+          <div class="lab-remember">🐰 <b>${tr("Bé nhớ nhé:", "Remember:")}</b> ${esc(viewExp(exp).remember)}</div>
           <div class="lab-actions" style="justify-content:center">
-            ${next ? `<button id="lab-next-exp" class="lab-btn primary" type="button">▶ Thí nghiệm tiếp: ${esc(next.title)}</button>` : ""}
-            <button id="lab-replay" class="lab-btn" type="button">🔄 Làm lại</button>
-            <button id="lab-list" class="lab-btn" type="button">🔬 Chọn thí nghiệm khác</button>
+            ${next ? `<button id="lab-next-exp" class="lab-btn primary" type="button">▶ ${tr("Thí nghiệm tiếp:", "Next experiment:")} ${esc(viewExp(next).title)}</button>` : ""}
+            <button id="lab-replay" class="lab-btn" type="button">🔄 ${tr("Làm lại", "Try again")}</button>
+            <button id="lab-list" class="lab-btn" type="button">🔬 ${tr("Chọn thí nghiệm khác", "Choose experiment")}</button>
           </div>
         </section>
         ${notebookHtml()}
         <p id="lab-voice" class="lab-voice" hidden></p>
       </div>`;
-    speak(`Bé đoán đúng ${right} trên ${results.length} lần. Bé nhớ nhé: ${exp.remember}`);
+    bindLanguageBar();
+    if (announce) speak(tr(`Bé đoán đúng ${right} trên ${results.length} lần. Bé nhớ nhé: ${exp.remember}`, `You guessed correctly ${right} out of ${results.length} times. Remember: ${viewExp(exp).remember}`));
     h.querySelector("#lab-next-exp")?.addEventListener("click", () => startExp(next));
     h.querySelector("#lab-replay")?.addEventListener("click", () => startExp(exp));
     h.querySelector("#lab-list")?.addEventListener("click", renderHome);
@@ -532,6 +584,7 @@
 
   function render(context) {
     activeContext = context || null;
+    language = "vi";
     ensureStyles();
     renderHome();
   }

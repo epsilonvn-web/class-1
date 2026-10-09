@@ -2967,6 +2967,36 @@
   let muted = false;
   let finishTimer = 0;
 
+  const EN_PAIRS = [[["Rabbit","Carrot"],["Panda","Bamboo"],["Cat","Fish"],["Monkey","Banana"]],[["Umbrella","Keep dry in rain"],["Scissors","Cut paper"],["Pencil","Write and draw"],["Cup","Hold drinking water"]],[["Read books","Library"],["Swim","Swimming pool"],["Cook","Kitchen"],["Sleep","Bedroom"]],[["Doctor","Stethoscope"],["Artist","Paintbrush"],["Chef","Pot"],["Soccer player","Ball"]],[["Breakfast","Morning"],["Lunch","Noon"],["Watch stars","Evening"],["Go to bed","Night"]],[["Bed","Bedroom"],["Pot","Kitchen"],["Toothbrush","Bathroom"],["Television","Living room"]],[["Cross a river","Boat"],["Fly to a distant city","Airplane"],["Travel on tracks","Train"],["Travel around the neighborhood","Bicycle"]],[["Raincoat","Rainy weather"],["Helmet","Ride a motorbike"],["Swimming goggles","Go swimming"],["Wool gloves","Cold weather"]],[["Apple","Fruit"],["Carrot","Vegetables"],["Ball","Toys"],["Shirt","Clothing"]],[["Dolphin","Ocean"],["Camel","Desert"],["Frog","Pond"],["Squirrel","Forest"]],[["Teacher","School"],["Doctor","Hospital"],["Chef","Kitchen"],["Librarian","Library"]],[["Ruler","Measure length"],["Eraser","Erase pencil marks"],["Colored pencils","Color pictures"],["Notebook","Write lessons"]],[["Birthday cake","Birthday party"],["Bowl of porridge","Breakfast"],["Rice and vegetables","Main meal"],["Fruit","Snack"]],[["Sound of waves","Beach"],["Train whistle","Train station"],["School drum","Schoolyard"],["Birdsong","Garden"]],[["Train","Railway"],["Airplane","Air route"],["Ship","Waterway"],["Bus","Road"]],[["Window","Glass"],["Notebook","Paper"],["Wool scarf","Wool yarn"],["Stainless-steel pot","Metal"]],[["Broom","Sweep the floor"],["Mop","Mop a wet floor"],["Cleaning cloth","Wipe a table"],["Toothbrush","Brush teeth"],["Comb","Comb hair"]],[["Mechanic","Wrench"],["Tailor","Sewing needle"],["Photographer","Camera"],["Dentist","Dental mirror"],["Gardener","Watering can"]],[["Ruler","Length"],["Scale","Weight"],["Clock","Time"],["Thermometer","Temperature"],["Measuring cup","Volume"]],[["Ride a bicycle","Helmet"],["Swim in a pool","Safety float"],["Strong sunshine","Wide-brimmed hat"],["Work at a construction site","Hard hat"],["Walk in the rain","Raincoat"]],[["Drinking water","Water bottle"],["Books","School bag"],["Trash","Trash can"],["Clothes","Wardrobe"],["Pencils","Pencil case"]],[["Red traffic light","Stop"],["Green traffic light","Go when safe"],["Fire alarm","Leave danger as instructed"],["School bell","Enter class"],["Doorbell","Someone is at the door"]],[["Paint a picture","Colored pencils"],["Read a story","Storybook"],["Play soccer","Ball"],["Plant a seedling","Small shovel"],["Watch distant birds","Binoculars"]],[["Blunt pencil","Sharpen the pencil"],["Dirty hands","Wash with soap"],["Thirsty","Drink water"],["Dark room","Turn on the light"],["Scattered toys","Put in the box"]],[["Plant a seed","A sprout grows"],["Pour water into an ice tray","Water freezes into ice"],["Switch on a light","Light turns on"],["Blow up a balloon","Balloon inflates"],["Water a dry plant","Soil gets wetter"]],[["Heavy rain","Road gets wet"],["Strong sunshine","Clothes dry faster"],["Strong wind","Branches sway"],["Drop a glass","Glass may break"],["Forget to water a plant","Plant wilts"]],[["Squeeze an orange","Orange juice"],["Bake cake batter","Baked cake"],["Boil an egg","Cooked egg"],["Blend fruit","Smoothie"],["Wash and cook rice","Cooked rice"]],[["Wake up","Fold the blanket"],["Brush teeth","Eat breakfast"],["Wear a school bag","Leave for school"],["School ends","Go home"],["Put on pajamas","Go to bed"]],[["Chick","Chicken"],["Puppy","Dog"],["Kitten","Cat"],["Duckling","Duck"],["Foal","Horse"]],[["Open an umbrella in rain","Get less wet"],["Turn off the tap","Water stops flowing"],["Fasten seat belt","Passenger is safer"],["Close fridge door","Cold air stays inside"],["Draw the curtains","Less light enters the room"]],[["Alarm rings","Wake up"],["Class-ending bell","Pack books"],["Traffic light turns green","Vehicles may go when safe"],["Mom calls for dinner","Go to the dining table"],["Rain begins","Find shelter or open an umbrella"]],[["Leave ice outside","Ice melts into water"],["Pump air into a tire","Tire gets firmer"],["Fold paper","Paper has a crease"],["Color a picture","Picture gains color"],["Place a book on a scale","Scale shows its weight"]],[["Large rotor blades","Helicopter"],["Steel wheels on tracks","Train"],["Sail","Sailboat"],["Pedal","Bicycle"],["Airplane wing","Airplane"]],[["Eyes","See"],["Ears","Hear"],["Nose","Smell"],["Tongue","Taste"],["Skin","Feel touch"]],[["Roots","Absorb water from soil"],["Stem","Support the plant"],["Leaves","Catch sunlight"],["Flowers","Make seeds and fruit after pollination"],["Fruit","Protect seeds"]],[["Roof","House"],["Step","Staircase"],["Drawer","Cabinet"],["Tabletop","Table"],["Door handle","Door"]],[["Sandwich","Two slices of bread"],["Vegetable salad","Leafy vegetables"],["Lemonade","Lemon juice"],["Egg fried rice","Egg"],["Fruit yogurt","Cut fruit"]],[["One sock","Pair of socks"],["One glove","Pair of gloves"],["One chopstick","Pair of chopsticks"],["One chess piece","Chess set"],["One puzzle piece","Jigsaw puzzle"]],[["Handle","Handbag"],["Lid","Pot"],["Pen tip","Pen"],["Blade","Scissors"],["Screen","Computer"]],[["Elephant","Long trunk"],["Giraffe","Very long neck"],["Turtle","Hard shell"],["Rhino","Horn on its nose"],["Rabbit","Long ears"]],[["Chick","Hen"],["Duckling","Duck"],["Puppy","Dog"],["Kitten","Cat"],["Calf","Cow"],["Foal","Horse"]],[["Books","Bookshelf"],["Clothes","Wardrobe"],["Toys","Toy box"],["Dirty dishes","Sink"],["Paper waste","Trash can"],["Shoes","Shoe rack"]],[["Teach children to read and write","Teacher"],["Examine a patient","Doctor"],["Put out a fire","Firefighter"],["Cook in a restaurant","Chef"],["Grow and care for crops","Farmer"],["Repair a car engine","Mechanic"]],[["Has hands or numbers to tell time","Clock"],["Has pages to read","Book"],["Has two blades that cut","Scissors"],["Has a handle and keeps rain off","Umbrella"],["Has markings to measure length","Ruler"],["Has straps and carries school books","School bag"]],[["Need to cross a road","Use the crossing when allowed"],["Ride a bicycle","Wear a fitting helmet"],["Stranger knocks when home alone","Do not open and tell an adult"],["Smell smoke or burning","Move away and tell an adult"],["Get lost in a supermarket","Stay safe and ask staff for help"],["Hands are dirty before eating","Wash hands with soap"]],[["Carrot","Root"],["Leafy greens","Leaf"],["Cauliflower","Flower head"],["Sugarcane","Stem"],["Corn","Seeds"],["Tomato","Fruit"]],[["Beach","Sound of waves"],["Schoolyard","School drum"],["Farm","Rooster crowing"],["Train station","Train whistle"],["Stadium","Cheers"],["Forest","Birdsong and rustling leaves"]],[["Paper","Paper notebook"],["Glass","Drinking glass"],["Wood","Wooden table"],["Clay","Clay pot"],["Wool","Wool scarf"],["Metal","Stainless-steel spoon"]]];
+  const EN_ROUND_TITLES = ["Who goes with what?", "Objects and their uses", "Where does it happen?", "Who uses this?", "What time of day?", "Which room?", "How do we travel?", "When do we wear it?", "Match the categories", "Where do animals live?", "Jobs and workplaces", "School supplies", "Which meal?", "Where is the sound?", "Ways to travel", "What is it made of?", "Choose the right tool", "Tools for different jobs", "What do we measure?", "Safety first", "Find the right container", "Signals and actions", "Tools for activities", "Solve the problem", "First, then", "Cause and effect", "From ingredients to food", "A day in my life", "Babies and grown-ups", "Before and after using", "Signal and response", "What changes?", "Vehicle parts", "Body parts and senses", "Parts of a plant", "Parts of a house", "What is in the food?", "One part of a set", "Which part belongs here?", "Animal features", "Find the mother", "Put things away", "Who does this job?", "Secret clues", "Stay safe", "Parts of plants we eat", "Where is that sound?", "What can we make?"];
+  const EN_LEVELS = ["Familiar pairs", "Sort into groups", "Tools and uses", "Before and after", "Parts of a whole", "Little detective"];
+  let language = "vi";
+  const ui = (vi, en) => language === "en" ? en : vi;
+  const translatePiece = (text, side, index) => language === "en" ? ((EN_PAIRS[currentLevelIndex * 8 + currentRoundIndex] || [])[index] || [])[side === "left" ? 0 : 1] || text : text;
+  const englishRound = (levelIndex, roundIndex) => EN_ROUND_TITLES[levelIndex * 8 + roundIndex] || "Match the pairs";
+  const titleForRound = (li, ri, original) => ui(original, englishRound(li, ri));
+  const shortLevelText = (li, l) => ui(shortLevel(l), EN_LEVELS[li]);
+  const promptText = (r) => ui(r.prompt, "Match each picture or word on the left with the correct one on the right.");
+  const tipText = (r) => ui(r.tip, "Look closely at the pictures. Think about how the two items are connected.");
+  const whyText = (p, i) => ui(p.why, `${EN_PAIRS[currentLevelIndex * 8 + currentRoundIndex][i][0]} matches ${EN_PAIRS[currentLevelIndex * 8 + currentRoundIndex][i][1]}.`);
+  function languageSwitcher() {
+    return `<div class="ee-mp-lang" role="group" aria-label="Language"><button type="button" data-mp-lang="vi" class="${language === "vi" ? "active" : ""}" aria-pressed="${language === "vi"}">Tiếng Việt</button><button type="button" data-mp-lang="en" class="${language === "en" ? "active" : ""}" aria-pressed="${language === "en"}">English</button></div>`;
+  }
+  function bindLanguage() {
+    const h = host(); if (!h) return;
+    h.querySelectorAll("[data-mp-lang]").forEach((button) => button.addEventListener("click", () => {
+      const next = button.dataset.mpLang;
+      if (next === language) return;
+      stopSpeak();
+      window.clearTimeout(finishTimer);
+      language = next;
+      if (currentLevelIndex < 0) renderLevelRegistry();
+      else if (currentRoundIndex < 0) renderRoundRegistry(currentLevelIndex);
+      else if (matched.size === (round()?.pairs.length || -1)) renderFinish();
+      else renderRound();
+    }));
+  }
+
   const esc = (value) => String(value == null ? "" : value)
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#39;");
 
@@ -2992,78 +3022,44 @@
   function level() { return LEVELS[currentLevelIndex] || null; }
   function round() { const l = level(); return l && l.rounds[currentRoundIndex] ? l.rounds[currentRoundIndex] : null; }
 
-  /* ---------- Giọng đọc: ưu tiên giọng Việt có sẵn trong máy, không có thì dùng Google ---------- */
+  /* Google TTS only. A nonce prevents late audio from playing after navigation. */
   const ttsAudio = new Audio();
-  ttsAudio.referrerPolicy = "no-referrer";
   ttsAudio.preload = "none";
-  let ttsNonce = 0;
-  let ttsQueue = [];
-  const synth = typeof window !== "undefined" && "speechSynthesis" in window ? window.speechSynthesis : null;
-  if (synth) { try { synth.getVoices(); } catch (_) {} }
-  function viVoice() {
-    if (!synth) return null;
-    try { return synth.getVoices().find((v) => /^vi([-_]|$)/i.test(v.lang)) || null; } catch (_) { return null; }
-  }
-  function ttsUrl(text) {
-    return `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent(String(text || ""))}`;
-  }
-  function splitTtsText(text, maxLength = 170) {
-    const clean = String(text || "").replace(/\s+/g, " ").trim();
-    if (!clean) return [];
-    const pieces = clean.match(/[^.!?;:]+[.!?;:]?/g) || [clean];
-    const out = [];
-    let buf = "";
-    pieces.forEach((p) => {
-      const part = p.trim();
-      if (!part) return;
-      if (!buf) buf = part;
-      else if ((buf + " " + part).length <= maxLength) buf += " " + part;
-      else { out.push(buf); buf = part; }
-    });
-    if (buf) out.push(buf);
-    return out;
+  ttsAudio.referrerPolicy = "no-referrer";
+  let ttsNonce = 0, ttsQueue = [], lastSpeakKey = "", speaking = false;
+  function ttsUrl(text) { return `https://translate.google.com/translate_tts?ie=UTF-8&tl=${language === "en" ? "en" : "vi"}&client=tw-ob&q=${encodeURIComponent(text)}`; }
+  function splitTtsText(text, limit=170) {
+    const words = String(text||"").replace(/\s+/g," ").trim().split(" ");
+    const out=[];let chunk="";
+    for(const word of words) { if((chunk+" "+word).trim().length>limit && chunk){out.push(chunk);chunk="";}chunk=(chunk+" "+word).trim(); }
+    if(chunk) out.push(chunk);return out;
   }
   function stopSpeak() {
-    ttsNonce += 1;
-    ttsQueue = [];
-    try { if (synth) synth.cancel(); } catch (_) {}
-    try { ttsAudio.pause(); ttsAudio.removeAttribute("src"); ttsAudio.load(); } catch (_) {}
+    ttsNonce++; ttsQueue=[]; speaking=false; lastSpeakKey="";
+    ttsAudio.onended=null;ttsAudio.onerror=null;
+    try{ttsAudio.pause();ttsAudio.removeAttribute("src");ttsAudio.load();}catch(_){}
   }
   function showVoiceNote() {
-    const n = host() && host().querySelector("#ee-mp-voice-note");
-    if (n) { n.hidden = false; n.textContent = "Chưa phát được giọng đọc. Con nhờ người lớn kiểm tra loa và mạng nhé."; }
+    const n=host()?.querySelector("#ee-mp-voice-note");
+    if(n){n.hidden=false;n.textContent=ui("Chưa phát được giọng đọc. Con nhờ người lớn kiểm tra loa và mạng nhé.","Audio is unavailable. Please check the internet connection and speakers.");}
   }
-  function playNext(nonce, quiet) {
-    if (nonce !== ttsNonce || !ttsQueue.length) return;
-    const chunk = ttsQueue.shift();
-    const voice = viVoice();
-    if (voice) {
-      try {
-        const u = new SpeechSynthesisUtterance(chunk);
-        u.voice = voice; u.lang = voice.lang; u.rate = 0.92; u.pitch = 1.08;
-        u.onend = () => playNext(nonce, true);
-        u.onerror = (e) => { if (nonce === ttsNonce && !quiet && e.error !== "interrupted" && e.error !== "canceled") showVoiceNote(); };
-        synth.speak(u);
-        return;
-      } catch (_) { /* dùng Google bên dưới */ }
-    }
+  function playNext(nonce,quiet) {
+    if(nonce!==ttsNonce)return;
+    if(!ttsQueue.length){speaking=false;lastSpeakKey="";return;}
+    const chunk=ttsQueue.shift();
     try {
-      ttsAudio.src = ttsUrl(chunk);
-      ttsAudio.playbackRate = 0.96;
-      const p = ttsAudio.play();
-      if (p && typeof p.catch === "function") p.catch(() => { if (nonce === ttsNonce && !quiet) showVoiceNote(); });
-    } catch (_) { if (!quiet) showVoiceNote(); }
+      ttsAudio.src=ttsUrl(chunk);ttsAudio.playbackRate=.96;
+      ttsAudio.onended=()=>playNext(nonce,quiet);
+      ttsAudio.onerror=()=>{if(nonce===ttsNonce){speaking=false;ttsQueue=[];if(!quiet)showVoiceNote();}};
+      const p=ttsAudio.play();if(p?.catch)p.catch(()=>{if(nonce===ttsNonce){speaking=false;ttsQueue=[];if(!quiet)showVoiceNote();}});
+    }catch(_){if(nonce===ttsNonce&&!quiet)showVoiceNote();}
   }
-  ttsAudio.addEventListener("ended", () => { if (ttsQueue.length) playNext(ttsNonce, true); });
-  /* quiet = true: tự đọc (không báo lỗi); force = true: đọc cả khi đang tắt tiếng tự động */
-  function speak(text, quiet = false, force = false) {
-    if (muted && !force) return;
-    const chunks = splitTtsText(text);
-    if (!chunks.length) return;
-    stopSpeak();
-    const nonce = ++ttsNonce;
-    ttsQueue = chunks;
-    playNext(nonce, quiet);
+  function speak(text,quiet=false,force=false) {
+    if(muted&&!force)return;
+    const chunks=splitTtsText(text);if(!chunks.length)return;
+    const key=language+":"+text;
+    if(speaking&&lastSpeakKey===key&&!force)return;
+    stopSpeak();lastSpeakKey=key;speaking=true;ttsQueue=chunks;playNext(ttsNonce,quiet);
   }
 
   /* ---------- Thanh điều hướng ---------- */
@@ -3100,6 +3096,13 @@
     const style = document.createElement("style");
     style.id = STYLE_ID;
     style.textContent = `
+      .ee-mp-page .section-heading{display:flex;align-items:center;justify-content:space-between;gap:.6rem;flex-wrap:wrap}
+      .ee-mp-header-actions,.ee-mp-game-lang{display:flex;align-items:center;gap:.6rem;justify-content:flex-end;flex-wrap:wrap}
+      .ee-mp-lang{display:inline-flex;align-items:center;padding:3px;border:1px solid #bfdbfe;border-radius:15px;background:#fff;box-shadow:0 4px 12px rgba(96,165,250,.09)}
+      .ee-mp-lang button{border:0!important;box-shadow:none!important;border-radius:11px!important;background:#fff!important;color:#1e3a8a!important;font:inherit;font-size:14px!important;font-weight:800!important;min-height:36px;padding:0 12px;cursor:pointer}
+      .ee-mp-lang button.active{background:linear-gradient(90deg,#3b82f6,#10b981)!important;color:white!important}
+      .ee-mp-page .back-btn{min-height:43px;border:0;border-radius:13px;padding:.55rem .85rem;color:#fff;background:linear-gradient(90deg,#ec4899,#8b5cf6);font:inherit;font-weight:900;cursor:pointer}
+      .ee-mp-game-lang{margin:0 0 .65rem}
       .ee-mp-page{padding:.15rem .1rem 1rem;color:#344054;font-family:"Baloo 2","Nunito","Segoe UI",system-ui,sans-serif}
       .ee-mp-page button{font-family:inherit}
       .ee-mp-bubble{display:flex;align-items:center;gap:.6rem;border:2px solid #F9A8D4;border-radius:18px;background:#FFF1F7;padding:.55rem .8rem;margin:0 0 .9rem;color:#BE185D;font-size:19px;font-weight:700;line-height:1.35}
@@ -3201,23 +3204,24 @@
     if (!h) return;
     h.innerHTML = `
       <div class="ee-mp-page">
-        <div class="section-heading"><div><h1>🔗 Mảnh ghép còn thiếu</h1><p>6 cấp • 48 màn</p></div><button id="ee-mp-back-games" class="back-btn" type="button">← Games</button></div>
-        <div class="ee-mp-bubble"><span class="ico" aria-hidden="true">🐰</span><span class="txt">${INTRO}</span><button class="ee-mp-say" id="ee-mp-say-intro" type="button" aria-label="Nghe cô đọc">🔊</button></div>
+        <div class="section-heading"><div><h1>🔗 ${ui("Mảnh ghép còn thiếu","Missing Pieces")}</h1><p>${ui("6 cấp • 48 màn","6 levels • 48 rounds")}</p></div><div class="ee-mp-header-actions">${languageSwitcher()}<button id="ee-mp-back-games" class="back-btn" type="button">← Games</button></div></div>
+        <div class="ee-mp-bubble"><span class="ico" aria-hidden="true">🐰</span><span class="txt">${esc(ui(INTRO,"Tap a piece on the left, then tap its match on the right!"))}</span><button class="ee-mp-say" id="ee-mp-say-intro" type="button" aria-label="Nghe cô đọc">🔊</button></div>
         <p id="ee-mp-voice-note" class="ee-mp-voice-note" hidden></p>
         <div class="ee-mp-levels">
           ${LEVELS.map((l, i) => {
             const done = l.rounds.filter((_, ri) => stars[roundKey(i, ri)]).length;
             const sample = l.rounds.slice(0, 2).map((r) => `${r.pairs[0].left.icon}${r.pairs[0].right.icon}`).join(" ");
-            return `<button class="ee-mp-level" data-level="${i}" data-tone="${esc(l.tone)}" type="button" aria-label="Cấp ${i + 1}: ${esc(shortLevel(l))}">
-              <span class="top"><span class="num">${i + 1}</span><h3>${esc(shortLevel(l))}</h3></span>
+            return `<button class="ee-mp-level" data-level="${i}" data-tone="${esc(l.tone)}" type="button" aria-label="${ui("Cấp","Level")} ${i + 1}: ${esc(shortLevelText(i,l))}">
+              <span class="top"><span class="num">${i + 1}</span><h3>${esc(shortLevelText(i,l))}</h3></span>
               <span class="icons" aria-hidden="true">${sample}</span>
-              <span class="prog"><span class="ee-mp-bar"><span style="width:${(done / l.rounds.length) * 100}%"></span></span>${done}/${l.rounds.length} màn</span>
+              <span class="prog"><span class="ee-mp-bar"><span style="width:${(done / l.rounds.length) * 100}%"></span></span>${done}/${l.rounds.length} ${ui("màn","rounds")}</span>
             </button>`;
           }).join("")}
         </div>
       </div>`;
     h.querySelector("#ee-mp-back-games")?.addEventListener("click", () => activeContext && activeContext.back && activeContext.back());
-    h.querySelector("#ee-mp-say-intro")?.addEventListener("click", () => speak(INTRO, false, true));
+    h.querySelector("#ee-mp-say-intro")?.addEventListener("click", () => speak(ui(INTRO,"Tap a piece on the left, then tap its match on the right!"), false, true));
+    bindLanguage();
     h.querySelectorAll("[data-level]").forEach((button) => button.addEventListener("click", () => renderRoundRegistry(Number(button.dataset.level))));
   }
 
@@ -3234,19 +3238,20 @@
     if (!h) return;
     h.innerHTML = `
       <div class="ee-mp-page">
-        <div class="section-heading"><div><h1>🔗 Cấp ${levelIndex + 1}: ${esc(shortLevel(l))}</h1><p>${l.rounds.length} màn</p></div><button id="ee-mp-back-levels" class="back-btn" type="button">← 6 cấp</button></div>
+        <div class="section-heading"><div><h1>🔗 ${ui("Cấp","Level")} ${levelIndex + 1}: ${esc(shortLevelText(levelIndex,l))}</h1><p>${l.rounds.length} ${ui("màn","rounds")}</p></div><div class="ee-mp-header-actions">${languageSwitcher()}<button id="ee-mp-back-levels" class="back-btn" type="button">← ${ui("6 cấp", "6 levels")}</button></div></div>
         <div class="ee-mp-rounds">
           ${l.rounds.map((r, i) => {
             const st = stars[roundKey(levelIndex, i)] || 0;
-            return `<button class="ee-mp-round${st ? " done" : ""}" data-round="${i}" type="button" aria-label="Màn ${i + 1}: ${esc(r.title)}">
+            return `<button class="ee-mp-round${st ? " done" : ""}" data-round="${i}" type="button" aria-label="${ui("Màn","Round")} ${i + 1}: ${esc(titleForRound(levelIndex,i,r.title))}">
               <span class="n">${i + 1}</span>
               <span class="pair" aria-hidden="true">${r.pairs[0].left.icon}<i>➜</i>${r.pairs[0].right.icon}</span>
-              <strong>${esc(r.title)}</strong>${starRow(st)}
+              <strong>${esc(titleForRound(levelIndex,i,r.title))}</strong>${starRow(st)}
             </button>`;
           }).join("")}
         </div>
       </div>`;
     h.querySelector("#ee-mp-back-levels")?.addEventListener("click", renderLevelRegistry);
+    bindLanguage();
     h.querySelectorAll("[data-round]").forEach((button) => button.addEventListener("click", () => startRound(levelIndex, Number(button.dataset.round))));
   }
 
@@ -3259,7 +3264,7 @@
     currentRoundIndex = roundIndex;
     resetRoundState(r);
     renderRound();
-    speak(r.prompt, true);
+    speak(promptText(r), true);
   }
 
   /* ---------- Màn chơi ---------- */
@@ -3271,7 +3276,7 @@
     const dim = side === "right" && secondHintChoices.size > 0 && !secondHintChoices.has(key) && !isMatched;
     const cls = ["ee-mp-piece", side, isMatched ? "matched" : "", isSelected ? "selected" : "", isHint ? "hint" : "", dim ? "dim" : "", revealed.has(key) ? "revealed" : ""].filter(Boolean).join(" ");
     const badge = isMatched ? `<span class="badge" aria-hidden="true">${pairOrder.get(key)}</span>` : "";
-    return `<button class="${cls}" type="button" data-side="${side}" data-pair="${key}" ${isMatched ? "aria-disabled=\"true\"" : ""}><span class="ico" aria-hidden="true">${esc(item.icon)}</span><span class="txt">${esc(item.text)}</span>${badge}</button>`;
+    return `<button class="${cls}" type="button" data-side="${side}" data-pair="${key}" ${isMatched ? "aria-disabled=\"true\"" : ""}><span class="ico" aria-hidden="true">${esc(item.icon)}</span><span class="txt">${esc(translatePiece(item.text,side,pairIndex))}</span>${badge}</button>`;
   }
 
   function renderRound() {
@@ -3283,19 +3288,21 @@
     const dots = r.pairs.map((_, i) => `<span class="${matched.has(String(i)) ? (revealed.has(String(i)) ? "peek" : "on") : ""}"></span>`).join("");
     h.innerHTML = `
       <div class="ee-mp-page">
-        <div class="ee-mp-head"><h2>${esc(r.title)}</h2><div class="ee-mp-dots" aria-label="Đã ghép ${matched.size} trên ${r.pairs.length}">${dots}</div>
-          <button id="ee-mp-mute" class="ee-mp-say${muted ? " mute" : ""}" type="button" aria-label="${muted ? "Bật" : "Tắt"} giọng đọc tự động" title="${muted ? "Bật" : "Tắt"} giọng đọc tự động">${muted ? "🔇" : "🔈"}</button></div>
-        <div class="ee-mp-bubble"><span class="ico" aria-hidden="true">🐰</span><span class="txt">${esc(r.prompt)}</span><button class="ee-mp-say" id="ee-mp-say-prompt" type="button" aria-label="Nghe cô đọc">🔊</button></div>
+        <div class="ee-mp-head"><h2>${esc(titleForRound(currentLevelIndex,currentRoundIndex,r.title))}</h2><div class="ee-mp-dots" aria-label="Đã ghép ${matched.size} trên ${r.pairs.length}">${dots}</div>
+          <button id="ee-mp-mute" class="ee-mp-say${muted ? " mute" : ""}" type="button" aria-label="${ui(muted ? "Bật giọng đọc tự động" : "Tắt giọng đọc tự động",muted ? "Enable auto narration" : "Disable auto narration")}" title="${ui(muted ? "Bật giọng đọc tự động" : "Tắt giọng đọc tự động",muted ? "Enable auto narration" : "Disable auto narration")}">${muted ? "🔇" : "🔈"}</button></div>
+        <div class="ee-mp-game-lang">${languageSwitcher()}<button class="back-btn" type="button" id="ee-mp-back-rounds">← ${ui("Chọn màn", "Rounds")}</button></div><div class="ee-mp-bubble"><span class="ico" aria-hidden="true">🐰</span><span class="txt">${esc(promptText(r))}</span><button class="ee-mp-say" id="ee-mp-say-prompt" type="button" aria-label="Nghe cô đọc">🔊</button></div>
         <p id="ee-mp-voice-note" class="ee-mp-voice-note" hidden></p>
         <div class="ee-mp-board">
           <div class="ee-mp-col">${r.pairs.map((p, i) => pieceHtml("left", i, p.left)).join("")}</div>
           <div class="ee-mp-col">${rightOrder.map((key) => pieceHtml("right", Number(key), r.pairs[Number(key)].right)).join("")}</div>
         </div>
         <div class="ee-mp-foot">
-          <div id="ee-mp-fb" class="ee-mp-fb" aria-live="polite"><span class="ico" aria-hidden="true">👆</span><span>Chạm một mảnh bên trái trước nhé!</span></div>
-          <div class="ee-mp-acts"><button id="ee-mp-hint" class="ee-mp-btn" type="button">💡 Gợi ý</button><button id="ee-mp-answer" class="ee-mp-btn amber" type="button">👀 Đáp án</button></div>
+          <div id="ee-mp-fb" class="ee-mp-fb" aria-live="polite"><span class="ico" aria-hidden="true">👆</span><span>${ui("Chạm một mảnh bên trái trước nhé!","Tap a piece on the left first!")}</span></div>
+          <div class="ee-mp-acts"><button id="ee-mp-hint" class="ee-mp-btn" type="button">💡 ${ui("Gợi ý","Hint")}</button><button id="ee-mp-answer" class="ee-mp-btn amber" type="button">👀 ${ui("Đáp án","Answer")}</button></div>
         </div>
       </div>`;
+    bindLanguage();
+    h.querySelector("#ee-mp-back-rounds")?.addEventListener("click",()=>renderRoundRegistry(currentLevelIndex));
     bindRound();
   }
 
@@ -3344,13 +3351,13 @@
         rightSelected = "";
         secondHintChoices = new Set();
         if (leftSelected) {
-          feedback("", "👉", `Bây giờ chạm mảnh bên phải hợp với “${item.text}”.`);
-          speak(item.text, true);
+          feedback("", "👉", ui(`Bây giờ chạm mảnh bên phải hợp với “${item.text}”.`, `Now find the match for “${translatePiece(item.text,side,Number(key))}” on the right.`));
+          speak(translatePiece(item.text,side,Number(key)), true);
         }
       } else {
         if (!leftSelected) {
-          feedback("tip", "👈", "Bé chạm một mảnh bên trái trước nhé!");
-          speak(item.text, true);
+          feedback("tip", "👈", ui("Bé chạm một mảnh bên trái trước nhé!","Tap a piece on the left first!"));
+          speak(translatePiece(item.text,side,Number(key)), true);
           refresh();
           return;
         }
@@ -3361,13 +3368,13 @@
     }));
     h.querySelector("#ee-mp-hint")?.addEventListener("click", useHint);
     h.querySelector("#ee-mp-answer")?.addEventListener("click", revealAnswer);
-    h.querySelector("#ee-mp-say-prompt")?.addEventListener("click", () => speak(r.prompt, false, true));
+    h.querySelector("#ee-mp-say-prompt")?.addEventListener("click", () => speak(promptText(r), false, true));
     h.querySelector("#ee-mp-mute")?.addEventListener("click", (e) => {
       muted = !muted;
       if (muted) stopSpeak();
       e.currentTarget.textContent = muted ? "🔇" : "🔈";
       e.currentTarget.classList.toggle("mute", muted);
-      e.currentTarget.setAttribute("aria-label", `${muted ? "Bật" : "Tắt"} giọng đọc tự động`);
+      e.currentTarget.setAttribute("aria-label", `${muted ? ui("Bật","Enable") : ui("Tắt","Disable")} ${ui("giọng đọc tự động","automatic narration")}`);
     });
   }
 
@@ -3388,7 +3395,7 @@
       const p = r.pairs[Number(leftKey)];
       markMatched(leftKey, false);
       refresh();
-      feedback("good", "🎉", p.why, `Đúng rồi! ${p.why}`);
+      feedback("good", "🎉", whyText(p,Number(leftKey)), ui(`Đúng rồi! ${p.why}`,`Correct! ${whyText(p,Number(leftKey))}`));
       if (matched.size === r.pairs.length) finishTimer = window.setTimeout(renderFinish, 1600);
       return;
     }
@@ -3400,7 +3407,7 @@
     });
     rightSelected = "";
     refresh();
-    feedback("bad", "🤔", "Chưa đúng rồi. Bé thử mảnh khác nhé!", "Chưa đúng rồi. Bé thử mảnh khác nhé!");
+    feedback("bad", "🤔", ui("Chưa đúng rồi. Bé thử mảnh khác nhé!","Not quite. Try another piece!"), ui("Chưa đúng rồi. Bé thử mảnh khác nhé!","Not quite. Try another piece!"));
   }
 
   function unresolvedKey() {
@@ -3424,7 +3431,7 @@
     secondHintChoices = new Set([key, ...shuffle(others).slice(0, Math.min(1, others.length))]);
     refresh();
     const left = r.pairs[Number(key)].left.text;
-    feedback("tip", "💡", `“${left}” đi với một trong ${secondHintChoices.size} mảnh còn sáng.`, `${r.tip} ${left} đi với một trong ${secondHintChoices.size} mảnh còn sáng.`);
+    feedback("tip", "💡", ui(`“${left}” đi với một trong ${secondHintChoices.size} mảnh còn sáng.`,`“${translatePiece(left,"left",Number(key))}” matches one of the ${secondHintChoices.size} bright pieces.`), ui(`${r.tip} ${left} đi với một trong ${secondHintChoices.size} mảnh còn sáng.`,`${tipText(r)} Find the match for ${translatePiece(left,"left",Number(key))}.`));
   }
 
   function revealAnswer() {
@@ -3435,7 +3442,7 @@
     hinted.add(key);
     markMatched(key, true);
     refresh();
-    feedback("tip", "👀", `${p.left.text} ➜ ${p.right.text}. ${p.why}`, `${p.left.text} đi với ${p.right.text}. ${p.why}`);
+    feedback("tip", "👀", ui(`${p.left.text} ➜ ${p.right.text}. ${p.why}`,`${translatePiece(p.left.text,"left",Number(key))} ➜ ${translatePiece(p.right.text,"right",Number(key))}. ${whyText(p,Number(key))}`), ui(`${p.left.text} đi với ${p.right.text}. ${p.why}`,whyText(p,Number(key))));
     if (matched.size === r.pairs.length) finishTimer = window.setTimeout(renderFinish, 1800);
   }
 
@@ -3451,21 +3458,23 @@
     saveStars(roundKey(currentLevelIndex, currentRoundIndex), n);
     const hasNext = currentRoundIndex < l.rounds.length - 1 || currentLevelIndex < LEVELS.length - 1;
     h.innerHTML = `
-      <div class="ee-mp-page"><section class="ee-mp-finish">
+      <div class="ee-mp-page"><div class="ee-mp-game-lang">${languageSwitcher()}<button id="ee-mp-back-rounds" class="back-btn" type="button">← ${ui("Chọn màn","Rounds")}</button></div><section class="ee-mp-finish">
         <div class="big" aria-hidden="true">🎉🐰</div>
-        <h2>Ghép xong rồi!</h2>
+        <h2>${ui("Ghép xong rồi!","Great matching!")}</h2>
         <div class="bigstars" aria-label="${n} sao">${[1, 2, 3].map((i) => `<span class="${i <= n ? "" : "off"}">★</span>`).join("")}</div>
-        <div class="ee-mp-recap">${r.pairs.map((p, i) => `<button type="button" data-say-pair="${i}" aria-label="Nghe: ${esc(p.left.text)} đi với ${esc(p.right.text)}"><span class="e" aria-hidden="true">${p.left.icon}➜${p.right.icon}</span><span>${esc(p.left.text)} – ${esc(p.right.text)}</span></button>`).join("")}</div>
+        <div class="ee-mp-recap">${r.pairs.map((p, i) => `<button type="button" data-say-pair="${i}" aria-label="Nghe: ${esc(p.left.text)} đi với ${esc(p.right.text)}"><span class="e" aria-hidden="true">${p.left.icon}➜${p.right.icon}</span><span>${esc(translatePiece(p.left.text,"left",i))} – ${esc(translatePiece(p.right.text,"right",i))}</span></button>`).join("")}</div>
         <div class="ee-mp-finish-actions">
-          ${hasNext ? `<button id="ee-mp-next" class="ee-mp-btn primary" type="button">▶ Màn tiếp theo</button>` : ""}
-          <button id="ee-mp-replay" class="ee-mp-btn" type="button">🔄 Chơi lại</button>
-          <button id="ee-mp-rounds" class="ee-mp-btn" type="button">📚 Chọn màn</button>
+          ${hasNext ? `<button id="ee-mp-next" class="ee-mp-btn primary" type="button">▶ ${ui("Màn tiếp theo","Next round")}</button>` : ""}
+          <button id="ee-mp-replay" class="ee-mp-btn" type="button">🔄 ${ui("Chơi lại","Play again")}</button>
+          <button id="ee-mp-rounds" class="ee-mp-btn" type="button">📚 ${ui("Chọn màn","Choose round")}</button>
         </div>
       </section></div>`;
-    speak(n === 3 ? "Giỏi quá! Bé ghép đúng hết mà không cần gợi ý!" : "Ghép xong rồi! Bé giỏi lắm!", true);
+    bindLanguage();
+    h.querySelector("#ee-mp-back-rounds")?.addEventListener("click",()=>renderRoundRegistry(currentLevelIndex));
+    speak(n===3?ui("Giỏi quá! Bé ghép đúng hết mà không cần gợi ý!","Excellent! You matched everything without hints!"):ui("Ghép xong rồi! Bé giỏi lắm!","Great job! All pairs are matched!"),true);
     h.querySelectorAll("[data-say-pair]").forEach((b) => b.addEventListener("click", () => {
       const p = r.pairs[Number(b.dataset.sayPair)];
-      speak(`${p.left.text} đi với ${p.right.text}. ${p.why}`, false, true);
+      speak(ui(`${p.left.text} đi với ${p.right.text}. ${p.why}`,whyText(p,Number(b.dataset.sayPair))), false, true);
     }));
     h.querySelector("#ee-mp-replay")?.addEventListener("click", () => startRound(currentLevelIndex, currentRoundIndex));
     h.querySelector("#ee-mp-next")?.addEventListener("click", () => {
@@ -3478,6 +3487,7 @@
   function render(context) {
     activeContext = context || null;
     ensureStyles();
+    language="vi";
     renderLevelRegistry();
   }
 

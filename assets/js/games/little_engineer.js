@@ -10,7 +10,7 @@
   const MODULE_KEY = "littleEngineer";
   const GAME_NUMBER = 11;
   const GAME_TITLE = "Kỹ sư nhí";
-  const STYLE_ID = "class1-games-little-engineer-style-v1";
+  const STYLE_ID = "class1-games-little-engineer-style-v2";
   const STARS_KEY = "class1-little-engineer-stars";
 
   /* ---------- Hình các bộ phận (khung 100 x 100) ---------- */
@@ -114,6 +114,94 @@
     }
   ];
 
+
+  /* Offline English learning content. IDs, options, correct answers and SVGs remain unchanged. */
+  const EN_CHALLENGES = Object.freeze({
+    circuit: {
+      title: "Light up a bulb", desc: "Build a circuit to light the bulb",
+      intro: "The bulb is off. Choose the right parts to build a simple circuit. Then turn on the switch and see if it lights up!",
+      asks: ["What will provide electricity for the bulb?", "Choose a wire to connect the parts:"],
+      testLabel: "🔌 Turn on the switch",
+      success: "The bulb is glowing! Electricity flows from the battery, through the copper wire and the bulb, then back to the battery in a closed loop.",
+      remember: "A bulb needs a battery, metal wires and a complete closed circuit to light up. ⚠️ Small learning batteries can be safe with adult guidance. Wall outlets are dangerous. Never touch them or experiment with household electricity!"
+    },
+    car: {
+      title: "Build a toy car", desc: "Choose wheels that can roll",
+      intro: "Our toy car has no wheels yet. Choose the wheels and put them in the right place. Then give the car a gentle push!",
+      asks: ["Which wheels should we use?", "Where should the wheels go?"],
+      testLabel: "👉 Push the car",
+      success: "The car rolls smoothly! Round wheels under the car help it move easily along the road.",
+      remember: "Wheels roll best when they are round and touch the ground. That is why bicycles, motorcycles and cars all have round wheels."
+    },
+    bridge: {
+      title: "Build a bridge", desc: "Help a truck cross the stream",
+      intro: "A truck full of apples needs to cross a stream. Build a strong bridge, then test whether the truck can cross safely!",
+      asks: ["Choose the material for the bridge deck:", "Should we add a support under the middle?"],
+      testLabel: "🚚 Test the truck",
+      success: "The truck crossed safely! A strong wooden deck and a support in the middle keep the bridge from bending too much.",
+      remember: "A bridge needs strong materials and supports to carry weight. Next time you see a long bridge, look for the supports underneath."
+    },
+    raincoat: {
+      title: "A raincoat for Teddy", desc: "Choose waterproof materials",
+      intro: "It is about to rain, and Teddy has no raincoat! Choose a material and a design. Then make it rain and check if Teddy stays dry.",
+      asks: ["What material should we use for the raincoat?", "Should the raincoat have a hood?"],
+      testLabel: "🌧️ Make it rain",
+      success: "Teddy stayed dry in the rain! A waterproof plastic raincoat with a hood keeps the water out.",
+      remember: "A raincoat should be made from waterproof material, such as suitable plastic, and have a hood to keep the head dry. Different jobs need different materials."
+    }
+  });
+  const EN_OPTIONS = Object.freeze({
+    pin: ["Battery", "A battery stores energy that can power the light."],
+    tay: ["Eraser", "An eraser cannot supply electricity, so the light will not turn on."],
+    da: ["Rock", "A rock does not supply electricity, so the light stays off."],
+    len: ["Wool yarn", "Wool yarn does not conduct electricity well enough for our circuit."],
+    day_dong: ["Copper wire", "Copper is a metal that lets electric current flow easily."],
+    ong_hut: ["Plastic straw", "A plastic straw does not let electric current pass through."],
+    banh_vuong: ["Square wheels", "Square wheels have corners. The car bumps and gets stuck instead of rolling smoothly."],
+    banh_tron: ["Round wheels", "Round wheels roll smoothly along the ground."],
+    banh_tg: ["Triangle wheels", "Triangle wheels have sharp corners. The car moves a little, then stops."],
+    gan_tren: ["On the roof", "Wheels on top cannot touch the road. The car body drags on the ground."],
+    gan_duoi: ["Under the car", "Wheels underneath hold up the car and touch the road."],
+    giay: ["Sheet of paper", "Paper is thin and soft. It collapses under the truck's weight."],
+    go: ["Wooden board", "A strong wooden board can support the truck."],
+    day_len: ["Piece of yarn", "Yarn bends easily and cannot make a flat road for the truck."],
+    khong_tru: ["No middle support", "Without a middle support, the long bridge bends under the heavy truck."],
+    co_tru: ["Add a middle support", "A middle support helps carry the truck's weight."],
+    vai_bong: ["Cotton cloth", "Cotton absorbs water, so the raincoat becomes soaked."],
+    giay_bao: ["Newspaper", "Newspaper absorbs rainwater and can tear apart."],
+    nilon: ["Plastic sheet", "A waterproof plastic sheet lets raindrops slide off."],
+    len_ao: ["Wool", "Wool absorbs water, so Teddy would get wet."],
+    khong_mu: ["No hood", "Without a hood, Teddy's head gets wet."],
+    co_mu: ["Add a hood", "A hood helps keep Teddy's head dry."]
+  });
+  let language = "vi";
+  const isEnglish = () => language === "en";
+  const tr = (vi, en) => isEnglish() ? en : vi;
+  function viewChallenge(c) {
+    if (!c || !isEnglish()) return c;
+    const t = EN_CHALLENGES[c.id];
+    if (!t) return c;
+    return { ...c, ...t, steps: c.steps.map((step, i) => ({ ...step, ask: t.asks[i],
+      options: step.options.map((opt) => ({ ...opt, label: EN_OPTIONS[opt.id]?.[0] || opt.label,
+        why: EN_OPTIONS[opt.id]?.[1] || opt.why })) })) };
+  }
+  function languageControls() {
+    return `<div class="eng-header-actions"><div class="eng-languages" role="group" aria-label="Language"><button type="button" data-eng-language="vi" class="${!isEnglish() ? "on" : ""}" aria-pressed="${!isEnglish()}">Tiếng Việt</button><button type="button" data-eng-language="en" class="${isEnglish() ? "on" : ""}" aria-pressed="${isEnglish()}">English</button></div><button id="eng-back-games" type="button" class="back-btn">← Games</button></div>`;
+  }
+  function bindLanguages() {
+    const h = host(); if (!h) return;
+    h.querySelectorAll("[data-eng-language]").forEach((button) => button.addEventListener("click", () => {
+      const next = button.dataset.engLanguage;
+      if ((next !== "vi" && next !== "en") || next === language) return;
+      stopSpeak(); language = next;
+      // Keep picks/tries/step and any pending test timeout. Only replace the text/UI.
+      if (ch) renderCh(false); else renderHome();
+    }));
+    h.querySelector("#eng-back-games")?.addEventListener("click", () => {
+      clearTimers(); stopSpeak(); activeContext?.back?.();
+    });
+  }
+
   /* ---------- Trạng thái ---------- */
   let activeContext = null;
   let ch = null;
@@ -132,70 +220,74 @@
   function clearTimers() { timers.forEach((t) => window.clearTimeout(t)); timers = []; }
   const stars = (() => { try { return JSON.parse(window.localStorage.getItem(STARS_KEY) || "{}") || {}; } catch (_) { return {}; } })();
   function saveStars(id, n) { stars[id] = Math.max(stars[id] || 0, n); try { window.localStorage.setItem(STARS_KEY, JSON.stringify(stars)); } catch (_) {} }
-  const starRow = (n) => `<span class="eng-stars" aria-label="${n} sao">${[1, 2, 3].map((i) => `<span class="${i <= n ? "" : "off"}">★</span>`).join("")}</span>`;
+  const starRow = (n) => `<span class="eng-stars" aria-label="${n} ${tr("sao", "stars")}">${[1, 2, 3].map((i) => `<span class="${i <= n ? "" : "off"}">★</span>`).join("")}</span>`;
   const host = () => activeContext && activeContext.host;
   const optOf = (step, id) => step.options.find((o) => o.id === id) || null;
   const pickOpt = (k) => { const s = ch.steps[k]; return s ? optOf(s, picks[s.key]) : null; };
 
-  /* ---------- Giọng đọc ---------- */
-  const ttsAudio = new Audio();
-  ttsAudio.referrerPolicy = "no-referrer";
-  ttsAudio.preload = "none";
+  /* ---------- Google TTS: one audio stream, queued chunks, cancel on screen change ---------- */
+  const ttsAudio = typeof Audio === "function" ? new Audio() : null;
+  if (ttsAudio) { ttsAudio.referrerPolicy = "no-referrer"; ttsAudio.preload = "none"; }
   let ttsNonce = 0;
   let ttsQueue = [];
-  const synth = typeof window !== "undefined" && "speechSynthesis" in window ? window.speechSynthesis : null;
-  if (synth) { try { synth.getVoices(); } catch (_) {} }
-  function viVoice() { if (!synth) return null; try { return synth.getVoices().find((v) => /^vi([-_]|$)/i.test(v.lang)) || null; } catch (_) { return null; } }
+  let lastSpeech = "";
+  let lastSpeechAt = 0;
   function splitText(text, max = 170) {
-    const parts = String(text || "").replace(/⚠️/g, "").replace(/\s+/g, " ").trim().match(/[^.!?]+[.!?]?/g) || [];
+    const cleaned = String(text || "").replace(/⚠️/g, "").replace(/\s+/g, " ").trim();
+    const sentences = cleaned.match(/[^.!?…]+[.!?…]+|[^.!?…]+$/g) || [];
     const out = []; let buf = "";
-    parts.forEach((p) => { const s = p.trim(); if (!s) return; if (!buf) buf = s; else if ((buf + " " + s).length <= max) buf += " " + s; else { out.push(buf); buf = s; } });
+    for (const raw of sentences) {
+      const words = raw.trim().split(/\s+/);
+      for (const w of words) {
+        if (!w) continue;
+        if (buf && (buf + " " + w).length > max) { out.push(buf); buf = ""; }
+        if (w.length > max) { if (buf) { out.push(buf); buf = ""; } for (let n = 0; n < w.length; n += max) out.push(w.slice(n, n + max)); }
+        else buf += (buf ? " " : "") + w;
+      }
+    }
     if (buf) out.push(buf);
     return out;
   }
   function stopSpeak() {
     ttsNonce += 1; ttsQueue = [];
-    try { if (synth) synth.cancel(); } catch (_) {}
-    try { ttsAudio.pause(); ttsAudio.removeAttribute("src"); ttsAudio.load(); } catch (_) {}
+    if (ttsAudio) { try { ttsAudio.pause(); ttsAudio.onended = null; ttsAudio.onerror = null; ttsAudio.removeAttribute("src"); ttsAudio.load(); } catch (_) {} }
   }
   function voiceFail(quiet) {
     if (quiet) return;
-    const n = host() && host().querySelector("#eng-voice");
-    if (n) { n.hidden = false; n.textContent = "Chưa phát được giọng đọc. Con nhờ người lớn kiểm tra loa và mạng nhé."; }
+    const n = host()?.querySelector("#eng-voice");
+    if (n) { n.hidden = false; n.textContent = tr("Chưa phát được giọng đọc. Con nhờ người lớn kiểm tra loa và mạng nhé.", "The voice could not play. Please ask an adult to check the sound and internet."); }
   }
   function playNext(nonce, quiet) {
-    if (nonce !== ttsNonce || !ttsQueue.length) return;
+    if (nonce !== ttsNonce || !ttsAudio) return;
     const chunk = ttsQueue.shift();
-    const voice = viVoice();
-    if (voice) {
-      try {
-        const u = new SpeechSynthesisUtterance(chunk);
-        u.voice = voice; u.lang = voice.lang; u.rate = 0.92; u.pitch = 1.08;
-        u.onend = () => playNext(nonce, true);
-        u.onerror = (e) => { if (nonce === ttsNonce && e.error !== "interrupted" && e.error !== "canceled") voiceFail(quiet); };
-        synth.speak(u); return;
-      } catch (_) { /* dùng Google */ }
-    }
+    if (!chunk) return;
+    const lang = isEnglish() ? "en-US" : "vi";
     try {
-      ttsAudio.src = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent(chunk)}`;
+      ttsAudio.onended = () => { if (nonce === ttsNonce) playNext(nonce, quiet); };
+      ttsAudio.onerror = () => { if (nonce === ttsNonce) { ttsQueue = []; voiceFail(quiet); } };
+      ttsAudio.src = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${lang}&client=tw-ob&q=${encodeURIComponent(chunk)}`;
       ttsAudio.playbackRate = 0.96;
-      const p = ttsAudio.play();
-      if (p && p.catch) p.catch(() => { if (nonce === ttsNonce) voiceFail(quiet); });
-    } catch (_) { voiceFail(quiet); }
+      const result = ttsAudio.play();
+      if (result?.catch) result.catch(() => { if (nonce === ttsNonce) { ttsQueue = []; voiceFail(quiet); } });
+    } catch (_) { if (nonce === ttsNonce) { ttsQueue = []; voiceFail(quiet); } }
   }
-  ttsAudio.addEventListener("ended", () => { if (ttsQueue.length) playNext(ttsNonce, true); });
   function speak(text, quiet = true, force = false) {
     if (muted && !force) return;
-    const chunks = splitText(text); if (!chunks.length) return;
+    const clean = String(text || "").trim();
+    if (!clean) return;
+    const now = Date.now();
+    if (!force && clean === lastSpeech && now - lastSpeechAt < 260) return;
+    lastSpeech = clean; lastSpeechAt = now;
     stopSpeak();
-    const nonce = ++ttsNonce; ttsQueue = chunks; playNext(nonce, quiet);
+    ttsQueue = splitText(clean);
+    playNext(ttsNonce, quiet);
   }
 
   function setBanner(withCh) {
     const fn = activeContext && activeContext.hooks && activeContext.hooks.setSubBanner;
     if (typeof fn !== "function") return;
-    const items = [{ level: 2, title: `${GAME_NUMBER}. ${GAME_TITLE}`, action: withCh ? renderHome : null }];
-    if (withCh && ch) items.push({ level: 3, title: `${GAME_NUMBER}.${CHALLENGES.indexOf(ch) + 1} ${ch.title}`, action: null });
+    const items = [{ level: 2, title: `${GAME_NUMBER}. ${tr(GAME_TITLE, "Little Engineer")}`, action: withCh ? renderHome : null }];
+    if (withCh && ch) items.push({ level: 3, title: `${GAME_NUMBER}.${CHALLENGES.indexOf(ch) + 1} ${viewChallenge(ch).title}`, action: null });
     fn({ items });
   }
 
@@ -331,6 +423,15 @@
     style.textContent = `
       .eng-page{color:#344054;font-family:"Baloo 2","Nunito","Segoe UI",system-ui,sans-serif;padding:.1rem .1rem 1rem}
       .eng-page button{font-family:inherit}
+      .eng-page .section-heading{display:flex;align-items:center;justify-content:space-between;gap:.8rem;flex-wrap:wrap;margin-bottom:.8rem}
+      .eng-header-actions{display:flex;align-items:center;justify-content:flex-end;gap:.6rem;flex:0 0 auto;white-space:nowrap;margin-left:auto}
+      .eng-languages{display:inline-flex;align-items:center;padding:3px;border:1px solid #bfdbfe;background:#fff;border-radius:15px;box-shadow:0 3px 10px rgba(59,130,246,.09)}
+      .eng-languages button{border:0!important;border-radius:12px;min-height:40px;background:transparent!important;padding:.45rem .9rem;font-size:15px;font-weight:800;color:#1d4ed8!important;cursor:pointer;line-height:1.2;white-space:nowrap}
+      .eng-languages button.on{background:linear-gradient(90deg,#3b82f6,#14b8a6)!important;color:#fff!important;box-shadow:0 3px 9px rgba(20,184,166,.2)}
+      .eng-languages button:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+      .eng-header-actions .back-btn{min-height:46px!important;padding:.6rem .95rem!important;border:0;border-radius:15px!important;background:linear-gradient(90deg,#ec4899,#8b5cf6)!important;color:#fff!important;font-weight:800;box-shadow:0 4px 11px rgba(139,92,246,.16)}
+      .eng-head .eng-header-actions{margin-left:0}
+      @media(max-width:700px){.eng-page .section-heading{align-items:flex-start}.eng-header-actions{max-width:100%;gap:.45rem;margin-left:auto}.eng-languages button{font-size:14px;padding:.4rem .7rem;min-height:38px}.eng-header-actions .back-btn{font-size:14px;min-height:44px!important;padding:.5rem .8rem!important}.eng-head h2{min-width:0;width:100%;flex-basis:100%}}
       .eng-bubble{display:flex;align-items:center;gap:.6rem;border:2px solid #F9A8D4;border-radius:18px;background:#FFF1F7;padding:.55rem .8rem;margin:0 0 .9rem;color:#BE185D;font-size:19px;font-weight:700;line-height:1.4}
       .eng-bubble .ico{font-size:30px}.eng-bubble .txt{flex:1}
       .eng-say{flex:0 0 auto;min-width:50px;min-height:50px;border-radius:14px;border:2px solid #F9A8D4;background:#fff;cursor:pointer;font-size:22px}
@@ -415,18 +516,18 @@
     const h = host(); if (!h) return;
     h.innerHTML = `
       <div class="eng-page">
-        <div class="section-heading"><div><h1>🛠️ ${GAME_TITLE}</h1><p>${CHALLENGES.length} thử thách</p></div><button id="eng-back-games" class="back-btn" type="button">← Games</button></div>
-        <div class="eng-bubble"><span class="ico" aria-hidden="true">🐰</span><span class="txt">${HOME_TIP}</span><button class="eng-say" id="eng-say-home" type="button" aria-label="Nghe cô đọc">🔊</button></div>
-        <div class="eng-steps"><span class="eng-step"><b>1</b>✏️ Thiết kế</span><span class="eng-step"><b>2</b>▶️ Chạy thử</span><span class="eng-step"><b>3</b>🔧 Sửa lại</span></div>
+        <div class="section-heading"><div><h1>🛠️ ${tr(GAME_TITLE, "Little Engineer")}</h1><p>${CHALLENGES.length} ${tr("thử thách", "challenges")}</p></div>${languageControls()}</div>
+        <div class="eng-bubble"><span class="ico" aria-hidden="true">🐰</span><span class="txt">${esc(tr(HOME_TIP, "An engineer designs, tests and fixes things until they work. If it does not work the first time, that is okay. Try a better design!"))}</span><button class="eng-say" id="eng-say-home" type="button" aria-label="${tr("Nghe cô đọc", "Listen to Bunny")}">🔊</button></div>
+        <div class="eng-steps"><span class="eng-step"><b>1</b>✏️ ${tr("Thiết kế", "Design")}</span><span class="eng-step"><b>2</b>▶️ ${tr("Chạy thử", "Test")}</span><span class="eng-step"><b>3</b>🔧 ${tr("Sửa lại", "Improve")}</span></div>
         <p id="eng-voice" class="eng-voice" hidden></p>
         <div class="eng-grid">${CHALLENGES.map((c, i) => `
           <button class="eng-card eng-tone-${c.tone}" type="button" data-ch="${i}">
             <span class="big" aria-hidden="true">${c.emoji}</span>
-            <h3>${i + 1}. ${esc(c.title)}</h3><p>${esc(c.desc)}</p>${starRow(stars[c.id] || 0)}
+            <h3>${i + 1}. ${esc(viewChallenge(c).title)}</h3><p>${esc(viewChallenge(c).desc)}</p>${starRow(stars[c.id] || 0)}
           </button>`).join("")}</div>
       </div>`;
-    h.querySelector("#eng-back-games")?.addEventListener("click", () => activeContext && activeContext.back && activeContext.back());
-    h.querySelector("#eng-say-home")?.addEventListener("click", () => speak(HOME_TIP, false, true));
+    bindLanguages();
+    h.querySelector("#eng-say-home")?.addEventListener("click", () => speak(tr(HOME_TIP, "An engineer designs, tests and fixes things until they work. If it does not work the first time, that is okay. Try a better design!"), false, true));
     h.querySelectorAll("[data-ch]").forEach((b) => b.addEventListener("click", () => startCh(CHALLENGES[Number(b.dataset.ch)])));
   }
 
@@ -442,48 +543,49 @@
 
   function renderCh(readIntro) {
     const h = host(); if (!h || !ch) return;
+    const view = viewChallenge(ch);
     setBanner(true);
     const allPicked = ch.steps.every((s) => picks[s.key]);
-    const track = ch.steps.map((s, k) => {
+    const track = view.steps.map((s, k) => {
       const o = optOf(s, picks[s.key]);
       const cls = state === "fail" && k === failStep ? "bad" : state === "build" && k === stepIndex ? "now" : "";
       return `<button type="button" class="eng-chip ${cls}" data-goto="${k}" ${state === "test" ? "disabled" : ""}>${o ? optSvg(o.id) : `<span style="width:30px;text-align:center">${k + 1}</span>`}${esc(o ? o.label : s.ask.replace(/:$/, ""))}</button>`;
     }).join("");
     let panel = "";
     if (state === "build") {
-      const s = ch.steps[stepIndex];
+      const s = view.steps[stepIndex];
       panel = `<p class="eng-q">✏️ ${esc(s.ask)}</p>
         <div class="eng-opts">${s.options.map((o) => `<button type="button" class="eng-opt ${picks[s.key] === o.id ? "picked" : ""}" data-opt="${o.id}">${optSvg(o.id)}${esc(o.label)}</button>`).join("")}</div>
-        <div class="eng-actions"><button id="eng-test" class="eng-btn go" type="button" ${allPicked ? "" : "disabled"}>${esc(ch.testLabel)}</button></div>`;
+        <div class="eng-actions"><button id="eng-test" class="eng-btn go" type="button" ${allPicked ? "" : "disabled"}>${esc(view.testLabel)}</button></div>`;
     } else if (state === "test") {
-      panel = `<p class="eng-wait">▶️ Đang chạy thử… bé nhìn kỹ nhé!</p>`;
+      panel = `<p class="eng-wait">▶️ ${tr("Đang chạy thử… bé nhìn kỹ nhé!", "Testing… Watch carefully!")}</p>`;
     } else if (state === "ok") {
-      panel = `<div class="eng-res good"><span class="title">🎉 Thành công!</span>${esc(ch.success)}</div>
-        ${ch.id === "circuit" ? `<div class="eng-actions"><button id="eng-switch" class="eng-btn" type="button">${switchOn ? "🔌 Tắt công tắc" : "🔌 Bật công tắc"}</button></div>` : ""}
-        <div class="eng-actions"><button id="eng-again-say" class="eng-btn" type="button">🔊 Nghe lại</button></div>`;
+      panel = `<div class="eng-res good"><span class="title">🎉 ${tr("Thành công!", "It works!")}</span>${esc(view.success)}</div>
+        ${ch.id === "circuit" ? `<div class="eng-actions"><button id="eng-switch" class="eng-btn" type="button">${switchOn ? tr("🔌 Tắt công tắc", "🔌 Switch off") : tr("🔌 Bật công tắc", "🔌 Switch on")}</button></div>` : ""}
+        <div class="eng-actions"><button id="eng-again-say" class="eng-btn" type="button">🔊 ${tr("Nghe lại", "Listen again")}</button></div>`;
     } else {
-      const bad = pickOpt(failStep);
-      panel = `<div class="eng-res fix"><span class="title">🔧 Chưa được rồi!</span>${esc(bad ? bad.why : "")}<br>Bé sửa lại bộ phận này nhé!</div>
-        <div class="eng-actions"><button id="eng-fix" class="eng-btn primary" type="button">🔧 Sửa lại</button><button id="eng-again-say" class="eng-btn" type="button">🔊 Nghe lại</button></div>`;
+      const bad = failStep >= 0 ? view.steps[failStep]?.options.find((o) => o.id === picks[view.steps[failStep].key]) : null;
+      panel = `<div class="eng-res fix"><span class="title">🔧 ${tr("Chưa được rồi!", "Not yet!")}</span>${esc(bad ? bad.why : "")}${tr(" Bé sửa lại bộ phận này nhé!", " Try changing this part!")}</div>
+        <div class="eng-actions"><button id="eng-fix" class="eng-btn primary" type="button">🔧 ${tr("Sửa lại", "Fix it")}</button><button id="eng-again-say" class="eng-btn" type="button">🔊 ${tr("Nghe lại", "Listen again")}</button></div>`;
     }
     const finish = state === "ok" ? (() => {
       const n = tries <= 1 ? 3 : tries === 2 ? 2 : 1;
       saveStars(ch.id, n);
       const next = CHALLENGES[CHALLENGES.indexOf(ch) + 1];
-      return `<section class="eng-finish"><h3>${tries <= 1 ? "Làm được ngay lần đầu, kỹ sư giỏi quá!" : `Bé sửa ${tries - 1} lần và đã thành công!`}</h3>
-        <div class="bigstars" aria-label="${n} sao">${[1, 2, 3].map((i) => `<span class="${i <= n ? "" : "off"}">★</span>`).join("")}</div>
-        <div class="eng-remember" style="text-align:left">🐰 <b>Bé nhớ nhé:</b> ${esc(ch.remember)}</div>
+      return `<section class="eng-finish"><h3>${tries <= 1 ? tr("Làm được ngay lần đầu, kỹ sư giỏi quá!", "Great engineering! It worked on the first try!") : tr(`Bé sửa ${tries - 1} lần và đã thành công!`, `You improved your design ${tries - 1} time(s) and made it work!`)}</h3>
+        <div class="bigstars" aria-label="${n} ${tr("sao", "stars")}">${[1, 2, 3].map((i) => `<span class="${i <= n ? "" : "off"}">★</span>`).join("")}</div>
+        <div class="eng-remember" style="text-align:left">🐰 <b>${tr("Bé nhớ nhé:", "Remember:")}</b> ${esc(view.remember)}</div>
         <div class="eng-actions" style="justify-content:center;margin-top:.8rem">
-          ${next ? `<button id="eng-next" class="eng-btn primary" type="button">▶ Thử thách tiếp: ${esc(next.title)}</button>` : ""}
-          <button id="eng-replay" class="eng-btn" type="button">🔄 Làm lại</button>
-          <button id="eng-list" class="eng-btn" type="button">🛠️ Chọn thử thách khác</button></div></section>`;
+          ${next ? `<button id="eng-next" class="eng-btn primary" type="button">▶ ${tr("Thử thách tiếp:", "Next challenge:")} ${esc(viewChallenge(next).title)}</button>` : ""}
+          <button id="eng-replay" class="eng-btn" type="button">🔄 ${tr("Làm lại", "Try again")}</button>
+          <button id="eng-list" class="eng-btn" type="button">🛠️ ${tr("Chọn thử thách khác", "Choose another challenge")}</button></div></section>`;
     })() : "";
     h.innerHTML = `
       <div class="eng-page">
-        <div class="eng-head"><h2>${ch.emoji} ${esc(ch.title)}</h2>
-          <button id="eng-mute" class="eng-say${muted ? " mute" : ""}" type="button" aria-label="${muted ? "Bật" : "Tắt"} giọng đọc tự động">${muted ? "🔇" : "🔈"}</button>
-          <button id="eng-home" class="back-btn" type="button">← ${CHALLENGES.length} thử thách</button></div>
-        ${readIntro ? `<div class="eng-bubble"><span class="ico" aria-hidden="true">🐰</span><span class="txt">${esc(ch.intro)}</span><button class="eng-say" id="eng-say-intro" type="button" aria-label="Nghe cô đọc">🔊</button></div>` : ""}
+        <div class="eng-head"><h2>${ch.emoji} ${esc(view.title)}</h2>
+          <button id="eng-mute" class="eng-say${muted ? " mute" : ""}" type="button" aria-label="${muted ? tr("Bật", "Enable") : tr("Tắt", "Disable")} ${tr("giọng đọc tự động", "automatic narration")}">${muted ? "🔇" : "🔈"}</button>
+          <button id="eng-home" class="back-btn" type="button">← ${CHALLENGES.length} ${tr("thử thách", "challenges")}</button>${languageControls()}</div>
+        ${readIntro ? `<div class="eng-bubble"><span class="ico" aria-hidden="true">🐰</span><span class="txt">${esc(view.intro)}</span><button class="eng-say" id="eng-say-intro" type="button" aria-label="${tr("Nghe cô đọc", "Listen to Bunny")}">🔊</button></div>` : ""}
         <p id="eng-voice" class="eng-voice" hidden></p>
         <div class="eng-main">
           <div class="eng-stage">${sceneSvg()}</div>
@@ -491,36 +593,38 @@
         </div>
         ${finish}
       </div>`;
+    bindLanguages();
     bind();
-    if (readIntro) speak(`${ch.intro} ${ch.steps[0].ask}`);
+    if (readIntro) speak(`${view.intro} ${view.steps[0].ask}`);
   }
 
   function bind() {
     const h = host(); if (!h) return;
     h.querySelector("#eng-home")?.addEventListener("click", renderHome);
-    h.querySelector("#eng-say-intro")?.addEventListener("click", () => speak(ch.intro, false, true));
+    h.querySelector("#eng-say-intro")?.addEventListener("click", () => speak(viewChallenge(ch).intro, false, true));
     h.querySelector("#eng-mute")?.addEventListener("click", (ev) => {
       muted = !muted; if (muted) stopSpeak();
       ev.currentTarget.textContent = muted ? "🔇" : "🔈"; ev.currentTarget.classList.toggle("mute", muted);
     });
     h.querySelectorAll("[data-goto]").forEach((b) => b.addEventListener("click", () => {
       if (state === "test") return;
-      clearTimers(); state = "build"; stepIndex = Number(b.dataset.goto); renderCh(false); speak(ch.steps[stepIndex].ask);
+      clearTimers(); state = "build"; stepIndex = Number(b.dataset.goto); renderCh(false); speak(viewChallenge(ch).steps[stepIndex].ask);
     }));
     h.querySelectorAll("[data-opt]").forEach((b) => b.addEventListener("click", () => {
       const s = ch.steps[stepIndex];
       picks[s.key] = b.dataset.opt;
       const o = optOf(s, b.dataset.opt);
+      const chosenLabel = viewChallenge(ch).steps[stepIndex].options.find((x) => x.id === o.id)?.label || o.label;
       const nextEmpty = ch.steps.findIndex((x) => !picks[x.key]);
-      if (nextEmpty >= 0) { stepIndex = nextEmpty; renderCh(false); speak(`${o.label}. ${ch.steps[stepIndex].ask}`); }
-      else { renderCh(false); speak(`${o.label}. Lắp xong rồi! Bé bấm nút để chạy thử nhé.`); }
+      if (nextEmpty >= 0) { stepIndex = nextEmpty; renderCh(false); speak(`${chosenLabel}. ${viewChallenge(ch).steps[stepIndex].ask}`); }
+      else { renderCh(false); speak(`${chosenLabel}. ${tr("Lắp xong rồi! Bé bấm nút để chạy thử nhé.", "All parts are in place! Press the button to test your design.")}`); }
     }));
     h.querySelector("#eng-test")?.addEventListener("click", runTest);
-    h.querySelector("#eng-fix")?.addEventListener("click", () => { clearTimers(); state = "build"; stepIndex = Math.max(0, failStep); renderCh(false); speak(ch.steps[stepIndex].ask); });
-    h.querySelector("#eng-again-say")?.addEventListener("click", () => { const bad = pickOpt(failStep); speak(state === "ok" ? ch.success : (bad ? bad.why : ""), false, true); });
+    h.querySelector("#eng-fix")?.addEventListener("click", () => { clearTimers(); state = "build"; stepIndex = Math.max(0, failStep); renderCh(false); speak(viewChallenge(ch).steps[stepIndex].ask); });
+    h.querySelector("#eng-again-say")?.addEventListener("click", () => { const bad = pickOpt(failStep); speak(state === "ok" ? viewChallenge(ch).success : (bad ? viewChallenge(ch).steps[failStep].options.find((o) => o.id === bad.id)?.why : ""), false, true); });
     h.querySelector("#eng-switch")?.addEventListener("click", () => {
       switchOn = !switchOn; renderCh(false);
-      speak(switchOn ? "Công tắc đóng lại, mạch điện thành vòng kín, đèn sáng." : "Công tắc mở ra, mạch điện bị hở, dòng điện không chạy được nên đèn tắt.");
+      speak(switchOn ? tr("Công tắc đóng lại, mạch điện thành vòng kín, đèn sáng.", "The switch is closed. The circuit is complete, so the bulb lights up.") : tr("Công tắc mở ra, mạch điện bị hở, dòng điện không chạy được nên đèn tắt.", "The switch is open. The circuit is broken, so the bulb goes out."));
     });
     h.querySelector("#eng-next")?.addEventListener("click", () => startCh(CHALLENGES[CHALLENGES.indexOf(ch) + 1]));
     h.querySelector("#eng-replay")?.addEventListener("click", () => startCh(ch));
@@ -535,8 +639,8 @@
     state = "test";
     renderCh(false);
     later(() => {
-      if (failStep < 0) { state = "ok"; renderCh(false); speak(`Thành công! ${ch.success}`); }
-      else { state = "fail"; renderCh(false); const bad = pickOpt(failStep); speak(`Chưa được rồi. ${bad ? bad.why : ""} Bé sửa lại bộ phận này nhé!`); }
+      if (failStep < 0) { state = "ok"; renderCh(false); speak(`${tr("Thành công!", "Success!")} ${viewChallenge(ch).success}`); }
+      else { state = "fail"; renderCh(false); const bad = pickOpt(failStep); speak(`${tr("Chưa được rồi.", "Not yet.")} ${bad ? viewChallenge(ch).steps[failStep].options.find((o) => o.id === bad.id)?.why || "" : ""} ${tr("Bé sửa lại bộ phận này nhé!", "Try changing this part!")}`); }
     }, ch.id === "circuit" ? 900 : 2300);
   }
 

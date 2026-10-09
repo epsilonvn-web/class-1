@@ -22,6 +22,166 @@
     "Điều 4: Các bước mở túi hoặc gấp ngược nên nhờ người lớn hỗ trợ lần đầu."
   ]);
 
+  let language = "vi";
+  let translationNonce = 0;
+  const EN_LABELS = new Map(Object.entries({
+    "Xưởng Gấp Giấy":"Paper Folding Workshop", "Chuẩn bị":"Materials", "Loại giấy":"Paper type",
+    "Độ khó • thời gian":"Difficulty • time", "Dễ":"Easy", "Vừa":"Intermediate", "Khéo tay":"Advanced",
+    "Gấp vào":"Valley fold", "Gập giấy về phía bé":"Fold toward you",
+    "Gấp ra sau":"Mountain fold", "Gập giấy ra sau lưng":"Fold away from you",
+    "Mũi tên đặc":"Solid arrow", "Hướng đưa giấy":"Folding direction", "Hai đầu":"Double arrow",
+    "Gấp rồi mở ra":"Fold and unfold", "Mũi tên rỗng":"Hollow arrow", "Ấn, đẩy vào":"Push inward",
+    "Hai mặt giấy":"Two sides of the paper", "Mặt màu và mặt trắng":"Colored side and white side",
+    "Ký hiệu cần nhớ":"Folding symbols", "Cô Thỏ Hồng":"Miss Pink Bunny",
+    "Thử thách sau khi gấp":"After-folding challenge", "Nghe cô đọc":"Listen",
+    "Nghe bước này":"Listen to this step", "Dừng âm thanh":"Stop audio",
+    "Bé gấp thế này":"Fold it like this", "Sẽ được thế này":"It should look like this",
+    "Cô Thỏ mách bé:":"Bunny's tip:", "Mẹo nhìn hình:":"Diagram tip:",
+    "Bước trước":"Previous step", "Hoàn thành":"Finish", "Em làm xong":"Done",
+    "Gấp lại từ đầu":"Fold again", "Chọn kiểu khác":"Choose another design",
+    "Bé gấp xong rồi!":"Great job! Your origami is complete!",
+    "Hoàn thành sản phẩm.":"Project completed.", "Thử thách:":"Challenge:",
+    "Máy bay":"Airplanes", "Thuyền":"Boats", "Máy ảnh":"Camera", "Hạc giấy":"Paper crane",
+    "Giấy":"Paper", "Lật mặt":"Flip over", "Làm cả mặt sau":"Repeat on the back"
+  }));
+  // Offline translations are shown immediately; remote translation is optional.
+  // Never send accounts, session tokens or private user data to external services.
+  const EN_STATIC = new Map(Object.entries({
+    "Xưởng Gấp Giấy": "Paper Folding Workshop",
+    "Gấp từng bước cùng Cô Thỏ Hồng.": "Learn paper folding step by step with Miss Pink Bunny.",
+    "Chọn món bé thích, chuẩn bị đúng loại giấy rồi làm từng bước. Mỗi bước đều có hình ": "Choose your favorite design, get the right paper, and follow each step. Each step includes ",
+    "trước → sau": "before → after",
+    ", đường gấp, mũi tên hướng dẫn và nút nghe Cô Thỏ Hồng đọc từng bước.": ", fold lines, direction arrows, and a button to hear Miss Pink Bunny explain the step.",
+    "Cô Thỏ Hồng nhắc bé": "Miss Pink Bunny's reminder",
+    "Gấp chậm, miết nếp rõ và luôn so hai bên cho cân. Không cần làm thật nhanh đâu nhé!": "Fold slowly, make neat creases, and check that both sides match. There's no need to rush!",
+    "Máy bay": "Airplanes", "Thuyền": "Boats", "Máy ảnh": "Camera", "Hạc giấy": "Paper crane",
+    "Ếch": "Frog", "Cá": "Fish", "Mèo": "Cat", "Chó": "Dog", "Hoa": "Flower", "Trái tim": "Heart", "Hộp": "Box", "Bướm": "Butterfly",
+    "Gấp máy bay bay nhanh, bay xa hoặc lượn lâu.": "Fold paper airplanes that fly fast, far, or glide gently.",
+    "Từ tờ giấy chữ nhật thành chiếc thuyền có thể mở đáy.": "Turn a rectangular sheet into a paper boat with an opening base.",
+    "Gấp máy ảnh giấy có hai cánh bật vui mắt.": "Fold a fun paper camera with two pop-out sides.",
+    "Bài gấp khéo tay với nền chim cơ bản và cổ dài.": "Practice skillful folds to make a long-necked paper crane.",
+    "Chọn để bắt đầu →": "Choose to start →", "kiểu gấp": "designs", "hoàn thành": "completed",
+    "Hình minh họa trong game là sơ đồ vector hướng dẫn nếp gấp. Với các mẫu “Khéo tay”, bé nên làm lần đầu cùng người lớn để quen thao tác mở túi và gấp ngược.": "The illustrations are vector diagrams showing the folds. For advanced designs, ask an adult to help the first time with pocket folds and reverse folds.",
+    "Xem hướng dẫn từng bước →": "View step-by-step instructions →",
+    "Bước": "Step", "bước": "steps", "Giấy:": "Paper:", "Thử thách:": "Challenge:",
+    "Gấp chậm": "Fold slowly", "Gấp vào": "Valley fold", "Gấp ra sau": "Mountain fold",
+    "Nghe cô đọc": "Listen", "Nghe bước này": "Listen to this step", "Dừng âm thanh": "Stop audio",
+    "Bé gấp thế này": "Fold like this", "Sẽ được thế này": "Result",
+    "Bước trước": "Previous step", "Em làm xong": "Done", "Hoàn thành": "Finish",
+    "Gấp lại từ đầu": "Start again", "Chọn kiểu khác": "Choose another design",
+    "Cô Thỏ mách bé:": "Bunny's tip:", "Mẹo nhìn hình:": "Diagram tip:",
+    "Bé gấp xong rồi!": "You've finished folding!",
+    "Hoàn thành sản phẩm.": "Design complete.",
+    "Độ khó • thời gian": "Difficulty • time", "Dễ": "Easy", "Vừa": "Intermediate", "Khéo tay": "Advanced",
+    "Cô Thỏ Hồng": "Miss Pink Bunny", "Thử thách sau khi gấp": "After-folding challenge",
+    "Ký hiệu cần nhớ": "Folding symbols", "Lật mặt": "Flip over", "Làm cả mặt sau": "Repeat on the back"
+  }));
+  for (const [key, value] of EN_LABELS) EN_STATIC.set(key, value);
+  const EN_PATTERNS = [
+    [/^(\d+) món • (\d+) kiểu gấp$/, '$1 designs • $2 ways to fold'],
+    [/^(\d+) kiểu gấp$/, '$1 designs'],
+    [/^✓ (\d+) hoàn thành$/, '✓ $1 completed'],
+    [/^(\d+) bước$/, '$1 steps'],
+    [/^← 12 món$/, '← 12 designs'],
+    [/^← Xưởng Gấp Giấy$/, '← Paper Folding Workshop']
+  ];
+  const translationCache = new Map();
+  function offlineEnglish(source) {
+    const value = String(source || '').trim();
+    if (EN_STATIC.has(value)) return EN_STATIC.get(value);
+    for (const [pattern, out] of EN_PATTERNS) if (pattern.test(value)) return value.replace(pattern, out);
+    return null;
+  }
+  async function englishText(value) {
+    const source = String(value == null ? '' : value).trim();
+    if (!source) return source;
+    const local = offlineEnglish(source);
+    if (local !== null) return local;
+    if (!/[À-ỹ]/i.test(source)) return source;
+    if (translationCache.has(source)) return translationCache.get(source);
+    const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=vi&tl=en&dt=t&q=' + encodeURIComponent(source);
+    const response = await fetch(url, { mode: 'cors', credentials: 'omit', referrerPolicy: 'no-referrer' });
+    if (!response.ok) throw new Error('TRANSLATION_UNAVAILABLE');
+    const data = await response.json();
+    const result = Array.isArray(data?.[0]) ? data[0].map(part => String(part?.[0] || '')).join('').trim() : '';
+    if (!result) throw new Error('TRANSLATION_UNAVAILABLE');
+    translationCache.set(source, result);
+    return result;
+  }
+  function translateTextNode(node, value) {
+    if (!node?.isConnected) return;
+    const original = String(node.textContent || '');
+    node.textContent = (original.match(/^\s*/)?.[0] || '') + value + (original.match(/\s*$/)?.[0] || '');
+  }
+  async function localizePage(host) {
+    if (!host || !host.isConnected) return;
+    const nonce = ++translationNonce;
+    const page = host.querySelector('.ee-fold-page');
+    if (!page) return;
+    const heading = page.querySelector(':scope > .section-heading');
+    const backButton = heading?.querySelector('.back-btn');
+    const toggle = document.createElement('div');
+    toggle.className = 'ee-fold-language-toggle';
+    toggle.setAttribute('role', 'group');
+    toggle.setAttribute('aria-label', 'Language / Ngôn ngữ');
+    toggle.innerHTML = `<button type="button" data-fold-lang="vi" aria-pressed="${language === 'vi'}">Tiếng Việt</button><button type="button" data-fold-lang="en" aria-pressed="${language === 'en'}">English</button>`;
+    // The language control shares the same row as the existing back button.
+    if (backButton) {
+      const actions = document.createElement('div');
+      actions.className = 'ee-fold-heading-actions';
+      backButton.before(actions);
+      actions.append(toggle, backButton);
+    } else if (heading) heading.appendChild(toggle);
+    toggle.querySelectorAll('[data-fold-lang]').forEach(button => button.addEventListener('click', () => {
+      if (button.dataset.foldLang === language) return;
+      stopNarration();
+      language = button.dataset.foldLang;
+      renderCurrent();
+    }));
+    if (language !== 'en') return;
+    const walker = document.createTreeWalker(page, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    while (walker.nextNode()) {
+      const node = walker.currentNode;
+      if (node.parentElement?.closest('svg,style,script,[data-fold-lang]')) continue;
+      const raw = node.textContent.trim();
+      if (raw && /[À-ỹ]/i.test(raw)) nodes.push([node, raw]);
+    }
+    const attrs = [...page.querySelectorAll('[aria-label],[title]')].flatMap(el =>
+      ['aria-label','title'].filter(attr => /[À-ỹ]/i.test(el.getAttribute(attr) || '')).map(attr => [el,attr,el.getAttribute(attr)]));
+    const pending = [];
+    for (const [node, raw] of nodes) {
+      const local = offlineEnglish(raw);
+      if (local !== null) translateTextNode(node, local);
+      else pending.push([node, raw]);
+    }
+    for (const [el, attr, raw] of attrs) {
+      const local = offlineEnglish(raw);
+      if (local !== null) el.setAttribute(attr, local);
+    }
+    const entries = [...new Set([...pending.map(([,raw]) => raw), ...attrs.map(([, ,raw]) => raw).filter(x=>offlineEnglish(x)===null)])];
+    if (!entries.length) return;
+    // Render locally first, then fill remote translations progressively.
+    let failures = 0;
+    await Promise.all(Array.from({length: Math.min(3,entries.length)}, async (_, worker) => {
+      for (let i=worker;i<entries.length;i+=3) {
+        if (nonce !== translationNonce || language !== 'en') return;
+        const source = entries[i];
+        try {
+          const translated = await englishText(source);
+          if (nonce !== translationNonce || language !== 'en' || !host.isConnected) return;
+          pending.forEach(([node,raw]) => { if (raw===source) translateTextNode(node, translated); });
+          attrs.forEach(([el,attr,raw]) => { if (raw===source && el.isConnected) el.setAttribute(attr,translated); });
+        } catch (_) { failures++; }
+      }
+    }));
+    if (failures && nonce===translationNonce && language==='en' && host.isConnected) {
+      const note=document.createElement('p');
+      note.className='ee-fold-voice-note';
+      note.textContent='Some instructions could not be translated because Google Translate is unavailable. Please try again later.';
+      heading?.after(note);
+    }
+  }
   let narrationNonce = 0;
   let currentUtterance = null;
   const narrationAudio = typeof Audio === "function" ? new Audio() : null;
@@ -422,100 +582,59 @@
     return which === "before" ? diagramSvg(stepItem.before, stepItem.guide, label) : diagramSvg(stepItem.after, "", label);
   }
 
-  function bunnyTtsUrl(text) {
-    return `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent(text)}`;
+  function googleTtsUrl(text, lang) {
+    return `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=${lang === "en" ? "en-US" : "vi"}&q=${encodeURIComponent(text)}`;
   }
-
-  function pickVietnameseVoice() {
-    if (!("speechSynthesis" in window) || typeof window.speechSynthesis.getVoices !== "function") return null;
-    const voices = window.speechSynthesis.getVoices() || [];
-    if (!voices.length) return null;
-    return voices.find((voice) => /^vi/i.test(String(voice.lang || "")))
-      || voices.find((voice) => /vietnam|tiếng việt|hoaimy|namminh/i.test(String(voice.name || "")))
-      || null;
-  }
-
   function stopNarration() {
-    narrationNonce += 1;
+    narrationNonce++;
     currentUtterance = null;
-    try {
-      if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-    } catch (_) {}
-    try {
-      if (narrationAudio) {
-        narrationAudio.pause();
-        narrationAudio.currentTime = 0;
-        narrationAudio.removeAttribute("src");
-        narrationAudio.load();
-      }
-    } catch (_) {}
-  }
-
-  function speakWithAudio(text, nonce) {
-    if (!narrationAudio) return false;
-    try {
-      narrationAudio.pause();
-      narrationAudio.currentTime = 0;
-      narrationAudio.src = bunnyTtsUrl(text);
-      narrationAudio.playbackRate = 0.98;
-      const playPromise = narrationAudio.play();
-      if (playPromise && typeof playPromise.catch === "function") {
-        playPromise.catch(() => {});
-      }
-      return nonce === narrationNonce;
-    } catch (_) {
-      return false;
+    if (narrationAudio) {
+      narrationAudio.onended = null;
+      narrationAudio.onerror = null;
+      try { narrationAudio.pause(); narrationAudio.removeAttribute("src"); narrationAudio.load(); } catch (_) {}
     }
   }
-
-  try {
-    if ("speechSynthesis" in window) {
-      window.speechSynthesis.getVoices();
-      window.speechSynthesis.addEventListener?.("voiceschanged", () => window.speechSynthesis.getVoices());
-    }
-  } catch (_) {}
-
   function showVoiceNotice(message) {
-    const host = activeContext && activeContext.host;
-    const box = host && host.querySelector("#ee-fold-voice-note");
-    if (!box) return;
-    box.textContent = message;
-    box.hidden = false;
+    const box = activeContext?.host?.querySelector("#ee-fold-voice-note");
+    if (box) { box.textContent = message; box.hidden = false; }
   }
-
-  function speakNarration(text) {
-    const cleanText = String(text || "").replace(/\s+/g, " ").trim();
-    if (!cleanText) return false;
-    stopNarration();
-    const nonce = narrationNonce;
-    const viVoice = pickVietnameseVoice();
-    if (!viVoice) {
-      // Không có giọng Việt: không đọc bằng giọng tiếng Anh, thử nguồn âm thanh dự phòng rồi báo cho người lớn.
-      const ok = speakWithAudio(cleanText, nonce);
-      if (narrationAudio) narrationAudio.onerror = () => showVoiceNotice("Máy này chưa có giọng đọc tiếng Việt. Người lớn có thể cài thêm giọng Tiếng Việt trong phần Cài đặt › Giọng nói của máy.");
-      if (!ok) showVoiceNotice("Máy này chưa có giọng đọc tiếng Việt. Người lớn có thể cài thêm giọng Tiếng Việt trong phần Cài đặt › Giọng nói của máy.");
-      return ok;
-    }
-    try {
-      if ("speechSynthesis" in window && typeof window.SpeechSynthesisUtterance === "function") {
-        const utterance = new window.SpeechSynthesisUtterance(cleanText);
-        utterance.lang = "vi-VN";
-        utterance.rate = 1;
-        utterance.pitch = 1.08;
-        utterance.volume = 1;
-        utterance.voice = viVoice;
-        utterance.onend = () => {
-          if (nonce === narrationNonce) currentUtterance = null;
-        };
-        utterance.onerror = () => {
-          if (nonce === narrationNonce) speakWithAudio(cleanText, nonce);
-        };
-        currentUtterance = utterance;
-        window.speechSynthesis.speak(utterance);
-        return true;
+  function chunkSpeech(text) {
+    const sentences = String(text).match(/[^.!?;]+[.!?;]*/g) || [String(text)];
+    const result=[];
+    for(const sentence of sentences) {
+      const words=sentence.trim().split(/\s+/); let part="";
+      for(const word of words) {
+        if(part && (part.length + word.length + 1 > 155)){result.push(part);part="";}
+        part += (part ? " " : "") + word;
       }
-    } catch (_) {}
-    return speakWithAudio(cleanText, nonce);
+      if(part)result.push(part);
+    }
+    return result;
+  }
+  async function speakNarration(text) {
+    const cleanText=String(text||"").replace(/\s+/g," ").trim();
+    if(!cleanText) return false;
+    stopNarration();
+    const nonce=narrationNonce;
+    if(!narrationAudio){showVoiceNotice("Google TTS is not supported in this browser.");return false;}
+    let spoken=cleanText;
+    if(language==="en"){
+      try { spoken=await englishText(cleanText); }
+      catch (_) { if(nonce===narrationNonce)showVoiceNotice("English speech is unavailable: translation service could not be reached."); return false; }
+    }
+    if(nonce!==narrationNonce) return false;
+    const segments=chunkSpeech(spoken);
+    const playNext= (index) => {
+      if(nonce!==narrationNonce || index>=segments.length)return;
+      narrationAudio.onended=()=>playNext(index+1);
+      narrationAudio.onerror=()=>{if(nonce===narrationNonce)showVoiceNotice(language==="en"?"Google English voice is unavailable. Please try again.":"Không tải được giọng đọc Google tiếng Việt. Bé thử lại nhé.");};
+      narrationAudio.src=googleTtsUrl(segments[index],language);
+      narrationAudio.playbackRate=1;
+      const promise=narrationAudio.play();
+      promise?.catch?.(()=>{if(nonce===narrationNonce)showVoiceNotice(language==="en"?"Tap Listen again to enable audio.":"Bé bấm Nghe lại để bật âm thanh nhé.");});
+    };
+    playNext(0);
+    return true;
   }
 
   function stepNarrationText(variant, stepItem, index) {
@@ -1017,6 +1136,13 @@
   });
 
   function ensureStyles() {
+    if (!document.getElementById("ee-fold-language-style")) {
+      const languageStyle=document.createElement("style");
+      languageStyle.id="ee-fold-language-style";
+      languageStyle.textContent=`.ee-fold-heading-actions{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:10px;margin-left:auto}.ee-fold-heading-actions .back-btn{flex:none}@media(max-width:600px){.ee-fold-heading-actions{width:100%;justify-content:flex-end}}.ee-fold-language-row{display:flex;justify-content:flex-end;align-items:center;margin:0 0 12px}.ee-fold-language-toggle{display:inline-flex;border:1px solid #bfdbfe;border-radius:14px;padding:3px;box-shadow:0 3px 12px rgba(99,102,241,.10);background:#fff;gap:2px}.ee-fold-language-toggle button{min-height:39px;padding:8px 14px;border:0;border-radius:10px;background:transparent;color:#334155;font-weight:900;font-size:14px}.ee-fold-language-toggle button[aria-pressed="true"]{color:#fff;background:linear-gradient(100deg,#4385ef,#10b8a0);box-shadow:0 3px 9px rgba(59,130,246,.20)}`;
+      document.head.appendChild(languageStyle);
+    }
+
     if (document.getElementById(STYLE_ID)) return;
     const style = document.createElement("style");
     style.id = STYLE_ID;
@@ -1574,6 +1700,7 @@
     const host = activeContext && activeContext.host;
     if (!host) return;
     host.innerHTML = registryHtml();
+    void localizePage(host);
     host.querySelector("#ee-fold-back-games")?.addEventListener("click", () => {
       if (activeContext && typeof activeContext.back === "function") activeContext.back();
     });
@@ -1592,6 +1719,7 @@
     const host = activeContext && activeContext.host;
     if (!host || !project) return;
     host.innerHTML = variantsHtml(project);
+    void localizePage(host);
     host.querySelector("#ee-fold-back-list")?.addEventListener("click", () => {
       currentProductId = "";
       currentVariantId = "";
@@ -1613,6 +1741,7 @@
     if (!host || !project || !variant) return;
     const stepItem = variant.steps[currentStepIndex] || variant.steps[0] || null;
     host.innerHTML = workshopHtml(project, variant);
+    void localizePage(host);
     host.querySelector("#ee-fold-back-variants")?.addEventListener("click", () => {
       currentVariantId = "";
       currentStepIndex = 0;
@@ -1661,6 +1790,7 @@
     const host = activeContext && activeContext.host;
     if (!host) return;
     host.innerHTML = finishHtml(project, variant);
+    void localizePage(host);
     host.querySelector("#ee-fold-finish-back")?.addEventListener("click", () => renderVariants(project));
     host.querySelector("#ee-fold-again")?.addEventListener("click", () => {
       currentStepIndex = 0;
@@ -1693,6 +1823,7 @@
 
   function destroy() {
     stopNarration();
+    translationNonce++;
     activeContext = null;
     currentProductId = "";
     currentVariantId = "";

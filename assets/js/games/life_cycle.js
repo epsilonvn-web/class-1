@@ -3,7 +3,7 @@
 
   /* Vòng đời kỳ diệu – sắp xếp các giai đoạn của vòng đời theo đúng thứ tự. */
   const MODULE_KEY = "lifeCycle";
-  const STYLE_ID = "class1-games-life-cycle-style-v4";
+  const STYLE_ID = "class1-games-life-cycle-style-v5";
   const GAME_NUMBER = 8; // đổi số này cho khớp với vị trí game trong trang Games
   const GAME_TITLE = "Vòng đời kỳ diệu";
   const STARS_KEY = "class1-life-cycle-stars";
@@ -40,6 +40,53 @@
   const cardOf = (s) => (s === ODD ? odd.stage : current.stages[s]);
   const starKey = (c) => (mode === "odd" ? `odd:${c.id}` : c.id);
 
+
+  /* Complete local English content. Indexed by stable cycle ID and stage position. */
+  const EN_CYCLES = Object.freeze({"chicken":{"title":"Chicken Life Cycle","subject":"Chicken","intro":"A mother hen lays eggs. Chicks hatch, grow into chickens, and the cycle starts again.","stages":[{"name":"Egg","fact":"A mother hen lays eggs and sits on them to keep them warm."},{"name":"Hatching Chick","fact":"After about 21 days, a chick breaks the eggshell and comes out."},{"name":"Chick","fact":"A little chick has soft yellow feathers and follows its mother to find food."},{"name":"Adult Chicken","fact":"The chick grows into an adult chicken. A hen can lay eggs again."}]},"butterfly":{"title":"Butterfly Life Cycle","subject":"Butterfly","intro":"A tiny egg becomes a caterpillar, then a chrysalis, and finally a beautiful butterfly.","stages":[{"name":"Eggs on a Leaf","fact":"A butterfly lays tiny eggs on the leaves of plants."},{"name":"Caterpillar","fact":"A caterpillar hatches from the egg. It eats many leaves and grows quickly."},{"name":"Chrysalis","fact":"The caterpillar changes into a chrysalis. Inside, it slowly becomes a butterfly."},{"name":"Butterfly","fact":"The butterfly comes out, dries its wings, and flies away. It can lay eggs again."}]},"water":{"title":"The Water Cycle","subject":"Water","intro":"Water rises into the sky as vapor, forms clouds, and falls as rain. Then the cycle repeats.","stages":[{"name":"Water in Rivers and Seas","fact":"Water is found in rivers, lakes, and seas."},{"name":"Evaporation","fact":"The Sun warms the water. Some of it becomes water vapor and rises."},{"name":"Clouds","fact":"High in the cool sky, water vapor forms tiny droplets that gather into clouds."},{"name":"Rain","fact":"Droplets in the clouds grow bigger and fall as rain. The water flows back to rivers and seas."}]},"bee":{"title":"Honeybee Life Cycle","subject":"Honeybee","intro":"Bees grow inside small, six-sided wax cells in their hive.","stages":[{"name":"Egg in a Cell","fact":"The queen bee lays one egg in each tiny hexagonal cell."},{"name":"Larva","fact":"The egg hatches into a white larva. Worker bees feed and care for it."},{"name":"Pupa","fact":"The bees close the cell with a wax cap. Inside, the larva becomes a pupa."},{"name":"Adult Bee","fact":"The adult bee chews through the wax cap and starts helping the hive."}]},"turtle":{"title":"Sea Turtle Life Cycle","subject":"Sea Turtle","intro":"Sea turtles live in the ocean, but mother turtles come onto sandy beaches to lay their eggs.","stages":[{"name":"Eggs in the Sand","fact":"A mother turtle digs a nest in the sand, lays eggs, and covers them."},{"name":"Hatching Turtle","fact":"About two months later, baby turtles break out of their eggs."},{"name":"Turtle Reaches the Sea","fact":"The little turtle crawls quickly across the sand toward the ocean."},{"name":"Adult Sea Turtle","fact":"The turtle grows up in the sea. A mother turtle returns to a beach to lay eggs."}]},"bean":{"title":"Bean Plant Life Cycle","subject":"Bean Plant","intro":"A small bean grows roots and leaves, blooms, and makes new bean pods and seeds.","stages":[{"name":"Bean Seed","fact":"A bean seed is planted in moist soil."},{"name":"Germination","fact":"With water and warmth, the seed sprouts. Roots grow down and a shoot grows up."},{"name":"Seedling","fact":"The young bean plant grows green leaves and needs sunlight."},{"name":"Flowers","fact":"The plant gets bigger and grows flowers."},{"name":"Bean Pod","fact":"Flowers turn into bean pods with seeds inside. These seeds can grow into new plants."}]},"sunflower":{"title":"Sunflower Life Cycle","subject":"Sunflower","intro":"A tiny sunflower seed can grow into a tall plant with a big yellow flower and many new seeds.","stages":[{"name":"Sunflower Seed","fact":"The sunflower seed has a striped shell."},{"name":"Sprouting Seed","fact":"The seed sprouts and two small seed leaves appear above the soil."},{"name":"Young Plant","fact":"The young plant grows more leaves and reaches toward sunlight."},{"name":"Flower Bud","fact":"A little flower bud forms at the top of the plant."},{"name":"Blooming Sunflower","fact":"The bud opens into a sunflower. Its center can make many new seeds."}]},"frog":{"title":"Frog Life Cycle","subject":"Frog","intro":"Frogs begin life in water. As they grow, they develop legs and can move onto land.","stages":[{"name":"Frog Eggs","fact":"A mother frog lays groups of eggs in water."},{"name":"Tadpole","fact":"An egg hatches into a tadpole with a long tail. It swims in water."},{"name":"Tadpole with Legs","fact":"The tadpole grows hind legs first, then front legs."},{"name":"Froglet","fact":"Its tail becomes shorter. The young frog starts hopping onto land."},{"name":"Adult Frog","fact":"The froglet grows into an adult frog that can lay eggs in water."}]},"mosquito":{"title":"Mosquito Life Cycle","subject":"Mosquito","intro":"Mosquitoes grow in standing water. Emptying water-filled containers helps stop them breeding.","stages":[{"name":"Eggs on Water","fact":"A female mosquito lays eggs on standing water in tubs, pots, or old tires."},{"name":"Larva","fact":"The eggs hatch into mosquito larvae. They live in water and come to the surface to breathe."},{"name":"Pupa","fact":"The larvae become pupae. These curl like commas and still live in water."},{"name":"Adult Mosquito","fact":"An adult mosquito comes out, waits for its wings to dry, and flies away to begin the cycle again."}]},"ladybug":{"title":"Ladybug Life Cycle","subject":"Ladybug","intro":"Ladybugs help gardens by eating tiny plant pests called aphids. They change shape as they grow.","stages":[{"name":"Eggs on a Leaf","fact":"A female ladybug lays clusters of tiny yellow eggs on leaves."},{"name":"Larva","fact":"The egg hatches into a spiky larva that looks like a tiny alligator. It eats aphids."},{"name":"Pupa","fact":"The larva attaches to a leaf and changes into a pupa."},{"name":"Adult Ladybug","fact":"The ladybug emerges, then slowly becomes colorful with black spots. It can lay eggs again."}]},"rice":{"title":"Rice Plant Life Cycle","subject":"Rice Plant","intro":"A tiny grain of rice grows into a plant that produces the rice we eat.","stages":[{"name":"Rice Seed","fact":"Farmers soak rice seeds until they begin to sprout, then plant them."},{"name":"Rice Seedling","fact":"The seeds grow into young, bright green rice plants."},{"name":"Growing Rice Plant","fact":"Farmers move seedlings into wet fields. The plants grow taller and make more shoots."},{"name":"Rice Flowers","fact":"The rice plant makes heads of grain with very tiny flowers."},{"name":"Ripe Rice","fact":"The grains ripen and turn golden. Farmers harvest the rice and keep seeds for the next crop."}]},"carp":{"title":"Carp Life Cycle","subject":"Carp","intro":"Carp live in lakes and ponds. Their babies hatch from tiny eggs attached to water plants.","stages":[{"name":"Fish Eggs","fact":"A female carp lays eggs that stick to underwater plants."},{"name":"Newly Hatched Fish","fact":"Tiny fish hatch from the eggs. They have a yolk sac that gives them food."},{"name":"Young Fish","fact":"The small fish grow fins and become stronger swimmers."},{"name":"Adult Carp","fact":"The young fish grow into adult carp. Adult carp can lay eggs again."}]},"silkworm":{"title":"Silkworm Life Cycle","subject":"Silkworm","intro":"A silkworm spins a silk cocoon. People can use silk threads to make soft fabric.","stages":[{"name":"Silkworm Eggs","fact":"A female silk moth lays many tiny eggs."},{"name":"Silkworm","fact":"Silkworms hatch and eat lots of mulberry leaves as they grow."},{"name":"Silk Cocoon","fact":"A silkworm spins silk around itself to make a cocoon. Silk can be used to make fabric."},{"name":"Silk Moth","fact":"Inside the cocoon, it becomes a pupa and then a moth. The moth comes out and can lay eggs."}]},"dragonfly":{"title":"Dragonfly Life Cycle","subject":"Dragonfly","intro":"Baby dragonflies live in water. Adult dragonflies fly through the air.","stages":[{"name":"Eggs in Water","fact":"A female dragonfly lays eggs in water or on plants beside a pond."},{"name":"Underwater Nymph","fact":"An egg hatches into a young dragonfly called a nymph. It lives in water and catches tiny animals."},{"name":"Nymph Climbs Out","fact":"The nymph grows and climbs out onto a plant beside the water to shed its skin."},{"name":"Adult Dragonfly","fact":"The adult dragonfly comes out, dries its wings, and flies away. It has no pupal stage."}]},"cat":{"title":"Cat Life Cycle","subject":"Cat","intro":"Cats do not lay eggs. Mother cats give birth to kittens and feed them milk.","stages":[{"name":"Newborn Kitten","fact":"A newborn kitten keeps its eyes closed, stays close to its mother, and drinks milk."},{"name":"Kitten Opens Its Eyes","fact":"After about one or two weeks, the kitten opens its eyes and begins learning to walk."},{"name":"Playful Kitten","fact":"The kitten runs, plays with toys, and learns to catch things."},{"name":"Adult Cat","fact":"The kitten grows into an adult cat. An adult female cat can have kittens."}]}});
+  let language = "vi";
+  let view = "registry";
+  let messageEn = "";
+  const isEnglish = () => language === "en";
+  const tr = (vi, en) => isEnglish() ? en : vi;
+  const enCycle = (cycle) => EN_CYCLES[cycle.id];
+  const cycleTitle = (cycle) => tr(cycle.title, enCycle(cycle).title);
+  const cycleIntro = (cycle) => tr(cycle.intro, enCycle(cycle).intro);
+  const stageData = (cycle, index) => enCycle(cycle).stages[index];
+  const stageName = (cycle, index) => tr(cycle.stages[index].name, stageData(cycle,index).name);
+  const stageFact = (cycle, index) => tr(cycle.stages[index].fact, stageData(cycle,index).fact);
+  const cardCycle = (n) => n === ODD ? odd.cycle : current;
+  const cardIndex = (n) => n === ODD ? odd.cycle.stages.indexOf(odd.stage) : n;
+  const cardName = (n) => stageName(cardCycle(n), cardIndex(n));
+  const cardNameEn = (n) => stageData(cardCycle(n), cardIndex(n)).name;
+  function setMessage(vi, en) { message = vi; messageEn = en; }
+  function messageText() { return tr(message, messageEn); }
+  const modeName = (m) => tr(m.label, MODE_EN[m.id].label);
+  const modeDesc = (m) => tr(m.desc, MODE_EN[m.id].desc);
+  const MODE_EN = Object.freeze({
+    order: {label:"Arrange the Life Cycle",desc:"Put the cards in the correct order."},
+    odd: {label:"Find the Odd Card",desc:"One card does not belong. Leave it out!"},
+    before: {label:"What Comes First?",desc:"Choose which picture comes first."},
+    compare: {label:"Compare Life Cycles",desc:"How are two life cycles alike or different?"}
+  });
+  function languageButtons() {
+    return `<div class="ee-life-head-actions"><div class="ee-life-langs" role="group" aria-label="Language">
+      <button type="button" data-life-lang="vi" class="${language === "vi" ? "active" : ""}" aria-pressed="${language === "vi"}">Tiếng Việt</button>
+      <button type="button" data-life-lang="en" class="${language === "en" ? "active" : ""}" aria-pressed="${language === "en"}">English</button>
+    </div>`;
+  }
+  function bindLanguage(host) {
+    host.querySelectorAll("[data-life-lang]").forEach((button) => button.addEventListener("click", () => {
+      const next = button.dataset.lifeLang;
+      if ((next !== "vi" && next !== "en") || next === language) return;
+      stopSpeak();
+      language = next;
+      // Preserve placed cards, quiz choices, earned stars and current screen.
+      if (view === "play") renderPlay();
+      else if (view === "quiz") renderQuiz(false);
+      else renderRegistry();
+    }));
+  }
+
   const esc = (value) => String(value == null ? "" : value)
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#39;");
 
@@ -49,116 +96,69 @@
     try { window.localStorage.setItem(STARS_KEY, JSON.stringify(stars)); } catch (_) {}
   }
 
-  /* ---------- giọng đọc Google TTS, tiếng Việt ---------- */
-  const ttsAudio = new Audio();
-  ttsAudio.referrerPolicy = "no-referrer";
-  ttsAudio.preload = "none";
+  /* Google TTS, single audio stream, queue, interruption and stale-play guards. */
+  const ttsAudio = typeof Audio === "function" ? new Audio() : null;
+  if (ttsAudio) { ttsAudio.referrerPolicy = "no-referrer"; ttsAudio.preload = "none"; }
   let ttsNonce = 0;
   let ttsQueue = [];
-
+  let ttsPlaying = false;
+  let ttsCurrent = "";
+  let ttsLastStart = 0;
   function ttsUrl(text) {
-    return `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent(String(text || ""))}`;
+    return `https://translate.google.com/translate_tts?ie=UTF-8&tl=${isEnglish() ? "en-US" : "vi"}&client=tw-ob&q=${encodeURIComponent(text)}`;
   }
-
-  function splitTtsText(text, maxLength = 170) {
+  function splitTtsText(text, maxLength = 160) {
     const clean = String(text || "").replace(/\s+/g, " ").trim();
     if (!clean) return [];
-    const sentences = clean.match(/[^.!?;,:]+[.!?;,:]?/g) || [clean];
-    const out = [];
-    let current = "";
-    sentences.forEach((piece) => {
-      const part = piece.trim();
-      if (!part) return;
-      if (!current) { current = part; return; }
-      if ((current + " " + part).length <= maxLength) {
-        current += " " + part;
-      } else {
-        out.push(current);
-        current = part;
-      }
+    const words = clean.split(" "); const out = []; let part = "";
+    words.forEach((word) => {
+      if (part && (part + " " + word).length > maxLength) { out.push(part); part = word; }
+      else part = part ? part + " " + word : word;
     });
-    if (current) out.push(current);
-    return out.flatMap((chunk) => {
-      if (chunk.length <= maxLength) return [chunk];
-      const words = chunk.split(" ");
-      const parts = [];
-      let buf = "";
-      words.forEach((word) => {
-        if (!buf || (buf + " " + word).length <= maxLength) buf = buf ? buf + " " + word : word;
-        else { parts.push(buf); buf = word; }
-      });
-      if (buf) parts.push(buf);
-      return parts;
-    });
+    if (part) out.push(part);
+    return out;
   }
-
-  /* Ưu tiên giọng tiếng Việt có sẵn trong máy (Web Speech API, chạy cả khi mất mạng).
-     Máy nào không có giọng Việt thì dùng Google TTS như cũ. */
-  const synth = typeof window !== "undefined" && "speechSynthesis" in window ? window.speechSynthesis : null;
-  if (synth) { try { synth.getVoices(); } catch (_) {} }
-  function viVoice() {
-    if (!synth) return null;
-    try { return synth.getVoices().find((v) => /^vi([-_]|$)/i.test(v.lang)) || null; } catch (_) { return null; }
-  }
-
   function stopSpeak() {
-    ttsNonce += 1;
-    ttsQueue = [];
-    try { if (synth) synth.cancel(); } catch (_) {}
+    ++ttsNonce;
+    ttsQueue = []; ttsPlaying = false; ttsCurrent = "";
+    if (!ttsAudio) return;
+    try { ttsAudio.pause(); ttsAudio.onended = null; ttsAudio.onerror = null;
+      ttsAudio.removeAttribute("src"); ttsAudio.load(); } catch (_) {}
+  }
+  function playNextTts(nonce, quiet) {
+    if (nonce !== ttsNonce || !ttsAudio) return;
+    const next = ttsQueue.shift();
+    if (!next) { ttsPlaying = false; ttsCurrent = ""; return; }
     try {
       ttsAudio.pause();
-      ttsAudio.removeAttribute("src");
-      ttsAudio.load();
-    } catch (_) {}
-  }
-
-  function playNextTts(nonce, quiet) {
-    if (nonce !== ttsNonce || !ttsQueue.length) return;
-    const chunk = ttsQueue.shift();
-    const voice = viVoice();
-    if (voice) {
-      try {
-        const u = new SpeechSynthesisUtterance(chunk);
-        u.voice = voice; u.lang = voice.lang; u.rate = 0.9; u.pitch = 1.08;
-        u.onend = () => playNextTts(nonce, true);
-        u.onerror = (e) => { if (nonce === ttsNonce && !quiet && e.error !== "interrupted" && e.error !== "canceled") showVoiceNote(); };
-        synth.speak(u);
-        return;
-      } catch (_) { /* dùng Google TTS bên dưới */ }
-    }
-    try {
-      ttsAudio.src = ttsUrl(chunk);
+      ttsAudio.src = ttsUrl(next);
       ttsAudio.playbackRate = 0.96;
-      const result = ttsAudio.play();
-      if (result && typeof result.catch === "function") {
-        result.catch(() => { if (nonce === ttsNonce && !quiet) showVoiceNote(); });
-      }
-    } catch (_) {
-      if (!quiet) showVoiceNote();
-    }
+      ttsAudio.onended = () => { if (nonce === ttsNonce) playNextTts(nonce, quiet); };
+      ttsAudio.onerror = () => { if (nonce === ttsNonce) { stopSpeak(); if (!quiet) showVoiceNote(); } };
+      const played = ttsAudio.play();
+      if (played && typeof played.catch === "function") played.catch(() => {
+        if (nonce === ttsNonce) { stopSpeak(); if (!quiet) showVoiceNote(); }
+      });
+    } catch (_) { if (nonce === ttsNonce) { stopSpeak(); if (!quiet) showVoiceNote(); } }
   }
-
-  ttsAudio.addEventListener("ended", () => {
-    const nonce = ttsNonce;
-    if (ttsQueue.length) playNextTts(nonce, true);
-  });
-
-  function speak(text, quiet) {
-    const chunks = splitTtsText(text);
-    if (!chunks.length) return false;
+  function speak(text, quiet = false) {
+    const clean = String(text || "").replace(/\s+/g," ").trim();
+    if (!clean || !ttsAudio) { if (!quiet) showVoiceNote(); return false; }
+    const now = Date.now();
+    if (ttsPlaying && ttsCurrent === clean && now - ttsLastStart < 300) return false;
     stopSpeak();
-    const nonce = ++ttsNonce;
-    ttsQueue = chunks.slice();
+    ttsCurrent = clean; ttsPlaying = true; ttsLastStart = now;
+    ttsQueue = splitTtsText(clean);
+    const nonce = ttsNonce;
     playNextTts(nonce, quiet);
     return true;
   }
-
   function showVoiceNote() {
     const n = activeContext && activeContext.host && activeContext.host.querySelector("#ee-life-voice-note");
-    if (n) {
-      n.hidden = false;
-      n.textContent = "Chưa phát được giọng đọc. Con thử bấm lại hoặc kiểm tra kết nối mạng nhé.";
-    }
+    if (n) { n.hidden = false; n.textContent = tr(
+      "Chưa phát được Google TTS. Con kiểm tra mạng rồi thử lại nhé.",
+      "Google TTS is unavailable. Please check your connection and try again."
+    ); }
   }
 
   function clearTimers() { timers.forEach((t) => clearTimeout(t)); timers = []; }
@@ -299,45 +299,58 @@
       @media(max-width:900px){.ee-life-play{grid-template-columns:1fr}.ee-life-hero{grid-template-columns:1fr}}
       @media(max-width:620px){.ee-life-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ee-life-tray{grid-template-columns:repeat(2,minmax(0,1fr))}.ee-life-learn-item{grid-template-columns:52px 1fr auto}.ee-life-learn-item .ee-life-art{width:52px;height:52px}}
       @media (prefers-reduced-motion: reduce){.ee-life-ring.solved .arrows path,.ee-life-slot.bad{animation:none}}
+
+      /* Language switch anchored beside the return button on all game screens. */
+      .ee-life .section-heading{display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap}
+      .ee-life .section-heading>div:first-child{min-width:0;flex:1 1 230px}
+      .ee-life-head-actions{display:flex;align-items:center;justify-content:flex-end;gap:.55rem;flex-wrap:nowrap;margin-left:auto;max-width:100%}
+      .ee-life-langs{display:inline-flex;align-items:center;padding:3px;border:1px solid #bfdbfe;border-radius:15px;background:#fff;box-shadow:0 4px 12px rgba(96,165,250,.09);gap:2px}
+      .ee-life-langs button{appearance:none!important;border:0!important;box-shadow:none!important;border-radius:11px!important;background:#fff!important;color:#1e3a8a!important;font:inherit;font-size:14px!important;font-weight:800!important;line-height:1.3!important;min-height:39px!important;padding:.5rem .75rem!important;cursor:pointer}
+      .ee-life-langs button.active{background:linear-gradient(90deg,#3b82f6,#10b981)!important;color:#fff!important}
+      .ee-life-langs button:focus-visible{outline:3px solid #f472b6;outline-offset:2px}
+      .ee-life-head-actions .back-btn{flex:0 0 auto;min-height:44px}
+      @media(max-width:620px){.ee-life-head-actions{width:100%;justify-content:flex-end;gap:.35rem}.ee-life-langs button{font-size:12px!important;padding:.45rem .46rem!important}.ee-life-head-actions .back-btn{font-size:13px!important;min-width:0;padding:.55rem .6rem!important;white-space:nowrap}}
     `;
     document.head.appendChild(style);
   }
 
   function starHtml(n, cls = "ee-life-stars") {
-    return `<span class="${cls}" aria-label="${n} sao">${[1, 2, 3].map((i) => `<span class="${i <= n ? "" : "off"}">★</span>`).join("")}</span>`;
+    return `<span class="${cls}" aria-label="${n} ${tr("sao", "stars")}">${[1, 2, 3].map((i) => `<span class="${i <= n ? "" : "off"}">★</span>`).join("")}</span>`;
   }
 
   /* ---------- danh sách ---------- */
   function renderRegistry() {
     clearTimers(); stopSpeak();
     current = null;
-    setBanner([{ level: 2, title: `${GAME_NUMBER}. ${GAME_TITLE}`, action: null }]);
+    setBanner([{ level: 2, title: `${GAME_NUMBER}. ${tr(GAME_TITLE, "Amazing Life Cycles")}`, action: null }]);
     const host = activeContext && activeContext.host;
     if (!host) return;
     host.innerHTML = `
       <div class="ee-life">
         <div class="section-heading">
-          <div><h1>🌱 ${GAME_TITLE}</h1><p>${CYCLES.length} vòng đời • xếp các giai đoạn theo đúng thứ tự.</p></div>
-          <button id="ee-life-back-games" class="back-btn" type="button">← Games</button>
+          <div><h1>🌱 ${tr(GAME_TITLE, "Amazing Life Cycles")}</h1><p>${CYCLES.length} ${tr("vòng đời • xếp các giai đoạn theo đúng thứ tự.", "life cycles • arrange the stages in the right order.")}</p></div>
+          ${languageButtons()}<button id="ee-life-back-games" class="back-btn" type="button">← Games</button></div>
         </div>
         <div class="ee-life-hero">
-          <div><h2>Con vật và cây cối lớn lên thế nào?</h2><p>Mỗi vòng đời có nhiều giai đoạn nối tiếp nhau rồi lại quay về điểm bắt đầu. Bé chạm vào các thẻ để xếp chúng vào vòng tròn theo đúng thứ tự nhé!</p></div>
-          <div class="ee-life-bunny"><span class="icon" aria-hidden="true">🐰</span><div><strong>Cô Thỏ Hồng mách bé</strong><span>Bắt đầu từ thứ nhỏ nhất, như quả trứng hay hạt giống, rồi nghĩ xem nó sẽ lớn lên thành gì.</span></div></div>
+          <div><h2>${tr("Con vật và cây cối lớn lên thế nào?", "How Do Living Things Grow?")}</h2><p>${tr("Mỗi vòng đời có nhiều giai đoạn nối tiếp nhau rồi lại quay về điểm bắt đầu. Bé chạm vào các thẻ để xếp chúng vào vòng tròn theo đúng thứ tự nhé!", "Each life cycle has stages that follow one another and begin again. Tap the cards to put them in the right order!")}</p></div>
+          <div class="ee-life-bunny"><span class="icon" aria-hidden="true">🐰</span><div><strong>${tr("Cô Thỏ Hồng mách bé", "Miss Pink Rabbit’s Tip")}</strong><span>${tr("Bắt đầu từ thứ nhỏ nhất, như quả trứng hay hạt giống, rồi nghĩ xem nó sẽ lớn lên thành gì.", "Start with something small, such as an egg or a seed. What will it become next?")}</span></div></div>
         </div>
-        <div class="ee-life-modes" role="tablist" aria-label="Chọn cách chơi">
-          ${MODES.map((m) => `<button type="button" role="tab" class="ee-life-mode${m.id === mode ? " on" : ""}" data-mode="${m.id}" aria-selected="${m.id === mode}"><span class="ic" aria-hidden="true">${m.icon}</span><strong>${m.label}</strong><small>${m.desc}</small></button>`).join("")}
+        <div class="ee-life-modes" role="tablist" aria-label="${tr("Chọn cách chơi", "Choose a game mode")}">
+          ${MODES.map((m) => `<button type="button" role="tab" class="ee-life-mode${m.id === mode ? " on" : ""}" data-mode="${m.id}" aria-selected="${m.id === mode}"><span class="ic" aria-hidden="true">${m.icon}</span><strong>${esc(modeName(m))}</strong><small>${esc(modeDesc(m))}</small></button>`).join("")}
         </div>
         ${mode === "before" || mode === "compare" ? quizStartHtml() : `<div class="ee-life-grid">
           ${CYCLES.filter((c) => mode !== "odd" || c.id !== "water").map((c) => `<button class="ee-life-card" data-tone="${esc(c.tone)}" data-cycle="${esc(c.id)}" type="button">
               ${art(c.stages[c.stages.length - 1].key)}
-              <h3>${CYCLES.indexOf(c) + 1}. ${esc(c.emoji)} ${esc(c.title)}</h3>
-              <div class="ee-life-meta"><span class="ee-life-chip">${c.stages.length} giai đoạn</span><span class="ee-life-chip">${difficulty(c)}</span>${starHtml(stars[mode === "odd" ? `odd:${c.id}` : c.id] || 0)}</div>
+              <h3>${CYCLES.indexOf(c) + 1}. ${esc(c.emoji)} ${esc(cycleTitle(c))}</h3>
+              <div class="ee-life-meta"><span class="ee-life-chip">${c.stages.length} ${tr("giai đoạn", "stages")}</span><span class="ee-life-chip">${tr(difficulty(c), c.stages.length <= 4 ? "Easy" : "Medium")}</span>${starHtml(stars[mode === "odd" ? `odd:${c.id}` : c.id] || 0)}</div>
             </button>`).join("")}
         </div>`}
       </div>`;
+    view = "registry";
+    bindLanguage(host);
     host.querySelectorAll("[data-mode]").forEach((b) => b.addEventListener("click", () => { mode = b.dataset.mode; renderRegistry(); }));
     host.querySelector("#ee-life-quiz-start")?.addEventListener("click", startQuiz);
-    host.querySelector("#ee-life-back-games")?.addEventListener("click", () => activeContext && activeContext.back && activeContext.back());
+    host.querySelector("#ee-life-back-games")?.addEventListener("click", () => { stopSpeak(); activeContext && activeContext.back && activeContext.back(); });
     host.querySelectorAll("[data-cycle]").forEach((b) => b.addEventListener("click", () => {
       const c = CYCLES.find((x) => x.id === b.dataset.cycle);
       if (c) startCycle(c);
@@ -361,18 +374,24 @@
       CYCLES.filter((x) => x.id !== c.id && x.id !== "water").forEach((x) => x.stages.forEach((st) => { if (!names.has(st.name)) pool.push({ cycle: x, stage: st }); }));
       odd = pool[Math.floor(Math.random() * pool.length)];
       tray = shuffle([...Array(n).keys(), ODD]);
-      message = `Trong ${n + 1} thẻ có 1 thẻ lạ không thuộc ${c.title.toLowerCase()}. Bé xếp ${n} thẻ đúng vào vòng tròn và để thẻ lạ ở ngoài nhé!`;
+      setMessage(`Trong ${n + 1} thẻ có 1 thẻ lạ không thuộc ${c.title.toLowerCase()}. Bé xếp ${n} thẻ đúng vào vòng tròn và để thẻ lạ ở ngoài nhé!`,
+        `One of these ${n+1} cards does not belong to the ${enCycle(c).subject.toLowerCase()} life cycle. Arrange the ${n} correct cards and leave the odd card out!`);
     } else {
       tray = shuffle([...Array(n).keys()]);
-      message = `Bé chạm vào một thẻ, thẻ sẽ bay vào ô trống đầu tiên. Muốn đặt vào ô khác thì chạm vào ô đó trước.`;
+      setMessage("Bé chạm vào một thẻ, thẻ sẽ bay vào ô trống đầu tiên. Muốn đặt vào ô khác thì chạm vào ô đó trước.",
+        "Tap a card to put it in the first empty space. To choose a different space, tap that space first.");
     }
     selectedSlot = null; hintsUsed = 0; wrongRounds = 0; busy = false; solved = false;
     renderPlay();
   }
 
   function askText(c) {
-    if (mode === "odd") return `${c.title}. ${c.intro} Có một thẻ lạ lẫn vào. Bé hãy xếp ${c.stages.length} thẻ đúng theo thứ tự và để thẻ lạ ở ngoài nhé.`;
-    return `${c.title}. ${c.intro} Bé hãy xếp ${c.stages.length} thẻ theo đúng thứ tự, bắt đầu từ ô số 1.`;
+    if (mode === "odd") return tr(
+      `${c.title}. ${c.intro} Có một thẻ lạ lẫn vào. Bé hãy xếp ${c.stages.length} thẻ đúng theo thứ tự và để thẻ lạ ở ngoài nhé.`,
+      `${cycleTitle(c)}. ${cycleIntro(c)} One card does not belong. Arrange the ${c.stages.length} correct cards in order, and leave the odd card out.`
+    );
+    return tr(`${c.title}. ${c.intro} Bé hãy xếp ${c.stages.length} thẻ theo đúng thứ tự, bắt đầu từ ô số 1.`,
+      `${cycleTitle(c)}. ${cycleIntro(c)} Arrange all ${c.stages.length} cards in order, starting at number one.`);
   }
 
   function ringHtml(c) {
@@ -397,29 +416,29 @@
       const s = placed[i];
       const cls = ["ee-life-slot", s != null ? "filled" : "", selectedSlot === i ? "selected" : "", locked[i] ? "ok" : ""].join(" ");
       const inner = s != null
-        ? `${art(cardOf(s).key)}<span class="name">${esc(cardOf(s).name)}</span>`
+        ? `${art(cardOf(s).key)}<span class="name">${esc(cardName(s))}</span>`
         : `<span class="empty">${i + 1}</span>`;
-      const label = s != null ? `Ô ${i + 1}: ${cardOf(s).name}${locked[i] ? ", đúng rồi" : ". Chạm để lấy thẻ ra"}` : `Ô ${i + 1} đang trống. Chạm để chọn ô này`;
-      return `<button type="button" class="${cls}" data-slot="${i}" style="left:${x.toFixed(2)}%;top:${y.toFixed(2)}%;width:${size}%;height:${size}%" aria-label="${esc(label)}"><span class="num">${i + 1}</span>${inner}${i === 0 ? `<span class="start">Bắt đầu</span>` : ""}</button>`;
+      const label = s != null ? tr(`Ô ${i + 1}: ${cardOf(s).name}${locked[i] ? ", đúng rồi" : ". Chạm để lấy thẻ ra"}`, `Space ${i+1}: ${cardName(s)}${locked[i] ? ", correct" : ". Tap to remove the card"}`) : tr(`Ô ${i + 1} đang trống. Chạm để chọn ô này`, `Space ${i+1} is empty. Tap to select it`);
+      return `<button type="button" class="${cls}" data-slot="${i}" style="left:${x.toFixed(2)}%;top:${y.toFixed(2)}%;width:${size}%;height:${size}%" aria-label="${esc(label)}"><span class="num">${i + 1}</span>${inner}${i === 0 ? `<span class="start">${tr("Bắt đầu", "Start")}</span>` : ""}</button>`;
     }).join("");
     return `<div class="ee-life-ring${solved ? " solved" : ""}">
       <svg class="arrows" viewBox="0 0 100 100" aria-hidden="true">${arcs}</svg>
-      <div class="ee-life-center"><span class="em">${esc(c.emoji)}</span>${solved ? "Vòng đời<br>lại bắt đầu!" : "Vòng đời"}</div>
+      <div class="ee-life-center"><span class="em">${esc(c.emoji)}</span>${solved ? tr("Vòng đời lại bắt đầu!", "The cycle starts again!") : tr("Vòng đời", "Life Cycle")}</div>
       ${slots}</div>`;
   }
 
   function sidePlayHtml(c) {
     const allFilled = placed.every((v) => v != null);
     return `
-      <div class="ee-life-msg"><span class="icon" aria-hidden="true">🐰</span><div>${esc(message)}</div></div>
+      <div class="ee-life-msg"><span class="icon" aria-hidden="true">🐰</span><div>${esc(messageText())}</div></div>
       <section class="ee-life-panel">
-        <h3>${mode === "odd" ? "🕵️ Các thẻ (có 1 thẻ lạ)" : "🃏 Các thẻ cần xếp"}</h3>
-        <div class="ee-life-tray">${tray.length ? tray.map((s) => `<button type="button" class="ee-life-tcard" data-card="${s}" aria-label="Thẻ ${esc(cardOf(s).name)}">${art(cardOf(s).key)}<span class="name">${esc(cardOf(s).name)}</span></button>`).join("") : `<div class="ee-life-tray-empty">Đã xếp hết thẻ. Bé bấm “Kiểm tra” nhé!</div>`}</div>
+        <h3>${mode === "odd" ? tr("🕵️ Các thẻ (có 1 thẻ lạ)", "🕵️ Cards (one is the odd one)") : tr("🃏 Các thẻ cần xếp", "🃏 Cards to Arrange")}</h3>
+        <div class="ee-life-tray">${tray.length ? tray.map((s) => `<button type="button" class="ee-life-tcard" data-card="${s}" aria-label="${esc(tr("Thẻ", "Card") + ": " + cardName(s))}">${art(cardOf(s).key)}<span class="name">${esc(cardName(s))}</span></button>`).join("") : `<div class="ee-life-tray-empty">${tr("Đã xếp hết thẻ. Bé bấm “Kiểm tra” nhé!", "All cards are placed. Press Check!")}</div>`}</div>
       </section>
       <div class="ee-life-actions">
-        <button id="ee-life-check" class="ee-life-btn primary wide" type="button" ${allFilled && !busy ? "" : "disabled"}>✅ Kiểm tra</button>
-        <button id="ee-life-hint" class="ee-life-btn" type="button" ${busy ? "disabled" : ""}>💡 Gợi ý</button>
-        <button id="ee-life-reset" class="ee-life-btn" type="button" ${busy ? "disabled" : ""}>🔄 Xếp lại</button>
+        <button id="ee-life-check" class="ee-life-btn primary wide" type="button" ${allFilled && !busy ? "" : "disabled"}>✅ ${tr("Kiểm tra", "Check")}</button>
+        <button id="ee-life-hint" class="ee-life-btn" type="button" ${busy ? "disabled" : ""}>💡 ${tr("Gợi ý", "Hint")}</button>
+        <button id="ee-life-reset" class="ee-life-btn" type="button" ${busy ? "disabled" : ""}>🔄 ${tr("Xếp lại", "Reset")}</button>
       </div>`;
   }
 
@@ -429,20 +448,20 @@
     return `
       <section class="ee-life-panel ee-life-win">
         <div style="font-size:42px" aria-hidden="true">🎉🐰</div>
-        <h3>Đúng rồi! Bé giỏi quá!</h3>
+        <h3>${tr("Đúng rồi! Bé giỏi quá!", "Wonderful! You got it!")}</h3>
         <div class="big-stars">${[1, 2, 3].map((i) => `<span class="${i <= n ? "" : "off"}">★</span>`).join("")}</div>
-        <p style="margin:.4rem 0 0;font-weight:700;color:#475467;font-size:17px">${n === 3 ? "Xếp đúng ngay lần đầu, không cần gợi ý!" : "Lần sau thử xếp mà không cần gợi ý để được 3 sao nhé."}</p>
+        <p style="margin:.4rem 0 0;font-weight:700;color:#475467;font-size:17px">${n === 3 ? tr("Xếp đúng ngay lần đầu, không cần gợi ý!", "Perfect on your first try, with no hints!") : tr("Lần sau thử xếp mà không cần gợi ý để được 3 sao nhé.", "Next time, try without hints to earn 3 stars!")}</p>
       </section>
-      ${odd ? `<section class="ee-life-panel ee-life-oddwin">${art(odd.stage.key)}<div><strong>🕵️ Thẻ lạ là “${esc(odd.stage.name)}”</strong><span>Thẻ này thuộc ${esc(odd.cycle.title.toLowerCase())} ${esc(odd.cycle.emoji)}, không phải ${esc(c.title.toLowerCase())}.</span></div></section>` : ""}
+      ${odd ? `<section class="ee-life-panel ee-life-oddwin">${art(odd.stage.key)}<div><strong>🕵️ ${tr("Thẻ lạ là", "The odd card is")} “${esc(cardName(ODD))}”</strong><span>${tr("Thẻ này thuộc", "It belongs to")} ${esc(cycleTitle(odd.cycle))} ${esc(odd.cycle.emoji)}, ${tr("không phải", "not")} ${esc(cycleTitle(c))}.</span></div></section>` : ""}
       <section class="ee-life-panel">
-        <h3>📖 Tìm hiểu ${esc(c.title.toLowerCase())}</h3>
-        <div class="ee-life-learn">${c.stages.map((s, i) => `<div class="ee-life-learn-item">${art(s.key)}<div><strong>${i + 1}. ${esc(s.name)}</strong><span>${esc(s.fact)}</span></div><button type="button" class="ee-life-mini" data-say="${i}" aria-label="Nghe giai đoạn ${i + 1}">🔊</button></div>`).join("")}</div>
+        <h3>📖 ${tr("Tìm hiểu", "Learn About")} ${esc(cycleTitle(c))}</h3>
+        <div class="ee-life-learn">${c.stages.map((s, i) => `<div class="ee-life-learn-item">${art(s.key)}<div><strong>${i + 1}. ${esc(stageName(c,i))}</strong><span>${esc(stageFact(c,i))}</span></div><button type="button" class="ee-life-mini" data-say="${i}" aria-label="${tr("Nghe giai đoạn", "Listen to stage")} ${i+1}">🔊</button></div>`).join("")}</div>
       </section>
       <div class="ee-life-actions">
-        <button id="ee-life-say-all" class="ee-life-btn pink wide" type="button">🔊 Nghe Cô Thỏ kể cả vòng đời</button>
-        ${next ? `<button id="ee-life-next" class="ee-life-btn primary wide" type="button">Vòng đời tiếp theo: ${esc(next.title)} →</button>` : ""}
-        <button id="ee-life-again" class="ee-life-btn" type="button">🔄 Chơi lại</button>
-        <button id="ee-life-list" class="ee-life-btn" type="button">📚 Chọn vòng đời khác</button>
+        <button id="ee-life-say-all" class="ee-life-btn pink wide" type="button">🔊 ${tr("Nghe Cô Thỏ kể cả vòng đời", "Listen to the Whole Cycle")}</button>
+        ${next ? `<button id="ee-life-next" class="ee-life-btn primary wide" type="button">${tr("Vòng đời tiếp theo", "Next Life Cycle")}: ${esc(cycleTitle(next))} →</button>` : ""}
+        <button id="ee-life-again" class="ee-life-btn" type="button">🔄 ${tr("Chơi lại", "Play Again")}</button>
+        <button id="ee-life-list" class="ee-life-btn" type="button">📚 ${tr("Chọn vòng đời khác", "Choose Another Cycle")}</button>
       </div>`;
   }
 
@@ -452,19 +471,19 @@
     if (!host || !c) return;
     const idx = CYCLES.indexOf(c) + 1;
     setBanner([
-      { level: 2, title: `${GAME_NUMBER}. ${GAME_TITLE}`, action: () => renderRegistry() },
-      { level: 3, title: `${GAME_NUMBER}.${idx} ${c.title}${mode === "odd" ? " (Tìm thẻ lạ)" : ""}`, action: null }
+      { level: 2, title: `${GAME_NUMBER}. ${tr(GAME_TITLE, "Amazing Life Cycles")}`, action: () => renderRegistry() },
+      { level: 3, title: `${GAME_NUMBER}.${idx} ${cycleTitle(c)}${mode === "odd" ? tr(" (Tìm thẻ lạ)", " (Find the Odd Card)") : ""}`, action: null }
     ]);
     const n = solved ? lastStars : 0;
     host.innerHTML = `
       <div class="ee-life">
         <div class="section-heading">
-          <div><h1>${esc(c.emoji)} ${esc(c.title)}</h1><p>${mode === "odd" ? "🕵️ Tìm thẻ lạ • " : ""}${c.stages.length} giai đoạn • ${difficulty(c)}</p></div>
-          <button id="ee-life-back" class="back-btn" type="button">← ${CYCLES.length} vòng đời</button>
+          <div><h1>${esc(c.emoji)} ${esc(cycleTitle(c))}</h1><p>${mode === "odd" ? tr("🕵️ Tìm thẻ lạ • ", "🕵️ Find the Odd Card • ") : ""}${c.stages.length} ${tr("giai đoạn", "stages")} • ${tr(difficulty(c), c.stages.length <= 4 ? "Easy" : "Medium")}</p></div>
+          ${languageButtons()}<button id="ee-life-back" class="back-btn" type="button">← ${tr("Danh sách", "All Cycles")}</button></div>
         </div>
         <div class="ee-life-ask">
-          <p>${esc(c.intro)} ${mode === "odd" ? "Có 1 thẻ lạ lẫn vào, bé đừng xếp nhầm nhé!" : "Bé hãy xếp các thẻ theo đúng thứ tự, bắt đầu từ ô số 1."}</p>
-          <button id="ee-life-say-ask" class="ee-life-btn pink" type="button">🔊 Nghe cô đọc</button>
+          <p>${esc(cycleIntro(c)) } ${mode === "odd" ? tr("Có 1 thẻ lạ lẫn vào, bé đừng xếp nhầm nhé!", "One card does not belong. Leave it out!") : tr("Bé hãy xếp các thẻ theo đúng thứ tự, bắt đầu từ ô số 1.", "Arrange the cards in the correct order, starting at number 1.")}</p>
+          <button id="ee-life-say-ask" class="ee-life-btn pink" type="button">🔊 ${tr("Nghe cô đọc", "Listen")}</button>
         </div>
         <p id="ee-life-voice-note" class="ee-life-voice-note" hidden></p>
         <div class="ee-life-play">
@@ -472,6 +491,8 @@
           <div class="ee-life-side">${solved ? sideWinHtml(c, n) : sidePlayHtml(c)}</div>
         </div>
       </div>`;
+    view = "play";
+    bindLanguage(host);
     bindPlay(host, c);
   }
 
@@ -484,7 +505,8 @@
     placed[slot] = stageIdx;
     tray = tray.filter((s) => s !== stageIdx);
     selectedSlot = null;
-    message = firstEmpty() >= 0 ? `Đã đặt “${cardOf(stageIdx).name}” vào ô ${slot + 1}.` : "Xếp đủ rồi! Bé bấm “Kiểm tra” xem đúng chưa nhé.";
+    setMessage(firstEmpty() >= 0 ? `Đã đặt “${cardOf(stageIdx).name}” vào ô ${slot + 1}.` : "Xếp đủ rồi! Bé bấm “Kiểm tra” xem đúng chưa nhé.",
+      firstEmpty() >= 0 ? `Placed “${cardNameEn(stageIdx)}” in space ${slot+1}.` : "All spaces are filled. Press Check to see how you did!");
     renderPlay();
   }
 
@@ -492,12 +514,13 @@
     if (busy || solved || locked[i]) return;
     if (placed[i] != null) {
       tray.push(placed[i]);
-      message = `Đã lấy “${cardOf(placed[i]).name}” ra khỏi ô ${i + 1}.`;
+      setMessage(`Đã lấy “${cardOf(placed[i]).name}” ra khỏi ô ${i + 1}.`, `Removed “${cardNameEn(placed[i])}” from space ${i+1}.`);
       placed[i] = null;
       selectedSlot = null;
     } else {
       selectedSlot = selectedSlot === i ? null : i;
-      message = selectedSlot === i ? `Đã chọn ô ${i + 1}. Bé chạm vào thẻ muốn đặt vào ô này.` : "Bé chạm vào một thẻ để xếp vào vòng tròn.";
+      setMessage(selectedSlot === i ? `Đã chọn ô ${i + 1}. Bé chạm vào thẻ muốn đặt vào ô này.` : "Bé chạm vào một thẻ để xếp vào vòng tròn.",
+        selectedSlot === i ? `Space ${i+1} selected. Tap a card to place it here.` : "Tap a card to put it in the circle.");
     }
     renderPlay();
   }
@@ -515,8 +538,9 @@
     placed[i] = i;
     locked[i] = true;
     selectedSlot = null;
-    message = `Gợi ý: ô số ${i + 1} là “${c.stages[i].name}”. ${c.stages[i].fact}`;
-    speak(message, true);
+    setMessage(`Gợi ý: ô số ${i + 1} là “${c.stages[i].name}”. ${c.stages[i].fact}`,
+      `Hint: space ${i+1} is “${stageData(c,i).name}”. ${stageData(c,i).fact}`);
+    speak(messageText(), true);
     if (placed.every((v, k) => v === k)) return win();
     renderPlay();
   }
@@ -530,9 +554,11 @@
     if (!wrongCount) return win();
     wrongRounds += 1;
     busy = true;
-    message = `Có ${wrongCount} thẻ chưa đúng chỗ. Các thẻ đúng đã được giữ lại, bé thử xếp lại những thẻ còn lại nhé!`
-      + (placed.includes(ODD) ? " Chú ý: thẻ lạ đã lọt vào vòng tròn đó!" : "");
-    speak(message, true);
+    setMessage(`Có ${wrongCount} thẻ chưa đúng chỗ. Các thẻ đúng đã được giữ lại, bé thử xếp lại những thẻ còn lại nhé!`
+      + (placed.includes(ODD) ? " Chú ý: thẻ lạ đã lọt vào vòng tròn đó!" : ""),
+      `${wrongCount} cards are in the wrong places. Correct cards will stay. Try the others again!`
+      + (placed.includes(ODD) ? " Watch out! The odd card is inside the circle!" : ""));
+    speak(messageText(), true);
     renderPlay();
     const host = activeContext && activeContext.host;
     wrong.forEach((w, k) => { if (w) host?.querySelector(`[data-slot="${k}"]`)?.classList.add("bad"); });
@@ -550,9 +576,10 @@
     const n = mistakes === 0 ? 3 : mistakes <= 2 ? 2 : 1;
     saveStars(starKey(c), n);
     lastStars = n;
-    message = "";
+    setMessage("", "");
     renderPlay();
-    speak(`Đúng rồi! Bé giỏi quá! ${odd ? `Thẻ lạ là ${odd.stage.name}, thuộc ${odd.cycle.title.toLowerCase()}. ` : ""}${c.title}: ${c.stages.map((s) => s.name).join(", rồi ")}. Rồi vòng đời lại bắt đầu.`, true);
+    speak(tr(`Đúng rồi! Bé giỏi quá! ${odd ? `Thẻ lạ là ${odd.stage.name}, thuộc ${odd.cycle.title.toLowerCase()}. ` : ""}${c.title}: ${c.stages.map((s) => s.name).join(", rồi ")}. Rồi vòng đời lại bắt đầu.`,
+      `Great job! ${odd ? `The odd card was ${cardName(ODD)}, from the ${enCycle(odd.cycle).subject} life cycle. ` : ""}${enCycle(c).title}: ${enCycle(c).stages.map((s) => s.name).join(", then ")}. And the cycle begins again!`), true);
   }
 
   function bindPlay(host, c) {
@@ -570,10 +597,13 @@
       const next = list[list.indexOf(c) + 1];
       if (next) startCycle(next);
     });
-    host.querySelector("#ee-life-say-all")?.addEventListener("click", () => speak(`${c.title}. ` + c.stages.map((s, i) => `Giai đoạn ${i + 1}, ${s.name}. ${s.fact}`).join(" ") + " Và thế là vòng đời lại bắt đầu."));
+    host.querySelector("#ee-life-say-all")?.addEventListener("click", () => speak(tr(
+      `${c.title}. ` + c.stages.map((s, i) => `Giai đoạn ${i + 1}, ${s.name}. ${s.fact}`).join(" ") + " Và thế là vòng đời lại bắt đầu.",
+      `${enCycle(c).title}. ` + c.stages.map((s, i) => `Stage ${i+1}. ${stageData(c,i).name}. ${stageData(c,i).fact}`).join(" ") + " And the life cycle starts again."
+    )));
     host.querySelectorAll("[data-say]").forEach((b) => b.addEventListener("click", () => {
-      const s = c.stages[Number(b.dataset.say)];
-      speak(`${s.name}. ${s.fact}`);
+      const i = Number(b.dataset.say);
+      speak(`${stageName(c,i)}. ${stageFact(c,i)}`);
     }));
   }
 
@@ -598,6 +628,15 @@
     { q: "Con nào đẻ ra con, không đẻ trứng?", yes: ["cat"], no: ["chicken", "turtle", "frog", "butterfly", "carp", "bee", "ladybug", "silkworm", "dragonfly", "mosquito"],
       why: (y, n) => `${shortName(y)} mẹ đẻ ra con và nuôi con bằng sữa. ${shortName(n)} thì đẻ trứng.` }
   ];
+  const TRAITS_EN = Object.freeze([
+    {q:"Which animal has a pupa stage?", why:(y,n)=>`${enCycle(y).subject} has a pupa stage${y.id==="mosquito"?" (in water)":y.id==="silkworm"?" (inside a cocoon)":""}. ${enCycle(n).subject} does not have one.`},
+    {q:"Which young animal looks a lot like its parent?", why:(y,n)=>`A young ${enCycle(y).subject.toLowerCase()} looks similar to its parent. A young ${enCycle(n).subject.toLowerCase()} changes its shape much more as it grows.`},
+    {q:"Which life cycle begins with a seed?", why:(y,n)=>`${enCycle(y).subject} is a plant and begins as a seed. ${enCycle(n).subject} is an animal and begins as an egg.`},
+    {q:"Which animal lays eggs in water?", why:(y,n)=>`${enCycle(y).subject} lays eggs in water. ${enCycle(n).subject} lays eggs on land${n.id==="turtle"?", in sand":""}.`},
+    {q:"Which animal lives in water when young, then moves onto land or flies?", why:(y,n)=>`Young animals in the ${enCycle(y).subject.toLowerCase()} life cycle live in water. Young animals in the ${enCycle(n).subject.toLowerCase()} life cycle live on land.`},
+    {q:"Which animal lays eggs on leaves?", why:(y,n)=>`${enCycle(y).subject} lays eggs on leaves. ${enCycle(n).subject} lays eggs somewhere else.`},
+    {q:"Which animal gives birth to babies rather than laying eggs?", why:(y,n)=>`A mother ${enCycle(y).subject.toLowerCase()} gives birth to babies and feeds them milk. ${enCycle(n).subject} lays eggs.`}
+  ]);
   const byIdC = (id) => CYCLES.find((c) => c.id === id);
 
   function makeQuiz(kind) {
@@ -613,9 +652,11 @@
         const opts = shuffle([a, b]);
         items.push({
           q: `Trong ${c.title.toLowerCase()}, hình nào đến trước?`,
-          opts: opts.map((s) => ({ key: c.stages[s].key, label: c.stages[s].name })),
+          qEn: `In the ${enCycle(c).subject.toLowerCase()} life cycle, which picture comes first?`,
+          opts: opts.map((s) => ({ key: c.stages[s].key, label: c.stages[s].name, labelEn: stageData(c,s).name })),
           answer: opts.indexOf(a),
           why: `“${c.stages[a].name}” đến trước, rồi mới đến “${c.stages[b].name}”.`,
+          whyEn: `“${stageData(c,a).name}” comes before “${stageData(c,b).name}”.`,
           cycle: c
         });
       } else {
@@ -624,9 +665,11 @@
         const opts = shuffle([y, n]);
         items.push({
           q: t.q,
-          opts: opts.map((c) => ({ key: c.stages[c.stages.length - 1].key, label: shortName(c) })),
+          qEn: TRAITS_EN[TRAITS.indexOf(t)].q,
+          opts: opts.map((c) => ({ key: c.stages[c.stages.length - 1].key, label: shortName(c), labelEn: enCycle(c).subject })),
           answer: opts.indexOf(y),
-          why: t.why(y, n)
+          why: t.why(y, n),
+          whyEn: TRAITS_EN[TRAITS.indexOf(t)].why(y, n)
         });
       }
     }
@@ -637,16 +680,16 @@
     const m = modeOf(mode);
     const best = stars[`mode:${mode}`] || 0;
     const sample = mode === "before"
-      ? `<div class="ee-life-sample">${art("ech_nong_noc")}<span>hay</span>${art("ech_moc_chan")}</div>`
-      : `<div class="ee-life-sample">${art("buom_lon")}<span>hay</span>${art("ga_lon")}</div>`;
+      ? `<div class="ee-life-sample">${art("ech_nong_noc")}<span>${tr("hay", "or")}</span>${art("ech_moc_chan")}</div>`
+      : `<div class="ee-life-sample">${art("buom_lon")}<span>${tr("hay", "or")}</span>${art("ga_lon")}</div>`;
     return `<section class="ee-life-panel ee-life-qstart">
         ${sample}
-        <div><h3>${m.icon} ${m.label}</h3>
+        <div><h3>${m.icon} ${esc(modeName(m))}</h3>
         <p>${mode === "before"
-          ? "Mỗi câu có 2 hình trong cùng một vòng đời. Bé chọn hình xảy ra trước nhé! Có 10 câu."
-          : "Mỗi câu hỏi về 2 vòng đời khác nhau, ví dụ: con nào có giai đoạn nhộng? Bé chọn đúng con nhé! Có 10 câu."}</p>
-        <div class="ee-life-meta" style="margin:.4rem 0 .8rem">Kỷ lục: ${starHtml(best)}</div>
-        <button id="ee-life-quiz-start" class="ee-life-btn primary" type="button">▶ Bắt đầu</button></div>
+          ? tr("Mỗi câu có 2 hình trong cùng một vòng đời. Bé chọn hình xảy ra trước nhé! Có 10 câu.", "Each question shows two pictures from one life cycle. Choose what comes first! There are 10 questions.")
+          : tr("Mỗi câu hỏi về 2 vòng đời khác nhau, ví dụ: con nào có giai đoạn nhộng? Bé chọn đúng con nhé! Có 10 câu.", "Compare two life cycles. For example, which animal has a pupa stage? Choose the correct one! There are 10 questions.")}</p>
+        <div class="ee-life-meta" style="margin:.4rem 0 .8rem">${tr("Kỷ lục", "Best")}: ${starHtml(best)}</div>
+        <button id="ee-life-quiz-start" class="ee-life-btn primary" type="button">▶ ${tr("Bắt đầu", "Start")}</button></div>
       </section>`;
   }
 
@@ -658,12 +701,13 @@
   }
 
   function renderQuiz(readIt) {
+    if (readIt) stopSpeak();
     const host = activeContext && activeContext.host;
     if (!host || !qz) return;
     const m = modeOf(qz.kind);
     setBanner([
-      { level: 2, title: `${GAME_NUMBER}. ${GAME_TITLE}`, action: () => renderRegistry() },
-      { level: 3, title: m.label, action: null }
+      { level: 2, title: `${GAME_NUMBER}. ${tr(GAME_TITLE, "Amazing Life Cycles")}`, action: () => renderRegistry() },
+      { level: 3, title: modeName(m), action: null }
     ]);
     const total = qz.items.length;
     const dots = qz.items.map((_, k) => `<span class="ee-life-dot ${qz.results[k] === true ? "ok" : qz.results[k] === false ? "bad" : k === qz.i ? "now" : ""}"></span>`).join("");
@@ -672,60 +716,64 @@
       const n = qz.score >= 9 ? 3 : qz.score >= 6 ? 2 : 1;
       body = `<section class="ee-life-panel ee-life-win">
           <div style="font-size:42px" aria-hidden="true">🎉🐰</div>
-          <h3>Bé đúng ${qz.score}/${total} câu!</h3>
+          <h3>${tr(`Bé đúng ${qz.score}/${total} câu!`, `You got ${qz.score}/${total} right!`)}</h3>
           <div class="big-stars">${[1, 2, 3].map((k) => `<span class="${k <= n ? "" : "off"}">★</span>`).join("")}</div>
           <div class="ee-life-actions" style="margin-top:.8rem">
-            <button id="ee-life-q-again" class="ee-life-btn primary wide" type="button">🔄 Chơi lượt mới</button>
-            <button id="ee-life-q-list" class="ee-life-btn wide" type="button">📚 Về trang chọn cách chơi</button>
+            <button id="ee-life-q-again" class="ee-life-btn primary wide" type="button">🔄 ${tr("Chơi lượt mới", "New Round")}</button>
+            <button id="ee-life-q-list" class="ee-life-btn wide" type="button">📚 ${tr("Về trang chọn cách chơi", "Choose Game Mode")}</button>
           </div></section>`;
     } else {
       const it = qz.items[qz.i];
       const answered = qz.chosen >= 0;
       const ok = qz.chosen === it.answer;
-      body = `<div class="ee-life-ask"><p>${esc(it.q)}</p><button id="ee-life-q-say" class="ee-life-btn pink" type="button">🔊 Nghe cô đọc</button></div>
+      body = `<div class="ee-life-ask"><p>${esc(tr(it.q,it.qEn))}</p><button id="ee-life-q-say" class="ee-life-btn pink" type="button">🔊 ${tr("Nghe cô đọc", "Listen")}</button></div>
         <div class="ee-life-opts">${it.opts.map((o, k) => {
           const cls = answered ? (k === it.answer ? "ok" : k === qz.chosen ? "bad" : "dim") : "";
-          return `<button type="button" class="ee-life-opt ${cls}" data-opt="${k}" ${answered ? "disabled" : ""}>${art(o.key)}<span class="name">${esc(o.label)}</span></button>`;
+          return `<button type="button" class="ee-life-opt ${cls}" data-opt="${k}" ${answered ? "disabled" : ""}>${art(o.key)}<span class="name">${esc(tr(o.label,o.labelEn))}</span></button>`;
         }).join("")}</div>
-        ${answered ? `<div class="ee-life-msg ${ok ? "good" : ""}"><span class="icon" aria-hidden="true">${ok ? "🌟" : "💡"}</span><div>${ok ? "Đúng rồi! " : "Chưa đúng rồi. "}${esc(it.why)}</div></div>
-          <div class="ee-life-actions"><button id="ee-life-q-next" class="ee-life-btn primary wide" type="button">${qz.i === total - 1 ? "Xem kết quả" : "Câu tiếp theo →"}</button></div>` : ""}`;
+        ${answered ? `<div class="ee-life-msg ${ok ? "good" : ""}"><span class="icon" aria-hidden="true">${ok ? "🌟" : "💡"}</span><div>${ok ? tr("Đúng rồi! ", "Correct! ") : tr("Chưa đúng rồi. ", "Not quite. ")}${esc(tr(it.why,it.whyEn))}</div></div>
+          <div class="ee-life-actions"><button id="ee-life-q-next" class="ee-life-btn primary wide" type="button">${qz.i === total - 1 ? tr("Xem kết quả", "See Results") : tr("Câu tiếp theo →", "Next Question →")}</button></div>` : ""}`;
     }
     host.innerHTML = `
       <div class="ee-life">
         <div class="section-heading">
-          <div><h1>${m.icon} ${m.label}</h1><p>Câu ${Math.min(qz.i + 1, total)}/${total} • Đúng ${qz.score} câu</p></div>
-          <button id="ee-life-back" class="back-btn" type="button">← Trang chọn cách chơi</button>
+          <div><h1>${m.icon} ${esc(modeName(m))}</h1><p>${tr("Câu", "Question")} ${Math.min(qz.i + 1, total)}/${total} • ${tr("Đúng", "Correct")}: ${qz.score}</p></div>
+          ${languageButtons()}<button id="ee-life-back" class="back-btn" type="button">← ${tr("Cách chơi", "Game Modes")}</button></div>
         </div>
         <div class="ee-life-dots">${dots}</div>
         <p id="ee-life-voice-note" class="ee-life-voice-note" hidden></p>
         <div class="ee-life-quiz">${body}</div>
       </div>`;
+    view = "quiz";
+    bindLanguage(host);
     host.querySelector("#ee-life-back")?.addEventListener("click", renderRegistry);
     host.querySelector("#ee-life-q-list")?.addEventListener("click", renderRegistry);
     host.querySelector("#ee-life-q-again")?.addEventListener("click", startQuiz);
     host.querySelector("#ee-life-q-say")?.addEventListener("click", () => speak(quizSpeech()));
-    host.querySelector("#ee-life-q-next")?.addEventListener("click", () => { qz.i += 1; qz.chosen = -1; renderQuiz(true); if (qz.i >= qz.items.length) speak(`Bé đúng ${qz.score} trên ${qz.items.length} câu. Giỏi lắm!`, true); });
+    host.querySelector("#ee-life-q-next")?.addEventListener("click", () => { qz.i += 1; qz.chosen = -1; renderQuiz(true); if (qz.i >= qz.items.length) speak(tr(`Bé đúng ${qz.score} trên ${qz.items.length} câu. Giỏi lắm!`, `You answered ${qz.score} out of ${qz.items.length} questions correctly. Great work!`), true); });
     host.querySelectorAll("[data-opt]").forEach((b) => b.addEventListener("click", () => answerQuiz(Number(b.dataset.opt))));
     if (qz.i >= total) saveStars(`mode:${qz.kind}`, qz.score >= 9 ? 3 : qz.score >= 6 ? 2 : 1);
     if (readIt && qz.i < total) speak(quizSpeech(), true);
   }
   function quizSpeech() {
     const it = qz.items[qz.i];
-    return `${it.q} ${it.opts.map((o) => o.label).join(", hay ")}?`;
+    return `${tr(it.q,it.qEn)} ${it.opts.map((o) => tr(o.label,o.labelEn)).join(tr(", hay ", ", or "))}?`;
   }
   function answerQuiz(k) {
     if (!qz || qz.chosen >= 0 || qz.i >= qz.items.length) return;
+    stopSpeak();
     const it = qz.items[qz.i];
     qz.chosen = k;
     const ok = k === it.answer;
     qz.results[qz.i] = ok;
     if (ok) qz.score += 1;
     renderQuiz(false);
-    speak(`${ok ? "Đúng rồi!" : "Chưa đúng rồi."} ${it.why}`, true);
+    speak(`${ok ? tr("Đúng rồi!", "Correct!") : tr("Chưa đúng rồi.", "Not quite.")} ${tr(it.why,it.whyEn)}`, true);
   }
 
   function render(context) {
     activeContext = context || null;
+    language = "vi";
     ensureStyles();
     renderRegistry();
   }
