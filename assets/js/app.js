@@ -102,22 +102,21 @@
   }
 
 
-  // Pure UI styling for top-level selection cards only. No account/content changes.
+  // English 1 (ta_app.js) reference: the tile remains in place while the
+  // large, vivid icon rises slightly on hover. This styles only the four
+  // shared-shell catalogs (Lop 1, Games, Tools, AI Lab), not subject modules.
   function ensureClass1CardIconTypography_() {
     if (document.getElementById("class1-card-icon-typography")) return;
     const style = document.createElement("style");
     style.id = "class1-card-icon-typography";
     style.textContent = `
-/* Class 1 Home + Games + Tools + AI Lab: match the lively Explore icon scale. */
+/* Class 1 shell catalog cards: inspired by ta_app.js Explore icon and type. */
 #content-stage :is(.class1-subject-card,.home-feature-card){
-    min-height:146px!important;padding:13px 14px!important;
-    /* The card stays still; only the icon scales on hover. */
+    min-height:146px!important;padding:12px 13px!important;
+    border-width:1px!important;
+    /* Preserve the English Explore behavior: no shift or scale of entire tile. */
     transform:none!important;translate:none!important;scale:1!important;
     transition:border-color .18s ease,box-shadow .18s ease,filter .18s ease!important;
-}
-#content-stage .subject-profile-card{
-    transform:none!important;translate:none!important;scale:1!important;
-    transition:box-shadow .18s ease,filter .18s ease!important;
 }
 #content-stage :is(.class1-subject-card,.home-feature-card) .card-top{
     display:flex!important;align-items:center!important;gap:12px!important;min-width:0!important;
@@ -127,84 +126,122 @@
 }
 #content-stage :is(.class1-subject-card,.home-feature-card) .card-icon{
     box-sizing:border-box!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
-    width:60px!important;height:60px!important;min-width:60px!important;min-height:60px!important;flex:0 0 60px!important;
-    border:2px solid #d8b4fe!important;border-radius:17px!important;
-    background:linear-gradient(145deg,rgba(255,255,255,.90),#f5edff)!important;
+    width:64px!important;height:64px!important;min-width:64px!important;min-height:64px!important;flex:0 0 64px!important;
+    border:2px solid #d8b4fe!important;border-radius:18px!important;
+    background:linear-gradient(145deg,#fff,#f5edff)!important;
     font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif!important;
-    font-size:36px!important;line-height:1!important;font-weight:400!important;
-    opacity:1!important;filter:saturate(1.22) contrast(1.04)!important;
-    box-shadow:0 3px 9px rgba(109,40,217,.15),inset 0 1px 2px rgba(255,255,255,.9)!important;
-    transform:none;transition:transform .18s ease,box-shadow .18s ease!important;
+    font-size:39px!important;line-height:1!important;font-weight:400!important;
+    opacity:1!important;filter:saturate(1.23) contrast(1.04)!important;
+    box-shadow:0 3px 9px rgba(109,40,217,.16),inset 0 1px 2px rgba(255,255,255,.9)!important;
+    transform:none!important;
+    transition:transform .18s ease,box-shadow .18s ease!important;
 }
 #content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="pink"] .card-icon,
-#content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="rose"] .card-icon{border-color:#f9a8d4!important;background:linear-gradient(145deg,#fff,#ffe5f1)!important;}
-#content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="blue"] .card-icon,
-#content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="indigo"] .card-icon{border-color:#a5b4fc!important;background:linear-gradient(145deg,#fff,#e0e7ff)!important;}
+#content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="rose"] .card-icon{
+    border-color:#f9a8d4!important;background:linear-gradient(145deg,#fff,#ffe5f1)!important;
+}
+#content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="blue"] .card-icon{
+    border-color:#7dd3fc!important;background:linear-gradient(145deg,#fff,#e0f2fe)!important;
+}
+#content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="indigo"] .card-icon{
+    border-color:#a5b4fc!important;background:linear-gradient(145deg,#fff,#e0e7ff)!important;
+}
 #content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="green"] .card-icon,
-#content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="teal"] .card-icon{border-color:#86efac!important;background:linear-gradient(145deg,#fff,#dcfce7)!important;}
+#content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="teal"] .card-icon{
+    border-color:#86efac!important;background:linear-gradient(145deg,#fff,#dcfce7)!important;
+}
 #content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="amber"] .card-icon,
-#content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="coral"] .card-icon{border-color:#fcd34d!important;background:linear-gradient(145deg,#fff,#fef3c7)!important;}
-#content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="lime"] .card-icon{border-color:#bef264!important;background:linear-gradient(145deg,#fff,#ecfccb)!important;}
+#content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="coral"] .card-icon{
+    border-color:#fcd34d!important;background:linear-gradient(145deg,#fff,#fef3c7)!important;
+}
+#content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="lime"] .card-icon{
+    border-color:#bef264!important;background:linear-gradient(145deg,#fff,#ecfccb)!important;
+}
 #content-stage :is(.class1-subject-card,.home-feature-card) .card-title{
-    font-size:19.5px!important;line-height:1.23!important;font-weight:900!important;
+    font-size:20px!important;line-height:1.22!important;font-weight:900!important;
     overflow-wrap:break-word;
 }
 #content-stage :is(.class1-subject-card,.home-feature-card) .card-desc{
-    font-size:15.5px!important;line-height:1.4!important;font-weight:750!important;
+    font-size:16px!important;line-height:1.38!important;font-weight:750!important;
 }
-/* Compact Games / Tools / AI Lab only; do not shrink Home subject cards. */
 #content-stage .home-feature-card{
-    min-height:108px!important;
-    padding:9px 12px!important;
+    min-height:112px!important;padding:10px 12px!important;
 }
-#content-stage .home-feature-card .card-desc{
-    margin-top:3px!important;
-    line-height:1.32!important;
-}
+#content-stage .home-feature-card .card-desc{margin-top:4px!important;line-height:1.34!important;}
 #content-stage .class1-subject-card .card-top{padding-right:84px!important;}
+/* Profile cards use the same restrained icon lift, without changing routing. */
+#content-stage .subject-profile-card{
+    transform:none!important;translate:none!important;scale:1!important;
+    transition:border-color .18s ease,box-shadow .18s ease,filter .18s ease!important;
+}
 #content-stage .subject-profile-card .subject-profile-icon{
     display:inline-flex!important;align-items:center!important;justify-content:center!important;
-    width:48px!important;height:48px!important;min-width:48px!important;flex:0 0 48px!important;
-    border:1.5px solid #c4b5fd!important;border-radius:14px!important;
-    background:#f5f3ff!important;font-size:29px!important;
+    width:50px!important;height:50px!important;min-width:50px!important;flex:0 0 50px!important;
+    border:1.5px solid #c4b5fd!important;border-radius:15px!important;
+    background:#f5f3ff!important;font-size:30px!important;
     box-shadow:0 3px 8px rgba(109,40,217,.12)!important;
+    transform:none!important;
     transition:transform .18s ease,box-shadow .18s ease!important;
 }
-#content-stage .subject-profile-card .subject-profile-title{font-size:17px!important;line-height:1.25!important;}
-#content-stage .subject-profile-card .subject-profile-note{font-size:14px!important;line-height:1.3!important;}
+#content-stage .subject-profile-card .subject-profile-title{font-size:18px!important;line-height:1.25!important;}
+#content-stage .subject-profile-card .subject-profile-note{font-size:15px!important;line-height:1.3!important;}
+/* ta_app.js Explore: the icon moves up and grows, but the whole tile doesn't. */
 @media(hover:hover) and (pointer:fine){
-  /* Match Class 2 English: brighten the hovered tile, never enlarge or move it. */
   #content-stage :is(.class1-subject-card,.home-feature-card,.subject-profile-card):hover{
-    transform:none!important;translate:none!important;scale:1!important;
-    filter:brightness(1.035)!important;
-    box-shadow:0 0 0 1px rgba(255,255,255,.8),0 0 17px rgba(168,85,247,.16),0 6px 16px rgba(109,40,217,.10)!important;
+      transform:none!important;translate:none!important;scale:1!important;
+      filter:brightness(1.015)!important;
+      box-shadow:0 6px 15px rgba(76,29,149,.09)!important;
   }
+  #content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="purple"]:hover,
+  #content-stage .subject-profile-card[data-tone="purple"]:hover{border-color:#a78bfa!important;}
+  #content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="pink"]:hover,
+  #content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="rose"]:hover,
+  #content-stage .subject-profile-card[data-tone="pink"]:hover{border-color:#f472b6!important;}
+  #content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="blue"]:hover{border-color:#38bdf8!important;}
+  #content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="indigo"]:hover{border-color:#818cf8!important;}
+  #content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="teal"]:hover,
+  #content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="green"]:hover,
+  #content-stage .subject-profile-card[data-tone="green"]:hover{border-color:#34d399!important;}
+  #content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="amber"]:hover,
+  #content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="coral"]:hover{border-color:#fbbf24!important;}
+  #content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="lime"]:hover{border-color:#a3e635!important;}
   #content-stage :is(.class1-subject-card,.home-feature-card):hover .card-icon{
-    transform:translateY(-2px) scale(1.05)!important;
-    box-shadow:0 6px 14px rgba(109,40,217,.22),inset 0 1px 2px rgba(255,255,255,.94)!important;
+      transform:translateY(-2px) scale(1.06)!important;
+      box-shadow:0 6px 14px rgba(109,40,217,.22),inset 0 1px 2px rgba(255,255,255,.9)!important;
   }
   #content-stage .subject-profile-card:hover .subject-profile-icon{
-    transform:translateY(-1px) scale(1.06)!important;
-    box-shadow:0 5px 12px rgba(109,40,217,.2)!important;
+      transform:translateY(-2px) scale(1.06)!important;
+      box-shadow:0 5px 12px rgba(109,40,217,.2)!important;
   }
 }
+#content-stage :is(.class1-subject-card,.home-feature-card,.subject-profile-card):focus-visible{
+    outline:3px solid rgba(139,92,246,.28);outline-offset:2px;
+}
+/* Keep the desktop icon comfortably large on tablet widths. */
 @media(max-width:767px){
-  #content-stage :is(.class1-subject-card,.home-feature-card){min-height:128px!important;padding:11px!important;}
+  #content-stage :is(.class1-subject-card,.home-feature-card){min-height:132px!important;padding:11px!important;}
   #content-stage :is(.class1-subject-card,.home-feature-card) .card-top{gap:10px!important;}
   #content-stage :is(.class1-subject-card,.home-feature-card) .card-icon{
-    width:52px!important;height:52px!important;min-width:52px!important;min-height:52px!important;
-    flex-basis:52px!important;font-size:31px!important;border-radius:15px!important;
+      width:58px!important;height:58px!important;min-width:58px!important;min-height:58px!important;
+      flex-basis:58px!important;font-size:35px!important;border-radius:16px!important;
   }
-  #content-stage :is(.class1-subject-card,.home-feature-card) .card-title{font-size:18px!important;}
-  #content-stage :is(.class1-subject-card,.home-feature-card) .card-desc{font-size:14px!important;}
-  /* Small screens: keep the 52px icon while reducing unused vertical space. */
-  #content-stage .home-feature-card{min-height:96px!important;padding:9px 10px!important;}
+  #content-stage :is(.class1-subject-card,.home-feature-card) .card-title{font-size:19px!important;}
+  #content-stage :is(.class1-subject-card,.home-feature-card) .card-desc{font-size:15px!important;}
+  #content-stage .home-feature-card{min-height:105px!important;padding:10px 11px!important;}
   #content-stage .class1-subject-card .card-top{padding-right:68px!important;}
   #content-stage .subject-profile-card .subject-profile-icon{
-    width:43px!important;height:43px!important;min-width:43px!important;flex-basis:43px!important;font-size:26px!important;
+      width:46px!important;height:46px!important;min-width:46px!important;flex-basis:46px!important;font-size:28px!important;
   }
-  #content-stage .subject-profile-card .subject-profile-title{font-size:16px!important;}
-  #content-stage .subject-profile-card .subject-profile-note{font-size:13px!important;}
+  #content-stage .subject-profile-card .subject-profile-title{font-size:17px!important;}
+  #content-stage .subject-profile-card .subject-profile-note{font-size:14px!important;}
+}
+@media(max-width:360px){
+  #content-stage :is(.class1-subject-card,.home-feature-card) .card-icon{
+      width:54px!important;height:54px!important;min-width:54px!important;min-height:54px!important;
+      flex-basis:54px!important;font-size:33px!important;
+  }
+  #content-stage :is(.class1-subject-card,.home-feature-card) .card-title{font-size:18px!important;}
+  #content-stage .class1-subject-card .card-top{padding-right:65px!important;}
 }
 @media(prefers-reduced-motion:reduce){
   #content-stage :is(.class1-subject-card,.home-feature-card,.subject-profile-card){transition:none!important;}
