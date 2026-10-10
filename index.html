@@ -370,6 +370,60 @@
     }
 
 
+
+    /* Games / Tools / AI Lab: thông báo VIP theo số môn (chỉ UI, không khóa truy cập). */
+    .feature-vip-notice{
+      width:100%;
+      margin:.72rem auto .12rem;
+      display:flex;
+      flex-wrap:wrap;
+      align-items:stretch;
+      justify-content:center;
+      gap:.65rem;
+    }
+    .feature-vip-notice-message{
+      flex:1 1 470px;
+      min-width:0;
+      min-height:49px;
+      padding:.65rem 1rem;
+      border:1px solid #C4B5FD;
+      border-radius:16px;
+      background:linear-gradient(90deg,#FFF1F7 0%,#FAF5FF 52%,#EFF8FF 100%);
+      box-shadow:0 5px 14px rgba(124,58,237,.09);
+      color:#6D28D9;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      font-size:17px;
+      font-weight:950;
+      line-height:1.35;
+      overflow-wrap:break-word;
+    }
+    .feature-vip-notice-button{
+      flex:0 1 235px;
+      min-width:0;
+      min-height:49px;
+      padding:.65rem 1rem;
+      border:0;
+      border-radius:15px;
+      background:linear-gradient(90deg,#3B82F6 0%,#10B981 100%);
+      box-shadow:0 6px 15px rgba(16,185,129,.17);
+      color:#fff;
+      font-size:16px;
+      line-height:1.25;
+      font-weight:950;
+      text-align:center;
+      white-space:normal;
+    }
+    .feature-vip-notice-button:hover{filter:brightness(1.055);box-shadow:0 8px 18px rgba(16,185,129,.23);}
+    .feature-vip-notice-button:focus-visible{outline:3px solid #93C5FD;outline-offset:3px;}
+    @media (max-width:767px){
+      .feature-vip-notice{gap:.5rem;margin:.55rem auto .08rem;}
+      .feature-vip-notice-message{flex:1 1 100%;min-height:44px;padding:.62rem .7rem;font-size:16px;}
+      .feature-vip-notice-button{flex:1 1 100%;min-height:44px;padding:.6rem .75rem;font-size:16px;}
+    }
+
     /* Trang Liên hệ */
     .contact-page{
       max-width:980px;
@@ -1753,6 +1807,11 @@
       <span class="home-vip-notice-copy">Để được ghi nhớ lịch sử học, được học nhiều hơn và có những trải nghiệm tuyệt vời nhé!</span>
     </div>
 
+    <div id="feature-vip-notice" class="feature-vip-notice hidden" role="note" aria-label="Thông báo quyền học VIP của Games, Tools và AI Lab">
+      <span id="feature-vip-notice-message" class="feature-vip-notice-message"></span>
+      <button id="feature-vip-notice-button" class="feature-vip-notice-button" type="button">Đăng ký quyền học VIP</button>
+    </div>
+
     <main id="content-stage" class="content-stage" tabindex="-1"></main>
 
     <footer class="app-footer" aria-label="Chân trang">
@@ -1822,6 +1881,6 @@
   <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
 
   <script src="assets/js/core/class1-data.js?v=class1-greeting-audio-2"></script>
-  <script src="assets/js/app.js?v=class1-ai-lab-1"></script>
+  <script src="assets/js/app.js?v=class1-vip-notice-1"></script>
 </body>
 </html>
