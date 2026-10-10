@@ -755,19 +755,19 @@ async function renderDashboardGrid() {
             ? (mediaCount > 0 ? `${mediaCount} truyện` : 'Truyện cổ tích')
             : (totalCount > 0 ? `${totalCount} câu` : t.desc);
         const iconHtml = t.isCustomTextIcon
-            ? `<div class="w-8 h-8 bg-rose-100 rounded-xl flex items-center justify-center text-[11px] font-black text-rose-600 shadow-inner group-hover:scale-110 transition-transform shrink-0 tracking-tight">S/X</div>`
-            : `<div class="w-8 h-8 bg-${t.color}-100 rounded-xl flex items-center justify-center text-sm font-extrabold text-${t.color}-600 shadow-inner group-hover:scale-110 transition-transform shrink-0">${t.icon}</div>`;
+            ? `<div class="l1-tv-explore-icon l1-tv-explore-icon--text w-8 h-8 bg-rose-100 rounded-xl flex items-center justify-center text-[11px] font-black text-rose-600 shadow-inner group-hover:scale-110 transition-transform shrink-0 tracking-tight">S/X</div>`
+            : `<div class="l1-tv-explore-icon w-8 h-8 bg-${t.color}-100 rounded-xl flex items-center justify-center text-sm font-extrabold text-${t.color}-600 shadow-inner group-hover:scale-110 transition-transform shrink-0">${t.icon}</div>`;
         const locked = PREMIUM_TOPIC_IDS.has(Number(t.id)) && !hasPremiumAccess();
         html += `
-            <div onclick="openTopic(${t.id}, '${t.title}', '${t.icon}')" class="relative pastel-card p-3 flex flex-col justify-between cursor-pointer hover:border-${t.color}-400 transition-all group min-h-[92px]">
+            <div onclick="openTopic(${t.id}, '${t.title}', '${t.icon}')" class="l1-tv-explore-card relative pastel-card p-3 flex flex-col justify-between cursor-pointer hover:border-${t.color}-400 transition-all group min-h-[92px]">
                 ${locked ? '<span class="absolute top-2 right-2 text-gray-400 text-xs">🔒</span>' : ''}
-                <div class="flex items-center space-x-2.5">
+                <div class="l1-tv-explore-head flex items-center gap-3">
                     ${iconHtml}
-                    <h3 class="font-extrabold text-${t.color}-700 text-sm md:text-base leading-tight">${t.title}</h3>
+                    <h3 class="l1-tv-explore-title font-extrabold text-${t.color}-700 text-sm md:text-base leading-tight">${t.title}</h3>
                 </div>
-                <div class="flex justify-between items-center mt-1.5 pt-1 border-t border-pink-100 text-[11px] font-bold text-gray-500">
-                    <span>${t.desc}</span>
-                    <span class="bg-${t.color}-50 text-${t.color}-600 px-2 py-0.5 rounded-full">${countLabel}</span>
+                <div class="l1-tv-explore-foot flex justify-between items-center mt-1.5 pt-1 border-t border-pink-100 text-[11px] font-bold text-gray-500">
+                    <span class="l1-tv-explore-desc">${t.desc}</span>
+                    <span class="l1-tv-explore-count bg-${t.color}-50 text-${t.color}-600 px-2 py-0.5 rounded-full">${countLabel}</span>
                 </div>
             </div>`;
     });
@@ -5739,7 +5739,66 @@ function installTvInlineBridge_(){
 function removeTvInlineBridge_(){tvInlineBridgePrevious_.forEach((prev,name)=>{if(prev.had)window[name]=prev.value;else try{delete window[name];}catch(_){window[name]=undefined;}});tvInlineBridgePrevious_.clear();}
 function ensureTvDependency_(kind,id,url){if(document.getElementById(id))return;if(kind==='link'){const el=document.createElement('link');el.id=id;el.rel='stylesheet';el.href=url;document.head.appendChild(el);return;}const el=document.createElement('script');el.id=id;el.src=url;el.async=true;document.head.appendChild(el);}
 function ensureTvDependencies_(){ensureTvDependency_('link','class1-tv-fontawesome','https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');ensureTvDependency_('link','class1-tv-fonts','https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;700;800&display=swap');ensureTvDependency_('script','class1-tv-chartjs','https://cdn.jsdelivr.net/npm/chart.js');ensureTvDependency_('script','class1-tv-confetti','https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js');ensureTvDependency_('script','class1-tv-html2pdf','https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js');}
-function ensureTvStyles_(){if(document.getElementById(TV_MODULE_STYLE_ID_))return;const st=document.createElement('style');st.id=TV_MODULE_STYLE_ID_;st.textContent=TV_RUNTIME_CSS_+TV_SHELL_BREADCRUMB_CSS_+TV_MODULE_UI_CSS_;document.head.appendChild(st);}
+const TV_EXPLORE_ICON_TEXT_CSS_ = `
+
+/* Class 1 Vietnamese | Only Explore topic cards. */
+#class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card{
+    min-height:146px!important;padding:12px 12px 10px!important;
+    transition:border-color .18s ease,box-shadow .18s ease!important;
+}
+#class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card .l1-tv-explore-head{
+    display:flex!important;align-items:center!important;gap:11px!important;min-width:0!important;
+}
+#class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card .l1-tv-explore-icon{
+    box-sizing:border-box!important;width:60px!important;height:60px!important;
+    min-width:60px!important;min-height:60px!important;flex:0 0 60px!important;
+    border:2px solid color-mix(in srgb,currentColor 28%,transparent)!important;border-radius:17px!important;
+    font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif!important;
+    font-size:36px!important;line-height:1!important;font-weight:400!important;
+    opacity:1!important;filter:saturate(1.23) contrast(1.04)!important;
+    box-shadow:0 3px 9px rgba(109,40,217,.16),inset 0 1px 2px rgba(255,255,255,.9)!important;
+    transform:none;transition:transform .18s ease,box-shadow .18s ease!important;
+}
+#class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card .l1-tv-explore-icon--text{
+    font-family:inherit!important;font-size:19px!important;font-weight:900!important;
+}
+#class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card .l1-tv-explore-title{
+    min-width:0!important;font-size:19.5px!important;font-weight:900!important;line-height:1.19!important;
+}
+#class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card .l1-tv-explore-foot{
+    margin-top:8px!important;padding-top:8px!important;gap:8px!important;align-items:flex-end!important;
+}
+#class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card .l1-tv-explore-desc{
+    min-width:0!important;font-size:16px!important;line-height:1.3!important;color:#334155!important;
+}
+#class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card .l1-tv-explore-count{
+    flex:0 1 auto!important;max-width:43%!important;font-size:14px!important;line-height:1.2!important;overflow-wrap:anywhere;
+}
+@media(hover:hover) and (pointer:fine){
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card:hover .l1-tv-explore-icon{
+    transform:translateY(-2px) scale(1.06)!important;
+    box-shadow:0 6px 14px rgba(109,40,217,.22),inset 0 1px 2px rgba(255,255,255,.9)!important;
+  }
+}
+@media(max-width:560px){
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card{min-height:132px!important;padding:10px!important;}
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card .l1-tv-explore-icon{
+    width:52px!important;height:52px!important;min-width:52px!important;min-height:52px!important;
+    flex-basis:52px!important;font-size:31px!important;border-radius:15px!important;
+  }
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card .l1-tv-explore-icon--text{font-size:17px!important;}
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card .l1-tv-explore-title{font-size:18px!important;}
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card .l1-tv-explore-desc{font-size:14px!important;}
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card .l1-tv-explore-count{font-size:12.5px!important;}
+}
+@media(prefers-reduced-motion:reduce){
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card .l1-tv-explore-icon{transition:none!important;}
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card:hover .l1-tv-explore-icon{transform:none!important;}
+}
+
+`;
+
+function ensureTvStyles_(){if(document.getElementById(TV_MODULE_STYLE_ID_))return;const st=document.createElement('style');st.id=TV_MODULE_STYLE_ID_;st.textContent=TV_RUNTIME_CSS_+TV_SHELL_BREADCRUMB_CSS_+TV_MODULE_UI_CSS_+TV_EXPLORE_ICON_TEXT_CSS_;document.head.appendChild(st);}
 function primeTvAudio_(){if(tvModuleAudioPrimed_)return;tvModuleAudioPrimed_=true;const once=()=>{try{const C=window.AudioContext||window.webkitAudioContext;if(!audioCtx&&C)audioCtx=new C();if(audioCtx?.state==='suspended')audioCtx.resume();}catch(_){}};tvModuleRoot_?.addEventListener('pointerdown',once,{once:true,passive:true});}
 function mountTvRuntime_(){if(!tvModuleCtx_?.host)throw new Error('TV_MODULE_HOST_MISSING');ensureTvStyles_();ensureTvDependencies_();tvModuleCtx_.host.innerHTML=`<div id="${TV_MODULE_RUNTIME_ID_}">${TV_RUNTIME_HTML_}</div>`;tvModuleRoot_=document.getElementById(TV_MODULE_RUNTIME_ID_);installTvInlineBridge_();syncClass1ModuleStateTV1_();resetStars();updateAutoSpeechButtonUI();primeTvAudio_();tvModuleMounted_=true;}
 async function bootstrapTvRuntime_(){if(!tvModuleMounted_||!tvModuleRoot_||!tvModuleRoot_.isConnected||tvModuleRoot_.parentElement!==tvModuleCtx_.host){mountTvRuntime_();await loadSharedImageCatalogTV1_();await Promise.resolve(renderDashboardGrid());await Promise.resolve(renderExamHubGrid());}else syncClass1ModuleStateTV1_();if(tvModuleCtx_?.isAuthenticated)loadLearningProfile_();}
