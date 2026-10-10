@@ -1212,13 +1212,13 @@ async function renderDashboardGrid() {
     try { topicsData = await fetchAllTopicsData(); } catch (e) {}
 
     let html = `
-        <div onclick="openAlphabetIPA()" class="pastel-card p-2 flex flex-col justify-start cursor-pointer hover:border-violet-400 transition-all group bg-gradient-to-br from-white to-violet-50/50 min-h-[92px]">
-            <div class="flex items-center space-x-2.5">
-                <div class="w-10 h-10 bg-violet-100 rounded-2xl flex items-center justify-center text-xl font-extrabold text-violet-600 shadow-inner group-hover:scale-110 transition-transform shrink-0">🔤</div>
+        <div onclick="openAlphabetIPA()" class="l1-en-explore-card pastel-card p-2 flex flex-col justify-start cursor-pointer hover:border-violet-400 transition-all group bg-gradient-to-br from-white to-violet-50/50 min-h-[92px]">
+            <div class="l1-en-explore-head flex items-center gap-3">
+                <div class="l1-en-explore-icon w-10 h-10 bg-violet-100 rounded-2xl flex items-center justify-center text-xl font-extrabold text-violet-600 shadow-inner group-hover:scale-110 transition-transform shrink-0">🔤</div>
                 <div class="min-w-0"><h3 class="font-extrabold text-violet-700 text-lg md:text-xl leading-snug"><span class="card-title-bi"><span class="en">1. Alphabet & IPA</span><span class="vi">Bảng chữ cái & phiên âm</span></span></h3></div>
             </div>
             <div class="flex justify-between items-end gap-2 mt-0.5 pt-0.5 border-t border-violet-100">
-                <div class="min-w-0 leading-snug"><div class="text-[15px] md:text-base font-bold text-gray-600">Letters & sounds</div><div class="text-sm md:text-[15px] font-bold text-gray-400 mt-0.5">Chữ cái & âm</div></div>
+                <div class="l1-en-explore-desc min-w-0 leading-snug"><div class="text-[15px] md:text-base font-bold text-gray-600">Letters & sounds</div><div class="text-sm md:text-[15px] font-bold text-gray-400 mt-0.5">Chữ cái & âm</div></div>
                 <span class="bg-violet-100 text-violet-700 px-2.5 py-1 rounded-full text-xs md:text-sm font-extrabold shrink-0">26 chữ + 44 âm</span>
             </div>
         </div>`;
@@ -1231,13 +1231,13 @@ async function renderDashboardGrid() {
         else if (Number(t.id) === 6) countLabel = '80 bài';
         else if ([7,8,9,10].includes(Number(t.id))) countLabel = '80 câu';
         html += `
-            <div onclick="openTopic(${t.id}, '${t.title}', '${t.icon}')" class="pastel-card p-2 flex flex-col justify-start cursor-pointer hover:border-${t.color}-400 transition-all group min-h-[92px] relative">
-                <div class="flex items-center space-x-2.5">
-                    <div class="w-10 h-10 bg-${t.color}-100 rounded-2xl flex items-center justify-center text-xl font-extrabold text-${t.color}-600 shadow-inner group-hover:scale-110 transition-transform shrink-0">${t.icon}</div>
+            <div onclick="openTopic(${t.id}, '${t.title}', '${t.icon}')" class="l1-en-explore-card pastel-card p-2 flex flex-col justify-start cursor-pointer hover:border-${t.color}-400 transition-all group min-h-[92px] relative">
+                <div class="l1-en-explore-head flex items-center gap-3">
+                    <div class="l1-en-explore-icon w-10 h-10 bg-${t.color}-100 rounded-2xl flex items-center justify-center text-xl font-extrabold text-${t.color}-600 shadow-inner group-hover:scale-110 transition-transform shrink-0">${t.icon}</div>
                     <div class="min-w-0"><h3 class="font-extrabold text-${t.color}-700 text-lg md:text-xl leading-snug"><span class="card-title-bi"><span class="en">${t.title}</span><span class="vi">${t.titleVi || ''}</span></span></h3></div>
                 </div>
                 <div class="flex justify-between items-end gap-2 mt-0.5 pt-0.5 border-t border-pink-100">
-                    <div class="min-w-0 leading-snug"><div class="text-[15px] md:text-base font-bold text-gray-600">${t.descEn || ''}</div><div class="text-sm md:text-[15px] font-bold text-gray-400 mt-0.5">${t.descVi || ''}</div></div>
+                    <div class="l1-en-explore-desc min-w-0 leading-snug"><div class="text-[15px] md:text-base font-bold text-gray-600">${t.descEn || ''}</div><div class="text-sm md:text-[15px] font-bold text-gray-400 mt-0.5">${t.descVi || ''}</div></div>
                     <span class="bg-${t.color}-50 text-${t.color}-600 px-2.5 py-1 rounded-full text-xs md:text-sm font-extrabold shrink-0">${countLabel}</span>
                 </div>
             </div>`;
@@ -5242,7 +5242,70 @@ body:has(#class1-english-runtime) #sub-pill.english-sub-breadcrumbs .english-bre
 }
 `;
 
-function ensureEnglishStyles_(){if(document.getElementById(ENGLISH_MODULE_STYLE_ID_))return;const style=document.createElement('style');style.id=ENGLISH_MODULE_STYLE_ID_;style.textContent=ENGLISH_RUNTIME_CSS_+ENGLISH_HUB_UI_OVERRIDES_;document.head.appendChild(style);}
+const ENGLISH_EXPLORE_ICON_TEXT_CSS_ = `
+
+/* Class 1 English | Only Explore hub cards (Alphabet & IPA and topics). */
+#class1-english-runtime #view-dashboard-grid > .l1-en-explore-card{
+    min-height:146px!important;padding:12px 12px 10px!important;
+    transition:border-color .18s ease,box-shadow .18s ease!important;
+}
+#class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .l1-en-explore-head{
+    display:flex!important;align-items:center!important;gap:11px!important;min-width:0!important;
+}
+#class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .l1-en-explore-icon{
+    box-sizing:border-box!important;width:60px!important;height:60px!important;
+    min-width:60px!important;min-height:60px!important;flex:0 0 60px!important;
+    border:2px solid color-mix(in srgb,currentColor 28%,transparent)!important;border-radius:17px!important;
+    font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif!important;
+    font-size:36px!important;line-height:1!important;font-weight:400!important;
+    opacity:1!important;filter:saturate(1.23) contrast(1.04)!important;
+    box-shadow:0 3px 9px rgba(109,40,217,.16),inset 0 1px 2px rgba(255,255,255,.9)!important;
+    transform:none;transition:transform .18s ease,box-shadow .18s ease!important;
+}
+#class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .card-title-bi .en{
+    font-size:19.5px!important;font-weight:900!important;line-height:1.18!important;
+}
+#class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .card-title-bi .vi{
+    font-size:14px!important;line-height:1.2!important;margin-top:3px!important;
+}
+#class1-english-runtime #view-dashboard-grid > .l1-en-explore-card > div:nth-child(2){
+    margin-top:8px!important;padding-top:8px!important;padding-bottom:0!important;gap:7px!important;
+}
+#class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .l1-en-explore-desc > div:first-child{
+    font-size:15px!important;line-height:1.28!important;
+}
+#class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .l1-en-explore-desc > div:nth-child(2){
+    font-size:13.5px!important;line-height:1.25!important;
+}
+#class1-english-runtime #view-dashboard-grid > .l1-en-explore-card > div:nth-child(2) > span:last-child{
+    flex:0 0 auto!important;white-space:nowrap!important;font-size:13px!important;
+}
+@media(hover:hover) and (pointer:fine){
+  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card:hover .l1-en-explore-icon{
+    transform:translateY(-2px) scale(1.06)!important;
+    box-shadow:0 6px 14px rgba(109,40,217,.22),inset 0 1px 2px rgba(255,255,255,.9)!important;
+  }
+}
+@media(max-width:560px){
+  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card{min-height:132px!important;padding:10px!important;}
+  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .l1-en-explore-icon{
+    width:52px!important;height:52px!important;min-width:52px!important;min-height:52px!important;
+    flex-basis:52px!important;font-size:31px!important;border-radius:15px!important;
+  }
+  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .card-title-bi .en{font-size:18px!important;}
+  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .card-title-bi .vi{font-size:13.5px!important;}
+  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .l1-en-explore-desc > div:first-child{font-size:14px!important;}
+  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .l1-en-explore-desc > div:nth-child(2){font-size:13px!important;}
+  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card > div:nth-child(2) > span:last-child{font-size:12px!important;}
+}
+@media(prefers-reduced-motion:reduce){
+  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .l1-en-explore-icon{transition:none!important;}
+  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card:hover .l1-en-explore-icon{transform:none!important;}
+}
+
+`;
+
+function ensureEnglishStyles_(){if(document.getElementById(ENGLISH_MODULE_STYLE_ID_))return;const style=document.createElement('style');style.id=ENGLISH_MODULE_STYLE_ID_;style.textContent=ENGLISH_RUNTIME_CSS_+ENGLISH_HUB_UI_OVERRIDES_+ENGLISH_EXPLORE_ICON_TEXT_CSS_;document.head.appendChild(style);}
 function ensureEnglishDependency_(tag,id,url){if(document.getElementById(id))return;const exists=[...document.querySelectorAll(tag)].some(el=>String(tag==='link'?el.href:el.src)===String(new URL(url,document.baseURI).href));if(exists)return;const el=document.createElement(tag);el.id=id;if(tag==='link'){el.rel='stylesheet';el.href=url;}else{el.src=url;el.async=true;}document.head.appendChild(el);}
 function ensureEnglishDependencies_(){ensureEnglishDependency_('link','class1-english-fontawesome','https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');ensureEnglishDependency_('link','class1-english-fonts','https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;700;800&display=swap');ensureEnglishDependency_('script','class1-english-chartjs','https://cdn.jsdelivr.net/npm/chart.js');ensureEnglishDependency_('script','class1-english-confetti','https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js');ensureEnglishDependency_('script','class1-english-html2pdf','https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js');}
 function mountEnglishRuntime_(){if(!englishModuleCtx_?.host)throw new Error('ENGLISH_MODULE_HOST_MISSING');ensureEnglishStyles_();ensureEnglishDependencies_();englishModuleCtx_.host.innerHTML=`<div id="${ENGLISH_MODULE_RUNTIME_ID_}">${ENGLISH_RUNTIME_HTML_}</div>`;englishModuleRoot_=document.getElementById(ENGLISH_MODULE_RUNTIME_ID_);installEnglishInlineBridge_();syncClass1EnglishState_();resetStars();try{updateAutoSpeechButtonUI();}catch(_){}primeEnglishAudio_();englishModuleMounted_=true;}
