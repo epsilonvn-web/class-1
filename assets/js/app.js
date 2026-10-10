@@ -21,6 +21,11 @@
 
   // AI Lab là module giá trị gia tăng dùng chung, đặt ngay bên phải Tools.
   const AI_LAB_HOME_TAB = Object.freeze({ id: "aiLab", icon: "🤖", label: "AI Lab", tone: "blue", badge: "AI" });
+  const FEATURE_VIP_REQUIREMENTS = Object.freeze({
+    games: Object.freeze({ count: 1, message: "Bé cần có 1 quyền học VIP để sử dụng đầy đủ nội dung này" }),
+    tools: Object.freeze({ count: 2, message: "Bé cần có 2 quyền học VIP để sử dụng đầy đủ nội dung này" }),
+    aiLab: Object.freeze({ count: 3, message: "Bé cần có 3 quyền học VIP để sử dụng đầy đủ nội dung này" })
+  });
   const HOME_TABS_WITH_AI = Object.freeze((() => {
     if (HOME_TABS.some((tab) => tab.id === AI_LAB_HOME_TAB.id)) return [...HOME_TABS];
     const tabs = [...HOME_TABS];
@@ -433,6 +438,9 @@
     subBanner: document.getElementById("sub-banner"),
     subPill: document.getElementById("sub-pill"),
     homeVipNotice: document.getElementById("home-vip-notice"),
+    featureVipNotice: document.getElementById("feature-vip-notice"),
+    featureVipMessage: document.getElementById("feature-vip-notice-message"),
+    featureVipButton: document.getElementById("feature-vip-notice-button"),
     scoreBox: document.getElementById("score-box"),
     installButton: document.getElementById("install-button"),
     accountButton: document.getElementById("account-button"),
@@ -1439,6 +1447,7 @@
     state.detail = null;
     render();
     focusContent();
+    refreshFeatureVipNoticeIfNeeded();
   }
 
   function openSubject(subjectId) {
@@ -1730,6 +1739,25 @@
   }
 
 
+  let featureVipExpiryTimer = 0;
+  let featureVipRefreshPromise = null;
+
+  function isFeatureVipLanding() {
+    return state.screen === "home"
+      && !state.homeFeatureId
+      && !state.homeFeatureGroupId
+      && Object.prototype.hasOwnProperty.call(FEATURE_VIP_REQUIREMENTS, state.homeTab);
+  }
+
+  function activeVipExpiryTimes() {
+    if (!state.auth.user || !state.auth.ready) return [];
+    const now = Date.now();
+    return SUBJECTS.map((subject) => state.auth.access[subject.id])
+      .filter((access) => access && access.type === "vip" && access.endAt)
+      .map((access) => new Date(access.endAt).getTime())
+      .filter((expiresAt) => Number.isFinite(expiresAt) && expiresAt > now);
+  }
+
   function updateHomeVipNoticeVisibility() {
     if (!el.homeVipNotice) return;
     const isTopLevelHome = state.screen === "home" && !state.homeFeatureId && !state.homeFeatureGroupId;
@@ -1738,10 +1766,38 @@
       ? SUBJECTS.reduce((count, subject) => count + (accessTypeFor(subject.id) === "vip" ? 1 : 0), 0)
       : 0;
     const hasAllThreeVip = vipCount >= SUBJECTS.length;
+    const featureRequirement = isFeatureVipLanding() ? FEATURE_VIP_REQUIREMENTS[state.homeTab] : null;
 
-    // Đây chỉ là thông báo tĩnh. Vẫn hiện nếu mới có VIP 1-2 môn hoặc đang Trial/Regular.
-    // Chỉ ẩn khi Admin hoặc đã có đủ VIP ở cả ba môn.
-    el.homeVipNotice.classList.toggle("hidden", !isTopLevelHome || isAdmin || hasAllThreeVip);
+    // Giữ quy tắc cũ của Trang chủ; chỉ thay thông báo chung bằng thông báo riêng tại ba tab.
+    el.homeVipNotice.classList.toggle("hidden", !isTopLevelHome || !!featureRequirement || isAdmin || hasAllThreeVip);
+
+    // Đây là thông báo giới thiệu quyền học, tuyệt đối không dùng làm điều kiện chặn module.
+    const activeExpiryTimes = featureRequirement && !isAdmin ? activeVipExpiryTimes() : [];
+    const showFeatureVip = !!(featureRequirement && state.auth.ready && !isAdmin
+      && activeExpiryTimes.length < featureRequirement.count);
+    if (el.featureVipNotice) {
+      el.featureVipNotice.classList.toggle("hidden", !showFeatureVip);
+      if (showFeatureVip && el.featureVipMessage) {
+        el.featureVipMessage.textContent = featureRequirement.message;
+      }
+    }
+
+    // VIP hết hạn khi bé đang mở tab cũng cần cập nhật trạng thái hiển thị.
+    if (featureVipExpiryTimer) window.clearTimeout(featureVipExpiryTimer);
+    featureVipExpiryTimer = 0;
+    if (featureRequirement && activeExpiryTimes.length) {
+      const nextExpiry = Math.min(...activeExpiryTimes);
+      const delay = Math.min(2147483647, Math.max(1, nextExpiry - Date.now() + 1));
+      featureVipExpiryTimer = window.setTimeout(updateHomeVipNoticeVisibility, delay);
+    }
+  }
+
+  function refreshFeatureVipNoticeIfNeeded() {
+    if (!isFeatureVipLanding() || !state.auth.ready || !state.auth.user
+        || !state.auth.token || featureVipRefreshPromise) return;
+    featureVipRefreshPromise = refreshAccessState(false).finally(() => {
+      featureVipRefreshPromise = null;
+    });
   }
 
   function renderHomeContent() {
@@ -2255,6 +2311,19 @@
           width:100%;min-height:42px;border:0;border-radius:14px;padding:.55rem .75rem;color:#fff;
           background:linear-gradient(90deg,#ec4899,#a855f7,#7c3aed);font-size:16px;font-weight:950;line-height:1.2;
           box-shadow:0 5px 13px rgba(139,92,246,.16);
+        }
+        /* Nut dang ky VIP dong bo mau nen, vien va chu voi the mon hoc. */
+        .subject-vip-request-button[data-vip-subject="math"]:not(.has-pending){
+          background:#F3E8FF;border:1px solid #C4B5FD;color:#7C3AED;
+          box-shadow:0 4px 10px rgba(109,40,217,.08);
+        }
+        .subject-vip-request-button[data-vip-subject="vietnamese"]:not(.has-pending){
+          background:#FCE3F0;border:1px solid #F9A8D4;color:#BE185D;
+          box-shadow:0 4px 10px rgba(190,24,93,.08);
+        }
+        .subject-vip-request-button[data-vip-subject="english"]:not(.has-pending){
+          background:#DCFCE7;border:1px solid #86EFAC;color:#047857;
+          box-shadow:0 4px 10px rgba(4,120,87,.08);
         }
         .subject-vip-request-button.has-pending{background:linear-gradient(90deg,#94a3b8,#64748b);}
         @media(max-width:767px){
@@ -4058,6 +4127,7 @@
       .replace(/'/g, "&#039;");
   }
 
+  el.featureVipButton.addEventListener("click", onVipRegisterAction);
   el.homeButton.addEventListener("click", goHome);
   el.accountButton.addEventListener("click", () => state.auth.user ? openAccountPage() : openAuth("login"));
   el.authClose.addEventListener("click", closeAuth);
@@ -4114,11 +4184,15 @@
   window.addEventListener("focus", () => {
     refreshAdminPendingBadge(false);
     refreshUserNoticeBadge();
+    updateHomeVipNoticeVisibility();
+    refreshFeatureVipNoticeIfNeeded();
   });
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) {
       refreshAdminPendingBadge(false);
       refreshUserNoticeBadge();
+      updateHomeVipNoticeVisibility();
+      refreshFeatureVipNoticeIfNeeded();
     }
   });
 
