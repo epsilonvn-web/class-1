@@ -1,3 +1,6 @@
+/* Word Search: reload-safe classic script for the Class 1 lazy-loaded English module. */
+(() => {
+'use strict';
 // ==========================================
 // GAME: WORD SEARCH — tách riêng file để lazy-load (chỉ tải khi bé thật sự bấm vào game này)
 // ==========================================
@@ -9,6 +12,10 @@ let wsSize = 9, wsWordCount = 6;
 let wsCurrentDirs = null;
 let wsCurrentDifficulty = 'medium';
 let wsStartTime = 0, wsTimerInterval = null, wsHintsLeft = 3, wsHintsUsed = 0;
+let wsRoundNonce = 0;
+let wsHintedWords = new Set();
+let wsHintVisualCells = [];
+let wsLastHintClick = 0;
 const WS_DIRS_STRAIGHT = [[0,1],[1,0]];                                        // Dễ: chỉ ngang + dọc
 const WS_DIRS_FULL = [[0,1],[1,0],[1,1],[0,-1],[-1,0],[-1,-1],[1,-1],[-1,1]];   // Vừa/Khó: đủ 8 hướng kể cả chéo
 const WS_DIFFICULTIES = {
@@ -31,6 +38,9 @@ async function startWordSearchGame() {
 }
 
 function wsRenderTopicScreen() {
+    wsClearHintHighlight_();
+    wsRoundNonce++; // invalidate stale hint callbacks when leaving a round
+    wsSelecting = false;
     clearInterval(wsTimerInterval);
     headerLevel3ClickHandler = null;
     document.getElementById('game-play-container').innerHTML = renderMiniGameTopicMenu({
@@ -47,6 +57,9 @@ function wsChooseTopic(topicId) {
 }
 
 function renderWordSearchDifficultyScreen() {
+    wsClearHintHighlight_();
+    wsRoundNonce++;
+    wsSelecting = false;
     clearInterval(wsTimerInterval);
     headerLevel3ClickHandler = null;
     const level3El = document.getElementById('header-level3-btn');
@@ -92,6 +105,12 @@ function wsStartWithDifficulty(diffKey) {
 }
 
 function wsGenerateAndRender() {
+    wsClearHintHighlight_();
+    wsHintedWords = new Set();
+    wsLastHintClick = 0;
+    wsRoundNonce++;
+    wsSelecting = false;
+    wsCurrentPath = [];
     const pool = shuffleArray(getWordSearchVocabPool(wsTopicId)).filter(item => item.w.length <= wsSize);
     let poolIdx = 0;
     const usedWords = new Set();
@@ -117,6 +136,7 @@ function wsGenerateAndRender() {
         chosen.push(item);
     }
 
+    wsHintsLeft = chosen.length;
     if (chosen.length < 4) {
         document.getElementById('game-play-container').innerHTML = `<p class="text-center text-gray-500 font-bold py-8">Chưa đủ từ vựng phù hợp để chơi Word Search, bé quay lại sau nhé!</p>`;
         return;
@@ -185,9 +205,27 @@ function renderWordSearchUI(chosen) {
             </div>
             <p class="text-sm md:text-base font-bold text-gray-500 mb-1">Kéo qua các ô để nối thành 1 từ tiếng Anh nhé!</p>
             <p class="text-xs text-indigo-400 font-bold mb-2">💡 Từ giấu theo ${(WS_DIFFICULTIES[wsCurrentDifficulty] || {}).dirsLabel || 'ngang, dọc'}, có thể đọc xuôi hoặc ngược</p>
-            <div id="ws-grid" class="grid gap-1 mb-3" style="grid-template-columns: repeat(${wsSize}, 1fr); max-width: 400px; width: 100%; touch-action: none; user-select: none;"></div>
-            <div id="ws-wordlist" class="flex flex-wrap gap-2 justify-center mb-2"></div>
-            <p id="ws-status" class="text-sm font-bold text-pink-500 text-center min-h-[18px]"></p>
+            <p id="ws-hint-message" role="status" aria-live="polite" class="hidden w-full max-w-[760px] mb-2 px-3 py-2 text-center text-sm font-extrabold text-amber-900 bg-amber-50 border border-amber-300 rounded-xl"></p>
+            <!-- Word Search only: force one single right-aligned word column on tablet/desktop. -->
+            <style>
+                #ws-main-layout { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+                #ws-main-layout .ws-board-wrap { width: 100%; min-width: 0; display: flex; justify-content: center; }
+                #ws-main-layout #ws-wordlist { display: flex; flex-wrap: wrap; flex-direction: row; align-items: flex-start; align-content: flex-start; justify-content: center; gap: 8px; width: 100%; min-width: 0; }
+                #ws-wordlist > .ws-word-pill { display: inline-flex; flex: 0 0 auto; align-items: center; max-width: 100%; min-height: 36px; padding: 7px 12px; border-radius: 999px; line-height: 1.35; font-size: 15px; }
+                @media (min-width: 768px) {
+                    #ws-main-layout { display: grid !important; grid-template-columns: minmax(0, 400px) minmax(0, 200px); column-gap: 24px; align-items: start; justify-content: center; max-width: 100%; }
+                    #ws-main-layout .ws-board-wrap { width: 100%; min-width: 0; }
+                    #ws-main-layout #ws-wordlist { display: flex !important; flex-direction: column !important; flex-wrap: nowrap !important; align-items: stretch !important; align-content: flex-start !important; justify-content: flex-start !important; gap: 8px !important; width: 100% !important; min-width: 0 !important; margin: 0 !important; }
+                    #ws-wordlist > .ws-word-pill { display: flex !important; flex: 0 0 auto !important; width: 100% !important; height: auto !important; min-height: 38px; max-width: 100%; justify-content: flex-end !important; align-items: center !important; text-align: right !important; padding: 8px 12px; border-radius: 12px; overflow-wrap: anywhere; font-size: 17px; }
+                }
+            </style>
+            <div id="ws-main-layout" class="w-full max-w-[760px] mb-2">
+                <div class="ws-board-wrap">
+                    <div id="ws-grid" class="grid gap-1 mb-2 md:mb-0" style="grid-template-columns: repeat(${wsSize}, 1fr); max-width: 400px; width: 100%; touch-action: none; user-select: none;"></div>
+                </div>
+                <div id="ws-wordlist" class="mb-2 md:mb-0"></div>
+            </div>
+            <p id="ws-status" class="w-full max-w-[760px] text-sm font-bold text-pink-500 text-center min-h-[18px]"></p>
         </div>`;
 
     const gridEl = document.getElementById('ws-grid');
@@ -203,44 +241,98 @@ function renderWordSearchUI(chosen) {
 
     const wordlistEl = document.getElementById('ws-wordlist');
     wordlistEl.innerHTML = chosen.map(item => `
-        <span id="ws-pill-${item.w}" class="text-sm md:text-base font-bold px-3 py-1 rounded-full bg-white border-2 border-pink-200 text-gray-600 transition-all duration-300">${escapeHtml(item.vi)}</span>
+        <span id="ws-pill-${item.w}" class="ws-word-pill text-sm md:text-base font-bold bg-white border border-pink-200 text-gray-600 transition-all duration-300">${escapeHtml(item.vi)}</span>
     `).join('');
 
     wsBindEvents(gridEl);
 }
 
+// Tra lai giao dien o chu truoc khi choi lai/chuyen man/hint tiep theo.
+// Khong thay doi mau xanh cua nhung tu da tim duoc.
+function wsClearHintHighlight_() {
+    wsHintVisualCells.forEach(({ el, saved }) => {
+        if (!el) return;
+        Object.keys(saved).forEach(prop => { el.style[prop] = saved[prop]; });
+    });
+    wsHintVisualCells = [];
+    const message = document.getElementById('ws-hint-message');
+    if (message) { message.textContent = ''; message.classList.add('hidden'); }
+}
+
 function wsUseHint() {
     if (wsHintsLeft <= 0) return;
-    const remaining = Object.keys(wsSolutions).filter(w => !wsFoundWords.has(w));
-    if (!remaining.length) return;
-    const word = remaining[Math.floor(Math.random() * remaining.length)];
-    const cells = wsSolutions[word];
-    if (!cells) return;
-    wsHintsLeft--;
-    wsHintsUsed++;
-    document.getElementById('ws-hint-btn').textContent = `💡 Gợi ý (${wsHintsLeft})`;
-    if (wsHintsLeft <= 0) document.getElementById('ws-hint-btn').classList.add('opacity-40', 'pointer-events-none');
+    // Chan thao tac bam lien tuc (double click) lam ton nhieu luot goi y.
+    const now = Date.now();
+    if (now - wsLastHintClick < 650) return;
 
     const gridEl = document.getElementById('ws-grid');
+    const hintBtn = document.getElementById('ws-hint-btn');
+    const message = document.getElementById('ws-hint-message');
+    if (!gridEl || !hintBtn || !message) return;
+    const remaining = Object.keys(wsSolutions).filter(w => !wsFoundWords.has(w));
+    if (!remaining.length) return;
+    const notYetHinted = remaining.filter(w => !wsHintedWords.has(w));
+    const candidates = notYetHinted.length ? notYetHinted : remaining;
+    const word = candidates[Math.floor(Math.random() * candidates.length)];
+    const cells = wsSolutions[word];
+    if (!Array.isArray(cells) || cells.length < 2) return;
+    const hints = cells.slice(0, 2).map(([r, c]) => ({
+        r, c, el: gridEl.children[r * wsSize + c]
+    }));
+    if (hints.some(({ el }) => !el)) return;
+
+    wsClearHintHighlight_();
+    wsLastHintClick = now;
+    wsHintedWords.add(word);
+    wsHintsLeft--;
+    wsHintsUsed++;
+    hintBtn.textContent = `💡 Gợi ý (${wsHintsLeft})`;
+    if (wsHintsLeft === 0) {
+        hintBtn.disabled = true;
+        hintBtn.classList.add('opacity-40', 'pointer-events-none');
+    }
+
+    // Khong dung them class bg-amber-300 tren o dang co bg-white:
+    // Tailwind co the uu tien bg-white, lam goi y khong thay doi mau.
+    // Inline style cho mau dam, luu lai gia tri cu de phuc hoi chinh xac.
+    hints.forEach(({ el }, i) => {
+        const props = ['backgroundColor', 'borderColor', 'outline', 'outlineOffset', 'boxShadow', 'transform', 'position', 'zIndex'];
+        const saved = Object.fromEntries(props.map(k => [k, el.style[k]]));
+        el.style.backgroundColor = i === 0 ? '#fbbf24' : '#fef08a';
+        el.style.borderColor = '#d97706';
+        el.style.outline = i === 0 ? '3px solid #d97706' : '2px solid #f59e0b';
+        el.style.outlineOffset = '1px';
+        el.style.boxShadow = i === 0 ? '0 0 0 5px rgba(245,158,11,.25)' : '0 0 0 3px rgba(245,158,11,.15)';
+        el.style.transform = i === 0 ? 'scale(1.1)' : 'scale(1.045)';
+        el.style.position = 'relative';
+        el.style.zIndex = i === 0 ? '2' : '1';
+        wsHintVisualCells.push({ el, saved });
+    });
+
     const [r, c] = cells[0];
-    const el = gridEl.children[r * wsSize + c];
-    el.classList.add('bg-amber-300', 'scale-110');
-    setTimeout(() => { if (!wsPlacedCells[wsCellKey(r, c)]) el.classList.remove('bg-amber-300', 'scale-110'); }, 1500);
+    const meaning = document.getElementById('ws-pill-' + word)?.textContent?.trim();
+    message.textContent = `💡 Ô vàng đậm là chữ đầu tiên (hàng ${r + 1}, cột ${c + 1}); ô vàng nhạt là chữ tiếp theo.${meaning ? ' Con hãy tìm từ có nghĩa: ' + meaning + '.' : ''} Kéo tiếp để tìm cả từ nhé!`;
+    message.classList.remove('hidden');
+    // Giu goi y tren man hinh cho den khi be bat dau keo, bam goi y moi hoac choi lai.
 }
 
 function wsCellKey(r, c) { return r + '_' + c; }
 
 function wsGetCellFromPoint(x, y) {
     const el = document.elementFromPoint(x, y);
-    return (el && el.dataset && el.dataset.r !== undefined) ? el : null;
+    const gridEl = document.getElementById('ws-grid');
+    return (gridEl && el && gridEl.contains(el) && el.classList.contains('ws-cell')
+        && el.dataset.r !== undefined && el.dataset.c !== undefined) ? el : null;
 }
 
 function wsClearTempHighlight() {
     const gridEl = document.getElementById('ws-grid');
+    if (!gridEl) { wsCurrentPath = []; return; }
     wsCurrentPath.forEach(key => {
         const [r, c] = key.split('_').map(Number);
         if (wsPlacedCells[key]) return;
         const el = gridEl.children[r * wsSize + c];
+        if (!el) return;
         el.classList.remove('bg-pink-200', 'scale-105');
         el.classList.add('bg-white');
     });
@@ -277,6 +369,7 @@ function wsCheckMatch(cells) {
 }
 
 function wsMarkFound(word, cells) {
+    wsClearHintHighlight_();
     wsFoundWords.add(word);
     const gridEl = document.getElementById('ws-grid');
     cells.forEach(([r, c]) => {
@@ -309,6 +402,7 @@ function wsMarkFound(word, cells) {
 // bấm nút "Chơi lại" (ra ván mới cùng độ khó) hoặc "Chọn game khác" / chạm vào tên game trên
 // breadcrumb (quay về màn chọn độ khó).
 function wsFinishGame(total, gridEl, statusEl) {
+    wsClearHintHighlight_();
     clearInterval(wsTimerInterval);
     const secs = Math.floor((Date.now() - wsStartTime) / 1000);
     const mm = String(Math.floor(secs / 60)).padStart(2, '0');
@@ -322,45 +416,70 @@ function wsFinishGame(total, gridEl, statusEl) {
 }
 
 function wsBindEvents(gridEl) {
-    const start = (r, c) => { wsSelecting = true; wsStartCell = [r, c]; wsHighlightPath([[r, c]]); };
+    // Pointer events unify mouse, touch and pen. Capturing on the grid ensures
+    // releasing outside still ends a drag without adding listeners to window.
+    const start = (r, c) => {
+        wsClearHintHighlight_();
+        wsSelecting = true;
+        wsStartCell = [r, c];
+        wsHighlightPath([[r, c]]);
+    };
     const move = (x, y) => {
-        if (!wsSelecting) return;
+        if (!wsSelecting || document.getElementById('ws-grid') !== gridEl) return;
         const el = wsGetCellFromPoint(x, y);
         if (!el) return;
         const path = wsPathBetween(wsStartCell[0], wsStartCell[1], Number(el.dataset.r), Number(el.dataset.c));
         if (path) wsHighlightPath(path);
     };
-    const end = () => {
+    const end = (cancelled = false) => {
         if (!wsSelecting) return;
         wsSelecting = false;
+        if (document.getElementById('ws-grid') !== gridEl) { wsCurrentPath = []; return; }
         const cells = wsCurrentPath.map(key => key.split('_').map(Number));
-        const match = wsCheckMatch(cells);
-        if (match) {
-            wsMarkFound(match, cells);
-        } else {
-            wsClearTempHighlight();
-        }
+        const match = cancelled ? null : wsCheckMatch(cells);
+        if (match) wsMarkFound(match, cells);
+        else wsClearTempHighlight();
     };
 
-    gridEl.addEventListener('mousedown', e => {
-        if (e.target.dataset.r === undefined) return;
-        start(Number(e.target.dataset.r), Number(e.target.dataset.c));
+    gridEl.addEventListener('pointerdown', event => {
+        const el = event.target;
+        if (!el?.classList?.contains('ws-cell') || wsSelecting) return;
+        if (event.pointerType === 'mouse' && event.button !== 0) return;
+        event.preventDefault();
+        start(Number(el.dataset.r), Number(el.dataset.c));
+        try { gridEl.setPointerCapture(event.pointerId); } catch (_) { /* no capture support */ }
     });
-    gridEl.addEventListener('mousemove', e => move(e.clientX, e.clientY));
-    window.addEventListener('mouseup', end);
-
-    gridEl.addEventListener('touchstart', e => {
-        e.preventDefault();
-        const t = e.touches[0];
-        const el = wsGetCellFromPoint(t.clientX, t.clientY);
-        if (el) start(Number(el.dataset.r), Number(el.dataset.c));
-    }, { passive: false });
-    gridEl.addEventListener('touchmove', e => {
-        e.preventDefault();
-        const t = e.touches[0];
-        move(t.clientX, t.clientY);
-    }, { passive: false });
-    window.addEventListener('touchend', end);
+    gridEl.addEventListener('pointermove', event => move(event.clientX, event.clientY));
+    gridEl.addEventListener('pointerup', event => {
+        move(event.clientX, event.clientY);
+        end(false);
+        try { if (gridEl.hasPointerCapture(event.pointerId)) gridEl.releasePointerCapture(event.pointerId); } catch (_) {}
+    });
+    gridEl.addEventListener('pointercancel', () => end(true));
+    gridEl.addEventListener('lostpointercapture', () => end(true));
 }
 
-
+// Classic-script functions must be accessible to the Class 1 shell and inline button handlers.
+Object.assign(window, {
+    startWordSearchGame,
+    wsRenderTopicScreen,
+    wsChooseTopic,
+    renderWordSearchDifficultyScreen,
+    wsToggleRules,
+    wsStartWithDifficulty,
+    wsGenerateAndRender,
+    wsTryPlaceWord,
+    wsUpdateTimerDisplay,
+    renderWordSearchUI,
+    wsUseHint,
+    wsCellKey,
+    wsGetCellFromPoint,
+    wsClearTempHighlight,
+    wsHighlightPath,
+    wsPathBetween,
+    wsCheckMatch,
+    wsMarkFound,
+    wsFinishGame,
+    wsBindEvents,
+});
+})();
