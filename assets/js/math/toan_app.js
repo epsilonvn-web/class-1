@@ -466,7 +466,7 @@ async function renderDashboardGrid() {
 
         html += `
             <div onclick="openTopic(${t.id}, '${t.title}', '${t.icon}')" class="math-topic-card pastel-card p-2.5 flex flex-col justify-start cursor-pointer hover:border-${t.color}-400 transition-all group min-h-[98px] md:min-h-[104px]">
-                <div class="math-topic-head flex items-center space-x-2">
+                <div class="math-topic-head flex items-center gap-3">
                     ${iconHtml}
                     <h3 class="math-topic-title font-extrabold text-${t.color}-700 text-base md:text-lg leading-snug overflow-hidden" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">${t.title}</h3>
                 </div>
@@ -8471,11 +8471,71 @@ const MATH_HUB_CARD_CSS_ = `
 }
 `;
 
+const MATH_EXPLORE_ICON_TEXT_CSS_ = `
+
+/* Class 1 Math | Only the 12 Explore cards: readable icons and typography. */
+#class1-math-runtime #view-dashboard-grid > .math-topic-card{
+    min-height:146px!important;
+    padding:12px 12px 10px!important;
+    transition:border-color .18s ease,box-shadow .18s ease!important;
+}
+#class1-math-runtime #view-dashboard-grid > .math-topic-card .math-topic-head{
+    display:flex!important;align-items:center!important;gap:11px!important;min-width:0!important;
+}
+#class1-math-runtime #view-dashboard-grid > .math-topic-card .math-topic-icon{
+    box-sizing:border-box!important;width:60px!important;height:60px!important;
+    min-width:60px!important;min-height:60px!important;flex:0 0 60px!important;
+    border-width:2px!important;border-radius:17px!important;
+    font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif!important;
+    font-size:36px!important;line-height:1!important;font-weight:400!important;
+    opacity:1!important;filter:saturate(1.22) contrast(1.04)!important;
+    box-shadow:0 3px 9px rgba(109,40,217,.16),inset 0 1px 2px rgba(255,255,255,.86)!important;
+    transform:none;transition:transform .18s ease,box-shadow .18s ease!important;
+}
+#class1-math-runtime #view-dashboard-grid > .math-topic-card .math-topic-icon.tracking-tight{
+    font-family:inherit!important;font-size:20px!important;font-weight:900!important;
+}
+#class1-math-runtime #view-dashboard-grid > .math-topic-card .math-topic-title{
+    min-width:0!important;font-size:19.5px!important;font-weight:900!important;line-height:1.2!important;
+}
+#class1-math-runtime #view-dashboard-grid > .math-topic-card .math-topic-foot{
+    margin-top:9px!important;padding-top:8px!important;gap:7px!important;align-items:flex-end!important;
+}
+#class1-math-runtime #view-dashboard-grid > .math-topic-card .math-topic-foot > span:first-child{
+    min-width:0!important;font-size:16px!important;line-height:1.3!important;
+}
+#class1-math-runtime #view-dashboard-grid > .math-topic-card .math-topic-foot > span:last-child{
+    font-size:14px!important;white-space:nowrap!important;
+}
+@media(hover:hover) and (pointer:fine){
+  #class1-math-runtime #view-dashboard-grid > .math-topic-card:hover .math-topic-icon{
+    transform:translateY(-2px) scale(1.06)!important;
+    box-shadow:0 6px 14px rgba(109,40,217,.23),inset 0 1px 2px rgba(255,255,255,.92)!important;
+  }
+}
+@media(max-width:560px){
+  #class1-math-runtime #view-dashboard-grid > .math-topic-card{min-height:132px!important;padding:10px!important;}
+  #class1-math-runtime #view-dashboard-grid > .math-topic-card .math-topic-icon{
+    width:52px!important;height:52px!important;min-width:52px!important;min-height:52px!important;
+    flex-basis:52px!important;font-size:31px!important;border-radius:15px!important;
+  }
+  #class1-math-runtime #view-dashboard-grid > .math-topic-card .math-topic-icon.tracking-tight{font-size:18px!important;}
+  #class1-math-runtime #view-dashboard-grid > .math-topic-card .math-topic-title{font-size:18px!important;}
+  #class1-math-runtime #view-dashboard-grid > .math-topic-card .math-topic-foot > span:first-child{font-size:14px!important;}
+  #class1-math-runtime #view-dashboard-grid > .math-topic-card .math-topic-foot > span:last-child{font-size:12.5px!important;}
+}
+@media(prefers-reduced-motion:reduce){
+  #class1-math-runtime #view-dashboard-grid > .math-topic-card .math-topic-icon{transition:none!important;}
+  #class1-math-runtime #view-dashboard-grid > .math-topic-card:hover .math-topic-icon{transform:none!important;}
+}
+
+`;
+
 function ensureMathStyles_() {
     if (document.getElementById(MATH_MODULE_STYLE_ID_)) return;
     const style = document.createElement('style');
     style.id = MATH_MODULE_STYLE_ID_;
-    style.textContent = MATH_RUNTIME_CSS_ + MATH_SHELL_BREADCRUMB_CSS_ + MATH_HUB_CARD_CSS_;
+    style.textContent = MATH_RUNTIME_CSS_ + MATH_SHELL_BREADCRUMB_CSS_ + MATH_HUB_CARD_CSS_ + MATH_EXPLORE_ICON_TEXT_CSS_;
     document.head.appendChild(style);
 }
 
