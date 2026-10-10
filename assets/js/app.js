@@ -49,6 +49,8 @@
     Object.freeze({ id: "learningClock", icon: "🕐", title: "Đồng hồ học xem giờ", description: "Học đọc giờ, quay kim và luyện tập.", badge: "Công cụ", tone: "purple" }),
     Object.freeze({ id: "solarSystem", icon: "🪐", title: "Hệ Mặt Trời", description: "Khám phá Hệ Mặt Trời, ngày - đêm và các mùa bằng mô phỏng tương tác.", badge: "Khoa học", tone: "blue" }),
     Object.freeze({ id: "moon", icon: "🌙", title: "Mặt Trăng", description: "Khám phá các pha Mặt Trăng, nhật thực, nguyệt thực và thủy triều bằng mô phỏng tương tác.", badge: "Khoa học", tone: "blue" }),
+    Object.freeze({ id: "starrySky", icon: "🌌", title: "Bầu trời sao", description: "Quan sát chòm sao, nối sao và tìm Sao Bắc Cực.", badge: "Thiên văn", tone: "indigo" }),
+    Object.freeze({ id: "virtualTelescope", icon: "🔭", title: "Kính thiên văn", description: "Điều khiển kính, thay đổi độ phóng đại và ngắm thiên thể.", badge: "Thiên văn", tone: "purple" }),
     Object.freeze({ id: "waterCycle", icon: "💧", title: "Vòng tuần hoàn của nước", description: "Khám phá vòng tuần hoàn, ba thể của nước và cách làm sạch nước bằng mô phỏng tương tác.", badge: "Khoa học", tone: "teal" }),
     Object.freeze({ id: "lifeCycle", icon: "🦋", title: "Vòng đời sinh vật", description: "Khám phá vòng đời bướm, ếch và quá trình cây đậu lớn lên bằng mô phỏng tương tác.", badge: "Khoa học", tone: "green" }),
     Object.freeze({ id: "humanBody", icon: "🫀", title: "Cơ thể em", description: "Khám phá hệ tiêu hóa, hô hấp, tim và mạch máu bằng mô phỏng tương tác.", badge: "Khoa học", tone: "pink" }),
@@ -64,6 +66,10 @@
     Object.freeze({ id: "circuitLab", icon: "💡", title: "Mạch điện vui", description: "Lắp mạch điện, bật sáng bóng đèn và khám phá vật dẫn điện - cách điện.", badge: "Khoa học", tone: "amber" }),
     Object.freeze({ id: "homeSafety", icon: "🏠", title: "An toàn ở nhà", description: "Tìm mối nguy trong nhà, học sơ cứu và cách thoát hiểm khi có cháy.", badge: "Kỹ năng", tone: "rose" }),
     Object.freeze({ id: "trafficSafety", icon: "🚦", title: "An toàn giao thông", description: "Khám phá biển báo, đèn tín hiệu và luyện cách tham gia giao thông an toàn.", badge: "Kỹ năng", tone: "green" }),
+    Object.freeze({ id: "emotions", icon: "💖", title: "Hiểu cảm xúc", description: "Nhận biết cảm xúc, tập bình tĩnh và ứng xử qua trò chơi tương tác.", badge: "Kỹ năng", tone: "rose" }),
+    Object.freeze({ id: "waterSafety", icon: "🛟", title: "An toàn dưới nước", description: "Nhận biết nguy hiểm, mặc áo phao và học cách giúp bạn an toàn.", badge: "Kỹ năng", tone: "blue" }),
+    Object.freeze({ id: "lostAndStrangers", icon: "🧭", title: "Khi bị lạc", description: "Tìm nơi an toàn, nhớ số người thân và xử lý khi gặp người lạ.", badge: "Kỹ năng", tone: "purple" }),
+    Object.freeze({ id: "smartMoney", icon: "💰", title: "Tiêu tiền thông minh", description: "Phân biệt cần - muốn, tập tiết kiệm và mua sắm có kế hoạch.", badge: "Kỹ năng", tone: "green" }),
     Object.freeze({ id: "virtualPiano", icon: "🎹", title: "Đàn ảo - Bé học nốt nhạc", description: "Chơi đàn, học nốt nhạc, luyện nghe và gõ nhịp bằng tương tác trực tiếp.", badge: "Âm nhạc", tone: "pink" }),
     Object.freeze({ id: "vnInstruments", icon: "🎶", title: "Nhạc cụ dân tộc", description: "Chơi thử đàn bầu, đàn tranh, sáo trúc, đàn t’rưng và trống.", badge: "Âm nhạc", tone: "pink" }),
     Object.freeze({ id: "typingTenFingers", icon: "⌨️", title: "Luyện gõ 10 ngón", description: "Luyện đặt đúng ngón tay, tăng độ chính xác và tốc độ gõ bàn phím.", badge: "Tin học", tone: "blue" }),
@@ -73,12 +79,12 @@
   // Mỗi công cụ thuộc đúng một nhóm; có thể bổ sung tới tối đa 12 nhóm khi cần.
   const TOOL_GROUPS = Object.freeze([
     Object.freeze({ id: "math", icon: "🧮", title: "Toán", tone: "purple", ids: Object.freeze(["calculator", "converter", "geometryArea", "mathTables", "learningClock", "calendarRoman", "lineDiagram"]) }),
-    Object.freeze({ id: "earthSpace", icon: "🌍", title: "Trái Đất và thiên văn", tone: "blue", ids: Object.freeze(["solarSystem", "moon", "earthMotion", "earthChanges"]) }),
+    Object.freeze({ id: "earthSpace", icon: "🌍", title: "Trái Đất và thiên văn", tone: "blue", ids: Object.freeze(["solarSystem", "moon", "starrySky", "virtualTelescope", "earthMotion", "earthChanges"]) }),
     Object.freeze({ id: "naturalScience", icon: "🔬", title: "Khoa học tự nhiên", tone: "teal", ids: Object.freeze(["waterCycle", "lifeCycle", "natureAround", "circuitLab"]) }),
     Object.freeze({ id: "socialScience", icon: "🏛️", title: "Khoa học xã hội", tone: "green", ids: Object.freeze(["vietnamMap", "vnHistory"]) }),
     Object.freeze({ id: "technology", icon: "💻", title: "Tin học và công nghệ", tone: "blue", ids: Object.freeze(["bunnyCoding", "typingTenFingers", "inventions"]) }),
     Object.freeze({ id: "arts", icon: "🎨", title: "Nghệ thuật", tone: "pink", ids: Object.freeze(["colorMixer", "virtualPiano", "vnInstruments"]) }),
-    Object.freeze({ id: "lifeSkills", icon: "🚦", title: "Kỹ năng sống", tone: "amber", ids: Object.freeze(["trafficSafety", "homeSafety"]) }),
+    Object.freeze({ id: "lifeSkills", icon: "🤝", title: "Kỹ năng sống", tone: "amber", ids: Object.freeze(["trafficSafety", "homeSafety", "emotions", "waterSafety", "lostAndStrangers", "smartMoney"]) }),
     Object.freeze({ id: "bodyNutrition", icon: "🫀", title: "Cơ thể và dinh dưỡng", tone: "pink", ids: Object.freeze(["humanBody", "fiveSenses", "nutrition"]) })
   ]);
 
@@ -88,6 +94,122 @@
 
   function toolCardTone(index, offset = 0) {
     return TOOL_CARD_TONES[(index + offset) % TOOL_CARD_TONES.length];
+  }
+
+
+  // Pure UI styling for top-level selection cards only. No account/content changes.
+  function ensureClass1CardIconTypography_() {
+    if (document.getElementById("class1-card-icon-typography")) return;
+    const style = document.createElement("style");
+    style.id = "class1-card-icon-typography";
+    style.textContent = `
+/* Class 1 Home + Games + Tools + AI Lab: match the lively Explore icon scale. */
+#content-stage :is(.class1-subject-card,.home-feature-card){
+    min-height:146px!important;padding:13px 14px!important;
+    /* The card stays still; only the icon scales on hover. */
+    transform:none!important;translate:none!important;scale:1!important;
+    transition:border-color .18s ease,box-shadow .18s ease,filter .18s ease!important;
+}
+#content-stage .subject-profile-card{
+    transform:none!important;translate:none!important;scale:1!important;
+    transition:box-shadow .18s ease,filter .18s ease!important;
+}
+#content-stage :is(.class1-subject-card,.home-feature-card) .card-top{
+    display:flex!important;align-items:center!important;gap:12px!important;min-width:0!important;
+}
+#content-stage :is(.class1-subject-card,.home-feature-card) .card-copy{
+    flex:1 1 auto!important;min-width:0!important;
+}
+#content-stage :is(.class1-subject-card,.home-feature-card) .card-icon{
+    box-sizing:border-box!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
+    width:60px!important;height:60px!important;min-width:60px!important;min-height:60px!important;flex:0 0 60px!important;
+    border:2px solid #d8b4fe!important;border-radius:17px!important;
+    background:linear-gradient(145deg,rgba(255,255,255,.90),#f5edff)!important;
+    font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif!important;
+    font-size:36px!important;line-height:1!important;font-weight:400!important;
+    opacity:1!important;filter:saturate(1.22) contrast(1.04)!important;
+    box-shadow:0 3px 9px rgba(109,40,217,.15),inset 0 1px 2px rgba(255,255,255,.9)!important;
+    transform:none;transition:transform .18s ease,box-shadow .18s ease!important;
+}
+#content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="pink"] .card-icon,
+#content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="rose"] .card-icon{border-color:#f9a8d4!important;background:linear-gradient(145deg,#fff,#ffe5f1)!important;}
+#content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="blue"] .card-icon,
+#content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="indigo"] .card-icon{border-color:#a5b4fc!important;background:linear-gradient(145deg,#fff,#e0e7ff)!important;}
+#content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="green"] .card-icon,
+#content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="teal"] .card-icon{border-color:#86efac!important;background:linear-gradient(145deg,#fff,#dcfce7)!important;}
+#content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="amber"] .card-icon,
+#content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="coral"] .card-icon{border-color:#fcd34d!important;background:linear-gradient(145deg,#fff,#fef3c7)!important;}
+#content-stage :is(.class1-subject-card,.home-feature-card)[data-tone="lime"] .card-icon{border-color:#bef264!important;background:linear-gradient(145deg,#fff,#ecfccb)!important;}
+#content-stage :is(.class1-subject-card,.home-feature-card) .card-title{
+    font-size:19.5px!important;line-height:1.23!important;font-weight:900!important;
+    overflow-wrap:break-word;
+}
+#content-stage :is(.class1-subject-card,.home-feature-card) .card-desc{
+    font-size:15.5px!important;line-height:1.4!important;font-weight:750!important;
+}
+/* Compact Games / Tools / AI Lab only; do not shrink Home subject cards. */
+#content-stage .home-feature-card{
+    min-height:108px!important;
+    padding:9px 12px!important;
+}
+#content-stage .home-feature-card .card-desc{
+    margin-top:3px!important;
+    line-height:1.32!important;
+}
+#content-stage .class1-subject-card .card-top{padding-right:84px!important;}
+#content-stage .subject-profile-card .subject-profile-icon{
+    display:inline-flex!important;align-items:center!important;justify-content:center!important;
+    width:48px!important;height:48px!important;min-width:48px!important;flex:0 0 48px!important;
+    border:1.5px solid #c4b5fd!important;border-radius:14px!important;
+    background:#f5f3ff!important;font-size:29px!important;
+    box-shadow:0 3px 8px rgba(109,40,217,.12)!important;
+    transition:transform .18s ease,box-shadow .18s ease!important;
+}
+#content-stage .subject-profile-card .subject-profile-title{font-size:17px!important;line-height:1.25!important;}
+#content-stage .subject-profile-card .subject-profile-note{font-size:14px!important;line-height:1.3!important;}
+@media(hover:hover) and (pointer:fine){
+  /* Match Class 2 English: brighten the hovered tile, never enlarge or move it. */
+  #content-stage :is(.class1-subject-card,.home-feature-card,.subject-profile-card):hover{
+    transform:none!important;translate:none!important;scale:1!important;
+    filter:brightness(1.035)!important;
+    box-shadow:0 0 0 1px rgba(255,255,255,.8),0 0 17px rgba(168,85,247,.16),0 6px 16px rgba(109,40,217,.10)!important;
+  }
+  #content-stage :is(.class1-subject-card,.home-feature-card):hover .card-icon{
+    transform:translateY(-2px) scale(1.05)!important;
+    box-shadow:0 6px 14px rgba(109,40,217,.22),inset 0 1px 2px rgba(255,255,255,.94)!important;
+  }
+  #content-stage .subject-profile-card:hover .subject-profile-icon{
+    transform:translateY(-1px) scale(1.06)!important;
+    box-shadow:0 5px 12px rgba(109,40,217,.2)!important;
+  }
+}
+@media(max-width:767px){
+  #content-stage :is(.class1-subject-card,.home-feature-card){min-height:128px!important;padding:11px!important;}
+  #content-stage :is(.class1-subject-card,.home-feature-card) .card-top{gap:10px!important;}
+  #content-stage :is(.class1-subject-card,.home-feature-card) .card-icon{
+    width:52px!important;height:52px!important;min-width:52px!important;min-height:52px!important;
+    flex-basis:52px!important;font-size:31px!important;border-radius:15px!important;
+  }
+  #content-stage :is(.class1-subject-card,.home-feature-card) .card-title{font-size:18px!important;}
+  #content-stage :is(.class1-subject-card,.home-feature-card) .card-desc{font-size:14px!important;}
+  /* Small screens: keep the 52px icon while reducing unused vertical space. */
+  #content-stage .home-feature-card{min-height:96px!important;padding:9px 10px!important;}
+  #content-stage .class1-subject-card .card-top{padding-right:68px!important;}
+  #content-stage .subject-profile-card .subject-profile-icon{
+    width:43px!important;height:43px!important;min-width:43px!important;flex-basis:43px!important;font-size:26px!important;
+  }
+  #content-stage .subject-profile-card .subject-profile-title{font-size:16px!important;}
+  #content-stage .subject-profile-card .subject-profile-note{font-size:13px!important;}
+}
+@media(prefers-reduced-motion:reduce){
+  #content-stage :is(.class1-subject-card,.home-feature-card,.subject-profile-card){transition:none!important;}
+  #content-stage :is(.class1-subject-card,.home-feature-card) .card-icon,
+  #content-stage .subject-profile-card .subject-profile-icon{transition:none!important;}
+  #content-stage :is(.class1-subject-card,.home-feature-card):hover .card-icon,
+  #content-stage .subject-profile-card:hover .subject-profile-icon{transform:none!important;}
+}
+`;
+    document.head.appendChild(style);
   }
 
   function ensureToolsCardPaletteStyles() {
@@ -200,6 +322,8 @@
       learningClock: "assets/js/tools/dong-ho.js?v=class1-dong-ho-1",
       solarSystem: "assets/js/tools/he-mat-troi.js?v=class1-he-mat-troi-1",
       moon: "assets/js/tools/mat-trang.js?v=class1-mat-trang-1",
+      starrySky: "assets/js/tools/bau-troi-sao.js?v=class1-bau-troi-sao-1",
+      virtualTelescope: "assets/js/tools/kinh-thien-van.js?v=class1-kinh-thien-van-1",
       waterCycle: "assets/js/tools/vong-tuan-hoan-nuoc.js?v=class1-vong-tuan-hoan-nuoc-1",
       lifeCycle: "assets/js/tools/vong-doi-sinh-vat.js?v=class1-vong-doi-sinh-vat-1",
       humanBody: "assets/js/tools/co-the-em.js?v=class1-co-the-em-1",
@@ -215,6 +339,10 @@
       circuitLab: "assets/js/tools/mach-dien.js?v=class1-mach-dien-1",
       homeSafety: "assets/js/tools/an-toan-o-nha.js?v=class1-an-toan-o-nha-1",
       trafficSafety: "assets/js/tools/an-toan-giao-thong.js?v=class1-an-toan-giao-thong-1",
+      emotions: "assets/js/tools/hieu-cam-xuc.js?v=class1-hieu-cam-xuc-1",
+      waterSafety: "assets/js/tools/an-toan-duoi-nuoc.js?v=class1-an-toan-duoi-nuoc-1",
+      lostAndStrangers: "assets/js/tools/khi-bi-lac.js?v=class1-khi-bi-lac-1",
+      smartMoney: "assets/js/tools/tieu-tien-thong-minh.js?v=class1-tieu-tien-thong-minh-1",
       virtualPiano: "assets/js/tools/dan-ao.js?v=class1-dan-ao-1",
       vnInstruments: "assets/js/tools/nhac-cu-dan-toc.js?v=class1-nhac-cu-dan-toc-1",
       typingTenFingers: "assets/js/tools/luyen-go-10-ngon.js?v=class1-luyen-go-10-ngon-1",
@@ -635,6 +763,12 @@
       host: el.content,
       kind,
       featureId,
+      // Only the feelings tool needs an account-scoped key for its local diary.
+      // Never pass the session token to a lazily loaded public module.
+      diaryUserId: kind === "tools" && featureId === "emotions" && state.auth.token && state.auth.user
+        ? String(state.auth.user.userId || "") : "",
+      badgeUserId: kind === "tools" && featureId === "virtualTelescope" && state.auth.token && state.auth.user
+        ? String(state.auth.user.userId || "") : "",
       hooks: { showToast, showDialog, setSubBanner },
       back: () => {
         destroyActiveHomeFeature();
@@ -1585,6 +1719,7 @@
   }
 
   function renderContent() {
+    ensureClass1CardIconTypography_();
     if (state.screen === "home") return renderHomeContent();
     if (state.screen === "profile") return renderLearningProfile();
     if (state.screen === "account") return renderAccountPage();
