@@ -5796,6 +5796,75 @@ const TV_EXPLORE_ICON_TEXT_CSS_ = `
   #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card:hover .l1-tv-explore-icon{transform:none!important;}
 }
 
+
+/* Epsilon Edu - TA1 card hover parity: border feedback + small lift, no strong whole-card glow. */
+@media (hover:hover) and (pointer:fine) {
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card {
+    transition:border-color .18s ease,box-shadow .18s ease!important;
+  }
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card:hover:has(h3.text-pink-700){border-color:#f472b6!important;}
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card:hover:has(h3.text-purple-700){border-color:#c084fc!important;}
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card:hover:has(h3.text-indigo-700){border-color:#818cf8!important;}
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card:hover:has(h3.text-blue-700){border-color:#60a5fa!important;}
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card:hover:has(h3.text-cyan-700){border-color:#22d3ee!important;}
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card:hover:has(h3.text-sky-700){border-color:#38bdf8!important;}
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card:hover:has(h3.text-teal-700){border-color:#2dd4bf!important;}
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card:hover:has(h3.text-emerald-700){border-color:#34d399!important;}
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card:hover:has(h3.text-amber-700){border-color:#fbbf24!important;}
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card:hover:has(h3.text-yellow-700){border-color:#facc15!important;}
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card:hover:has(h3.text-rose-700){border-color:#fb7185!important;}
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card:hover:has(h3.text-fuchsia-700){border-color:#e879f9!important;}
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card:hover:has(h3.text-violet-700){border-color:#a78bfa!important;}
+
+  /* TA1 uses Tailwind hover:shadow-md for lesson / exercise cards. */
+  #class1-vietnamese-runtime #bai-hoc-grid > button:not(:disabled),
+  #class1-vietnamese-runtime #roadmap-svg-container button:not(:disabled) {
+    transition:box-shadow .15s ease,border-color .15s ease!important;
+  }
+  #class1-vietnamese-runtime #bai-hoc-grid > button:not(:disabled):hover,
+  #class1-vietnamese-runtime #roadmap-svg-container button:not(:disabled):not(.opacity-60):hover {
+    box-shadow:0 4px 6px -1px rgba(0,0,0,.10),0 2px 4px -2px rgba(0,0,0,.10)!important;
+  }
+
+  /* TA1 subtopic cards: pastel hover tint + pastel-btn lift, not the large Home glow. */
+  #class1-vietnamese-runtime #lecture-subtopics-list > button:not(:disabled):not(.opacity-60) {
+    transition:transform .2s ease,box-shadow .2s ease,background-color .2s ease!important;
+  }
+  #class1-vietnamese-runtime #lecture-subtopics-list > button:not(:disabled):not(.opacity-60):hover {
+    transform:translateY(-2px);
+    box-shadow:0 5px 15px rgba(0,0,0,.09)!important;
+  }
+  /* TA1 mini games: pastel-btn lift and soft shadow, icon grows via existing group-hover. */
+  #class1-vietnamese-runtime #minigame-grid > div[onclick] {
+    transition:transform .2s ease,box-shadow .2s ease,background-color .2s ease!important;
+  }
+  #class1-vietnamese-runtime #minigame-grid > div[onclick]:hover {
+    transform:translateY(-2px);
+    box-shadow:0 5px 15px rgba(0,0,0,.09)!important;
+  }
+  #class1-vietnamese-runtime #lecture-subtopics-list > button:not(:disabled):not(.opacity-60):nth-child(6n+1):hover{background:#f9a8d4!important;}
+  #class1-vietnamese-runtime #lecture-subtopics-list > button:not(:disabled):not(.opacity-60):nth-child(6n+2):hover{background:#a7f3d0!important;}
+  #class1-vietnamese-runtime #lecture-subtopics-list > button:not(:disabled):not(.opacity-60):nth-child(6n+3):hover{background:#d8b4fe!important;}
+  #class1-vietnamese-runtime #lecture-subtopics-list > button:not(:disabled):not(.opacity-60):nth-child(6n+4):hover{background:#fde68a!important;}
+  #class1-vietnamese-runtime #lecture-subtopics-list > button:not(:disabled):not(.opacity-60):nth-child(6n+5):hover{background:#c7d2fe!important;}
+  #class1-vietnamese-runtime #lecture-subtopics-list > button:not(:disabled):not(.opacity-60):nth-child(6n+6):hover{background:#fecdd3!important;}
+  #class1-vietnamese-runtime #minigame-grid > div[onclick]:nth-child(6n+1):hover{background:#fecdd3!important;}
+  #class1-vietnamese-runtime #minigame-grid > div[onclick]:nth-child(6n+2):hover{background:#bfdbfe!important;}
+  #class1-vietnamese-runtime #minigame-grid > div[onclick]:nth-child(6n+3):hover{background:#ddd6fe!important;}
+  #class1-vietnamese-runtime #minigame-grid > div[onclick]:nth-child(6n+4):hover{background:#fde68a!important;}
+  #class1-vietnamese-runtime #minigame-grid > div[onclick]:nth-child(6n+5):hover{background:#f5d0fe!important;}
+  #class1-vietnamese-runtime #minigame-grid > div[onclick]:nth-child(6n+6):hover{background:#a7f3d0!important;}
+}
+@media (prefers-reduced-motion:reduce) {
+  #class1-vietnamese-runtime #view-dashboard-grid > .l1-tv-explore-card,
+  #class1-vietnamese-runtime #bai-hoc-grid > button,
+  #class1-vietnamese-runtime #roadmap-svg-container button,
+  #class1-vietnamese-runtime #lecture-subtopics-list > button,
+  #class1-vietnamese-runtime #minigame-grid > div[onclick] {transition:none!important;}
+  #class1-vietnamese-runtime #minigame-grid > div[onclick]:hover,
+  #class1-vietnamese-runtime #lecture-subtopics-list > button:hover{transform:none!important;}
+}
+
 `;
 
 function ensureTvStyles_(){if(document.getElementById(TV_MODULE_STYLE_ID_))return;const st=document.createElement('style');st.id=TV_MODULE_STYLE_ID_;st.textContent=TV_RUNTIME_CSS_+TV_SHELL_BREADCRUMB_CSS_+TV_MODULE_UI_CSS_+TV_EXPLORE_ICON_TEXT_CSS_;document.head.appendChild(st);}
