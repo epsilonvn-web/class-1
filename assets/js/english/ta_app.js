@@ -444,7 +444,8 @@ let activeVocabularyStudyMode = 'flashcard';
 let vocabularyModeState = {
     flashcard: { answers: {}, wrongs: {} },
     picture: { answers: {}, wrongs: {} },
-    listen: { answers: {}, wrongs: {} }
+    listen: { answers: {}, wrongs: {} },
+    speak: { answers: {}, wrongs: {} }
 };
 
 // Mục 3-4-5 dùng CHUNG đúng Vocabulary Master 160 từ của mục 2.
@@ -469,11 +470,12 @@ function resetVocabularyModeState_() {
     vocabularyModeState = {
         flashcard: { answers: {}, wrongs: {} },
         picture: { answers: {}, wrongs: {} },
-        listen: { answers: {}, wrongs: {} }
+        listen: { answers: {}, wrongs: {} },
+        speak: { answers: {}, wrongs: {} }
     };
 }
 function getVocabularyModeKey_(mode = activeVocabularyStudyMode) {
-    return ['picture','listen'].includes(mode) ? mode : 'flashcard';
+    return ['picture','listen','speak'].includes(mode) ? mode : 'flashcard';
 }
 function saveVocabularyModeState_() {
     if (!activeVocabularyHubTopic) return;
@@ -501,7 +503,7 @@ function renderVocabularyLevelHub_(questions = []) {
     const view = document.getElementById('view-lecture');
     const list = document.getElementById('lecture-subtopics-list');
     if (title) title.textContent = '2. Vocabulary';
-    const intro = '160 words · 4 levels · 40 words each · Flashcards, Word-picture Puzzle and Listen and Choose.\n160 từ · 4 cấp độ · 40 từ mỗi cấp · ba cách học dùng chung một Vocabulary Master.';
+    const intro = '160 words · 4 levels · 40 words each · Flashcards, Word-picture Puzzle, Listen and Choose, Speak & Check.\n160 từ · 4 cấp độ · 40 từ mỗi cấp · bốn cách học dùng chung một Vocabulary Master.';
     if (content) { content.textContent = intro; content.style.whiteSpace = 'pre-line'; }
     if (view) view.dataset.audioText = '';
     const speakBtn = view?.querySelector('button[onclick="speakLecture()"]'); if (speakBtn) speakBtn.classList.add('hidden');
@@ -849,7 +851,8 @@ function renderSharedVocabActivityQuestion_(q) {
     return true;
 }
 function setVocabularyStudyMode(mode) {
-    if (!activeVocabularyHubTopic || !['flashcard','picture','listen'].includes(mode)) return;
+    if (!activeVocabularyHubTopic || !['flashcard','picture','listen','speak'].includes(mode)) return;
+    stopVocabularySpeechCheck_();
     saveVocabularyModeState_();
     activeVocabularyStudyMode = mode;
     restoreVocabularyModeState_();
@@ -859,9 +862,10 @@ function vocabularyTabsHtml_() {
     const tabs = [
         { key:'flashcard', icon:'🃏', en:'Flashcards', vi:'' },
         { key:'picture', icon:'🖼️', en:'Word-picture Puzzle', vi:'Nhìn tranh chọn từ' },
-        { key:'listen', icon:'🎧', en:'Listen and Choose', vi:'Nghe và chọn từ' }
+        { key:'listen', icon:'🎧', en:'Listen and Choose', vi:'Nghe và chọn từ' },
+        { key:'speak', icon:'🎤', en:'Speak & Check', vi:'Nói và kiểm tra' }
     ];
-    return `<div class="grid grid-cols-3 gap-2 md:gap-3 mb-3">${tabs.map(t => {
+    return `<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-3 mb-3">${tabs.map(t => {
         const active = activeVocabularyStudyMode === t.key;
         return `<button onclick="setVocabularyStudyMode('${t.key}')" class="h-[48px] md:h-[52px] rounded-[14px] border px-2 md:px-3 py-1 transition-all flex items-center justify-center gap-1.5 md:gap-2 ${active ? 'bg-gradient-to-r from-pink-500 to-violet-500 text-white border-pink-300 shadow-md' : 'bg-white text-slate-600 border-pink-200 hover:bg-pink-50'}">
             <span class="text-[15px] md:text-base leading-none shrink-0">${t.icon}</span>
@@ -920,6 +924,7 @@ function speakVocabularyExample_(i) {
     if (text) speakEnglish(text, 0.92);
 }
 function speakVocabularyTarget_() {
+    if (activeVocabularyHubTopic && activeVocabularyStudyMode === 'speak') stopVocabularySpeechCheck_();
     const q = activeQuestionsList[currentQIndex];
     if (q?.word) speakEnglish(q.word, 0.9);
 }
@@ -927,6 +932,202 @@ function speakVocabularyPrompt_() {
     if (activeVocabularyStudyMode === 'listen') return speakVocabularyTarget_();
     speakEnglish('Choose the correct English word.', 0.92);
 }
+// SPEAK & CHECK — CHỈ Vocabulary (Khám phá > mục 2, tất cả Level).
+// Không lưu audio/transcript lên server, không đụng luồng Ôn tập/Đề thi.
+let vocabularySpeechRecognition_ = null;
+let vocabularySpeechEpoch_ = 0;
+let vocabularySpeechReplayTimer_ = null;
+
+function stopVocabularySpeechCheck_() {
+    ++vocabularySpeechEpoch_; // Bỏ qua mọi callback muộn khi chuyển tab/từ/màn.
+    if (vocabularySpeechReplayTimer_ !== null) {
+        clearTimeout(vocabularySpeechReplayTimer_);
+        vocabularySpeechReplayTimer_ = null;
+    }
+    const instance = vocabularySpeechRecognition_;
+    vocabularySpeechRecognition_ = null;
+    if (instance) {
+        instance.onresult = null;
+        instance.onerror = null;
+        instance.onend = null;
+        try { instance.abort(); } catch (_) {}
+    }
+    const btn = document.getElementById('vocab-speak-check-button');
+    if (btn) {
+        btn.disabled = false;
+        btn.classList.remove('opacity-60', 'cursor-wait');
+        const caption = document.getElementById('vocab-speak-check-button-text');
+        if (caption) caption.textContent = 'Bấm để nói';
+    }
+}
+
+// Không dùng playAudio('wrong') của bài trắc nghiệm: micro/no-speech KHÔNG phải trả lời sai.
+function playVocabularySpeechBeep_(correct) {
+    try {
+        const Context = window.AudioContext || window.webkitAudioContext;
+        if (!audioCtx && Context) audioCtx = new Context();
+        if (!audioCtx) return;
+        if (audioCtx.state === 'suspended') {
+            const res = audioCtx.resume();
+            if (res && typeof res.catch === 'function') res.catch(() => {});
+        }
+        const startAt = audioCtx.currentTime + 0.015;
+        const count = correct ? 1 : 2;
+        for (let i = 0; i < count; i++) {
+            const at = startAt + i * 0.17;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(correct ? 880 : 520, at);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            gain.gain.setValueAtTime(0.0001, at);
+            gain.gain.exponentialRampToValueAtTime(0.12, at + 0.014);
+            gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.11);
+            osc.start(at);
+            osc.stop(at + 0.115);
+        }
+    } catch (_) { /* Không để lỗi phát âm thanh ảnh hưởng bài học. */ }
+}
+
+function normalizeVocabularySpokenText_(value) {
+    return String(value || '')
+        .toLowerCase().replace(/[\u2018\u2019]/g, "'")
+        .replace(/[^a-z0-9' ]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function isVocabularySpokenMatch_(heard, target) {
+    const spoken = normalizeVocabularySpokenText_(heard);
+    const expected = normalizeVocabularySpokenText_(target);
+    if (!spoken || !expected) return false;
+    // Nhận một từ/cụm từ chính xác, có thể kèm mạo từ do ASR tự thêm.
+    return spoken === expected || ['a ', 'an ', 'the '].some(prefix => spoken === prefix + expected);
+}
+
+function setVocabularySpeechFeedback_(kind, message, detected = '') {
+    const status = document.getElementById('vocab-speak-check-feedback');
+    if (!status) return;
+    const palette = {
+        success: 'border-emerald-200 bg-emerald-50 text-emerald-800',
+        retry: 'border-amber-200 bg-amber-50 text-amber-900',
+        info: 'border-violet-200 bg-violet-50 text-violet-800'
+    };
+    status.className = 'mt-3 rounded-2xl border px-4 py-3 text-sm md:text-base font-bold text-center ' + (palette[kind] || palette.info);
+    status.textContent = String(message);
+    const result = document.getElementById('vocab-speak-check-heard');
+    if (result) result.textContent = detected ? 'Máy nghe được: ' + detected : '';
+}
+
+function startVocabularySpeechCheck_() {
+    if (activeVocabularyStudyMode !== 'speak' || !activeVocabularyHubTopic || activeExamContext || activeRoadmapContext) return;
+    const q = activeQuestionsList[currentQIndex];
+    const target = String(q?.word || '').trim();
+    if (!target) return;
+    // SpeechRecognition chỉ có trên một số trình duyệt (HTTPS/localhost, cho phép mic).
+    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!Recognition) {
+        setVocabularySpeechFeedback_('info', 'Trình duyệt chưa hỗ trợ nhận diện giọng nói. Bé hãy thử Chrome hoặc Edge nhé!');
+        return;
+    }
+
+    stopVocabularySpeechCheck_();
+    stopSpeaking(); // Tránh giọng đọc mẫu bị micro nhận nhầm thành giọng bé.
+    const epoch = vocabularySpeechEpoch_;
+    const wordIndex = currentQIndex;
+    const isCurrent = () => epoch === vocabularySpeechEpoch_
+        && activeVocabularyStudyMode === 'speak'
+        && currentQIndex === wordIndex
+        && activeQuestionsList[wordIndex] === q
+        && !!activeVocabularyHubTopic && !englishModuleDestroyed_;
+    let recognition;
+    try {
+        recognition = new Recognition();
+        recognition.lang = 'en-US';
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 4;
+    } catch (_) {
+        setVocabularySpeechFeedback_('info', 'Không khởi động được micro. Bé hãy thử lại nhé!');
+        return;
+    }
+    vocabularySpeechRecognition_ = recognition;
+    const btn = document.getElementById('vocab-speak-check-button');
+    if (btn) {
+        btn.disabled = true;
+        btn.classList.add('opacity-60', 'cursor-wait');
+        const caption = document.getElementById('vocab-speak-check-button-text');
+        if (caption) caption.textContent = 'Đang nghe...';
+    }
+    setVocabularySpeechFeedback_('info', '🎤 Cô Thỏ Hồng đang nghe. Bé hãy nói rõ từ tiếng Anh nhé!');
+    let resolved = false;
+    let errored = false;
+    recognition.onresult = event => {
+        if (!isCurrent() || resolved) return;
+        const candidates = [];
+        for (let i = event.resultIndex || 0; i < event.results.length; i++) {
+            const result = event.results[i];
+            if (!result || !result.isFinal) continue;
+            for (let j = 0; j < result.length; j++) {
+                const alt = result[j];
+                const transcript = String(alt?.transcript || '').trim();
+                const confidence = Number(alt?.confidence);
+                if (transcript) candidates.push({ transcript, confidence });
+            }
+        }
+        if (!candidates.length) return; // Chưa thực sự nhận ra tiếng nói.
+        resolved = true;
+        const reliable = candidates.filter(x => !Number.isFinite(x.confidence) || x.confidence <= 0 || x.confidence >= 0.35);
+        if (!reliable.length) {
+            setVocabularySpeechFeedback_('info', '🌷 Cô chưa nghe rõ lắm. Con nói chậm và gần micro hơn nhé!');
+            return; // Không bíp khi máy không chắc chắn.
+        }
+        const matched = reliable.find(x => isVocabularySpokenMatch_(x.transcript, target));
+        if (matched) {
+            userAnswers[wordIndex] = target; // Dùng chung điều kiện sang từ tiếp theo; chỉ trong tab Speak.
+            setVocabularySpeechFeedback_('success', '🎉 Tuyệt vời! Con nói đúng rồi! Cô Thỏ Hồng khen con!', matched.transcript);
+            playVocabularySpeechBeep_(true);
+        } else {
+            setVocabularySpeechFeedback_('retry', '💗 Con cố gắng thêm chút nhé! Hãy nghe mẫu và đọc lại nào.', reliable[0].transcript);
+            playVocabularySpeechBeep_(false);
+            vocabularySpeechReplayTimer_ = setTimeout(() => {
+                vocabularySpeechReplayTimer_ = null;
+                if (isCurrent()) speakEnglish(target, 0.88);
+            }, 480);
+        }
+    };
+    recognition.onerror = event => {
+        if (!isCurrent() || resolved) return;
+        errored = true;
+        const code = String(event?.error || '');
+        const message = (code === 'not-allowed' || code === 'service-not-allowed')
+            ? 'Micro chưa được cấp quyền. Bé hãy cho phép micro trong trình duyệt rồi thử lại nhé!'
+            : code === 'audio-capture'
+                ? 'Không tìm thấy micro. Bé hãy kiểm tra thiết bị rồi thử lại nhé!'
+                : code === 'network'
+                    ? 'Mạng hoặc dịch vụ nhận diện đang gián đoạn. Bé hãy thử lại sau nhé!'
+                    : 'Cô chưa nghe rõ giọng bé. Con thử nói lại, chậm và rõ hơn nhé!';
+        setVocabularySpeechFeedback_('info', '🎤 ' + message); // Không bíp đối với MỌI lỗi mic/ASR.
+    };
+    recognition.onend = () => {
+        if (!isCurrent()) return;
+        vocabularySpeechRecognition_ = null;
+        if (!resolved && !errored) setVocabularySpeechFeedback_('info', '🌷 Cô chưa nghe được tiếng nói. Con thử bấm micro và nói lại nhé!');
+        const button = document.getElementById('vocab-speak-check-button');
+        if (button) {
+            button.disabled = false;
+            button.classList.remove('opacity-60', 'cursor-wait');
+            const caption = document.getElementById('vocab-speak-check-button-text');
+            if (caption) caption.textContent = 'Bấm để nói lại';
+        }
+    };
+    try { recognition.start(); }
+    catch (_) {
+        if (!isCurrent()) return;
+        stopVocabularySpeechCheck_();
+        setVocabularySpeechFeedback_('info', '🎤 Không mở được micro. Bé kiểm tra quyền truy cập rồi thử lại nhé!');
+    }
+}
+
 function revealVocabularyAfterCorrect_() {
     if (!activeVocabularyHubTopic || !['picture','listen'].includes(activeVocabularyStudyMode)) return;
     document.querySelectorAll('.vocab-option-meaning').forEach(el => el.classList.remove('hidden'));
@@ -955,6 +1156,9 @@ function renderVocabularySharedStudy_(q) {
         const options = getVocabularyChoiceOptions_(q); q.answer = q.word; q.options = options;
         const solved = userAnswers[currentQIndex] === q.answer;
         body = `<div class="text-center mb-2"><div class="flex items-center justify-center gap-2 flex-wrap"><span class="px-3 py-1 rounded-full bg-pink-50 border border-pink-200 text-pink-700 font-black text-xs">${group.icon} Level ${group.level} · ${group.name}</span><span class="text-lg md:text-xl font-black text-slate-900">Choose the correct English word:</span><button onclick="speakVocabularyPrompt_()" class="w-8 h-8 rounded-full bg-sky-100 text-sky-600"><i class="fa-solid fa-volume-high text-xs"></i></button></div></div><div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2"><section class="rounded-3xl border border-dashed border-pink-300 bg-pink-50/30 p-3 flex flex-col"><div class="w-full aspect-[4/3] max-h-[210px] flex items-center justify-center overflow-hidden rounded-2xl bg-white">${visual}</div><div class="mt-2 text-center text-xl md:text-2xl font-black text-violet-700 leading-tight">Nghĩa: ${escapeHtml(q.vietnamese || '')}</div></section><section id="vocab-picture-examples" class="rounded-3xl border border-fuchsia-200 bg-gradient-to-br from-pink-50/50 via-white to-violet-50/50 p-3">${vocabularyExamplesHtml_(q, solved)}</section></div><div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">${options.map(optionHtml).join('')}</div>`;
+    } else if (activeVocabularyStudyMode === 'speak') {
+        const solved = userAnswers[currentQIndex] === q.word;
+        body = `<section class="rounded-3xl border border-fuchsia-200 bg-gradient-to-br from-pink-50 via-white to-violet-50 p-4 md:p-5 text-center shadow-sm"><div class="flex items-center justify-center gap-2 flex-wrap mb-3"><span class="px-3 py-1 rounded-full bg-white text-purple-700 border border-purple-200 text-xs font-black">🎤 Speak & Check · Level ${group.level}</span><span class="text-xs md:text-sm text-slate-600 font-bold">Nghe mẫu · Nói theo · Kiểm tra</span></div><div class="mx-auto w-full max-w-[300px] aspect-[4/3] max-h-[220px] rounded-2xl bg-white border border-pink-100 overflow-hidden flex items-center justify-center">${visual}</div><div class="mt-2 text-2xl md:text-3xl font-black text-slate-900">${escapeHtml(q.word || '')}</div>${q.ipa ? `<div class="mt-1 text-base font-bold text-sky-700">/${escapeHtml(String(q.ipa).replace(/^\/+|\/+$/g, ''))}/</div>` : ''}<div class="mt-1 text-base md:text-lg font-black text-purple-700">${escapeHtml(q.vietnamese || '')}</div><div class="mt-4 flex flex-wrap items-center justify-center gap-3"><button onclick="speakVocabularyTarget_()" class="px-5 py-3 rounded-2xl border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100 text-sm font-black shadow-sm">🔊 Nghe từ mẫu</button><button id="vocab-speak-check-button" onclick="startVocabularySpeechCheck_()" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-pink-500 to-violet-500 text-white text-sm font-black shadow-md hover:brightness-105"><span aria-hidden="true">🎤 </span><span id="vocab-speak-check-button-text">Bấm để nói</span></button></div><div id="vocab-speak-check-feedback" role="status" aria-live="polite" class="mt-3 rounded-2xl border border-violet-200 bg-violet-50 px-4 py-3 text-sm md:text-base font-bold text-center text-violet-800">${solved ? '🎉 Giỏi lắm! Con đã nói đúng từ này rồi.' : 'Bé nghe từ mẫu, bấm micro rồi đọc theo nhé!'}</div><div id="vocab-speak-check-heard" class="mt-1 text-xs md:text-sm font-semibold text-slate-500"></div><p class="mt-2 text-xs md:text-sm font-semibold text-slate-500">Máy nhận diện lời nói để luyện tập; kết quả không thay thế đánh giá phát âm của giáo viên.</p></section>`;
     } else {
         const options = getVocabularyChoiceOptions_(q); q.answer = q.word; q.options = options;
         body = `<div class="min-h-[275px] flex flex-col items-center justify-center"><div class="text-xl md:text-2xl font-black text-slate-900 mb-1">Listen and choose.</div><div class="text-xs md:text-sm font-bold text-slate-400 mb-3">Nghe và chọn từ đúng</div><button onclick="speakVocabularyTarget_()" class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-pink-500 to-violet-500 text-white shadow-lg hover:scale-105 transition-transform flex items-center justify-center mb-4"><i class="fa-solid fa-volume-high text-3xl"></i></button><div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full max-w-3xl">${options.map(optionHtml).join('')}</div></div>`;
@@ -2751,6 +2955,7 @@ function startTopicQuiz(topicNum, topicName, questions, subLabel) {
 }
 
 function loadQuestion() {
+    stopVocabularySpeechCheck_();
     stopSpeaking();
     const q = activeQuestionsList[currentQIndex];
     if (!q) return;
@@ -3269,7 +3474,9 @@ function nextQuestion() {
     }
 
     if (!isEvaluationMode && userAnswers[currentQIndex] === undefined) {
-        alert('Bé hãy tìm đáp án đúng để hoàn thành câu này nhé!');
+        alert(activeVocabularyHubTopic && activeVocabularyStudyMode === 'speak'
+            ? 'Con hãy bấm micro để luyện nói đúng từ này trước khi sang từ tiếp theo nhé!'
+            : 'Bé hãy tìm đáp án đúng để hoàn thành câu này nhé!');
         return;
     }
 
@@ -3289,6 +3496,7 @@ function nextQuestion() {
             currentQIndex = 0;
             userAnswers = {};
             wrongAttemptsByQ = {};
+            if (activeVocabularyHubTopic) resetVocabularyModeState_();
             loadQuestion();
         }
     }
@@ -4499,6 +4707,7 @@ function setAppShellRootMode_(isRoot) {
 }
 
 function switchAppView(viewId) {
+    stopVocabularySpeechCheck_();
     stopSpeaking();
     if (!['view-bai-hoc-hub','view-bai-hoc-lesson'].includes(viewId)) inLessonFlow=false;
 
@@ -5057,7 +5266,7 @@ renderTa1LessonPage_=function(p){
 function primeEnglishAudio_(){if(englishModuleAudioPrimed_)return;englishModuleAudioPrimed_=true;const once=()=>{try{const AC=window.AudioContext||window.webkitAudioContext;if(!audioCtx&&AC)audioCtx=new AC();if(audioCtx?.state==='suspended')audioCtx.resume();}catch(_){}};englishModuleRoot_?.addEventListener('pointerdown',once,{once:true,passive:true});}
 
 function installEnglishInlineBridge_(){
-  const names=["acceptFriendlyDialog_", "addVocabularyMeaning", "alert", "assessmentAnswersPayload_", "beautifySubtopicName", "buildMiniGameVocabItem", "buildRoadmapPathD", "buildTrickyChoices", "callAppsScript", "capitalizeFirstLetter", "catalogImage_", "catalogSrc_", "checkAnswer", "class1EnglishApi_", "class1EnglishUser_", "closeFriendlyDialog_", "closeHistoryModal", "closeReviewWrongModal", "enableReplayOnOptions", "englishReadBreadcrumb_", "englishVocabVisualHtml_", "ensureFriendlyDialog_", "ensureMiniGameLearningReady", "ensureMiniGameThemeStyles", "ensureMiniGameVocabReady", "escapeHtml", "escapeJsStringTa1_", "exerciseBankQuestions_", "exportReportToPDF", "extractFirstEmoji", "extractMiniGameEmoji", "extractVocabularyVietnameseMeaning", "fetchAllQuestionsFlat", "fetchAllTopicsData", "fetchClass1EnglishHistoryByLegacySheet_", "fetchJsonEnglish_", "formatDateOnly", "formatDateShort", "formatDuration", "generateReview15", "getActiveLessonPageData_", "getBaiHocTa1CompletedSet_", "getBaiHocTa1ProgressKey_", "getBaiTapTa1RecentKey_", "getBaiTapTa1Recent_", "getBaiTapTa1UnlockKey_", "getEnglishExerciseProgressKey_", "getHeaderEnglishLabel_", "getLocalEnglishExerciseProgress_", "getMiniGamePaletteOrder", "getMiniGameSectionPool", "getMiniGameTopicGroups", "getMiniGameTopicName", "getMiniGameVocabPool", "getQuestionsForBaiTapTa1_", "getQuestionsForWeek343", "getRoadmapCoord", "getSkillCell", "getStoredSessionToken", "getStudentFirstName", "getUnlockedBaiTapTa1_", "getWeekRawPool", "getWordSearchVocabPool", "goHome", "handleNextExamFromReport", "handleTa1PracticeChoice_", "hasPremiumAccess", "hideLoadingOverlay", "initQuizPallet", "isAdminUser", "jumpToQuestion", "launchSubtopicQuiz", "lessonSceneSrc_", "loadAlphabetIPAData", "loadExamDataFile", "loadExerciseData_", "loadGameScript", "loadLessonData_", "loadQuestion", "loadReviewData_", "loadSemesterData", "loadSharedImageCatalog_", "lookupVocabEmoji", "markBaiHocTa1Complete_", "matchesAnyTa1_", "miniGameHash", "newAssessmentAttemptId_", "nextQuestion", "normalizeEnglishHistoryRow_", "normalizeQuestion", "normalizeTopic", "normalizeVocabWordKey", "onHeaderLevel3Click", "openAlphabetIPA", "openAlphabetMenu", "openAuthScreen", "openBaiHocHub", "openBaiHocTa1_", "openExamHub", "openGamePlay", "openHistoryModal", "openIPAMenu", "openLessonUnit_", "openLessonsHub", "openMainTab", "openMiniGameHub", "openPhonicsMatcher", "openReviewTab", "openReviewWrongModal", "openRoadmap", "openSharedVocabActivityLevel_", "openTopic", "openVocabularyLevel_", "playAudio", "prevQuestion", "primeEnglishAudio_", "questionSearchTextTa1_", "refreshClass1EnglishProgress_", "refreshMainTabLocks_", "rememberEnglishGameGlobals_", "removeEnglishGameGlobals_", "renderAlphaIPAMenu", "renderBaiHocTa1Hub_", "renderBaiHocTa1Lesson_", "renderBaiTapTa1Grid_", "renderDashboardGrid", "renderExamHubGrid", "renderHistoryReport", "renderHistoryTable", "renderLessonLearnPage_", "renderLessonPage_", "renderLessonPracticePage_", "renderLessonSummaryPage_", "renderLessonsHub_", "renderMiniGameTopicMenu", "renderPedagogicalEvaluation", "renderReportTopicsBreakdown", "renderRoadmapSVG", "renderTa1LessonBottom_", "renderTa1LessonPage_", "renderTa1LessonTabs_", "renderTa1QuestionsPage_", "renderTa1SummaryPage_", "replaySpeakOption", "requirePremiumAccess", "resetClass1EnglishBreadcrumb_", "resetStars", "resolveEnglishImage_", "restoreQuestionState", "returnToTopicLecture", "saveBaiHocTa1CompletedSet_", "saveBaiTapTa1Recent_", "saveExamResultToSheet", "saveUnlockedBaiTapTa1_", "saveWeeklyProgressToSheet", "selectBaiTapTa1_", "selectBalancedTa1_", "selectPairedGroup", "selectRoadmapWeek", "selectSubtopic", "setAppShellRootMode_", "setMainTabActive_", "setSubtopicGridColumns", "setVocabularyStudyMode", "showFriendlyConfirm_", "showFriendlyDialog_", "showLectureAndSubtopics", "showLoadingOverlay", "showLockedBaiTapTa1_", "showPairedGroupMenu", "showPremiumAccessWarning", "showResultScreen", "showVocabularyMeaningForOption", "showVocabularyTopicMenu", "shuffleArray", "speakAlphaWord", "speakAlphabetLetter", "speakBaiHocTa1_", "speakCurrentQuestion", "speakEnglish", "speakGoogleTTS", "speakIPAExampleWord", "speakIPAGuideVietnamese", "speakIPASound", "speakLecture", "speakLessonPhonics_", "speakLessonPractice_", "speakLessonSentence_", "speakLessonSummary_", "speakLessonWord_", "speakOptionWithMeaning", "speakPedagogicalEvaluation", "speakVocabularyExample_", "speakVocabularyPrompt_", "speakVocabularyTarget_", "speakVietnamese", "starCountFromPercent", "startExamCountdown", "startRandomExam", "startTopicQuiz", "stopActiveMiniGame_", "stopSpeaking", "switchAppView", "switchLessonSemester_", "syncClass1BannerFromEnglish_", "syncClass1EnglishState_", "syncClass1Score_", "toggleAutoSpeech", "triggerSubmitQuizPrompt", "updateAutoSpeechButtonUI", "updateExamTimerDisplay", "updateNavButtons", "updateNavTabs", "updateQuizPalletUI", "wrapCaptionLines", "openExploreLevelHub_", "openExploreLevelGroup_", "openReadingComprehensionHub_", "openReadingGroup_", "speakReadingPassage_", "answerReadingQuestion_", "nextReadingPair_", "renderReadingPair_", "renderSentenceBuilderTap_", "sentenceBuilderPick_", "renderFillSentenceInteractive_", "checkFillSentenceInteractive_", "speakFillSentence_"];
+  const names=["acceptFriendlyDialog_", "addVocabularyMeaning", "alert", "assessmentAnswersPayload_", "beautifySubtopicName", "buildMiniGameVocabItem", "buildRoadmapPathD", "buildTrickyChoices", "callAppsScript", "capitalizeFirstLetter", "catalogImage_", "catalogSrc_", "checkAnswer", "class1EnglishApi_", "class1EnglishUser_", "closeFriendlyDialog_", "closeHistoryModal", "closeReviewWrongModal", "enableReplayOnOptions", "englishReadBreadcrumb_", "englishVocabVisualHtml_", "ensureFriendlyDialog_", "ensureMiniGameLearningReady", "ensureMiniGameThemeStyles", "ensureMiniGameVocabReady", "escapeHtml", "escapeJsStringTa1_", "exerciseBankQuestions_", "exportReportToPDF", "extractFirstEmoji", "extractMiniGameEmoji", "extractVocabularyVietnameseMeaning", "fetchAllQuestionsFlat", "fetchAllTopicsData", "fetchClass1EnglishHistoryByLegacySheet_", "fetchJsonEnglish_", "formatDateOnly", "formatDateShort", "formatDuration", "generateReview15", "getActiveLessonPageData_", "getBaiHocTa1CompletedSet_", "getBaiHocTa1ProgressKey_", "getBaiTapTa1RecentKey_", "getBaiTapTa1Recent_", "getBaiTapTa1UnlockKey_", "getEnglishExerciseProgressKey_", "getHeaderEnglishLabel_", "getLocalEnglishExerciseProgress_", "getMiniGamePaletteOrder", "getMiniGameSectionPool", "getMiniGameTopicGroups", "getMiniGameTopicName", "getMiniGameVocabPool", "getQuestionsForBaiTapTa1_", "getQuestionsForWeek343", "getRoadmapCoord", "getSkillCell", "getStoredSessionToken", "getStudentFirstName", "getUnlockedBaiTapTa1_", "getWeekRawPool", "getWordSearchVocabPool", "goHome", "handleNextExamFromReport", "handleTa1PracticeChoice_", "hasPremiumAccess", "hideLoadingOverlay", "initQuizPallet", "isAdminUser", "jumpToQuestion", "launchSubtopicQuiz", "lessonSceneSrc_", "loadAlphabetIPAData", "loadExamDataFile", "loadExerciseData_", "loadGameScript", "loadLessonData_", "loadQuestion", "loadReviewData_", "loadSemesterData", "loadSharedImageCatalog_", "lookupVocabEmoji", "markBaiHocTa1Complete_", "matchesAnyTa1_", "miniGameHash", "newAssessmentAttemptId_", "nextQuestion", "normalizeEnglishHistoryRow_", "normalizeQuestion", "normalizeTopic", "normalizeVocabWordKey", "onHeaderLevel3Click", "openAlphabetIPA", "openAlphabetMenu", "openAuthScreen", "openBaiHocHub", "openBaiHocTa1_", "openExamHub", "openGamePlay", "openHistoryModal", "openIPAMenu", "openLessonUnit_", "openLessonsHub", "openMainTab", "openMiniGameHub", "openPhonicsMatcher", "openReviewTab", "openReviewWrongModal", "openRoadmap", "openSharedVocabActivityLevel_", "openTopic", "openVocabularyLevel_", "playAudio", "prevQuestion", "primeEnglishAudio_", "questionSearchTextTa1_", "refreshClass1EnglishProgress_", "refreshMainTabLocks_", "rememberEnglishGameGlobals_", "removeEnglishGameGlobals_", "renderAlphaIPAMenu", "renderBaiHocTa1Hub_", "renderBaiHocTa1Lesson_", "renderBaiTapTa1Grid_", "renderDashboardGrid", "renderExamHubGrid", "renderHistoryReport", "renderHistoryTable", "renderLessonLearnPage_", "renderLessonPage_", "renderLessonPracticePage_", "renderLessonSummaryPage_", "renderLessonsHub_", "renderMiniGameTopicMenu", "renderPedagogicalEvaluation", "renderReportTopicsBreakdown", "renderRoadmapSVG", "renderTa1LessonBottom_", "renderTa1LessonPage_", "renderTa1LessonTabs_", "renderTa1QuestionsPage_", "renderTa1SummaryPage_", "replaySpeakOption", "requirePremiumAccess", "resetClass1EnglishBreadcrumb_", "resetStars", "resolveEnglishImage_", "restoreQuestionState", "returnToTopicLecture", "saveBaiHocTa1CompletedSet_", "saveBaiTapTa1Recent_", "saveExamResultToSheet", "saveUnlockedBaiTapTa1_", "saveWeeklyProgressToSheet", "selectBaiTapTa1_", "selectBalancedTa1_", "selectPairedGroup", "selectRoadmapWeek", "selectSubtopic", "setAppShellRootMode_", "setMainTabActive_", "setSubtopicGridColumns", "setVocabularyStudyMode", "showFriendlyConfirm_", "showFriendlyDialog_", "showLectureAndSubtopics", "showLoadingOverlay", "showLockedBaiTapTa1_", "showPairedGroupMenu", "showPremiumAccessWarning", "showResultScreen", "showVocabularyMeaningForOption", "showVocabularyTopicMenu", "shuffleArray", "speakAlphaWord", "speakAlphabetLetter", "speakBaiHocTa1_", "speakCurrentQuestion", "speakEnglish", "speakGoogleTTS", "speakIPAExampleWord", "speakIPAGuideVietnamese", "speakIPASound", "speakLecture", "speakLessonPhonics_", "speakLessonPractice_", "speakLessonSentence_", "speakLessonSummary_", "speakLessonWord_", "speakOptionWithMeaning", "speakPedagogicalEvaluation", "speakVocabularyExample_", "speakVocabularyPrompt_", "speakVocabularyTarget_", "startVocabularySpeechCheck_", "speakVietnamese", "starCountFromPercent", "startExamCountdown", "startRandomExam", "startTopicQuiz", "stopActiveMiniGame_", "stopSpeaking", "switchAppView", "switchLessonSemester_", "syncClass1BannerFromEnglish_", "syncClass1EnglishState_", "syncClass1Score_", "toggleAutoSpeech", "triggerSubmitQuizPrompt", "updateAutoSpeechButtonUI", "updateExamTimerDisplay", "updateNavButtons", "updateNavTabs", "updateQuizPalletUI", "wrapCaptionLines", "openExploreLevelHub_", "openExploreLevelGroup_", "openReadingComprehensionHub_", "openReadingGroup_", "speakReadingPassage_", "answerReadingQuestion_", "nextReadingPair_", "renderReadingPair_", "renderSentenceBuilderTap_", "sentenceBuilderPick_", "renderFillSentenceInteractive_", "checkFillSentenceInteractive_", "speakFillSentence_"];
   names.forEach(name=>{
     if(englishBridgePrevious_.has(name))return;
     englishBridgePrevious_.set(name,Object.prototype.hasOwnProperty.call(window,name)?Object.getOwnPropertyDescriptor(window,name):null);
@@ -5311,6 +5520,6 @@ function ensureEnglishDependencies_(){ensureEnglishDependency_('link','class1-en
 function mountEnglishRuntime_(){if(!englishModuleCtx_?.host)throw new Error('ENGLISH_MODULE_HOST_MISSING');ensureEnglishStyles_();ensureEnglishDependencies_();englishModuleCtx_.host.innerHTML=`<div id="${ENGLISH_MODULE_RUNTIME_ID_}">${ENGLISH_RUNTIME_HTML_}</div>`;englishModuleRoot_=document.getElementById(ENGLISH_MODULE_RUNTIME_ID_);installEnglishInlineBridge_();syncClass1EnglishState_();resetStars();try{updateAutoSpeechButtonUI();}catch(_){}primeEnglishAudio_();englishModuleMounted_=true;}
 async function bootstrapEnglishRuntime_(){if(!englishModuleMounted_||!englishModuleRoot_||!englishModuleRoot_.isConnected||englishModuleRoot_.parentElement!==englishModuleCtx_.host){mountEnglishRuntime_();await loadSharedImageCatalog_();await Promise.resolve(renderDashboardGrid());await Promise.resolve(renderExamHubGrid());}else syncClass1EnglishState_();}
 async function renderClass1English_(ctx){englishModuleDestroyed_=false;englishModuleCtx_=ctx||null;await bootstrapEnglishRuntime_();const tab=String(ctx?.tabId||'discover');englishModuleLastTab_=tab;if(tab!=='games')stopActiveMiniGame_();if(tab==='lessons')return openBaiHocHub(1);if(tab==='exercises')return openRoadmap(1);if(tab==='review')return openReviewTab();if(tab==='exams')return openExamHub();if(tab==='games')return openMiniGameHub();return goHome();}
-function destroyClass1English_(){englishModuleDestroyed_=true;try{stopSpeaking();}catch(_){}try{clearInterval(quizTimerInterval);}catch(_){}try{stopActiveMiniGame_();}catch(_){}try{removeEnglishGameGlobals_();}catch(_){}try{histLineChartInstance?.destroy?.();}catch(_){}try{histBarChartInstance?.destroy?.();}catch(_){}try{document.getElementById('modal-friendly-dialog')?.remove();}catch(_){}try{document.getElementById('premium-access-modal')?.remove();}catch(_){}try{document.getElementById('ta1-minigame-theme-styles')?.remove();}catch(_){}englishModuleCtx_?.hooks?.clearDetail?.();resetClass1EnglishBreadcrumb_();englishModuleCtx_?.hooks?.setScore?.(0,0);removeEnglishInlineBridge_();if(englishModuleRoot_?.isConnected)englishModuleRoot_.remove();englishModuleRoot_=null;englishModuleMounted_=false;englishModuleAudioPrimed_=false;englishModuleCtx_=null;}
+function destroyClass1English_(){englishModuleDestroyed_=true;try{stopVocabularySpeechCheck_();}catch(_){}try{stopSpeaking();}catch(_){}try{clearInterval(quizTimerInterval);}catch(_){}try{stopActiveMiniGame_();}catch(_){}try{removeEnglishGameGlobals_();}catch(_){}try{histLineChartInstance?.destroy?.();}catch(_){}try{histBarChartInstance?.destroy?.();}catch(_){}try{document.getElementById('modal-friendly-dialog')?.remove();}catch(_){}try{document.getElementById('premium-access-modal')?.remove();}catch(_){}try{document.getElementById('ta1-minigame-theme-styles')?.remove();}catch(_){}englishModuleCtx_?.hooks?.clearDetail?.();resetClass1EnglishBreadcrumb_();englishModuleCtx_?.hooks?.setScore?.(0,0);removeEnglishInlineBridge_();if(englishModuleRoot_?.isConnected)englishModuleRoot_.remove();englishModuleRoot_=null;englishModuleMounted_=false;englishModuleAudioPrimed_=false;englishModuleCtx_=null;}
 window.CLASS1_SUBJECT_MODULES=window.CLASS1_SUBJECT_MODULES||{};window.CLASS1_SUBJECT_MODULES.english=Object.freeze({render:renderClass1English_,destroy:destroyClass1English_});
 })();
