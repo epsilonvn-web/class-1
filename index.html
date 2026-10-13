@@ -1447,8 +1447,17 @@
       .score-box{height:46px;padding:.18rem .38rem;font-size:16px}
       .score-box strong{font-size:16px}
       .main-banner{aspect-ratio:3.5/1}
-      .sub-banner{aspect-ratio:15/1;padding:0 .55rem}
-      .sub-pill{min-width:0;max-width:72%;min-height:32px;padding:.34rem .68rem;font-size:16px}
+      /* Sub Banner mobile (khung chung Toan, Tieng Viet, Tieng Anh): khong ep 15:1 */
+      .sub-banner{aspect-ratio:auto;min-height:64px;padding:8px .55rem}
+      .sub-pill{min-width:0;max-width:72%;min-height:40px;padding:.4rem .68rem;font-size:16px}
+      #sub-banner #sub-pill.math-sub-breadcrumbs .math-breadcrumb-tab,
+      #sub-banner #sub-pill.english-sub-breadcrumbs .english-breadcrumb-tab,
+      #sub-banner #sub-pill.home-sub-breadcrumbs .home-breadcrumb-tab{
+        height:40px!important;
+        max-width:min(220px,62vw)!important;
+        padding:0 11px!important;
+        font-size:16px!important;
+      }
       .content-stage{min-height:300px;padding:.72rem .05rem 1.65rem}
       .section-heading{align-items:flex-start}
       .section-heading h1{font-size:23px}
