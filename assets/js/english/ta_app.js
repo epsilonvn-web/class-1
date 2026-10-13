@@ -491,6 +491,31 @@ function restoreVocabularyModeState_() {
     userAnswers = { ...state.answers };
     wrongAttemptsByQ = Object.fromEntries(Object.entries(state.wrongs || {}).map(([k,v]) => [k, Array.isArray(v) ? [...v] : v]));
 }
+// The hoc chung cho tat ca man chon bai/nhanh trong Tieng Anh 1.
+// Noi dung duoc escape; onclick chi duoc truyen tu handler noi bo (khong tu du lieu JSON).
+const TA1_LEARNING_ICONS_ = Object.freeze(['📘','🌟','🧩','🎯','📚','🖍️','🔤','💡','🌈','📝','🐰','🏅']);
+function ta1LearningIconFor_(index, fallback = '') {
+    return fallback || TA1_LEARNING_ICONS_[Math.abs(Number(index) || 0) % TA1_LEARNING_ICONS_.length];
+}
+function ta1LearningCardHtml_({ action, icon='📘', title='', titleVi='', descEn='', descVi='', badge='', index=0, locked=false }) {
+    const palette = ['pink','violet','sky','fuchsia','mint','peach'][Math.abs(Number(index)||0)%6];
+    return `<button type="button" onclick="${action}" class="l1-en-learning-card l1-en-learning-card--${palette}${locked?' is-locked':''}" ${locked?'aria-label="Bài học chưa mở khóa"':''}>
+      <span class="l1-en-learning-top">
+        <span class="l1-en-learning-icon" aria-hidden="true"><span class="l1-en-learning-icon-glyph">${escapeHtml(icon)}</span></span>
+        <span class="l1-en-learning-heading"><span class="l1-en-learning-title">${escapeHtml(title)}</span>${titleVi ? `<span class="l1-en-learning-title-vi">${escapeHtml(titleVi)}</span>` : ''}</span>
+      </span>
+      <span class="l1-en-learning-bottom">
+        <span class="l1-en-learning-details">${descEn ? `<span class="l1-en-learning-desc-en">${escapeHtml(descEn)}</span>` : ''}${descVi ? `<span class="l1-en-learning-desc-vi">${escapeHtml(descVi)}</span>` : ''}</span>
+        ${badge ? `<span class="l1-en-learning-badge">${escapeHtml(badge)}</span>` : ''}
+      </span>
+    </button>`;
+}
+function ta1LearningLevelCard_(g, i, count, action, noun='câu', descEn='Practice by level', descVi='Luyện tập theo cấp độ') {
+    const unitText = Array.isArray(g.units) && g.units.length ? ` · Unit ${g.units[0]}–${g.units[g.units.length - 1]}` : '';
+    return ta1LearningCardHtml_({action, icon:g.icon||ta1LearningIconFor_(i), title:`Level ${g.level} · ${g.name}`,
+        titleVi:`${g.name_vi||''}${unitText}`,descEn,descVi,badge:`${count} ${noun}`,index:i});
+}
+
 function renderVocabularyLevelHub_(questions = []) {
     activeVocabularyHubQuestions = (questions || []).filter(q => String(q.sub_topic || '').startsWith('2.1'));
     activeVocabularyHubTopic = null;
@@ -513,18 +538,10 @@ function renderVocabularyLevelHub_(questions = []) {
     activeVocabularyHubQuestions.forEach(q => { const lv = getVocabularyCurriculumLevel_(q); counts[lv] = (counts[lv] || 0) + 1; });
     if (list) {
         list.className = 'grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 w-full max-w-4xl';
-        list.innerHTML = TA1_VOCAB_LEVEL_GROUPS_.map((g,i) => {
-            const style = SUBTOPIC_PALETTES[i % SUBTOPIC_PALETTES.length];
-            return `<button onclick="openVocabularyLevel_(${g.level})" class="p-4 ${style.card} border rounded-2xl font-bold text-left transition-all shadow-sm pastel-btn min-h-[88px]">
-                <div class="flex items-center justify-between gap-3">
-                    <div class="min-w-0">
-                        <div class="text-lg md:text-xl font-black ${style.num}">${g.icon} Level ${g.level} · ${g.name}</div>
-                        <div class="text-xs md:text-sm text-slate-500 font-extrabold mt-1">${g.name_vi} · Unit ${g.units[0]}–${g.units[g.units.length-1]}</div>
-                    </div>
-                    <span class="text-xs font-black ${style.badge} px-3 py-1 rounded-full border shrink-0">${counts[g.level] || 0} words</span>
-                </div>
-            </button>`;
-        }).join('');
+        list.innerHTML = TA1_VOCAB_LEVEL_GROUPS_.map((g,i) => ta1LearningLevelCard_(
+            g, i, counts[g.level] || 0, `openVocabularyLevel_(${g.level})`, 'words',
+            'Flashcards · Listen · Speak', '4 cách học cùng một bộ từ'
+        )).join('');
     }
     updateNavTabs('2. Vocabulary', '📚', null);
     switchAppView('view-lecture');
@@ -588,7 +605,7 @@ function buildSharedRemoveLetterQuestion_(rec, index) {
         options: sharedVocabLetterOptions_(extra, word, seed), answer: extra,
         hint_en: `Correct word: ${word}.`, hint_vi: `Từ đúng: ${word}.`, hint: `Correct word: ${word}.`, explanation: `Correct word: ${word}.`,
         skill_tag: 'ENG_VOC', diem: 0.5, shared_vocab_activity: 3, render_style: 'shared_vocab_remove',
-        target_word: word, display_word: wrongWord, vietnamese: rec.vietnamese || '', ipa: rec.ipa || '',
+        target_word: word, display_word: wrongWord, extra_index: insertAt, vietnamese: rec.vietnamese || '', ipa: rec.ipa || '',
         curriculum_level: getVocabularyCurriculumLevel_(rec), level_name: rec.level_name || '', unit_group: rec.unit_group || ''
     };
 }
@@ -746,12 +763,10 @@ function renderSharedVocabActivityLevelHub_(topicNum, questions = []) {
     activeSharedVocabMasterQuestions_.forEach(q => { const lv = getVocabularyCurriculumLevel_(q); counts[lv] = (counts[lv] || 0) + 1; });
     if (list) {
         list.className = 'grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 w-full max-w-4xl';
-        list.innerHTML = TA1_VOCAB_LEVEL_GROUPS_.map((g,i) => {
-            const style = SUBTOPIC_PALETTES[i % SUBTOPIC_PALETTES.length];
-            return `<button onclick="openSharedVocabActivityLevel_(${Number(topicNum)},${g.level})" class="p-4 ${style.card} border rounded-2xl font-bold text-left transition-all shadow-sm pastel-btn min-h-[88px]">
-                <div class="flex items-center justify-between gap-3"><div class="min-w-0"><div class="text-lg md:text-xl font-black ${style.num}">${g.icon} Level ${g.level} · ${g.name}</div><div class="text-xs md:text-sm text-slate-700 font-extrabold mt-1">${g.name_vi} · Unit ${g.units[0]}–${g.units[g.units.length-1]}</div></div><span class="text-xs font-black ${style.badge} px-3 py-1 rounded-full border shrink-0">${counts[g.level] || 0} words</span></div>
-            </button>`;
-        }).join('');
+        list.innerHTML = TA1_VOCAB_LEVEL_GROUPS_.map((g,i) => ta1LearningLevelCard_(
+            g, i, counts[g.level] || 0, `openSharedVocabActivityLevel_(${Number(topicNum)},${g.level})`, 'words',
+            config.shortEn, config.shortVi
+        )).join('');
     }
     updateNavTabs(config.title, config.icon, null);
     switchAppView('view-lecture');
@@ -773,12 +788,39 @@ function openSharedVocabActivityLevel_(topicNum, level) {
     updateNavTabs(config.title, config.icon, label, null);
     startTopicQuiz(Number(topicNum), `${config.title} - Level ${g.level}`, shuffleArray([...questions]), `${topicNum}.shared`);
 }
+
+function sharedRemoveLetterWordHtml_(q, highlight = false) {
+    const word = String(q?.display_word || '');
+    // Bao gồm hỗ trợ câu đã lưu trước khi bổ sung trường extra_index.
+    let idx = q?.extra_index == null ? -1 : Number(q.extra_index);
+    if (!Number.isInteger(idx) || idx < 0 || idx >= word.length) {
+        const correct = String(q?.target_word || '');
+        idx = [...word].findIndex((ch, i) =>
+            ch.toLowerCase() === String(q?.answer || '').toLowerCase() &&
+            (word.slice(0, i) + word.slice(i + 1)).toLowerCase() === correct.toLowerCase()
+        );
+    }
+    return [...word].map((ch, i) => {
+        if (highlight && i === idx) {
+            // Màu áp dụng trực tiếp để luôn nổi rõ, kể cả khi theme có CSS ghi đè.
+            // scale chỉ tác động vào ký tự; không thay đổi kích thước hay vị trí khung từ.
+            return `<span class="shared-remove-wrong-letter" style="display:inline-block;position:relative;z-index:1;color:#dc2626!important;background:#ffe4e6;border-radius:0.18em;font-weight:900;text-shadow:0 1px 0 #fff,0 1px 5px rgba(220,38,38,.28);box-shadow:0 0 0 1px rgba(244,63,94,.4),0 1px 7px rgba(244,63,94,.2);transform:scale(1.16);transform-origin:center;">${escapeHtml(ch)}</span>`;
+        }
+        return `<span>${escapeHtml(ch)}</span>`;
+    }).join('');
+}
+function revealSharedRemoveLetter_(q) {
+    if (Number(q?.shared_vocab_activity) !== 3) return;
+    const el = document.getElementById('shared-remove-letter-word');
+    if (!el) return;
+    el.innerHTML = sharedRemoveLetterWordHtml_(q, true);
+}
 function sharedVocabPromptHtml_(q) {
     const n = Number(q?.shared_vocab_activity || 0);
     const meaning = String(q?.vietnamese || '').trim();
     const meaningHtml = meaning && n !== 5 ? `<div class="mt-2 text-sm md:text-base font-extrabold text-slate-800">Nghĩa: <span class="text-violet-700">${escapeHtml(meaning)}</span></div>` : '';
     if (n === 3) {
-        return `<div class="text-sm md:text-base font-black text-slate-900">Remove the extra letter.</div><div class="mt-0.5 text-xs md:text-sm font-bold text-slate-600">Xóa chữ cái thừa.</div><div class="mt-2 inline-flex items-center justify-center min-h-[56px] px-5 py-2 rounded-2xl bg-fuchsia-50 border border-fuchsia-200 text-3xl md:text-4xl font-black tracking-[0.08em] text-fuchsia-700">${escapeHtml(q.display_word || '')}</div>${meaningHtml}`;
+        return `<div class="text-sm md:text-base font-black text-slate-900">Remove the extra letter.</div><div class="mt-0.5 text-xs md:text-sm font-bold text-slate-600">Xóa chữ cái thừa.</div><div id="shared-remove-letter-word" class="mt-2 inline-flex items-center justify-center min-h-[56px] px-5 py-2 rounded-2xl bg-fuchsia-50 border border-fuchsia-200 text-3xl md:text-4xl font-black tracking-[0.08em] text-fuchsia-700 gap-[0.02em]">${sharedRemoveLetterWordHtml_(q, false)}</div>${meaningHtml}`;
     }
     if (n === 4) {
         const w = String(q.target_word || '');
@@ -842,6 +884,7 @@ function renderSharedVocabActivityQuestion_(q) {
     box.innerHTML = `<div class="w-full max-w-4xl mx-auto px-1 md:px-2"><div class="flex items-center justify-center gap-2 flex-wrap mb-2"><span class="px-3 py-1 rounded-full bg-pink-50 border border-pink-200 text-pink-700 font-black text-xs">${config.icon} ${escapeHtml(config.title)}</span>${g ? `<span class="px-3 py-1 rounded-full bg-violet-50 border border-violet-200 text-violet-700 font-black text-xs">Level ${g.level} · ${escapeHtml(g.name)}</span>` : ''}<button onclick="speakCurrentQuestion()" class="w-8 h-8 rounded-full bg-sky-100 text-sky-600 hover:bg-sky-200" title="Listen"><i class="fa-solid fa-volume-high text-xs"></i></button></div><section class="rounded-3xl border border-pink-200 bg-white/80 px-4 py-4 md:py-5 text-center shadow-sm">${sharedVocabPromptHtml_(q)}</section><div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-3">${optionHtml}</div>${explanation}</div>`;
     restoreQuestionState(q);
     if (userAnswers[currentQIndex] === q.answer) {
+        revealSharedRemoveLetter_(q);
         revealSharedFillMissing_(q, false, q.answer);
         revealSharedOddOneAfterCorrect_(q);
     }
@@ -860,19 +903,20 @@ function setVocabularyStudyMode(mode) {
 }
 function vocabularyTabsHtml_() {
     const tabs = [
-        { key:'flashcard', icon:'🃏', en:'Flashcards', vi:'' },
+        { key:'flashcard', icon:'🃏', en:'Flashcards', vi:'Thẻ từ' },
         { key:'picture', icon:'🖼️', en:'Word-picture Puzzle', vi:'Nhìn tranh chọn từ' },
         { key:'listen', icon:'🎧', en:'Listen and Choose', vi:'Nghe và chọn từ' },
         { key:'speak', icon:'🎤', en:'Speak & Check', vi:'Nói và kiểm tra' }
     ];
-    return `<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-3 mb-3">${tabs.map(t => {
+    return `<div class="l1-en-vocab-mode-grid" role="group" aria-label="Chọn cách học từ vựng">${tabs.map(t => {
         const active = activeVocabularyStudyMode === t.key;
-        return `<button onclick="setVocabularyStudyMode('${t.key}')" class="h-[48px] md:h-[52px] rounded-[14px] border px-2 md:px-3 py-1 transition-all flex items-center justify-center gap-1.5 md:gap-2 ${active ? 'bg-gradient-to-r from-pink-500 to-violet-500 text-white border-pink-300 shadow-md' : 'bg-white text-slate-600 border-pink-200 hover:bg-pink-50'}">
-            <span class="text-[15px] md:text-base leading-none shrink-0">${t.icon}</span>
-            <span class="min-w-0 flex flex-col items-start leading-tight"><span class="font-black text-[10px] sm:text-[11px] md:text-sm truncate max-w-full">${t.en}</span>${t.vi ? `<span class="text-[7px] md:text-[9px] font-bold ${active ? 'text-white/90' : 'text-slate-400'} truncate max-w-full">${t.vi}</span>` : ''}</span>
+        return `<button onclick="setVocabularyStudyMode('${t.key}')" class="l1-en-learning-mode-tab ${active?'is-active':''}" ${active?'aria-pressed="true"':'aria-pressed="false"'}>
+            <span class="l1-en-learning-mode-icon" aria-hidden="true">${t.icon}</span>
+            <span class="l1-en-learning-mode-label"><span class="l1-en-learning-mode-en">${t.en}</span><span class="l1-en-learning-mode-vi">${t.vi}</span></span>
         </button>`;
     }).join('')}</div>`;
 }
+
 function getVocabularyRecordByWord_(word) {
     const key = String(word || '').trim().toLowerCase();
     if (!key) return null;
@@ -916,7 +960,7 @@ function vocabularyExamplesHtml_(q, reveal = true) {
     const examples = (Array.isArray(q?.examples) ? q.examples : []).slice(0,3);
     const vi = (Array.isArray(q?.examples_vi) ? q.examples_vi : []).slice(0,3);
     if (!examples.length) return '';
-    return `<div class="font-black text-fuchsia-600 text-sm md:text-base mb-2">⭐ 3 EXAMPLE SENTENCES:</div><div class="space-y-2">${examples.map((ex,i) => `<div class="bg-white rounded-2xl border border-fuchsia-100 px-3 py-2 text-left"><div class="flex items-center gap-2"><div class="flex-1 min-w-0 font-bold text-slate-700">${highlightVocabularyTarget_(ex, q.word)}</div><button onclick="speakVocabularyExample_(${i})" class="w-9 h-9 shrink-0 rounded-xl bg-sky-100 text-sky-600 hover:bg-sky-200" title="Listen"><i class="fa-solid fa-volume-high text-xs"></i></button></div>${vi[i] ? `<div class="mt-1 text-xs md:text-sm font-semibold text-slate-400">${escapeHtml(vi[i])}</div>` : ''}</div>`).join('')}</div>`;
+    return `<div class="vocab-examples-title font-black text-fuchsia-600 mb-2">⭐ 3 EXAMPLE SENTENCES:</div><div class="space-y-2">${examples.map((ex,i) => `<div class="bg-white rounded-2xl border border-fuchsia-100 px-3 py-2 text-left"><div class="flex items-center gap-2"><div class="vocab-example-en flex-1 min-w-0 font-bold text-slate-700">${highlightVocabularyTarget_(ex, q.word)}</div><button onclick="speakVocabularyExample_(${i})" class="w-9 h-9 shrink-0 rounded-xl bg-sky-100 text-sky-600 hover:bg-sky-200" title="Listen"><i class="fa-solid fa-volume-high text-xs"></i></button></div>${vi[i] ? `<div class="vocab-example-vi mt-1 font-bold text-slate-500">${escapeHtml(vi[i])}</div>` : ''}</div>`).join('')}</div>`;
 }
 function speakVocabularyExample_(i) {
     const q = activeQuestionsList[currentQIndex];
@@ -1146,24 +1190,24 @@ function renderVocabularySharedStudy_(q) {
         const rec = getVocabularyRecordByWord_(opt);
         const ipa = getVocabularyIpaForWord_(opt);
         const meaning = String(rec?.vietnamese || '').trim();
-        return `<button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${escapeJsStringTa1_(opt)}')" class="option-btn w-full px-3 py-2.5 bg-pink-50/40 hover:bg-pink-100/70 border border-pink-200 rounded-2xl font-black text-slate-800 text-left transition-all"><span class="opt-text flex items-center gap-2 min-w-0"><strong class="text-pink-600 shrink-0">${String.fromCharCode(65+i)}.</strong><span class="font-black leading-tight shrink-0">${escapeHtml(opt)}</span>${ipa ? `<span class="text-sm md:text-base font-bold text-slate-500 shrink-0">/${escapeHtml(ipa)}/</span>` : ''}${meaning ? `<span class="vocab-option-meaning hidden text-sm md:text-base font-bold text-violet-600 truncate">(${escapeHtml(meaning)})</span>` : ''}</span></button>`;
+        return `<button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${escapeJsStringTa1_(opt)}')" class="option-btn vocab-option-btn w-full px-3 py-2.5 bg-pink-50/40 hover:bg-pink-100/70 border border-pink-200 rounded-2xl font-black text-slate-800 text-left transition-all"><span class="opt-text flex flex-wrap items-center gap-x-2 gap-y-1 min-w-0"><strong class="vocab-option-letter text-pink-600 shrink-0">${String.fromCharCode(65+i)}.</strong><span class="vocab-option-en font-black leading-tight">${escapeHtml(opt)}</span>${ipa ? `<span class="vocab-option-ipa font-bold text-slate-500">/${escapeHtml(ipa)}/</span>` : ''}${meaning ? `<span class="vocab-option-meaning hidden font-bold text-violet-700">(${escapeHtml(meaning)})</span>` : ''}</span></button>`;
     };
 
     let body = '';
     if (activeVocabularyStudyMode === 'flashcard') {
-        body = `<div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-stretch"><section class="rounded-3xl border border-pink-200 bg-pink-50/40 p-3 shadow-sm flex flex-col"><div class="w-full aspect-[4/3] bg-white rounded-3xl overflow-hidden flex items-center justify-center mb-1" style="max-height:220px">${visual}</div><div class="relative w-full flex flex-col items-center justify-center px-12 text-center min-h-[84px]"><div class="flex items-center justify-center gap-2 flex-wrap"><div class="text-2xl md:text-3xl font-black text-slate-900 leading-tight">${escapeHtml(q.word || '')}</div>${q.part_of_speech ? `<span class="px-2 py-1 rounded-full bg-violet-100 text-violet-700 text-[10px] font-black">${escapeHtml(String(q.part_of_speech).toUpperCase())}</span>` : ''}</div>${q.ipa ? `<div class="mt-1 text-sm md:text-base font-black text-sky-700">/${escapeHtml(String(q.ipa).replace(/^\/+|\/+$/g,''))}/</div>` : ''}<div class="mt-1 text-base md:text-lg font-black text-violet-700">${escapeHtml(q.vietnamese || '')}</div><button onclick="speakVocabularyTarget_()" class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-sky-100 text-sky-600 hover:bg-sky-200"><i class="fa-solid fa-volume-high"></i></button></div></section><section class="rounded-3xl border border-fuchsia-200 bg-gradient-to-br from-pink-50/60 via-white to-violet-50/60 p-3 shadow-sm">${vocabularyExamplesHtml_(q,true)}</section></div>`;
+        body = `<div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-stretch"><section class="rounded-3xl border border-pink-200 bg-pink-50/40 p-3 shadow-sm flex flex-col"><div class="w-full aspect-[4/3] bg-white rounded-3xl overflow-hidden flex items-center justify-center mb-1" style="max-height:220px">${visual}</div><div class="relative w-full flex flex-col items-center justify-center px-12 text-center min-h-[84px]"><div class="flex items-center justify-center gap-2 flex-wrap"><div class="vocab-main-word font-black text-slate-900 leading-tight">${escapeHtml(q.word || '')}</div>${q.part_of_speech ? `<span class="vocab-part-of-speech px-2 py-1 rounded-full bg-violet-100 text-violet-700 font-black">${escapeHtml(String(q.part_of_speech).toUpperCase())}</span>` : ''}</div>${q.ipa ? `<div class="vocab-main-ipa mt-1 font-black text-sky-700">/${escapeHtml(String(q.ipa).replace(/^\/+|\/+$/g,''))}/</div>` : ''}<div class="vocab-main-meaning mt-1 font-black text-violet-700">${escapeHtml(q.vietnamese || '')}</div><button onclick="speakVocabularyTarget_()" class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-sky-100 text-sky-600 hover:bg-sky-200"><i class="fa-solid fa-volume-high"></i></button></div></section><section class="rounded-3xl border border-fuchsia-200 bg-gradient-to-br from-pink-50/60 via-white to-violet-50/60 p-3 shadow-sm">${vocabularyExamplesHtml_(q,true)}</section></div>`;
     } else if (activeVocabularyStudyMode === 'picture') {
         const options = getVocabularyChoiceOptions_(q); q.answer = q.word; q.options = options;
         const solved = userAnswers[currentQIndex] === q.answer;
-        body = `<div class="text-center mb-2"><div class="flex items-center justify-center gap-2 flex-wrap"><span class="px-3 py-1 rounded-full bg-pink-50 border border-pink-200 text-pink-700 font-black text-xs">${group.icon} Level ${group.level} · ${group.name}</span><span class="text-lg md:text-xl font-black text-slate-900">Choose the correct English word:</span><button onclick="speakVocabularyPrompt_()" class="w-8 h-8 rounded-full bg-sky-100 text-sky-600"><i class="fa-solid fa-volume-high text-xs"></i></button></div></div><div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2"><section class="rounded-3xl border border-dashed border-pink-300 bg-pink-50/30 p-3 flex flex-col"><div class="w-full aspect-[4/3] max-h-[210px] flex items-center justify-center overflow-hidden rounded-2xl bg-white">${visual}</div><div class="mt-2 text-center text-xl md:text-2xl font-black text-violet-700 leading-tight">Nghĩa: ${escapeHtml(q.vietnamese || '')}</div></section><section id="vocab-picture-examples" class="rounded-3xl border border-fuchsia-200 bg-gradient-to-br from-pink-50/50 via-white to-violet-50/50 p-3">${vocabularyExamplesHtml_(q, solved)}</section></div><div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">${options.map(optionHtml).join('')}</div>`;
+        body = `<div class="text-center mb-2"><div class="flex items-center justify-center gap-2 flex-wrap"><span class="vocab-picture-level px-3 py-1 rounded-full bg-pink-50 border border-pink-200 text-pink-700 font-black">${group.icon} Level ${group.level} · ${group.name}</span><span class="vocab-picture-prompt font-black text-slate-900">Choose the correct English word:</span><button onclick="speakVocabularyPrompt_()" class="w-8 h-8 rounded-full bg-sky-100 text-sky-600"><i class="fa-solid fa-volume-high text-xs"></i></button></div></div><div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2"><section class="rounded-3xl border border-dashed border-pink-300 bg-pink-50/30 p-3 flex flex-col"><div class="w-full aspect-[4/3] max-h-[210px] flex items-center justify-center overflow-hidden rounded-2xl bg-white">${visual}</div><div class="vocab-picture-meaning mt-2 text-center font-black text-violet-700 leading-tight">Nghĩa: ${escapeHtml(q.vietnamese || '')}</div></section><section id="vocab-picture-examples" class="rounded-3xl border border-fuchsia-200 bg-gradient-to-br from-pink-50/50 via-white to-violet-50/50 p-3">${vocabularyExamplesHtml_(q, solved)}</section></div><div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">${options.map(optionHtml).join('')}</div>`;
     } else if (activeVocabularyStudyMode === 'speak') {
         const solved = userAnswers[currentQIndex] === q.word;
-        body = `<section class="rounded-3xl border border-fuchsia-200 bg-gradient-to-br from-pink-50 via-white to-violet-50 p-4 md:p-5 text-center shadow-sm"><div class="flex items-center justify-center gap-2 flex-wrap mb-3"><span class="px-3 py-1 rounded-full bg-white text-purple-700 border border-purple-200 text-xs font-black">🎤 Speak & Check · Level ${group.level}</span><span class="text-xs md:text-sm text-slate-600 font-bold">Nghe mẫu · Nói theo · Kiểm tra</span></div><div class="mx-auto w-full max-w-[300px] aspect-[4/3] max-h-[220px] rounded-2xl bg-white border border-pink-100 overflow-hidden flex items-center justify-center">${visual}</div><div class="mt-2 text-2xl md:text-3xl font-black text-slate-900">${escapeHtml(q.word || '')}</div>${q.ipa ? `<div class="mt-1 text-base font-bold text-sky-700">/${escapeHtml(String(q.ipa).replace(/^\/+|\/+$/g, ''))}/</div>` : ''}<div class="mt-1 text-base md:text-lg font-black text-purple-700">${escapeHtml(q.vietnamese || '')}</div><div class="mt-4 flex flex-wrap items-center justify-center gap-3"><button onclick="speakVocabularyTarget_()" class="px-5 py-3 rounded-2xl border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100 text-sm font-black shadow-sm">🔊 Nghe từ mẫu</button><button id="vocab-speak-check-button" onclick="startVocabularySpeechCheck_()" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-pink-500 to-violet-500 text-white text-sm font-black shadow-md hover:brightness-105"><span aria-hidden="true">🎤 </span><span id="vocab-speak-check-button-text">Bấm để nói</span></button></div><div id="vocab-speak-check-feedback" role="status" aria-live="polite" class="mt-3 rounded-2xl border border-violet-200 bg-violet-50 px-4 py-3 text-sm md:text-base font-bold text-center text-violet-800">${solved ? '🎉 Giỏi lắm! Con đã nói đúng từ này rồi.' : 'Bé nghe từ mẫu, bấm micro rồi đọc theo nhé!'}</div><div id="vocab-speak-check-heard" class="mt-1 text-xs md:text-sm font-semibold text-slate-500"></div><p class="mt-2 text-xs md:text-sm font-semibold text-slate-500">Máy nhận diện lời nói để luyện tập; kết quả không thay thế đánh giá phát âm của giáo viên.</p></section>`;
+        body = `<section class="rounded-3xl border border-fuchsia-200 bg-gradient-to-br from-pink-50 via-white to-violet-50 p-4 md:p-5 text-center shadow-sm"><div class="flex items-center justify-center gap-2 flex-wrap mb-3"><span class="px-3 py-1 rounded-full bg-white text-purple-700 border border-purple-200 text-xs font-black">🎤 Speak & Check · Level ${group.level}</span><span class="text-xs md:text-sm text-slate-600 font-bold">Nghe mẫu · Nói theo · Kiểm tra</span></div><div class="mx-auto w-full max-w-[300px] aspect-[4/3] max-h-[220px] rounded-2xl bg-white border border-pink-100 overflow-hidden flex items-center justify-center">${visual}</div><div class="vocab-speak-word mt-2 font-black text-slate-900">${escapeHtml(q.word || '')}</div>${q.ipa ? `<div class="vocab-speak-ipa mt-1 font-bold text-sky-700">/${escapeHtml(String(q.ipa).replace(/^\/+|\/+$/g, ''))}/</div>` : ''}<div class="vocab-speak-meaning mt-1 font-black text-purple-700">${escapeHtml(q.vietnamese || '')}</div><div class="mt-4 flex flex-wrap items-center justify-center gap-3"><button onclick="speakVocabularyTarget_()" class="px-5 py-3 rounded-2xl border border-sky-200 bg-sky-50 text-sky-700 hover:bg-sky-100 text-sm font-black shadow-sm">🔊 Nghe từ mẫu</button><button id="vocab-speak-check-button" onclick="startVocabularySpeechCheck_()" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-pink-500 to-violet-500 text-white text-sm font-black shadow-md hover:brightness-105"><span aria-hidden="true">🎤 </span><span id="vocab-speak-check-button-text">Bấm để nói</span></button></div><div id="vocab-speak-check-feedback" role="status" aria-live="polite" class="mt-3 rounded-2xl border border-violet-200 bg-violet-50 px-4 py-3 text-sm md:text-base font-bold text-center text-violet-800">${solved ? '🎉 Giỏi lắm! Con đã nói đúng từ này rồi.' : 'Bé nghe từ mẫu, bấm micro rồi đọc theo nhé!'}</div><div id="vocab-speak-check-heard" class="mt-1 text-xs md:text-sm font-semibold text-slate-500"></div><p class="mt-2 text-xs md:text-sm font-semibold text-slate-500">Máy nhận diện lời nói để luyện tập; kết quả không thay thế đánh giá phát âm của giáo viên.</p></section>`;
     } else {
         const options = getVocabularyChoiceOptions_(q); q.answer = q.word; q.options = options;
-        body = `<div class="min-h-[275px] flex flex-col items-center justify-center"><div class="text-xl md:text-2xl font-black text-slate-900 mb-1">Listen and choose.</div><div class="text-xs md:text-sm font-bold text-slate-400 mb-3">Nghe và chọn từ đúng</div><button onclick="speakVocabularyTarget_()" class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-pink-500 to-violet-500 text-white shadow-lg hover:scale-105 transition-transform flex items-center justify-center mb-4"><i class="fa-solid fa-volume-high text-3xl"></i></button><div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full max-w-3xl">${options.map(optionHtml).join('')}</div></div>`;
+        body = `<div class="min-h-[275px] flex flex-col items-center justify-center"><div class="vocab-listen-prompt font-black text-slate-900 mb-1">Listen and choose.</div><div class="vocab-listen-vi font-bold text-slate-500 mb-3">Nghe và chọn từ đúng</div><button onclick="speakVocabularyTarget_()" class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-pink-500 to-violet-500 text-white shadow-lg hover:scale-105 transition-transform flex items-center justify-center mb-4"><i class="fa-solid fa-volume-high text-3xl"></i></button><div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full max-w-3xl">${options.map(optionHtml).join('')}</div></div>`;
     }
-    document.getElementById('question-box').innerHTML = `<div class="w-full max-w-5xl mx-auto px-1 md:px-2 -mt-2">${tabs}${body}</div>`;
+    document.getElementById('question-box').innerHTML = `<div class="l1-en-vocab-study w-full max-w-5xl mx-auto px-1 md:px-2 -mt-2">${tabs}${body}</div>`;
     restoreQuestionState(q);
     if (userAnswers[currentQIndex] === q.answer) revealVocabularyAfterCorrect_();
     updateNavButtons();
@@ -1638,23 +1682,16 @@ function renderAlphaIPAMenu(phonicsCount = 0) {
     document.getElementById('lecture-title').textContent = '1. Alphabet & IPA';
     document.getElementById('lecture-content').textContent = 'Chào con, đây là góc làm quen với bảng chữ cái và ngữ âm tiếng Anh! Con hãy chọn 1 mục nhỏ bên dưới để bắt đầu nhé.';
     document.getElementById('view-lecture').dataset.audioText = 'Chào con, đây là góc làm quen với bảng chữ cái và ngữ âm tiếng Anh! Con hãy chọn 1 mục nhỏ bên dưới để bắt đầu nhé.';
-
     const items = [
-        { label: 'Alphabet (A-Z)', count: '26 chữ', action: "openAlphabetMenu(0)", style: SUBTOPIC_PALETTES[0] },
-        { label: 'Bảng ngữ âm IPA', count: '44 âm', action: "openIPAMenu(0)", style: SUBTOPIC_PALETTES[1] },
-        { label: 'Phonics Matcher', count: `${phonicsCount} câu`, action: "openPhonicsMatcher()", style: SUBTOPIC_PALETTES[2] }
+        { title:'1. Alphabet (A-Z)', vi:'Bảng chữ cái',en:'Letters and sounds', desc:'Nhận biết và nghe phát âm', icon:'🔤',badge:'26 chữ',action:'openAlphabetMenu(0)' },
+        { title:'2. IPA', vi:'Bảng phiên âm',en:'44 English sounds', desc:'Luyện phát âm từng âm',icon:'🗣️',badge:'44 âm',action:'openIPAMenu(0)' },
+        { title:'3. Phonics Matcher', vi:'Ghép âm và chữ',en:'Sound matching',desc:'Ghép âm và luyện tập',icon:'🎯',badge:`${phonicsCount} câu`,action:'openPhonicsMatcher()' }
     ];
-    document.getElementById('lecture-subtopics-list').innerHTML = items.map((it, idx) => `
-        <button onclick="${it.action}" class="p-3 ${it.style.card} border-2 rounded-xl font-bold text-left transition-all flex items-center justify-between shadow-sm pastel-btn">
-            <span class="text-sm md:text-base leading-snug"><strong class="${it.style.num} mr-1.5">${idx + 1}.</strong> ${escapeHtml(it.label)}</span>
-            <span class="text-xs font-extrabold ${it.style.badge} px-2.5 py-0.5 rounded-full border shrink-0 ml-1.5 shadow-inner">${it.count}</span>
-        </button>`).join('');
+    const list = document.getElementById('lecture-subtopics-list');
+    list.innerHTML = items.map((it,i)=>ta1LearningCardHtml_({action:it.action,icon:it.icon,title:it.title,titleVi:it.vi,descEn:it.en,descVi:it.desc,badge:it.badge,index:i})).join('');
     setSubtopicGridColumns(items.length);
-
-    // Không có khái niệm "học trộn tất cả" ở đây vì 1.1/1.2 là bảng tra cứu tĩnh, 1.3 mới là luyện tập thật
     document.getElementById('wrap-mix-all-subtopics').classList.add('hidden');
-
-    updateNavTabs("1. Alphabet & IPA", "🔤", null);
+    updateNavTabs('1. Alphabet & IPA','🔤',null);
     switchAppView('view-lecture');
 }
 
@@ -1671,7 +1708,7 @@ function openAlphabetMenu(index = 0) {
     const item = ALPHABET_DATA[index];
     const keyboardHtml = ALPHABET_DATA.map((alpha, idx) => {
         const isActive = idx === currentAlphabetIndex;
-        return `<button onclick="openAlphabetMenu(${idx})" class="pastel-btn flex flex-col items-center justify-center rounded-xl p-1.5 shadow-sm cursor-pointer ${isActive ? 'bg-pink-500 text-white border-2 border-pink-600 scale-105 ring-2 ring-pink-200' : 'bg-white text-gray-700 border border-gray-200 hover:bg-pink-50 hover:border-pink-300'} min-w-[52px] min-h-[52px]">
+        return `<button onclick="openAlphabetMenu(${idx})" class="l1-en-learning-letter-key pastel-btn flex flex-col items-center justify-center rounded-xl p-1.5 shadow-sm cursor-pointer ${isActive ? 'bg-pink-500 text-white border-2 border-pink-600 ring-2 ring-pink-200' : 'bg-white text-gray-700 border border-gray-200 hover:bg-pink-50 hover:border-pink-300'} min-w-[52px] min-h-[52px]">
             <span class="text-base font-black">${alpha.letter}</span>
             <span class="font-bold ${isActive ? 'text-white' : 'text-pink-600'} text-xs md:text-sm">${alpha.ipaName}</span>
         </button>`;
@@ -1736,7 +1773,7 @@ function openIPAMenu(index = 0) {
         let badgeColor = isActive ? 'bg-pink-600 text-white border-pink-700' : 'bg-pink-50 text-pink-700 border-pink-200 hover:bg-pink-100';
         if (snd.type === 'vowel_di') badgeColor = isActive ? 'bg-purple-600 text-white border-purple-700' : 'bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100';
         else if (snd.type && snd.type.startsWith('consonant')) badgeColor = isActive ? 'bg-emerald-600 text-white border-emerald-700' : 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100';
-        return `<button onclick="openIPAMenu(${idx})" class="pastel-btn flex flex-col items-center justify-center rounded-xl p-1 shadow-sm border ${badgeColor} min-w-[50px] min-h-[46px] cursor-pointer ${isActive ? 'scale-105 ring-2 ring-pink-300 font-black' : ''}">
+        return `<button onclick="openIPAMenu(${idx})" class="l1-en-learning-sound-key pastel-btn flex flex-col items-center justify-center rounded-xl p-1 shadow-sm border ${badgeColor} min-w-[50px] min-h-[46px] cursor-pointer ${isActive ? 'ring-2 ring-pink-300 font-black' : ''}">
             <span class="text-base md:text-lg font-black">${snd.ipa}</span>
             <span class="text-[8px] font-bold opacity-80 line-clamp-1">${(snd.name || '').split(' ')[0]}</span>
         </button>`;
@@ -2289,11 +2326,10 @@ function prepareTa1CompactExploreHub_() {
     }
 }
 function ta1LevelCardHtml_(g, i, count, onclickName, unitLabel=true, noun='câu') {
-    const style = SUBTOPIC_PALETTES[i % SUBTOPIC_PALETTES.length];
-    const unitText = unitLabel ? ` · Unit ${g.units[0]}–${g.units[g.units.length - 1]}` : '';
-    return `<button onclick="${onclickName}" class="p-4 ${style.card} border rounded-2xl font-bold text-left transition-all shadow-sm pastel-btn min-h-[88px]">
-      <div class="flex items-center justify-between gap-3"><div class="min-w-0"><div class="text-lg md:text-xl font-black ${style.num}">${g.icon} Level ${g.level} · ${escapeHtml(g.name)}</div><div class="text-sm md:text-base text-slate-700 font-extrabold mt-1">${escapeHtml(g.name_vi)}${unitText}</div></div><span class="text-xs font-black ${style.badge} px-3 py-1 rounded-full border shrink-0">${count} ${noun}</span></div>
-    </button>`;
+    const item = unitLabel ? g : {...g,units:[]};
+    return ta1LearningLevelCard_(item,i,count,onclickName,noun,
+        noun === 'bài' ? 'Read and answer' : 'Learn · Practice',
+        noun === 'bài' ? 'Đọc hiểu và trả lời' : 'Học và luyện tập');
 }
 async function loadTa1ExploreLevelBank_(topicId) {
     const cfg = TA1_EXPLORE_LEVEL_BANKS_[Number(topicId)];
@@ -2574,11 +2610,9 @@ function openTopic(topicNum, topicName, icon) {
 function setSubtopicGridColumns(count) {
     const el = document.getElementById('lecture-subtopics-list');
     if (!el) return;
-    if (count > 6) {
-        el.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 w-full max-w-4xl';
-    } else {
-        el.className = 'grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-2xl';
-    }
+    el.className = count > 6
+        ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 w-full max-w-6xl'
+        : 'grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 w-full max-w-5xl';
 }
 
 function showLectureAndSubtopics(topicNum, topicName, topicObj) {
@@ -2629,15 +2663,13 @@ function showLectureAndSubtopics(topicNum, topicName, topicObj) {
 
     let subHtml = '';
     groups.forEach((subName, idx) => {
-        const style = SUBTOPIC_PALETTES[idx % SUBTOPIC_PALETTES.length];
         const displayTitle = beautifySubtopicName(groupLabels[subName]);
         const count = groupMap[subName].length;
-
-        subHtml += `
-            <button onclick="selectSubtopic(${idx})" class="p-3 ${style.card} border-2 rounded-xl font-bold text-left transition-all flex items-center justify-between shadow-sm pastel-btn">
-                <span class="text-base md:text-lg leading-snug font-extrabold"><strong class="${style.num} mr-1.5">${idx + 1}.</strong> ${escapeHtml(displayTitle)}</span>
-                <span class="text-xs font-extrabold ${style.badge} px-2.5 py-0.5 rounded-full border shrink-0 ml-1.5 shadow-inner">${count} câu</span>
-            </button>`;
+        const icon = topicNumber === 11 ? (idx%2===0?'🌸':'🌷') : ta1LearningIconFor_(idx);
+        subHtml += ta1LearningCardHtml_({action:`selectSubtopic(${idx})`,icon,
+            title:`${idx+1}. ${displayTitle}`,titleVi:topicNumber===11?'Ôn tập kiến thức đã học':'Luyện tập theo chủ đề',
+            descEn:topicNumber===11?'Review and practice':'Choose this activity',
+            descVi:topicNumber===11?'Củng cố kiến thức':'Chọn để bắt đầu',badge:`${count} câu`,index:idx});
     });
     setSubtopicGridColumns(groups.length);
     document.getElementById('lecture-subtopics-list').innerHTML = subHtml;
@@ -2691,14 +2723,11 @@ function showVocabularyTopicMenu(topicNum, topicName, subLabel, displayLabel, po
     document.getElementById('view-lecture').dataset.audioText = introText;
 
     let html = '';
-    vocabularyTopics.forEach((pg, i) => {
-        const style = SUBTOPIC_PALETTES[i % SUBTOPIC_PALETTES.length];
+    vocabularyTopics.forEach((pg,i) => {
         const count = pool.filter(q => q.content_topic === pg).length;
-        html += `
-            <button onclick="selectPairedGroup(${i})" class="p-3 ${style.card} border-2 rounded-xl font-bold text-left transition-all flex items-center justify-between shadow-sm pastel-btn">
-                <span class="text-sm md:text-base leading-snug"><strong class="${style.num} mr-1.5">${i + 1}.</strong> ${escapeHtml(pg)}</span>
-                <span class="text-xs font-extrabold ${style.badge} px-2.5 py-0.5 rounded-full border shrink-0 ml-1.5 shadow-inner">${count} câu</span>
-            </button>`;
+        html += ta1LearningCardHtml_({action:`selectPairedGroup(${i})`,icon:ta1LearningIconFor_(i),
+            title:`${i+1}. ${pg}`,titleVi:'Nhóm nội dung',descEn:'Choose to learn',
+            descVi:'Bắt đầu luyện tập',badge:`${count} câu`,index:i});
     });
     document.getElementById('lecture-subtopics-list').innerHTML = html;
     setSubtopicGridColumns(vocabularyTopics.length);
@@ -2719,14 +2748,11 @@ function showPairedGroupMenu(topicNum, topicName, subLabel, displayLabel, pool, 
     document.getElementById('view-lecture').dataset.audioText = introText;
 
     let html = '';
-    pairedGroups.forEach((pg, i) => {
-        const style = SUBTOPIC_PALETTES[i % SUBTOPIC_PALETTES.length];
+    pairedGroups.forEach((pg,i) => {
         const count = pool.filter(q => q.paired_group === pg).length;
-        html += `
-            <button onclick="selectPairedGroup(${i})" class="p-3 ${style.card} border-2 rounded-xl font-bold text-left transition-all flex items-center justify-between shadow-sm pastel-btn">
-                <span class="text-sm md:text-base leading-snug"><strong class="${style.num} mr-1.5">${i + 1}.</strong> ${escapeHtml(pg)}</span>
-                <span class="text-xs font-extrabold ${style.badge} px-2.5 py-0.5 rounded-full border shrink-0 ml-1.5 shadow-inner">${count} câu</span>
-            </button>`;
+        html += ta1LearningCardHtml_({action:`selectPairedGroup(${i})`,icon:ta1LearningIconFor_(i),
+            title:`${i+1}. ${pg}`,titleVi:'Nhóm nội dung',descEn:'Choose to learn',
+            descVi:'Bắt đầu luyện tập',badge:`${count} câu`,index:i});
     });
     document.getElementById('lecture-subtopics-list').innerHTML = html;
     setSubtopicGridColumns(pairedGroups.length);
@@ -3421,6 +3447,7 @@ function checkAnswer(selectedOpt) {
 
         playAudio('correct');
         confetti({ particleCount: 30, spread: 55, origin: { y: 0.7 } });
+        if (Number(q.shared_vocab_activity) === 3) revealSharedRemoveLetter_(q);
         if (Number(q.shared_vocab_activity) === 4) revealSharedFillMissing_(q, true, selectedOpt);
         if (Number(q.shared_vocab_activity) === 5) revealSharedOddOneAfterCorrect_(q);
         if (q.shared_vocab_activity) setTimeout(() => speakEnglish(q.target_word || q.answer, 0.9), 180);
@@ -4784,13 +4811,21 @@ async function openBaiHocHub(semesterNumber=1){
     try{const data=await loadLessonData_();renderBaiHocTa1Hub_(data,activeBaiHocContext.semester);}catch(err){alert(`Không thể mở Bài học: ${err.message}`);}finally{hideLoadingOverlay();}
 }
 function openLessonsHub(){return openBaiHocHub(activeBaiHocContext?.semester||1);}
-function renderBaiHocTa1Hub_(data,semester){
-    const tabs=document.getElementById('bai-hoc-semester-tabs'),grid=document.getElementById('bai-hoc-grid'),sub=document.getElementById('bai-hoc-hub-subtitle');if(!tabs||!grid)return;
+function renderBaiHocTa1Hub_(data,semester) {
+    const tabs=document.getElementById('bai-hoc-semester-tabs');
+    const grid=document.getElementById('bai-hoc-grid');
+    const sub=document.getElementById('bai-hoc-hub-subtitle');
+    if(!tabs||!grid)return;
     const arr=(data.bai_hoc||[]).filter(x=>Number(x.semester)===Number(semester));
     tabs.innerHTML=[1,2].map(s=>`<button onclick="openBaiHocHub(${s})" class="semester-switch-btn ${Number(s)===Number(semester)?'is-active':'is-inactive'}"><span class="block">Semester ${s}</span><span class="semester-vi">Học kỳ ${s}</span></button>`).join('');
     if(sub)sub.innerHTML=`Semester ${semester} · ${arr.length} Units · 3 pages each<span class="lesson-hub-vi">Học kỳ ${semester} · mỗi bài 3 trang · khoảng 12–18 phút</span>`;
     const done=getBaiHocTa1CompletedSet_();
-    grid.innerHTML=arr.map((l,idx)=>{const ok=done.has(`${l.lesson_id}_done`);return `<button onclick="openBaiHocTa1_(${l.bai},1)" class="text-left min-h-[112px] rounded-2xl border-2 ${ok?'border-emerald-300 bg-emerald-50/60':(idx%2?'border-purple-200 bg-gradient-to-br from-white to-purple-50':'border-pink-200 bg-gradient-to-br from-white to-pink-50')} px-3 py-3 hover:border-fuchsia-400 hover:shadow-md transition-shadow"><div class="flex items-center justify-between"><span class="font-black text-purple-700 text-[15px] md:text-base">Lesson ${l.bai}<span class="block text-[11px] font-extrabold text-slate-400 mt-0.5">Bài ${l.bai}</span></span><span>${ok?'✅':'›'}</span></div><div class="mt-1.5 text-[13px] md:text-[14px] leading-5 font-extrabold text-slate-700">${escapeHtml(l.source_title||'')}</div><div class="text-[12px] md:text-[13px] leading-4 font-extrabold text-slate-400 mt-1.5">${escapeHtml(l.source_title_vi||'')}</div></button>`}).join('');
+    grid.innerHTML=arr.map((l,idx)=>{
+        const ok=done.has(`${l.lesson_id}_done`);
+        return ta1LearningCardHtml_({action:`openBaiHocTa1_(${Number(l.bai)},1)`,icon:ta1LearningIconFor_(Number(l.bai)-1),
+            title:`Lesson ${l.bai}`,titleVi:`Bài ${l.bai}`,descEn:l.source_title||'',descVi:l.source_title_vi||'',
+            badge:ok?'✓ Đã học':'3 trang',index:idx});
+    }).join('');
 }
 async function openBaiHocTa1_(bai,pageNo=1){
     if(!requirePremiumAccess('Lessons / Bài học'))return;
@@ -4805,7 +4840,15 @@ function renderBaiHocTa1Lesson_(l,pageNo){
     let body='';if(page.page_type==='lesson')body=renderTa1LessonPage_(page);else if(page.page_type==='questions')body=renderTa1QuestionsPage_(page);else body=renderTa1SummaryPage_(page,l);
     host.innerHTML=`${renderTa1LessonTabs_(l,pageNo)}${body}${renderTa1LessonBottom_(l,pageNo)}`;
 }
-function renderTa1LessonTabs_(l,pageNo){const a=[['📖','Learn','Bài học'],['❓','Practice','Câu hỏi'],['🌟','Review','Tổng kết']];return `<div class="grid grid-cols-3 gap-2 mb-3">${a.map((x,i)=>{const n=i+1,ac=Number(pageNo)===n;return `<button onclick="openBaiHocTa1_(${l.bai},${n})" class="py-2.5 rounded-xl border font-black text-sm ${ac?'bg-gradient-to-r from-pink-500 to-purple-500 text-white border-purple-400 shadow-md':'bg-pink-50/60 text-purple-700 border-pink-200'}"><span>${x[0]}</span><span class="block">${x[1]}</span><span class="block text-[9px] opacity-75">${x[2]}</span></button>`}).join('')}</div>`;}
+function renderTa1LessonTabs_(l,pageNo) {
+    const a=[['📖','Learn','Bài học'],['❓','Practice','Câu hỏi'],['🌟','Review','Tổng kết']];
+    return `<div class="grid grid-cols-3 gap-2.5 mb-3">${a.map((x,i)=>{
+        const n=i+1,ac=Number(pageNo)===n;
+        return `<button onclick="openBaiHocTa1_(${Number(l.bai)},${n})" class="l1-en-learning-page-tab ${ac?'is-active':''}" ${ac?'aria-current="page"':''}>
+            <span class="l1-en-learning-page-icon" aria-hidden="true">${x[0]}</span><span class="l1-en-learning-page-en">${x[1]}</span><span class="l1-en-learning-page-vi">${x[2]}</span>
+        </button>`;
+    }).join('')}</div>`;
+}
 function escapeJsStringTa1_(value){return String(value??'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r/g,'\\r').replace(/\n/g,'\\n').replace(/<\//g,'<\\/');}
 function handleTa1PracticeChoice_(btn,isCorrect,correctText){if(!btn||btn.disabled)return;const card=btn.closest('[data-ta1-practice-card]'),feedback=card?.querySelector('[data-ta1-practice-feedback]');if(isCorrect){card?.querySelectorAll('button[data-ta1-choice]').forEach(b=>{b.disabled=true;b.classList.add('opacity-75');});btn.classList.remove('border-pink-200','bg-white','opacity-75');btn.classList.add('bg-emerald-100','border-emerald-400','text-emerald-800');if(feedback){feedback.className='mt-2 rounded-xl bg-emerald-50 border border-emerald-200 px-3 py-2 text-xs font-extrabold text-emerald-700';feedback.textContent='✅ Great! Đúng rồi. Con đọc lại đáp án một lần nhé.';}if(correctText)speakEnglish(correctText,0.9);}else{btn.disabled=true;btn.classList.remove('border-pink-200','bg-white');btn.classList.add('bg-rose-100','border-rose-400','text-rose-700','opacity-70');if(feedback){feedback.className='mt-2 rounded-xl bg-amber-50 border border-amber-200 px-3 py-2 text-xs font-extrabold text-amber-700';feedback.textContent='💡 Chưa đúng. Con thử lại một đáp án khác nhé.';}}}
 function __legacyTa1_renderTa1LessonPage__1(p){
@@ -5163,9 +5206,21 @@ async function selectBaiTapTa1_(bai){
   if(!requirePremiumAccess('Exercises / Bài tập'))return;
   stopSpeaking();showLoadingOverlay(`Đang chuẩn bị Bài tập ${bai}...`);try{const sem=Number(bai)>8?2:1,data=await loadExerciseData_(sem),bt=(data.bai_tap||[]).find(x=>Number(x.bai)===Number(bai));if(!bt)throw new Error('Không tìm thấy Bài tập');if(Number(bai)>getUnlockedBaiTapTa1_()){showLockedBaiTapTa1_(bai);return;}const qs=getQuestionsForBaiTapTa1_(bt,data);if(qs.length<10)throw new Error('Kho câu hỏi phù hợp Unit này chưa đủ dữ liệu để tạo lượt luyện ổn định');activeRoadmapContext={week:Number(bai),bai:Number(bai),semester:sem,exerciseId:String(bt.exercise_id||`TA1_BT${String(bai).padStart(2,'0')}`),topicId:String(bt.exercise_id||''),chuDe:`Bài tập ${bai} · ${bt.title||''}`};activeAssessmentAttemptId_=newAssessmentAttemptId_();pendingTopicQuiz=null;activeExamContext=null;updateNavTabs('Exercises / Bài tập','✏️',`Exercise ${bai} / Bài ${bai}`,bt.title||'');startTopicQuiz(bai,activeRoadmapContext.chuDe,qs,null);}catch(err){alert(`Không thể mở Bài tập: ${err.message}`);}finally{hideLoadingOverlay();}
 }
-function renderBaiTapTa1Grid_(data,semester){
-  const host=document.getElementById('roadmap-svg-container'),tabs=document.getElementById('bai-tap-semester-tabs');if(!host)return;const arr=(data?.bai_tap||[]).filter(x=>Number(x.semester)===Number(semester)),unlocked=getUnlockedBaiTapTa1_();if(tabs)tabs.innerHTML=[1,2].map(s=>`<button onclick="openRoadmap(${s})" class="semester-switch-btn ${Number(s)===Number(semester)?'is-active':'is-inactive'}"><span class="block">Semester ${s}</span><span class="block text-[9px] opacity-75">Học kỳ ${s}</span></button>`).join('');
-  host.innerHTML=`<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">${arr.map((bt,idx)=>{const open=Number(bt.bai)<=unlocked,best=Number(class1EnglishBestPercent_?.[String(bt.exercise_id||'')]??class1EnglishBestPercent_?.[String(bt.bai)]??0);return `<button onclick="${open?`selectBaiTapTa1_(${bt.bai})`:`showLockedBaiTapTa1_(${bt.bai})`}" class="relative text-left min-h-[105px] rounded-2xl border-2 p-3 ${open?(idx%2?'bg-purple-50 border-purple-200 hover:border-purple-400':'bg-pink-50 border-pink-200 hover:border-pink-400'):'bg-slate-50 border-slate-200 opacity-60'} hover:shadow-md transition-shadow"><div class="flex justify-between"><span class="font-black ${open?'text-purple-700':'text-slate-500'}">Exercise ${bt.bai}<span class="block text-[9px] text-slate-400">Bài tập ${bt.bai}</span></span><span>${open?(best?`⭐ ${best}%`:''):'🔒'}</span></div><div class="text-[12px] md:text-[13px] font-bold text-slate-600 mt-1 line-clamp-2">${escapeHtml(bt.title||'')}</div><div class="text-[11px] font-extrabold text-slate-400 mt-1 line-clamp-1">${escapeHtml(bt.title_vi||'')}</div><div class="text-[10px] mt-2 ${open?'text-fuchsia-600':'text-slate-400'} font-black">${open?'20 questions · ≥80% unlock<br><span class="text-[9px] text-slate-400">20 câu · đạt ≥80% mở bài sau</span>':'Score ≥80% to unlock<br><span class="text-[9px] text-slate-400">Cần ≥80% bài trước</span>'}</div></button>`}).join('')}</div>`;
+function renderBaiTapTa1Grid_(data,semester) {
+    const host=document.getElementById('roadmap-svg-container');
+    const tabs=document.getElementById('bai-tap-semester-tabs');
+    if(!host)return;
+    const arr=(data?.bai_tap||[]).filter(x=>Number(x.semester)===Number(semester));
+    const unlocked=getUnlockedBaiTapTa1_();
+    if(tabs)tabs.innerHTML=[1,2].map(s=>`<button onclick="openRoadmap(${s})" class="semester-switch-btn ${Number(s)===Number(semester)?'is-active':'is-inactive'}"><span class="block">Semester ${s}</span><span class="block text-[13px] opacity-75">Học kỳ ${s}</span></button>`).join('');
+    host.innerHTML=`<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 w-full">${arr.map((bt,idx)=>{
+        const open=Number(bt.bai)<=unlocked;
+        const best=Number(class1EnglishBestPercent_?.[String(bt.exercise_id||'')]??class1EnglishBestPercent_?.[String(bt.bai)]??0);
+        return ta1LearningCardHtml_({action:open?`selectBaiTapTa1_(${Number(bt.bai)})`:`showLockedBaiTapTa1_(${Number(bt.bai)})`,
+            icon:open?ta1LearningIconFor_(Number(bt.bai)-1):'🔒',title:`Exercise ${bt.bai}`,titleVi:`Bài tập ${bt.bai}`,
+            descEn:bt.title||'',descVi:open?(bt.title_vi||'20 câu · đạt 80% mở bài sau'):'Cần đạt ≥80% bài trước',
+            badge:open?(best?`⭐ ${best}%`:'20 câu'):'🔒 Chưa mở',index:idx,locked:!open});
+    }).join('')}</div>`;
 }
 async function saveWeeklyProgressToSheet(percent,starCount,scoreVal){
   if(!activeRoadmapContext||!currentUser||currentUser.isGuest)return;try{const r=await class1EnglishApi_('assessmentAttemptSubmit',{subjectId:'ta',kind:'baitap',semester:Number(activeRoadmapContext.semester)===2?'hk2':'hk1',assessmentId:String(activeRoadmapContext.exerciseId||''),attemptId:activeAssessmentAttemptId_||newAssessmentAttemptId_(),answers:assessmentAnswersPayload_(),durationMs:quizStartTime?Math.max(0,Date.now()-quizStartTime):0});const vp=Number(r?.verified?.percent),authoritative=Number.isFinite(vp)?vp:Number(percent||0);if(r?.progress){class1EnglishExerciseUnlocked_=Math.max(1,Number(r.progress.unlockedIndex)||1);class1EnglishBestPercent_=r.progress.bestPercentByExercise||{};class1EnglishProgressLoaded_=true;try{localStorage.setItem(getEnglishExerciseProgressKey_(),String(class1EnglishExerciseUnlocked_));}catch(_){}}if(authoritative>=80&&Number(activeRoadmapContext.bai)<16)setTimeout(()=>alert(`🎉 Chúc mừng bé đạt ${authoritative}%! Nếu đủ điều kiện, Bài tập tiếp theo đã được mở khóa trên tài khoản Lớp 1.`),350);}catch(err){if(String(err?.code||'')==='EXERCISE_LOCKED'){try{await refreshClass1EnglishProgress_();}catch(_){}alert('Tiến độ trên máy chủ cho biết bài này chưa được mở. Bé hãy hoàn thành bài trước đạt từ 80% nhé!');return;}alert('Kết quả Bài tập chưa được lưu vào tài khoản Lớp 1. Bé có thể thử lại khi kết nối ổn định.');}
@@ -5514,7 +5569,367 @@ const ENGLISH_EXPLORE_ICON_TEXT_CSS_ = `
 
 `;
 
-function ensureEnglishStyles_(){if(document.getElementById(ENGLISH_MODULE_STYLE_ID_))return;const style=document.createElement('style');style.id=ENGLISH_MODULE_STYLE_ID_;style.textContent=ENGLISH_RUNTIME_CSS_+ENGLISH_HUB_UI_OVERRIDES_+ENGLISH_EXPLORE_ICON_TEXT_CSS_;document.head.appendChild(style);}
+const ENGLISH_UNIFIED_LEARNING_CARDS_CSS_ = `
+/* Nhanh con cua Vocabulary: 4 cach hoc, icon ro rang va chu de doc. */
+#class1-english-runtime .l1-en-learning-mode-tab{
+ display:flex;align-items:center;justify-content:center;gap:8px;min-height:72px;
+ border:1px solid #e9d5ff;border-radius:16px;padding:8px 10px;
+ background:#faf5ff;color:#7e22ce;text-align:left;
+ transform:none!important;translate:none!important;scale:1!important;rotate:none!important;
+ box-shadow:none;transition:border-color .18s ease!important;
+}
+#class1-english-runtime .l1-en-learning-mode-tab.is-active{background:#f3e8ff;border-color:#a855f7;box-shadow:inset 0 0 0 1px #d8b4fe;}
+#class1-english-runtime .l1-en-learning-mode-tab:hover{border-color:#a855f7;box-shadow:none!important;}
+#class1-english-runtime .l1-en-learning-mode-icon{display:inline-block;font-size:26px;flex:0 0 auto;line-height:1.2;transform:none!important;transition:transform .18s ease!important;}
+#class1-english-runtime .l1-en-learning-mode-label{display:flex;min-width:0;flex-direction:column;gap:2px;}
+#class1-english-runtime .l1-en-learning-mode-en{font-size:15px!important;line-height:1.18;font-weight:900;overflow-wrap:anywhere;}
+#class1-english-runtime .l1-en-learning-mode-vi{font-size:13px!important;line-height:1.2;font-weight:800;color:#475569;}
+/* Cac quy tac legacy trong 2 hub dung background !important: the thong nhat duoc uu tien. */
+#class1-english-runtime #bai-hoc-grid > button.l1-en-learning-card,
+#class1-english-runtime #view-roadmap #roadmap-svg-container .grid > button.l1-en-learning-card{
+ background:var(--lc-bg)!important;border-color:var(--lc-border)!important;
+}
+#class1-english-runtime #bai-hoc-grid > button.l1-en-learning-card:hover,
+#class1-english-runtime #view-roadmap #roadmap-svg-container .grid > button.l1-en-learning-card:hover{
+ border-color:var(--lc-ink)!important;
+}
+#class1-english-runtime #view-roadmap #roadmap-svg-container .grid > button.l1-en-learning-card.is-locked:hover{
+ border-color:var(--lc-border)!important;box-shadow:none!important;
+}
+@media(max-width:560px){
+ #class1-english-runtime .l1-en-learning-mode-tab{gap:6px;padding:7px;min-height:74px;}
+ #class1-english-runtime .l1-en-learning-mode-icon{font-size:23px;}
+ #class1-english-runtime .l1-en-learning-mode-en{font-size:14px!important;}
+ #class1-english-runtime .l1-en-learning-mode-vi{font-size:12px!important;}
+}
+
+/* Epsilon Edu TA1 - dung chung kieu the cua Kham pha cho tat ca menu hoc. */
+#class1-english-runtime .l1-en-learning-card{
+  --lc-bg:#fff1f7;--lc-border:#f9a8d4;--lc-ink:#be185d;--lc-icon:#fce7f3;--lc-glow:rgba(236,72,153,.10);
+  display:flex!important; flex-direction:column; justify-content:space-between; gap:7px;
+  min-width:0;width:100%;min-height:143px;padding:12px 12px 10px!important;
+  text-align:left;cursor:pointer; border:1px solid var(--lc-border)!important;
+  border-radius:22px!important; background:var(--lc-bg)!important;color:#334155!important;
+  box-shadow:none!important; outline-offset:3px; box-sizing:border-box;
+  transform:none!important;translate:none!important;scale:1!important;rotate:none!important;
+  animation:none!important;filter:none!important;
+  transition:border-color .18s ease!important;
+}
+#class1-english-runtime .l1-en-learning-card--pink{--lc-bg:#fcecf5;--lc-border:#f9a8d4;--lc-ink:#c2185b;--lc-icon:#fce7f3;--lc-glow:rgba(236,72,153,.11);}
+#class1-english-runtime .l1-en-learning-card--violet{--lc-bg:#f5ecff;--lc-border:#e9a8ff;--lc-ink:#9d00e8;--lc-icon:#f3e8ff;--lc-glow:rgba(168,85,247,.11);}
+#class1-english-runtime .l1-en-learning-card--sky{--lc-bg:#eaf3ff;--lc-border:#b4d5ff;--lc-ink:#2563eb;--lc-icon:#e0f2fe;--lc-glow:rgba(59,130,246,.10);}
+#class1-english-runtime .l1-en-learning-card--fuchsia{--lc-bg:#f9ecff;--lc-border:#e9b4fa;--lc-ink:#b000d4;--lc-icon:#fae8ff;--lc-glow:rgba(217,70,239,.105);}
+#class1-english-runtime .l1-en-learning-card--mint{--lc-bg:#e5f8ef;--lc-border:#a7e7c4;--lc-ink:#047857;--lc-icon:#d1fae5;--lc-glow:rgba(16,185,129,.09);}
+#class1-english-runtime .l1-en-learning-card--peach{--lc-bg:#fff0e8;--lc-border:#ffc9ad;--lc-ink:#c2410c;--lc-icon:#ffedd5;--lc-glow:rgba(249,115,22,.09);}
+#class1-english-runtime .l1-en-learning-card .l1-en-learning-top{
+  display:flex!important;align-items:center;gap:11px;min-width:0;width:100%;
+}
+#class1-english-runtime .l1-en-learning-card .l1-en-learning-icon{
+  width:60px;height:60px;flex:0 0 60px;min-width:60px;min-height:60px;
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--lc-icon); color:var(--lc-ink);
+  border:2px solid var(--lc-border);border-radius:17px;
+  font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;
+  font-size:35px;line-height:1; font-weight:400;
+  box-shadow:0 3px 9px rgba(109,40,217,.14),inset 0 1px 2px rgba(255,255,255,.95);
+  transform:none!important;translate:none!important;scale:1!important;rotate:none!important;
+  transition:transform .18s ease!important;
+  transform-origin:center center;
+  will-change:transform;
+}
+#class1-english-runtime .l1-en-learning-card .l1-en-learning-icon-glyph{
+  display:inline-block;line-height:1;transform:none!important;
+  transition:transform .18s ease!important;transform-origin:center;
+}
+#class1-english-runtime .l1-en-learning-card .l1-en-learning-heading{display:flex;flex:1 1 auto;min-width:0;flex-direction:column;gap:3px;}
+#class1-english-runtime .l1-en-learning-card .l1-en-learning-title{
+  display:block;color:var(--lc-ink)!important;font-size:19.5px!important;font-weight:900!important;
+  line-height:1.18!important;overflow-wrap:anywhere;
+}
+#class1-english-runtime .l1-en-learning-card .l1-en-learning-title-vi{
+  display:block;color:#1f2937!important;font-size:14px!important;font-weight:800!important;
+  line-height:1.22!important;overflow-wrap:anywhere;
+}
+#class1-english-runtime .l1-en-learning-card .l1-en-learning-bottom{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:8px;width:100%;min-width:0;
+  padding-top:8px;border-top:1px solid color-mix(in srgb,var(--lc-border) 34%,transparent);
+}
+#class1-english-runtime .l1-en-learning-card .l1-en-learning-details{
+  display:flex;flex:1 1 auto;min-width:0;flex-direction:column;gap:2px;
+}
+#class1-english-runtime .l1-en-learning-card .l1-en-learning-desc-en{
+  display:block;font-size:15px!important;line-height:1.28!important;font-weight:800!important;color:#334155!important;overflow-wrap:anywhere;
+}
+#class1-english-runtime .l1-en-learning-card .l1-en-learning-desc-vi{
+  display:block;font-size:13.5px!important;line-height:1.25!important;font-weight:800!important;color:#475569!important;overflow-wrap:anywhere;
+}
+#class1-english-runtime .l1-en-learning-card .l1-en-learning-badge{
+  display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
+  border:1px solid var(--lc-border);border-radius:999px;padding:4px 10px;
+  white-space:nowrap;background:#fff;color:var(--lc-ink);font-size:13px!important;
+  font-weight:900!important;line-height:1.2!important;
+}
+@media(hover:hover) and (pointer:fine){
+ #class1-english-runtime .l1-en-learning-card:not(.is-locked):hover,
+ #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card:hover{
+   border-color:var(--lc-ink,#e879f9)!important;
+   box-shadow:none!important;
+   transform:none!important;translate:none!important;scale:1!important;rotate:none!important;
+ }
+}
+#class1-english-runtime .l1-en-learning-card:focus-visible,
+#class1-english-runtime #view-dashboard-grid > .l1-en-explore-card:focus-visible{
+  outline:2px solid var(--lc-ink,#a855f7);outline-offset:2px;
+  box-shadow:0 0 0 2px var(--lc-glow,rgba(168,85,247,.10))!important;
+}
+#class1-english-runtime .l1-en-learning-card.is-locked{
+  --lc-bg:#f8fafc;--lc-border:#e2e8f0;--lc-ink:#64748b;--lc-icon:#f1f5f9;
+  opacity:.78;cursor:pointer;
+}
+/* Explore: the frame stays still; keep its native gentle icon zoom on hover. */
+#class1-english-runtime #view-dashboard-grid > .l1-en-explore-card,
+#class1-english-runtime #view-dashboard-grid > .l1-en-explore-card:hover{
+  transform:none!important;animation:none!important;
+  transition:border-color .18s ease,box-shadow .18s ease!important;
+}
+@media(hover:hover) and (pointer:fine){
+  /* Zoom the entire icon tile, as in Discover; never transform the learning card. */
+  #class1-english-runtime .l1-en-learning-card:not(.is-locked):hover .l1-en-learning-icon{
+    transform:scale(1.06)!important;
+  }
+  #class1-english-runtime .l1-en-learning-mode-tab:hover .l1-en-learning-mode-icon,
+  #class1-english-runtime .l1-en-learning-page-tab:hover .l1-en-learning-page-icon{
+    transform:scale(1.06)!important;
+  }
+}
+#class1-english-runtime .l1-en-learning-page-tab{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  min-height:94px;padding:8px 6px;text-align:center;border:1px solid #e9d5ff;border-radius:16px;
+  background:#faf5ff;color:#7e22ce;box-shadow:none;
+  transform:none!important;translate:none!important;scale:1!important;rotate:none!important;
+  transition:border-color .18s ease!important;
+}
+#class1-english-runtime .l1-en-learning-page-tab.is-active{background:#f5ecff;border-color:#a855f7;color:#7e22ce;box-shadow:inset 0 0 0 1px #d8b4fe;}
+#class1-english-runtime .l1-en-learning-page-tab:hover{border-color:#a855f7;box-shadow:none!important;}
+#class1-english-runtime .l1-en-learning-page-icon{display:inline-block;font-size:27px;line-height:1.1;transform:none!important;transition:transform .18s ease!important;}
+#class1-english-runtime .l1-en-learning-page-en{font-size:16px;line-height:1.2;font-weight:900;}
+#class1-english-runtime .l1-en-learning-page-vi{font-size:13.5px;line-height:1.2;font-weight:800;color:#475569;}
+#class1-english-runtime .l1-en-learning-letter-key,
+#class1-english-runtime .l1-en-learning-sound-key,
+#class1-english-runtime #view-alphabet .card-hover{
+  transform:none!important;animation:none!important;transition:border-color .18s ease,box-shadow .18s ease!important;
+}
+#class1-english-runtime .l1-en-learning-letter-key:hover,
+#class1-english-runtime .l1-en-learning-sound-key:hover,
+#class1-english-runtime #view-alphabet .card-hover:hover{
+  transform:none!important;translate:none!important;scale:1!important;box-shadow:none!important;border-color:#c084fc!important;
+}
+@media(max-width:560px){
+ #class1-english-runtime .l1-en-learning-card{min-height:132px;padding:10px!important;border-radius:18px!important;}
+ #class1-english-runtime .l1-en-learning-card .l1-en-learning-icon{width:52px;height:52px;min-width:52px;min-height:52px;flex-basis:52px;font-size:31px;border-radius:15px;}
+ #class1-english-runtime .l1-en-learning-card .l1-en-learning-title{font-size:18px!important;}
+ #class1-english-runtime .l1-en-learning-card .l1-en-learning-title-vi{font-size:13.5px!important;}
+ #class1-english-runtime .l1-en-learning-card .l1-en-learning-desc-en{font-size:14px!important;}
+ #class1-english-runtime .l1-en-learning-card .l1-en-learning-desc-vi{font-size:13px!important;}
+ #class1-english-runtime .l1-en-learning-card .l1-en-learning-badge{font-size:12px!important;padding:4px 8px;}
+}
+@media(prefers-reduced-motion:reduce){
+ #class1-english-runtime .l1-en-learning-card,
+ #class1-english-runtime .l1-en-learning-page-tab,
+ #class1-english-runtime .l1-en-learning-mode-tab,
+ #class1-english-runtime .l1-en-learning-card .l1-en-learning-icon,
+ #class1-english-runtime .l1-en-learning-page-icon,
+ #class1-english-runtime .l1-en-learning-mode-icon{transition:none!important;}
+ #class1-english-runtime .l1-en-learning-card:not(.is-locked):hover .l1-en-learning-icon,
+ #class1-english-runtime .l1-en-learning-page-tab:hover .l1-en-learning-page-icon,
+ #class1-english-runtime .l1-en-learning-mode-tab:hover .l1-en-learning-mode-icon{transform:none!important;}
+}
+
+/* Vocabulary readability: larger text only within the four Vocabulary modes. */
+#class1-english-runtime .l1-en-vocab-study .l1-en-learning-mode-tab{
+  min-height:78px;padding:10px 12px;
+}
+#class1-english-runtime .l1-en-vocab-study .l1-en-learning-mode-en{
+  font-size:18px!important;line-height:1.22!important;
+}
+#class1-english-runtime .l1-en-vocab-study .l1-en-learning-mode-vi{
+  font-size:15.5px!important;line-height:1.3!important;
+}
+#class1-english-runtime .l1-en-vocab-study .l1-en-learning-mode-icon{font-size:29px;}
+#class1-english-runtime .l1-en-vocab-study .vocab-examples-title{font-size:18px;line-height:1.25;}
+#class1-english-runtime .l1-en-vocab-study .vocab-example-en{font-size:19px;line-height:1.35;overflow-wrap:break-word;}
+#class1-english-runtime .l1-en-vocab-study .vocab-example-vi{font-size:16px;line-height:1.38;overflow-wrap:break-word;}
+#class1-english-runtime .l1-en-vocab-study .vocab-option-btn{min-height:59px;}
+#class1-english-runtime .l1-en-vocab-study .vocab-option-letter{font-size:17px;}
+#class1-english-runtime .l1-en-vocab-study .vocab-option-en{font-size:19px;line-height:1.25;overflow-wrap:anywhere;}
+#class1-english-runtime .l1-en-vocab-study .vocab-option-ipa{font-size:17px;line-height:1.3;overflow-wrap:anywhere;}
+#class1-english-runtime .l1-en-vocab-study .vocab-option-meaning{font-size:16px;line-height:1.3;overflow-wrap:anywhere;}
+#class1-english-runtime .l1-en-vocab-study .vocab-main-word,
+#class1-english-runtime .l1-en-vocab-study .vocab-speak-word{font-size:36px;line-height:1.2;overflow-wrap:anywhere;}
+#class1-english-runtime .l1-en-vocab-study .vocab-main-ipa,
+#class1-english-runtime .l1-en-vocab-study .vocab-speak-ipa{font-size:20px;line-height:1.35;}
+#class1-english-runtime .l1-en-vocab-study .vocab-main-meaning,
+#class1-english-runtime .l1-en-vocab-study .vocab-speak-meaning{font-size:21px;line-height:1.32;}
+#class1-english-runtime .l1-en-vocab-study .vocab-part-of-speech{font-size:12px;}
+#class1-english-runtime .l1-en-vocab-study .vocab-picture-level{font-size:14px;}
+#class1-english-runtime .l1-en-vocab-study .vocab-picture-prompt{font-size:22px;line-height:1.3;}
+#class1-english-runtime .l1-en-vocab-study .vocab-picture-meaning{font-size:25px;line-height:1.3;overflow-wrap:anywhere;}
+#class1-english-runtime .l1-en-vocab-study .vocab-listen-prompt{font-size:24px;line-height:1.3;}
+#class1-english-runtime .l1-en-vocab-study .vocab-listen-vi{font-size:16px;line-height:1.4;}
+@media(max-width:560px){
+  #class1-english-runtime .l1-en-vocab-study .l1-en-learning-mode-tab{padding:8px;gap:6px;min-height:76px;}
+  #class1-english-runtime .l1-en-vocab-study .l1-en-learning-mode-en{font-size:16px!important;}
+  #class1-english-runtime .l1-en-vocab-study .l1-en-learning-mode-vi{font-size:14px!important;}
+  #class1-english-runtime .l1-en-vocab-study .l1-en-learning-mode-icon{font-size:25px;}
+  #class1-english-runtime .l1-en-vocab-study .vocab-examples-title{font-size:17px;}
+  #class1-english-runtime .l1-en-vocab-study .vocab-example-en{font-size:18px;}
+  #class1-english-runtime .l1-en-vocab-study .vocab-example-vi{font-size:15px;}
+  #class1-english-runtime .l1-en-vocab-study .vocab-option-en{font-size:18px;}
+  #class1-english-runtime .l1-en-vocab-study .vocab-option-ipa{font-size:16px;}
+  #class1-english-runtime .l1-en-vocab-study .vocab-option-meaning{font-size:15px;}
+  #class1-english-runtime .l1-en-vocab-study .vocab-main-word,
+  #class1-english-runtime .l1-en-vocab-study .vocab-speak-word{font-size:32px;}
+  #class1-english-runtime .l1-en-vocab-study .vocab-main-ipa,
+  #class1-english-runtime .l1-en-vocab-study .vocab-speak-ipa{font-size:18px;}
+  #class1-english-runtime .l1-en-vocab-study .vocab-main-meaning,
+  #class1-english-runtime .l1-en-vocab-study .vocab-speak-meaning{font-size:19px;}
+  #class1-english-runtime .l1-en-vocab-study .vocab-picture-prompt{font-size:19px;}
+  #class1-english-runtime .l1-en-vocab-study .vocab-picture-meaning{font-size:22px;}
+}
+
+/* Epsilon Edu: selection cards never move. Hover brightens ONLY their borders.
+   Tailwind v4 can use individual 'translate'/'scale', independent of 'transform'. */
+#class1-english-runtime :is(
+  .l1-en-learning-card,
+  .l1-en-learning-mode-tab,
+  .l1-en-learning-page-tab,
+  .l1-en-learning-letter-key,
+  .l1-en-learning-sound-key,
+  #view-dashboard-grid > .l1-en-explore-card,
+  #lessons-content .pastel-card,
+  #lessons-content .pastel-btn,
+  #view-bai-hoc-hub .semester-switch-btn,
+  #exam-categories-grid > .pastel-card,
+  #game-play-container .mg-topic-card
+){
+  transform:none!important;translate:none!important;scale:1!important;rotate:none!important;
+  animation:none!important;
+  transition:border-color .18s ease!important;
+}
+@media(hover:hover) and (pointer:fine){
+  #class1-english-runtime :is(
+    .l1-en-learning-card:not(.is-locked),
+    .l1-en-learning-mode-tab,
+    .l1-en-learning-page-tab,
+    #lessons-content .pastel-card,
+    #lessons-content .pastel-btn,
+    #view-bai-hoc-hub .semester-switch-btn,
+    #exam-categories-grid > .pastel-card,
+    #game-play-container .mg-topic-card
+  ):hover{
+    transform:none!important;translate:none!important;scale:1!important;rotate:none!important;
+    box-shadow:none!important;
+    border-color:#a855f7!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  #class1-english-runtime .l1-en-learning-card:hover .l1-en-learning-icon-glyph{transform:none!important;}
+}
+/* Vocabulary: four modes in ONE row, no movement; active mode has a deep violet fill. */
+#class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:10px;
+  width:100%;min-width:0;
+  margin-bottom:12px;
+}
+#class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid > .l1-en-learning-mode-tab{
+  box-sizing:border-box;min-width:0;width:100%;min-height:74px;
+  padding:9px 8px;gap:7px;
+  display:flex;align-items:center;justify-content:center;
+  border:1.5px solid #e9d5ff;
+  border-radius:16px;
+  background:#faf5ff!important;
+  color:#7e22ce!important;
+  transform:none!important;translate:none!important;scale:1!important;
+  box-shadow:none!important;
+  transition:border-color .18s ease,background-color .18s ease!important;
+}
+#class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid > .l1-en-learning-mode-tab.is-active,
+#class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid > .l1-en-learning-mode-tab.is-active:hover{
+  background:linear-gradient(135deg,#7c3aed,#9333ea)!important;
+  border-color:#6d28d9!important;
+  color:#fff!important;
+  box-shadow:none!important;
+}
+#class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid > .l1-en-learning-mode-tab.is-active .l1-en-learning-mode-en{
+  color:#fff!important;
+}
+#class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid > .l1-en-learning-mode-tab.is-active .l1-en-learning-mode-vi{
+  color:#f5eaff!important;
+}
+#class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid > .l1-en-learning-mode-tab:focus-visible{
+  outline:3px solid #a78bfa;outline-offset:3px;
+}
+#class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid .l1-en-learning-mode-label{
+  min-width:0;
+}
+#class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid .l1-en-learning-mode-en{
+  font-size:17px!important;
+}
+#class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid .l1-en-learning-mode-vi{
+  font-size:14px!important;
+}
+#class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid .l1-en-learning-mode-icon{
+  font-size:26px;
+}
+/* Mobile: fixed 2x2 grid so all four learning modes stay visible, no horizontal scrolling. */
+@media(max-width:640px){
+  #class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:9px!important;
+    overflow:visible!important;
+    padding:0!important;
+  }
+  #class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid > .l1-en-learning-mode-tab{
+    min-height:88px;
+    padding:10px 8px;
+  }
+  #class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid .l1-en-learning-mode-en{
+    font-size:16px!important;
+  }
+  #class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid .l1-en-learning-mode-vi{
+    font-size:13px!important;
+  }
+}
+/* Narrow phones: stack the icon above the label inside each card, not the cards themselves. */
+@media(max-width:440px){
+  #class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid > .l1-en-learning-mode-tab{
+    flex-direction:column!important;
+    gap:4px!important;
+    min-height:110px!important;
+    padding:9px 6px!important;
+    text-align:center!important;
+  }
+  #class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid .l1-en-learning-mode-label{
+    align-items:center;
+  }
+  #class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid .l1-en-learning-mode-icon{
+    font-size:27px!important;
+  }
+  #class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid .l1-en-learning-mode-en{
+    font-size:15px!important;
+    line-height:1.16;
+  }
+  #class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid .l1-en-learning-mode-vi{
+    font-size:12.5px!important;
+    line-height:1.2;
+  }
+}
+
+`;
+
+function ensureEnglishStyles_(){if(document.getElementById(ENGLISH_MODULE_STYLE_ID_))return;const style=document.createElement('style');style.id=ENGLISH_MODULE_STYLE_ID_;style.textContent=ENGLISH_RUNTIME_CSS_+ENGLISH_HUB_UI_OVERRIDES_+ENGLISH_EXPLORE_ICON_TEXT_CSS_+ENGLISH_UNIFIED_LEARNING_CARDS_CSS_;document.head.appendChild(style);}
 function ensureEnglishDependency_(tag,id,url){if(document.getElementById(id))return;const exists=[...document.querySelectorAll(tag)].some(el=>String(tag==='link'?el.href:el.src)===String(new URL(url,document.baseURI).href));if(exists)return;const el=document.createElement(tag);el.id=id;if(tag==='link'){el.rel='stylesheet';el.href=url;}else{el.src=url;el.async=true;}document.head.appendChild(el);}
 function ensureEnglishDependencies_(){ensureEnglishDependency_('link','class1-english-fontawesome','https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');ensureEnglishDependency_('link','class1-english-fonts','https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;700;800&display=swap');ensureEnglishDependency_('script','class1-english-chartjs','https://cdn.jsdelivr.net/npm/chart.js');ensureEnglishDependency_('script','class1-english-confetti','https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js');ensureEnglishDependency_('script','class1-english-html2pdf','https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js');}
 function mountEnglishRuntime_(){if(!englishModuleCtx_?.host)throw new Error('ENGLISH_MODULE_HOST_MISSING');ensureEnglishStyles_();ensureEnglishDependencies_();englishModuleCtx_.host.innerHTML=`<div id="${ENGLISH_MODULE_RUNTIME_ID_}">${ENGLISH_RUNTIME_HTML_}</div>`;englishModuleRoot_=document.getElementById(ENGLISH_MODULE_RUNTIME_ID_);installEnglishInlineBridge_();syncClass1EnglishState_();resetStars();try{updateAutoSpeechButtonUI();}catch(_){}primeEnglishAudio_();englishModuleMounted_=true;}
