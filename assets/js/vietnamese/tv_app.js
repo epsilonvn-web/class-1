@@ -1070,10 +1070,10 @@ function ensureCompactHeaderBreadcrumbTabs_() {
             #header-level3-tab,
             #header-level4-tab,
             #header-level5-tab {
-                width: 112px !important;
-                min-width: 112px !important;
-                max-width: 112px !important;
-                flex: 0 0 112px !important;
+                width: 132px !important;
+                min-width: 132px !important;
+                max-width: 132px !important;
+                flex: 0 0 132px !important;
                 overflow: hidden !important;
             }
             #header-level2-tab > button,
@@ -1082,8 +1082,10 @@ function ensureCompactHeaderBreadcrumbTabs_() {
             #header-level5-tab > div {
                 width: 100% !important;
                 max-width: 100% !important;
-                padding-left: 9px !important;
-                padding-right: 9px !important;
+                min-height: 40px !important;
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+                border-radius: 13px !important;
                 overflow: hidden !important;
             }
             #header-level2-title,
@@ -1091,7 +1093,7 @@ function ensureCompactHeaderBreadcrumbTabs_() {
             #header-level4-title,
             #header-level5-title {
                 max-width: 100% !important;
-                font-size: 16px !important;
+                font-size: 17px !important;
                 overflow: hidden !important;
                 text-overflow: ellipsis !important;
                 white-space: nowrap !important;
@@ -2721,15 +2723,10 @@ function changeToneLessonStepTV1_(step) {
     renderToneLessonTV1_();
 }
 
-function toneLessonListenTV1_(toneIndex, includeExplanation = false) {
+function toneLessonListenTV1_(toneIndex) {
     const item = toneLessonTonesTV1_()[toneIndex];
     if (!item) return;
-    // Buoc "Hoc tung thanh": doc am mau, roi doc du hai cau giai thich
-    // lay truc tiep tu du lieu dang hien thi. Cac nut nghe mau khac giu ngan gon.
-    const speech = includeExplanation
-        ? `${item.name}. ${item.sound}. ${item.sound}. ${item.shape} ${item.explain}`
-        : `${item.name}. ${item.sound}. ${item.sound}.`;
-    speakVietnamese(speech, 0.84);
+    speakVietnamese(`${item.name}. ${item.sound}. ${item.sound}.`, 0.84);
 }
 
 function renderToneLessonTV1_() {
@@ -2764,7 +2761,7 @@ function renderToneLessonTV1_() {
                 <div class="tv-tone-single-text"><span>Thanh ${s.tone+1}/6</span><h3>${escapeHtml(t.name)}</h3>
                     <div class="tv-tone-mark-name">${escapeHtml(t.markIcon)} ${escapeHtml(t.mark)}</div>
                     <p>${escapeHtml(t.shape)}</p><p>${escapeHtml(t.explain)}</p>
-                    <button type="button" class="tv-tone-speak" data-tl-action="listen" data-tl-value="${s.tone}">🔊 Nghe cô đọc và giải thích</button>
+                    <button type="button" class="tv-tone-speak" data-tl-action="listen" data-tl-value="${s.tone}">🔊 Nghe cô phát âm</button>
                 </div>
             </div>
             <div class="tv-tone-actions"><button type="button" class="tv-tone-secondary" data-tl-action="previous-tone" ${s.tone===0?'disabled':''}>← Thanh trước</button>
@@ -2824,7 +2821,7 @@ function handleToneLessonClickTV1_(event) {
         return;
     }
     if (action === 'stage') { changeToneLessonStepTV1_(value); return; }
-    if (action === 'listen') { if (Number.isInteger(value) && value >= 0 && value < 6) toneLessonListenTV1_(value, s.step === 1); return; }
+    if (action === 'listen') { if (Number.isInteger(value) && value >= 0 && value < 6) toneLessonListenTV1_(value); return; }
     if (action === 'learn') { if (Number.isInteger(value) && value >= 0 && value < 6) { s.tone=value; changeToneLessonStepTV1_(1); } return; }
     if (action === 'tone') { if (Number.isInteger(value) && value >= 0 && value < 6) { stopSpeaking(); s.tone=value; renderToneLessonTV1_(); } return; }
     if (action === 'previous-tone') { if (s.tone>0) { stopSpeaking(); s.tone--; renderToneLessonTV1_(); } return; }
@@ -2948,6 +2945,9 @@ function startTopicQuiz(topicNum, topicName, questions, subLabel) {
     score = 0;
     userAnswers = {};
     wrongAttemptsByQ = {};
+    if (Number(topicNum) === 6 && !activeExamContext && !activeRoadmapContext) {
+        Object.keys(topic8ArrangeState).forEach(key => delete topic8ArrangeState[key]);
+    }
     quizWrongAnswers = []; 
     quizAnsweredLog = []; 
     quizStartTime = Date.now();
@@ -3234,21 +3234,85 @@ function renderTopic3FusionQuestion(q) {
 
 
 // ==========================================
-// CHỦ ĐỀ 8: NHÀ THÔNG THÁI SẮP CÂU - GIAO DIỆN XẾP THẺ TỪ
+// MỤC 6 - NHÀ THÔNG THÁI SẮP CÂU (legacy topic 9)
+// Khám phá: ghép thẻ từ; đề thi/bài tập giữ luồng đánh giá hiện có.
 // ==========================================
 const topic8ArrangeState = {};
 
+// Cấp 4: chỉ giữ liền những cụm danh từ/danh ngữ hai tiếng có nghĩa.
+// Danh sách đóng này được rà theo 38 câu hiện có của Mục 6; tuyệt đối không
+// ghép cơ học hai tiếng kế tiếp (vd. "vàng chạy", "nhanh theo").
+const TOPIC6_NOUN_PHRASES_ = new Set([
+    'buổi sáng', 'buổi tối', 'chủ nhật', 'cả nhà', 'cả lớp', 'các bạn', 'bạn nhỏ',
+    'quyển truyện', 'xe đạp', 'cổ tích', 'vườn cây', 'cô giáo', 'bữa ăn',
+    'con mèo', 'đàn chim', 'cành cây', 'bông hoa', 'cánh đồng', 'nắng mai',
+    'dòng sông', 'mặt trời', 'bầu trời', 'người lớn', 'sách vở', 'công viên',
+    'món canh', 'sân trường', 'chú chó', 'quả bóng', 'con thỏ', 'cỏ non',
+    'chuồn chuồn', 'khóm khoai', 'hải âu', 'con suối', 'quả cam'
+]);
+
 function getTopic8State(q) {
-    const key = `${q.question_id}`;
+    const key = String(q.question_id);
     if (!topic8ArrangeState[key]) {
-        const tokens = Array.isArray(q.tokens) && q.tokens.length ? q.tokens.slice() : String(q.answer || '').split(/\s+/).filter(Boolean);
-        topic8ArrangeState[key] = { selected: [], pool: tokens.map((text, i) => ({ id: `${key}-${i}`, text })), wrongCount: 0, wrongLogged: false };
+        const words = String(q.answer || '').trim().split(/\s+/).filter(Boolean);
+        const level4 = Array.isArray(q.tags) && q.tags.includes('level4');
+        const cleanNounWord = word => String(word).replace(/[.,!?;:]+$/g, '').toLocaleLowerCase('vi');
+        const arranged = [];
+        for (let i = 0; i < words.length;) {
+            const pair = i + 1 < words.length
+                ? cleanNounWord(words[i]) + ' ' + cleanNounWord(words[i + 1])
+                : '';
+            if (level4 && TOPIC6_NOUN_PHRASES_.has(pair)) {
+                arranged.push(words[i] + ' ' + words[i + 1]);
+                i += 2;
+            } else {
+                arranged.push(words[i]);
+                i += 1;
+            }
+        }
+        const sourceTokens = Array.isArray(q.tokens) && q.tokens.every(t => typeof t === 'string')
+            ? q.tokens.map(t => t.trim()) : [];
+        const sourceValid = sourceTokens.length === words.length
+            && sourceTokens.slice().sort().join('\u0000') === words.slice().sort().join('\u0000');
+        const ordered = level4 ? arranged : words;
+        const mixed = shuffleArray(level4 ? arranged : (sourceValid ? sourceTokens : words));
+        if (mixed.length > 1 && mixed.every((word, i) => word === ordered[i])) {
+            mixed.push(mixed.shift());
+        }
+        topic8ArrangeState[key] = {
+            selected: [],
+            pool: mixed.map((word, i) => ({ id: i, text: word })),
+            ordered,
+            wrongCount: 0,
+            wrongLogged: false,
+            hintUsed: false,
+            message: ''
+        };
     }
     return topic8ArrangeState[key];
 }
 
 function topic8SentenceFromSelected(state) {
-    return state.selected.map(x => x.text).join(' ').replace(/\s+([,.!?])/g, '$1').trim();
+    return state.selected.map(x => x.text).join(' ').replace(/\s+([,.!?;:])/g, '$1').trim();
+}
+
+function topic8Speak() {
+    const q = activeQuestionsList[currentQIndex];
+    if (!q || Number(activeTopicId) !== 6) return;
+    if (userAnswers[currentQIndex] === undefined) {
+        speakVietnamese('Con hãy chọn từng từ ở hàng dưới theo đúng thứ tự để ghép thành một câu có nghĩa. Chọn nhầm thì chạm từ ở hàng trên để sửa nhé.');
+    } else {
+        speakVietnamese(String(q.answer || ''));
+    }
+}
+
+function topic8ShowHint() {
+    const q = activeQuestionsList[currentQIndex];
+    if (!q || Number(activeTopicId) !== 6 || userAnswers[currentQIndex] !== undefined) return;
+    const state = getTopic8State(q);
+    state.hintUsed = true;
+    state.message = `💡 Câu bắt đầu bằng: “${state.ordered[0]}…”`;
+    renderTopic8SentenceBuilder(q);
 }
 
 function renderTopic8SentenceBuilder(q) {
@@ -3256,35 +3320,35 @@ function renderTopic8SentenceBuilder(q) {
     const completed = userAnswers[currentQIndex] !== undefined;
     const selectedIds = new Set(state.selected.map(x => x.id));
     const available = state.pool.filter(x => !selectedIds.has(x.id));
-    const built = topic8SentenceFromSelected(state);
+    const levelName = String(q.sub_topic || 'Sắp xếp câu');
+    // Trực tiếp thiết lập chữ trên thẻ: bảo đảm dễ đọc ngay cả khi lớp utility
+    // chưa tải hoặc bị CSS của module khác ghi đè.
+    const tileWordStyle = 'font-size:clamp(23px, calc(2.15vw - 1px), 27px);font-weight:900;color:#6D28D9;-webkit-text-stroke:0.35px currentColor;line-height:1.3';
 
-    const topHtml = state.selected.length
-        ? state.selected.map((tok, i) => `<button ${completed ? 'disabled' : ''} onclick="topic8ReturnToken(${i})" class="px-3 py-2 md:px-4 md:py-2.5 rounded-2xl border-2 ${completed ? 'bg-emerald-100 border-emerald-400 text-emerald-800' : 'bg-white border-fuchsia-300 text-fuchsia-700 hover:bg-fuchsia-50'} font-black text-sm md:text-base shadow-sm transition-all">${escapeHtml(tok.text)}</button>`).join('')
-        : `<span class="text-slate-400 font-bold text-sm md:text-base">Chọn từ bên dưới để ghép câu...</span>`;
+    const selectedHtml = state.selected.length
+        ? state.selected.map((tok, i) => `<button type="button" ${completed ? 'disabled' : ''} onclick="topic8ReturnToken(${i})" aria-label="Bỏ ${escapeHtml(tok.text)} khỏi câu" class="min-h-[52px] px-4 py-2 rounded-2xl border ${completed ? 'bg-emerald-100 border-emerald-400' : 'bg-white border-fuchsia-300 hover:bg-fuchsia-50'} shadow-sm transition-colors" style="${tileWordStyle}">${escapeHtml(tok.text)}</button>`).join('')
+        : `<span class="text-slate-500 font-bold text-[16px] md:text-[18px]">Câu của bé sẽ hiện ở đây...</span>`;
 
-    const poolHtml = available.map(tok => `<button ${completed ? 'disabled' : ''} onclick="topic8PickToken('${tok.id.replace(/'/g, "\\'")}')" class="px-3.5 py-2.5 md:px-4 md:py-3 rounded-2xl bg-amber-50 hover:bg-amber-100 border-2 border-amber-300 text-amber-800 font-black text-sm md:text-base shadow-sm transition-all active:scale-95">${escapeHtml(tok.text)}</button>`).join('');
+    const poolHtml = available.map(tok => `<button type="button" ${completed ? 'disabled' : ''} onclick="topic8PickToken(${tok.id})" aria-label="Chọn từ ${escapeHtml(tok.text)}" class="min-h-[54px] px-4 py-2.5 rounded-2xl bg-pink-50 hover:bg-pink-100 border border-pink-300 shadow-sm transition-colors active:scale-[.98]" style="${tileWordStyle}">${escapeHtml(tok.text)}</button>`).join('');
 
     const statusHtml = completed
-        ? `<div class="mt-3 px-4 py-2 rounded-2xl bg-emerald-50 border border-emerald-300 text-emerald-700 font-black text-sm md:text-base">🎉 Chính xác! ${escapeHtml(q.answer)}</div>`
-        : `<div id="topic8-status" class="mt-3 min-h-[28px] text-sm md:text-base font-extrabold text-rose-500"></div>`;
+        ? `<div role="status" class="mt-3 text-center px-4 py-2 rounded-2xl bg-emerald-50 border border-emerald-300 text-emerald-800 font-extrabold text-base md:text-lg">🌟 Tuyệt vời! Bé đã ghép đúng câu.</div>`
+        : `<div id="topic8-status" role="status" aria-live="polite" class="mt-3 min-h-[25px] text-center text-[16px] md:text-[17px] font-bold ${state.hintUsed && state.message.startsWith('💡') ? 'text-violet-700' : 'text-rose-600'}">${escapeHtml(state.message)}</div>`;
 
     document.getElementById('question-box').innerHTML = `
-        <div class="w-full max-w-4xl flex flex-col items-center px-2">
-            <div class="text-4xl md:text-5xl mb-2">🧩</div>
-            <h3 class="text-base md:text-lg font-black text-slate-900 text-center">Sắp xếp các từ thành câu hoàn chỉnh</h3>
-            <p class="text-xs md:text-sm font-bold text-slate-500 mt-1 text-center">Chạm từ bên dưới để đưa lên. Chạm từ phía trên để đưa xuống.</p>
-
-            <div class="w-full mt-4 rounded-3xl border-2 border-dashed border-fuchsia-300 bg-fuchsia-50/40 p-4 min-h-[92px] flex flex-wrap gap-2 items-center justify-center">
-                ${topHtml}
+        <div class="w-full max-w-4xl flex flex-col items-center px-1 md:px-2">
+            <div class="text-3xl md:text-4xl" aria-hidden="true">🧩</div>
+            <h3 class="text-xl md:text-[25px] font-black text-slate-900 text-center mt-1">${escapeHtml(levelName)} · Bé xếp câu nhé!</h3>
+            <p class="text-[16px] md:text-[17px] font-bold text-slate-600 mt-1 text-center">Chọn từ ở dưới để xếp thành câu đúng.</p>
+            <div class="w-full mt-3 rounded-3xl border border-fuchsia-300 bg-fuchsia-50/60 px-3 py-4 md:p-5 min-h-[92px] flex flex-wrap gap-2.5 items-center justify-center" aria-label="Câu bé đang xếp" aria-live="polite">
+                ${selectedHtml}
             </div>
-
-            <div class="w-full mt-4 rounded-3xl border-2 border-amber-200 bg-white p-4 flex flex-wrap gap-2.5 items-center justify-center min-h-[96px]">
-                ${poolHtml || (completed ? '<span class="text-emerald-600 font-black">Hoàn thành rồi! 🌟</span>' : '')}
+            <div class="w-full mt-3 rounded-3xl border border-pink-200 bg-white/90 px-3 py-4 md:p-5 flex flex-wrap gap-2.5 items-center justify-center min-h-[96px]" aria-label="Các thẻ từ xáo trộn">
+                ${poolHtml || '<span class="text-emerald-700 font-bold text-[16px]">Bé đã chọn đủ các thẻ từ.</span>'}
             </div>
-
             <div class="flex flex-wrap items-center justify-center gap-2 mt-3">
-                <button onclick="speakVietnamese('${String(q.answer || '').replace(/'/g, "\\'")}')" class="px-4 py-2 rounded-2xl bg-pink-50 border border-pink-200 text-pink-700 font-extrabold text-sm hover:bg-pink-100"><i class="fa-solid fa-volume-high mr-1.5"></i>Nghe câu đúng</button>
-                ${!completed ? '<button onclick="topic8ResetCurrent()" class="px-4 py-2 rounded-2xl bg-slate-50 border border-slate-200 text-slate-600 font-extrabold text-sm hover:bg-slate-100"><i class="fa-solid fa-rotate-left mr-1.5"></i>Làm lại</button>' : ''}
+                <button type="button" onclick="topic8Speak()" class="min-h-[41px] px-4 py-2 rounded-xl bg-purple-50 border border-purple-200 text-purple-700 font-bold text-[16px] hover:bg-purple-100">🔊 ${completed ? 'Cô đọc câu đúng' : 'Nghe hướng dẫn'}</button>
+                ${!completed ? '<button type="button" onclick="topic8ShowHint()" class="min-h-[41px] px-4 py-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 font-bold text-[16px] hover:bg-amber-100">💡 Gợi ý</button><button type="button" onclick="topic8ResetCurrent()" class="min-h-[41px] px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-600 font-bold text-[16px] hover:bg-slate-50">↺ Làm lại</button>' : ''}
             </div>
             ${statusHtml}
         </div>`;
@@ -3295,37 +3359,40 @@ function renderTopic8SentenceBuilder(q) {
 
 function topic8PickToken(tokenId) {
     const q = activeQuestionsList[currentQIndex];
-    if (!q || userAnswers[currentQIndex] !== undefined) return;
+    if (!q || Number(activeTopicId) !== 6 || userAnswers[currentQIndex] !== undefined) return;
     const state = getTopic8State(q);
     const tok = state.pool.find(x => x.id === tokenId);
     if (!tok || state.selected.some(x => x.id === tokenId)) return;
     state.selected.push(tok);
+    state.message = '';
     topic8EvaluateOrRender(q, state);
 }
 
 function topic8ReturnToken(index) {
     const q = activeQuestionsList[currentQIndex];
-    if (!q || userAnswers[currentQIndex] !== undefined) return;
+    if (!q || Number(activeTopicId) !== 6 || userAnswers[currentQIndex] !== undefined) return;
     const state = getTopic8State(q);
+    if (!Number.isInteger(index) || index < 0 || index >= state.selected.length) return;
     state.selected.splice(index, 1);
+    state.message = '';
     renderTopic8SentenceBuilder(q);
 }
 
 function topic8ResetCurrent() {
     const q = activeQuestionsList[currentQIndex];
-    if (!q || userAnswers[currentQIndex] !== undefined) return;
+    if (!q || Number(activeTopicId) !== 6 || userAnswers[currentQIndex] !== undefined) return;
     const state = getTopic8State(q);
     state.selected = [];
+    state.message = '';
     renderTopic8SentenceBuilder(q);
 }
 
 function topic8EvaluateOrRender(q, state) {
-    const built = topic8SentenceFromSelected(state);
     if (state.selected.length < state.pool.length) {
         renderTopic8SentenceBuilder(q);
         return;
     }
-
+    const built = topic8SentenceFromSelected(state);
     if (built === String(q.answer || '').trim()) {
         userAnswers[currentQIndex] = q.answer;
         score += (q.diem ?? 0.5);
@@ -3333,24 +3400,22 @@ function topic8EvaluateOrRender(q, state) {
         const greenEl = document.getElementById('star-green-count');
         if (greenEl) greenEl.textContent = starGreenCount;
         playAudio('correct');
-        confetti({ particleCount: 55, spread: 70, origin: { y: 0.68 } });
-        setTimeout(() => speakVietnamese(`Chính xác! ${q.answer}`), 160);
-        queueLearningEvent_(q, 'correct', { topicId: 9, supportUsed: state.wrongCount > 0 ? 1 : 0 });
+        if (typeof confetti === 'function') confetti({ particleCount: 50, spread: 65, origin: { y: 0.68 } });
+        queueLearningEvent_(q, 'correct', { topicId: 6, supportUsed: state.wrongCount > 0 || state.hintUsed ? 1 : 0 });
         renderTopic8SentenceBuilder(q);
         updateQuizPalletUI();
     } else {
-        state.wrongCount = (Number(state.wrongCount) || 0) + 1;
+        state.wrongCount++;
         if (!state.wrongLogged) {
             state.wrongLogged = true;
-            queueLearningEvent_(q, 'wrong', { topicId: 9, errorType: 'word_order_error' });
+            queueLearningEvent_(q, 'wrong', { topicId: 6, errorType: 'word_order_error' });
         }
         starRedCount++;
         const redEl = document.getElementById('star-red-count');
         if (redEl) redEl.textContent = starRedCount;
         playAudio('wrong');
+        state.message = 'Chưa đúng rồi! Bé chạm vào từ ở hàng trên để sắp xếp lại nhé.';
         renderTopic8SentenceBuilder(q);
-        const status = document.getElementById('topic8-status');
-        if (status) status.textContent = 'Chưa đúng rồi. Bé chạm vào từ phía trên để đổi lại thứ tự nhé!';
     }
 }
 
@@ -3545,7 +3610,7 @@ function renderTopic4ReadingQuestion(q) {
         : meta.level <= 5 ? 'text-[2.3rem] md:text-[3.05rem]'
         : meta.level === 6 ? 'text-[2.05rem] md:text-[2.75rem]'
         : meta.level === 7 ? 'text-[1.9rem] md:text-[2.45rem]'
-        : 'text-[1.65rem] md:text-[2.15rem]';
+        : 'text-[1.85rem] md:text-[2.35rem]';
     const targetHtml = meta.level <= 3
         ? renderTopic4Level1Target_(meta.text)
         : meta.level <= 6
@@ -3610,9 +3675,9 @@ function loadQuestion() {
         quizBottomNav.style.marginTop = isTopic2Compact ? '0.75rem' : (isTopic3Compact ? '0.35rem' : (isTopic4Reading ? '0.3rem' : ''));
     }
 
-    // Sắp câu (ID nội bộ 9) ở chế độ luyện tập dùng trò chơi xếp thẻ từ riêng.
+    // Mục 6 - Sắp câu: hoạt động xếp thẻ từ riêng (chỉ trong Khám phá).
     // Tiến trình tuần / đề thi vẫn dùng renderer chuẩn để giữ nguyên cơ chế chấm điểm.
-    if (!isEvaluationMode && Number(activeTopicId) === 9 && Array.isArray(q.tokens) && q.tokens.length) {
+    if (!isEvaluationMode && Number(activeTopicId) === 6 && Array.isArray(q.tokens) && q.tokens.length) {
         const stepEl = document.getElementById('practice-step-text');
         if (stepEl) stepEl.textContent = `Câu ${currentQIndex + 1} / ${activeQuestionsList.length}`;
         renderTopic8SentenceBuilder(q);
@@ -3690,9 +3755,54 @@ function loadQuestion() {
     ` : '';
 
     const isLetterListen = q.render_style === 'letter_listen';
+    // Khám phá Mục 7: tách văn bản/hình (trái) và câu hỏi/đáp án (phải).
+    // Không áp dụng renderer này cho Bài tập, Ôn tập hoặc Đề thi.
+    const isTopic7ReadingLayout = !isEvaluationMode && Number(activeTopicId) === 7 && !!pText;
 
     let html;
-    if (isLetterListen) {
+    if (isTopic7ReadingLayout) {
+        const illustrationHtml = q.image_url
+            ? `<img src="${escapeHtml(q.image_url)}" alt="Minh họa bài đọc" loading="lazy" onerror="this.remove()">`
+            : q.emoji
+                ? `<span role="img" aria-label="Hình minh họa bài đọc">${escapeHtml(q.emoji)}</span>`
+                : '';
+        html = `
+          <div class="tv7-reading-layout">
+            <section class="tv7-passage-card" aria-label="Bài đọc">
+              <div class="tv7-passage-head">
+                ${illustrationHtml ? `<div class="tv7-reading-media">${illustrationHtml}</div>` : ''}
+                ${pTitle ? `<h3 class="tv7-passage-title">${escapeHtml(pTitle)}</h3>` : ''}
+              </div>
+              <p class="tv7-passage-body">${escapeHtml(pText)}</p>
+              <div class="mt-3 flex justify-center">
+                <button type="button" onclick="speakTopic7Passage_()" class="tv7-listen-btn px-4 py-2 rounded-2xl text-sm font-extrabold shadow-sm pastel-btn">
+                  <i class="fa-solid fa-volume-high" aria-hidden="true"></i>
+                  <span>${isTopic7PoemTV1_(q) ? 'Cô đọc thơ' : 'Cô đọc bài'}</span>
+                </button>
+              </div>
+            </section>
+            <section class="tv7-question-card" aria-label="Câu hỏi đọc hiểu">
+              <h3 class="tv1-quiz-question tv7-question-title">${renderQuizQuestionTextTV1_(q.question_text)}</h3>
+              <div class="flex justify-center mt-1 mb-1">
+                <button type="button" onclick="speakTopic7Question_()" class="tv7-listen-btn px-4 py-1.5 rounded-2xl text-xs md:text-sm font-extrabold shadow-sm pastel-btn">
+                  <i class="fa-solid fa-volume-high" aria-hidden="true"></i>
+                  <span>Nghe câu hỏi</span>
+                </button>
+              </div>
+              <div class="tv7-answer-grid">`;
+        q.options.forEach((opt, idx) => {
+            const letter = String.fromCharCode(65 + idx);
+            html += `
+                <button type="button" data-opt="${escapeHtml(opt)}"
+                  onclick="checkAnswer(this.dataset.opt)"
+                  class="option-btn tv7-answer-btn pastel-btn">
+                    <span class="tv7-answer-label">${letter}.</span>
+                    <span class="tv7-answer-text">${escapeHtml(capitalizeFirstLetter(opt))}</span>
+                    <span class="option-icon" aria-hidden="true"></span>
+                </button>`;
+        });
+        html += `</div></section></div>`;
+    } else if (isLetterListen) {
         html = `
             ${mediaHtml}
             <div class="w-full max-w-3xl border-2 border-dashed border-pink-200 bg-pink-50/40 rounded-3xl px-4 py-4 md:py-5 flex flex-col items-center text-center mb-3">
@@ -4018,6 +4128,7 @@ async function nextQuestion() {
             currentQIndex = 0;
             userAnswers = {};
             wrongAttemptsByQ = {};
+            if (Number(activeTopicId) === 6) Object.keys(topic8ArrangeState).forEach(key => delete topic8ArrangeState[key]);
             loadQuestion();
         }
     }
@@ -4767,7 +4878,57 @@ function splitVietnameseTtsChunks_(text, maxLen = 120) {
     return out.filter(Boolean);
 }
 
-function speakVietnamese(text, rate = 0.96) {
+// Chỉ dùng cho bài thơ trong Khám phá → Đọc hiểu (Mục 7).
+// Giữ nguyên từng dòng, thở nhẹ giữa dòng và nghỉ dài hơn sau mỗi cặp câu.
+// Không ghép từ của hai dòng thơ trước khi gửi Google TTS.
+function buildPoetryTtsSegmentsTV1_(text) {
+    const lines = String(text || '').replace(/\r\n?/g, '\n').split('\n');
+    const valid = lines.map(s => s.replace(/[ \t]+/g, ' ').trim());
+    const last = valid.reduce((i, line, k) => line ? k : i, -1);
+    const segments = [];
+    let coupletLine = 0;
+    for (let i = 0; i < valid.length; i++) {
+        const line = valid[i];
+        if (!line) {
+            // Dòng trống phân cách khổ thơ.
+            if (segments.length) segments[segments.length - 1].pauseAfterMs = 980;
+            coupletLine = 0;
+            continue;
+        }
+        const isLast = i === last;
+        const isEndOfStanza = isLast || !valid.slice(i + 1).some(Boolean);
+        // Chỉ thêm dấu nhịp cho TTS nếu câu thơ chưa có dấu kết thúc.
+        const speechLine = /[.!?…,:;]$/.test(line) ? line : line + (isEndOfStanza ? '.' : ',');
+        const pieces = splitVietnameseTtsChunks_(speechLine, 120);
+        pieces.forEach((part, j) => {
+            // Không nghỉ giữa các mảnh nếu một dòng quá dài phải chia nhỏ.
+            const pause = j < pieces.length - 1 ? 100 : (isLast ? 0 : (coupletLine % 2 === 1 ? 720 : 410));
+            segments.push({ text: part, pauseAfterMs: pause });
+        });
+        coupletLine++;
+    }
+    return segments;
+}
+
+function isTopic7PoemTV1_(q) {
+    const lines = String(q?.reading_passage || '').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+    return lines.length >= 4 && lines.reduce((n, line) => n + line.length, 0) / lines.length < 35;
+}
+
+function speakTopic7Passage_() {
+    const q = activeQuestionsList[currentQIndex];
+    if (activeExamContext || activeRoadmapContext || Number(activeTopicId) !== 7 || !q?.reading_passage) return;
+    const poem = isTopic7PoemTV1_(q);
+    speakVietnamese(q.reading_passage, poem ? 0.88 : 0.94, poem ? {poem: true} : undefined);
+}
+
+function speakTopic7Question_() {
+    const q = activeQuestionsList[currentQIndex];
+    if (activeExamContext || activeRoadmapContext || Number(activeTopicId) !== 7 || !q) return;
+    speakVietnamese(q.question_text, 0.94);
+}
+
+function speakVietnamese(text, rate = 0.96, options = undefined) {
     if (!text) return;
 
     stopSpeaking();
@@ -4779,29 +4940,31 @@ function speakVietnamese(text, rate = 0.96) {
         .replace(/c\/k/g, 'cờ hoặc ca')
         .replace(/g\/gh/g, 'gờ đơn hoặc gờ kép')
         .replace(/ng\/ngh/g, 'ngờ đơn hoặc ngờ kép')
-        .replace(/\s+/g, ' ')
+        // Chỉ giữ dấu xuống dòng ở chế độ đọc thơ, các chức năng đọc khác giữ như cũ.
+        .replace(options?.poem ? /[ \t]+/g : /\s+/g, ' ')
         .trim();
 
     if (!cleanText) return;
 
-    // Google Translate TTS không ổn định với câu dài. Luôn chia thành đoạn ngắn,
-    // kể cả khi nội dung chỉ có ít dấu câu (truyện cổ tích thường có đoạn rất dài).
-    const chunks = splitVietnameseTtsChunks_(cleanText, 120);
-    if (!chunks.length) return;
+    // Thơ đọc từng dòng; các nội dung khác vẫn dùng bộ chia câu cũ.
+    const segments = options?.poem
+        ? buildPoetryTtsSegmentsTV1_(cleanText)
+        : splitVietnameseTtsChunks_(cleanText, 120).map(text => ({ text, pauseAfterMs: 0 }));
+    if (!segments.length) return;
 
     let index = 0;
     let retry = 0;
 
     const playNext = () => {
         if (myEpoch !== speechStopEpoch_) return;
-        if (index >= chunks.length) {
+        if (index >= segments.length) {
             banMaiAudio.onended = null;
             banMaiAudio.onerror = null;
             return;
         }
 
-        const chunk = chunks[index];
-        const encoded = encodeURIComponent(chunk);
+        const segment = segments[index];
+        const encoded = encodeURIComponent(segment.text);
         const src = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encoded}`;
 
         // Watchdog: nếu trình duyệt/network treo một đoạn mà không phát onended/onerror,
@@ -4820,7 +4983,15 @@ function speakVietnamese(text, rate = 0.96) {
             if (myEpoch !== speechStopEpoch_) return;
             index++;
             retry = 0;
-            playNext();
+            // Nghỉ theo dấu xuống dòng; timer cũng bị hủy khi đổi câu/tab/môn.
+            if (segment.pauseAfterMs > 0 && index < segments.length) {
+                speechChunkTimer_ = setTimeout(() => {
+                    speechChunkTimer_ = null;
+                    playNext();
+                }, segment.pauseAfterMs);
+            } else {
+                playNext();
+            }
         };
 
         banMaiAudio.onerror = () => {
@@ -4880,6 +5051,11 @@ function speakPedagogicalEvaluation() {
 function speakCurrentQuestion() {
     const q = activeQuestionsList[currentQIndex];
     if (!q) return;
+    // Mục 7 tự đọc bài thơ/văn khi vào câu; nút riêng bên phải đọc câu hỏi.
+    if (!activeExamContext && !activeRoadmapContext && Number(activeTopicId) === 7 && q.reading_passage) {
+        speakTopic7Passage_();
+        return;
+    }
     const textToRead = q.audio_text || q.reading_passage || q.question_text;
     speakVietnamese(textToRead, 0.96);
 }
@@ -5841,6 +6017,127 @@ const TV_MODULE_UI_CSS_ = `
 #class1-vietnamese-runtime #view-quiz{gap:.3rem!important;}
 #class1-vietnamese-runtime #view-quiz > .pastel-card{min-height:0!important;padding-top:.35rem!important;padding-bottom:.35rem!important;}
 
+/* Mục 7 (Khám phá): bài đọc và hình ở trái, câu hỏi + đáp án ở phải. */
+#class1-vietnamese-runtime #question-box .tv7-reading-layout{
+    width:100%; max-width:1240px; margin:0 auto;
+    display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,0.95fr);
+    align-items:stretch; gap:16px; text-align:left;
+}
+#class1-vietnamese-runtime #question-box .tv7-passage-card,
+#class1-vietnamese-runtime #question-box .tv7-question-card{
+    min-width:0; padding:20px 22px;
+    border:1px solid #f9a8d4; border-radius:22px;
+    background:rgba(255,250,253,.93);
+    box-shadow:0 3px 10px rgba(76,29,149,.04);
+}
+#class1-vietnamese-runtime #question-box .tv7-question-card{
+    background:rgba(255,255,255,.94); display:flex; flex-direction:column;
+    justify-content:center; gap:8px;
+}
+#class1-vietnamese-runtime #question-box .tv7-passage-head{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:7px; margin-bottom:11px;
+}
+#class1-vietnamese-runtime #question-box .tv7-reading-media{
+    min-height:98px; display:flex; align-items:center; justify-content:center;
+}
+#class1-vietnamese-runtime #question-box .tv7-reading-media span{
+    font-size:90px; line-height:1.15; display:block;
+}
+#class1-vietnamese-runtime #question-box .tv7-reading-media img{
+    display:block; width:136px; height:116px; max-width:100%; object-fit:contain;
+    border-radius:16px;
+}
+#class1-vietnamese-runtime #question-box .tv7-passage-title{
+    margin:0; color:#be185d; font-weight:900; font-size:21px; line-height:1.3;
+    text-align:center;
+}
+#class1-vietnamese-runtime #question-box .tv7-passage-body{
+    margin:0; white-space:pre-line; overflow-wrap:anywhere;
+    color:#283449; font-weight:800; font-size:20px; line-height:1.7;
+    text-align:left;
+}
+#class1-vietnamese-runtime #question-box .tv7-question-title{
+    margin:0; text-align:center; color:#1e293b;
+    font-weight:900; font-size:clamp(22px,2.25vw,26px); line-height:1.4;
+}
+/* Hai nút nghe của Mục 7: gradient xanh dương sang xanh ngọc / xanh lá. */
+#class1-vietnamese-runtime #question-box button.tv7-listen-btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    min-height:40px; background:linear-gradient(90deg,#2563eb 0%,#0891b2 52%,#10b981 100%);
+    border:1px solid #0891b2; border-radius:14px;
+    color:#fff; font-weight:850; line-height:1.3;
+    box-shadow:0 3px 9px rgba(8,145,178,.16);
+    transition:filter .16s ease,box-shadow .16s ease;
+}
+#class1-vietnamese-runtime #question-box button.tv7-listen-btn:hover{
+    filter:brightness(1.06);box-shadow:0 4px 12px rgba(8,145,178,.24);
+}
+#class1-vietnamese-runtime #question-box button.tv7-listen-btn:focus-visible{
+    outline:3px solid #a7f3d0;outline-offset:3px;
+}
+#class1-vietnamese-runtime #question-box button.tv7-listen-btn .fa-volume-high{
+    color:#fff;
+}
+#class1-vietnamese-runtime #question-box .tv7-answer-grid{
+    width:100%; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px;
+}
+#class1-vietnamese-runtime #question-box button.tv7-answer-btn{
+    display:flex; align-items:center; text-align:left; gap:9px;
+    min-width:0; min-height:66px; padding:12px 14px;
+    border:1px solid #f9a8d4; border-radius:16px;
+    background:#fff7fb; color:#334155; font-weight:850;
+    box-shadow:0 2px 5px rgba(76,29,149,.04);
+}
+/* checkAnswer()/restoreQuestionState() them bg-green-100 / bg-red-200.
+   Phai co bo chon rieng de mau trang thai thang CSS mac dinh cua button.tv7-answer-btn. */
+#class1-vietnamese-runtime #question-box button.tv7-answer-btn.bg-green-100{
+    background:#d1fae5; border-color:#34d399; color:#065f46;
+    box-shadow:0 2px 8px rgba(16,185,129,.13);
+}
+#class1-vietnamese-runtime #question-box button.tv7-answer-btn.bg-green-100 .tv7-answer-label{
+    color:#047857;
+}
+#class1-vietnamese-runtime #question-box button.tv7-answer-btn.bg-red-200{
+    background:#ffe4e6; border-color:#fb7185; color:#9f1239;
+}
+#class1-vietnamese-runtime #question-box button.tv7-answer-btn.bg-red-200 .tv7-answer-label{
+    color:#be123c;
+}
+#class1-vietnamese-runtime #question-box .tv7-answer-label{
+    color:#db2777; font-weight:950; flex:0 0 auto;
+}
+#class1-vietnamese-runtime #question-box .tv7-answer-text{
+    flex:1; min-width:0; overflow-wrap:anywhere;
+}
+#class1-vietnamese-runtime #question-box .tv7-answer-btn .option-icon{
+    flex:0 0 auto;
+}
+@media(min-width:768px) and (max-width:1060px){
+    #class1-vietnamese-runtime #question-box .tv7-answer-grid{
+        grid-template-columns:minmax(0,1fr);
+    }
+}
+@media(max-width:767px){
+    #class1-vietnamese-runtime #question-box .tv7-reading-layout{
+        grid-template-columns:minmax(0,1fr); gap:12px;
+    }
+    #class1-vietnamese-runtime #question-box .tv7-passage-card,
+    #class1-vietnamese-runtime #question-box .tv7-question-card{
+        padding:15px 16px; border-radius:18px;
+    }
+    #class1-vietnamese-runtime #question-box .tv7-reading-media{min-height:75px;}
+    #class1-vietnamese-runtime #question-box .tv7-reading-media span{font-size:74px;}
+    #class1-vietnamese-runtime #question-box .tv7-reading-media img{width:115px;height:100px;}
+    #class1-vietnamese-runtime #question-box .tv7-passage-title{font-size:20px;}
+    #class1-vietnamese-runtime #question-box .tv7-passage-body{font-size:19px;line-height:1.62;}
+    #class1-vietnamese-runtime #question-box .tv7-question-title{font-size:23px;}
+    #class1-vietnamese-runtime #question-box button.tv7-answer-btn{min-height:59px;padding:9px 11px;}
+}
+@media(max-width:390px){
+    #class1-vietnamese-runtime #question-box .tv7-answer-grid{grid-template-columns:minmax(0,1fr);gap:7px;}
+}
+
 /* Khám phá: cùng độ thoáng, chiều cao card và palette với Toán. */
 #class1-vietnamese-runtime :is(#view-dashboard-grid,#lecture-subtopics-list){gap:.5rem!important;align-items:stretch;}
 #class1-vietnamese-runtime :is(#view-dashboard-grid,#lecture-subtopics-list) .pastel-card{
@@ -5986,7 +6283,7 @@ const TV_MODULE_UI_CSS_ = `
 }
 `;
 
-const TV_INLINE_FN_NAMES_ = Object.freeze(["accountTierBadge", "adaptiveApplyLocalEvent_", "adaptiveDefaultSkill_", "adaptiveErrorType_", "adaptiveLatestByQuestion_", "adaptiveLevel_", "adaptivePracticeSupportKey_", "adaptiveQuestionId_", "adaptiveSkillKey_", "answerStoryQuestion_", "beautifySubtopicName", "buildAdaptiveQuestionOrder_", "buildTrickyChoices", "callAppsScript", "capitalizeFirstLetter", "changeAccountType", "checkAnswer", "checkTopic3FusionAnswer", "clearStoredSession", "clearTopic23AutoAdvance_", "clickProgressOrExam", "closeAccountManager", "closeAppDialog_", "closeAuthScreen", "closeHistoryModal", "closePremiumAccessPopup", "closeReviewWrongModal", "countAlphabetQuizQuestions", "doLogin", "doRegister", "ensureAccountManagerModal", "ensureAppFeedbackUI_", "ensureCompactHeaderBreadcrumbTabs_", "ensureHeaderLevel5Tab_", "ensureMiniGameThemeStyles", "ensureNatureAmbientForView_", "ensurePremiumAccessModal", "ensureTopic3FusionStyles", "enterDashboard", "escapeHtml", "escapeJsStringTV1_", "exportReportToPDF", "fairyCategoryById_", "fairyDataFile_", "fairyStoriesInCategory_", "fairyStoryById_", "fairyStoryCount_", "fetchAllQuestionsFlat", "fetchAllTopicsData", "flushLearningEvents_", "formatAccountDate", "formatDateOnly", "formatDateShort", "formatDuration", "getAccountType", "getAdminAuthPayload", "getAlphabetQuizVariantsPerLetter", "getAppFeedbackTheme_", "getBaiHocCompletedSetTV1_", "getBaiHocProgressKeyTV1_", "getBaiTapRecentKeyTV1_", "getBaiTapUnlockKeyTV1_", "getExamMinQuestionsPerCompetency_", "getFairyConfig_", "getLessonAudioTextTV1_", "getMiniGamePaletteOrder", "getPremiumAccessState", "getQuestionsForBaiTapTV1_", "getRecentBaiTapIdsTV1_", "getSessionToken", "getSkillCell", "getStoryQuestions_", "getStudentFirstName", "getTopic3FusionMeta", "getTopic3OnsetSpeech_", "getTopic4Level1Parts_", "getTopic4ReadingMeta", "getTopic8State", "getUnlockedBaiTapTV1_", "goHome", "handleGuestMode", "handleNextExamFromReport", "hasPremiumAccess", "hideAuthError", "hideLoadingOverlay", "initQuizPallet", "initializeApp", "isAdminUser", "jumpToQuestion", "loadAccountManager", "loadBaiHocDataTV1_", "loadExamDataFile", "loadFairyLibrary_", "loadGameScript", "loadLearningProfile_", "loadQuestion", "logout", "makeGuestUser", "makePendingSessionUser", "markAdminRegistrationsSeen", "markCurrentBaiHocCompleteTV1_", "miniGameHash", "nextQuestion", "normalizeQuestion", "normalizeTopic", "openAccountManager", "openAlphabetSubmenuItem_", "openAuthScreen", "openBaiHocByNumberTV1_", "openBaiHocHub", "openBaiHocHubLegacyStub_", "openExamHub", "openFairyCategory_", "openFairyGroup_", "openFairyLibrary_", "openGamePlay", "openHistoryModal", "openLettersSubmenu", "openMainTab", "openMiniGameHub", "openReviewTab", "openReviewWrongModal", "openRoadmap", "openSemesterReviewMenu", "openThoNhacMenu", "openThoNhacPoem_", "openThoNhacSection_", "openThoNhacStory_", "openTopic", "playAudio", "prevQuestion", "questionMatchesFocusTV1_", "queueLearningEvent_", "recordEvaluationToAdaptive_", "refreshAdminRegistrationBadge", "refreshMainTabLocks_", "renderAccountManagerRows", "renderAdminRegistrationBadge", "renderAlphabetBoard", "renderBaiHocBottomNavTV1_", "renderBaiHocHubTV1_", "renderBaiHocLessonTV1_", "renderBaiHocPageTabsTV1_", "renderBaiHocQuestionsPageTV1_", "renderBaiHocReadingPageTV1_", "renderBaiHocSummaryPageTV1_", "renderBaiTapGridTV1_", "renderDashboardGrid", "renderExamHubGrid", "renderFairyCategories_", "renderFairyHome_", "renderFairyStoryList_", "renderHistoryReport", "renderHistoryTable", "renderNatureAmbientLayer_", "renderPedagogicalEvaluation", "renderReportTopicsBreakdown", "renderStoryQuestions_", "renderTopic3FusionQuestion", "renderTopic4Level1Target_", "renderTopic4ReadingQuestion", "renderTopic4TwoWordTarget_", "renderTopic8SentenceBuilder", "requirePremiumAccess", "resetAdaptiveLearningState_", "resetStars", "restoreQuestionState", "retryPendingSessionRestore", "returnToCurrentDiscoverTopic_", "returnToTopicLecture", "saveBaiHocCompletedSetTV1_", "saveExamResultToSheet", "saveRecentBaiTapIdsTV1_", "saveUnlockedBaiTapTV1_", "saveWeeklyProgressToSheet", "scheduleTopic23AutoAdvance_", "selectBaiTapTV1_", "selectSubtopic", "setAppShellRootMode_", "setBreadcrumbAction_", "setFairyBreadcrumbActions_", "setFairyLectureLayout_", "setLectureUtilityVisibility_", "setMainTabActive_", "setSubtopicGridColumns", "showAppConfirm", "showAppDialog", "showAppToast", "showAuthError", "showLectureAndSubtopics", "showLoadingOverlay", "showLockedBaiTapTV1_", "showPremiumAccessPopup", "showResultScreen", "shuffleArray", "sortAccountManager", "speakActiveFairyStory_", "speakCurrentQuestion", "speakLecture", "speakPedagogicalEvaluation", "speakTopic3FusionQuestion", "speakTopic4Reading_", "speakVietnamese", "splitStoryParagraphs_", "splitVietnameseTtsChunks_", "starCountFromPercent", "startAdminNotificationPolling", "startAlphabetCategoryQuiz", "startExamCountdown", "startRandomExam", "startTopicQuiz", "stopActiveMiniGameTV1_", "stopSpeaking", "storeSessionToken", "switchAppView", "switchAuthTab", "toggleAutoSpeech", "topic4ReadingDone_", "topic4ReadingHint_", "topic8EvaluateOrRender", "topic8PickToken", "topic8ResetCurrent", "topic8ReturnToken", "topic8SentenceFromSelected", "triggerSubmitQuizPrompt", "tryAutoLogin", "updateAutoSpeechButtonUI", "updateDiscoverBreadcrumb_", "updateExamTimerDisplay", "updateMaHSPreview", "updateNavButtons", "updateNavTabs", "updatePremiumUI", "updateQuizPalletUI", "updateUserInfoBox"]);
+const TV_INLINE_FN_NAMES_ = Object.freeze(["accountTierBadge", "adaptiveApplyLocalEvent_", "adaptiveDefaultSkill_", "adaptiveErrorType_", "adaptiveLatestByQuestion_", "adaptiveLevel_", "adaptivePracticeSupportKey_", "adaptiveQuestionId_", "adaptiveSkillKey_", "answerStoryQuestion_", "beautifySubtopicName", "buildAdaptiveQuestionOrder_", "buildTrickyChoices", "callAppsScript", "capitalizeFirstLetter", "changeAccountType", "checkAnswer", "checkTopic3FusionAnswer", "clearStoredSession", "clearTopic23AutoAdvance_", "clickProgressOrExam", "closeAccountManager", "closeAppDialog_", "closeAuthScreen", "closeHistoryModal", "closePremiumAccessPopup", "closeReviewWrongModal", "countAlphabetQuizQuestions", "doLogin", "doRegister", "ensureAccountManagerModal", "ensureAppFeedbackUI_", "ensureCompactHeaderBreadcrumbTabs_", "ensureHeaderLevel5Tab_", "ensureMiniGameThemeStyles", "ensureNatureAmbientForView_", "ensurePremiumAccessModal", "ensureTopic3FusionStyles", "enterDashboard", "escapeHtml", "escapeJsStringTV1_", "exportReportToPDF", "fairyCategoryById_", "fairyDataFile_", "fairyStoriesInCategory_", "fairyStoryById_", "fairyStoryCount_", "fetchAllQuestionsFlat", "fetchAllTopicsData", "flushLearningEvents_", "formatAccountDate", "formatDateOnly", "formatDateShort", "formatDuration", "getAccountType", "getAdminAuthPayload", "getAlphabetQuizVariantsPerLetter", "getAppFeedbackTheme_", "getBaiHocCompletedSetTV1_", "getBaiHocProgressKeyTV1_", "getBaiTapRecentKeyTV1_", "getBaiTapUnlockKeyTV1_", "getExamMinQuestionsPerCompetency_", "getFairyConfig_", "getLessonAudioTextTV1_", "getMiniGamePaletteOrder", "getPremiumAccessState", "getQuestionsForBaiTapTV1_", "getRecentBaiTapIdsTV1_", "getSessionToken", "getSkillCell", "getStoryQuestions_", "getStudentFirstName", "getTopic3FusionMeta", "getTopic3OnsetSpeech_", "getTopic4Level1Parts_", "getTopic4ReadingMeta", "getTopic8State", "getUnlockedBaiTapTV1_", "goHome", "handleGuestMode", "handleNextExamFromReport", "hasPremiumAccess", "hideAuthError", "hideLoadingOverlay", "initQuizPallet", "initializeApp", "isAdminUser", "jumpToQuestion", "loadAccountManager", "loadBaiHocDataTV1_", "loadExamDataFile", "loadFairyLibrary_", "loadGameScript", "loadLearningProfile_", "loadQuestion", "logout", "makeGuestUser", "makePendingSessionUser", "markAdminRegistrationsSeen", "markCurrentBaiHocCompleteTV1_", "miniGameHash", "nextQuestion", "normalizeQuestion", "normalizeTopic", "openAccountManager", "openAlphabetSubmenuItem_", "openAuthScreen", "openBaiHocByNumberTV1_", "openBaiHocHub", "openBaiHocHubLegacyStub_", "openExamHub", "openFairyCategory_", "openFairyGroup_", "openFairyLibrary_", "openGamePlay", "openHistoryModal", "openLettersSubmenu", "openMainTab", "openMiniGameHub", "openReviewTab", "openReviewWrongModal", "openRoadmap", "openSemesterReviewMenu", "openThoNhacMenu", "openThoNhacPoem_", "openThoNhacSection_", "openThoNhacStory_", "openTopic", "playAudio", "prevQuestion", "questionMatchesFocusTV1_", "queueLearningEvent_", "recordEvaluationToAdaptive_", "refreshAdminRegistrationBadge", "refreshMainTabLocks_", "renderAccountManagerRows", "renderAdminRegistrationBadge", "renderAlphabetBoard", "renderBaiHocBottomNavTV1_", "renderBaiHocHubTV1_", "renderBaiHocLessonTV1_", "renderBaiHocPageTabsTV1_", "renderBaiHocQuestionsPageTV1_", "renderBaiHocReadingPageTV1_", "renderBaiHocSummaryPageTV1_", "renderBaiTapGridTV1_", "renderDashboardGrid", "renderExamHubGrid", "renderFairyCategories_", "renderFairyHome_", "renderFairyStoryList_", "renderHistoryReport", "renderHistoryTable", "renderNatureAmbientLayer_", "renderPedagogicalEvaluation", "renderReportTopicsBreakdown", "renderStoryQuestions_", "renderTopic3FusionQuestion", "renderTopic4Level1Target_", "renderTopic4ReadingQuestion", "renderTopic4TwoWordTarget_", "renderTopic8SentenceBuilder", "requirePremiumAccess", "resetAdaptiveLearningState_", "resetStars", "restoreQuestionState", "retryPendingSessionRestore", "returnToCurrentDiscoverTopic_", "returnToTopicLecture", "saveBaiHocCompletedSetTV1_", "saveExamResultToSheet", "saveRecentBaiTapIdsTV1_", "saveUnlockedBaiTapTV1_", "saveWeeklyProgressToSheet", "scheduleTopic23AutoAdvance_", "selectBaiTapTV1_", "selectSubtopic", "setAppShellRootMode_", "setBreadcrumbAction_", "setFairyBreadcrumbActions_", "setFairyLectureLayout_", "setLectureUtilityVisibility_", "setMainTabActive_", "setSubtopicGridColumns", "showAppConfirm", "showAppDialog", "showAppToast", "showAuthError", "showLectureAndSubtopics", "showLoadingOverlay", "showLockedBaiTapTV1_", "showPremiumAccessPopup", "showResultScreen", "shuffleArray", "sortAccountManager", "speakActiveFairyStory_", "speakCurrentQuestion", "speakTopic7Passage_", "speakTopic7Question_", "speakLecture", "speakPedagogicalEvaluation", "speakTopic3FusionQuestion", "speakTopic4Reading_", "speakVietnamese", "splitStoryParagraphs_", "splitVietnameseTtsChunks_", "starCountFromPercent", "startAdminNotificationPolling", "startAlphabetCategoryQuiz", "startExamCountdown", "startRandomExam", "startTopicQuiz", "stopActiveMiniGameTV1_", "stopSpeaking", "storeSessionToken", "switchAppView", "switchAuthTab", "toggleAutoSpeech", "topic4ReadingDone_", "topic4ReadingHint_", "topic8EvaluateOrRender", "topic8PickToken", "topic8ResetCurrent", "topic8ReturnToken", "topic8SentenceFromSelected", "topic8ShowHint", "topic8Speak", "triggerSubmitQuizPrompt", "tryAutoLogin", "updateAutoSpeechButtonUI", "updateDiscoverBreadcrumb_", "updateExamTimerDisplay", "updateMaHSPreview", "updateNavButtons", "updateNavTabs", "updatePremiumUI", "updateQuizPalletUI", "updateUserInfoBox"]);
 
 // ================= CLASS 1 VIETNAMESE MODULE BRIDGE =================
 async function loadSharedImageCatalogTV1_(){
