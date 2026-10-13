@@ -1881,53 +1881,63 @@ function renderAlphabetBoard(index = 0) {
     stopSpeaking();
     updateDiscoverBreadcrumb_("1. Bảng chữ cái", "🅰️", "Bảng chữ cái");
     const item = ALPHABET_29_DETAILS[index];
+    if (!item) return;
 
-    const row1 = ALPHABET_29_DETAILS.slice(0, 15);
-    const row2 = ALPHABET_29_DETAILS.slice(15);
-
-    const renderKeyRow = (arr) => arr.map(l => {
-        const idx = ALPHABET_29_DETAILS.indexOf(l);
+    // Giữ nguyên thứ tự và chức năng chọn/nghe từng chữ; chỉ cải thiện giao diện.
+    const keyboardHtml = ALPHABET_29_DETAILS.map((letter, idx) => {
         const isActive = idx === index;
-        const activeCls = isActive ? "bg-rose-500 text-white border-rose-600 shadow-md scale-105" : "bg-white text-gray-700 border-gray-200 hover:border-pink-300";
+        const longKey = letter.u.length >= 3 ? ' tv-alpha-key--long' : '';
+        const kind = letter.group === 'nguyen_am_don' ? 'vowel'
+            : letter.group === 'phu_am_ghep' ? 'blend' : 'consonant';
         return `
-          <button class="w-9 h-11 md:w-[48px] md:h-[53px] rounded-xl font-black text-xs md:text-[15px] border-2 transition-all flex flex-col items-center justify-center p-0.5 ${activeCls}" onclick="renderAlphabetBoard(${idx})">
-            <span>${l.u}</span>
-            <span class="text-[10px] md:text-[11px] opacity-75">${l.l}</span>
-          </button>`;
+            <button type="button" class="tv-alpha-key tv-alpha-key--${kind}${longKey}${isActive ? ' is-active' : ''}"
+                aria-label="Chữ ${escapeHtml(letter.u)}, chữ thường ${escapeHtml(letter.l)}"
+                aria-pressed="${isActive}" onclick="renderAlphabetBoard(${idx})">
+                <span class="tv-alpha-upper">${escapeHtml(letter.u)}</span>
+                <span class="tv-alpha-lower">${escapeHtml(letter.l)}</span>
+            </button>`;
     }).join('');
 
     const html = `
-        <div class="w-full flex flex-col items-center justify-between space-y-2.5">
-            <div class="w-full max-w-4xl md:max-w-[62rem] grid grid-cols-1 sm:grid-cols-4 gap-2.5 md:gap-[11px]">
-                <div class="p-3 bg-pink-50/70 border-2 border-pink-300 rounded-2xl flex flex-col items-center justify-center shadow-xs text-center">
-                    <div class="flex items-baseline space-x-2 mb-1">
-                        <span class="text-3xl md:text-[40px] font-black text-rose-600">${item.u}</span>
-                        <span class="text-2xl md:text-[33px] font-bold text-pink-500">${item.l}</span>
-                        <span class="text-3xl md:text-[33px] font-serif italic text-indigo-600">${item.hw}</span>
+        <div class="tv-alphabet-layout">
+            <div class="tv-alphabet-cards">
+                <section class="tv-alphabet-feature" aria-label="Chữ cái đang học">
+                    <div class="tv-alphabet-letter-display">
+                        <span class="tv-alphabet-feature-upper">${escapeHtml(item.u)}</span>
+                        <span class="tv-alphabet-feature-lower">${escapeHtml(item.l)}</span>
+                        <span class="tv-alphabet-feature-write">${escapeHtml(item.hw)}</span>
                     </div>
-                    <span class="text-xs md:text-[13px] font-bold text-purple-700 mb-2">Âm đọc: "${item.sound}"</span>
-                    <button onclick="speakVietnamese('${item.sound}')" class="px-3 py-1 md:px-[13px] md:py-[5px] bg-amber-200 hover:bg-amber-300 text-amber-900 rounded-xl text-xs md:text-[13px] font-black pastel-btn shadow-xs flex items-center space-x-1">
-                        <i class="fa-solid fa-volume-high"></i><span>Nghe âm</span>
+                    <div class="tv-alphabet-sound">Âm đọc: <strong>“${escapeHtml(item.sound)}”</strong></div>
+                    <button type="button" onclick="speakVietnamese('${item.sound}')" class="tv-alphabet-listen tv-alphabet-listen-main">
+                        <i class="fa-solid fa-volume-high" aria-hidden="true"></i><span>Nghe âm</span>
                     </button>
-                </div>
-
+                </section>
                 ${item.examples.map(ex => `
-                    <div onclick="speakVietnamese('${ex.w}. ${ex.sent}')" class="p-2.5 bg-white hover:bg-pink-50/50 border-2 border-emerald-300 rounded-2xl flex flex-col items-center justify-between text-center cursor-pointer shadow-xs pastel-btn transition-all">
-                        <span class="text-2xl md:text-[33px] mb-0.5">${ex.emo}</span>
-                        <span class="text-xs md:text-[15px] font-black text-emerald-800">${ex.w}</span>
-                        <span class="text-[9px] md:text-[10px] px-2 md:px-[9px] py-0.2 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-full font-bold my-1">${ex.tag}</span>
-                        <p class="text-[11px] md:text-[12px] text-gray-600 font-medium italic leading-tight mb-1.5">"${ex.sent}"</p>
-                        <button onclick="event.stopPropagation(); speakVietnamese('${ex.w}. ${ex.sent}')" class="px-2.5 md:px-[11px] py-0.5 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-lg text-[10px] md:text-[11px] font-black border border-amber-300">
-                            <i class="fa-solid fa-volume-high mr-1"></i>Nghe
+                    <div onclick="speakVietnamese('${ex.w}. ${ex.sent}')" class="tv-alphabet-example">
+                        <span class="tv-alphabet-emoji" aria-hidden="true">${ex.emo}</span>
+                        <strong class="tv-alphabet-example-word">${escapeHtml(ex.w)}</strong>
+                        <span class="tv-alphabet-example-tag">${escapeHtml(ex.tag)}</span>
+                        <p class="tv-alphabet-example-sentence">“${escapeHtml(ex.sent)}”</p>
+                        <button type="button" onclick="event.stopPropagation(); speakVietnamese('${ex.w}. ${ex.sent}')" class="tv-alphabet-listen tv-alphabet-listen-example">
+                            <i class="fa-solid fa-volume-high" aria-hidden="true"></i><span>Nghe</span>
                         </button>
                     </div>
                 `).join('')}
             </div>
-
-            <div class="w-full max-w-4xl md:max-w-[62rem] bg-white p-2.5 md:p-[11px] rounded-2xl border-2 border-pink-200 shadow-xs flex flex-col items-center space-y-1.5 md:space-y-[7px]">
-                <div class="flex flex-wrap justify-center gap-1.5 md:gap-[7px]">${renderKeyRow(row1)}</div>
-                <div class="flex flex-wrap justify-center gap-1.5 md:gap-[7px]">${renderKeyRow(row2)}</div>
-            </div>
+            <section class="tv-alphabet-board" aria-label="Bảng chọn chữ cái và âm ghép">
+                <div class="tv-alphabet-toolbar">
+                    <div class="tv-alphabet-heading">
+                        <strong>🌸 Bé chọn chữ để nghe nhé!</strong>
+                        <span>Chữ hoa và chữ thường luôn đi cùng nhau.</span>
+                    </div>
+                    <div class="tv-alphabet-legend" aria-label="Màu phân loại chữ">
+                        <span class="tv-alpha-legend-item tv-alpha-legend-vowel"><i aria-hidden="true"></i>Nguyên âm</span>
+                        <span class="tv-alpha-legend-item tv-alpha-legend-consonant"><i aria-hidden="true"></i>Phụ âm</span>
+                        <span class="tv-alpha-legend-item tv-alpha-legend-blend"><i aria-hidden="true"></i>Âm ghép</span>
+                    </div>
+                </div>
+                <div class="tv-alphabet-grid">${keyboardHtml}</div>
+            </section>
         </div>
     `;
 
@@ -2711,10 +2721,15 @@ function changeToneLessonStepTV1_(step) {
     renderToneLessonTV1_();
 }
 
-function toneLessonListenTV1_(toneIndex) {
+function toneLessonListenTV1_(toneIndex, includeExplanation = false) {
     const item = toneLessonTonesTV1_()[toneIndex];
     if (!item) return;
-    speakVietnamese(`${item.name}. ${item.sound}. ${item.sound}.`, 0.84);
+    // Buoc "Hoc tung thanh": doc am mau, roi doc du hai cau giai thich
+    // lay truc tiep tu du lieu dang hien thi. Cac nut nghe mau khac giu ngan gon.
+    const speech = includeExplanation
+        ? `${item.name}. ${item.sound}. ${item.sound}. ${item.shape} ${item.explain}`
+        : `${item.name}. ${item.sound}. ${item.sound}.`;
+    speakVietnamese(speech, 0.84);
 }
 
 function renderToneLessonTV1_() {
@@ -2749,7 +2764,7 @@ function renderToneLessonTV1_() {
                 <div class="tv-tone-single-text"><span>Thanh ${s.tone+1}/6</span><h3>${escapeHtml(t.name)}</h3>
                     <div class="tv-tone-mark-name">${escapeHtml(t.markIcon)} ${escapeHtml(t.mark)}</div>
                     <p>${escapeHtml(t.shape)}</p><p>${escapeHtml(t.explain)}</p>
-                    <button type="button" class="tv-tone-speak" data-tl-action="listen" data-tl-value="${s.tone}">🔊 Nghe cô phát âm</button>
+                    <button type="button" class="tv-tone-speak" data-tl-action="listen" data-tl-value="${s.tone}">🔊 Nghe cô đọc và giải thích</button>
                 </div>
             </div>
             <div class="tv-tone-actions"><button type="button" class="tv-tone-secondary" data-tl-action="previous-tone" ${s.tone===0?'disabled':''}>← Thanh trước</button>
@@ -2809,7 +2824,7 @@ function handleToneLessonClickTV1_(event) {
         return;
     }
     if (action === 'stage') { changeToneLessonStepTV1_(value); return; }
-    if (action === 'listen') { if (Number.isInteger(value) && value >= 0 && value < 6) toneLessonListenTV1_(value); return; }
+    if (action === 'listen') { if (Number.isInteger(value) && value >= 0 && value < 6) toneLessonListenTV1_(value, s.step === 1); return; }
     if (action === 'learn') { if (Number.isInteger(value) && value >= 0 && value < 6) { s.tone=value; changeToneLessonStepTV1_(1); } return; }
     if (action === 'tone') { if (Number.isInteger(value) && value >= 0 && value < 6) { stopSpeaking(); s.tone=value; renderToneLessonTV1_(); } return; }
     if (action === 'previous-tone') { if (s.tone>0) { stopSpeaking(); s.tone--; renderToneLessonTV1_(); } return; }
@@ -6402,7 +6417,58 @@ const TV_TONE_LESSON_CSS_ = `
 @media(prefers-reduced-motion:reduce){#class1-vietnamese-runtime .tv-tone-lesson *{animation:none!important;transition:none!important;}}
 `;
 
-function ensureTvStyles_(){if(document.getElementById(TV_MODULE_STYLE_ID_))return;const st=document.createElement('style');st.id=TV_MODULE_STYLE_ID_;st.textContent=TV_RUNTIME_CSS_+TV_SHELL_BREADCRUMB_CSS_+TV_MODULE_UI_CSS_+TV_EXPLORE_ICON_TEXT_CSS_+TV_CHILD_TA_PARITY_CSS_+TV_TONE_LESSON_CSS_;document.head.appendChild(st);}
+// Chỉ áp dụng cho màn Khám phá > Bảng chữ cái Tiếng Việt 1.
+const TV_ALPHABET_BOARD_CSS_ = `
+#class1-vietnamese-runtime .tv-alphabet-layout{width:100%;max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:12px;font-family:'Nunito','Quicksand',sans-serif;}
+#class1-vietnamese-runtime .tv-alphabet-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:stretch;}
+#class1-vietnamese-runtime .tv-alphabet-feature,#class1-vietnamese-runtime .tv-alphabet-example{min-width:0;min-height:192px;border:1px solid #f5c7e2;border-radius:18px;padding:13px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 3px 12px rgba(124,58,237,.055);}
+#class1-vietnamese-runtime .tv-alphabet-feature{background:linear-gradient(145deg,#fff2f9,#faf5ff);border-color:#f9a8d4;}
+#class1-vietnamese-runtime .tv-alphabet-letter-display{display:flex;align-items:baseline;justify-content:center;gap:9px;white-space:nowrap;line-height:1.07;margin-bottom:7px;}
+#class1-vietnamese-runtime .tv-alphabet-feature-upper{font:900 clamp(36px,3.3vw,45px)/1.12 'Nunito',sans-serif!important;color:#db2777;}
+#class1-vietnamese-runtime .tv-alphabet-feature-lower{font:900 clamp(32px,2.8vw,39px)/1.12 'Nunito',sans-serif!important;color:#a21caf;}
+#class1-vietnamese-runtime .tv-alphabet-feature-write{font:italic 800 clamp(31px,2.9vw,39px)/1.12 Georgia,serif!important;color:#6d28d9;}
+#class1-vietnamese-runtime .tv-alphabet-sound{font-size:16px;line-height:1.35;font-weight:850;color:#7e22ce;margin-bottom:9px;}
+#class1-vietnamese-runtime .tv-alphabet-sound strong{font-weight:950;color:#be185d;}
+#class1-vietnamese-runtime .tv-alphabet-example{background:#fff;border-color:#a7e9d1;cursor:pointer;gap:5px;}
+#class1-vietnamese-runtime .tv-alphabet-example:hover{border-color:#34d399;background:#f4fdf9;}
+#class1-vietnamese-runtime .tv-alphabet-emoji{font-size:35px;line-height:1.08;}
+#class1-vietnamese-runtime .tv-alphabet-example-word{font-size:17px;line-height:1.18;font-weight:950;color:#065f46;}
+#class1-vietnamese-runtime .tv-alphabet-example-tag{display:inline-block;padding:2px 10px;border:1px solid #c7d2fe;border-radius:99px;background:#eef2ff;color:#4338ca;font-size:12px;line-height:1.18;font-weight:850;}
+#class1-vietnamese-runtime .tv-alphabet-example-sentence{font-size:13px;line-height:1.34;color:#475569;font-weight:700;font-style:italic;margin:0;min-height:34px;display:flex;align-items:center;justify-content:center;}
+#class1-vietnamese-runtime button.tv-alphabet-listen{min-height:32px;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:6px 14px;border:1px solid #facc15;border-radius:11px;background:#fff0b3;color:#92400e;font-family:'Nunito',sans-serif!important;font-size:14px!important;font-weight:900!important;line-height:1.1;box-shadow:0 2px 5px rgba(146,64,14,.06);cursor:pointer;}
+#class1-vietnamese-runtime button.tv-alphabet-listen:hover{background:#fef08a;}
+#class1-vietnamese-runtime .tv-alphabet-board{border:1px solid #f5bfde;border-radius:20px;padding:14px 16px 16px;background:#fff;box-shadow:0 4px 16px rgba(236,72,153,.065);}
+#class1-vietnamese-runtime .tv-alphabet-toolbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:9px 16px;margin-bottom:13px;}
+#class1-vietnamese-runtime .tv-alphabet-heading{display:flex;flex-direction:column;gap:2px;text-align:left;}
+#class1-vietnamese-runtime .tv-alphabet-heading strong{font-size:16px;line-height:1.25;font-weight:950;color:#9d174d;}
+#class1-vietnamese-runtime .tv-alphabet-heading>span{font-size:12px;line-height:1.25;font-weight:750;color:#64748b;}
+#class1-vietnamese-runtime .tv-alphabet-legend{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;}
+#class1-vietnamese-runtime .tv-alpha-legend-item{font-size:11px;line-height:1.2;font-weight:900;display:inline-flex;align-items:center;gap:5px;border-radius:99px;padding:5px 8px;border:1px solid;white-space:nowrap;}
+#class1-vietnamese-runtime .tv-alpha-legend-item i{width:9px;height:9px;border-radius:4px;background:currentColor;display:block;}
+#class1-vietnamese-runtime .tv-alpha-legend-vowel{color:#1d4ed8;background:#eff6ff;border-color:#bfdbfe;}
+#class1-vietnamese-runtime .tv-alpha-legend-consonant{color:#be185d;background:#fff1f8;border-color:#fbcfe8;}
+#class1-vietnamese-runtime .tv-alpha-legend-blend{color:#047857;background:#effdf6;border-color:#a7f3d0;}
+#class1-vietnamese-runtime .tv-alphabet-grid{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:8px;}
+#class1-vietnamese-runtime button.tv-alpha-key{min-width:0;height:68px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:4px 2px;border-radius:13px;border:1px solid var(--tv-alpha-border);background:var(--tv-alpha-bg);color:var(--tv-alpha-ink);box-shadow:0 2px 3px rgba(51,65,85,.06);cursor:pointer;transition:background .15s,border-color .15s,box-shadow .15s;}
+#class1-vietnamese-runtime button.tv-alpha-key--vowel{--tv-alpha-bg:#eff6ff;--tv-alpha-border:#bfd8ff;--tv-alpha-ink:#1d4ed8;}
+#class1-vietnamese-runtime button.tv-alpha-key--consonant{--tv-alpha-bg:#fff4fa;--tv-alpha-border:#f6c0df;--tv-alpha-ink:#9d174d;}
+#class1-vietnamese-runtime button.tv-alpha-key--blend{--tv-alpha-bg:#effcf5;--tv-alpha-border:#a4e6cd;--tv-alpha-ink:#065f46;}
+#class1-vietnamese-runtime button.tv-alpha-key .tv-alpha-upper{font-family:'Nunito','Quicksand',sans-serif!important;font-size:24px!important;font-weight:950!important;line-height:1.05!important;letter-spacing:-.6px;color:inherit;}
+#class1-vietnamese-runtime button.tv-alpha-key .tv-alpha-lower{font-family:'Nunito','Quicksand',sans-serif!important;font-size:17px!important;font-weight:900!important;line-height:1.05!important;letter-spacing:-.25px;color:inherit;opacity:.95;}
+#class1-vietnamese-runtime button.tv-alpha-key--long .tv-alpha-upper{font-size:20px!important;}
+#class1-vietnamese-runtime button.tv-alpha-key--long .tv-alpha-lower{font-size:15px!important;}
+#class1-vietnamese-runtime button.tv-alpha-key.is-active{background:linear-gradient(125deg,#ec4899,#a855f7)!important;border-color:#c026d3!important;color:#fff!important;box-shadow:0 3px 9px rgba(168,85,247,.30),inset 0 0 0 1px rgba(255,255,255,.25)!important;}
+#class1-vietnamese-runtime button.tv-alpha-key:focus-visible,#class1-vietnamese-runtime .tv-alphabet-example:focus-visible,#class1-vietnamese-runtime button.tv-alphabet-listen:focus-visible{outline:3px solid #7c3aed;outline-offset:2px;}
+@media(hover:hover) and (pointer:fine){#class1-vietnamese-runtime button.tv-alpha-key:not(.is-active):hover{border-color:#a855f7;box-shadow:0 2px 9px rgba(124,58,237,.16);filter:saturate(1.1);}}
+@media(max-width:1079px){#class1-vietnamese-runtime .tv-alphabet-grid{grid-template-columns:repeat(12,minmax(0,1fr));}}
+@media(max-width:899px){#class1-vietnamese-runtime .tv-alphabet-grid{grid-template-columns:repeat(10,minmax(0,1fr));}}
+@media(max-width:799px){#class1-vietnamese-runtime .tv-alphabet-cards{grid-template-columns:repeat(2,minmax(0,1fr));}#class1-vietnamese-runtime .tv-alphabet-grid{grid-template-columns:repeat(8,minmax(0,1fr));}}
+@media(max-width:519px){#class1-vietnamese-runtime .tv-alphabet-cards{gap:8px;}#class1-vietnamese-runtime .tv-alphabet-feature,#class1-vietnamese-runtime .tv-alphabet-example{min-height:175px;padding:10px 7px;}#class1-vietnamese-runtime .tv-alphabet-letter-display{gap:5px;}#class1-vietnamese-runtime .tv-alphabet-feature-upper{font-size:35px!important;}#class1-vietnamese-runtime .tv-alphabet-feature-lower,#class1-vietnamese-runtime .tv-alphabet-feature-write{font-size:28px!important;}#class1-vietnamese-runtime .tv-alphabet-sound{font-size:14px;}#class1-vietnamese-runtime .tv-alphabet-example-word{font-size:15px;}#class1-vietnamese-runtime .tv-alphabet-example-sentence{font-size:12px;}#class1-vietnamese-runtime .tv-alphabet-board{padding:11px 8px 12px;}#class1-vietnamese-runtime .tv-alphabet-heading strong{font-size:15px;}#class1-vietnamese-runtime .tv-alphabet-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;}#class1-vietnamese-runtime button.tv-alpha-key{height:61px;border-radius:11px;}#class1-vietnamese-runtime button.tv-alpha-key .tv-alpha-upper{font-size:22px!important;}#class1-vietnamese-runtime button.tv-alpha-key .tv-alpha-lower{font-size:16px!important;}#class1-vietnamese-runtime button.tv-alpha-key--long .tv-alpha-upper{font-size:18px!important;}#class1-vietnamese-runtime button.tv-alpha-key--long .tv-alpha-lower{font-size:14px!important;}#class1-vietnamese-runtime .tv-alphabet-legend{justify-content:flex-start;gap:4px;}#class1-vietnamese-runtime .tv-alpha-legend-item{font-size:10px;padding:4px 6px;}}
+@media(max-width:339px){#class1-vietnamese-runtime .tv-alphabet-grid{grid-template-columns:repeat(5,minmax(0,1fr));}}
+@media(prefers-reduced-motion:reduce){#class1-vietnamese-runtime button.tv-alpha-key{transition:none;}}
+`;
+
+function ensureTvStyles_(){if(document.getElementById(TV_MODULE_STYLE_ID_))return;const st=document.createElement('style');st.id=TV_MODULE_STYLE_ID_;st.textContent=TV_RUNTIME_CSS_+TV_SHELL_BREADCRUMB_CSS_+TV_MODULE_UI_CSS_+TV_EXPLORE_ICON_TEXT_CSS_+TV_CHILD_TA_PARITY_CSS_+TV_TONE_LESSON_CSS_+TV_ALPHABET_BOARD_CSS_;document.head.appendChild(st);}
 function primeTvAudio_(){if(tvModuleAudioPrimed_)return;tvModuleAudioPrimed_=true;const once=()=>{try{const C=window.AudioContext||window.webkitAudioContext;if(!audioCtx&&C)audioCtx=new C();if(audioCtx?.state==='suspended')audioCtx.resume();}catch(_){}};tvModuleRoot_?.addEventListener('pointerdown',once,{once:true,passive:true});}
 function mountTvRuntime_(){if(!tvModuleCtx_?.host)throw new Error('TV_MODULE_HOST_MISSING');ensureTvStyles_();ensureTvDependencies_();tvModuleCtx_.host.innerHTML=`<div id="${TV_MODULE_RUNTIME_ID_}">${TV_RUNTIME_HTML_}</div>`;tvModuleRoot_=document.getElementById(TV_MODULE_RUNTIME_ID_);installTvInlineBridge_();syncClass1ModuleStateTV1_();resetStars();updateAutoSpeechButtonUI();primeTvAudio_();tvModuleMounted_=true;}
 async function bootstrapTvRuntime_(){if(!tvModuleMounted_||!tvModuleRoot_||!tvModuleRoot_.isConnected||tvModuleRoot_.parentElement!==tvModuleCtx_.host){mountTvRuntime_();await loadSharedImageCatalogTV1_();await Promise.resolve(renderDashboardGrid());await Promise.resolve(renderExamHubGrid());}else syncClass1ModuleStateTV1_();if(tvModuleCtx_?.isAuthenticated)loadLearningProfile_();}
