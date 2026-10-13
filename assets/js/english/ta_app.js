@@ -5374,6 +5374,31 @@ const ENGLISH_RUNTIME_CSS_ = "/*! tailwindcss v4.1.10 | MIT License | https://ta
 
 
 const ENGLISH_HUB_UI_OVERRIDES_ = `
+/* Class 1 English: fix clipped/undersized shared sub-banner on mobile.
+   Desktop preserves the shared banner aspect ratio and pill styling. */
+@media (max-width:767px) {
+  body:has(#class1-english-runtime) #sub-banner {
+    aspect-ratio:auto!important;
+    height:auto!important;
+    min-height:64px!important;
+    padding:8px 10px!important;
+  }
+  body:has(#class1-english-runtime) #sub-pill.english-sub-breadcrumbs {
+    max-width:calc(100% - .35rem)!important;
+    gap:.3rem!important;
+  }
+  body:has(#class1-english-runtime) #sub-pill.english-sub-breadcrumbs .english-breadcrumb-tab {
+    height:40px;
+    max-width:min(220px,62vw);
+    padding:0 11px;
+    border-radius:13px;
+    font-size:17px;
+  }
+  body:has(#class1-english-runtime) #sub-pill.english-sub-breadcrumbs .english-breadcrumb-sep {
+    font-size:17px;
+  }
+}
+
 /* TA1 - layout ngang gon muc 6-10.
    Dung CSS thuong thay cho arbitrary Tailwind md:grid-cols-[...] vi class runtime
    khong co trong CSS build san nen truoc day trinh duyet van xep 1 cot. */
