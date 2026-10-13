@@ -3326,6 +3326,143 @@
       "l_title": "Bài học 2: Nhận biết 6 thanh tiếng Việt",
       "l_content": "Tiếng Việt có 6 thanh: ngang, sắc, huyền, hỏi, ngã, nặng. Bé luyện nhận biết thanh trong các tiếng quen thuộc trước, sau đó chuyển sang các tiếng có vần khó hơn. Chú ý: thanh ngang là tiếng không có dấu thanh viết trên chữ.",
       "l_audio": "Chào bé đến với bài học Dấu thanh kì diệu. Chúng mình sẽ luyện nhận biết sáu thanh: ngang, sắc, huyền, hỏi, ngã và nặng qua ba cấp độ từ dễ đến khó.",
+      "tone_lesson": {
+        "lesson_id": "tv1_topic2_tone_introduction",
+        "title_lead": "1. Làm quen với",
+        "title_highlight": "6 thanh điệu",
+        "subtitle": "Bé nhìn dấu, nghe cô đọc, tự đặt dấu lên chữ và luyện nhận biết nhé!",
+        "overview": "Tiếng Việt có 6 thanh điệu nhưng chỉ có 5 dấu thanh. Thanh ngang không có dấu viết, bé nhé!",
+        "steps": [
+          "Quan sát",
+          "Học từng thanh",
+          "Thử đặt dấu",
+          "Bé tự kiểm tra"
+        ],
+        "card": {
+          "title": "Làm quen với 6 thanh điệu",
+          "description": "Quan sát dấu, nghe cô đọc, đặt dấu và tự kiểm tra.",
+          "badge": "Bài học",
+          "icon": "🎶"
+        },
+        "tones": [
+          {
+            "name": "Thanh ngang",
+            "mark": "Không dấu",
+            "markIcon": "∅",
+            "letter": "a",
+            "sound": "a",
+            "shape": "Chữ a không có dấu thanh.",
+            "explain": "Thanh ngang không viết dấu trên chữ.",
+            "color": "sky"
+          },
+          {
+            "name": "Thanh sắc",
+            "mark": "Dấu sắc",
+            "markIcon": "◌́",
+            "letter": "á",
+            "sound": "á",
+            "shape": "Dấu sắc là nét nghiêng lên trên.",
+            "explain": "Dấu sắc nằm phía trên chữ a.",
+            "color": "pink"
+          },
+          {
+            "name": "Thanh huyền",
+            "mark": "Dấu huyền",
+            "markIcon": "◌̀",
+            "letter": "à",
+            "sound": "à",
+            "shape": "Dấu huyền là nét nghiêng xuống.",
+            "explain": "Dấu huyền nằm phía trên chữ a.",
+            "color": "violet"
+          },
+          {
+            "name": "Thanh hỏi",
+            "mark": "Dấu hỏi",
+            "markIcon": "◌̉",
+            "letter": "ả",
+            "sound": "ả",
+            "shape": "Dấu hỏi có nét cong như dấu hỏi nhỏ.",
+            "explain": "Dấu hỏi nằm phía trên chữ a.",
+            "color": "amber"
+          },
+          {
+            "name": "Thanh ngã",
+            "mark": "Dấu ngã",
+            "markIcon": "◌̃",
+            "letter": "ã",
+            "sound": "ã",
+            "shape": "Dấu ngã có nét lượn sóng.",
+            "explain": "Dấu ngã nằm phía trên chữ a.",
+            "color": "mint"
+          },
+          {
+            "name": "Thanh nặng",
+            "mark": "Dấu nặng",
+            "markIcon": "◌̣",
+            "letter": "ạ",
+            "sound": "ạ",
+            "shape": "Dấu nặng là một chấm phía dưới.",
+            "explain": "Dấu nặng nằm phía dưới chữ a.",
+            "color": "peach"
+          }
+        ],
+        "checks": [
+          {
+            "tone": 1,
+            "choices": [
+              1,
+              2,
+              4,
+              0
+            ]
+          },
+          {
+            "tone": 2,
+            "choices": [
+              2,
+              1,
+              3,
+              5
+            ]
+          },
+          {
+            "tone": 3,
+            "choices": [
+              3,
+              4,
+              5,
+              0
+            ]
+          },
+          {
+            "tone": 4,
+            "choices": [
+              4,
+              3,
+              1,
+              2
+            ]
+          },
+          {
+            "tone": 5,
+            "choices": [
+              5,
+              0,
+              3,
+              2
+            ]
+          },
+          {
+            "tone": 0,
+            "choices": [
+              0,
+              2,
+              1,
+              4
+            ]
+          }
+        ]
+      },
       "qs": [
         {
           "id": 2001,
