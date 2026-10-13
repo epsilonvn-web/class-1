@@ -8408,15 +8408,23 @@ body:has(#class1-math-runtime) #class1-math-runtime #practice-step-text{
     body:has(#class1-math-runtime) #class1-math-runtime #btn-next-q-exam,
     body:has(#class1-math-runtime) #class1-math-runtime #practice-step-indicator,
     body:has(#class1-math-runtime) #class1-math-runtime #practice-step-text{font-size:16px!important;}
-    body:has(#class1-math-runtime) #sub-pill.math-sub-breadcrumbs{max-width:calc(100% - .35rem)!important;gap:.22rem!important;}
-    body:has(#class1-math-runtime) #sub-pill.math-sub-breadcrumbs .math-breadcrumb-tab{
-        height:34px;
-        max-width:44vw;
-        padding:0 10px;
-        border-radius:11px;
-        font-size:16px;
+    /* The shared Class 1 sub-banner is 15:1 by default (too short on phones).
+       Make its visual area tall enough to contain the breadcrumb without clipping. */
+    body:has(#class1-math-runtime) #sub-banner{
+        aspect-ratio:auto!important;
+        height:auto!important;
+        min-height:64px!important;
+        padding:8px 10px!important;
     }
-    body:has(#class1-math-runtime) #sub-pill.math-sub-breadcrumbs .math-breadcrumb-sep{font-size:16px;}
+    body:has(#class1-math-runtime) #sub-pill.math-sub-breadcrumbs{max-width:calc(100% - .35rem)!important;gap:.3rem!important;}
+    body:has(#class1-math-runtime) #sub-pill.math-sub-breadcrumbs .math-breadcrumb-tab{
+        height:40px;
+        max-width:min(220px,62vw);
+        padding:0 11px;
+        border-radius:13px;
+        font-size:17px;
+    }
+    body:has(#class1-math-runtime) #sub-pill.math-sub-breadcrumbs .math-breadcrumb-sep{font-size:17px;}
 }
 `;
 
