@@ -4927,18 +4927,33 @@ function buildMuc2Options_(q, compact = true) {
     }).join('');
 }
 
+// Muc 2 / muc con 4: bo moi goi y truc quan, chi giu phep tinh.
+// Khong sua question_text trong data: muc 3 van dung duoc hinh va huong dan goc.
+function getMuc2SelfPracticePrompt_(q) {
+    const eq = getMuc2Equation_(q);
+    if (eq?.raw) return eq.raw;
+    // Phong ve voi hoc lieu bo sung: bo dong hinh va cac lenh phu thuoc vao hinh.
+    return String(q?.question_text || '').split('\n')
+        .map(line => line.trim())
+        .filter(line => line && !extractEmojiTokens_(line).length &&
+            !/^(?:Nh[iì]n h[iì]nh|B[oớ]t [đd]i r[oồ]i t[ií]nh)/i.test(line))
+        .join(' ');
+}
+
 function buildMuc2ExamLikeLayout_(q, speakerHtml) {
+    const isSelfPractice = q?._muc2_self_practice === true;
     const text = String(q?.question_text || '');
-    const lines = text.split('\n').map(x => x.trim()).filter(Boolean);
+    const lines = isSelfPractice ? [] : text.split('\n').map(x => x.trim()).filter(Boolean);
     const visualLines = lines.filter(line => extractEmojiTokens_(line).length > 0);
     const textLines = lines.filter(line => !extractEmojiTokens_(line).length);
     const visual = visualLines.length
         ? `<div class="w-full max-w-3xl rounded-2xl border border-slate-200 bg-slate-50/70 px-4 py-4 text-center text-[26px] md:text-[30px] leading-relaxed">${visualLines.map(escapeHtml).join('<br>')}</div>`
         : '';
+    const prompt = isSelfPractice ? getMuc2SelfPracticePrompt_(q) : (textLines.join(' ') || text);
     return `
         <div class="w-full max-w-4xl mx-auto flex flex-col items-center gap-3 py-2">
             ${visual}
-            <h3 class="text-lg md:text-xl lg:text-2xl font-black text-slate-900 text-center leading-snug">${escapeHtml(textLines.join(' ') || text)}</h3>
+            <h3 class="text-lg md:text-xl lg:text-2xl font-black text-slate-900 text-center leading-snug">${escapeHtml(prompt)}</h3>
             ${speakerHtml}
             <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">${buildMuc2Options_(q, false)}</div>
         </div>`;
@@ -7999,7 +8014,10 @@ function speakVietnamese(text, rate = 0.96) {
 function speakCurrentQuestion() {
     const q = activeQuestionsList[currentQIndex];
     if (!q) return;
-    const textToRead = q.audio_text || q.reading_passage || q.question_text;
+    // Muc 4 - Tu luyen: khong doc hinh/emoji hay cac cau goi y tu data.
+    const textToRead = q._muc2_self_practice === true
+        ? getMuc2SelfPracticePrompt_(q)
+        : (q.audio_text || q.reading_passage || q.question_text);
     speakVietnamese(textToRead, 0.96);
 }
 
