@@ -1480,9 +1480,24 @@
       .card-desc{font-size:16px}
       .subject-card .card-title{font-size:19px}
       .subject-card .card-desc{font-size:16px}
-      .app-footer{margin-top:-.6rem;padding-bottom:0}
+      /* Mobile: giu tron anh footer 2048x292, khong cat hai mep. */
+      .app-footer{
+        margin-top:0;
+        padding:0;
+        aspect-ratio:2048 / 292;
+        height:auto;
+        min-height:0;
+        background-size:contain;
+        background-position:center bottom;
+        background-repeat:no-repeat;
+      }
       .content-stage:has(> .card-grid) + .app-footer{margin-top:0}
       .footer-logo{transform:none}
+      .footer-logo img{
+        width:clamp(88px,30vw,130px);
+        height:auto;
+        max-height:none;
+      }
       
       .auth-logo{width:225px;max-width:74%}
     }
