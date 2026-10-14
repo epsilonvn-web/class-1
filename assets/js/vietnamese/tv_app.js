@@ -2389,7 +2389,7 @@ function renderFairyCategories_(libraryKey, data) {
             idx
         });
     }).join('') + `
-        <button onclick="openThoNhacMenu()" class="sm:col-span-2 lg:col-span-3 py-2 bg-slate-50 border border-slate-200 text-slate-600 rounded-xl text-xs font-black pastel-btn">\u2190 Hai kho truy\u1ec7n</button>`;
+        <button onclick="openThoNhacMenu()" class="sm:col-span-2 lg:col-span-4 py-2 bg-slate-50 border border-slate-200 text-slate-600 rounded-xl text-xs font-black pastel-btn">\u2190 Hai kho truy\u1ec7n</button>`;
 }
 
 async function openFairyCategory_(categoryId) {
@@ -2433,7 +2433,7 @@ function renderFairyStoryList_(libraryKey, data, cat) {
         topicNum: 12,
         idx
     })).join('') + `
-        <button onclick="openFairyLibrary_('${libraryKey}')" class="sm:col-span-2 lg:col-span-3 py-2 bg-slate-50 border border-slate-200 text-slate-600 rounded-xl text-xs font-black pastel-btn">\u2190 C\u00e1c ch\u1ee7 \u0111\u1ec1 / series</button>`;
+        <button onclick="openFairyLibrary_('${libraryKey}')" class="sm:col-span-2 lg:col-span-4 py-2 bg-slate-50 border border-slate-200 text-slate-600 rounded-xl text-xs font-black pastel-btn">\u2190 C\u00e1c ch\u1ee7 \u0111\u1ec1 / series</button>`;
 }
 
 function splitStoryParagraphs_(content) {
@@ -3630,7 +3630,7 @@ function renderTopic4ReadingQuestion(q) {
           </div>
           <p class="mt-2 text-xs md:text-sm font-bold text-slate-500">${escapeHtml(meta.note)}</p>
           <div class="mt-5 md:mt-6 rounded-[26px] bg-white/90 border-2 border-pink-100 px-4 md:px-8 py-7 md:py-9 shadow-sm min-h-[150px] flex items-center justify-center">
-            <div id="topic4-reading-target" class="${sizeCls} leading-[1.35] font-black text-slate-800 tracking-wide select-none">${targetHtml}</div>
+            <div id="topic4-reading-target" class="${sizeCls} leading-[1.35] font-black text-slate-800 tracking-wide select-none"${meta.level === 8 ? ' style="font-size:22px !important"' : ''}>${targetHtml}</div>
           </div>
           <div id="topic4-reading-hint" class="hidden mt-3 text-base md:text-xl font-black text-indigo-600 bg-indigo-50/85 border border-indigo-100 rounded-2xl px-4 py-2.5"></div>
           <p id="topic4-reading-status" class="mt-3 text-xs md:text-sm font-extrabold text-pink-600">Con tự đọc trước nhé. Chưa chắc thì mới nghe cô đọc mẫu.</p>
@@ -6699,7 +6699,7 @@ const TV_FAIRY_CARD_GRID_CSS_ = `
    Tieu de/mo ta toi da 2 dong, khong ep chu xuong tung tu. */
 #class1-vietnamese-runtime #lecture-subtopics-list.tv-fairy-card-grid{
     display:grid!important;
-    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
     width:100%!important;
     min-width:0!important;
     max-width:100%!important;
