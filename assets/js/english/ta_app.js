@@ -2942,6 +2942,59 @@ async function openReadingGroup_(groupId) {
     startTopicQuiz(6,`${g.name} / ${g.name_vi}`,pool,`reading-group-${groupId}`);
 }
 function speakReadingPassage_(){const q=activeQuestionsList[currentQIndex];if(q&&q.render_style==='reading_pair')speakEnglish(q.tts_text||q.passage||'',0.92);}
+// Explore 6 - pictures are drawn exclusively from shared_image_catalog.json.
+// Exact object illustrations unlock after question 1, so children must read first.
+// Pictures of the scene/location unlock only after both questions are correct.
+// This preserves the two-question Reading Comprehension exercise (not a picture guessing quiz).
+const TA1_READING_WORD_IMAGE_IDS_ = Object.freeze({
+    'ball':'do_vat_ball', 'bike':'family_11_cycling_yard', 'book':'ban_hoc',
+    'cake':'do_an_birthday_cake', 'car':'giao_thong_car', 'cat':'dong_vat_kitten',
+    'cup':'do_vat_cup', 'apple':'cay_coi_apple_tree', 'bag':'do_vat_bag',
+    'can':'do_vat_can', 'hat':'do_vat_hat', 'desk':'ban_hoc',
+    'dog':'dong_vat_puppy', 'chicken':'do_an_chicken',
+    'fish':'do_an_fish_food', 'milk':'family_27_breakfast_kitchen',
+    'pen':'ban_hoc', 'pencil':'ban_hoc',
+    'garden':'vuon_nha', 'gate':'noi_chon_gate',
+    'girl':'family_11_cycling_yard', 'goat':'gia_suc_nong_trai_1',
+    'hair':'co_the_hair', 'head':'co_the_head', 'horse':'gia_suc_nong_trai_1',
+    'clock':'do_vat_alarm_clock', 'mop':'gia_dung_mop', 'pot':'gia_dung_pot',
+    'monkey':'noi_chon_zoo', 'mother':'family_05_study_homework',
+    'bus':'traffic_09_bus_stop', 'run':'san_bong_tre_em',
+    'sun':'cong_vien', 'truck':'traffic_16_fire_truck',
+    'lake':'cay_lieu_ben_ho', 'leaf':'cay_lieu_ben_ho',
+    'teddy bear':'do_choi_teddy_bear', 'tiger':'hoang_da_rung_xanh_1',
+    'top':'do_choi_spinning_top', 'turtle':'dong_vat_turtle',
+    'face':'co_the_face', 'father':'family_10_playing_toys',
+    'football':'san_bong_tre_em', 'water':'do_an_water',
+    'window':'noi_chon_washing_window'
+});
+function ta1ReadingIllustration_(reading,state) {
+    const firstSolved = state.correct?.[0] === true;
+    const allSolved = Array.isArray(reading.questions) && reading.questions.length > 0 &&
+                      reading.questions.every((_, i) => state.correct?.[i] === true);
+    const word = String(reading.questions?.[0]?.answer || '').trim().toLowerCase().replace(/\s+/g,' ');
+    const wordImageId = TA1_READING_WORD_IMAGE_IDS_[word] || '';
+    const sceneImageId = ENGLISH_LESSON_SCENE_[Number(reading.unit)] || '';
+    // At initial load, show only a neutral illustration: no answer may be inferred.
+    // After question 1, reveal the object; after both, fallback to the unit scene.
+    let imageId = 'dong_vat_pink_rabbit';
+    let caption = '🐰 Con đọc đoạn văn rồi chọn đáp án nhé!';
+    if (firstSolved && wordImageId && catalogImage_(wordImageId)) {
+        imageId = wordImageId;
+        caption = '🌟 Bé đã nhận ra từ trong bài!';
+    } else if (allSolved && sceneImageId && catalogImage_(sceneImageId)) {
+        imageId = sceneImageId;
+        caption = '🌈 Tranh minh họa bài đọc';
+    }
+    const image = catalogImage_(imageId);
+    const src = String(image?.src || '');
+    // Catalog is a public JSON file: accept only local image assets, never remote URLs.
+    const safe = /^assets\/images\/[A-Za-z0-9 _./-]+\.(?:jpe?g|png|webp)$/i.test(src) &&
+                 !src.split('/').some(piece => piece === '..' || piece === '.');
+    return { imageId: safe ? imageId : '', src: safe ? src : '',
+             alt: String(image?.alt_vi || image?.name_vi || 'Tranh minh họa bài học'), caption };
+}
+
 // Reading: chi giai nghia khi hoc sinh tra loi dung. Du lieu IPA va nghia
 // lay truc tiep tu reading_comprehension.readings[].questions[].
 function renderReadingPair_(q){
@@ -2950,6 +3003,7 @@ function renderReadingPair_(q){
     if(!ta1ReadingPairState_[key]) ta1ReadingPairState_[key]={correct:questions.map(()=>false),chosen:questions.map(()=>null)};
     const state=ta1ReadingPairState_[key];
     const allDone=questions.length>0&&questions.every((_,i)=>state.correct[i]===true);
+    const readingIllustration = ta1ReadingIllustration_(q,state);
     const questionsHtml=questions.map((item,qi)=>{
         const revealed=state.correct[qi]===true;
         const opts=(item.options||[]).map((opt,oi)=>{
@@ -2997,7 +3051,15 @@ function renderReadingPair_(q){
                 <div class="text-[11px] md:text-xs font-black text-fuchsia-500 uppercase tracking-wide mb-0.5">${escapeHtml(q.unit_title||'')}</div>
                 <h2 class="text-lg md:text-xl font-black text-pink-700 mb-0.5">${escapeHtml(q.title||'')}</h2>
                 ${allDone&&q.title_vi?`<p class="text-sm md:text-base font-bold text-violet-600 mb-2">${escapeHtml(q.title_vi)}</p>`:''}
-                <p class="text-base md:text-lg font-bold text-slate-800 leading-7 whitespace-pre-line">${escapeHtml(q.passage||'')}</p>
+                <div class="ta1-reading-illustrated-passage">
+                    <figure class="ta1-reading-figure">
+                        <div class="ta1-reading-picture">
+                          ${readingIllustration.src?`<span class="ta1-reading-picture-fallback" aria-hidden="true" style="display:none">📖</span><img src="${escapeHtml(readingIllustration.src)}" alt="${escapeHtml(readingIllustration.alt)}" loading="lazy" decoding="async" onerror="this.style.display='none';if(this.previousElementSibling)this.previousElementSibling.style.display='block'" />`:'<span class="ta1-reading-picture-fallback" aria-hidden="true">📖</span>'}
+                        </div>
+                        <figcaption>${escapeHtml(readingIllustration.caption)}</figcaption>
+                    </figure>
+                    <p class="ta1-reading-passage-text text-base md:text-lg font-bold text-slate-800 leading-7 whitespace-pre-line">${escapeHtml(q.passage||'')}</p>
+                </div>
                 ${allDone&&q.passage_vi?`<div class="mt-2 pt-2 border-t border-pink-100 text-sm md:text-base font-bold text-slate-600 leading-6">${escapeHtml(q.passage_vi)}</div>`:''}
             </section>
             <div class="grid grid-cols-1 gap-2.5">${questionsHtml}</div>
@@ -7034,7 +7096,49 @@ const TA1_ODD_ONE_CSS_ = `
   #class1-english-runtime .l1-oo-choices .option-btn{min-height:59px;padding:10px 12px!important;}
 }
 `;
-function ensureEnglishStyles_(){if(document.getElementById(ENGLISH_MODULE_STYLE_ID_))return;const style=document.createElement('style');style.id=ENGLISH_MODULE_STYLE_ID_;style.textContent=ENGLISH_RUNTIME_CSS_+ENGLISH_HUB_UI_OVERRIDES_+ENGLISH_EXPLORE_ICON_TEXT_CSS_+ENGLISH_UNIFIED_LEARNING_CARDS_CSS_+TA1_REMOVE_LETTER_CSS_+TA1_FILL_MISSING_CSS_+TA1_ODD_ONE_CSS_;document.head.appendChild(style);}
+
+const TA1_READING_ILLUSTRATION_CSS_ = `
+/* Explore 6 Reading Comprehension: catalog pictures support, never replace, text reading. */
+#class1-english-runtime .ta1-reading-illustrated-passage{
+  display:grid;grid-template-columns:160px minmax(0,1fr);
+  gap:14px;align-items:center;margin-top:8px;
+}
+#class1-english-runtime .ta1-reading-figure{
+  min-width:0;display:flex;flex-direction:column;align-items:center;
+  gap:6px;margin:0;text-align:center;
+}
+#class1-english-runtime .ta1-reading-picture{
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+  width:160px;max-width:100%;height:160px;
+  background:#fff;border:1px solid #f9a8d4;border-radius:18px;
+  box-shadow:0 3px 12px rgba(126,34,206,.07);
+}
+#class1-english-runtime .ta1-reading-picture img{
+  width:100%;height:100%;object-fit:contain;object-position:center;display:block;
+}
+#class1-english-runtime .ta1-reading-picture-fallback{font-size:66px;}
+#class1-english-runtime .ta1-reading-figure figcaption{
+  max-width:165px;color:#7e22ce;font-size:13px;
+  font-weight:800;line-height:1.3;
+}
+#class1-english-runtime .ta1-reading-passage-text{
+  min-width:0;margin:0;color:#1e293b;font-size:clamp(17px,1.9vw,20px);
+  font-weight:800;line-height:1.6;overflow-wrap:anywhere;
+}
+@media(max-width:1040px){
+ #class1-english-runtime .ta1-reading-illustrated-passage{
+   grid-template-columns:minmax(0,1fr);gap:11px;
+ }
+ #class1-english-runtime .ta1-reading-picture{width:150px;height:150px;}
+ #class1-english-runtime .ta1-reading-figure figcaption{max-width:250px;}
+}
+@media(max-width:520px){
+ #class1-english-runtime .ta1-reading-picture{width:132px;height:132px;}
+ #class1-english-runtime .ta1-reading-illustrated-passage{gap:9px;}
+ #class1-english-runtime .ta1-reading-figure figcaption{font-size:13px;}
+}
+`;
+function ensureEnglishStyles_(){if(document.getElementById(ENGLISH_MODULE_STYLE_ID_))return;const style=document.createElement('style');style.id=ENGLISH_MODULE_STYLE_ID_;style.textContent=ENGLISH_RUNTIME_CSS_+ENGLISH_HUB_UI_OVERRIDES_+ENGLISH_EXPLORE_ICON_TEXT_CSS_+ENGLISH_UNIFIED_LEARNING_CARDS_CSS_+TA1_REMOVE_LETTER_CSS_+TA1_FILL_MISSING_CSS_+TA1_ODD_ONE_CSS_+TA1_READING_ILLUSTRATION_CSS_;document.head.appendChild(style);}
 function ensureEnglishDependency_(tag,id,url){if(document.getElementById(id))return;const exists=[...document.querySelectorAll(tag)].some(el=>String(tag==='link'?el.href:el.src)===String(new URL(url,document.baseURI).href));if(exists)return;const el=document.createElement(tag);el.id=id;if(tag==='link'){el.rel='stylesheet';el.href=url;}else{el.src=url;el.async=true;}document.head.appendChild(el);}
 function ensureEnglishDependencies_(){ensureEnglishDependency_('link','class1-english-fontawesome','https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');ensureEnglishDependency_('link','class1-english-fonts','https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;700;800&display=swap');ensureEnglishDependency_('script','class1-english-chartjs','https://cdn.jsdelivr.net/npm/chart.js');ensureEnglishDependency_('script','class1-english-confetti','https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js');ensureEnglishDependency_('script','class1-english-html2pdf','https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js');}
 function mountEnglishRuntime_(){if(!englishModuleCtx_?.host)throw new Error('ENGLISH_MODULE_HOST_MISSING');ensureEnglishStyles_();ensureEnglishDependencies_();englishModuleCtx_.host.innerHTML=`<div id="${ENGLISH_MODULE_RUNTIME_ID_}">${ENGLISH_RUNTIME_HTML_}</div>`;englishModuleRoot_=document.getElementById(ENGLISH_MODULE_RUNTIME_ID_);installEnglishInlineBridge_();syncClass1EnglishState_();resetStars();try{updateAutoSpeechButtonUI();}catch(_){}primeEnglishAudio_();englishModuleMounted_=true;}
