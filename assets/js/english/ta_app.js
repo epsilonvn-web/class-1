@@ -497,8 +497,8 @@ const TA1_LEARNING_ICONS_ = Object.freeze(['📘','🌟','🧩','🎯','📚','�
 function ta1LearningIconFor_(index, fallback = '') {
     return fallback || TA1_LEARNING_ICONS_[Math.abs(Number(index) || 0) % TA1_LEARNING_ICONS_.length];
 }
-function ta1LearningCardHtml_({ action, icon='📘', title='', titleVi='', descEn='', descVi='', badge='', index=0, locked=false }) {
-    const palette = ['pink','violet','sky','fuchsia','mint','peach'][Math.abs(Number(index)||0)%6];
+function ta1LearningCardHtml_({ action, icon='📘', title='', titleVi='', descEn='', descVi='', badge='', index=0, locked=false, forcedPalette='' }) {
+    const palette = forcedPalette || ['pink','violet','sky','fuchsia','mint','peach'][Math.abs(Number(index)||0)%6];
     return `<button type="button" onclick="${action}" class="l1-en-learning-card l1-en-learning-card--${palette}${locked?' is-locked':''}" ${locked?'aria-label="Bài học chưa mở khóa"':''}>
       <span class="l1-en-learning-top">
         <span class="l1-en-learning-icon" aria-hidden="true"><span class="l1-en-learning-icon-glyph">${escapeHtml(icon)}</span></span>
@@ -818,7 +818,7 @@ function revealSharedRemoveLetter_(q) {
 function sharedVocabPromptHtml_(q) {
     const n = Number(q?.shared_vocab_activity || 0);
     const meaning = String(q?.vietnamese || '').trim();
-    const meaningHtml = meaning && n !== 5 ? `<div class="mt-2 text-sm md:text-base font-extrabold text-slate-800">Nghĩa: <span class="text-violet-700">${escapeHtml(meaning)}</span></div>` : '';
+    const meaningHtml = meaning && ![3,4,5].includes(n) ? `<div class="mt-2 text-sm md:text-base font-extrabold text-slate-800">Nghĩa: <span class="text-violet-700">${escapeHtml(meaning)}</span></div>` : '';
     if (n === 3) {
         return `<div class="text-sm md:text-base font-black text-slate-900">Remove the extra letter.</div><div class="mt-0.5 text-xs md:text-sm font-bold text-slate-600">Xóa chữ cái thừa.</div><div id="shared-remove-letter-word" class="mt-2 inline-flex items-center justify-center min-h-[56px] px-5 py-2 rounded-2xl bg-fuchsia-50 border border-fuchsia-200 text-3xl md:text-4xl font-black tracking-[0.08em] text-fuchsia-700 gap-[0.02em]">${sharedRemoveLetterWordHtml_(q, false)}</div>${meaningHtml}`;
     }
@@ -857,18 +857,250 @@ function revealSharedFillMissing_(q, animate = false, selectedOpt = '') {
         anim.oncancel = () => { flyer.remove(); finish(); };
     } else { flyer.remove(); finish(); }
 }
+// Muc 4: ket qua chi duoc them vao DOM SAU khi be chon dung.
+// Nhu vay khong de lo IPA, nghia tieng Viet hay tu hoan chinh truoc khi lam bai.
+function sharedFillMissingResultHtml_(q) {
+    const word = String(q?.target_word || '').trim();
+    const ipa = String(q?.ipa || '').replace(/^\/+|\/+$/g, '').trim();
+    const meaning = String(q?.vietnamese || '').trim();
+    return `<div class="l1-fm-success">🌟 Chính xác! Con đã hoàn thành từ.</div>
+        <div class="l1-fm-answer-line">
+          <strong class="l1-fm-correct-word">${escapeHtml(word)}</strong>
+          ${ipa ? `<span class="l1-fm-ipa">/${escapeHtml(ipa)}/</span>` : ''}
+          <button type="button" class="l1-fm-replay" onclick="speakSharedFillMissingTarget_()" aria-label="Nghe lại từ vừa hoàn thành"><i class="fa-solid fa-volume-high" aria-hidden="true"></i> Nghe lại</button>
+        </div>
+        ${meaning ? `<div class="l1-fm-meaning">Nghĩa: <strong>${escapeHtml(meaning)}</strong></div>` : ''}`;
+}
+function speakSharedFillMissingTarget_() {
+    const q = activeQuestionsList[currentQIndex];
+    if (Number(q?.shared_vocab_activity) !== 4 || userAnswers[currentQIndex] !== q.answer) return;
+    speakEnglish(String(q.target_word || ''), 0.9);
+}
+function revealSharedFillMissingResult_(q) {
+    if (Number(q?.shared_vocab_activity) !== 4 || userAnswers[currentQIndex] !== q.answer) return;
+    const result = document.getElementById('shared-fill-missing-result');
+    if (result) result.innerHTML = sharedFillMissingResultHtml_(q);
+}
 function revealSharedOddOneAfterCorrect_(q) {
     if (Number(q?.shared_vocab_activity) !== 5 || userAnswers[currentQIndex] !== q.answer) return;
     document.querySelectorAll('#question-box .shared-odd-meaning').forEach(el => el.classList.remove('hidden'));
     document.getElementById('shared-odd-explanation')?.classList.remove('hidden');
 }
+// Muc 3 - thao tac tren tung o chu (khong phai cau hoi trac nghiem).
+// Chon dua tren vi tri, khong dua tren ky tu: dap an co the chua nhieu chu giong nhau.
+let sharedRemoveFeedbackTimer_ = null;
+let sharedRemoveLastTap_ = { key: '', index: -1, at: 0 };
+
+function sharedRemoveTileGroupsHtml_(q, solved) {
+    const display = String(q?.display_word || '');
+    const extra = Number(q?.extra_index);
+    const wrong = new Set((wrongAttemptsByQ[currentQIndex] || []).map(Number));
+    let group = '', groups = [];
+    const flush = () => {
+        if (group) groups.push(`<span class="l1-rl-letter-group">${group}</span>`);
+        group = '';
+    };
+    [...display].forEach((letter, index) => {
+        if (solved && index === extra) return;
+        if (letter === ' ') { flush(); groups.push('<span class="l1-rl-space" aria-hidden="true"></span>'); return; }
+        if (!/[A-Za-z]/.test(letter)) {
+            group += `<span class="l1-rl-mark" aria-label="Dau ngan cach">${escapeHtml(letter)}</span>`;
+            return;
+        }
+        group += solved
+            ? `<span class="l1-rl-tile is-solved" aria-label="${escapeHtml(letter)}">${escapeHtml(letter)}</span>`
+            : `<button type="button" class="l1-rl-tile ${wrong.has(index) ? 'is-wrong' : ''}" data-remove-pos="${index}" onclick="tapSharedRemoveLetter_(${index})" aria-label="Chon chu ${escapeHtml(letter)}, vi tri ${index + 1}">${escapeHtml(letter)}</button>`;
+    });
+    flush();
+    return groups.join('');
+}
+
+function sharedRemoveIsCurrent_(q, index, nonce) {
+    return !englishModuleDestroyed_
+        && activeQuestionsList[currentQIndex] === q
+        && currentQIndex === index
+        && englishTtsNonce_ === nonce
+        && !document.getElementById('view-quiz')?.classList.contains('hidden');
+}
+
+function queueSharedRemoveFeedback_(q, text, isEnglish, delay) {
+    if (sharedRemoveFeedbackTimer_ !== null) clearTimeout(sharedRemoveFeedbackTimer_);
+    const questionIndex = currentQIndex, nonce = englishTtsNonce_;
+    sharedRemoveFeedbackTimer_ = setTimeout(() => {
+        sharedRemoveFeedbackTimer_ = null;
+        if (!sharedRemoveIsCurrent_(q, questionIndex, nonce)) return;
+        if (isEnglish) speakEnglish(text, 0.9);
+        else speakVietnamese(text, 0.96);
+    }, delay);
+}
+
+function speakSharedRemoveTarget_() {
+    const q = activeQuestionsList[currentQIndex];
+    if (Number(q?.shared_vocab_activity) !== 3 || userAnswers[currentQIndex] !== q.answer) return;
+    speakEnglish(String(q.target_word || ''), 0.9);
+}
+
+function renderSharedRemoveLetterInteractive_(q) {
+    const box = document.getElementById('question-box');
+    if (!box) return false;
+    const step = document.getElementById('practice-step-text');
+    if (step) step.textContent = `${currentQIndex + 1}/${activeQuestionsList.length}`;
+    const solved = userAnswers[currentQIndex] === q.answer;
+    const wrongs = wrongAttemptsByQ[currentQIndex] || [];
+    const extraIndex = Number(q.extra_index);
+    const removed = String(q.display_word || '')[extraIndex] || String(q.answer || '');
+    const word = String(q.target_word || '');
+    const ipa = String(q.ipa || '').replace(/^\/+|\/+$/g, '').trim();
+    const meaning = String(q.vietnamese || '').trim();
+    // IPA va nghia chi co trong DOM sau khi chon DUNG; khong lo dap an tu man choi.
+    const result = solved ? `<div class="l1-rl-result" role="status" aria-live="polite">
+        <div class="l1-rl-removed-label">✂️ Chữ thừa đã được tách ra</div>
+        <div id="shared-remove-moved" class="l1-rl-tile l1-rl-removed-tile" aria-label="Chu thua ${escapeHtml(removed)}">${escapeHtml(removed)}</div>
+        <div class="l1-rl-success">🌟 Tuyệt vời! Con đã chọn đúng.</div>
+        <div class="l1-rl-answer-line"><strong class="l1-rl-correct-word">${escapeHtml(word)}</strong>
+            ${ipa ? `<span class="l1-rl-ipa">/${escapeHtml(ipa)}/</span>` : ''}
+            <button type="button" onclick="speakSharedRemoveTarget_()" class="l1-rl-replay" aria-label="Nghe lai tu ${escapeHtml(word)}"><i class="fa-solid fa-volume-high" aria-hidden="true"></i><span>Nghe lại</span></button></div>
+        ${meaning ? `<div class="l1-rl-meaning">Nghĩa: <strong>${escapeHtml(meaning)}</strong></div>` : ''}
+      </div>` : `<div id="shared-remove-feedback" class="l1-rl-feedback ${wrongs.length ? 'has-errors' : ''}" role="status" aria-live="polite">${wrongs.length ? '🌸 Chưa đúng. Con nghe cô nhắc và thử lại nhé!' : '🐰 Chạm vào ô chữ con nghĩ là bị thừa nhé!'}</div>`;
+    box.innerHTML = `<div class="l1-rl-screen">
+      <div class="l1-rl-content" aria-label="Remove the extra letter">
+        <h3 class="l1-rl-title">Remove the extra letter.</h3>
+        <p class="l1-rl-subtitle">Chạm vào chữ cái thừa để xóa khỏi từ.</p>
+        <div class="l1-rl-letter-line" role="group" aria-label="Cac o chu can quan sat">${sharedRemoveTileGroupsHtml_(q, solved)}</div>
+        ${result}
+      </div>
+    </div>`;
+    updateNavButtons();
+    updateQuizPalletUI();
+    // Khong tu doc tu vung truoc khi tra loi, vi do co the lo ket qua.
+    return true;
+}
+
+function animateSharedRemovedTile_(letter, rect, q) {
+    const destination = document.getElementById('shared-remove-moved');
+    if (!destination || !rect || !document.body || !window.Element?.prototype?.animate) return;
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches) return;
+    const to = destination.getBoundingClientRect();
+    if (!rect.width || !to.width) return;
+    const tokenIndex = currentQIndex;
+    const flyer = document.createElement('span');
+    flyer.className = 'l1-rl-flyer';
+    flyer.textContent = letter;
+    flyer.setAttribute('aria-hidden', 'true');
+    flyer.style.left = `${rect.left}px`;
+    flyer.style.top = `${rect.top}px`;
+    flyer.style.width = `${rect.width}px`;
+    flyer.style.height = `${rect.height}px`;
+    document.body.appendChild(flyer);
+    const dx = to.left - rect.left, dy = to.top - rect.top;
+    try {
+        const animation = flyer.animate([
+            { transform: 'translate(0px, 0px) scale(1)', opacity: 1 },
+            { transform: `translate(${dx}px, ${dy}px) scale(.9)`, opacity: 1 }
+        ], { duration: 430, easing: 'cubic-bezier(.22,.8,.2,1)' });
+        destination.style.visibility = 'hidden';
+        const finish = () => {
+            flyer.remove();
+            if (currentQIndex === tokenIndex && activeQuestionsList[currentQIndex] === q && destination.isConnected)
+                destination.style.visibility = '';
+        };
+        animation.onfinish = finish;
+        animation.oncancel = finish;
+    } catch (_) { flyer.remove(); destination.style.visibility = ''; }
+}
+
+// Pháo hoa ngắn khi bé tìm đúng chữ thừa; không dùng cho các câu/hoạt động khác.
+function playSharedRemoveFireworks_() {
+    // Respect reduced-motion and do not cover or block learning controls.
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches) return;
+    const row = document.querySelector('#question-box .l1-rl-letter-line');
+    const rect = row?.getBoundingClientRect?.();
+    const width = Math.max(1, Number(window.innerWidth) || 1);
+    const height = Math.max(1, Number(window.innerHeight) || 1);
+    const y = rect ? Math.max(0.24, Math.min(0.7, (rect.top + rect.height / 2) / height)) : 0.43;
+    const cx = rect ? Math.max(0.3, Math.min(0.7, (rect.left + rect.width / 2) / width)) : 0.5;
+    const colors = ['#ec4899', '#a855f7', '#facc15', '#34d399', '#38bdf8'];
+    const leftX = Math.max(0.12, cx - 0.22);
+    const rightX = Math.min(0.88, cx + 0.22);
+    if (typeof window.confetti === 'function') {
+        try {
+            const settings = { particleCount: 38, spread: 60, startVelocity: 32,
+                gravity: 1.3, ticks: 95, scalar: 0.88, zIndex: 9998,
+                disableForReducedMotion: true, colors };
+            window.confetti({ ...settings, angle: 65, origin: { x: leftX, y } });
+            window.confetti({ ...settings, angle: 115, origin: { x: rightX, y } });
+            return;
+        } catch (_) { /* If the CDN is unavailable, use the light CSS fallback. */ }
+    }
+    if (!document.body) return;
+    const layer = document.createElement('div');
+    layer.className = 'l1-rl-fireworks-layer';
+    layer.setAttribute('aria-hidden', 'true');
+    for (const originX of [leftX, rightX]) {
+        for (let i = 0; i < 12; i++) {
+            const particle = document.createElement('span');
+            particle.className = 'l1-rl-fireworks-spark';
+            const angle = (i / 12) * Math.PI * 2;
+            const distance = 43 + (i % 3) * 17;
+            particle.style.left = `${Math.round(originX * width)}px`;
+            particle.style.top = `${Math.round(y * height)}px`;
+            particle.style.backgroundColor = colors[i % colors.length];
+            particle.style.setProperty('--l1-rl-dx', `${Math.round(Math.cos(angle) * distance)}px`);
+            particle.style.setProperty('--l1-rl-dy', `${Math.round(Math.sin(angle) * distance)}px`);
+            layer.appendChild(particle);
+        }
+    }
+    document.body.appendChild(layer);
+    setTimeout(() => layer.remove(), 950);
+}
+
+function tapSharedRemoveLetter_(position) {
+    const q = activeQuestionsList[currentQIndex];
+    if (!q || Number(q.shared_vocab_activity) !== 3 || userAnswers[currentQIndex] !== undefined) return;
+    const display = String(q.display_word || '');
+    const pos = Number(position);
+    if (!Number.isInteger(pos) || pos < 0 || pos >= display.length || !/[A-Za-z]/.test(display[pos])) return;
+    const key = String(q.question_id || currentQIndex);
+    const now = Date.now();
+    if (sharedRemoveLastTap_.key === key && sharedRemoveLastTap_.index === pos && now - sharedRemoveLastTap_.at < 280) return;
+    sharedRemoveLastTap_ = { key, index: pos, at: now };
+    // Mot luong TTS: huy loi nhac/cu phat cu truoc khi xu ly luot moi.
+    stopSpeaking();
+    if (sharedRemoveFeedbackTimer_ !== null) { clearTimeout(sharedRemoveFeedbackTimer_); sharedRemoveFeedbackTimer_ = null; }
+    if (pos === Number(q.extra_index)) {
+        const tile = document.querySelector(`#question-box [data-remove-pos="${pos}"]`);
+        const rect = tile?.getBoundingClientRect?.() || null;
+        userAnswers[currentQIndex] = q.answer;
+        score += (q.diem ?? 0.5);
+        starGreenCount++;
+        const count = document.getElementById('star-green-count');
+        if (count) count.textContent = starGreenCount;
+        renderSharedRemoveLetterInteractive_(q);
+        animateSharedRemovedTile_(display[pos], rect, q);
+        playSharedRemoveFireworks_();
+        playAudio('correct');
+        queueSharedRemoveFeedback_(q, String(q.target_word || ''), true, 390);
+    } else {
+        if (!wrongAttemptsByQ[currentQIndex]) wrongAttemptsByQ[currentQIndex] = [];
+        if (!wrongAttemptsByQ[currentQIndex].includes(pos)) {
+            wrongAttemptsByQ[currentQIndex].push(pos);
+            starRedCount++;
+            const count = document.getElementById('star-red-count');
+            if (count) count.textContent = starRedCount;
+        }
+        renderSharedRemoveLetterInteractive_(q);
+        playAudio('wrong');
+        queueSharedRemoveFeedback_(q, 'Chưa đúng, con thử lại nhé!', false, 310);
+    }
+}
+
 function renderSharedVocabActivityQuestion_(q) {
     const n = Number(q?.shared_vocab_activity || 0);
     const config = TA1_SHARED_VOCAB_ACTIVITY_CONFIG_[n];
     if (!config) return false;
+    if (n === 3) return renderSharedRemoveLetterInteractive_(q);
     const stepEl = document.getElementById('practice-step-text');
     if (stepEl) stepEl.textContent = `${currentQIndex + 1}/${activeQuestionsList.length}`;
-    const g = getVocabularyLevelGroup_(getVocabularyCurriculumLevel_(q));
     const options = Array.isArray(q.options) ? q.options : [];
     const optionHtml = options.map((opt, idx) => {
         const letter = String.fromCharCode(65 + idx);
@@ -878,19 +1110,60 @@ function renderSharedVocabActivityQuestion_(q) {
     }).join('');
     const box = document.getElementById('question-box');
     if (!box) return false;
-    const explanation = n === 5 && q.hint_vi
-        ? `<div id="shared-odd-explanation" class="hidden mt-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-left text-sm md:text-base font-bold text-emerald-800">✅ ${escapeHtml(q.hint_vi)}</div>`
-        : '';
-    box.innerHTML = `<div class="w-full max-w-4xl mx-auto px-1 md:px-2"><div class="flex items-center justify-center gap-2 flex-wrap mb-2"><span class="px-3 py-1 rounded-full bg-pink-50 border border-pink-200 text-pink-700 font-black text-xs">${config.icon} ${escapeHtml(config.title)}</span>${g ? `<span class="px-3 py-1 rounded-full bg-violet-50 border border-violet-200 text-violet-700 font-black text-xs">Level ${g.level} · ${escapeHtml(g.name)}</span>` : ''}<button onclick="speakCurrentQuestion()" class="w-8 h-8 rounded-full bg-sky-100 text-sky-600 hover:bg-sky-200" title="Listen"><i class="fa-solid fa-volume-high text-xs"></i></button></div><section class="rounded-3xl border border-pink-200 bg-white/80 px-4 py-4 md:py-5 text-center shadow-sm">${sharedVocabPromptHtml_(q)}</section><div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mt-3">${optionHtml}</div>${explanation}</div>`;
-    restoreQuestionState(q);
-    if (userAnswers[currentQIndex] === q.answer) {
-        revealSharedRemoveLetter_(q);
-        revealSharedFillMissing_(q, false, q.answer);
-        revealSharedOddOneAfterCorrect_(q);
+    if (n === 4) {
+        const word = String(q.target_word || '');
+        const pos = Number(q.missing_index);
+        const solved = userAnswers[currentQIndex] === q.answer;
+        const before = Number.isInteger(pos) && pos >= 0 && pos < word.length ? word.slice(0,pos) : '';
+        const after = Number.isInteger(pos) && pos >= 0 && pos < word.length ? word.slice(pos+1) : '';
+        // Only a blank slot is visible before the right answer; never expose IPA or meaning.
+        box.innerHTML = `<div class="l1-fm-screen">
+          <h3 class="l1-fm-title">Complete the word.</h3>
+          <p class="l1-fm-subtitle">Hoàn thành từ.</p>
+          <div class="l1-fm-word" role="group" aria-label="Từ còn thiếu một chữ cái">
+            <span>${escapeHtml(before)}</span><span id="shared-vocab-missing-slot" class="l1-fm-missing-slot ${solved ? 'is-solved' : ''}">${solved ? escapeHtml(q.answer) : '_'}</span><span>${escapeHtml(after)}</span>
+          </div>
+          <div class="l1-fm-choices grid grid-cols-1 sm:grid-cols-2 gap-2.5">${optionHtml}</div>
+          <div id="shared-fill-missing-result" class="l1-fm-result" role="status" aria-live="polite">${solved ? sharedFillMissingResultHtml_(q) : ''}</div>
+        </div>`;
+        restoreQuestionState(q);
+        updateNavButtons();
+        updateQuizPalletUI();
+        if (autoSpeechEnabled) {
+            const openedIndex = currentQIndex, openedNonce = englishTtsNonce_;
+            setTimeout(() => {
+                if (!englishModuleDestroyed_ && activeQuestionsList[currentQIndex] === q
+                    && currentQIndex === openedIndex && englishTtsNonce_ === openedNonce
+                    && !document.getElementById('view-quiz')?.classList.contains('hidden'))
+                    speakCurrentQuestion();
+            }, 100);
+        }
+        return true;
     }
+    // Explore 5: the shared sub-banner already shows the activity and level.
+    // Keep the original multiple-choice questions, their IPA and reveal-on-success feedback.
+    const explanation = q.hint_vi
+        ? `<div id="shared-odd-explanation" class="l1-oo-explanation hidden" role="status">✅ ${escapeHtml(q.hint_vi)}</div>`
+        : '';
+    box.innerHTML = `<div class="l1-oo-screen">
+        <h3 class="l1-oo-title">Find the odd word.</h3>
+        <p class="l1-oo-subtitle">Tìm từ khác nhóm.</p>
+        <div class="l1-oo-choices grid grid-cols-1 sm:grid-cols-2 gap-2.5">${optionHtml}</div>
+        ${explanation}
+    </div>`;
+    restoreQuestionState(q);
+    if (userAnswers[currentQIndex] === q.answer) revealSharedOddOneAfterCorrect_(q);
     updateNavButtons();
     updateQuizPalletUI();
-    if (autoSpeechEnabled) setTimeout(() => speakCurrentQuestion(), 100);
+    if (autoSpeechEnabled) {
+        const openedIndex = currentQIndex, openedNonce = englishTtsNonce_;
+        setTimeout(() => {
+            if (!englishModuleDestroyed_ && activeQuestionsList[currentQIndex] === q
+                && currentQIndex === openedIndex && englishTtsNonce_ === openedNonce
+                && !document.getElementById('view-quiz')?.classList.contains('hidden'))
+                speakCurrentQuestion();
+        }, 100);
+    }
     return true;
 }
 function setVocabularyStudyMode(mode) {
@@ -1339,7 +1612,7 @@ async function fetchAllQuestionsFlat() {
     if (allQuestionsFlatCache) return allQuestionsFlatCache;
     const { sectionsById } = await loadSemesterData();
     const rawQuestions = Object.values(sectionsById).flatMap(sec => sec.rawQuestions);
-    allQuestionsFlatCache = rawQuestions.map(normalizeQuestion).filter(Boolean);
+    allQuestionsFlatCache = rawQuestions.map(normalizeQuestion).filter(q => q && q.render_style !== 'alphabet_ipa_practice');
     return allQuestionsFlatCache;
 }
 
@@ -1660,42 +1933,48 @@ async function openAlphabetIPA() {
     activeTopicId = null; activeExamContext = null; activeRoadmapContext = null; pendingTopicQuiz = null;
     inAlphaIpaFlow = true;
     updateNavTabs("1. Alphabet & IPA", "🔤", null);
-    showLoadingOverlay("Đang tải bảng chữ cái & ngữ âm...");
+    showLoadingOverlay("Đang tải bảng chữ cái và ngữ âm...");
     try {
-        await loadAlphabetIPAData();
-        let phonicsCount = 0;
-        try {
-            const flat = await fetchAllQuestionsFlat();
-            phonicsCount = flat.filter(q => Math.floor(Number(q.sub_topic)) === 1).length;
-        } catch (e) {}
+        await Promise.all([loadAlphabetIPAData(), loadSemesterData()]);
         hideLoadingOverlay();
-        renderAlphaIPAMenu(phonicsCount);
-    } catch (err) {
+        renderAlphaIPAMenu();
+    } catch (_) {
         hideLoadingOverlay();
-        alert('Không tải được dữ liệu Alphabet & IPA: ' + err.message);
+        alert('Chưa tải được phần Alphabet & IPA. Con thử lại sau nhé!');
     }
 }
 
-// Màn hình chọn 1 trong 3 mục nhỏ — dùng ĐÚNG khung "view-lecture" chuẩn (đồng bộ với mọi chuyên mục khác),
-// chỉ khác ở chỗ 3 nút bấm dẫn sang 3 màn hình riêng (Alphabet, IPA, Phonics Matcher) thay vì bốc câu hỏi.
-function renderAlphaIPAMenu(phonicsCount = 0) {
+// Four independent choices: children can learn Alphabet without having to learn IPA.
+function renderAlphaIPAMenu() {
     document.getElementById('lecture-title').textContent = '1. Alphabet & IPA';
-    document.getElementById('lecture-content').textContent = 'Chào con, đây là góc làm quen với bảng chữ cái và ngữ âm tiếng Anh! Con hãy chọn 1 mục nhỏ bên dưới để bắt đầu nhé.';
-    document.getElementById('view-lecture').dataset.audioText = 'Chào con, đây là góc làm quen với bảng chữ cái và ngữ âm tiếng Anh! Con hãy chọn 1 mục nhỏ bên dưới để bắt đầu nhé.';
-    const items = [
-        { title:'1. Alphabet (A-Z)', vi:'Bảng chữ cái',en:'Letters and sounds', desc:'Nhận biết và nghe phát âm', icon:'🔤',badge:'26 chữ',action:'openAlphabetMenu(0)' },
-        { title:'2. IPA', vi:'Bảng phiên âm',en:'44 English sounds', desc:'Luyện phát âm từng âm',icon:'🗣️',badge:'44 âm',action:'openIPAMenu(0)' },
-        { title:'3. Phonics Matcher', vi:'Ghép âm và chữ',en:'Sound matching',desc:'Ghép âm và luyện tập',icon:'🎯',badge:`${phonicsCount} câu`,action:'openPhonicsMatcher()' }
-    ];
+    const introduction = 'Cô Thỏ Hồng 🐰🌸 mời con học 26 chữ cái trước, rồi luyện nghe và ghi nhớ nhé!\nBảng IPA và phần luyện IPA là lựa chọn nâng cao, con có thể học khi đã sẵn sàng.';
+    document.getElementById('lecture-content').textContent = introduction;
+    document.getElementById('view-lecture').dataset.audioText = introduction;
     const list = document.getElementById('lecture-subtopics-list');
-    list.innerHTML = items.map((it,i)=>ta1LearningCardHtml_({action:it.action,icon:it.icon,title:it.title,titleVi:it.vi,descEn:it.en,descVi:it.desc,badge:it.badge,index:i})).join('');
-    setSubtopicGridColumns(items.length);
+    const items = [
+        { title:'1.1 Alphabet (A–Z)', vi:'Bảng chữ cái', en:'26 English letters', desc:'Học tên và cách đọc chữ cái', icon:'🔠', badge:'26 chữ', action:'openAlphabetMenu(0)', palette:'pink' },
+        { title:'1.2 IPA Sounds', vi:'Bảng ngữ âm IPA', en:'44 English sounds', desc:'Học ký hiệu và cách nhận biết âm', icon:'🗣️', badge:'44 âm', action:'openIPAMenu(0)', palette:'sky' },
+        { title:'1.3 Alphabet Practice', vi:'Luyện bảng chữ cái', en:'Listen · Read · Sequence', desc:'Nghe, chọn phiên âm và điền chữ', icon:'🎧', badge:'78 câu', action:'openAlphabetPractice()', palette:'violet' },
+        { title:'1.4 IPA Practice', vi:'Luyện ký hiệu âm', en:'Identify IPA symbols', desc:'Nghe từ mẫu và chọn ký hiệu âm', icon:'🔊', badge:'44 câu', action:'openIPAPractice()', palette:'mint' }
+    ];
+    list.innerHTML = items.map((it,i) => ta1LearningCardHtml_({
+        action:it.action,icon:it.icon,title:it.title,titleVi:it.vi,
+        descEn:it.en,descVi:it.desc,badge:it.badge,index:i,forcedPalette:it.palette
+    })).join('');
+    list.dataset.alphabetIpaMenu = 'true';
+    setSubtopicGridColumns(4);
     document.getElementById('wrap-mix-all-subtopics').classList.add('hidden');
     updateNavTabs('1. Alphabet & IPA','🔤',null);
     switchAppView('view-lecture');
 }
 
 // ---------- 1.1 ALPHABET A-Z ----------
+function alphabetIpaAmerican_(letter, sourceIpa = '') {
+    if (letter === 'O') return '/oʊ/';
+    if (letter === 'Z') return '/ziː/';
+    return String(sourceIpa || '');
+}
+
 function openAlphabetMenu(index = 0) {
     stopSpeaking();
     inAlphaIpaFlow = true;
@@ -1710,7 +1989,7 @@ function openAlphabetMenu(index = 0) {
         const isActive = idx === currentAlphabetIndex;
         return `<button onclick="openAlphabetMenu(${idx})" class="l1-en-learning-letter-key pastel-btn flex flex-col items-center justify-center rounded-xl p-1.5 shadow-sm cursor-pointer ${isActive ? 'bg-pink-500 text-white border-2 border-pink-600 ring-2 ring-pink-200' : 'bg-white text-gray-700 border border-gray-200 hover:bg-pink-50 hover:border-pink-300'} min-w-[52px] min-h-[52px]">
             <span class="text-base font-black">${alpha.letter}</span>
-            <span class="font-bold ${isActive ? 'text-white' : 'text-pink-600'} text-xs md:text-sm">${alpha.ipaName}</span>
+            <span class="font-bold ${isActive ? 'text-white' : 'text-pink-600'} text-xs md:text-sm">${escapeHtml(alphabetIpaAmerican_(alpha.letter, alpha.ipaName))}</span>
         </button>`;
     }).join('');
 
@@ -1737,7 +2016,7 @@ function openAlphabetMenu(index = 0) {
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 items-stretch">
                     <div onclick="speakAlphabetLetter(${index})" class="card-hover bg-white border-2 border-pink-400 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer shadow-sm bg-gradient-to-b from-white to-pink-50">
                         <div class="text-5xl md:text-6xl font-black text-pink-600 mb-1">${item.name}</div>
-                        <div class="text-xs font-extrabold text-gray-600 mb-2">Cách đọc: <b class="text-purple-600 text-lg">${item.ipaName}</b></div>
+                        <div class="text-xs font-extrabold text-gray-600 mb-2">Cách đọc: <b class="text-purple-600 text-lg">${escapeHtml(alphabetIpaAmerican_(item.letter, item.ipaName))}</b></div>
                         <span class="bg-pink-100 text-pink-700 text-[10px] font-black px-2.5 py-0.5 rounded-full border border-pink-200">👆 Tap to Listen</span>
                     </div>
                     ${wordCard(item.word1, 1)}${wordCard(item.word2, 2)}${wordCard(item.word3, 3)}
@@ -1748,7 +2027,7 @@ function openAlphabetMenu(index = 0) {
             </div>
             <div class="flex items-center justify-center space-x-3 mt-1">
                 <button onclick="openAlphabetMenu(${index - 1})" class="pastel-btn bg-sky-50 hover:bg-sky-100 text-sky-600 border-2 border-sky-300 font-black text-xs md:text-sm px-4 py-2 rounded-xl shadow-sm flex items-center space-x-1 cursor-pointer ${index <= 0 ? 'opacity-40 pointer-events-none' : ''}"><i class="fa-solid fa-arrow-left"></i><span>Previous</span></button>
-                <button onclick="openPhonicsMatcher()" class="pastel-btn bg-amber-400 hover:bg-amber-500 text-amber-900 border-2 border-amber-500 font-black text-xs md:text-sm px-5 py-2 rounded-xl shadow-sm flex items-center gap-1.5 cursor-pointer"><span>🎯 Phonics Quiz</span></button>
+                <button onclick="openAlphabetPractice()" class="pastel-btn bg-amber-400 hover:bg-amber-500 text-amber-900 border-2 border-amber-500 font-black text-xs md:text-sm px-5 py-2 rounded-xl shadow-sm flex items-center gap-1.5 cursor-pointer"><span>🎧 Alphabet Practice</span></button>
                 <button onclick="openAlphabetMenu(${index + 1})" class="pastel-btn bg-emerald-500 hover:bg-emerald-600 text-white font-black text-xs md:text-sm px-5 py-2 rounded-xl shadow-sm flex items-center space-x-1 cursor-pointer ${index >= ALPHABET_DATA.length - 1 ? 'opacity-40 pointer-events-none' : ''}"><span>Next</span><i class="fa-solid fa-arrow-right"></i></button>
             </div>
         </div>`;
@@ -1800,7 +2079,7 @@ function openIPAMenu(index = 0) {
                 <div class="flex items-center justify-between flex-wrap gap-1 mb-1">
                     <span class="text-xs font-black bg-pink-100 text-pink-700 px-3 py-1 rounded-xl shadow-sm">Âm ${currentIPAIndex + 1} / ${IPA_DATA.length} IPA</span>
                     <h2 class="text-base md:text-xl font-black text-pink-600 flex items-center justify-center gap-1.5"><span>🗣️</span><span>BẢNG PHIÊN ÂM QUỐC TẾ IPA</span><span>🎙️</span></h2>
-                    <button onclick="openPhonicsMatcher()" class="pastel-btn bg-amber-400 hover:bg-amber-500 text-amber-900 border-2 border-amber-500 text-xs font-black px-3.5 py-1 rounded-xl shadow-sm flex items-center gap-1 cursor-pointer"><span>🎯 IPA Quiz</span></button>
+                    <button onclick="openIPAPractice()" class="pastel-btn bg-amber-400 hover:bg-amber-500 text-amber-900 border-2 border-amber-500 text-xs font-black px-3.5 py-1 rounded-xl shadow-sm flex items-center gap-1 cursor-pointer"><span>🔊 IPA Practice</span></button>
                 </div>
                 <p class="text-xs font-bold text-gray-500">Bấm vào bất kỳ âm IPA nào để nghe phát âm chuẩn và xem hướng dẫn chi tiết:</p>
             </div>
@@ -1842,24 +2121,294 @@ function openIPAMenu(index = 0) {
         </div>`;
     speakIPASound(currentIPAIndex);
 }
-function speakIPASound(index) { const item = IPA_DATA[index]; if (item) speakEnglish(item.soundWord || item.ipa); }
+function speakIPASound(index) { const item = IPA_DATA[index]; const word = item?.soundWord || item?.words?.[0]?.word; if (word) speakEnglish(word); }
 function speakIPAGuideVietnamese(index) { const item = IPA_DATA[index]; if (item) speakVietnamese(item.guide || ''); }
 function speakIPAExampleWord(index, wordIdx) { const item = IPA_DATA[index]; const w = item.words && item.words[wordIdx]; if (w) speakEnglish(w.word); }
 
-// ---------- 1.3 PHONICS MATCHER (dùng đúng ngân hàng câu hỏi thật, chuyên mục 1) ----------
-function openPhonicsMatcher() {
-    stopSpeaking();
-    showLoadingOverlay("Đang tải Phonics Matcher...");
-    fetchAllQuestionsFlat().then(flat => {
+// ---------- 1.3 ALPHABET PRACTICE / 1.4 IPA PRACTICE ----------
+function openPhonicsMatcher() { return openAlphabetPractice(); } // legacy internal navigation
+async function alphaIpaPracticePool_(subCode) {
+    const { sectionsById } = await loadSemesterData();
+    const raw = sectionsById[1]?.rawQuestions || [];
+    return raw.filter(q => String(q.sub_code || q.sub) === subCode)
+        .map(normalizeQuestion).filter(q => q && q.render_style === 'alphabet_ipa_practice');
+}
+
+async function openAlphabetPractice() {
+    stopSpeaking(); inAlphaIpaFlow = true;
+    showLoadingOverlay('Đang tải Alphabet Practice...');
+    try {
+        await loadAlphabetIPAData();
+        const questions = await alphaIpaPracticePool_('1.3');
+        if (questions.length !== 78) throw new Error('ALPHABET_QUESTION_COUNT');
+        const groups = ['letter_listen','letter_name_ipa','letter_sequence'];
+        if (!groups.every(type => questions.filter(q=>q.phonics_kind===type).length===26)) throw new Error('ALPHABET_GROUP_COUNT');
+        // Shuffle all 78 questions together once per new practice attempt.
+        // Keep the same order when the learner moves Previous/Next in this attempt.
+        const shuffledQuestions = shuffleArray(questions);
+        activeTopicId=1; activeExamContext=null;activeRoadmapContext=null;pendingTopicQuiz=null;
+        practiceCycleRawPool=[...questions];
+        updateNavTabs('1. Alphabet & IPA','🔤','1.3 Alphabet Practice');
         hideLoadingOverlay();
-        const questions = shuffleArray(flat.filter(q => Math.floor(Number(q.sub_topic)) === 1));
-        if (!questions.length) return alert('Đang cập nhật thêm câu hỏi cho Phonics Matcher, bé quay lại sau nhé!');
-        activeTopicId = 1;
-        pendingTopicQuiz = null; activeExamContext = null; activeRoadmapContext = null;
-        practiceCycleRawPool = [...questions];
-        updateNavTabs("1. Alphabet & IPA", "🔤", "1.3 Phonics Matcher");
-        startTopicQuiz(1, '1.3 Phonics Matcher', questions, '1.3 Phonics Matcher');
-    }).catch(err => { hideLoadingOverlay(); alert('Lỗi tải Phonics Matcher: ' + err.message); });
+        startTopicQuiz(1,'1.3 Alphabet Practice',shuffledQuestions,'1.3 Alphabet Practice');
+    } catch (_) {
+        hideLoadingOverlay();
+        alert('Chưa tải được phần luyện bảng chữ cái. Con thử lại sau nhé!');
+    }
+}
+
+function ipaPracticeChoices_(itemIndex) {
+    const target = IPA_DATA[itemIndex];
+    const answer = String(target?.ipa || '').trim();
+    const group = String(target?.type || '');
+    const near = IPA_DATA.map((x,i)=>({x,i})).filter(o=>o.i!==itemIndex&&o.x?.ipa&&o.x.type===group);
+    const far = IPA_DATA.map((x,i)=>({x,i})).filter(o=>o.i!==itemIndex&&o.x?.ipa&&o.x.type!==group);
+    const sample = [...near,...far];
+    // Rotate alternatives without randomizing the target across rerenders.
+    const shift = sample.length ? itemIndex % sample.length : 0;
+    const rotated = [...sample.slice(shift),...sample.slice(0,shift)];
+    const options = [answer];
+    for (const entry of rotated) {
+        const symbol=String(entry.x.ipa).trim();
+        if (!options.includes(symbol)) options.push(symbol);
+        if (options.length===4) break;
+    }
+    if (options.length!==4) throw new Error('IPA_OPTIONS_INCOMPLETE');
+    const rotate = (itemIndex * 7 + 1) % 4;
+    return [...options.slice(rotate),...options.slice(0,rotate)];
+}
+function ipaPracticeQuestion_(q) {
+    const i = Number(q.ipa_index);
+    if (!Number.isInteger(i)||i<0||i>=IPA_DATA.length) return null;
+    const item = IPA_DATA[i];
+    if (!item?.ipa || !(item?.soundWord || item?.words?.[0]?.word)) return null;
+    const choices = ipaPracticeChoices_(i);
+    return {...q,options:choices,answer:String(item.ipa).trim(),
+        ipa_label:String(item.name||'English sound'),
+        ipa_example:String(item.soundWord||item.words?.[0]?.word||''),
+        ipa_guide:String(item.guide||''),
+        option_sounds:choices.map(sym=>{const snd=IPA_DATA.find(x=>String(x?.ipa||'').trim()===sym);return String(snd?.soundWord||snd?.words?.[0]?.word||'');})};
+}
+async function openIPAPractice() {
+    stopSpeaking(); inAlphaIpaFlow=true;
+    showLoadingOverlay('Đang tải IPA Practice...');
+    try {
+        await loadAlphabetIPAData();
+        if (IPA_DATA.length!==44) throw new Error('IPA_SOUNDS_INCOMPLETE');
+        const raw = await alphaIpaPracticePool_('1.4');
+        const questions = raw.map(ipaPracticeQuestion_).filter(Boolean);
+        if (questions.length!==44 || questions.some(q=>q.options.length!==4||!q.options.includes(q.answer))) throw new Error('IPA_QUESTION_COUNT');
+        activeTopicId=1;activeExamContext=null;activeRoadmapContext=null;pendingTopicQuiz=null;
+        practiceCycleRawPool=[...questions];
+        updateNavTabs('1. Alphabet & IPA','🔤','1.4 IPA Practice');
+        hideLoadingOverlay();
+        startTopicQuiz(1,'1.4 IPA Practice',questions,'1.4 IPA Practice');
+    } catch (_) {
+        hideLoadingOverlay();
+        alert('Chưa tải được phần luyện IPA. Con thử lại sau nhé!');
+    }
+}
+
+function speakAlphaIPAPracticePrompt_() {
+    const q=activeQuestionsList[currentQIndex];
+    if (!q || q.render_style!=='alphabet_ipa_practice') return;
+    const kind=q.phonics_kind;
+    if (kind==='ipa_symbol') { if (q.ipa_example) speakEnglish(q.ipa_example,0.88); return; }
+    if (kind==='letter_listen') { if (q.audio_text) speakEnglish(q.audio_text,0.88); else if (q.letter_target) speakEnglish('The letter '+q.letter_target+'.',0.88); return; }
+    if (q.letter_target) speakEnglish('The letter '+q.letter_target+'.',0.88);
+}
+function alphabetIPAOptionSpeak_(q,selectedIndex) {
+    const kind=q.phonics_kind;
+    const options=q.options||[];
+    if (!Number.isInteger(selectedIndex)||selectedIndex<0||selectedIndex>=options.length)return;
+    let text='';
+    if(kind==='letter_name_ipa') text=String(q.option_letters?.[selectedIndex]||'');
+    else if(kind==='ipa_symbol')text=String(q.option_sounds?.[selectedIndex]||'');
+    else text=String(options[selectedIndex]||'');
+    // IPA is visual notation only. Spell out a letter in context to force its name,
+    // not the English article "a" or a word that happens to share the letter.
+    if (text) speakEnglish(kind==='ipa_symbol' ? text : 'The letter '+text+'.',0.88);
+}
+
+function alphabetPracticeInstruction_(kind) {
+    if(kind==='letter_listen')return ['🎧 Listen and choose','Nghe tên chữ cái rồi chọn đáp án'];
+    if(kind==='letter_name_ipa')return ['🔠 Choose the IPA','Nhìn chữ cái và chọn phiên âm'];
+    if(kind==='letter_sequence')return ['🧩 Complete the alphabet','Điền chữ cái còn thiếu theo thứ tự A–Z'];
+    return ['🔊 Identify the IPA symbol','Nghe từ mẫu và chọn ký hiệu âm'];
+}
+function alphabetPracticeHint_(q) {
+    if(q.phonics_kind==='ipa_symbol') {
+        const guide=String(q.ipa_guide||'').trim();
+        return `🎉 Chính xác! Âm ${escapeHtml(q.answer)} · ${escapeHtml(q.ipa_label||'')}. ${escapeHtml(guide)}`;
+    }
+    if (q.hint_vi) return `🐰🌸 ${escapeHtml(String(q.hint_vi))}`;
+    const ipa=alphabetIpaAmerican_(q.letter_target,q.ipa_name);
+    if(q.phonics_kind==='letter_sequence') {
+        const seq=(q.sequence_letters||[]).map(x=>x===null?q.letter_target:x).join(' – ');
+        return `🐰🌸 Giỏi lắm! Chữ còn thiếu là ${escapeHtml(q.letter_target)}. Dãy đúng: ${escapeHtml(seq)}.`;
+    }
+    return `🐰🌸 Giỏi lắm! Tên chữ ${escapeHtml(q.letter_target)} được phiên âm là ${escapeHtml(ipa)}.`;
+}
+function renderAlphabetPracticeClass2_(q) {
+    const box = document.getElementById('question-box');
+    if (!box) return;
+    const kind = q.phonics_kind;
+    const choices = Array.isArray(q.options) ? q.options : [];
+    if (choices.length !== 4) { box.textContent = 'Câu hỏi đang được cập nhật.'; return; }
+    const solved = userAnswers[currentQIndex] === q.answer;
+    const wrong = new Set(wrongAttemptsByQ[currentQIndex] || []);
+    const letter = String(q.letter_target || '');
+    // TA2-style centered prompt; never print the hidden answer or its IPA in the stem.
+    let visual = '';
+    if (kind === 'letter_listen') {
+        visual = `<span class="l1-c2-headphone" aria-hidden="true">🎧</span>`;
+    } else if (kind === 'letter_name_ipa') {
+        visual = `<span class="l1-c2-bigletter">${escapeHtml(letter)}</span>
+          ${solved ? `<span class="l1-c2-reveal-ipa">${escapeHtml(alphabetIpaAmerican_(letter, q.ipa_name))}</span>` : ''}`;
+    } else if (kind === 'letter_sequence') {
+        const row = (q.sequence_letters || []).map(ch => {
+            const text = ch === null ? (solved ? letter : '?') : String(ch);
+            return `<span class="l1-c2-seq-cell ${ch === null ? 'is-gap' : ''}">${escapeHtml(text)}</span>`;
+        }).join('');
+        visual = `<div class="l1-c2-sequence" role="group" aria-label="Alphabet sequence">${row}</div>`;
+    }
+    // Display exactly the reference questions and Vietnamese support text.
+    const en = String(q.question_text_en || q.question_text || '');
+    const vi = String(q.question_text_vi || '');
+    const listenBtn = (kind === 'letter_listen' || (kind === 'letter_name_ipa' && solved))
+        ? `<button type="button" class="l1-c2-listen" onclick="speakAlphaIPAPracticePrompt_()">
+             <i class="fa-solid fa-volume-high" aria-hidden="true"></i> Listen</button>` : '';
+    const optionHtml = choices.map((choice, i) => {
+        const correct = choice === q.answer;
+        const cls = solved && correct ? 'is-correct' : ((!solved && wrong.has(choice)) ? 'is-wrong' : '');
+        let label = `<span class="l1-c2-choice-text">${escapeHtml(choice)}</span>`;
+        if (kind === 'letter_listen' && solved && correct) {
+            label += `<span class="l1-c2-ipa-tag">${escapeHtml(alphabetIpaAmerican_(letter,q.ipa_name))}</span>`;
+        } else if (kind === 'letter_name_ipa' && solved) {
+            // Following TA2 hints: reveal the identifying letters only AFTER answer.
+            label += `<span class="l1-c2-choice-letter">${escapeHtml(q.option_letters?.[i] || '')}</span>`;
+        } else if (kind === 'letter_sequence') {
+            const symbol = (q.options_ipa || [])[i] || '';
+            label = `<span class="l1-c2-choice-text l1-c2-choice-sequence"><strong>${escapeHtml(choice)}</strong><span>${escapeHtml(symbol)}</span></span>`;
+        }
+        const speaker = (kind === 'letter_sequence' || (kind === 'letter_name_ipa' && solved))
+            ? '<i class="fa-solid fa-volume-high l1-c2-choice-speaker" aria-hidden="true"></i>' : '';
+        return `<button type="button" class="l1-c2-choice ${cls}" onclick="checkAlphaIPAPracticeAnswer_(${i})" aria-label="${String.fromCharCode(65+i)}. ${escapeHtml(choice)}">
+             <span class="l1-c2-answer-index">${String.fromCharCode(65+i)}.</span>${label}${speaker}</button>`;
+    }).join('');
+    const feedback = solved
+        ? `<div class="l1-c2-feedback is-success" role="status">${alphabetPracticeHint_(q)}</div>`
+        : wrong.size ? '<div class="l1-c2-feedback is-retry" role="status">🌸 Chưa đúng rồi! Con thử lại nhé.</div>' : '';
+    const count = document.getElementById('practice-step-text');
+    if (count) count.textContent = `${currentQIndex+1}/${activeQuestionsList.length}`;
+    box.innerHTML = `<div class="l1-alpha-practice l1-c2-practice">
+        <div class="l1-c2-prompt">${visual}
+          <p class="l1-c2-question">${escapeHtml(en)}</p>
+          <p class="l1-c2-translation">${escapeHtml(vi)}</p>
+          ${listenBtn}
+        </div>
+        <div class="l1-c2-options" aria-label="Four possible answers">${optionHtml}</div>
+        ${feedback}
+    </div>`;
+    updateNavButtons();
+    if (!solved && !wrong.size && kind === 'letter_listen' && autoSpeechEnabled) {
+        speakAlphaIPAPracticePrompt_();
+    }
+}
+
+function renderAlphabetIPAPracticeQuestion_(q) {
+    if (q.phonics_kind !== 'ipa_symbol') { renderAlphabetPracticeClass2_(q); return; }
+    const box=document.getElementById('question-box');
+    if(!box) return;
+    const kind=q.phonics_kind, choices=q.options||[];
+    if(choices.length!==4) {box.textContent='Câu hỏi đang được cập nhật.';return;}
+    const solved=userAnswers[currentQIndex]===q.answer;
+    const wrong=new Set(wrongAttemptsByQ[currentQIndex]||[]);
+    const guide=alphabetPracticeInstruction_(kind);
+    const letter=String(q.letter_target||'');
+    let visual='';
+    if(kind==='letter_listen'){
+        visual=`<span class="l1-ap-massive-icon" aria-hidden="true">🎧</span>
+            <button type="button" class="l1-ap-listen" onclick="speakAlphaIPAPracticePrompt_()"><i class="fa-solid fa-volume-high" aria-hidden="true"></i> Listen to the letter</button>
+            <p class="l1-ap-help">Chạm loa để nghe lại tên chữ cái.</p>`;
+    } else if(kind==='letter_name_ipa'){
+        visual=`<span class="l1-ap-big-letter" aria-label="Letter ${escapeHtml(letter)}">${escapeHtml(letter)}</span>
+            <span class="l1-ap-big-ipa ${solved?'':'l1-ap-concealed'}">${solved?escapeHtml(alphabetIpaAmerican_(letter,q.ipa_name)):''}</span>
+            <button type="button" class="l1-ap-listen" onclick="speakAlphaIPAPracticePrompt_()"><i class="fa-solid fa-volume-high" aria-hidden="true"></i> Listen</button>
+            <p class="l1-ap-help">${solved?'Bấm các phương án để nghe từng chữ.':'Hãy nhìn chữ cái lớn, rồi chọn phiên âm đúng. Con cũng có thể bấm từng đáp án để nghe tên chữ.'}</p>`;
+    } else if(kind==='letter_sequence'){
+        const tiles=(q.sequence_letters||[]).map(x=>`<span class="l1-ap-seq-tile ${x===null?'is-gap':''}">${escapeHtml(x===null?(solved?letter:'?'):String(x))}</span>`).join('');
+        visual=`<div class="l1-ap-sequence" role="group" aria-label="Missing alphabet letter">${tiles}</div>
+            <p class="l1-ap-help">Đọc thứ tự từ trái sang phải rồi chọn chữ còn thiếu.</p>`;
+    } else if(kind==='ipa_symbol'){
+        visual=`<span class="l1-ap-sound-label">${escapeHtml(q.ipa_label||'')}</span>
+            <button type="button" class="l1-ap-listen" onclick="speakAlphaIPAPracticePrompt_()"><i class="fa-solid fa-volume-high" aria-hidden="true"></i> Listen to a word</button>
+            <span class="l1-ap-example">Example: <strong>${escapeHtml(q.ipa_example||'')}</strong></span>
+            <p class="l1-ap-help">Nghe từ mẫu để nhận biết âm. Chỉ học phần này khi con muốn tìm hiểu IPA.</p>`;
+    }
+    const optionsHtml=choices.map((choice,i)=>{
+        const correct=choice===q.answer;
+        const state=solved&&correct?'is-correct':(!solved&&wrong.has(choice)?'is-wrong':'');
+        let label=`<span class="l1-ap-option-main">${escapeHtml(choice)}</span>`;
+        if(kind==='letter_sequence') {
+            const name=(q.options_ipa||[])[i]||alphabetIpaAmerican_(choice,'');
+            label=`<span class="l1-ap-option-inline"><strong>${escapeHtml(choice)}</strong><span>${escapeHtml(name)}</span></span>`;
+        } else if(kind==='letter_listen'&&solved&&correct) {
+            label+=`<span class="l1-ap-ipa-tag">${escapeHtml(alphabetIpaAmerican_(letter,q.ipa_name))}</span>`;
+        } else if(kind==='letter_name_ipa') {
+            // Match the Class 2 reference: always show the corresponding letter next to each IPA option.
+            label+=`<span class="l1-ap-letter-tag">${escapeHtml(q.option_letters?.[i]||'')}</span>`;
+        }
+        return `<button type="button" class="l1-ap-option ${state}" onclick="checkAlphaIPAPracticeAnswer_(${i})" aria-label="Option ${i+1}">
+          <span class="l1-ap-answer-index">${String.fromCharCode(65+i)}</span>${label}
+          <i class="fa-solid fa-volume-high l1-ap-small-volume" aria-hidden="true"></i></button>`;
+    }).join('');
+    const feedback = solved
+        ? `<div class="l1-ap-feedback is-success" role="status">${alphabetPracticeHint_(q)}</div>`
+        : wrong.size ? `<div class="l1-ap-feedback is-retry" role="status">🌸 Chưa đúng rồi. Con nghe lại và thử đáp án khác nhé!</div>` : '';
+    const number=document.getElementById('practice-step-text');
+    if(number)number.textContent=`${currentQIndex+1}/${activeQuestionsList.length}`;
+    box.innerHTML=`<div class="l1-alpha-practice">
+        <div class="l1-ap-topline"><span>${escapeHtml(guide[0])}</span><span class="l1-ap-count">${currentQIndex+1}/${activeQuestionsList.length}</span></div>
+        <div class="l1-ap-desc">${escapeHtml(guide[1])}</div>
+        <div class="l1-ap-layout">
+          <section class="l1-ap-visual">${visual}${feedback}</section>
+          <section class="l1-ap-choices" aria-label="Four answer options">${optionsHtml}</section>
+        </div>
+      </div>`;
+    updateNavButtons();
+    if(!solved && !wrong.size && kind==='letter_listen' && autoSpeechEnabled) speakAlphaIPAPracticePrompt_();
+}
+function checkAlphaIPAPracticeAnswer_(optionIndex) {
+    const q = activeQuestionsList[currentQIndex];
+    if (!q || q.render_style !== 'alphabet_ipa_practice') return;
+    const selected = q.options?.[optionIndex];
+    if (selected === undefined) return;
+    // A solved question stays interactive for listening, but never scores twice.
+    if (userAnswers[currentQIndex] === q.answer) {
+        alphabetIPAOptionSpeak_(q, optionIndex);
+        return;
+    }
+    if (selected === q.answer) {
+        userAnswers[currentQIndex] = selected;
+        score += q.diem || 0.5;
+        starGreenCount++;
+        const green = document.getElementById('star-green-count');
+        if (green) green.textContent = starGreenCount;
+        renderAlphabetIPAPracticeQuestion_(q);
+        if (q.phonics_kind !== 'letter_listen') alphabetIPAOptionSpeak_(q, optionIndex);
+    } else {
+        if (!wrongAttemptsByQ[currentQIndex]) wrongAttemptsByQ[currentQIndex] = [];
+        if (!wrongAttemptsByQ[currentQIndex].includes(selected)) {
+            wrongAttemptsByQ[currentQIndex].push(selected);
+            starRedCount++;
+            const red = document.getElementById('star-red-count');
+            if (red) red.textContent = starRedCount;
+        }
+        renderAlphabetIPAPracticeQuestion_(q);
+        // IPA-choice distractors are sounded only after completing the question.
+        if (q.phonics_kind !== 'letter_name_ipa') alphabetIPAOptionSpeak_(q, optionIndex);
+    }
 }
 
 // ==========================================
@@ -2986,6 +3535,7 @@ function loadQuestion() {
     const q = activeQuestionsList[currentQIndex];
     if (!q) return;
 
+    if (q.render_style === 'alphabet_ipa_practice') { renderAlphabetIPAPracticeQuestion_(q); return; }
     if (q.render_style === 'reading_pair') { const stepEl=document.getElementById('practice-step-text'); if(stepEl)stepEl.textContent=`${currentQIndex+1}/${activeQuestionsList.length}`; renderReadingPair_(q); return; }
     if (q.render_style === 'sentence_builder_tap') { const stepEl=document.getElementById('practice-step-text'); if(stepEl)stepEl.textContent=`${currentQIndex+1}/${activeQuestionsList.length}`; renderSentenceBuilderTap_(q); return; }
     if (q.render_style === 'fill_sentence_interactive') { const stepEl=document.getElementById('practice-step-text'); if(stepEl)stepEl.textContent=`${currentQIndex+1}/${activeQuestionsList.length}`; renderFillSentenceInteractive_(q); return; }
@@ -3000,6 +3550,10 @@ function loadQuestion() {
         return;
     }
     if (!isEvaluationMode && q.shared_vocab_activity && renderSharedVocabActivityQuestion_(q)) {
+        // Remove Letter: tu doc dung cau hoi tieng Anh moi lan vao / chuyen cau.
+        // Khong dat trong ham render: cham dap an dung/sai chi ve lai UI, khong phat lap.
+        // Ton trong tuy chon tat doc tu dong; TTS chung da huy audio cu khi loadQuestion bat dau.
+        if (Number(q.shared_vocab_activity) === 3 && autoSpeechEnabled) speakCurrentQuestion();
         return;
     }
 
@@ -3448,7 +4002,10 @@ function checkAnswer(selectedOpt) {
         playAudio('correct');
         confetti({ particleCount: 30, spread: 55, origin: { y: 0.7 } });
         if (Number(q.shared_vocab_activity) === 3) revealSharedRemoveLetter_(q);
-        if (Number(q.shared_vocab_activity) === 4) revealSharedFillMissing_(q, true, selectedOpt);
+        if (Number(q.shared_vocab_activity) === 4) {
+            revealSharedFillMissing_(q, true, selectedOpt);
+            revealSharedFillMissingResult_(q);
+        }
         if (Number(q.shared_vocab_activity) === 5) revealSharedOddOneAfterCorrect_(q);
         if (q.shared_vocab_activity) setTimeout(() => speakEnglish(q.target_word || q.answer, 0.9), 180);
         else setTimeout(() => speakOptionWithMeaning(q.answer), 180);
@@ -5082,6 +5639,10 @@ function normalizeQuestion(q){
   const rawImage=q.imageId||q.image_id||q.img||q.image_url||'';
   return {
     question_id:q.id??q.question_id??q.question_no??0,
+    phonics_kind:String(q.phonics_kind||''), letter_target:String(q.letter_target||''),
+    ipa_name:String(q.ipa_name||''), ipa_index:q.ipa_index??null,
+    option_letters:Array.isArray(q.option_letters)?q.option_letters.slice():[],
+    sequence_letters:Array.isArray(q.sequence_letters)?q.sequence_letters.slice():[],
     unit_id:Number(q.unit_id??q.source_unit??q.unit??0)||0,
     exercise_id:String(q.exercise_id??'').trim(),
     source_unit:Number(q.source_unit??q.unit_id??q.unit??0)||0,
@@ -5321,7 +5882,7 @@ renderTa1LessonPage_=function(p){
 function primeEnglishAudio_(){if(englishModuleAudioPrimed_)return;englishModuleAudioPrimed_=true;const once=()=>{try{const AC=window.AudioContext||window.webkitAudioContext;if(!audioCtx&&AC)audioCtx=new AC();if(audioCtx?.state==='suspended')audioCtx.resume();}catch(_){}};englishModuleRoot_?.addEventListener('pointerdown',once,{once:true,passive:true});}
 
 function installEnglishInlineBridge_(){
-  const names=["acceptFriendlyDialog_", "addVocabularyMeaning", "alert", "assessmentAnswersPayload_", "beautifySubtopicName", "buildMiniGameVocabItem", "buildRoadmapPathD", "buildTrickyChoices", "callAppsScript", "capitalizeFirstLetter", "catalogImage_", "catalogSrc_", "checkAnswer", "class1EnglishApi_", "class1EnglishUser_", "closeFriendlyDialog_", "closeHistoryModal", "closeReviewWrongModal", "enableReplayOnOptions", "englishReadBreadcrumb_", "englishVocabVisualHtml_", "ensureFriendlyDialog_", "ensureMiniGameLearningReady", "ensureMiniGameThemeStyles", "ensureMiniGameVocabReady", "escapeHtml", "escapeJsStringTa1_", "exerciseBankQuestions_", "exportReportToPDF", "extractFirstEmoji", "extractMiniGameEmoji", "extractVocabularyVietnameseMeaning", "fetchAllQuestionsFlat", "fetchAllTopicsData", "fetchClass1EnglishHistoryByLegacySheet_", "fetchJsonEnglish_", "formatDateOnly", "formatDateShort", "formatDuration", "generateReview15", "getActiveLessonPageData_", "getBaiHocTa1CompletedSet_", "getBaiHocTa1ProgressKey_", "getBaiTapTa1RecentKey_", "getBaiTapTa1Recent_", "getBaiTapTa1UnlockKey_", "getEnglishExerciseProgressKey_", "getHeaderEnglishLabel_", "getLocalEnglishExerciseProgress_", "getMiniGamePaletteOrder", "getMiniGameSectionPool", "getMiniGameTopicGroups", "getMiniGameTopicName", "getMiniGameVocabPool", "getQuestionsForBaiTapTa1_", "getQuestionsForWeek343", "getRoadmapCoord", "getSkillCell", "getStoredSessionToken", "getStudentFirstName", "getUnlockedBaiTapTa1_", "getWeekRawPool", "getWordSearchVocabPool", "goHome", "handleNextExamFromReport", "handleTa1PracticeChoice_", "hasPremiumAccess", "hideLoadingOverlay", "initQuizPallet", "isAdminUser", "jumpToQuestion", "launchSubtopicQuiz", "lessonSceneSrc_", "loadAlphabetIPAData", "loadExamDataFile", "loadExerciseData_", "loadGameScript", "loadLessonData_", "loadQuestion", "loadReviewData_", "loadSemesterData", "loadSharedImageCatalog_", "lookupVocabEmoji", "markBaiHocTa1Complete_", "matchesAnyTa1_", "miniGameHash", "newAssessmentAttemptId_", "nextQuestion", "normalizeEnglishHistoryRow_", "normalizeQuestion", "normalizeTopic", "normalizeVocabWordKey", "onHeaderLevel3Click", "openAlphabetIPA", "openAlphabetMenu", "openAuthScreen", "openBaiHocHub", "openBaiHocTa1_", "openExamHub", "openGamePlay", "openHistoryModal", "openIPAMenu", "openLessonUnit_", "openLessonsHub", "openMainTab", "openMiniGameHub", "openPhonicsMatcher", "openReviewTab", "openReviewWrongModal", "openRoadmap", "openSharedVocabActivityLevel_", "openTopic", "openVocabularyLevel_", "playAudio", "prevQuestion", "primeEnglishAudio_", "questionSearchTextTa1_", "refreshClass1EnglishProgress_", "refreshMainTabLocks_", "rememberEnglishGameGlobals_", "removeEnglishGameGlobals_", "renderAlphaIPAMenu", "renderBaiHocTa1Hub_", "renderBaiHocTa1Lesson_", "renderBaiTapTa1Grid_", "renderDashboardGrid", "renderExamHubGrid", "renderHistoryReport", "renderHistoryTable", "renderLessonLearnPage_", "renderLessonPage_", "renderLessonPracticePage_", "renderLessonSummaryPage_", "renderLessonsHub_", "renderMiniGameTopicMenu", "renderPedagogicalEvaluation", "renderReportTopicsBreakdown", "renderRoadmapSVG", "renderTa1LessonBottom_", "renderTa1LessonPage_", "renderTa1LessonTabs_", "renderTa1QuestionsPage_", "renderTa1SummaryPage_", "replaySpeakOption", "requirePremiumAccess", "resetClass1EnglishBreadcrumb_", "resetStars", "resolveEnglishImage_", "restoreQuestionState", "returnToTopicLecture", "saveBaiHocTa1CompletedSet_", "saveBaiTapTa1Recent_", "saveExamResultToSheet", "saveUnlockedBaiTapTa1_", "saveWeeklyProgressToSheet", "selectBaiTapTa1_", "selectBalancedTa1_", "selectPairedGroup", "selectRoadmapWeek", "selectSubtopic", "setAppShellRootMode_", "setMainTabActive_", "setSubtopicGridColumns", "setVocabularyStudyMode", "showFriendlyConfirm_", "showFriendlyDialog_", "showLectureAndSubtopics", "showLoadingOverlay", "showLockedBaiTapTa1_", "showPairedGroupMenu", "showPremiumAccessWarning", "showResultScreen", "showVocabularyMeaningForOption", "showVocabularyTopicMenu", "shuffleArray", "speakAlphaWord", "speakAlphabetLetter", "speakBaiHocTa1_", "speakCurrentQuestion", "speakEnglish", "speakGoogleTTS", "speakIPAExampleWord", "speakIPAGuideVietnamese", "speakIPASound", "speakLecture", "speakLessonPhonics_", "speakLessonPractice_", "speakLessonSentence_", "speakLessonSummary_", "speakLessonWord_", "speakOptionWithMeaning", "speakPedagogicalEvaluation", "speakVocabularyExample_", "speakVocabularyPrompt_", "speakVocabularyTarget_", "startVocabularySpeechCheck_", "speakVietnamese", "starCountFromPercent", "startExamCountdown", "startRandomExam", "startTopicQuiz", "stopActiveMiniGame_", "stopSpeaking", "switchAppView", "switchLessonSemester_", "syncClass1BannerFromEnglish_", "syncClass1EnglishState_", "syncClass1Score_", "toggleAutoSpeech", "triggerSubmitQuizPrompt", "updateAutoSpeechButtonUI", "updateExamTimerDisplay", "updateNavButtons", "updateNavTabs", "updateQuizPalletUI", "wrapCaptionLines", "openExploreLevelHub_", "openExploreLevelGroup_", "openReadingComprehensionHub_", "openReadingGroup_", "speakReadingPassage_", "answerReadingQuestion_", "nextReadingPair_", "renderReadingPair_", "renderSentenceBuilderTap_", "sentenceBuilderPick_", "renderFillSentenceInteractive_", "checkFillSentenceInteractive_", "speakFillSentence_"];
+  const names=["acceptFriendlyDialog_", "addVocabularyMeaning", "alert", "assessmentAnswersPayload_", "beautifySubtopicName", "buildMiniGameVocabItem", "buildRoadmapPathD", "buildTrickyChoices", "callAppsScript", "capitalizeFirstLetter", "catalogImage_", "catalogSrc_", "checkAnswer", "class1EnglishApi_", "class1EnglishUser_", "closeFriendlyDialog_", "closeHistoryModal", "closeReviewWrongModal", "enableReplayOnOptions", "englishReadBreadcrumb_", "englishVocabVisualHtml_", "ensureFriendlyDialog_", "ensureMiniGameLearningReady", "ensureMiniGameThemeStyles", "ensureMiniGameVocabReady", "escapeHtml", "escapeJsStringTa1_", "exerciseBankQuestions_", "exportReportToPDF", "extractFirstEmoji", "extractMiniGameEmoji", "extractVocabularyVietnameseMeaning", "fetchAllQuestionsFlat", "fetchAllTopicsData", "fetchClass1EnglishHistoryByLegacySheet_", "fetchJsonEnglish_", "formatDateOnly", "formatDateShort", "formatDuration", "generateReview15", "getActiveLessonPageData_", "getBaiHocTa1CompletedSet_", "getBaiHocTa1ProgressKey_", "getBaiTapTa1RecentKey_", "getBaiTapTa1Recent_", "getBaiTapTa1UnlockKey_", "getEnglishExerciseProgressKey_", "getHeaderEnglishLabel_", "getLocalEnglishExerciseProgress_", "getMiniGamePaletteOrder", "getMiniGameSectionPool", "getMiniGameTopicGroups", "getMiniGameTopicName", "getMiniGameVocabPool", "getQuestionsForBaiTapTa1_", "getQuestionsForWeek343", "getRoadmapCoord", "getSkillCell", "getStoredSessionToken", "getStudentFirstName", "getUnlockedBaiTapTa1_", "getWeekRawPool", "getWordSearchVocabPool", "goHome", "handleNextExamFromReport", "handleTa1PracticeChoice_", "hasPremiumAccess", "hideLoadingOverlay", "initQuizPallet", "isAdminUser", "jumpToQuestion", "launchSubtopicQuiz", "lessonSceneSrc_", "loadAlphabetIPAData", "loadExamDataFile", "loadExerciseData_", "loadGameScript", "loadLessonData_", "loadQuestion", "loadReviewData_", "loadSemesterData", "loadSharedImageCatalog_", "lookupVocabEmoji", "markBaiHocTa1Complete_", "matchesAnyTa1_", "miniGameHash", "newAssessmentAttemptId_", "nextQuestion", "normalizeEnglishHistoryRow_", "normalizeQuestion", "normalizeTopic", "normalizeVocabWordKey", "onHeaderLevel3Click", "openAlphabetIPA", "openAlphabetMenu", "openAuthScreen", "openBaiHocHub", "openBaiHocTa1_", "openExamHub", "openGamePlay", "openHistoryModal", "openIPAMenu", "openLessonUnit_", "openLessonsHub", "openMainTab", "openMiniGameHub", "openPhonicsMatcher", "openAlphabetPractice", "openIPAPractice", "speakAlphaIPAPracticePrompt_", "checkAlphaIPAPracticeAnswer_", "openReviewTab", "openReviewWrongModal", "openRoadmap", "openSharedVocabActivityLevel_", "openTopic", "openVocabularyLevel_", "playAudio", "prevQuestion", "primeEnglishAudio_", "questionSearchTextTa1_", "refreshClass1EnglishProgress_", "refreshMainTabLocks_", "rememberEnglishGameGlobals_", "removeEnglishGameGlobals_", "renderAlphaIPAMenu", "renderBaiHocTa1Hub_", "renderBaiHocTa1Lesson_", "renderBaiTapTa1Grid_", "renderDashboardGrid", "renderExamHubGrid", "renderHistoryReport", "renderHistoryTable", "renderLessonLearnPage_", "renderLessonPage_", "renderLessonPracticePage_", "renderLessonSummaryPage_", "renderLessonsHub_", "renderMiniGameTopicMenu", "renderPedagogicalEvaluation", "renderReportTopicsBreakdown", "renderRoadmapSVG", "renderTa1LessonBottom_", "renderTa1LessonPage_", "renderTa1LessonTabs_", "renderTa1QuestionsPage_", "renderTa1SummaryPage_", "replaySpeakOption", "requirePremiumAccess", "resetClass1EnglishBreadcrumb_", "resetStars", "resolveEnglishImage_", "restoreQuestionState", "returnToTopicLecture", "saveBaiHocTa1CompletedSet_", "saveBaiTapTa1Recent_", "saveExamResultToSheet", "saveUnlockedBaiTapTa1_", "saveWeeklyProgressToSheet", "selectBaiTapTa1_", "selectBalancedTa1_", "selectPairedGroup", "selectRoadmapWeek", "selectSubtopic", "setAppShellRootMode_", "setMainTabActive_", "setSubtopicGridColumns", "setVocabularyStudyMode", "showFriendlyConfirm_", "showFriendlyDialog_", "showLectureAndSubtopics", "showLoadingOverlay", "showLockedBaiTapTa1_", "showPairedGroupMenu", "showPremiumAccessWarning", "showResultScreen", "showVocabularyMeaningForOption", "showVocabularyTopicMenu", "shuffleArray", "speakAlphaWord", "speakAlphabetLetter", "speakBaiHocTa1_", "speakCurrentQuestion", "speakEnglish", "speakGoogleTTS", "speakIPAExampleWord", "speakIPAGuideVietnamese", "speakIPASound", "speakLecture", "speakLessonPhonics_", "speakLessonPractice_", "speakLessonSentence_", "speakLessonSummary_", "speakLessonWord_", "speakOptionWithMeaning", "speakPedagogicalEvaluation", "speakVocabularyExample_", "speakVocabularyPrompt_", "speakVocabularyTarget_", "startVocabularySpeechCheck_", "speakVietnamese", "starCountFromPercent", "startExamCountdown", "startRandomExam", "startTopicQuiz", "stopActiveMiniGame_", "stopSpeaking", "switchAppView", "switchLessonSemester_", "syncClass1BannerFromEnglish_", "syncClass1EnglishState_", "syncClass1Score_", "tapSharedRemoveLetter_", "speakSharedRemoveTarget_", "speakSharedFillMissingTarget_", "toggleAutoSpeech", "triggerSubmitQuizPrompt", "updateAutoSpeechButtonUI", "updateExamTimerDisplay", "updateNavButtons", "updateNavTabs", "updateQuizPalletUI", "wrapCaptionLines", "openExploreLevelHub_", "openExploreLevelGroup_", "openReadingComprehensionHub_", "openReadingGroup_", "speakReadingPassage_", "answerReadingQuestion_", "nextReadingPair_", "renderReadingPair_", "renderSentenceBuilderTap_", "sentenceBuilderPick_", "renderFillSentenceInteractive_", "checkFillSentenceInteractive_", "speakFillSentence_"];
   names.forEach(name=>{
     if(englishBridgePrevious_.has(name))return;
     englishBridgePrevious_.set(name,Object.prototype.hasOwnProperty.call(window,name)?Object.getOwnPropertyDescriptor(window,name):null);
@@ -5952,9 +6513,528 @@ const ENGLISH_UNIFIED_LEARNING_CARDS_CSS_ = `
   }
 }
 
+
+/* TA1 - Alphabet & IPA Practice 1.1-1.4 (Lop 2 reference, Class 1 pedagogy). */
+#class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"]{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  max-width:980px!important;
+  margin-inline:auto!important;
+  gap:15px!important;
+}
+#class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"] .l1-en-learning-card{
+  border-width:1px!important;
+  min-height:182px!important;
+  padding:14px 14px 12px!important;
+}
+#class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"] .l1-en-learning-icon{
+  border-width:1px!important;
+  width:64px;height:64px;flex-basis:64px;min-width:64px;min-height:64px;
+  font-size:37px;
+}
+#class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"] .l1-en-learning-heading{gap:4px!important;}
+#class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"] .l1-en-learning-title{
+  font-size:22px!important;
+  line-height:1.16!important;
+}
+#class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"] .l1-en-learning-title-vi{
+  font-size:15.5px!important;
+  line-height:1.22!important;
+}
+#class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"] .l1-en-learning-desc-en{
+  font-size:16px!important;
+  line-height:1.28!important;
+}
+#class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"] .l1-en-learning-desc-vi{
+  font-size:14.5px!important;
+  line-height:1.25!important;
+}
+#class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"] .l1-en-learning-badge{
+  font-size:14px!important;
+  padding:5px 11px!important;
+}
+@media(max-width:767px){
+ #class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"]{
+  grid-template-columns:1fr!important;
+  max-width:620px!important;
+  gap:12px!important;
+ }
+ #class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"] .l1-en-learning-card{
+  min-height:170px!important;
+ }
+}
+@media(hover:hover) and (pointer:fine){
+ #class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"] .l1-en-learning-card:not(.is-locked):hover .l1-en-learning-icon{transform:scale(1.05)!important;}
+}
+#class1-english-runtime .l1-alpha-practice{width:100%;max-width:1100px;margin-inline:auto;color:#334155;font-family:'Quicksand','Nunito',sans-serif;}
+#class1-english-runtime .l1-ap-topline{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:20px;font-weight:900;color:#7e22ce;line-height:1.24;}
+#class1-english-runtime .l1-ap-count{font-size:15px;font-weight:900;background:#f3e8ff;border:1px solid #e9d5ff;border-radius:12px;padding:5px 10px;white-space:nowrap;}
+#class1-english-runtime .l1-ap-desc{color:#64748b;font-weight:750;font-size:16px;margin:6px 0 12px;}
+#class1-english-runtime .l1-ap-layout{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,6fr);gap:14px;align-items:stretch;}
+#class1-english-runtime .l1-ap-visual{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:0;min-height:265px;border:1px solid #f5c8e5;border-radius:22px;background:#fff1f8;padding:19px 12px;text-align:center;gap:11px;}
+#class1-english-runtime .l1-ap-visual:has(.l1-ap-sequence){background:#f5f0ff;border-color:#e9d5ff;}
+#class1-english-runtime .l1-ap-visual:has(.l1-ap-sound-label){background:#ecfdf5;border-color:#b6e8d3;}
+#class1-english-runtime .l1-ap-massive-icon{font-size:82px;line-height:1.2;}
+#class1-english-runtime .l1-ap-big-letter{font-size:92px;line-height:1.03;font-weight:900;color:#be185d;}
+#class1-english-runtime .l1-ap-big-ipa{font-weight:900;font-size:23px;color:#6d28d9;min-height:29px;line-height:1.2;}
+#class1-english-runtime .l1-ap-big-ipa.l1-ap-concealed{visibility:hidden;}
+#class1-english-runtime .l1-ap-sound-label{font-size:28px;line-height:1.25;font-weight:900;color:#047857;overflow-wrap:anywhere;}
+#class1-english-runtime .l1-ap-example{font-size:16px;color:#475569;font-weight:800;}
+#class1-english-runtime .l1-ap-help{color:#64748b;font-size:14px;font-weight:750;max-width:350px;line-height:1.4;}
+#class1-english-runtime .l1-ap-listen{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:45px;padding:9px 17px;background:linear-gradient(90deg,#ec4899,#a855f7);color:white;font-size:16px;font-weight:900;border-radius:14px;border:1px solid #cf5fe3;box-shadow:0 3px 8px rgba(147,51,234,.14);}
+#class1-english-runtime .l1-ap-listen i{font-size:20px;color:#fff;}
+#class1-english-runtime .l1-ap-listen:hover{filter:brightness(1.06);}
+#class1-english-runtime .l1-ap-sequence{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;flex-wrap:nowrap;}
+#class1-english-runtime .l1-ap-seq-tile{width:clamp(37px,15%,66px);min-width:0;aspect-ratio:1/1;display:inline-flex;align-items:center;justify-content:center;border:1px solid #d9c3fc;background:#fff;color:#7c3aed;font-size:clamp(20px,3vw,31px);font-weight:900;border-radius:13px;line-height:1;}
+#class1-english-runtime .l1-ap-seq-tile.is-gap{background:#f5eaff;border:2px dashed #a855f7;color:#be185d;}
+#class1-english-runtime .l1-ap-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;align-content:center;min-width:0;}
+#class1-english-runtime .l1-ap-option{min-width:0;min-height:74px;display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;position:relative;padding:10px 13px;border:1px solid #ddd6fe;border-radius:19px;background:#f7f3ff;color:#6d28d9;font-size:20px;font-weight:900;box-shadow:none!important;transform:none!important;transition:border-color .18s,background .18s!important;cursor:pointer;}
+#class1-english-runtime .l1-ap-option:hover{border-color:#9333ea;background:#f4e9ff;transform:none!important;}
+#class1-english-runtime .l1-ap-option.is-correct{background:#dcfce7;border-color:#16a34a;color:#166534;}
+#class1-english-runtime .l1-ap-option.is-wrong{background:#ffe4e6;border-color:#fb7185;color:#be123c;}
+#class1-english-runtime .l1-ap-answer-index{position:absolute;top:7px;left:10px;color:#8b5cf6;font-size:11px;font-weight:900;}
+#class1-english-runtime .l1-ap-option-main{font-size:26px;font-weight:900;white-space:nowrap;line-height:1.18;}
+#class1-english-runtime .l1-ap-option-inline{display:inline-flex;align-items:center;justify-content:center;gap:10px;white-space:nowrap;line-height:1.1;max-width:100%;font-size:17px;}
+#class1-english-runtime .l1-ap-option-inline strong{font-size:27px;}
+#class1-english-runtime .l1-ap-ipa-tag{font-weight:900;font-size:16px;color:#047857;white-space:nowrap;}
+#class1-english-runtime .l1-ap-letter-tag{font-weight:900;font-size:18px;color:#047857;min-width:1em;text-align:center;}
+#class1-english-runtime .l1-ap-small-volume{font-size:13px;opacity:.72;}
+#class1-english-runtime .l1-ap-feedback{width:100%;border-radius:14px;padding:11px 13px;line-height:1.42;font-size:14px;font-weight:850;text-align:left;}
+#class1-english-runtime .l1-ap-feedback.is-success{background:#ecfdf5;color:#166534;border:1px solid #bbf7d0;}
+#class1-english-runtime .l1-ap-feedback.is-retry{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;}
+#class1-english-runtime #view-quiz:has(.l1-alpha-practice) #nav-group-practice{margin-top:22px!important;}
+@media(max-width:670px){
+ #class1-english-runtime .l1-ap-layout{grid-template-columns:minmax(0,1fr);gap:10px;}
+ #class1-english-runtime .l1-ap-visual{min-height:196px;padding:15px 10px;}
+ #class1-english-runtime .l1-ap-big-letter{font-size:70px;}
+ #class1-english-runtime .l1-ap-sound-label{font-size:23px;}
+ #class1-english-runtime .l1-ap-topline{font-size:17px;}
+ #class1-english-runtime .l1-ap-desc{font-size:15px;}
+ #class1-english-runtime .l1-ap-option{min-height:67px;padding:9px 8px;font-size:18px;}
+ #class1-english-runtime .l1-ap-option-inline{font-size:16px;gap:7px;}
+ #class1-english-runtime .l1-ap-option-inline strong{font-size:23px;}
+}
+@media(max-width:350px){
+ #class1-english-runtime .l1-ap-choices{grid-template-columns:1fr 1fr;gap:6px;}
+ #class1-english-runtime .l1-ap-option{padding:7px 4px;gap:5px;}
+ #class1-english-runtime .l1-ap-option-inline{gap:3px;font-size:14px;}
+ #class1-english-runtime .l1-ap-option-inline strong{font-size:20px;}
+ #class1-english-runtime .l1-ap-answer-index{top:4px;left:5px;}
+}
+
+
+/* TA1 section 1.3 visual synced with the Class 2 centered Alphabet Practice. */
+#class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"] .l1-en-learning-card{
+  min-height:0!important;
+  padding:12px 14px!important;
+  justify-content:flex-start!important;
+  gap:9px!important;
+}
+#class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"] .l1-en-learning-bottom{
+  padding-top:9px!important;
+  margin-top:auto!important;
+}
+#class1-english-runtime #view-quiz:has(.l1-c2-practice)> .pastel-card{
+  min-height:0!important;
+  height:auto!important;
+  padding:0!important;
+  justify-content:flex-start!important;
+}
+#class1-english-runtime #view-quiz:has(.l1-c2-practice) #question-box{
+  flex:0 0 auto!important;
+  justify-content:flex-start!important;
+  margin:0!important;
+  padding:4px 6px 0!important;
+}
+#class1-english-runtime .l1-c2-practice{
+  width:100%;max-width:780px;margin:0 auto;text-align:center;
+  font-family:'Quicksand','Nunito',sans-serif;color:#253047;
+}
+#class1-english-runtime .l1-c2-prompt{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
+  padding:8px 4px 9px;
+}
+#class1-english-runtime .l1-c2-headphone{font-size:45px;line-height:1.12;margin:0 0 6px;}
+#class1-english-runtime .l1-c2-bigletter{
+  display:block;font-size:72px;font-weight:900;line-height:1.05;color:#a21caf;
+  margin:2px 0;
+}
+#class1-english-runtime .l1-c2-reveal-ipa{
+  display:block;font-size:23px;line-height:1.15;color:#7e22ce;font-weight:900;
+}
+#class1-english-runtime .l1-c2-sequence{
+  display:flex;flex-wrap:nowrap;align-items:center;justify-content:center;
+  max-width:100%;gap:8px;margin:8px auto;
+}
+#class1-english-runtime .l1-c2-seq-cell{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:clamp(42px,11vw,64px);height:clamp(44px,11vw,64px);
+  border:1px solid #f9a8d4;border-radius:13px;background:#fffafa;
+  font-size:clamp(23px,3.4vw,32px);font-weight:900;color:#831843;
+}
+#class1-english-runtime .l1-c2-seq-cell.is-gap{background:#fce7f3;border:2px dashed #db2777;color:#be185d;}
+#class1-english-runtime .l1-c2-question{
+  margin:0!important;font-size:clamp(17px,1.7vw,19px);font-weight:900;
+  line-height:1.35;color:#202a3d;text-align:center;
+}
+#class1-english-runtime .l1-c2-translation{
+  margin:0!important;font-size:clamp(14px,1.35vw,16px);font-weight:750;
+  line-height:1.35;color:#64748b;text-align:center;
+}
+#class1-english-runtime .l1-c2-listen{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:1px solid #fbcfe8;border-radius:14px;background:#fdf0f7;color:#db2777;
+  padding:7px 15px;min-height:36px;font-size:15px;font-weight:900;
+  box-shadow:0 3px 7px rgba(219,39,119,.06);margin:1px 0 2px;
+}
+#class1-english-runtime .l1-c2-listen:hover{background:#fce7f3;border-color:#f9a8d4;}
+#class1-english-runtime .l1-c2-listen i{font-size:15px;color:#db2777;}
+#class1-english-runtime .l1-c2-options{
+  width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;margin-top:3px;
+}
+#class1-english-runtime .l1-c2-choice{
+  display:flex;align-items:center;justify-content:flex-start;gap:10px;
+  min-width:0;min-height:62px;border:2px solid #fbc6e7;border-radius:15px;
+  background:#fffaf7;color:#1f2937;font-family:inherit;
+  text-align:left;padding:10px 14px;font-weight:850;font-size:18px;
+  box-shadow:0 2px 4px rgba(219,39,119,.035);
+  transform:none!important;transition:background .15s,border-color .15s!important;
+}
+#class1-english-runtime .l1-c2-choice:hover{background:#fff0f8;border-color:#f472b6;transform:none!important;}
+#class1-english-runtime .l1-c2-answer-index{
+  font-weight:900;color:#ec1680;font-size:18px;flex:0 0 auto;
+}
+#class1-english-runtime .l1-c2-choice-text{font-size:18px;line-height:1.3;overflow-wrap:anywhere;}
+#class1-english-runtime .l1-c2-choice-sequence{
+  display:inline-flex;align-items:center;gap:10px;flex-wrap:nowrap;
+}
+#class1-english-runtime .l1-c2-choice-sequence strong{font-size:22px;color:#7e22ce;}
+#class1-english-runtime .l1-c2-choice-sequence span{white-space:nowrap;font-size:17px;}
+#class1-english-runtime .l1-c2-ipa-tag,
+#class1-english-runtime .l1-c2-choice-letter{
+  font-size:16px;font-weight:900;color:#047857;margin-left:auto;
+  white-space:nowrap;
+}
+#class1-english-runtime .l1-c2-choice-speaker{font-size:15px;color:#c026d3;margin-left:auto;}
+#class1-english-runtime .l1-c2-choice-letter + .l1-c2-choice-speaker{margin-left:2px;}
+#class1-english-runtime .l1-c2-choice.is-correct,
+#class1-english-runtime .l1-c2-choice.is-correct:hover{
+  background:#e8fbef;color:#166534;border-color:#34d399;
+}
+#class1-english-runtime .l1-c2-choice.is-wrong,
+#class1-english-runtime .l1-c2-choice.is-wrong:hover{
+  background:#fff1f2;color:#9f1239;border-color:#fda4af;
+}
+#class1-english-runtime .l1-c2-feedback{
+  font-size:15px;font-weight:800;text-align:center;border-radius:12px;
+  padding:10px 13px;margin-top:12px;line-height:1.45;
+}
+#class1-english-runtime .l1-c2-feedback.is-success{color:#166534;background:#ecfdf5;border:1px solid #bbf7d0;}
+#class1-english-runtime .l1-c2-feedback.is-retry{color:#a16207;background:#fffbeb;border:1px solid #fde68a;}
+#class1-english-runtime #view-quiz:has(.l1-c2-practice) #quiz-bottom-nav{
+  padding-top:22px!important;margin-top:0!important;
+}
+#class1-english-runtime #view-quiz:has(.l1-c2-practice) #nav-group-practice{margin-top:0!important;}
+@media(max-width:620px){
+  #class1-english-runtime #view-quiz:has(.l1-c2-practice) #question-box{padding:3px 4px 0!important;}
+  #class1-english-runtime .l1-c2-options{gap:8px;}
+  #class1-english-runtime .l1-c2-choice{min-height:57px;padding:8px 9px;gap:5px;}
+  #class1-english-runtime .l1-c2-answer-index{font-size:16px;}
+  #class1-english-runtime .l1-c2-choice-text{font-size:16px;}
+  #class1-english-runtime .l1-c2-choice-sequence{gap:4px;}
+  #class1-english-runtime .l1-c2-choice-sequence strong{font-size:18px;}
+  #class1-english-runtime .l1-c2-choice-sequence span{font-size:13px;}
+  #class1-english-runtime .l1-c2-headphone{font-size:41px;}
+  #class1-english-runtime .l1-c2-bigletter{font-size:61px;}
+}
+@media(max-width:370px){
+  #class1-english-runtime .l1-c2-choice{padding:7px;}
+  #class1-english-runtime .l1-c2-choice-sequence span{font-size:12px;}
+  #class1-english-runtime .l1-c2-answer-index{font-size:15px;}
+}
 `;
 
-function ensureEnglishStyles_(){if(document.getElementById(ENGLISH_MODULE_STYLE_ID_))return;const style=document.createElement('style');style.id=ENGLISH_MODULE_STYLE_ID_;style.textContent=ENGLISH_RUNTIME_CSS_+ENGLISH_HUB_UI_OVERRIDES_+ENGLISH_EXPLORE_ICON_TEXT_CSS_+ENGLISH_UNIFIED_LEARNING_CARDS_CSS_;document.head.appendChild(style);}
+const TA1_REMOVE_LETTER_CSS_ = `
+/* TA1 - Remove Letter only. Keep the subject banner as the only location heading. */
+#class1-english-runtime .l1-rl-screen{
+  width:100%;max-width:970px;margin:0 auto;padding:2px 8px 0;
+  color:#334155;background:transparent;
+}
+/* No duplicate pill strip or pink outer container. The exercise sits on the page background. */
+#class1-english-runtime .l1-rl-content{
+  padding:12px 12px 0;text-align:center;
+  background:transparent;border:0;border-radius:0;box-shadow:none;
+}
+#class1-english-runtime .l1-rl-title{
+  font-size:clamp(22px,2.8vw,27px);line-height:1.25;color:#1e293b;font-weight:900;
+}
+#class1-english-runtime .l1-rl-subtitle{
+  font-size:clamp(17px,1.85vw,19px);line-height:1.35;margin-top:6px;color:#64748b;font-weight:800;
+}
+#class1-english-runtime .l1-rl-letter-line{
+  display:flex;flex-wrap:wrap;gap:5px 12px;justify-content:center;align-items:center;
+  margin:21px auto 10px;max-width:100%;min-height:72px;
+}
+#class1-english-runtime .l1-rl-letter-group{
+  display:inline-flex;flex-wrap:wrap;gap:5px;justify-content:center;align-items:center;max-width:100%;
+}
+#class1-english-runtime .l1-rl-space{display:inline-block;width:15px;height:1px;}
+#class1-english-runtime .l1-rl-tile{
+  display:inline-flex;justify-content:center;align-items:center;flex:0 0 auto;
+  min-width:55px;height:65px;padding:0 6px;border:1px solid #e9a8ff;
+  border-radius:15px;background:#f5eaff;color:#9d00e8;
+  font-size:clamp(31px,3.8vw,41px);font-weight:900;line-height:1;
+  box-shadow:0 2px 5px rgba(109,40,217,.06);transform:none!important;
+  transition:border-color .16s,background .16s,color .16s;
+}
+#class1-english-runtime button.l1-rl-tile{cursor:pointer;touch-action:manipulation;}
+#class1-english-runtime button.l1-rl-tile:hover{border-color:#a855f7;background:#f0dcff;}
+#class1-english-runtime button.l1-rl-tile:focus-visible{outline:3px solid #c084fc;outline-offset:3px;}
+#class1-english-runtime .l1-rl-tile.is-wrong{border-color:#fb7185;background:#ffe4e6;color:#be123c;}
+#class1-english-runtime .l1-rl-tile.is-solved{border-color:#86efac;background:#ecfdf5;color:#047857;box-shadow:none;}
+#class1-english-runtime .l1-rl-mark{font-size:29px;color:#8b5cf6;font-weight:900;}
+#class1-english-runtime .l1-rl-feedback{
+  min-height:29px;margin:6px auto 0;color:#7c3aed;font-size:18px;line-height:1.4;font-weight:800;
+}
+#class1-english-runtime .l1-rl-feedback.has-errors{color:#be123c;}
+#class1-english-runtime .l1-rl-result{
+  display:flex;flex-direction:column;align-items:center;gap:7px;margin-top:6px;
+}
+/* Result typography is as legible as the instruction above; the corrected word matches the tile letter size. */
+#class1-english-runtime .l1-rl-removed-label{font-weight:850;font-size:19px;color:#c026d3;line-height:1.3;}
+#class1-english-runtime .l1-rl-removed-tile{border-color:#fda4af;background:#fff1f2;color:#e11d48;}
+#class1-english-runtime .l1-rl-success{font-size:19px;line-height:1.3;color:#047857;font-weight:900;}
+#class1-english-runtime .l1-rl-answer-line{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;}
+#class1-english-runtime .l1-rl-correct-word{
+  font-size:clamp(31px,3.8vw,41px);line-height:1.18;font-weight:900;color:#047857;
+}
+#class1-english-runtime .l1-rl-ipa{font-size:clamp(21px,2.3vw,24px);font-weight:850;color:#7e22ce;}
+#class1-english-runtime .l1-rl-replay{
+  display:inline-flex;gap:7px;align-items:center;justify-content:center;
+  min-height:39px;padding:7px 14px;border:1px solid #e9d5ff;
+  border-radius:12px;background:#f5edff;color:#7e22ce;font-size:16px;font-weight:900;
+}
+#class1-english-runtime .l1-rl-replay i{font-size:19px;color:#a21caf;}
+#class1-english-runtime .l1-rl-meaning{
+  font-size:clamp(19px,2vw,21px);line-height:1.35;color:#475569;font-weight:800;
+}
+#class1-english-runtime .l1-rl-meaning strong{color:#6d28d9;font-weight:900;}
+/* Pháo hoa dự phòng: không chặn click, tự biến mất sau 0.95 giây. */
+.l1-rl-fireworks-layer{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:9998;}
+.l1-rl-fireworks-spark{position:absolute;width:8px;height:10px;border-radius:3px;pointer-events:none;opacity:0;
+  animation:l1-rl-firework-burst .85s cubic-bezier(.1,.75,.28,1) forwards;}
+@keyframes l1-rl-firework-burst{
+  0%{opacity:1;transform:translate(0,0) scale(.65) rotate(0deg);}
+  45%{opacity:1;}
+  100%{opacity:0;transform:translate(var(--l1-rl-dx),var(--l1-rl-dy)) scale(.8) rotate(230deg);}
+}
+@media(prefers-reduced-motion:reduce){.l1-rl-fireworks-layer{display:none!important;}}
+.l1-rl-flyer{position:fixed;z-index:99999;display:flex;align-items:center;justify-content:center;border-radius:15px;border:1px solid #e9a8ff;background:#f5eaff;color:#9d00e8;font-size:38px;font-weight:900;pointer-events:none;box-sizing:border-box;}
+/* Exact spacing: from the last exercise element to Previous/Next = 22px (half a 44px navigation button).
+   Clear previous inherited paddings/margins instead of adding them together. */
+#class1-english-runtime #view-quiz:has(.l1-rl-screen) > .pastel-card{
+  min-height:0!important;justify-content:flex-start!important;
+  background:transparent!important;border:0!important;box-shadow:none!important;
+}
+#class1-english-runtime #view-quiz:has(.l1-rl-screen) #question-box{
+  flex:0 0 auto!important;justify-content:flex-start!important;
+  margin:0!important;padding:0!important;
+}
+#class1-english-runtime #view-quiz:has(.l1-rl-screen) #quiz-bottom-nav{
+  margin-top:22px!important;padding-top:0!important;
+}
+#class1-english-runtime #view-quiz:has(.l1-rl-screen) #nav-group-practice{
+  margin-top:0!important;
+}
+@media(max-width:640px){
+  #class1-english-runtime .l1-rl-screen{padding:2px 3px 0;}
+  #class1-english-runtime .l1-rl-content{padding:9px 4px 0;}
+  #class1-english-runtime .l1-rl-letter-line{gap:7px 10px;margin:18px auto 9px;}
+  #class1-english-runtime .l1-rl-letter-group{gap:4px;}
+  #class1-english-runtime .l1-rl-space{width:8px;}
+  #class1-english-runtime .l1-rl-tile{min-width:43px;height:55px;padding:0 4px;font-size:31px;border-radius:12px;}
+  #class1-english-runtime .l1-rl-removed-label{font-size:18px;}
+  #class1-english-runtime .l1-rl-success{font-size:18px;}
+  #class1-english-runtime .l1-rl-meaning{font-size:19px;}
+}
+`;
+const TA1_FILL_MISSING_CSS_ = `
+/* TA1 Explore 4 – Fill Missing: subtitle is in the shared subject banner already. */
+#class1-english-runtime .l1-fm-screen{
+  width:100%;max-width:960px;margin:0 auto;padding:13px 10px 0;
+  text-align:center;color:#334155;background:transparent;border:0;box-shadow:none;
+}
+#class1-english-runtime .l1-fm-title{
+  font-size:clamp(23px,2.8vw,28px);font-weight:900;line-height:1.28;color:#1e293b;
+}
+#class1-english-runtime .l1-fm-subtitle{
+  font-size:clamp(17px,1.9vw,20px);font-weight:800;line-height:1.35;color:#64748b;margin-top:8px;
+}
+#class1-english-runtime .l1-fm-word{
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;
+  min-width:0;max-width:100%;margin:17px auto 19px;
+  font-size:clamp(35px,5vw,48px);font-weight:900;letter-spacing:.055em;
+  line-height:1.3;color:#a21caf;overflow-wrap:anywhere;
+}
+#class1-english-runtime .l1-fm-missing-slot{
+  display:inline-flex;align-items:center;justify-content:center;
+  margin:0 3px;min-width:.8em;color:#ec4899;border-bottom:3px solid #f472b6;
+  line-height:1.08;vertical-align:middle;
+}
+#class1-english-runtime .l1-fm-missing-slot.is-solved,
+#class1-english-runtime .l1-fm-missing-slot.text-emerald-600{
+  color:#047857;border-color:#86efac;
+}
+#class1-english-runtime .l1-fm-choices{
+  display:grid;grid-template-columns:minmax(0,1fr);gap:10px;
+  width:100%;max-width:860px;margin:0 auto;
+}
+@media(min-width:640px){
+  #class1-english-runtime .l1-fm-choices{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+#class1-english-runtime .l1-fm-choices .option-btn{
+  width:100%;min-width:0;min-height:61px;padding:11px 17px;border-width:1px;
+  border-color:#f9a8d4;border-radius:17px;background:#fffafc;
+  font-size:21px;box-shadow:0 2px 5px rgba(126,34,206,.05);
+  transform:none!important;
+}
+#class1-english-runtime .l1-fm-choices .option-btn:hover{
+  border-color:#ec4899;background:#fff1f7;transform:none!important;
+}
+#class1-english-runtime .l1-fm-choices .option-btn.bg-green-100{
+  background:#dcfce7!important;border-color:#86efac!important;color:#166534!important;
+}
+#class1-english-runtime .l1-fm-choices .option-btn.bg-red-200{
+  background:#ffe4e6!important;border-color:#fda4af!important;color:#9f1239!important;
+}
+#class1-english-runtime .l1-fm-result:empty{display:none;}
+#class1-english-runtime .l1-fm-result{
+  margin:14px auto 0;display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+#class1-english-runtime .l1-fm-success{
+  font-size:clamp(18px,2vw,20px);font-weight:900;line-height:1.3;color:#047857;
+}
+#class1-english-runtime .l1-fm-answer-line{
+  display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
+}
+#class1-english-runtime .l1-fm-correct-word{
+  font-size:clamp(29px,3.6vw,38px);font-weight:900;line-height:1.2;color:#047857;
+}
+#class1-english-runtime .l1-fm-ipa{
+  font-size:clamp(20px,2.4vw,24px);font-weight:850;color:#7e22ce;line-height:1.3;
+}
+#class1-english-runtime .l1-fm-replay{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:40px;
+  padding:7px 14px;border:1px solid #e9d5ff;border-radius:13px;
+  background:#f5edff;color:#7e22ce;font-size:16px;font-weight:900;
+}
+#class1-english-runtime .l1-fm-replay i{font-size:19px;color:#a21caf;}
+#class1-english-runtime .l1-fm-meaning{
+  font-size:clamp(19px,2.2vw,22px);font-weight:800;line-height:1.35;color:#475569;
+}
+#class1-english-runtime .l1-fm-meaning strong{color:#6d28d9;font-weight:900;}
+/* Standard nav gap H/2 = 22px. Remove inherited flex stretch and doubled padding. */
+#class1-english-runtime #view-quiz:has(.l1-fm-screen) > .pastel-card{
+  min-height:0!important;justify-content:flex-start!important;
+  background:transparent!important;border:0!important;box-shadow:none!important;
+}
+#class1-english-runtime #view-quiz:has(.l1-fm-screen) #question-box{
+  flex:0 0 auto!important;justify-content:flex-start!important;
+  margin:0!important;padding:0!important;
+}
+#class1-english-runtime #view-quiz:has(.l1-fm-screen) #quiz-bottom-nav{
+  margin-top:22px!important;padding-top:0!important;
+}
+#class1-english-runtime #view-quiz:has(.l1-fm-screen) #nav-group-practice{margin-top:0!important;}
+@media(max-width:640px){
+  #class1-english-runtime .l1-fm-screen{padding:10px 3px 0;}
+  #class1-english-runtime .l1-fm-word{margin:15px auto 17px;letter-spacing:.025em;}
+  #class1-english-runtime .l1-fm-choices .option-btn{min-height:57px;padding:9px 12px;}
+}
+`;
+const TA1_ODD_ONE_CSS_ = `
+/* Explore 5 - Odd One Out. Activity and level are already visible in the sub-banner. */
+#class1-english-runtime .l1-oo-screen{
+  width:100%;max-width:960px;margin:0 auto;padding:13px 10px 0;
+  text-align:center;color:#334155;background:transparent;border:0;box-shadow:none;
+}
+#class1-english-runtime .l1-oo-title{
+  font-size:clamp(24px,2.9vw,29px);font-weight:900;line-height:1.26;color:#1e293b;
+}
+#class1-english-runtime .l1-oo-subtitle{
+  margin:7px 0 18px;font-size:clamp(18px,2vw,20px);
+  font-weight:800;line-height:1.35;color:#64748b;
+}
+#class1-english-runtime .l1-oo-choices{
+  width:100%;max-width:900px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;
+}
+#class1-english-runtime .l1-oo-choices .option-btn{
+  width:100%;min-width:0;min-height:65px;padding:12px 16px!important;
+  border-width:1px!important;border-color:#f9a8d4;
+  border-radius:17px;background:#fffafc;
+  box-shadow:0 2px 5px rgba(126,34,206,.05);
+  transform:none!important;text-align:left;
+}
+#class1-english-runtime .l1-oo-choices .option-btn:hover{
+  background:#fff1f7;border-color:#ec4899;transform:none!important;
+}
+#class1-english-runtime .l1-oo-choices .option-btn.bg-green-100{
+  background:#dcfce7!important;border-color:#86efac!important;color:#166534!important;
+}
+#class1-english-runtime .l1-oo-choices .option-btn.bg-red-200{
+  background:#ffe4e6!important;border-color:#fda4af!important;color:#9f1239!important;
+}
+#class1-english-runtime .l1-oo-choices .opt-text{
+  display:flex;min-width:0;flex:1;flex-wrap:wrap;align-items:center;
+  gap:2px 8px;line-height:1.28;
+}
+#class1-english-runtime .l1-oo-choices .opt-text > strong{
+  flex:0 0 auto;font-size:19px!important;margin-right:1px!important;
+}
+#class1-english-runtime .l1-oo-choices .opt-text > span:first-of-type{
+  font-size:clamp(21px,2.4vw,24px)!important;line-height:1.25;font-weight:900;
+  overflow-wrap:anywhere;
+}
+#class1-english-runtime .l1-oo-choices .opt-text > span.text-slate-500{
+  font-size:clamp(18px,1.85vw,20px)!important;line-height:1.28;
+  margin-left:2px!important;white-space:normal!important;overflow-wrap:anywhere;
+}
+#class1-english-runtime .l1-oo-choices .opt-text > .shared-odd-meaning{
+  font-size:clamp(17px,1.75vw,19px)!important;line-height:1.3;
+  margin-left:3px!important;overflow-wrap:anywhere;
+}
+#class1-english-runtime .l1-oo-explanation{
+  margin:12px auto 0;padding:11px 14px;
+  border:1px solid #a7f3d0;border-radius:15px;background:#ecfdf5;
+  color:#065f46;font-size:clamp(16px,1.75vw,19px);
+  line-height:1.45;font-weight:800;text-align:left;
+}
+/* The question content must not stretch the parent quiz card.
+   Use one 22px gap before the 44px Previous / counter / Next controls. */
+#class1-english-runtime #view-quiz:has(.l1-oo-screen) > .pastel-card{
+  min-height:0!important;justify-content:flex-start!important;
+  background:transparent!important;border:0!important;box-shadow:none!important;
+}
+#class1-english-runtime #view-quiz:has(.l1-oo-screen) #question-box{
+  flex:0 0 auto!important;justify-content:flex-start!important;
+  margin:0!important;padding:0!important;
+}
+#class1-english-runtime #view-quiz:has(.l1-oo-screen) #quiz-bottom-nav{
+  margin-top:22px!important;padding-top:0!important;
+}
+#class1-english-runtime #view-quiz:has(.l1-oo-screen) #nav-group-practice{
+  margin-top:0!important;
+}
+@media(max-width:639px){
+  #class1-english-runtime .l1-oo-screen{padding:10px 4px 0;}
+  #class1-english-runtime .l1-oo-subtitle{margin-bottom:14px;}
+  #class1-english-runtime .l1-oo-choices{grid-template-columns:minmax(0,1fr);gap:8px;}
+  #class1-english-runtime .l1-oo-choices .option-btn{min-height:59px;padding:10px 12px!important;}
+}
+`;
+function ensureEnglishStyles_(){if(document.getElementById(ENGLISH_MODULE_STYLE_ID_))return;const style=document.createElement('style');style.id=ENGLISH_MODULE_STYLE_ID_;style.textContent=ENGLISH_RUNTIME_CSS_+ENGLISH_HUB_UI_OVERRIDES_+ENGLISH_EXPLORE_ICON_TEXT_CSS_+ENGLISH_UNIFIED_LEARNING_CARDS_CSS_+TA1_REMOVE_LETTER_CSS_+TA1_FILL_MISSING_CSS_+TA1_ODD_ONE_CSS_;document.head.appendChild(style);}
 function ensureEnglishDependency_(tag,id,url){if(document.getElementById(id))return;const exists=[...document.querySelectorAll(tag)].some(el=>String(tag==='link'?el.href:el.src)===String(new URL(url,document.baseURI).href));if(exists)return;const el=document.createElement(tag);el.id=id;if(tag==='link'){el.rel='stylesheet';el.href=url;}else{el.src=url;el.async=true;}document.head.appendChild(el);}
 function ensureEnglishDependencies_(){ensureEnglishDependency_('link','class1-english-fontawesome','https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');ensureEnglishDependency_('link','class1-english-fonts','https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;700;800&display=swap');ensureEnglishDependency_('script','class1-english-chartjs','https://cdn.jsdelivr.net/npm/chart.js');ensureEnglishDependency_('script','class1-english-confetti','https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js');ensureEnglishDependency_('script','class1-english-html2pdf','https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js');}
 function mountEnglishRuntime_(){if(!englishModuleCtx_?.host)throw new Error('ENGLISH_MODULE_HOST_MISSING');ensureEnglishStyles_();ensureEnglishDependencies_();englishModuleCtx_.host.innerHTML=`<div id="${ENGLISH_MODULE_RUNTIME_ID_}">${ENGLISH_RUNTIME_HTML_}</div>`;englishModuleRoot_=document.getElementById(ENGLISH_MODULE_RUNTIME_ID_);installEnglishInlineBridge_();syncClass1EnglishState_();resetStars();try{updateAutoSpeechButtonUI();}catch(_){}primeEnglishAudio_();englishModuleMounted_=true;}
