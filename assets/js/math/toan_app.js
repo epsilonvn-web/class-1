@@ -39,7 +39,9 @@ const SUBTOPIC_PALETTES = [
 // Interface icons are not lesson images; real math illustrations still use the shared catalog.
 const MATH_SUBTOPIC_ICONS_ = {
     1: ['\u{1F522}', '\u2696\uFE0F', '\u{1F9E9}', '\u{1F9EE}'],
-    2: ['\u2795', '\u2796', '\u{1F9EE}', '\u{1F3AF}'],
+    2: ['\u{1F430}', '\u2795', '\u2796', '\u{1F9EE}', '\u{1F3AF}'],
+    // Mục 3: sáu icon riêng theo thứ tự học mới, tránh lặp icon số.
+    3: ['🧱', '🔢', '⚖️', '📊', '🧩', '🔍'],
     5: ['\u{1F4D0}', '\u{1F535}', '\u{1F9E9}', '\u{1F9CA}', '\u{1F50D}', '\u{1F537}']
 };
 
@@ -99,6 +101,11 @@ const SKILL_TAXONOMY = {
 // ==========================================
 let allTopicsDataCache = null;
 let allQuestionsFlatCache = null;
+// Cấu hình 50 phép tính gốc × 3 dạng hỏi cho mỗi phép cộng/trừ, lấy từ JSON Mục 2.
+let muc2ReducedSupportBankConfig_ = null;
+// Muc 6: cap 1/2 dung lai 300 cau cua Muc 4/5; che do day so chi thuoc phien luyen hien tai.
+let muc2PracticeNumberLineVisible_ = true;
+let muc2PracticeLevel_ = 0;
 // Bật/tắt đọc câu hỏi TỰ ĐỘNG khi vào câu mới — nút "Nghe câu hỏi" thủ công vẫn luôn hoạt động
 // dù tắt tính năng này (đây chỉ tắt phần tự động phát, không tắt hẳn tính năng nghe).
 let autoSpeechEnabled = localStorage.getItem('autoSpeechEnabled') !== 'false';
@@ -343,6 +350,15 @@ function normalizeQuestion(q) {
         diem: Number(q.diem ?? q.score ?? 0.5),
         explanation: q.explanation ?? q.h ?? 'Không có giải thích chi tiết.',
         muc1_type: q.muc1_type ?? '',
+        // Cấu hình riêng Mục 2 trong JSON: chỉ metadata, không thay nội dung gốc.
+        muc2_learning_stage: q.muc2_learning_stage === 'add' || q.muc2_learning_stage === 'sub' ? q.muc2_learning_stage : '',
+        muc2_practice: q.muc2_practice === true,
+        muc2_practice_only: q.muc2_practice_only === true,
+        // Thông tin câu hỏi/giọng đọc của hai chặng cộng-trừ cơ bản lưu ngay trong JSON.
+        muc2_equation: typeof q.muc2_equation === 'string' ? q.muc2_equation : '',
+        muc2_instruction: typeof q.muc2_instruction === 'string' ? q.muc2_instruction : '',
+        // Số gốc của Khám phá 3.2: cùng 50 số, mỗi lượt chia đều đọc và viết.
+        muc3_rw_number: Number.isSafeInteger(q.muc3_rw_number) ? q.muc3_rw_number : null,
         exercise_mode: q.exercise_mode ?? q.mode ?? '',
         muc5_type: q.muc5_type ?? '',
         muc5_visual: normalizeVisualMedia_(q.muc5_visual ?? null),
@@ -432,6 +448,10 @@ async function fetchAllQuestionsFlat() {
         return res.json();
     }));
 
+    // Dữ liệu ngân hàng biến thể nằm trong JSON Mục 2, chỉ lưu ID câu gốc.
+    // Không nhân ba học liệu và không thay đổi các câu 1-3 hoặc Mục 6.
+    muc2ReducedSupportBankConfig_ = results.flatMap(data => Array.isArray(data?.topics) ? data.topics : [])
+        .find(t => Number(t?.id) === 2)?.muc2_reduced_support_bank || null;
     const rawQuestions = results.flatMap(data => {
         if (Array.isArray(data)) return data;
         if (data && Array.isArray(data.topics)) return data.topics.flatMap(t => t.qs || t.questions || []);
@@ -2896,10 +2916,21 @@ function openTopic(topicNum, topicName, icon) {
     });
 }
 
-function setSubtopicGridColumns(count) {
+function setSubtopicGridColumns(count, topicNum = null) {
     const el = document.getElementById('lecture-subtopics-list');
     if (!el) return;
-    // Same responsive card grid as Explore; keep two columns for short lists.
+    const num = Number(topicNum);
+    // Khám phá 1–11: dựa vào SỐ Ô THỰC TẾ (kể cả ô bài giảng của Mục 2/5).
+    // Trên màn hình rộng: 1–4 ô = 2 cột, từ 5 ô = 3 cột.
+    if (num >= 1 && num <= 11) {
+        const threeColumns = count >= 5;
+        const gridClass = threeColumns
+            ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 w-full max-w-6xl'
+            : 'grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full max-w-6xl';
+        el.className = `${num === 2 ? 'math-muc2-equal-grid ' : ''}${gridClass}`;
+        return;
+    }
+    // Không thay đổi bố cục Ôn tập (chủ đề 13) hay các màn học khác.
     if (count > 6) {
         el.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 w-full max-w-6xl';
     } else {
@@ -2918,22 +2949,21 @@ function formatSubtopicLabelWithCode_(code, label) {
 
 function mapMuc2Stage_(q) {
     const src = String(q?._source_sub_topic || q?.sub_topic || '');
-    const id = Number(q?.question_id ?? q?.id ?? 0);
-
+    if (q?.muc2_practice_only === true) return { code: '2.7', name: 'Thực hành' };
     if (['2.1', '2.2', '2.3'].includes(src)) return { code: '2.1', name: 'Hiểu phép cộng' };
     if (src === '2.4') return { code: '2.2', name: 'Phép cộng trong phạm vi 10' };
     if (['2.6', '2.7', '2.8'].includes(src)) return { code: '2.3', name: 'Hiểu phép trừ' };
     if (src === '2.9') return { code: '2.4', name: 'Phép trừ trong phạm vi 10' };
-    if (src === '2.5') return { code: '2.5', name: 'Luyện tập có hỗ trợ' };
 
-    // Ngân hàng tổng hợp cũ: các câu trừ tìm số thiếu được đưa vào 2.5
-    // để phần luyện có hỗ trợ có cả cộng và trừ. Phần còn lại là thực hành độc lập.
-    if (src === '2.10' && [2291, 2293, 2295, 2297, 2299].includes(id)) {
-        return { code: '2.5', name: 'Luyện tập có hỗ trợ' };
+    // Bản legacy: các câu ở 2.5/2.10 vẫn phục vụ Mục 6; Mục 4/5 mới sinh từ 50 ID gốc trong JSON.
+    if (src === '2.5' || src === '2.10') {
+        const operation = q?.muc2_learning_stage ||
+            (getMuc2Equation_(q)?.op === '+' ? 'add' : 'sub');
+        return operation === 'add'
+            ? { code: '2.5', name: 'Bé tập tự cộng' }
+            : { code: '2.6', name: 'Bé tập tự trừ' };
     }
-    if (src === '2.10') return { code: '2.6', name: 'Thực hành tổng hợp' };
-
-    return { code: src || '2.6', name: q?.sub_topic_label || 'Thực hành tổng hợp' };
+    return { code: src || '2.7', name: q?.sub_topic_label || 'Thực hành' };
 }
 
 function remapMuc2Questions_(questions) {
@@ -2947,6 +2977,91 @@ function remapMuc2Questions_(questions) {
             sub_topic_label: stage.name
         };
     });
+}
+
+// ==========================================
+// MỤC 2 - 50 PHÉP TÍNH GỐC × 3 DẠNG HỎI, TÁI SỬ DỤNG ID TRONG JSON
+// ==========================================
+function muc2VariantOptions_(correct) {
+    const n = Number(correct);
+    if (!Number.isSafeInteger(n) || n < 0 || n > 10) return [];
+    const values = Array.from({length:11}, (_,i) => String(i));
+    const similar = values.filter(x => Math.abs(Number(x) - n) <= 2);
+    return buildTrickyChoices(String(n), similar, values, 3);
+}
+
+function muc2VariantSpeech_(op, a, b, total, variant) {
+    if (op === '+') {
+        if (variant === 'second') return `Bé ơi, ${a} cộng mấy bằng ${total}?`;
+        if (variant === 'first') return `Bé ơi, mấy cộng ${b} bằng ${total}?`;
+        return `Bé ơi, ${a} cộng ${b} bằng mấy?`;
+    }
+    if (variant === 'second') return `Bé ơi, ${a} trừ mấy bằng ${total}?`;
+    if (variant === 'first') return `Bé ơi, số mấy trừ ${b} bằng ${total}?`;
+    return `Bé ơi, ${a} trừ ${b} bằng mấy?`;
+}
+
+function buildMuc2VariantPool_(sourceQuestions) {
+    const cfg = muc2ReducedSupportBankConfig_;
+    if (Number(cfg?.schema_version) !== 1 || Number(cfg?.range_max) !== 10 ||
+        Number(cfg?.base_count_per_operation) !== 50 ||
+        JSON.stringify(cfg?.variants_per_base) !== '["result","second","first"]') return null;
+    const byId = new Map((sourceQuestions || []).map(q => [Number(q.question_id), q]));
+    const stages = { add: new Set(['2.1','2.2','2.3','2.4']), sub: new Set(['2.6','2.7','2.8','2.9']) };
+    const output = { add: [], sub: [] };
+    for (const operation of ['add','sub']) {
+        const op = operation === 'add' ? '+' : '−';
+        const list = operation === 'add' ? cfg.add_source_ids : cfg.sub_source_ids;
+        if (!Array.isArray(list) || list.length !== 50 || new Set(list).size !== 50) return null;
+        const distinct = new Set();
+        for (const id of list) {
+            if (!Number.isSafeInteger(id)) return null;
+            const source = byId.get(id);
+            if (!source || !stages[operation].has(String(source._source_sub_topic))) return null;
+            const sourceFormula = String(source.muc2_equation || '').trim();
+            const match = sourceFormula.match(/^(\d{1,2})\s*([+−])\s*(\d{1,2})\s*=\s*\?$/);
+            if (!match || match[2] !== op) return null;
+            const a = Number(match[1]), b = Number(match[3]);
+            const result = operation === 'add' ? a + b : a - b;
+            const key = `${a}${op}${b}`;
+            if (distinct.has(key) || a < 0 || a > 10 || b < 0 || b > 10 ||
+                result < 0 || result > 10 || result !== Number(source.answer)) return null;
+            distinct.add(key);
+            const stage = operation === 'add' ? '2.5' : '2.6';
+            for (const [variantIndex,variant] of ['result','second','first'].entries()) {
+                const correct = variant === 'result' ? result : (variant === 'second' ? b : a);
+                const questionText = variant === 'result'
+                    ? `${a} ${op} ${b} = ?`
+                    : (variant === 'second' ? `${a} ${op} ? = ${result}` : `? ${op} ${b} = ${result}`);
+                output[operation].push({
+                    ...source,
+                    question_id: 200000 + id * 10 + variantIndex + 1,
+                    _muc2_variant_source_id: id,
+                    _muc2_variant_kind: variant,
+                    _muc2_visual_emoji: getMuc2Emoji_(source),
+                    _muc2_stage: stage,
+                    sub_topic: stage,
+                    sub_topic_label: operation === 'add' ? 'Bé tập tự cộng' : 'Bé tập tự trừ',
+                    question_text: questionText,
+                    answer: String(correct),
+                    options: muc2VariantOptions_(correct),
+                    audio_text: muc2VariantSpeech_(op, a, b, result, variant),
+                    muc2_equation: '',
+                    muc2_instruction: '',
+                    reading_title: '',
+                    reading_passage: '',
+                    hint: '',
+                    explanation: '',
+                    image_url: '',
+                    muc2_practice: false,
+                    muc2_practice_only: false,
+                    _muc2_self_practice: false
+                });
+            }
+        }
+        if (output[operation].length !== 150) return null;
+    }
+    return output;
 }
 
 // ==========================================
@@ -3329,6 +3444,333 @@ function openMuc5IntroLesson_() {
         </div>`;
 }
 
+
+// ==========================================
+// MUC 2 - HOC CUNG CO THO HONG
+// Chi la bai giang tuong tac trong Kham pha; khong tao diem, quyen hay ket qua moi.
+// Nhom cau hoi 1-4 / source JSON duoc bao toan de khong doi tien do cu.
+// ==========================================
+const MUC2_GUIDE_TRACKS_ = Object.freeze({
+    add: {
+        title: 'Học phép cộng', sign: '+', verb: 'thêm', icon: '➕',
+        demo: { a: 3, b: 2 }, guided: { a: 2, b: 3 },
+        quiz: [[1,2], [2,2], [3,2], [4,1], [6,3]],
+        narration: [
+            'Cô có ba chấm tròn màu hồng. Cô thêm hai chấm tròn màu xanh. Con cùng cô đếm tất cả nhé. Ba cộng hai bằng năm. Phép cộng giúp ta tìm tổng khi gộp các nhóm lại.',
+            'Bây giờ đến lượt con. Có hai chấm hồng. Con chạm vào từng chấm xanh để thêm ba chấm vào nhóm. Khi đã thêm đủ, con đếm tất cả chấm tròn.',
+            'Gộp ba chấm hồng và hai chấm xanh, ta được năm chấm. Nếu từ năm chấm bớt hai chấm xanh, sẽ còn ba chấm hồng. Phép cộng và phép trừ có liên hệ với nhau.',
+            'Con hãy tự tìm kết quả từng phép tính. Nếu chưa chắc chắn, con bấm gợi ý để nhìn các chấm tròn. Cô tin là con làm được.'
+        ]
+    },
+    sub: {
+        title: 'Học phép trừ', sign: '−', verb: 'bớt', icon: '➖',
+        demo: { a: 5, b: 2 }, guided: { a: 6, b: 2 },
+        quiz: [[3,1], [4,2], [5,3], [6,2], [8,3]],
+        narration: [
+            'Cô có năm chấm tròn. Cô bớt đi hai chấm. Con nhìn xem những chấm nào được bớt đi nhé. Cô đếm số chấm còn lại: một, hai, ba. Năm trừ hai bằng ba.',
+            'Bây giờ có sáu chấm hồng. Con chạm vào hai chấm để bớt đi, rồi đếm xem còn bao nhiêu chấm chưa bị bớt nhé.',
+            'Ba chấm hồng và hai chấm xanh gộp lại được năm chấm. Từ năm chấm, bớt đi hai chấm xanh thì còn ba chấm hồng. Khi lấy bớt một phần, ta dùng phép trừ.',
+            'Bây giờ con thử tự làm từng phép trừ. Con có thể bấm gợi ý nếu cần nhìn chấm tròn và đếm số còn lại.'
+        ]
+    }
+});
+const MUC2_GUIDE_STEPS_ = ['Cô làm mẫu', 'Bé làm cùng cô', 'Hiểu bản chất', 'Bé tự làm'];
+let muc2GuideState_ = null;
+
+function muc2GuideTrack_() {
+    return MUC2_GUIDE_TRACKS_[muc2GuideState_?.lesson] || MUC2_GUIDE_TRACKS_.add;
+}
+
+function muc2GuideDot_(color, muted = false, extra = '') {
+    return `<span class="muc2-guide-dot muc2-guide-dot--${color}${muted ? ' is-removed' : ''}${extra ? ` ${extra}` : ''}" aria-hidden="true"></span>`;
+}
+
+function muc2GuideDots_(count, color, mutedCount = 0) {
+    return Array.from({ length: Math.max(0, Math.min(10, Number(count) || 0)) }, (_, i) =>
+        muc2GuideDot_(color, i >= (count - mutedCount))
+    ).join('');
+}
+
+function openMuc2Guide_(lesson = 'add') {
+    if (Number(pendingTopicQuiz?.topicNum) !== 2) return;
+    stopSpeaking();
+    muc2GuideState_ = {
+        lesson: MUC2_GUIDE_TRACKS_[lesson] ? lesson : 'add',
+        step: 0, demoRevealed: false, guidedPicked: [],
+        seenModels: { add:false, sub:false }, shownModel: '',
+        quizIndex: 0, quizSolved: false, quizHint: false,
+        quizWrong: null, quizCompleted: false
+    };
+    setAppShellRootMode_(false);
+    document.getElementById('quiz-top-bar')?.classList.add('hidden');
+    document.getElementById('quiz-card-header')?.classList.add('hidden');
+    document.getElementById('nav-group-practice')?.classList.add('hidden');
+    document.getElementById('nav-group-exam')?.classList.add('hidden');
+    document.getElementById('view-quiz')?.classList.remove('roadmap-exercise-mode');
+    updateDiscoverBreadcrumb_(pendingTopicQuiz.topicName, '➕', `1. Học cùng Cô Thỏ Hồng · ${muc2GuideTrack_().title}`);
+    switchAppView('view-quiz');
+    renderMuc2Guide_();
+}
+
+function muc2GuideSelectLesson_(lesson) {
+    if (!MUC2_GUIDE_TRACKS_[lesson] || !muc2GuideState_) return;
+    openMuc2Guide_(lesson);
+}
+
+function muc2GuideExit_() {
+    stopSpeaking();
+    muc2GuideState_ = null;
+    if (Number(pendingTopicQuiz?.topicNum) === 2) {
+        updateDiscoverBreadcrumb_(pendingTopicQuiz.topicName, '➕', null);
+        switchAppView('view-lecture');
+    } else goHome();
+}
+
+function muc2GuideSpeak_() {
+    if (!muc2GuideState_) return;
+    const track = muc2GuideTrack_();
+    if (muc2GuideState_.step === 3 && !muc2GuideState_.quizCompleted) {
+        const [a,b] = track.quiz[muc2GuideState_.quizIndex];
+        const sign = track.sign === '+' ? 'cộng' : 'trừ';
+        speakVietnamese(`${a} ${sign} ${b} bằng bao nhiêu? Con hãy tự tìm kết quả. Nếu cần, con bấm gợi ý nhé.`, 0.94);
+    } else {
+        speakVietnamese(track.narration[muc2GuideState_.step] || '', 0.94);
+    }
+}
+
+function muc2GuideReady_() {
+    const state = muc2GuideState_;
+    if (!state) return false;
+    if (state.step === 0) return state.demoRevealed;
+    if (state.step === 1) return state.guidedPicked.length === muc2GuideTrack_().guided.b;
+    if (state.step === 2) return state.seenModels.add && state.seenModels.sub;
+    return false;
+}
+
+function muc2GuideSetStep_(step) {
+    const state = muc2GuideState_;
+    if (!state || !Number.isInteger(step) || step < 0 || step > 3) return;
+    if (step > state.step && (!muc2GuideReady_() || step !== state.step + 1)) return;
+    stopSpeaking();
+    state.step = step;
+    renderMuc2Guide_();
+}
+
+function muc2GuideRevealDemo_() {
+    if (!muc2GuideState_ || muc2GuideState_.step !== 0) return;
+    stopSpeaking();
+    muc2GuideState_.demoRevealed = true;
+    renderMuc2Guide_();
+}
+
+function muc2GuidePick_(index) {
+    const state = muc2GuideState_;
+    if (!state || state.step !== 1) return;
+    const { a,b } = muc2GuideTrack_().guided;
+    const poolSize = state.lesson === 'add' ? b : a;
+    if (!Number.isInteger(index) || index < 0 || index >= poolSize || state.guidedPicked.includes(index) || state.guidedPicked.length >= b) return;
+    stopSpeaking();
+    state.guidedPicked.push(index);
+    renderMuc2Guide_();
+}
+
+function muc2GuideResetGuided_() {
+    if (!muc2GuideState_ || muc2GuideState_.step !== 1) return;
+    stopSpeaking();
+    muc2GuideState_.guidedPicked = [];
+    renderMuc2Guide_();
+}
+
+function muc2GuideShowModel_(kind) {
+    const state = muc2GuideState_;
+    if (!state || state.step !== 2 || (kind !== 'add' && kind !== 'sub')) return;
+    stopSpeaking();
+    state.seenModels[kind] = true;
+    state.shownModel = kind;
+    renderMuc2Guide_();
+}
+
+function muc2GuideQuizChoices_(answer) {
+    const values = [answer, answer + 1, answer - 1, answer + 2, answer - 2, answer + 3, answer - 3, 0, 10];
+    return [...new Set(values)].filter(n => n >= 0 && n <= 10).slice(0,4).sort((a,b) => a - b);
+}
+
+function muc2GuideChoose_(value) {
+    const state = muc2GuideState_;
+    if (!state || state.step !== 3 || state.quizSolved || state.quizCompleted) return;
+    if (!Number.isInteger(value)) return;
+    const [a,b] = muc2GuideTrack_().quiz[state.quizIndex];
+    const answer = state.lesson === 'add' ? a+b : a-b;
+    stopSpeaking();
+    if (value === answer) {
+        state.quizSolved = true;
+        state.quizWrong = null;
+    } else {
+        state.quizWrong = value;
+    }
+    renderMuc2Guide_();
+}
+
+function muc2GuideHint_() {
+    const state = muc2GuideState_;
+    if (!state || state.step !== 3 || state.quizCompleted || state.quizSolved) return;
+    stopSpeaking();
+    state.quizHint = true;
+    renderMuc2Guide_();
+}
+
+function muc2GuideNextQuiz_() {
+    const state = muc2GuideState_;
+    if (!state || state.step !== 3 || !state.quizSolved || state.quizCompleted) return;
+    stopSpeaking();
+    if (state.quizIndex < muc2GuideTrack_().quiz.length - 1) {
+        state.quizIndex++;
+        state.quizSolved = false;
+        state.quizHint = false;
+        state.quizWrong = null;
+    } else {
+        state.quizCompleted = true;
+    }
+    renderMuc2Guide_();
+}
+
+function muc2GuideDemoHtml_() {
+    const state = muc2GuideState_, track = muc2GuideTrack_();
+    const {a,b} = track.demo;
+    const after = state.demoRevealed;
+    const result = track.sign === '+' ? a+b : a-b;
+    const intro = state.lesson === 'add'
+        ? 'Cô có 3 chấm hồng. Cô sẽ thêm 2 chấm xanh. Theo con, tất cả có bao nhiêu chấm?'
+        : 'Cô có 5 chấm hồng. Cô sẽ bớt 2 chấm. Theo con, còn lại mấy chấm?';
+    const scene = state.lesson === 'add'
+        ? `<div class="muc2-guide-groups">
+            <div class="muc2-guide-tray"><strong>Ban đầu: ${a}</strong><div class="muc2-guide-dots">${muc2GuideDots_(a,'pink')}</div></div>
+            <div class="muc2-guide-symbol">+</div>
+            <div class="muc2-guide-tray ${after ? '' : 'is-waiting'}"><strong>Thêm ${b}</strong><div class="muc2-guide-dots">${after ? muc2GuideDots_(b,'mint') : '<span class="muc2-guide-placeholder">Chưa thêm</span>'}</div></div>
+        </div>`
+        : `<div class="muc2-guide-tray muc2-guide-tray--wide"><strong>Ban đầu có ${a} chấm</strong><div class="muc2-guide-dots">${muc2GuideDots_(a,'pink',after ? b : 0)}</div><div class="muc2-guide-caption">${after ? `Đã bớt ${b} chấm được gạch đi` : 'Chưa bớt chấm nào'}</div></div>`;
+    return `<div class="muc2-guide-panel">
+        <h3>Cô làm mẫu trước nhé!</h3><p>${intro}</p>
+        ${scene}
+        <div class="muc2-guide-equation">${a} <span>${track.sign}</span> ${b} = <b>${after ? result : '?'}</b></div>
+        ${after ? `<div class="muc2-guide-feedback is-good" role="status">${state.lesson === 'add' ? `Cô đếm tất cả được ${result} chấm. Thêm vào là dùng phép cộng!` : `Cô đếm số chấm chưa bị gạch: còn ${result}. Bớt đi là dùng phép trừ!`}</div>` : ''}
+        <button type="button" class="muc2-guide-primary" onclick="muc2GuideRevealDemo_()" ${after ? 'disabled' : ''}>${after ? '✓ Cô đã làm mẫu' : (state.lesson === 'add' ? '➕ Xem cô thêm 2 chấm' : '➖ Xem cô bớt 2 chấm')}</button>
+    </div>`;
+}
+
+function muc2GuideTogetherHtml_() {
+    const state = muc2GuideState_, track = muc2GuideTrack_();
+    const {a,b} = track.guided, picks = state.guidedPicked;
+    const done = picks.length === b;
+    const isAdd = state.lesson === 'add';
+    const msg = isAdd
+        ? `Có ${a} chấm hồng. Con hãy chạm từng chấm xanh bên dưới để thêm đủ ${b} chấm vào nhóm.`
+        : `Có ${a} chấm hồng. Con hãy chạm đúng ${b} chấm để bớt đi, rồi đếm những chấm còn lại.`;
+    const mainDots = isAdd
+        ? `${muc2GuideDots_(a,'pink')}${muc2GuideDots_(picks.length,'mint')}`
+        : Array.from({length:a},(_,i)=>`<button type="button" class="muc2-guide-tap-dot" onclick="muc2GuidePick_(${i})" ${picks.includes(i) || done ? 'disabled' : ''} aria-label="${picks.includes(i) ? 'Đã bớt' : 'Bớt'} chấm ${i+1}">${muc2GuideDot_('pink',picks.includes(i))}</button>`).join('');
+    const source = isAdd ? `<div class="muc2-guide-bank" aria-label="Chọn chấm để thêm">${Array.from({length:b},(_,i)=>`<button type="button" class="muc2-guide-tap-dot" onclick="muc2GuidePick_(${i})" ${picks.includes(i) || done ? 'disabled' : ''} aria-label="${picks.includes(i)?'Đã thêm':'Thêm'} chấm ${i+1}">${muc2GuideDot_('mint',picks.includes(i))}</button>`).join('')}</div>` : '';
+    return `<div class="muc2-guide-panel">
+        <h3>Giờ con làm cùng cô nhé!</h3><p>${msg}</p>
+        <div class="muc2-guide-tray muc2-guide-tray--wide"><strong>${isAdd ? 'Nhóm đã gộp' : 'Con chạm vào chấm muốn bớt'}</strong><div class="muc2-guide-dots">${mainDots}</div></div>
+        ${source}
+        <div class="muc2-guide-progress">Đã ${track.verb}: <strong>${picks.length}/${b}</strong> chấm</div>
+        <div class="muc2-guide-equation">${a} <span>${track.sign}</span> ${b} = <b>${done ? (isAdd ? a+b : a-b) : '?'}</b></div>
+        ${done ? `<div class="muc2-guide-feedback is-good" role="status">Con giỏi lắm! ${isAdd ? 'Gộp tất cả và đếm' : 'Đếm các chấm chưa bị gạch'} là ra kết quả.</div>` : ''}
+        <button type="button" class="muc2-guide-secondary" onclick="muc2GuideResetGuided_()">↻ Làm lại thao tác</button>
+    </div>`;
+}
+
+function muc2GuideUnderstandHtml_() {
+    const state = muc2GuideState_;
+    const isAdd = state.shownModel === 'add', isSub = state.shownModel === 'sub';
+    return `<div class="muc2-guide-panel">
+        <h3>Vì sao cộng và trừ liên quan với nhau?</h3>
+        <p>Con nhìn hai phần có <b>3 chấm hồng</b> và <b>2 chấm xanh</b>. Con thử cả hai cách nhé!</p>
+        <div class="muc2-guide-groups">
+            <div class="muc2-guide-tray"><strong>Phần thứ nhất: 3</strong><div class="muc2-guide-dots">${muc2GuideDots_(3,'pink')}</div></div>
+            <div class="muc2-guide-symbol">+</div>
+            <div class="muc2-guide-tray"><strong>Phần thứ hai: 2</strong><div class="muc2-guide-dots">${muc2GuideDots_(2,'mint')}</div></div>
+        </div>
+        <div class="muc2-guide-model-buttons">
+            <button type="button" class="muc2-guide-secondary ${isAdd?'is-active':''}" onclick="muc2GuideShowModel_('add')">➕ Gộp lại ${state.seenModels.add?'✓':''}</button>
+            <button type="button" class="muc2-guide-secondary ${isSub?'is-active':''}" onclick="muc2GuideShowModel_('sub')">➖ Tách ra ${state.seenModels.sub?'✓':''}</button>
+        </div>
+        ${state.shownModel ? `<div class="muc2-guide-equation">${isAdd?'3 + 2 = 5':'5 − 2 = 3'}</div>
+            <div class="muc2-guide-feedback is-good" role="status">${isAdd?'Gộp hai phần lại thành 5 chấm: dùng phép cộng.':'Có 5 chấm, bớt đi 2 chấm xanh, còn 3 chấm hồng: dùng phép trừ.'}</div>` : '<div class="muc2-guide-feedback">Bấm từng nút để thấy hai cách tính nhé.</div>'}
+        <div class="muc2-guide-progress">Đã khám phá: <strong>${Number(state.seenModels.add)+Number(state.seenModels.sub)}/2</strong> cách</div>
+    </div>`;
+}
+
+function muc2GuideQuizHintHtml_(a,b,kind) {
+    return `<div class="muc2-guide-hint" role="note"><strong>💡 Cô gợi ý cho con:</strong>
+        <div class="muc2-guide-groups">
+            ${kind==='add' ? `<div class="muc2-guide-tray"><strong>${a} chấm</strong><div class="muc2-guide-dots">${muc2GuideDots_(a,'pink')}</div></div><span class="muc2-guide-symbol">+</span><div class="muc2-guide-tray"><strong>${b} chấm</strong><div class="muc2-guide-dots">${muc2GuideDots_(b,'mint')}</div></div>`
+                : `<div class="muc2-guide-tray muc2-guide-tray--wide"><strong>${a} chấm, gạch đi ${b} chấm</strong><div class="muc2-guide-dots">${muc2GuideDots_(a,'pink',b)}</div></div>`}
+        </div>
+        <p>${kind==='add'?'Con đếm tất cả các chấm của hai nhóm nhé.':'Con đếm những chấm chưa bị gạch nhé.'}</p>
+    </div>`;
+}
+
+function muc2GuideQuizHtml_() {
+    const state = muc2GuideState_, track = muc2GuideTrack_();
+    if (state.quizCompleted) {
+        return `<div class="muc2-guide-panel muc2-guide-complete">
+            <div class="muc2-guide-trophy" aria-hidden="true">🏆</div>
+            <h3>Con đã hoàn thành 5 phép tính!</h3>
+            <p>Cô Thỏ Hồng rất vui vì con đã tự tìm kết quả. Bây giờ con có thể luyện nhiều câu hơn nhé!</p>
+            <div class="muc2-guide-actions">
+                <button type="button" class="muc2-guide-secondary" onclick="openMuc2Guide_('${state.lesson==='add'?'sub':'add'}')">${state.lesson==='add'?'Học phép trừ':'Học phép cộng'} →</button>
+                <button type="button" class="muc2-guide-primary" onclick="selectSubtopic(${state.lesson==='add'?0:1})">Vào luyện ${state.lesson==='add'?'phép cộng':'phép trừ'} →</button>
+            </div>
+        </div>`;
+    }
+    const [a,b] = track.quiz[state.quizIndex];
+    const answer = state.lesson==='add' ? a+b : a-b;
+    return `<div class="muc2-guide-panel">
+        <div class="muc2-guide-quiz-count">Câu ${state.quizIndex+1}/5</div>
+        <h3>Bé tự làm nào!</h3><p>Con thử tính trước nhé. Nếu cần, cô sẽ gợi ý bằng các chấm tròn.</p>
+        <div class="muc2-guide-equation">${a} <span>${track.sign}</span> ${b} = <b>?</b></div>
+        <div class="muc2-guide-choices">${muc2GuideQuizChoices_(answer).map(n=>`<button type="button" class="muc2-guide-choice ${state.quizSolved && n===answer?'is-correct':''} ${!state.quizSolved && state.quizWrong===n?'is-wrong':''}" onclick="muc2GuideChoose_(${n})" ${state.quizSolved?'disabled':''} aria-label="Chọn đáp án ${n}">${n}</button>`).join('')}</div>
+        ${state.quizSolved ? `<div class="muc2-guide-feedback is-good" role="status">✓ Đúng rồi! ${a} ${track.sign} ${b} = ${answer}. Con làm tốt lắm!</div>` : (state.quizWrong!==null ? '<div class="muc2-guide-feedback is-try" role="status">Con thử lại nhé. Hãy đếm thật chậm hoặc bấm Gợi ý để cô giúp con.</div>' : '')}
+        ${state.quizHint && !state.quizSolved ? muc2GuideQuizHintHtml_(a,b,state.lesson) : ''}
+        <div class="muc2-guide-actions">
+            ${!state.quizSolved ? `<button type="button" class="muc2-guide-secondary" onclick="muc2GuideHint_()" ${state.quizHint?'disabled':''}>💡 ${state.quizHint?'Đã hiện gợi ý':'Con cần gợi ý'}</button>` : ''}
+            ${state.quizSolved ? `<button type="button" class="muc2-guide-primary" onclick="muc2GuideNextQuiz_()">${state.quizIndex===4?'Hoàn thành bài học':'Câu tiếp theo →'}</button>` : ''}
+        </div>
+    </div>`;
+}
+
+function renderMuc2Guide_() {
+    const state = muc2GuideState_;
+    const host = document.getElementById('question-box');
+    if (!state || !host || Number(pendingTopicQuiz?.topicNum) !== 2) return;
+    const track = muc2GuideTrack_();
+    const htmlByStep = [muc2GuideDemoHtml_, muc2GuideTogetherHtml_, muc2GuideUnderstandHtml_, muc2GuideQuizHtml_];
+    host.innerHTML = `<section class="muc2-guide" aria-label="Học phép cộng và phép trừ cùng Cô Thỏ Hồng">
+        <div class="muc2-guide-header">
+            <div><div class="muc2-guide-eyebrow">🐰 HỌC CÙNG CÔ THỎ HỒNG</div>
+                <h2>Hiểu rồi mình mới luyện nhé!</h2>
+                <p>Bé nhìn, làm cùng cô, hiểu cách tính rồi tự thử sức.</p></div>
+            <button type="button" class="muc2-guide-secondary" onclick="muc2GuideExit_()">← Về Mục 2</button>
+        </div>
+        <div class="muc2-guide-lesson-tabs" role="group" aria-label="Chọn bài học">
+            ${Object.entries(MUC2_GUIDE_TRACKS_).map(([key,item])=>`<button type="button" class="muc2-guide-lesson-btn ${state.lesson===key?'is-active':''}" aria-pressed="${state.lesson===key}" onclick="muc2GuideSelectLesson_('${key}')">${item.icon} ${item.title}</button>`).join('')}
+        </div>
+        <div class="muc2-guide-steps" aria-label="Các bước học">
+            ${MUC2_GUIDE_STEPS_.map((label,i)=>`<div class="muc2-guide-step ${state.step===i?'is-active':(state.step>i?'is-done':'')}" ${state.step===i?'aria-current="step"':''}><span>${state.step>i?'✓':(i+1)}</span><strong>${label}</strong></div>`).join('')}
+        </div>
+        <div class="muc2-guide-voice"><div class="muc2-guide-voice-label">${track.icon} ${escapeHtml(track.title)} · ${MUC2_GUIDE_STEPS_[state.step]}</div>
+            <button type="button" class="muc2-guide-voice-button" onclick="muc2GuideSpeak_()"><i class="fa-solid fa-volume-high" aria-hidden="true"></i> Nghe cô giảng</button>
+        </div>
+        ${htmlByStep[state.step]()}
+        <div class="muc2-guide-bottom">
+            ${state.step>0 ? `<button type="button" class="muc2-guide-secondary" onclick="muc2GuideSetStep_(${state.step-1})">← Bước trước</button>` : '<span></span>'}
+            ${state.step<3 ? `<button type="button" class="muc2-guide-primary" onclick="muc2GuideSetStep_(${state.step+1})" ${muc2GuideReady_()?'':'disabled'}>Tiếp tục →</button>` : '<span></span>'}
+        </div>
+    </section>`;
+}
+
 function showLectureAndSubtopics(topicNum, topicName, topicObj) {
     const topicQuestions = Number(topicNum) === 2
         ? remapMuc2Questions_(topicObj.questions)
@@ -3337,17 +3779,32 @@ function showLectureAndSubtopics(topicNum, topicName, topicObj) {
             : (topicObj.questions || []);
     pendingTopicQuiz = { topicNum, topicName, questions: topicQuestions };
 
-    const isMuc5 = Number(topicNum) === 5;
-    document.getElementById('lecture-title').textContent = isMuc5 ? 'Hình học' : (topicObj.lecture_title || topicName);
-    document.getElementById('lecture-content').textContent = isMuc5
-        ? 'Làm quen tên gọi → nhận biết và phân loại → lắp ghép → nhận biết hình khối → đếm hình nâng cao.'
-        : (topicObj.lecture_content || topicObj.description || 'Chào mừng bé yêu! Hãy chọn một mục nhỏ bên dưới để bắt đầu luyện tập nhé.');
-    document.getElementById('lecture-content')?.classList.add('text-base', 'md:text-lg');
-    document.getElementById('view-lecture').dataset.audioText = isMuc5
-        ? 'Mục Hình học gồm năm bước. Trước tiên con làm quen tên gọi và cách nhận biết các hình. Sau đó con luyện phân loại hình phẳng, lắp ghép xếp hình, nhận biết hình khối trong đời sống và cuối cùng thử đếm hình trong các hình nhiều nét.'
-        : (topicObj.lecture_audio_text || topicObj.lecture_content || topicObj.description || '');
+    // Khám phá 1–11 chỉ tạo lưới bài học; không tạo khung giới thiệu.
+    // Ô bài giảng thực sự bên trong lưới (Mục 2 và 5) được giữ nguyên.
+    // Ôn tập (Mục 13) giữ lời giới thiệu riêng, chỉ tạo khi mở tab này.
+    document.getElementById('math-review-intro')?.remove();
+    if (Number(topicNum) === 13) {
+        const gridParent = document.getElementById('lecture-subtopics-list')?.parentElement;
+        if (gridParent) {
+            const reviewIntro = document.createElement('section');
+            reviewIntro.id = 'math-review-intro';
+            reviewIntro.className = 'w-full flex flex-col items-center gap-3 mb-3';
+            const description = document.createElement('p');
+            description.className = 'w-full bg-pink-50/40 px-4 py-3.5 rounded-2xl border border-pink-100 text-base md:text-lg text-gray-700 leading-relaxed whitespace-pre-line text-center';
+            description.textContent = topicObj.lecture_content || topicObj.description || 'Chào mừng bé yêu! Hãy chọn một mục nhỏ bên dưới để bắt đầu luyện tập nhé.';
+            const speak = document.createElement('button');
+            speak.type = 'button';
+            speak.className = 'w-full max-w-xs py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-extrabold rounded-xl text-sm md:text-base pastel-btn flex items-center justify-center gap-2 border border-purple-200 shadow-sm';
+            speak.innerHTML = '<i class="fa-solid fa-volume-high text-base" aria-hidden="true"></i><span>Nghe cô đọc</span>';
+            const audioText = topicObj.lecture_audio_text || topicObj.lecture_content || topicObj.description || '';
+            speak.addEventListener('click', () => speakVietnamese(audioText, 0.96));
+            reviewIntro.append(description, speak);
+            gridParent.before(reviewIntro);
+        }
+    }
 
     const groups = [], groupMap = {}, groupLabels = {};
+    const muc2Variants = Number(topicNum) === 2 ? buildMuc2VariantPool_(topicQuestions) : null;
     topicQuestions.forEach(q => {
         let k = (q.sub_topic || 'Câu hỏi chung').trim();
         let label = q.sub_topic_label || k;
@@ -3355,7 +3812,7 @@ function showLectureAndSubtopics(topicNum, topicName, topicObj) {
         // Mục 1 có 4 chặng: 100 câu làm quen, 100 câu so sánh,
         // 50 câu tách-gộp (1.5), 100 câu luyện tập/củng cố (1.6).
         // Giữ nguyên sub_topic của từng câu để bảo toàn hình minh họa, thao tác và đáp án.
-        // Mục 2 vẫn giữ 3 nhóm hiện tại, không thay đổi.
+        // Mục 2: giữ nguyên 1–3; chia chặng giảm hỗ trợ thành cộng/trừ, rồi tự thực hành.
         if (Number(topicNum) === 1) {
             const stage = String(q?.sub_topic || '');
             if (stage === '1.1' || stage === '1.2') {
@@ -3379,26 +3836,53 @@ function showLectureAndSubtopics(topicNum, topicName, topicObj) {
             } else if (stage === '2.3' || stage === '2.4') {
                 k = '2';
                 label = 'Phép trừ';
-            } else {
+            } else if (stage === '2.5') {
+                if (muc2Variants) return; // 4-5 sẽ dùng 50 phép tính gốc × 3 dạng.
                 k = '3';
-                label = 'Luyện tập tổng hợp';
+                label = 'Bé tập tự cộng';
+            } else if (stage === '2.6') {
+                if (muc2Variants) return;
+                k = '4';
+                label = 'Bé tập tự trừ';
+            } else {
+                // Câu chỉ dành cho Mục 6 Thực hành: không trộn vào chặng học 4–5.
+                return;
             }
         }
 
         if (!groupMap[k]) { groupMap[k] = []; groups.push(k); groupLabels[k] = label; }
         groupMap[k].push(q);
     });
-    // Mục 2: mục 4 tự luyện dùng lại đúng 60 câu của mục 3, không nhân bản JSON.
-    // Tạo bản sao ở RAM để mọi điều chỉnh riêng về gợi ý không chạm câu gốc.
-    if (Number(topicNum) === 2 && groupMap['3']?.length) {
-        groups.push('4');
-        groupLabels['4'] = 'Tự luyện';
-        groupMap['4'] = groupMap['3'].map(q => ({
-            ...q,
-            _muc2_self_practice: true,
-            hint: '',
-            explanation: ''
-        }));
+    if (Number(topicNum) === 2) {
+        if (muc2Variants) {
+            // Tách nguồn học liệu khỏi biến thể hiển thị; bảo toàn toàn bộ 307 câu gốc.
+            for (const [key,label,pool] of [
+                ['3','Bé tập tự cộng',muc2Variants.add],
+                ['4','Bé tập tự trừ',muc2Variants.sub]
+            ]) {
+                if (!groups.includes(key)) groups.push(key);
+                groupLabels[key] = label;
+                groupMap[key] = pool;
+            }
+        }
+        // Muc 6 ke thua CHINH XAC 300 cau cua Muc 4/5, khong nhan ban vao JSON.
+        // Giu nguyen cac cau cu trong JSON de khong lam mat lich su hoc lieu.
+        groups.push('5');
+        groupLabels['5'] = 'Thực hành';
+        groupMap['5'] = muc2Variants
+            ? [...muc2Variants.add, ...muc2Variants.sub].map(q => ({
+                ...q,
+                question_id: 1000000 + Number(q.question_id), // ID on dinh rieng cho bai thuc hanh.
+                _muc2_stage: '2.7',
+                sub_topic: '2.7',
+                sub_topic_label: 'Thực hành',
+                _muc2_self_practice: true,
+                muc2_practice: true,
+                hint: '',
+                explanation: '',
+                image_url: ''
+            }))
+            : []; // Khong quay lai 60 cau cu khi JSON ngan hang 4/5 chua dong bo.
     }
 
     groups.sort((a, b) => {
@@ -3412,11 +3896,40 @@ function showLectureAndSubtopics(topicNum, topicName, topicObj) {
         }
         return String(a).localeCompare(String(b), 'vi');
     });
+    // Mục 3: dạy cấu tạo số trước, đọc-viết số sau.
+    // Đảo vị trí hiển thị; không đổi mã ID gốc 3.1/3.2 và 50 câu mỗi nhóm.
+    if (Number(topicNum) === 3) {
+        const originalFirst = groups.indexOf('3.1');
+        const originalSecond = groups.indexOf('3.2');
+        if (originalFirst !== -1 && originalSecond !== -1) {
+            [groups[originalFirst], groups[originalSecond]] = [groups[originalSecond], groups[originalFirst]];
+        }
+    }
     pendingTopicQuiz.groups = groups; 
     pendingTopicQuiz.groupMap = groupMap;
     pendingTopicQuiz.groupLabels = groupLabels;
 
     let subHtml = '';
+    if (Number(topicNum) === 2) {
+        const guideStyle = {
+            bg: '#f5f3ff', border: '#ddd6fe', title: '#7c3aed', accent: '#a21caf',
+            iconBg: '#fdf2f8', hover: '#c084fc'
+        };
+        subHtml += `
+            <button type="button" onclick="openMuc2Guide_()" class="math-subtopic-card math-guide-intro-card group" style="${mathSubtopicPaletteVars_(guideStyle)}">
+                <div class="math-subtopic-head">
+                    <span class="math-subtopic-icon" aria-hidden="true">🐰</span>
+                    <div class="min-w-0">
+                        <h3 class="math-subtopic-title">1. Học cùng Cô Thỏ Hồng</h3>
+                        <p class="math-muc2-range">Phạm vi 10</p>
+                    </div>
+                </div>
+                <div class="math-subtopic-foot">
+                    <span class="math-subtopic-hint">Chọn để bắt đầu bài học</span>
+                    <span class="math-subtopic-badge">🎧 Bài giảng tương tác</span>
+                </div>
+            </button>`;
+    }
     if (Number(topicNum) === 5) {
         const introStyle = SUBTOPIC_PALETTES[0];
         const icon = mathSubtopicIcon_(5, 1, 'H\u00ecnh h\u1ecdc');
@@ -3433,8 +3946,8 @@ function showLectureAndSubtopics(topicNum, topicName, topicObj) {
             </button>`;
     }
     groups.forEach((subName, idx) => {
-        const displayIndex = idx + (Number(topicNum) === 5 ? 2 : 1);
-        const palette = SUBTOPIC_PALETTES[(displayIndex - 1) % SUBTOPIC_PALETTES.length];
+        const displayIndex = idx + ([2,5].includes(Number(topicNum)) ? 2 : 1);
+        const palette = SUBTOPIC_PALETTES[(Number(topicNum) === 2 ? idx : displayIndex - 1) % SUBTOPIC_PALETTES.length];
         const hideInternalCode = [3,4,5,6,7,8,9,10,11,13].includes(Number(topicNum));
         const hasFriendlyGroupNames = Number(topicNum) === 1 || Number(topicNum) === 2;
         const displayTitle = hasFriendlyGroupNames
@@ -3450,7 +3963,11 @@ function showLectureAndSubtopics(topicNum, topicName, topicObj) {
             <button type="button" onclick="selectSubtopic(${idx})" class="math-subtopic-card group" style="${mathSubtopicPaletteVars_(palette)}">
                 <div class="math-subtopic-head">
                     <span class="math-subtopic-icon" aria-hidden="true">${escapeHtml(icon)}</span>
-                    <h3 class="math-subtopic-title" title="${escapeHtml(title)}">${escapeHtml(title)}</h3>
+                    ${Number(topicNum) === 2 ? `
+                    <div class="min-w-0">
+                        <h3 class="math-subtopic-title" title="${escapeHtml(title)}">${escapeHtml(title)}</h3>
+                        <p class="math-muc2-range">Phạm vi 10</p>
+                    </div>` : `<h3 class="math-subtopic-title" title="${escapeHtml(title)}">${escapeHtml(title)}</h3>`}
                 </div>
                 <div class="math-subtopic-foot">
                     <span class="math-subtopic-hint">${hint}</span>
@@ -3458,7 +3975,7 @@ function showLectureAndSubtopics(topicNum, topicName, topicObj) {
                 </div>
             </button>`;
     });
-    setSubtopicGridColumns(groups.length + (Number(topicNum) === 5 ? 1 : 0));
+    setSubtopicGridColumns(groups.length + ([2,5].includes(Number(topicNum)) ? 1 : 0), topicNum);
     document.getElementById('lecture-subtopics-list').innerHTML = subHtml;
 
     if (Number(topicNum) === 13) updateNavTabs('Ôn tập', '📚', topicName);
@@ -3466,20 +3983,66 @@ function showLectureAndSubtopics(topicNum, topicName, topicObj) {
     switchAppView('view-lecture');
 }
 
-function speakLecture() {
-    speakVietnamese(document.getElementById('view-lecture').dataset.audioText || '', 0.96);
+
+function buildTopic3ReadWriteCycle_(source) {
+    if (source.length !== 50 || !source.every(q => Number.isSafeInteger(q?.muc3_rw_number) &&
+        q.muc3_rw_number >= 0 && q.muc3_rw_number <= 100)) return shuffleArray(source);
+    const shuffled = shuffleArray(source);
+    // 25 lượt đọc số + 25 lượt nghe/đọc chữ rồi viết số, đổi dạng và thứ tự mỗi vòng.
+    return shuffleArray(shuffled.map((q, i) => {
+        const n = q.muc3_rw_number;
+        const mode = i < 25 ? 'read' : 'write';
+        const word = String(q.answer || '');
+        if (mode === 'read') return {
+            ...q, _topic3_rw_mode: mode, _topic3_rw_word: word,
+            options: shuffleArray(q.options || []),
+            audio_text: 'Bé ơi, con hãy nhìn số trên màn hình và chọn cách đọc đúng nhé!'
+        };
+        return {
+            ...q, _topic3_rw_mode: mode, _topic3_rw_word: word,
+            question_text: 'Con nghe cô đọc rồi viết số vào các ô nhé.',
+            options: [], answer: String(n),
+            audio_text: `Bé ơi, cô đọc: ${word}. Con hãy viết số đó nhé!`
+        };
+    }));
 }
 
+// Muc 4/5 (phep cong/tru): 50 cau moi dang van tron ngau nhien,
+// nhung moi nhom 9-12 cau co du 3 vi tri dau hoi de be duoc luyen deu.
+// Khong ap dung cho Muc 6 (cap 1/2), de thi hay cac chu de khac.
+function buildMuc2BalancedVariantCycle_(source) {
+    const kinds = ['result', 'second', 'first'];
+    const buckets = Object.fromEntries(kinds.map(kind =>
+        [kind, shuffleArray(source.filter(q => q._muc2_variant_kind === kind))]));
+    if (kinds.some(kind => buckets[kind].length !== 50)) return shuffleArray(source);
+
+    // 11 nhom x 12 cau (moi dang 4) + 2 nhom x 9 cau (moi dang 3) = 150.
+    // Tron thu tu cac nhom va tung nhom, nen khong hoc lan luot tung dang.
+    const batchSizesPerKind = shuffleArray([...Array(11).fill(4), 3, 3]);
+    const out = [];
+    for (const count of batchSizesPerKind) {
+        const batch = kinds.flatMap(kind => buckets[kind].splice(0, count));
+        out.push(...shuffleArray(batch));
+    }
+    return out;
+}
 
 function buildPracticeCycleQuestions_(pool) {
     const source = Array.isArray(pool) ? [...pool] : [];
     if (!source.length) return [];
+    const muc2Stage = String(source[0]?._muc2_stage || source[0]?.sub_topic || '');
+    const isMuc2GuidedVariants = source.length === 150 && ['2.5', '2.6'].includes(muc2Stage) &&
+        source.every(q => q?._muc2_self_practice !== true &&
+            String(q?._muc2_stage || q?.sub_topic || '') === muc2Stage &&
+            ['result', 'second', 'first'].includes(q?._muc2_variant_kind));
+    if (isMuc2GuidedVariants) return buildMuc2BalancedVariantCycle_(source);
+    if (source.every(q => String(q?.sub_topic || '') === '3.1')) return buildTopic3ReadWriteCycle_(source);
     const isTopic35 = source.every(q => String(q?.sub_topic || '') === '3.5');
     if (!isTopic35) return shuffleArray(source);
 
     const phase1 = source.filter(q => Number(q?.question_id || 0) >= 5200 && Number(q?.question_id || 0) <= 5209);
     const phase2 = source.filter(q => Number(q?.question_id || 0) >= 5210 && Number(q?.question_id || 0) <= 5219);
-    const phase3 = source.filter(q => Number(q?.question_id || 0) >= 5220 && Number(q?.question_id || 0) <= 5239);
+    const phase3 = source.filter(q => Number(q?.question_id || 0) >= 5220 && Number(q?.question_id || 0) <= 5249);
     const other = source.filter(q => ![...phase1, ...phase2, ...phase3].includes(q));
 
     // 3.5 là lộ trình học có chủ đích: 10 câu số 0-9 → 10 câu chọn trong 4 số → 20 câu số hai chữ số.
@@ -3492,6 +4055,67 @@ function buildPracticeCycleQuestions_(pool) {
     ];
 }
 
+// Muc 6 la mot o duy nhat tren ban do 6 muc. Bam vao de chon cap do.
+function openMuc2PracticeLevelPicker_() {
+    if (Number(pendingTopicQuiz?.topicNum) !== 2 || pendingTopicQuiz?.groupMap?.['5']?.length !== 300) return;
+    const host = document.getElementById('lecture-subtopics-list');
+    if (!host) return;
+    if (!pendingTopicQuiz._muc2CardListHtml) {
+        pendingTopicQuiz._muc2CardListHtml = host.innerHTML;
+        pendingTopicQuiz._muc2CardListClass = host.className;
+    }
+    updateDiscoverBreadcrumb_(pendingTopicQuiz.topicName, '➕', '6. Thực hành');
+    host.className = 'math-muc2-level-picker w-full max-w-4xl mx-auto';
+    host.innerHTML = `
+        <div class="math-muc2-level-heading">
+            <button type="button" class="math-muc2-level-back" onclick="restoreMuc2PracticeCardList_()">← Sáu mục học</button>
+            <h2>6. Thực hành</h2>
+            <span>Chọn cấp độ con muốn luyện nhé!</span>
+        </div>
+        <div class="math-muc2-level-cards">
+            <button type="button" class="math-muc2-level-card" onclick="startMuc2PracticeLevel_(1)">
+                <span class="math-muc2-level-icon" aria-hidden="true">➕➖</span>
+                <strong>Cấp 1 · Cộng trừ cơ bản</strong>
+                <span>Tính kết quả: a + b = ? và a − b = ?</span>
+                <b>100 câu · 50 cộng + 50 trừ</b>
+            </button>
+            <button type="button" class="math-muc2-level-card math-muc2-level-card--advanced" onclick="startMuc2PracticeLevel_(2)">
+                <span class="math-muc2-level-icon" aria-hidden="true">🔢</span>
+                <strong>Cấp 2 · Tìm số còn thiếu</strong>
+                <span>Hai vị trí dấu ? trong mỗi phép cộng hoặc trừ</span>
+                <b>200 câu · 100 cộng + 100 trừ</b>
+            </button>
+        </div>`;
+}
+
+function restoreMuc2PracticeCardList_() {
+    const host = document.getElementById('lecture-subtopics-list');
+    if (!host || !pendingTopicQuiz?._muc2CardListHtml) return;
+    host.className = pendingTopicQuiz._muc2CardListClass;
+    host.innerHTML = pendingTopicQuiz._muc2CardListHtml;
+    updateDiscoverBreadcrumb_(pendingTopicQuiz.topicName, '➕', null);
+}
+
+function startMuc2PracticeLevel_(level) {
+    if (Number(pendingTopicQuiz?.topicNum) !== 2 || ![1,2].includes(Number(level))) return;
+    const all = pendingTopicQuiz?.groupMap?.['5'] || [];
+    const pool = all.filter(q => q._muc2_self_practice === true &&
+        (Number(level) === 1 ? q._muc2_variant_kind === 'result' : ['first','second'].includes(q._muc2_variant_kind)));
+    const expected = Number(level) === 1 ? 100 : 200;
+    const plus = pool.filter(q => getMuc2Equation_(q)?.op === '+').length;
+    const minus = pool.filter(q => getMuc2Equation_(q)?.op === '-').length;
+    if (pool.length !== expected || plus !== expected/2 || minus !== expected/2) {
+        showAppNotice('Câu hỏi thực hành đang được cập nhật. Bé thử lại sau nhé!', {title:'Thực hành',icon:'🐰'});
+        return;
+    }
+    muc2PracticeLevel_ = Number(level);
+    muc2PracticeNumberLineVisible_ = true;
+    practiceCycleRawPool = pool.slice();
+    const title = `6. Thực hành - Cấp ${level}`;
+    updateDiscoverBreadcrumb_(pendingTopicQuiz.topicName, '➕', title);
+    startTopicQuiz(2, title, buildPracticeCycleQuestions_(pool), '5');
+}
+
 function selectSubtopic(idx) {
     stopSpeaking();
     if (!pendingTopicQuiz) return;
@@ -3499,12 +4123,19 @@ function selectSubtopic(idx) {
     if (Number(topicNum) === 13 && !requirePremium('Ôn tập')) return;
     const subLabel = idx !== null ? groups[idx] : null;
     const pool = idx !== null ? groupMap[subLabel] : questions;
+    if (Number(topicNum) === 2 && subLabel === '5') {
+        if (pool?.length === 300) openMuc2PracticeLevelPicker_();
+        else showAppNotice('Dữ liệu 300 câu Thực hành chưa sẵn sàng. Anh chị vui lòng tải lại trang sau khi cập nhật học liệu nhé!', {title:'Thực hành',icon:'🐰'});
+        return;
+    }
     const displayLabel = subLabel
         ? ((Number(topicNum) === 1 || Number(topicNum) === 2)
-            ? `${subLabel}. ${beautifySubtopicName(groupLabels[subLabel])}`
+            ? `${Number(topicNum) === 2 ? Number(subLabel) + 1 : subLabel}. ${beautifySubtopicName(groupLabels[subLabel])}`
             : (Number(topicNum) === 13
                 ? beautifySubtopicName(groupLabels[subLabel])
-                : formatSubtopicLabelWithCode_(subLabel, groupLabels[subLabel])))
+                : (Number(topicNum) === 3
+                    ? `${idx + 1}. ${beautifySubtopicName(groupLabels[subLabel])}`
+                    : formatSubtopicLabelWithCode_(subLabel, groupLabels[subLabel]))))
         : null;
     const finalTitle = displayLabel ? `${topicName} - ${displayLabel}` : topicName;
 
@@ -3521,7 +4152,10 @@ function selectSubtopic(idx) {
 // ==========================================
 function handleNextExamFromReport() {
     stopSpeaking();
-    if (activeRoadmapContext) {
+    if (isMuc2IndependentPractice_() && Number(pendingTopicQuiz?.topicNum) === 2) {
+        updateDiscoverBreadcrumb_(pendingTopicQuiz.topicName, TOPICS_CONFIG[1]?.icon || '➕', null);
+        switchAppView('view-lecture');
+    } else if (activeRoadmapContext) {
         activeRoadmapContext = null;
         openRoadmap(exerciseSemesterFilter || 1);
     } else if (activeExamContext) {
@@ -3821,6 +4455,9 @@ function startTopicQuiz(topicNum, topicName, questions, subLabel) {
     score = 0;
     userAnswers = {};
     wrongAttemptsByQ = {};
+    topic3PlaceValueUiState_ = {};
+    topic3ReadWriteUiState_ = {};
+    if (Number(topicNum) === 2) resetMuc2UiState_(); // Muc 4/5 mac dinh hien hinh huong dan; Muc 6 van khong co goi y.
     quizWrongAnswers = []; 
     quizAnsweredLog = []; 
     quizStartTime = Date.now();
@@ -4085,6 +4722,8 @@ function getFoundationPrompt(q) {
 
 let muc1UiState = null;
 let topic3SortUiState_ = {};
+// Muc 3.1 tren giao dien = nhom 3.2 trong JSON: trang thai dem chuc/don vi chi nam trong luot hoc.
+let topic3PlaceValueUiState_ = {};
 
 function getMuc1QuestionKey_(q) {
     return `${q?.id ?? 'q'}::${q?.sub_topic || ''}::${q?.question_text || ''}`;
@@ -4614,11 +5253,33 @@ function getMuc2QuestionKey_(q) {
     return `${q?.question_id ?? q?.id ?? 'q'}::${q?._muc2_stage || q?.sub_topic || ''}::${q?.question_text || ''}`;
 }
 
+function isMuc2IndependentPractice_() {
+    return Number(activeTopicId) === 2 && !activeExamContext && !activeRoadmapContext &&
+        activeQuestionsList?.length > 0 && activeQuestionsList.every(q => q?._muc2_self_practice === true);
+}
+
+function highlightMuc2IndependentChoice_() {
+    const chosen = userAnswers?.[currentQIndex];
+    document.querySelectorAll('.option-btn').forEach(button => {
+        const picked = chosen !== undefined && button.getAttribute('data-opt') === chosen;
+        button.classList.toggle('border-violet-500', picked);
+        button.classList.toggle('bg-violet-100', picked);
+        button.classList.toggle('shadow-md', picked);
+        if (picked) {
+            button.classList.remove('border-pink-200', 'bg-pink-50/40');
+            button.setAttribute('aria-pressed', 'true');
+        } else {
+            button.classList.remove('border-violet-500', 'bg-violet-100', 'shadow-md');
+            button.classList.add('border-pink-200', 'bg-pink-50/40');
+            button.setAttribute('aria-pressed', 'false');
+        }
+    });
+}
+
 function getMuc2Stage_(q) {
-    // Mục 2.4: cùng 60 câu của mục 2.3, nhưng chỉ hiện đề và lựa chọn.
-    // Không dùng sơ đồ hỗ trợ, mẹo, gợi ý hay lời giải từ dữ liệu.
-    if (q?._muc2_self_practice === true) return '2.6';
-    return String(q?._muc2_stage || q?.sub_topic || '2.6');
+    // Mục 6: thực hành độc lập, không hình/gợi ý, nhưng phản hồi đúng/sai ngay.
+    if (q?._muc2_self_practice === true) return '2.7';
+    return String(q?._muc2_stage || q?.sub_topic || '2.7');
 }
 
 function getMuc2Equation_(q) {
@@ -4635,6 +5296,8 @@ function getMuc2Equation_(q) {
 }
 
 function getMuc2Emoji_(q) {
+    const modelEmoji = String(q?._muc2_visual_emoji || '');
+    if (modelEmoji && extractEmojiTokens_(modelEmoji).length) return modelEmoji;
     const tokens = extractEmojiTokens_(String(q?.question_text || '')).filter(x => x !== '❌');
     return tokens[0] || getFoundationEmojiSeed(q) || '●';
 }
@@ -4685,7 +5348,7 @@ function initMuc2UiState_(q) {
 
     const stage = getMuc2Stage_(q);
     const eq = getMuc2Equation_(q);
-    const state = { key, stage, moved: new Set(), removed: 0 };
+    const state = { key, stage, moved: new Set(), removed: 0, removedIndices: new Set() };
     if ((stage === '2.1' || stage === '2.2') || eq?.op === '+') {
         Object.assign(state, parseMuc2Addition_(q));
         state.mode = 'add';
@@ -4706,11 +5369,13 @@ function buildMuc2TenFrameRow_(filled, emoji, numbered = false) {
         <div class="grid grid-cols-5 md:grid-cols-10 gap-1 md:gap-1.5 w-full max-w-[720px]">
             ${Array.from({ length: 10 }, (_, i) => {
                 const active = i < filled;
-                const tone = i < 5 ? 'bg-pink-50 border-pink-200' : 'bg-sky-50 border-sky-200';
+                const tone = i < 5 ? 'bg-pink-50' : 'bg-sky-50';
+                // Mau so dem giong mau vien o tuong ung; 1-5 hong, 6-10 xanh.
+                const accent = i < 5 ? '#f472b6' : '#38bdf8';
                 return `
-                    <div class="flex flex-col items-center gap-1 min-w-0">
-                        <div class="h-6 md:h-7 text-sm md:text-base font-black ${active && numbered ? 'text-violet-700' : 'text-transparent'}">${i + 1}</div>
-                        <div class="w-10 h-10 md:w-12 md:h-12 lg:w-[54px] lg:h-[54px] rounded-xl border-2 ${tone} flex items-center justify-center shadow-inner">
+                    <div class="flex flex-col items-center gap-1 min-w-0" style="--muc2-ten-accent:${accent}">
+                        <div class="muc2-ten-label ${active && numbered ? '' : 'muc2-ten-label--hidden'}">${i + 1}</div>
+                        <div class="muc2-ten-cell w-10 h-10 md:w-12 md:h-12 lg:w-[54px] lg:h-[54px] rounded-xl border-2 ${tone} flex items-center justify-center shadow-inner">
                             ${active ? `<span class="text-[24px] md:text-[27px] lg:text-[30px] leading-none">${emoji}</span>` : '<span class="text-pink-200 text-lg font-black">+</span>'}
                         </div>
                     </div>`;
@@ -4736,54 +5401,128 @@ function buildMuc2AddSourceRow_(count, emoji, group, state, label) {
         </div>`;
 }
 
+// Mục 2 - chỉ hai ô Phép cộng / Phép trừ (không thay đổi chặng 4-6 hoặc Bài tập/Đề thi).
+function isMuc2GuidedBasic_(q) {
+    return Number(activeTopicId) === 2 && !activeRoadmapContext && !activeExamContext &&
+        ['2.1', '2.2', '2.3', '2.4'].includes(getMuc2Stage_(q));
+}
+
+// Ca Muc 2-6: tra loi dung hien ket qua mau do va chi chuyen cau bang nut.
+function isMuc2ReflectivePractice_(q) {
+    return Number(activeTopicId) === 2 && !activeRoadmapContext && !activeExamContext &&
+        (q?._muc2_self_practice === true ||
+            ['2.1', '2.2', '2.3', '2.4', '2.5', '2.6'].includes(getMuc2Stage_(q)));
+}
+
+function getMuc2BasicEquation_(q) {
+    const stage = getMuc2Stage_(q);
+    if (!['2.1', '2.2', '2.3', '2.4'].includes(stage)) return '';
+    // JSON là nguồn phép tính chính thức; kiểm tra tính nhất quán với hình và đáp án.
+    const fromJson = String(q?.muc2_equation || '').trim();
+    const parsed = fromJson.match(/^(\d{1,2})\s*([+−])\s*(\d{1,2})\s*=\s*\?$/);
+    if (stage === '2.1' || stage === '2.2') {
+        const { a, b } = parseMuc2Addition_(q);
+        if (!Number.isSafeInteger(a) || !Number.isSafeInteger(b) || a + b !== Number(q?.answer)) return '';
+        if (parsed && parsed[2] === '+' && Number(parsed[1]) === a && Number(parsed[3]) === b) return fromJson;
+        return `${a} + ${b} = ?`;
+    }
+    const { whole, take } = parseMuc2Subtraction_(q);
+    if (!Number.isSafeInteger(whole) || !Number.isSafeInteger(take) || whole - take !== Number(q?.answer)) return '';
+    if (parsed && parsed[2] === '−' && Number(parsed[1]) === whole && Number(parsed[3]) === take) return fromJson;
+    return `${whole} − ${take} = ?`;
+}
+
+function getMuc2InteractionGuide_(q) {
+    const stage = getMuc2Stage_(q);
+    if (!['2.1', '2.2', '2.3', '2.4'].includes(stage)) return '';
+    if (String(q?.muc2_instruction || '').trim()) return String(q.muc2_instruction).trim();
+    if (stage === '2.1' || stage === '2.2') return 'Con đưa từng hình lên hàng trên để gộp hai nhóm nhé.';
+    return 'Con bấm từng hình ở hàng dưới để bớt đi nhé.';
+}
+
+let muc2LastGuideSpeakAt_ = 0;
+function muc2SpeakInteractionGuide_() {
+    const q = activeQuestionsList?.[currentQIndex];
+    if (!q || !isMuc2GuidedBasic_(q)) return;
+    // Chặn click lặp quá nhanh để không yêu cầu TTS liên tục.
+    const now = Date.now();
+    if (now - muc2LastGuideSpeakAt_ < 300) return;
+    muc2LastGuideSpeakAt_ = now;
+    speakVietnamese(getMuc2InteractionGuide_(q), 0.96);
+}
+
+function getMuc2GuidedBasicSpeech_(q) {
+    // Lời đọc chính thức được lưu trong JSON, dùng chung cho tự đọc và nghe lại.
+    const fromJson = String(q?.audio_text || '').trim();
+    if (fromJson) return fromJson;
+    const eq = getMuc2BasicEquation_(q);
+    const parts = eq.match(/^(\d+)\s*([+−])\s*(\d+)\s*=\s*\?$/);
+    if (!parts) return '';
+    return `Bé ơi, ${parts[1]} ${parts[2] === '+' ? 'cộng' : 'trừ'} ${parts[3]} bằng mấy?`;
+}
+
 function buildMuc2AdditionInteractive_(q) {
     const s = initMuc2UiState_(q);
     const placed = s.moved.size;
-    const done = placed >= s.a + s.b;
     return `
         <div class="w-full flex flex-col items-center justify-center gap-3">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-50 border border-violet-200 text-violet-700 text-sm md:text-base font-black shadow-sm">
-                <span>🐰</span><span>Con đưa từng hình lên hàng trên để gộp hai nhóm nhé.</span>
+            <div class="w-full grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
+                <div class="justify-self-center inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-50 border border-violet-200 text-violet-700 muc2-teacher-instruction font-black shadow-sm text-center">
+                    <span aria-hidden="true">🐰</span><span>${escapeHtml(getMuc2InteractionGuide_(q))}</span>
+                </div>
+                <button type="button" onclick="muc2SpeakInteractionGuide_()" class="justify-self-center lg:justify-self-end inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border border-violet-200 bg-violet-50 hover:bg-violet-100 text-violet-700 text-sm md:text-base font-black shadow-sm pastel-btn" aria-label="Nghe cô hướng dẫn thao tác cộng">
+                    <i class="fa-solid fa-volume-high text-violet-600" aria-hidden="true"></i><span>Nghe cô hướng dẫn</span>
+                </button>
             </div>
             ${buildMuc2TenFrameRow_(placed, s.emoji, true)}
             <div class="w-4/5 h-px bg-pink-100 my-1"></div>
             ${buildMuc2AddSourceRow_(s.a, s.emoji, 'a', s, `Nhóm 1: <span class="inline-block ml-1 text-2xl md:text-3xl font-black text-red-500 leading-none align-middle">${s.a}</span>`)}
             ${buildMuc2AddSourceRow_(s.b, s.emoji, 'b', s, `Nhóm 2: <span class="inline-block ml-1 text-2xl md:text-3xl font-black text-red-500 leading-none align-middle">${s.b}</span>`)}
-            <div class="flex items-center gap-2 mt-1">
-                <button type="button" onclick="muc2ResetInteraction_()" class="px-3 py-1.5 rounded-full border border-pink-200 bg-pink-50 text-pink-700 text-sm md:text-base font-black">Làm lại</button>
-                <div class="px-3 py-1.5 rounded-full bg-white border border-slate-200 text-slate-600 text-sm md:text-base font-black">Đã gộp: ${placed} / ${s.a + s.b}</div>
-            </div>
-            ${done && s.stage === '2.1' ? `<div class="text-lg md:text-xl font-black text-emerald-600">${s.a} + ${s.b} = ${s.a + s.b}</div>` : ''}
+        </div>`;
+}
+
+function buildMuc2SubtractionTenFrame_(whole, removed, emoji) {
+    return `
+        <div class="grid grid-cols-5 md:grid-cols-10 gap-1 md:gap-1.5 w-full max-w-[720px]">
+            ${Array.from({ length: 10 }, (_, i) => {
+                const active = i < whole;
+                const crossed = active && i >= whole - removed;
+                const tone = i < 5 ? 'bg-pink-50 border-pink-300' : 'bg-sky-50 border-sky-300';
+                const accent = i < 5 ? '#f472b6' : '#38bdf8';
+                return `
+                    <div class="flex flex-col items-center gap-1 min-w-0" style="--muc2-ten-accent:${accent}">
+                        <div class="muc2-ten-label">${i + 1}</div>
+                        <div class="muc2-ten-cell relative w-10 h-10 md:w-12 md:h-12 lg:w-[54px] lg:h-[54px] rounded-xl border-2 ${tone} flex items-center justify-center shadow-inner ${crossed ? 'opacity-60' : ''}">
+                            ${active ? `<span class="text-[24px] md:text-[27px] lg:text-[30px] leading-none">${emoji}</span>` : '<span class="text-pink-200 text-lg font-black">+</span>'}
+                            ${crossed ? '<span class="absolute inset-0 flex items-center justify-center text-rose-500 text-4xl md:text-5xl font-black leading-none">╱</span>' : ''}
+                        </div>
+                    </div>`;
+            }).join('')}
         </div>`;
 }
 
 function buildMuc2SubtractionInteractive_(q) {
     const s = initMuc2UiState_(q);
-    const remaining = Math.max(0, s.whole - s.removed);
     return `
         <div class="w-full flex flex-col items-center justify-center gap-4">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-700 text-sm md:text-base font-black shadow-sm">
-                <span>🐰</span><span>Con bấm từng hình ở hàng dưới để bớt đi nhé.</span>
-            </div>
-            <div class="w-full max-w-[680px]">
-                <div class="text-center text-sm md:text-base font-black text-slate-500 mb-2">Ban đầu có <span class="inline-block ml-1 text-2xl md:text-3xl font-black text-red-500 leading-none align-middle">${s.whole}</span></div>
-                <div class="flex flex-wrap justify-center gap-2 md:gap-2.5">
-                    ${Array.from({ length: s.whole }, (_, i) => {
-                        const crossed = i >= s.whole - s.removed;
-                        return `
-                            <div class="relative w-11 h-11 md:w-12 md:h-12 rounded-full border-2 ${crossed ? 'border-slate-200 bg-slate-50 opacity-45' : 'border-violet-200 bg-white'} flex items-center justify-center shadow-sm">
-                                <span class="text-[24px] md:text-[27px] lg:text-[30px] leading-none">${s.emoji}</span>
-                                ${crossed ? '<span class="absolute inset-0 flex items-center justify-center text-rose-500 text-4xl md:text-5xl font-black leading-none">╱</span>' : ''}
-                            </div>`;
-                    }).join('')}
+            <div class="w-full grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
+                <div class="justify-self-center inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-700 muc2-teacher-instruction font-black shadow-sm text-center">
+                    <span aria-hidden="true">🐰</span><span>${escapeHtml(getMuc2InteractionGuide_(q))}</span>
                 </div>
+                <button type="button" onclick="muc2SpeakInteractionGuide_()" class="justify-self-center lg:justify-self-end inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 text-sm md:text-base font-black shadow-sm pastel-btn" aria-label="Nghe cô hướng dẫn thao tác trừ">
+                    <i class="fa-solid fa-volume-high text-rose-600" aria-hidden="true"></i><span>Nghe cô hướng dẫn</span>
+                </button>
+            </div>
+            <div class="w-full max-w-[720px]">
+                <div class="text-center text-sm md:text-base font-black text-slate-500 mb-2">Ban đầu có <span class="inline-block ml-1 text-2xl md:text-3xl font-black text-red-500 leading-none align-middle">${s.whole}</span></div>
+                ${buildMuc2SubtractionTenFrame_(s.whole, s.removed, s.emoji)}
             </div>
             <div class="w-3/4 h-px bg-pink-100"></div>
             <div class="w-full max-w-[620px]">
                 <div class="text-center text-sm md:text-base font-black text-slate-500 mb-2">Bớt đi <span class="inline-block ml-1 text-2xl md:text-3xl font-black text-red-500 leading-none align-middle">${s.take}</span></div>
                 <div class="flex flex-wrap justify-center gap-2 md:gap-2.5">
                     ${Array.from({ length: s.take }, (_, i) => {
-                        const used = i < s.removed;
+                        const used = s.removedIndices.has(i);
                         return `
                             <button type="button" onclick="muc2RemoveSubItem_(${i})" ${used ? 'disabled' : ''}
                                 class="w-11 h-11 md:w-12 md:h-12 rounded-full border-2 ${used ? 'border-slate-100 bg-slate-50 opacity-25' : 'border-rose-200 bg-white hover:border-rose-400 hover:scale-105'} flex items-center justify-center shadow-sm transition-all">
@@ -4792,11 +5531,6 @@ function buildMuc2SubtractionInteractive_(q) {
                     }).join('')}
                 </div>
             </div>
-            <div class="flex items-center gap-2">
-                <button type="button" onclick="muc2ResetInteraction_()" class="px-3 py-1.5 rounded-full border border-pink-200 bg-pink-50 text-pink-700 text-sm md:text-base font-black">Làm lại</button>
-                <div class="px-3 py-1.5 rounded-full bg-white border border-slate-200 text-slate-600 text-sm md:text-base font-black">Đã bớt: ${s.removed} / ${s.take}</div>
-            </div>
-            ${s.removed >= s.take && s.stage === '2.3' ? `<div class="text-lg md:text-xl font-black text-emerald-600">Còn lại ${remaining}: &nbsp; ${s.whole} − ${s.take} = ${remaining}</div>` : ''}
         </div>`;
 }
 
@@ -4814,18 +5548,26 @@ function buildMuc2StaticEmojiRow_(count, emoji, label, tone = 'violet') {
         </div>`;
 }
 
-function buildMuc2NumberBond_(topValue, leftValue, rightValue) {
+function buildMuc2NumberBond_(topValue, leftValue, rightValue, q = null) {
     const nodeClass = 'w-11 h-11 md:w-12 md:h-12 lg:w-[52px] lg:h-[52px] rounded-full border-[3px] flex items-center justify-center text-xl md:text-2xl lg:text-[30px] font-black shadow-sm';
-    const renderValue = (v) => (v == null ? '' : v);
+    // Sau khi be chon dung, chi thay dau hoi bang so do. Khong lo dap an som.
+    const solved = q && isMuc2ReflectivePractice_(q) && userAnswers?.[currentQIndex] === q.answer;
+    const renderValue = (v) => v != null ? v : (solved
+        ? `<span class="muc2-solved-number" style="color:#dc2626">${escapeHtml(String(q.answer))}</span>` : '?');
+    const compact = q && (q?._muc2_self_practice === true || ['2.5', '2.6'].includes(getMuc2Stage_(q)));
+    const consistentRoles = q && q?._muc2_self_practice !== true && ['2.5', '2.6'].includes(getMuc2Stage_(q));
+    const roleClass = (value, previous) => consistentRoles
+        ? (value === null ? 'muc2-role-missing' : 'muc2-role-known')
+        : previous;
     return `
-        <div class="relative w-[260px] md:w-[300px] h-[160px] md:h-[175px]">
-            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 300 175" preserveAspectRatio="none" aria-hidden="true">
+        <div class="${compact ? 'muc2-reduced-bond ' : ''}relative w-[260px] md:w-[300px] h-[160px] md:h-[175px]">
+            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 300 ${compact ? 155 : 175}" preserveAspectRatio="none" aria-hidden="true">
                 <line x1="150" y1="36" x2="98" y2="110" stroke="#4f46e5" stroke-width="4" stroke-linecap="round"></line>
                 <line x1="150" y1="36" x2="202" y2="110" stroke="#4f46e5" stroke-width="4" stroke-linecap="round"></line>
             </svg>
-            <div class="absolute left-1/2 top-0 -translate-x-1/2 ${nodeClass} bg-violet-50 border-violet-600 text-violet-700">${renderValue(topValue)}</div>
-            <div class="absolute left-[45px] md:left-[52px] top-[88px] md:top-[98px] ${nodeClass} bg-pink-50 border-pink-500 text-violet-700">${renderValue(leftValue)}</div>
-            <div class="absolute right-[45px] md:right-[52px] top-[88px] md:top-[98px] ${nodeClass} bg-amber-50 border-amber-400 text-violet-700">${renderValue(rightValue)}</div>
+            <div class="absolute left-1/2 top-0 -translate-x-1/2 ${nodeClass} ${roleClass(topValue, 'bg-violet-50 border-violet-600 text-violet-700')}">${renderValue(topValue)}</div>
+            <div class="absolute left-[45px] md:left-[52px] top-[88px] md:top-[98px] ${nodeClass} ${roleClass(leftValue, 'bg-pink-50 border-pink-500 text-violet-700')}">${renderValue(leftValue)}</div>
+            <div class="absolute right-[45px] md:right-[52px] top-[88px] md:top-[98px] ${nodeClass} ${roleClass(rightValue, 'bg-amber-50 border-amber-400 text-violet-700')}">${renderValue(rightValue)}</div>
         </div>`;
 }
 
@@ -4858,50 +5600,380 @@ function deriveMuc2ReducedSupportModel_(q) {
     return null;
 }
 
+// Muc 4/5: loi goi y theo 6 dang bai, chi dung cac so da biet.
+// Khong duoc noi truc tiep so can tim truoc khi be chon dap an.
+function muc2ReducedGuideSteps_(q) {
+    const eq = getMuc2Equation_(q);
+    if (!eq) return ['Con nhìn hình và các số đã biết nhé.', 'Con thử đếm tiến hoặc lùi để tìm số còn thiếu.'];
+    if (eq.op === '+') {
+        if (eq.result == null) return [
+            `Con có ${eq.left} hình và thêm ${eq.right} hình.`,
+            `Con bắt đầu ở ${eq.left}, tiến ${eq.right} bước rồi tự tìm kết quả nhé.`
+        ];
+        if (eq.right == null) return [
+            `Con biết số đầu là ${eq.left}, tổng là ${eq.result}.`,
+            `Con đứng ở ${eq.left}, tiến đến ${eq.result}. Đếm xem cần mấy bước nhé.`
+        ];
+        return [
+            `Con nhìn phép tính có dấu hỏi đứng trước: ? cộng ${eq.right} bằng ${eq.result}.`,
+            `Đổi chỗ hai số hạng được ${eq.right} cộng mấy bằng ${eq.result}. Tổng không đổi! Con tiến từ ${eq.right} đến ${eq.result} nhé.`
+        ];
+    }
+    if (eq.result == null) return [
+        `Ban đầu có ${eq.left} hình, bớt đi ${eq.right} hình.`,
+        `Con đứng ở ${eq.left}, lùi ${eq.right} bước rồi nhìn số còn lại nhé.`
+    ];
+    if (eq.right == null) return [
+        `Ban đầu có ${eq.left} hình, sau khi bớt thì còn ${eq.result} hình.`,
+        `Con đứng ở ${eq.left}, lùi về ${eq.result} và đếm xem đã đi mấy bước nhé.`
+    ];
+    return [
+        `Số ban đầu chưa biết. Bớt ${eq.right} thì còn lại ${eq.result}.`,
+        `Con làm ngược lại: đứng ở ${eq.result}, tiến thêm ${eq.right} bước để tìm số ban đầu nhé.`
+    ];
+}
+
+// Mục 4: minh họa đổi chỗ hai số hạng của phép cộng, KHÔNG điền đáp án.
+// Tương đương ? + a = b và a + ? = b; bé phải tự tìm dấu hỏi.
+function buildMuc2SwapDemonstration_(q) {
+    const eq = getMuc2Equation_(q);
+    if (!eq || eq.op !== '+' || eq.left !== null || eq.right === null || eq.result === null ||
+        q?._muc2_self_practice === true || getMuc2Stage_(q) !== '2.5') return '';
+    const state = initMuc2UiState_(q);
+    const swapped = !!state.swapShown;
+    const initial = `Mấy cộng ${eq.right} bằng ${eq.result}`;
+    const changed = `${eq.right} cộng mấy bằng ${eq.result}`;
+    return `<div id="muc2-swap-demo" class="muc2-swap-demo ${swapped ? 'is-swapped' : ''}">
+        <div class="muc2-swap-head">
+            <strong>🔄 Đổi chỗ hai số hạng – tổng không đổi</strong>
+            <button type="button" class="muc2-swap-trigger pastel-btn" onclick="muc2ExplainSwap_()">${swapped ? '↶ Xem lại' : '⇄ Xem đổi chỗ'}</button>
+        </div>
+        <div class="muc2-swap-math" role="img" aria-label="${swapped ? changed : initial}">
+            <span class="muc2-swap-token muc2-swap-token-first muc2-role-missing">?</span>
+            <span class="muc2-swap-op">+</span>
+            <span class="muc2-swap-token muc2-swap-token-second muc2-role-known">${eq.right}</span>
+            <span class="muc2-swap-op">=</span>
+            <span class="muc2-swap-token muc2-role-known">${eq.result}</span>
+        </div>
+        <div class="muc2-swap-explanation" aria-live="polite">${swapped
+            ? `${eq.right} + ? = ${eq.result}. Con đứng ở ${eq.right} và tiến đến ${eq.result} để đếm số bước nhé!`
+            : 'Con bấm “Xem đổi chỗ” rồi quan sát hai số hạng đổi vị trí nhé.'}</div>
+    </div>`;
+}
+
+let muc2SwapLastSpeakAt_ = 0;
+function muc2ExplainSwap_() {
+    const q = activeQuestionsList?.[currentQIndex];
+    const eq = getMuc2Equation_(q);
+    if (!q || !eq || eq.op !== '+' || eq.left !== null || eq.right === null || eq.result === null ||
+        q?._muc2_self_practice === true || !['2.5'].includes(getMuc2Stage_(q))) return;
+    const s = initMuc2UiState_(q);
+    s.swapShown = !s.swapShown;
+    const host = document.getElementById('muc2-swap-demo');
+    if (host) {
+        host.classList.toggle('is-swapped', !!s.swapShown);
+        const button = host.querySelector('.muc2-swap-trigger');
+        if (button) button.textContent = s.swapShown ? '↶ Xem lại' : '⇄ Xem đổi chỗ';
+        const math = host.querySelector('.muc2-swap-math');
+        if (math) math.setAttribute('aria-label', s.swapShown
+            ? `${eq.right} cộng mấy bằng ${eq.result}` : `Mấy cộng ${eq.right} bằng ${eq.result}`);
+        const caption = host.querySelector('.muc2-swap-explanation');
+        if (caption) caption.textContent = s.swapShown
+            ? `${eq.right} + ? = ${eq.result}. Con đứng ở ${eq.right} và tiến đến ${eq.result} để đếm số bước nhé!`
+            : 'Con bấm “Xem đổi chỗ” rồi quan sát hai số hạng đổi vị trí nhé.';
+    }
+    if (s.swapShown) {
+        const now = Date.now();
+        if (now - muc2SwapLastSpeakAt_ >= 300) {
+            muc2SwapLastSpeakAt_ = now;
+            speakVietnamese(`Mấy cộng ${eq.right} bằng ${eq.result}, cũng giống như ${eq.right} cộng mấy bằng ${eq.result}. Trong phép cộng, đổi chỗ các số hạng thì tổng không đổi. Con đứng ở ${eq.right}, tiến đến ${eq.result} rồi đếm số bước nhé.`, 0.96);
+        }
+    }
+}
+
+// Nut nghe giai thich chi cho Muc 4/5; doc hai buoc co san, khong tu doc khi render.
+let muc2LastReducedGuideSpeakAt_ = 0;
+function muc2SpeakReducedGuide_() {
+    const q = activeQuestionsList?.[currentQIndex];
+    if (!q || Number(activeTopicId) !== 2 || activeRoadmapContext || activeExamContext ||
+        q._muc2_self_practice === true || !['2.5','2.6'].includes(getMuc2Stage_(q))) return;
+    const now = Date.now();
+    if (now - muc2LastReducedGuideSpeakAt_ < 300) return;
+    muc2LastReducedGuideSpeakAt_ = now;
+    const steps = muc2ReducedGuideSteps_(q);
+    const line = muc2ReducedNumberLineModel_(q);
+    const last = line ? ` Con có thể dùng dãy số từ không đến mười. ${line.spokenGuide}` : '';
+    speakVietnamese(`Cô Thỏ Hồng hướng dẫn nhé. Bước một. ${steps[0]} Bước hai. ${steps[1]}${last}`, 0.96);
+}
+
+// Dãy số 0–10: mốc và chiều đi chỉ dựa trên các số ĐÃ BIẾT của câu hỏi.
+// 3 kiểu cộng và 3 kiểu trừ đều dùng được mà không điền sẵn số cần tìm.
+function muc2ReducedNumberLineModel_(q) {
+    const eq = getMuc2Equation_(q);
+    if (!eq || !['+', '-'].includes(eq.op)) return null;
+    const known = (value) => Number.isSafeInteger(value) && value >= 0 && value <= 10;
+    const make = (start, dir, steps, goal, desc, spokenGuide) => {
+        if (!known(start) || (steps !== null && (!known(steps) || steps > 10)) ||
+            (goal !== null && !known(goal))) return null;
+        return { start, dir, steps, goal, desc, spokenGuide };
+    };
+    if (eq.op === '+') {
+        if (eq.result === null) return make(eq.left, 1, eq.right, null,
+            `Bắt đầu ở ${eq.left}, tiến ${eq.right} ô sang phải.`,
+            `Bắt đầu ở ${eq.left}, tiến thêm ${eq.right} ô sang phải nhé.`);
+        if (eq.right === null) return make(eq.left, 1, null, eq.result,
+            `Bắt đầu ở ${eq.left}, tiến đến ${eq.result}. Đếm số bước.`,
+            `Bắt đầu ở ${eq.left}, tiến đến ${eq.result} và đếm xem đã đi mấy bước nhé.`);
+        if (eq.left === null) return make(eq.right, 1, null, eq.result,
+            `Đổi chỗ thành ${eq.right} + ? = ${eq.result}, rồi tiến từ ${eq.right} đến ${eq.result}.`,
+            `Đổi chỗ các số hạng, tổng không đổi. Bắt đầu ở ${eq.right}, tiến đến ${eq.result} và đếm số bước nhé.`);
+    } else {
+        if (eq.result === null) return make(eq.left, -1, eq.right, null,
+            `Bắt đầu ở ${eq.left}, lùi ${eq.right} ô sang trái.`,
+            `Bắt đầu ở ${eq.left}, lùi ${eq.right} ô sang trái nhé.`);
+        if (eq.right === null) return make(eq.left, -1, null, eq.result,
+            `Bắt đầu ở ${eq.left}, lùi đến ${eq.result}. Đếm số bước.`,
+            `Bắt đầu ở ${eq.left}, lùi đến ${eq.result} và đếm xem đã đi mấy bước nhé.`);
+        if (eq.left === null) return make(eq.result, 1, eq.right, null,
+            `Bắt đầu ở ${eq.result}, tiến ${eq.right} ô sang phải.`,
+            `Để tìm số ban đầu, con đứng ở ${eq.result} và tiến ${eq.right} ô nhé.`);
+    }
+    return null;
+}
+
+function muc2ReducedNumberLineState_(q, model) {
+    const state = initMuc2UiState_(q);
+    if (!state.numberLine || state.numberLine.start !== model.start || state.numberLine.dir !== model.dir) {
+        state.numberLine = { start: model.start, dir: model.dir, current: model.start, count: 0 };
+    }
+    return state.numberLine;
+}
+
+function buildMuc2ReducedNumberLine_(q) {
+    const model = muc2ReducedNumberLineModel_(q);
+    if (!model) return '';
+    // Mục 6 chế độ ẩn: giữ nguyên 11 số trung tính, không hiện chỉ dẫn/bước/đích.
+    if (q?._muc2_self_practice === true && !muc2PracticeNumberLineVisible_) {
+        return `<section class="muc2-reduced-number-line muc2-independent-neutral" aria-label="Dãy số 0 đến 10, chế độ quan sát">
+            <div class="muc2-reduced-number-line-grid">
+                ${Array.from({length:11},(_,i)=>`<span class="muc2-reduced-number-line-cell muc2-neutral-number">${i}</span>`).join('')}
+            </div>
+        </section>`;
+    }
+    const state = muc2ReducedNumberLineState_(q, model);
+    const finished = (model.steps !== null && state.count >= model.steps) ||
+        (model.goal !== null && state.current === model.goal);
+    const next = state.current + model.dir;
+    const nextValid = !finished && next >= 0 && next <= 10;
+    const stepCounter = `Đã đi <strong class="muc2-reduced-step-value">${state.count}</strong> bước`;
+    // Các ô bé đã bấm chỉ sáng viền; không vẽ vòng cung hoặc số bước lên trên dãy số.
+    return `<section class="muc2-reduced-number-line" aria-label="Dãy số từ 0 đến 10 để tập đếm tiến và lùi">
+        <div class="muc2-reduced-number-line-head">
+            <span class="muc2-reduced-number-line-title">🔢 Dãy số 0–10</span>
+            <span class="muc2-reduced-number-line-message">Bé ấn vào ô số để tiến hoặc lùi nhé</span>
+            <span class="muc2-reduced-number-line-counter" aria-live="polite">${stepCounter}</span>
+        </div>
+        <div class="muc2-reduced-number-line-grid">
+            ${Array.from({length:11},(_,i) => {
+                const isStart = i === model.start;
+                // Chỉ cắm cờ nếu số đích đã có trong đề. Không lấy đáp án để cắm cờ.
+                const isGoal = model.goal !== null && i === model.goal;
+                const isNext = nextValid && i === next;
+                const isVisited = model.dir === 1
+                    ? i > model.start && i <= state.current
+                    : i < model.start && i >= state.current;
+                const classes = [isStart ? 'is-start' : '', isGoal ? 'is-goal' : '',
+                    isVisited ? 'is-visited' : '', isNext ? 'is-next' : ''].filter(Boolean).join(' ');
+                const meaning = isStart ? 'số xuất phát' : isGoal ? 'đích đã biết' : `số ${i}`;
+                return `<button type="button" class="muc2-reduced-number-line-cell ${classes}"
+                    onclick="muc2StepNumberLine_(${i})" ${isNext ? '' : 'disabled'}
+                    aria-label="Số ${i}, ${meaning}" ${i === state.current ? 'aria-current="step"' : ''}>${i}${isGoal ? '<span class="muc2-line-flag" aria-hidden="true">⚑</span>' : ''}</button>`;
+            }).join('')}
+        </div>
+        ${state.count ? '<div class="muc2-reduced-number-line-bottom"><button type="button" class="muc2-reduced-number-line-reset" onclick="muc2ResetNumberLine_()">↺ Đi lại</button></div>' : ''}
+    </section>`;
+}
+
+function muc2StepNumberLine_(num) {
+    const q = activeQuestionsList?.[currentQIndex];
+    if (!q || Number(activeTopicId) !== 2 || activeRoadmapContext || activeExamContext ||
+        !(q._muc2_self_practice === true ? muc2PracticeNumberLineVisible_ : ['2.5','2.6'].includes(getMuc2Stage_(q)))) return;
+    const model = muc2ReducedNumberLineModel_(q);
+    if (!model) return;
+    const state = muc2ReducedNumberLineState_(q, model);
+    const finished = (model.steps !== null && state.count >= model.steps) ||
+        (model.goal !== null && state.current === model.goal);
+    if (finished || num !== state.current + model.dir || num < 0 || num > 10) return;
+    state.current = num;
+    state.count += 1;
+    refreshMuc2InteractiveZone_();
+}
+
+function muc2ResetNumberLine_() {
+    const q = activeQuestionsList?.[currentQIndex];
+    if (!q || Number(activeTopicId) !== 2 || activeRoadmapContext || activeExamContext ||
+        !(q._muc2_self_practice === true ? muc2PracticeNumberLineVisible_ : ['2.5','2.6'].includes(getMuc2Stage_(q)))) return;
+    const model = muc2ReducedNumberLineModel_(q);
+    if (!model) return;
+    const state = muc2ReducedNumberLineState_(q, model);
+    state.current = model.start;
+    state.count = 0;
+    refreshMuc2InteractiveZone_();
+}
+
+// Muc 4/5: de nguyen tat ca emoji trong hang 10 o, khong gach hay lam mo.
+// Be quan sat hinh va tu dem tien/lui tren day so de tim dap an.
+function muc2ReducedFrameSelectionRole_(q) {
+    const eq = getMuc2Equation_(q);
+    // a - ? = b: bé tự chọn hình định bớt, nhóm cần tìm được tô hồng SAU KHI chạm.
+    return eq?.op === '-' && eq.right === null ? 'missing' : 'known';
+}
+
+function muc2TapReducedEmoji_(index) {
+    const q = activeQuestionsList?.[currentQIndex];
+    if (!q || Number(activeTopicId) !== 2 || activeRoadmapContext || activeExamContext ||
+        q?._muc2_self_practice === true || !['2.5','2.6'].includes(getMuc2Stage_(q)) ||
+        userAnswers?.[currentQIndex] === q.answer) return;
+    const model = deriveMuc2ReducedSupportModel_(q);
+    if (!model || !Number.isSafeInteger(index) || index < 0 || index >= model.whole) return;
+    const state = initMuc2UiState_(q);
+    if (!state.reducedFrameSelected) state.reducedFrameSelected = new Set();
+    if (state.reducedFrameSelected.has(index)) state.reducedFrameSelected.delete(index);
+    else state.reducedFrameSelected.add(index);
+    refreshMuc2InteractiveZone_();
+}
+
+// Mục 4/5: ban đầu cùng một màu, chỉ tách nhóm khi chính bé chạm hình.
+function buildMuc2ReducedTenFrame_(q, model) {
+    const total = Math.max(0, Math.min(10, model.whole));
+    const state = initMuc2UiState_(q);
+    const selected = state.reducedFrameSelected || new Set();
+    const role = muc2ReducedFrameSelectionRole_(q);
+    const solved = userAnswers?.[currentQIndex] === q.answer;
+    const eq = getMuc2Equation_(q);
+    let caption = 'Con chạm từng hình rồi đếm tất cả nhé.';
+    if (eq?.op === '+' && eq.result !== null)
+        caption = `Con chạm ${eq.left ?? eq.right} hình đã biết, rồi đếm những hình còn lại nhé.`;
+    else if (eq?.op === '-' && eq.right === null)
+        caption = 'Con tự chạm những hình cần bớt, rồi đếm số hình còn lại nhé.';
+    else if (eq?.op === '-' && eq.right !== null)
+        caption = `Con chạm ${eq.right} hình cần bớt, rồi đếm số hình còn lại nhé.`;
+    return `<div class="muc2-reduced-frame-wrap w-full max-w-[680px]">
+        <div class="muc2-reduced-frame-caption">${caption}</div>
+        <div class="grid grid-cols-5 md:grid-cols-10 gap-1 md:gap-1.5 w-full" aria-label="Hàng 10 ô tương tác giúp bé đếm hình">
+            ${Array.from({length:10},(_,i) => {
+                const active = i < total;
+                const isSelected = selected.has(i);
+                const selectedClass = isSelected ? `is-selected-${role}` : '';
+                return `<button type="button" class="muc2-reduced-ten-cell ${selectedClass}"
+                    ${active && !solved ? `onclick="muc2TapReducedEmoji_(${i})"` : 'disabled'}
+                    aria-label="${active ? `Hình ${i + 1}${isSelected ? ', đã đánh dấu' : ', chưa đánh dấu'}` : `Ô trống ${i + 1}`}"
+                    aria-pressed="${isSelected ? 'true' : 'false'}">
+                    ${active ? `<span class="muc2-reduced-emoji">${escapeHtml(model.emoji)}</span>` : ''}
+                </button>`;
+            }).join('')}
+        </div>
+    </div>`;
+}
+
 function buildMuc2ReducedSupport_(q) {
     const model = deriveMuc2ReducedSupportModel_(q);
+    const steps = muc2ReducedGuideSteps_(q);
+    const guideHtml = `<div class="muc2-reduced-guide" role="note">
+        <div class="muc2-reduced-guide-head">
+            <div class="muc2-reduced-guide-title">🐰 Cô Thỏ Hồng gợi ý</div>
+            <button type="button" class="muc2-reduced-guide-listen pastel-btn" onclick="muc2SpeakReducedGuide_()" aria-label="Nghe cô hướng dẫn hai bước và cách dùng dãy số">
+                <i class="fa-solid fa-volume-high" aria-hidden="true"></i><span>Nghe cô hướng dẫn</span>
+            </button>
+        </div>
+        ${steps.map((step,index) => `<div class="muc2-reduced-guide-step"><span class="muc2-reduced-guide-bullet">${index + 1}</span><span>${escapeHtml(step)}</span></div>`).join('')}
+    </div>`;
     if (model) {
         return `
-            <div class="w-full flex flex-col items-center gap-4">
-                <div class="inline-flex px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-sm md:text-base font-black">Con nhìn hình rồi tự tính nhé.</div>
-                ${buildMuc1StaticTenFrame_(model.whole, model.emoji)}
-                ${buildMuc2NumberBond_(model.topValue, model.leftValue, model.rightValue)}
+            <div class="muc2-reduced-content w-full flex flex-col items-center gap-2">
+                ${guideHtml}
+                ${buildMuc2SwapDemonstration_(q)}
+                ${buildMuc2ReducedTenFrame_(q, model)}
+                ${buildMuc2NumberBond_(model.topValue, model.leftValue, model.rightValue, q)}
+                ${buildMuc2ReducedNumberLine_(q)}
             </div>`;
     }
 
-    const eq = getMuc2Equation_(q);
-    if (eq?.op === '-') {
-        const s = parseMuc2Subtraction_(q);
-        return `
-            <div class="w-full flex flex-col items-center gap-4">
-                <div class="inline-flex px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-sm md:text-base font-black">Nhìn hình và tự nghĩ cách tính nhé.</div>
-                ${buildMuc2StaticEmojiRow_(s.whole, s.emoji, `Số bị trừ: ${s.whole}`, 'violet')}
-                ${buildMuc2StaticEmojiRow_(s.take, s.emoji, `Số trừ: ${s.take}`, 'rose')}
-            </div>`;
-    }
+    // Du phong du lieu cu: van huong dan bang cau chu, khong dua ra dap an.
+    return `<div class="muc2-reduced-content w-full flex flex-col items-center gap-2">${guideHtml}</div>`;
+}
 
-    const s = parseMuc2Addition_(q);
-    return `
-        <div class="w-full flex flex-col items-center gap-4">
-            <div class="inline-flex px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-sm md:text-base font-black">Nhìn hình và tự gộp trong đầu nhé.</div>
-            ${buildMuc2StaticEmojiRow_(s.a, s.emoji, `Số hạng thứ nhất: ${s.a}`, 'violet')}
-            ${buildMuc2StaticEmojiRow_(s.b, s.emoji, `Số hạng thứ hai: ${s.b}`, 'rose')}
-        </div>`;
+// Muc 4/5 luon co huong dan. Muc 6 khong co hinh hay loi goi y.
+function buildMuc2OptionalSupport_(q) {
+    return `<div class="muc2-reduced-stage w-full flex flex-col items-center justify-center">${buildMuc2ReducedSupport_(q)}</div>`;
+}
+
+function buildMuc2IndependentNumberLine_(q) {
+    const shown = muc2PracticeNumberLineVisible_;
+    const bond = deriveMuc2ReducedSupportModel_(q);
+    return `<div class="muc2-independent-stage w-full max-w-[760px]">
+        ${bond ? buildMuc2NumberBond_(bond.topValue, bond.leftValue, bond.rightValue, q) : ''}
+        <div class="muc2-independent-number-toggle" role="group" aria-label="Chọn chế độ dãy số">
+            <button type="button" class="${shown ? 'is-selected' : ''}" aria-pressed="${shown}" onclick="muc2TogglePracticeNumberLine_(true)">✓ Hiện dãy số</button>
+            <button type="button" class="${shown ? '' : 'is-selected'}" aria-pressed="${!shown}" onclick="muc2TogglePracticeNumberLine_(false)">Ẩn hỗ trợ</button>
+        </div>
+        ${buildMuc2ReducedNumberLine_(q)}
+    </div>`;
+}
+
+function muc2TogglePracticeNumberLine_(show) {
+    const q = activeQuestionsList?.[currentQIndex];
+    if (!q || Number(activeTopicId) !== 2 || activeExamContext || activeRoadmapContext || q._muc2_self_practice !== true) return;
+    const wanted = !!show;
+    if (muc2PracticeNumberLineVisible_ === wanted) return;
+    muc2PracticeNumberLineVisible_ = wanted;
+    // Bat dau lai khi doi che do, khong mang theo duong di cu.
+    const model = muc2ReducedNumberLineModel_(q);
+    if (model && muc2UiState?.numberLine) {
+        muc2UiState.numberLine.current = model.start;
+        muc2UiState.numberLine.count = 0;
+    }
+    refreshMuc2InteractiveZone_();
 }
 
 function getMuc2Prompt_(q) {
     const text = String(q?.question_text || '');
     const eq = getMuc2Equation_(q);
     const stage = getMuc2Stage_(q);
-    if (stage === '2.6') return text;
     const lines = text.split('\n').map(x => x.trim()).filter(Boolean);
     const verbal = lines.find(line => !extractEmojiTokens_(line).length && !/(10|[0-9]|\?)\s*[+−-]/.test(line));
     if (stage === '2.1') return verbal || 'Gộp hai nhóm. Có tất cả bao nhiêu?';
     if (stage === '2.2') return eq?.raw || verbal || 'Con tính phép cộng nhé.';
     if (stage === '2.3') return verbal || 'Bớt đi rồi xem còn lại bao nhiêu.';
     if (stage === '2.4') return eq?.raw || verbal || 'Con tính phép trừ nhé.';
-    if (stage === '2.5') return eq?.raw || verbal || 'Con tìm số còn thiếu nhé.';
+    if (stage === '2.5' || stage === '2.6') return eq?.raw || verbal || 'Con tự tính nhé.';
     return verbal || text;
+}
+
+// Chi thay dung dau ? sau khi be tra loi dung; khong dua dap an vao DOM som.
+// Ho tro ca 4 + 6 = ? va 2 + ? = 3 / ? + 3 = 8.
+function muc2PromptAnswerHtml_(q, prompt) {
+    const text = String(prompt || '');
+    if (!isMuc2ReflectivePractice_(q) || userAnswers?.[currentQIndex] !== q?.answer) {
+        const reduced = Number(activeTopicId) === 2 && !activeRoadmapContext && !activeExamContext &&
+            q?._muc2_self_practice !== true && ['2.5','2.6'].includes(getMuc2Stage_(q));
+        const hole = text.indexOf('?');
+        return reduced && hole >= 0
+            ? `${escapeHtml(text.slice(0,hole))}<span class="muc2-equation-unknown">?</span>${escapeHtml(text.slice(hole + 1))}`
+            : escapeHtml(text);
+    }
+    const position = text.indexOf('?');
+    if (position < 0) return escapeHtml(text);
+    const answer = escapeHtml(String(q.answer));
+    return `${escapeHtml(text.slice(0, position))}<span class="muc2-solved-number text-red-600" style="color:#dc2626" aria-label="Đáp án đúng: ${answer}">${answer}</span>${escapeHtml(text.slice(position + 1))}`;
+}
+
+function refreshMuc2SolvedPrompt_(q) {
+    if (!isMuc2ReflectivePractice_(q) || userAnswers?.[currentQIndex] !== q?.answer) return;
+    const host = document.getElementById('muc2-equation-prompt');
+    if (!host) return;
+    const prompt = (isMuc2GuidedBasic_(q) && getMuc2BasicEquation_(q)) || getMuc2Prompt_(q);
+    host.innerHTML = muc2PromptAnswerHtml_(q, prompt);
 }
 
 function buildMuc2Tip_(q) {
@@ -4910,7 +5982,7 @@ function buildMuc2Tip_(q) {
     if (stage === '2.2') return 'Cô Thỏ Hồng: Con có thể dùng hàng ô để kiểm tra kết quả phép cộng.';
     if (stage === '2.3') return 'Cô Thỏ Hồng: Trừ là bớt đi. Những hình không bị gạch chính là phần còn lại.';
     if (stage === '2.4') return 'Cô Thỏ Hồng: Con nhìn phần còn lại rồi liên hệ với phép trừ.';
-    if (stage === '2.5') return 'Cô Thỏ Hồng: Con nhìn sơ đồ số và hình rồi tìm số còn thiếu nhé!';
+    // Chặng 4/5 đã có hướng dẫn chi tiết trong cột minh họa, không cần gợi ý trùng lặp ở cột phải.
     return '';
 }
 
@@ -4927,8 +5999,8 @@ function buildMuc2Options_(q, compact = true) {
     }).join('');
 }
 
-// Muc 2 / muc con 4: bo moi goi y truc quan, chi giu phep tinh.
-// Khong sua question_text trong data: muc 3 van dung duoc hinh va huong dan goc.
+// Mục 6 tự thực hành: chỉ dùng biểu thức, không hình, đáp án hay chỉ dẫn.
+// Giữ nguyên question_text gốc để ba chặng học trước vẫn sử dụng học liệu cũ.
 function getMuc2SelfPracticePrompt_(q) {
     const eq = getMuc2Equation_(q);
     if (eq?.raw) return eq.raw;
@@ -4961,22 +6033,24 @@ function buildMuc2ExamLikeLayout_(q, speakerHtml) {
 
 function buildMuc2QuestionLayout_(q, speakerHtml) {
     const stage = getMuc2Stage_(q);
-    if (stage === '2.6') return buildMuc2ExamLikeLayout_(q, speakerHtml);
-
+    const isSelfPractice = q?._muc2_self_practice === true;
     let visual = '';
-    if (stage === '2.1' || stage === '2.2') visual = buildMuc2AdditionInteractive_(q);
+    if (isSelfPractice) visual = buildMuc2IndependentNumberLine_(q);
+    else if (stage === '2.1' || stage === '2.2') visual = buildMuc2AdditionInteractive_(q);
     else if (stage === '2.3' || stage === '2.4') visual = buildMuc2SubtractionInteractive_(q);
-    else visual = buildMuc2ReducedSupport_(q);
+    else visual = buildMuc2OptionalSupport_(q);
 
-    const prompt = getMuc2Prompt_(q);
-    const tip = buildMuc2Tip_(q);
+    const isGuidedBasic = isMuc2GuidedBasic_(q);
+    const isReducedGuided = isSelfPractice || ['2.5','2.6'].includes(stage);
+    const prompt = (isGuidedBasic && getMuc2BasicEquation_(q)) || getMuc2Prompt_(q);
+    const tip = isGuidedBasic ? '' : buildMuc2Tip_(q);
     return `
         <div class="w-full max-w-none grid grid-cols-1 md:grid-cols-[1.4fr_0.6fr] gap-3 md:gap-4 items-stretch py-1">
-            <div class="min-h-[300px] md:min-h-[360px] rounded-[28px] border-2 border-pink-100 bg-gradient-to-br from-amber-50 via-white to-sky-50 px-3 py-4 md:px-5 md:py-5 flex flex-col items-center justify-center overflow-hidden shadow-sm">
+            <div class="min-h-[300px] md:min-h-[360px] rounded-[28px] border-2 border-pink-100 bg-gradient-to-br from-amber-50 via-white to-sky-50 ${isReducedGuided ? 'px-3 py-2 md:px-4 md:py-3' : 'px-3 py-4 md:px-5 md:py-5'} flex flex-col items-center justify-center overflow-hidden shadow-sm">
                 <div id="muc2-visual-host" class="w-full flex items-center justify-center">${visual}</div>
             </div>
             <div class="rounded-[28px] border border-pink-100 bg-white/95 px-3 py-4 md:px-4 md:py-5 flex flex-col justify-center shadow-sm">
-                <h3 class="text-lg md:text-xl lg:text-[22px] font-black text-slate-900 leading-snug text-center mb-1">${escapeHtml(prompt)}</h3>
+                <h3 id="muc2-equation-prompt" class="${isReducedGuided ? 'muc2-reduced-equation' : (isGuidedBasic ? 'text-2xl md:text-[28px] lg:text-[30px]' : 'text-lg md:text-xl lg:text-[22px]')} font-black text-slate-900 leading-snug text-center mb-1">${muc2PromptAnswerHtml_(q, prompt)}</h3>
                 ${speakerHtml}
                 ${tip ? `<div id="muc2-tip-host" class="mt-2 bg-amber-50 border border-amber-200 rounded-2xl px-3 py-2 text-sm md:text-base font-black text-amber-800 text-center shadow-xs">${escapeHtml(tip)}</div>` : ''}
                 <div class="w-full grid grid-cols-2 gap-2.5 md:gap-3 mt-3">${buildMuc2Options_(q, true)}</div>
@@ -4991,9 +6065,10 @@ function refreshMuc2InteractiveZone_() {
     const stage = getMuc2Stage_(q);
     const host = document.getElementById('muc2-visual-host');
     if (!host) return;
-    if (stage === '2.1' || stage === '2.2') host.innerHTML = buildMuc2AdditionInteractive_(q);
+    if (q?._muc2_self_practice === true) host.innerHTML = buildMuc2IndependentNumberLine_(q);
+    else if (stage === '2.1' || stage === '2.2') host.innerHTML = buildMuc2AdditionInteractive_(q);
     else if (stage === '2.3' || stage === '2.4') host.innerHTML = buildMuc2SubtractionInteractive_(q);
-    else if (stage === '2.5') host.innerHTML = buildMuc2ReducedSupport_(q);
+    else if (stage === '2.5' || stage === '2.6') host.innerHTML = buildMuc2OptionalSupport_(q);
 }
 
 function muc2MoveAddItem_(group, index) {
@@ -5003,18 +6078,22 @@ function muc2MoveAddItem_(group, index) {
     const key = `${group}:${index}`;
     if (s.moved.has(key)) return;
     s.moved.add(key);
+    // Be thao tac nhanh hon nhip TTS: chi hien so dem, khong doc tung buoc.
     refreshMuc2InteractiveZone_();
-    try { speakVietnamese(String(s.moved.size), 0.94); } catch (e) {}
 }
 
 function muc2RemoveSubItem_(index) {
     const q = activeQuestionsList?.[currentQIndex];
     if (!q) return;
     const s = initMuc2UiState_(q);
-    if (index !== s.removed || s.removed >= s.take) return;
-    s.removed += 1;
+    // Cho chon bat ky hinh nao o hang duoi, moi hinh chi duoc chon mot lan.
+    if (!Number.isInteger(index) || index < 0 || index >= s.take ||
+        s.removed >= s.take || s.removedIndices.has(index)) return;
+    s.removedIndices.add(index);
+    // Hang tren van gach dan tu phai qua trai, theo so hinh da bot.
+    s.removed = s.removedIndices.size;
+    // Khong doc tung buoc; be nhin cac o con lai de tu tim dap an.
     refreshMuc2InteractiveZone_();
-    try { speakVietnamese(`Bớt ${s.removed}`, 0.94); } catch (e) {}
 }
 
 function muc2ResetInteraction_() {
@@ -5023,6 +6102,7 @@ function muc2ResetInteraction_() {
     const s = initMuc2UiState_(q);
     s.moved = new Set();
     s.removed = 0;
+    s.removedIndices.clear();
     refreshMuc2InteractiveZone_();
 }
 
@@ -5071,8 +6151,277 @@ function buildFoundationQuestionLayout(q, speakerHtml) {
         </div>`;
 }
 
+let topic3ReadWriteUiState_ = {};
+
+function isTopic3ReadWrite_(q) {
+    return Number(activeTopicId) === 3 && !activeRoadmapContext && !activeExamContext &&
+        String(q?.sub_topic || '') === '3.1' &&
+        ['read', 'write'].includes(q?._topic3_rw_mode) &&
+        Number.isSafeInteger(q?.muc3_rw_number) && q.muc3_rw_number >= 0 && q.muc3_rw_number <= 100;
+}
+
+function topic3ReadWriteState_(q) {
+    const key = `${currentQIndex}:${q.question_id}`;
+    if (!topic3ReadWriteUiState_[key]) topic3ReadWriteUiState_[key] = { digits: [], hint: false, feedback: '' };
+    return topic3ReadWriteUiState_[key];
+}
+
+function topic3RwHintText_(q) {
+    const n = q.muc3_rw_number;
+    if (q._topic3_rw_mode === 'write') {
+        return n === 100
+            ? 'Con nghe kỹ từ “trăm”. Nếu số có hàng trăm, mình viết chữ số hàng trăm trước nhé.'
+            : (n < 10 ? 'Con nghe cô đọc lại, rồi chọn đúng một chữ số nhé.' : 'Con nghe số chục trước, rồi nghe số đơn vị. Mình viết từ trái sang phải nhé.');
+    }
+    if (n === 100) return 'Con nhớ cách đọc số có một trăm nhé.';
+    if (n < 10) return 'Con đọc tên chữ số lớn ở bên trái rồi tìm đáp án giống như vậy nhé.';
+    if (n === 14) return 'Trong các số từ 11 đến 19, con đọc “mười” trước rồi đọc chữ số phía sau.';
+    if (n >= 20 && n % 10 === 1) return 'Khi hàng đơn vị là 1 đứng sau “mươi”, con nhớ âm “mốt” nhé.';
+    if (n >= 20 && n % 10 === 4) return 'Khi hàng đơn vị là 4 sau “mươi”, mình thường đọc “tư” nhé.';
+    if (n >= 15 && n % 10 === 5) return 'Khi chữ số 5 ở cuối số hai chữ số, con nhớ cách đọc “lăm” nhé.';
+    return 'Con nhìn hàng chục trước, rồi đến hàng đơn vị. Hãy đọc từ trái sang phải nhé.';
+}
+
+function topic3RwToggleHint_() {
+    const q = activeQuestionsList?.[currentQIndex];
+    if (!isTopic3ReadWrite_(q) || userAnswers[currentQIndex] !== undefined) return;
+    const st = topic3ReadWriteState_(q);
+    st.hint = !st.hint;
+    refreshTopic3RwHost_(q);
+}
+
+function topic3RwDigitCount_(n) {
+    return String(n).length;
+}
+
+function topic3RwPressDigit_(n) {
+    const q = activeQuestionsList?.[currentQIndex];
+    if (!isTopic3ReadWrite_(q) || q._topic3_rw_mode !== 'write' || userAnswers[currentQIndex] !== undefined) return;
+    if (!Number.isSafeInteger(n) || n < 0 || n > 9) return;
+    const st = topic3ReadWriteState_(q);
+    if (st.digits.length >= topic3RwDigitCount_(q.muc3_rw_number)) return;
+    // Không cho phép 0 ở đầu số hai/ba chữ số.
+    if (st.digits.length === 0 && n === 0 && topic3RwDigitCount_(q.muc3_rw_number) > 1) {
+        st.feedback = 'Con bắt đầu bằng chữ số hàng chục (hoặc hàng trăm) nhé.';
+        refreshTopic3RwHost_(q);
+        return;
+    }
+    st.digits.push(String(n)); st.feedback = '';
+    refreshTopic3RwHost_(q);
+}
+
+function topic3RwEraseDigit_() {
+    const q = activeQuestionsList?.[currentQIndex];
+    if (!isTopic3ReadWrite_(q) || q._topic3_rw_mode !== 'write' || userAnswers[currentQIndex] !== undefined) return;
+    const st = topic3ReadWriteState_(q);
+    st.digits.pop(); st.feedback = '';
+    refreshTopic3RwHost_(q);
+}
+
+function topic3RwResetDigits_() {
+    const q = activeQuestionsList?.[currentQIndex];
+    if (!isTopic3ReadWrite_(q) || q._topic3_rw_mode !== 'write' || userAnswers[currentQIndex] !== undefined) return;
+    const st = topic3ReadWriteState_(q);
+    st.digits = []; st.feedback = '';
+    refreshTopic3RwHost_(q);
+}
+
+function topic3RwSubmit_() {
+    const q = activeQuestionsList?.[currentQIndex];
+    if (!isTopic3ReadWrite_(q) || q._topic3_rw_mode !== 'write' || userAnswers[currentQIndex] !== undefined) return;
+    const st = topic3ReadWriteState_(q);
+    if (st.digits.length !== topic3RwDigitCount_(q.muc3_rw_number)) {
+        st.feedback = 'Con hãy điền đủ các ô số rồi bấm Kiểm tra nhé.';
+        refreshTopic3RwHost_(q);
+        return;
+    }
+    const value = st.digits.join('');
+    if (value !== q.answer) {
+        st.feedback = 'Chưa đúng rồi. Con nghe lại và viết lại từng chữ số nhé!';
+        st.digits = [];
+    }
+    checkAnswer(value);
+}
+
+function buildTopic3RwAnswerSection_(q) {
+    const st = topic3ReadWriteState_(q);
+    const solved = userAnswers[currentQIndex] === q.answer;
+    const hasWrong = (wrongAttemptsByQ[currentQIndex] || []).length > 0;
+    const hintHtml = st.hint && !solved
+        ? `<div class="topic3-rw-hint">🐰 ${escapeHtml(topic3RwHintText_(q))}</div>` : '';
+    const successHtml = solved
+        ? `<div class="topic3-rw-success" role="status">✅ Giỏi lắm! <strong>${q.muc3_rw_number}</strong> đọc là <strong>${escapeHtml(q._topic3_rw_word)}</strong>.</div>` : '';
+    const hintBtn = solved ? '' : `<button type="button" class="topic3-rw-hint-btn pastel-btn" onclick="topic3RwToggleHint_()">💡 ${st.hint ? 'Ẩn gợi ý' : 'Cần gợi ý'}</button>`;
+    if (q._topic3_rw_mode === 'read') {
+        const opts = (q.options || []).map((opt,idx) => `<button type="button" class="topic3-rw-option option-btn pastel-btn"
+                data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${escapeJsString_(opt)}')">
+                <strong>${String.fromCharCode(65+idx)}.</strong><span class="opt-text">${escapeHtml(opt)}</span></button>`).join('');
+        return `<div class="topic3-rw-options">${opts}</div>
+            ${!solved && hasWrong ? '<div class="topic3-rw-try">Con đọc lại từ hàng chục rồi thử chọn lần nữa nhé.</div>' : ''}
+            ${hintBtn}${hintHtml}${successHtml}`;
+    }
+    const n = q.muc3_rw_number;
+    const targetLen = topic3RwDigitCount_(n);
+    const labels = targetLen === 3 ? ['Trăm','Chục','Đơn vị'] : targetLen === 2 ? ['Chục','Đơn vị'] : ['Chữ số'];
+    const value = solved ? String(n).split('') : st.digits;
+    const boxes = labels.map((label,i) => `<div class="topic3-rw-slot-wrap"><div class="topic3-rw-slot ${solved ? 'is-solved' : ''}">${escapeHtml(value[i] || '—')}</div><span>${label}</span></div>`).join('');
+    const keypad = Array.from({length:10},(_,i)=>i===9?0:i+1).map(d => `<button type="button" class="topic3-rw-digit pastel-btn" ${solved ? 'disabled' : ''} onclick="topic3RwPressDigit_(${d})">${d}</button>`).join('');
+    return `<div class="topic3-rw-slots">${boxes}</div>
+        <div class="topic3-rw-keypad">${keypad}</div>
+        <div class="topic3-rw-actions">
+            <button type="button" class="topic3-rw-clear pastel-btn" onclick="topic3RwEraseDigit_()" ${solved ? 'disabled' : ''}>⌫ Xóa số cuối</button>
+            <button type="button" class="topic3-rw-clear pastel-btn" onclick="topic3RwResetDigits_()" ${solved ? 'disabled' : ''}>↺ Làm lại</button>
+            <button type="button" class="topic3-rw-check pastel-btn" onclick="topic3RwSubmit_()" ${solved ? 'disabled' : ''}>✓ Kiểm tra</button>
+        </div>
+        ${!solved && st.feedback ? `<div class="topic3-rw-try" role="status">${escapeHtml(st.feedback)}</div>` : ''}
+        ${hintBtn}${hintHtml}${successHtml}`;
+}
+
+function refreshTopic3RwHost_(q) {
+    if (!isTopic3ReadWrite_(q)) return;
+    const host = document.getElementById('topic3-rw-answer-host');
+    if (host) host.innerHTML = buildTopic3RwAnswerSection_(q);
+    // Khi chuyển lại câu đã làm, giữ đúng trạng thái đáp án.
+    if (q._topic3_rw_mode === 'read' && userAnswers[currentQIndex] !== undefined) restoreQuestionState(q);
+}
+
+function buildTopic3RwLayout_(q, speakerHtml) {
+    const writing = q._topic3_rw_mode === 'write';
+    return `<div class="topic3-rw-layout">
+        <section class="topic3-rw-visual">
+            <div class="topic3-rw-label">${writing ? '👂 Nghe cô đọc rồi viết số' : '👀 Con nhìn số này nhé'}</div>
+            <div class="${writing ? 'topic3-rw-large-word' : 'topic3-rw-large-number'}">${writing ? escapeHtml(q._topic3_rw_word) : q.muc3_rw_number}</div>
+            ${writing ? `<button type="button" onclick="speakCurrentQuestion()" class="topic3-rw-listen pastel-btn"><i class="fa-solid fa-volume-high" aria-hidden="true"></i> Nghe cô đọc số</button>` : '<div class="topic3-rw-reminder">Con đọc từ hàng chục sang hàng đơn vị nhé!</div>'}
+        </section>
+        <section class="topic3-rw-question">
+            <h3>${writing ? 'Con hãy viết số vào các ô nhé!' : `Số ${q.muc3_rw_number} đọc là gì?`}</h3>
+            ${writing ? '' : speakerHtml}
+            <div id="topic3-rw-answer-host">${buildTopic3RwAnswerSection_(q)}</div>
+        </section>
+    </div>`;
+}
+
 function getTopic3Stage_(q) {
     return String(q?.sub_topic || '');
+}
+
+
+// Khám phá 3.1 (hiển thị): Học cấu tạo số bằng bó chục thực sự có 10 ô + đơn vị rời.
+// Dữ liệu 3.2 trong JSON giữ nguyên mã và 40 câu; không dùng cho Bài tập/Đề thi.
+function getTopic3PlaceValueMeta_(q) {
+    if (String(q?.sub_topic || '') !== '3.2') return null;
+    const match = String(q.question_text || '').match(/\bSố\s+(\d{2})\b/i);
+    if (!match) return null;
+    const num = Number(match[1]);
+    if (!Number.isSafeInteger(num) || num < 10 || num > 99) return null;
+    return { num, tens: Math.floor(num / 10), ones: num % 10 };
+}
+
+function isTopic3PlaceValuePractice_(q) {
+    return Number(activeTopicId) === 3 && !activeExamContext && !activeRoadmapContext && !!getTopic3PlaceValueMeta_(q);
+}
+
+function getTopic3PlaceValueState_(q) {
+    const key = `${currentQIndex}:${String(q?.question_id ?? '')}`;
+    if (!topic3PlaceValueUiState_[key]) {
+        topic3PlaceValueUiState_[key] = { tens: new Set(), ones: new Set() };
+    }
+    return topic3PlaceValueUiState_[key];
+}
+
+function topic3PlaceValueSpeakGuide_() {
+    const q = activeQuestionsList?.[currentQIndex];
+    if (!isTopic3PlaceValuePractice_(q)) return;
+    speakVietnamese('Bé ơi, mười ô nhỏ được bó thành một chục. Con chạm từng bó để đếm số chục, rồi chạm từng chấm để đếm số đơn vị rời nhé.', 0.94);
+}
+
+function buildTopic3PlaceValueVisual_(q) {
+    const meta = getTopic3PlaceValueMeta_(q);
+    if (!meta) return '';
+    const state = getTopic3PlaceValueState_(q);
+    const solved = userAnswers[currentQIndex] === q.answer;
+    const unitGrid = Array.from({ length: 10 }, () => '<span class="topic3-pv-small-square" aria-hidden="true"></span>').join('');
+    const rods = Array.from({ length: meta.tens }, (_, idx) => {
+        const selected = state.tens.has(idx);
+        return `<button type="button" class="topic3-pv-rod ${selected ? 'is-counted' : ''}" onclick="topic3PlaceValueTap_('tens',${idx})"
+            aria-label="Bó chục ${idx + 1}, gồm mười ô" aria-pressed="${selected}" ${solved ? 'disabled' : ''}>${unitGrid}</button>`;
+    }).join('');
+    const dots = meta.ones ? Array.from({ length: meta.ones }, (_, idx) => {
+        const selected = state.ones.has(idx);
+        return `<button type="button" class="topic3-pv-unit ${selected ? 'is-counted' : ''}" onclick="topic3PlaceValueTap_('ones',${idx})"
+            aria-label="Đơn vị rời ${idx + 1}" aria-pressed="${selected}" ${solved ? 'disabled' : ''}><span aria-hidden="true"></span></button>`;
+    }).join('') : '<span class="topic3-pv-zero" aria-label="Không có đơn vị rời">0</span>';
+    const allCounted = state.tens.size === meta.tens && state.ones.size === meta.ones;
+    return `
+        <div class="topic3-pv-heading"><span>Số</span><strong><span class="topic3-pv-digit-tens">${meta.tens}</span><span class="topic3-pv-digit-ones">${meta.ones}</span></strong></div>
+        <div class="topic3-pv-groups">
+            <section class="topic3-pv-group topic3-pv-tens" aria-label="Các bó chục">
+                <h4>🟣 Bó chục</h4>
+                <p>1 bó = 10 ô nhỏ</p>
+                <div class="topic3-pv-rods">${rods}</div>
+                <div class="topic3-pv-count" aria-live="polite">Đã đếm <b>${state.tens.size}</b> bó</div>
+            </section>
+            <section class="topic3-pv-group topic3-pv-ones" aria-label="Các đơn vị rời">
+                <h4>🔵 Đơn vị</h4>
+                <p>Mỗi chấm = 1</p>
+                <div class="topic3-pv-units">${dots}</div>
+                <div class="topic3-pv-count" aria-live="polite">Đã đếm <b>${state.ones.size}</b> chấm</div>
+            </section>
+        </div>
+        ${solved ? `<div class="topic3-pv-solution" role="status">✅ Số <b>${meta.num}</b> gồm <b>${meta.tens} chục</b> và <b>${meta.ones} đơn vị</b>.<div>${meta.num} = ${meta.tens * 10} + ${meta.ones}</div></div>` :
+            `<p class="topic3-pv-bottom-note">${allCounted ? 'Giỏi lắm! Con hãy chọn đáp án bên phải nhé.' : 'Con chạm các bó và chấm để đếm, mỗi hình một lần nhé!'}</p>`}`;
+}
+
+function refreshTopic3PlaceValueHost_(q) {
+    if (!isTopic3PlaceValuePractice_(q)) return;
+    const host = document.getElementById('topic3-place-value-host');
+    if (host) host.innerHTML = buildTopic3PlaceValueVisual_(q);
+}
+
+function topic3PlaceValueTap_(kind, idx) {
+    const q = activeQuestionsList?.[currentQIndex];
+    if (!isTopic3PlaceValuePractice_(q) || userAnswers[currentQIndex] !== undefined) return;
+    const meta = getTopic3PlaceValueMeta_(q);
+    const count = kind === 'tens' ? meta.tens : kind === 'ones' ? meta.ones : -1;
+    if (!Number.isInteger(idx) || idx < 0 || idx >= count) return;
+    const set = getTopic3PlaceValueState_(q)[kind];
+    if (set.has(idx)) return; // Mỗi bó/chấm chỉ được đếm một lần.
+    set.add(idx); // Bé được chọn theo bất kì thứ tự nào.
+    refreshTopic3PlaceValueHost_(q);
+}
+
+function buildTopic3PlaceValueLayout_(q, speakerHtml) {
+    const meta = getTopic3PlaceValueMeta_(q);
+    if (!meta) return '';
+    const optionHtml = (q.options || []).map((opt, idx) => `<button type="button" data-opt="${escapeHtml(opt)}"
+        onclick="checkAnswer('${escapeHtml(escapeJsString_(opt))}')" class="topic3-pv-option option-btn pastel-btn">
+        <strong>${String.fromCharCode(65 + idx)}.</strong><span class="opt-text">${escapeHtml(opt)}</span><span class="option-icon" aria-hidden="true"></span>
+    </button>`).join('');
+    return `<div class="topic3-pv-layout">
+        <div class="topic3-pv-visual-panel">
+            <div class="topic3-pv-topline">
+                <div class="topic3-pv-teacher"><span aria-hidden="true">🐰</span> Bé đếm từng bó chục, rồi đếm đơn vị rời nhé!</div>
+                <button type="button" class="topic3-pv-guide-btn pastel-btn" onclick="topic3PlaceValueSpeakGuide_()"><i class="fa-solid fa-volume-high" aria-hidden="true"></i> Nghe cô hướng dẫn</button>
+            </div>
+            <div id="topic3-place-value-host">${buildTopic3PlaceValueVisual_(q)}</div>
+        </div>
+        <div class="topic3-pv-question-panel">
+            <h3>${formatTopic3PromptHtml_(q, q.question_text)}</h3>
+            ${speakerHtml}
+            <div class="topic3-pv-options">${optionHtml}</div>
+            <div id="topic3-pv-try-again" aria-live="polite"></div>
+        </div>
+    </div>`;
+}
+
+function refreshTopic3PlaceValueTryAgain_(q) {
+    if (!isTopic3PlaceValuePractice_(q)) return;
+    const host = document.getElementById('topic3-pv-try-again');
+    if (!host) return;
+    const wrong = wrongAttemptsByQ[currentQIndex] || [];
+    host.innerHTML = userAnswers[currentQIndex] === undefined && wrong.length
+        ? '<p class="topic3-pv-try-again">🐰 Chưa đúng rồi. Con thử đếm lại các bó chục và chấm rời nhé!</p>'
+        : '';
 }
 
 function extractTopic3FocusNumber_(q) {
@@ -5425,7 +6774,7 @@ function buildTopic3CompareLayout_(q, speakerHtml) {
                 <h3 class="text-lg md:text-xl lg:text-[24px] font-black text-violet-700 leading-snug">Bé hãy chọn dấu thích hợp nhé!</h3>
                 ${speakerHtml}
             </div>
-            <div class="w-full max-w-5xl mx-auto grid grid-cols-4 gap-2.5 mt-2">${optionsHtml}</div>
+            <div class="w-full max-w-5xl mx-auto grid ${q.options.length === 3 ? 'grid-cols-3' : 'grid-cols-4'} gap-2.5 mt-2">${optionsHtml}</div>
         </div>`;
 }
 
@@ -5624,7 +6973,7 @@ function getTopic35Phase_(q) {
     const id = Number(q?.question_id || 0);
     if (id >= 5200 && id <= 5209) return 'digit_pairing';
     if (id >= 5210 && id <= 5219) return 'pick_from_four';
-    if (id >= 5220 && id <= 5239) return 'two_digit';
+    if (id >= 5220 && id <= 5249) return 'two_digit';
     return 'generic';
 }
 
@@ -6461,8 +7810,8 @@ function refreshMuc10SolutionHost_(q) { if(Number(activeTopicId)!==10 && !/^10\.
 function buildMuc10QuestionLayout_(q,speakerHtml,isEvaluationMode=false) {
     const label=beautifySubtopicName(q?.sub_topic_label)||'Toán tư duy nâng cao';
     const options=(q.options||[]).map((opt,idx)=>{const letter=String.fromCharCode(65+idx);const th=['border-amber-200 bg-amber-50/70 hover:bg-amber-100','border-sky-200 bg-sky-50/70 hover:bg-sky-100','border-indigo-200 bg-indigo-50/70 hover:bg-indigo-100','border-emerald-200 bg-emerald-50/70 hover:bg-emerald-100'];return `<button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${escapeJsString_(opt)}')" class="option-btn w-full min-h-[66px] px-4 py-3 ${th[idx%4]} border-2 rounded-2xl font-extrabold text-slate-800 transition-all flex items-center justify-start gap-3 text-left shadow-xs pastel-btn"><strong class="text-amber-700 text-xl md:text-2xl shrink-0 w-8">${letter}.</strong><span class="opt-text text-lg md:text-xl lg:text-[23px] leading-snug">${escapeHtml(capitalizeFirstLetter(opt))}</span><span class="option-icon ml-auto"></span></button>`}).join('');
-    const guide=isEvaluationMode?'':`<div class="mt-2 text-center text-sm md:text-base font-extrabold text-slate-600">🧠 ${escapeHtml(muc10StageGuide_(q))}</div>`;
-    return `<div class="w-full max-w-6xl mx-auto rounded-[30px] border-2 border-amber-100 bg-white/95 p-3 md:p-4 shadow-sm"><div class="grid grid-cols-1 md:grid-cols-[1.04fr_0.96fr] gap-3 md:gap-4 items-stretch"><div class="relative min-h-[420px] md:min-h-[470px] rounded-[24px] border-2 border-amber-100 bg-gradient-to-br from-amber-50 via-white to-indigo-50 p-4 flex items-center justify-center overflow-hidden">${muc10VisualHtml_(q)}<div class="absolute left-3 bottom-3 rounded-full border-2 border-amber-200 bg-white/95 px-4 py-1.5 text-sm md:text-base font-black text-amber-700 shadow-sm">${escapeHtml(label)}</div></div><div class="rounded-[24px] border-2 border-amber-100 bg-gradient-to-br from-white via-amber-50/20 to-indigo-50/20 px-3 py-4 md:px-5 md:py-5 flex flex-col justify-center"><h3 class="text-xl md:text-2xl lg:text-[27px] font-black text-slate-900 leading-snug text-center">${escapeHtml(q.question_text)}</h3>${speakerHtml}<div class="grid grid-cols-1 gap-2.5 mt-3">${options}</div>${guide}<div id="muc10-solution-host">${buildMuc10SolutionHtml_(q)}</div></div></div></div>`;
+    const guide=isEvaluationMode?'':`<div class="math-muc1011-guide mt-2 text-center text-sm md:text-base font-extrabold text-slate-600">🧠 ${escapeHtml(muc10StageGuide_(q))}</div>`;
+    return `<div class="w-full max-w-6xl mx-auto rounded-[30px] border-2 border-amber-100 bg-white/95 p-3 md:p-4 shadow-sm"><div class="grid grid-cols-1 md:grid-cols-[1.04fr_0.96fr] gap-3 md:gap-4 items-stretch"><div class="math-muc1011-visual relative min-h-[420px] md:min-h-[470px] rounded-[24px] border-2 border-amber-100 bg-gradient-to-br from-amber-50 via-white to-indigo-50 p-4 flex items-center justify-center overflow-hidden">${muc10VisualHtml_(q)}<div class="math-muc1011-label absolute left-3 bottom-3 rounded-full border-2 border-amber-200 bg-white/95 px-4 py-1.5 text-sm md:text-base font-black text-amber-700 shadow-sm">${escapeHtml(label)}</div></div><div class="rounded-[24px] border-2 border-amber-100 bg-gradient-to-br from-white via-amber-50/20 to-indigo-50/20 px-3 py-4 md:px-5 md:py-5 flex flex-col justify-center"><h3 class="text-xl md:text-2xl lg:text-[27px] font-black text-slate-900 leading-snug text-center">${escapeHtml(q.question_text)}</h3>${speakerHtml}<div class="math-muc1011-options grid grid-cols-2 gap-2.5 mt-3">${options}</div>${guide}<div id="muc10-solution-host">${buildMuc10SolutionHtml_(q)}</div></div></div></div>`;
 }
 
 // ==========================================
@@ -6514,8 +7863,8 @@ function refreshMuc11SolutionHost_(q) { if(Number(activeTopicId)!==11 && !/^11\.
 function buildMuc11QuestionLayout_(q,speakerHtml,isEvaluationMode=false) {
     const label=beautifySubtopicName(q?.sub_topic_label)||'Xưởng thử thách Toán';
     const options=(q.options||[]).map((opt,idx)=>{const letter=String.fromCharCode(65+idx);const th=['border-purple-200 bg-purple-50/70 hover:bg-purple-100','border-sky-200 bg-sky-50/70 hover:bg-sky-100','border-rose-200 bg-rose-50/70 hover:bg-rose-100','border-emerald-200 bg-emerald-50/70 hover:bg-emerald-100'];return `<button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${escapeJsString_(opt)}')" class="option-btn w-full min-h-[66px] px-4 py-3 ${th[idx%4]} border-2 rounded-2xl font-extrabold text-slate-800 transition-all flex items-center justify-start gap-3 text-left shadow-xs pastel-btn"><strong class="text-purple-700 text-xl md:text-2xl shrink-0 w-8">${letter}.</strong><span class="opt-text text-lg md:text-xl lg:text-[23px] leading-snug">${escapeHtml(capitalizeFirstLetter(opt))}</span><span class="option-icon ml-auto"></span></button>`}).join('');
-    const guide=isEvaluationMode?'':`<div class="mt-2 text-center text-sm md:text-base font-extrabold text-slate-600">🕵️ ${escapeHtml(muc11StageGuide_(q))}</div>`;
-    return `<div class="w-full max-w-6xl mx-auto rounded-[30px] border-2 border-purple-100 bg-white/95 p-3 md:p-4 shadow-sm"><div class="grid grid-cols-1 md:grid-cols-[1.04fr_0.96fr] gap-3 md:gap-4 items-stretch"><div class="relative min-h-[420px] md:min-h-[470px] rounded-[24px] border-2 border-purple-100 bg-gradient-to-br from-purple-50 via-white to-sky-50 p-4 flex items-center justify-center overflow-hidden">${muc11VisualHtml_(q)}<div class="absolute left-3 bottom-3 rounded-full border-2 border-purple-200 bg-white/95 px-4 py-1.5 text-sm md:text-base font-black text-purple-700 shadow-sm">${escapeHtml(label)}</div></div><div class="rounded-[24px] border-2 border-purple-100 bg-gradient-to-br from-white via-purple-50/20 to-sky-50/20 px-3 py-4 md:px-5 md:py-5 flex flex-col justify-center"><h3 class="text-xl md:text-2xl lg:text-[27px] font-black text-slate-900 leading-snug text-center">${escapeHtml(q.question_text)}</h3>${speakerHtml}<div class="grid grid-cols-1 gap-2.5 mt-3">${options}</div>${guide}<div id="muc11-solution-host">${buildMuc11SolutionHtml_(q)}</div></div></div></div>`;
+    const guide=isEvaluationMode?'':`<div class="math-muc1011-guide mt-2 text-center text-sm md:text-base font-extrabold text-slate-600">🕵️ ${escapeHtml(muc11StageGuide_(q))}</div>`;
+    return `<div class="w-full max-w-6xl mx-auto rounded-[30px] border-2 border-purple-100 bg-white/95 p-3 md:p-4 shadow-sm"><div class="grid grid-cols-1 md:grid-cols-[1.04fr_0.96fr] gap-3 md:gap-4 items-stretch"><div class="math-muc1011-visual relative min-h-[420px] md:min-h-[470px] rounded-[24px] border-2 border-purple-100 bg-gradient-to-br from-purple-50 via-white to-sky-50 p-4 flex items-center justify-center overflow-hidden">${muc11VisualHtml_(q)}<div class="math-muc1011-label absolute left-3 bottom-3 rounded-full border-2 border-purple-200 bg-white/95 px-4 py-1.5 text-sm md:text-base font-black text-purple-700 shadow-sm">${escapeHtml(label)}</div></div><div class="rounded-[24px] border-2 border-purple-100 bg-gradient-to-br from-white via-purple-50/20 to-sky-50/20 px-3 py-4 md:px-5 md:py-5 flex flex-col justify-center"><h3 class="text-xl md:text-2xl lg:text-[27px] font-black text-slate-900 leading-snug text-center">${escapeHtml(q.question_text)}</h3>${speakerHtml}<div class="math-muc1011-options grid grid-cols-2 gap-2.5 mt-3">${options}</div>${guide}<div id="muc11-solution-host">${buildMuc11SolutionHtml_(q)}</div></div></div></div>`;
 }
 
 // Khám phá Toán 4.2: chỉ điền đáp án màu đỏ vào dấu "..." SAU KHI bé chọn đúng.
@@ -6724,6 +8073,10 @@ function loadQuestion() {
         } else {
             html = buildFoundationQuestionLayout(q, practiceSpeakerBtnHtml);
         }
+    } else if (isTopic3Practice && getTopic3Stage_(q) === '3.1' && isTopic3ReadWrite_(q)) {
+        html = buildTopic3RwLayout_(q, practiceSpeakerBtnHtml);
+    } else if (isTopic3Practice && getTopic3Stage_(q) === '3.2' && getTopic3PlaceValueMeta_(q)) {
+        html = buildTopic3PlaceValueLayout_(q, practiceSpeakerBtnHtml);
     } else if (isTopic3Practice && getTopic3Stage_(q) === '3.3') {
         html = buildTopic3CompareLayout_(q, practiceSpeakerBtnHtml);
     } else if (isTopic3Practice && getTopic3Stage_(q) === '3.4') {
@@ -6827,6 +8180,7 @@ function loadQuestion() {
     document.getElementById('question-box').innerHTML = html;
 
     restoreQuestionState(q);
+    refreshTopic3PlaceValueTryAgain_(q);
     refreshTopic4Sub41SolutionHost_(q);
     refreshTopic3CompareSolutionHost_(q);
     renderTopic3SortInteractive_(q);
@@ -6928,9 +8282,6 @@ function updateNavButtons() {
         if (isEvaluationMode) {
             nextText.textContent = "Hoàn thành";
             nextIcon.className = "fa-solid fa-trophy ml-1.5";
-        } else if (Number(activeTopicId) === 2 && activeQuestionsList.every(q => q?._muc2_self_practice === true)) {
-            nextText.textContent = "Hoàn thành";
-            nextIcon.className = "fa-solid fa-trophy ml-1.5";
         } else {
             nextText.textContent = "Vòng tiếp theo";
             nextIcon.className = "fa-solid fa-rotate-right ml-1.5";
@@ -6941,10 +8292,30 @@ function updateNavButtons() {
     }
 }
 
+// Khám phá Mục 2: khi bé trả lời đúng, cô đọc trọn phép tính.
+// Bé chủ động bấm Câu tiếp theo sau khi nghe và suy nghĩ; không tự chuyển câu.
+function speakMuc2Correct_(q) {
+    if (!isMuc2ReflectivePractice_(q)) return false;
+    const basic = isMuc2GuidedBasic_(q);
+    const equation = basic ? getMuc2BasicEquation_(q) : getMuc2Prompt_(q);
+    const parts = String(equation || '').match(/^(10|[0-9]|\?)\s*([+−-])\s*(10|[0-9]|\?)\s*=\s*(10|[0-9]|\?)$/);
+    if (!parts) return false;
+    const fill = (value) => value === '?' ? Number(q.answer) : Number(value);
+    const a = fill(parts[1]), b = fill(parts[3]), result = fill(parts[4]);
+    const isAdd = parts[2] === '+';
+    if (![a,b,result].every(v => Number.isSafeInteger(v) && v >= 0 && v <= 10) ||
+        (isAdd ? a + b !== result : a - b !== result)) return false;
+    speakVietnamese(`Đúng rồi, ${a} ${isAdd ? 'cộng' : 'trừ'} ${b} bằng ${result}.`, 0.96);
+    return true;
+}
+
 function checkAnswer(selectedOpt) {
     const q = activeQuestionsList[currentQIndex];
     const isExam = !!activeExamContext;
     const isRoadmap = !!activeRoadmapContext;
+
+    // Mục 6 Thực hành dùng chung phản hồi đúng/sai tức thì của chế độ luyện tập.
+    // Không mở hình, gợi ý hay lời giải; phần hiển thị câu 6 chỉ có phép tính và đáp án.
 
     // RIÊNG ĐỀ THI: YÊN TĨNH TUYỆT ĐỐI, SÁNG VIỀN HỒNG, KHÔNG PHÁT ÂM THANH
     if (isExam) {
@@ -7040,6 +8411,9 @@ function checkAnswer(selectedOpt) {
             }
         });
         refreshTopic4SequenceFilledPrompt_(q);
+        refreshTopic3PlaceValueHost_(q);
+        refreshTopic3PlaceValueTryAgain_(q);
+        refreshTopic3RwHost_(q);
         refreshTopic4Sub41SolutionHost_(q);
         refreshTopic3CompareSolutionHost_(q);
         renderTopic3SortInteractive_(q);
@@ -7048,14 +8422,26 @@ function checkAnswer(selectedOpt) {
         refreshMuc9SolutionHost_(q);
         refreshMuc10SolutionHost_(q);
         refreshMuc11SolutionHost_(q);
+        // Dien dap an mau do vao phep tinh, giu nguyen man hinh de be suy nghi.
+        refreshMuc2SolvedPrompt_(q);
+        if (Number(activeTopicId) === 2 &&
+            (q?._muc2_self_practice === true || ['2.5','2.6'].includes(getMuc2Stage_(q)))) {
+            refreshMuc2InteractiveZone_(); // Cap nhat so do tach-gop sau khi be chon dung.
+        }
 
         playAudio('correct');
         confetti({ particleCount: 30, spread: 55, origin: { y: 0.7 } });
 
-        // Mục 1-2, 6, 7 và 8: trả lời đúng thì tự chuyển câu để giữ nhịp học liên tục cho bé.
-        // Các mục này thiên về nhận biết trực quan / thực hành nhanh nên không cần dừng lâu sau khi đã chọn đúng.
+        // Khám phá 3.2: bé chỉ nghe đáp án sau khi đã làm đúng.
         const isAutoNextPractice = /^(?:1|2|6|7|8)\./.test(String(q.sub_topic || ''));
-        if (isAutoNextPractice) {
+        if (isTopic3ReadWrite_(q)) {
+            speakVietnamese(`Đúng rồi! Số ${q.muc3_rw_number} đọc là ${q._topic3_rw_word}.`, 0.96);
+        } else if (isTopic3PlaceValuePractice_(q)) {
+            const meta = getTopic3PlaceValueMeta_(q);
+            speakVietnamese(`Đúng rồi! Số ${meta.num} gồm ${meta.tens} chục và ${meta.ones} đơn vị. ${meta.tens} chục là ${meta.tens * 10}, thêm ${meta.ones} đơn vị được ${meta.num}.`, 0.96);
+        } else if (isMuc2ReflectivePractice_(q)) {
+            if (!speakMuc2Correct_(q)) speakVietnamese('Đúng rồi!', 0.96);
+        } else if (isAutoNextPractice) {
             setTimeout(() => nextQuestion(), 650);
         } else if (!speakMuc5SelectedShape_(q, selectedOpt)) {
             setTimeout(() => speakVietnamese(`${q.answer}`), 180);
@@ -7077,6 +8463,8 @@ function checkAnswer(selectedOpt) {
         });
 
         playAudio('wrong');
+        refreshTopic3PlaceValueTryAgain_(q);
+        refreshTopic3RwHost_(q);
         speakMuc5SelectedShape_(q, selectedOpt);
     }
 
@@ -7109,17 +8497,6 @@ function nextQuestion() {
         } else {
             confetti({ particleCount: 75, spread: 75, origin: { y: 0.6 } });
             playAudio('win');
-            if (Number(activeTopicId) === 2 && activeQuestionsList.every(q => q?._muc2_self_practice === true)) {
-                showAppNotice(`🎉 Chúc mừng bé đã tự hoàn thành ${activeQuestionsList.length} câu luyện tập!`, {
-                    title: 'Hoàn thành mục 4', icon: '🏆', tone: 'emerald'
-                }).then(() => {
-                    // Chỉ quay về mục con nếu bé vẫn còn ở đúng chủ đề này.
-                    if (Number(activeTopicId) !== 2 || Number(pendingTopicQuiz?.topicNum) !== 2) return;
-                    updateDiscoverBreadcrumb_(pendingTopicQuiz.topicName, TOPICS_CONFIG[1].icon, null);
-                    switchAppView('view-lecture');
-                });
-                return;
-            }
             showAppNotice(`🎉 Chúc mừng bé đã hoàn thành trọn vẹn 1 vòng luyện tập (${activeQuestionsList.length} câu)!\nBây giờ Cô Thỏ Hồng sẽ xáo trộn để con bước vào vòng luyện tập tiếp theo nhé!`, { title: 'Hoàn thành vòng luyện tập', icon: '🎉', tone: 'emerald' });
 
             const basePool = practiceCycleRawPool.length ? practiceCycleRawPool : activeQuestionsList;
@@ -7127,6 +8504,8 @@ function nextQuestion() {
             currentQIndex = 0;
             userAnswers = {};
             wrongAttemptsByQ = {};
+            topic3PlaceValueUiState_ = {};
+            topic3ReadWriteUiState_ = {};
             loadQuestion();
         }
     }
@@ -7185,11 +8564,12 @@ function showResultScreen() {
     const percent = Math.round((correctCount / totalQ) * 100);
 
     // Bài tập theo SGK: điểm tính riêng theo công thức 10/tổng số câu
-    const displayScore = activeRoadmapContext
+    const displayScore = (activeRoadmapContext || isMuc2IndependentPractice_())
         ? Math.round((correctCount * 10 / totalQ) * 10) / 10
         : score;
 
-    const examBadgeText = activeExamContext ? activeExamContext.examTitle : (activeRoadmapContext ? activeRoadmapContext.chuDe : 'Bài luyện tập chủ đề');
+    const examBadgeText = isMuc2IndependentPractice_() ? `Mục 6. Thực hành - Cấp ${muc2PracticeLevel_ || 1}`
+        : (activeExamContext ? activeExamContext.examTitle : (activeRoadmapContext ? activeRoadmapContext.chuDe : 'Bài luyện tập chủ đề'));
     document.getElementById('report-exam-badge').textContent = examBadgeText;
     document.getElementById('report-student-display').textContent = `Học sinh: ${currentUser?.hoTen || 'Khách'}`;
     const durationStr = quizStartTime ? formatDuration(Date.now() - quizStartTime) : '35 phút';
@@ -7201,11 +8581,12 @@ function showResultScreen() {
 
     const nextActionLabel = document.getElementById('report-next-action-label');
     if (nextActionLabel) {
-        nextActionLabel.textContent = activeRoadmapContext ? '🔙 Quay lại Bài tập' : '🚀 Làm đề thi tiếp theo';
+        nextActionLabel.textContent = isMuc2IndependentPractice_() ? '← Về Phép cộng và phép trừ' : (activeRoadmapContext ? '🔙 Quay lại Bài tập' : '🚀 Làm đề thi tiếp theo');
     }
 
     const historyBtn = document.getElementById('report-history-btn');
     if (historyBtn) {
+        historyBtn.classList.toggle('hidden', isMuc2IndependentPractice_());
         const targetSheet = activeRoadmapContext
             ? 'LichSuTienTrinhTuan'
             : (examFileMap[activeExamContext?.categoryKey]?.sheet || 'LichSuBaiThi_HK1');
@@ -7238,6 +8619,10 @@ function getSkillKeyFromTag_(rawTag) {
 function renderReportTopicsBreakdown() {
     const container = document.getElementById('report-topics-list');
     if (!container) return;
+    if (isMuc2IndependentPractice_()) {
+        container.innerHTML = `<div class="col-span-full rounded-2xl border border-violet-200 bg-violet-50 p-4 text-center text-base font-black text-violet-800">Bài thực hành chỉ chấm số câu đúng. Con có thể xem lại các câu chưa đúng sau khi nộp bài; không tính vào đánh giá sáu năng lực.</div>`;
+        return;
+    }
 
     const isRoadmap = !!activeRoadmapContext;
     const skillKeys = ['C1', 'C2', 'C3', 'C4', 'C5', 'C6'];
@@ -8014,10 +9399,28 @@ function speakVietnamese(text, rate = 0.96) {
 function speakCurrentQuestion() {
     const q = activeQuestionsList[currentQIndex];
     if (!q) return;
-    // Muc 4 - Tu luyen: khong doc hinh/emoji hay cac cau goi y tu data.
+    // Đọc số: không phát âm ngay con số vì sẽ làm lộ đáp án; Viết số: đọc mẫu để bé nhập chữ số.
+    if (isTopic3ReadWrite_(q)) {
+        return speakVietnamese(q.audio_text || 'Bé ơi, con hãy đọc và viết số nhé!', 0.96);
+    }
+    // Cấu tạo số: lời hỏi ngắn, gần gũi với bé; giữ nguyên câu hỏi gốc trong JSON.
+    if (isTopic3PlaceValuePractice_(q)) {
+        const meta = getTopic3PlaceValueMeta_(q);
+        return speakVietnamese(`Bé ơi, số ${meta.num} gồm mấy chục và mấy đơn vị?`, 0.96);
+    }
+    // Mục 2 và 3: câu hỏi ngắn theo phép tính, không đọc lời gợi ý trong JSON.
+    // Chạy chung cho nút "Nghe câu hỏi" và tự đọc khi vào/chuyển câu.
+    if (isMuc2GuidedBasic_(q)) {
+        const questionSpeech = getMuc2GuidedBasicSpeech_(q);
+        if (questionSpeech) return speakVietnamese(questionSpeech, 0.96);
+    }
+    // 4–5 đọc ngắn gọn; 6 chỉ đọc phép tính, không đọc hình hay gợi ý trong JSON.
+    const reducedHelp = Number(activeTopicId) === 2 && ['2.5','2.6'].includes(getMuc2Stage_(q));
     const textToRead = q._muc2_self_practice === true
-        ? getMuc2SelfPracticePrompt_(q)
-        : (q.audio_text || q.reading_passage || q.question_text);
+        ? (q.audio_text || getMuc2SelfPracticePrompt_(q))
+        : (reducedHelp
+            ? (q.audio_text || getMuc2SelfPracticePrompt_(q))
+            : (q.audio_text || q.reading_passage || q.question_text));
     speakVietnamese(textToRead, 0.96);
 }
 
@@ -8260,9 +9663,24 @@ const __mathInlineBridgeGetters_ = {
     "operationSenseNext_": () => operationSenseNext_,
     "openTopic": () => openTopic,
     "MUC5_INTRO_AUDIO_": () => MUC5_INTRO_AUDIO_,
+    "openMuc2Guide_": () => openMuc2Guide_,
+    "muc2GuideSelectLesson_": () => muc2GuideSelectLesson_,
+    "muc2GuideExit_": () => muc2GuideExit_,
+    "muc2GuideSpeak_": () => muc2GuideSpeak_,
+    "muc2GuideSetStep_": () => muc2GuideSetStep_,
+    "muc2GuideRevealDemo_": () => muc2GuideRevealDemo_,
+    "muc2GuidePick_": () => muc2GuidePick_,
+    "muc2GuideResetGuided_": () => muc2GuideResetGuided_,
+    "muc2GuideShowModel_": () => muc2GuideShowModel_,
+    "muc2GuideChoose_": () => muc2GuideChoose_,
+    "muc2GuideHint_": () => muc2GuideHint_,
+    "muc2GuideNextQuiz_": () => muc2GuideNextQuiz_,
     "openMuc5IntroLesson_": () => openMuc5IntroLesson_,
-    "speakLecture": () => speakLecture,
     "selectSubtopic": () => selectSubtopic,
+    "openMuc2PracticeLevelPicker_": () => openMuc2PracticeLevelPicker_,
+    "restoreMuc2PracticeCardList_": () => restoreMuc2PracticeCardList_,
+    "startMuc2PracticeLevel_": () => startMuc2PracticeLevel_,
+    "muc2TogglePracticeNumberLine_": () => muc2TogglePracticeNumberLine_,
     "handleNextExamFromReport": () => handleNextExamFromReport,
     "openRoadmap": () => openRoadmap,
     "showLockedExercise_": () => showLockedExercise_,
@@ -8270,9 +9688,22 @@ const __mathInlineBridgeGetters_ = {
     "muc1PlaceCountItem": () => muc1PlaceCountItem,
     "muc1PlacePartItem": () => muc1PlacePartItem,
     "muc1ResetInteraction": () => muc1ResetInteraction,
+    "muc2SpeakInteractionGuide_": () => muc2SpeakInteractionGuide_,
+    "muc2SpeakReducedGuide_": () => muc2SpeakReducedGuide_,
+    "muc2ExplainSwap_": () => muc2ExplainSwap_,
+    "muc2TapReducedEmoji_": () => muc2TapReducedEmoji_,
+    "muc2StepNumberLine_": () => muc2StepNumberLine_,
+    "muc2ResetNumberLine_": () => muc2ResetNumberLine_,
     "muc2MoveAddItem_": () => muc2MoveAddItem_,
     "muc2RemoveSubItem_": () => muc2RemoveSubItem_,
     "muc2ResetInteraction_": () => muc2ResetInteraction_,
+    "topic3RwPressDigit_": () => topic3RwPressDigit_,
+    "topic3RwEraseDigit_": () => topic3RwEraseDigit_,
+    "topic3RwResetDigits_": () => topic3RwResetDigits_,
+    "topic3RwSubmit_": () => topic3RwSubmit_,
+    "topic3RwToggleHint_": () => topic3RwToggleHint_,
+    "topic3PlaceValueTap_": () => topic3PlaceValueTap_,
+    "topic3PlaceValueSpeakGuide_": () => topic3PlaceValueSpeakGuide_,
     "topic3SortPickNumber_": () => topic3SortPickNumber_,
     "topic3SortRemoveAt_": () => topic3SortRemoveAt_,
     "topic3SortReset_": () => topic3SortReset_,
@@ -8310,7 +9741,7 @@ function removeMathInlineBridge_() {
     __mathPreviousGlobals_.clear();
 }
 
-const MATH_RUNTIME_HTML_ = "<div class=\"w-full max-w-5xl flex flex-col space-y-1.5 md:space-y-2 p-1 md:p-2\" id=\"screen-dashboard\">\n<header class=\"app-main-header w-full bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border-2 border-pink-200\">\n<button class=\"flex items-center justify-center bg-white border border-pink-300 shadow-sm shrink-0 overflow-hidden p-0 transition-shadow duration-200 hover:border-pink-400 hover:shadow-[0_0_18px_rgba(244,114,182,0.65)]\" id=\"btn-header-home\" onclick=\"goHome()\" title=\"Về trang chủ\">\n<img alt=\"Trang chủ Toán 1\" class=\"w-full h-full object-cover\" src=\"logo-home.png\"/>\n</button>\n<nav aria-label=\"Điều hướng chính\" id=\"main-module-tabs\">\n<div>\n<button class=\"main-module-tab\" data-tab=\"discover\" id=\"main-tab-discover\" onclick=\"openMainTab('discover')\"><span>🧭</span><span>Khám phá</span></button>\n<button class=\"main-module-tab\" data-tab=\"lessons\" id=\"main-tab-lessons\" onclick=\"openMainTab('lessons')\"><span>📖</span><span>Bài học</span><span class=\"hidden absolute -top-1 -right-1 text-[10px]\" id=\"bai-hoc-lock-icon\">🔒</span></button>\n<button class=\"main-module-tab\" data-tab=\"exercises\" id=\"main-tab-exercises\" onclick=\"openMainTab('exercises')\"><span>✏️</span><span>Bài tập</span><span class=\"hidden absolute -top-1 -right-1 text-[10px]\" id=\"roadmap-lock-icon\">🔒</span></button>\n<button class=\"main-module-tab\" data-tab=\"review\" id=\"main-tab-review\" onclick=\"openMainTab('review')\"><span>🧠</span><span>Ôn tập</span><span class=\"hidden absolute -top-1 -right-1 text-[10px]\" id=\"review-lock-icon\">🔒</span></button>\n<button class=\"main-module-tab\" data-tab=\"exams\" id=\"main-tab-exams\" onclick=\"openMainTab('exams')\"><span>🏆</span><span>Đề thi</span><span class=\"hidden absolute -top-1 -right-1 text-[10px]\" id=\"exam-lock-icon\">🔒</span></button>\n<button class=\"main-module-tab\" data-tab=\"games\" id=\"main-tab-games\" onclick=\"openMainTab('games')\"><span>🎮</span><span>Mini games</span><span class=\"hidden absolute -top-1 -right-1 text-[10px]\" id=\"minigame-lock-icon\">🔒</span></button>\n</div>\n</nav>\n<div class=\"flex items-center\" id=\"header-info-zone\">\n<div class=\"flex flex-col space-y-0.5 bg-pink-50/90 px-1.5 md:px-2.5 py-1 rounded-xl border border-pink-200 shadow-inner\" id=\"header-star-box\">\n<div class=\"flex items-center justify-between space-x-2 font-extrabold\">\n<span class=\"px-1.5 py-0.5 bg-emerald-500 text-white rounded text-[10px] shadow-sm flex items-center justify-center\"><i class=\"fa-solid fa-star md:mr-0.5\"></i><span class=\"hidden md:inline\"> Đúng</span></span>\n<span class=\"text-emerald-600 font-extrabold text-xs\" id=\"star-green-count\">0</span>\n</div>\n<div class=\"flex items-center justify-between space-x-2 font-extrabold\">\n<span class=\"px-1.5 py-0.5 bg-rose-500 text-white rounded text-[10px] shadow-sm flex items-center justify-center\"><i class=\"fa-solid fa-star md:mr-0.5\"></i><span class=\"hidden md:inline\"> Sai</span></span>\n<span class=\"text-rose-600 font-extrabold text-xs\" id=\"star-red-count\">0</span>\n</div>\n</div>\n<div class=\"text-xs font-bold text-gray-600 text-right\" id=\"user-info-box\"></div>\n</div>\n</header>\n<section aria-label=\"Không gian nhận diện và điều hướng\" id=\"app-banner-slot\">\n<div id=\"app-main-banner\">\n<picture>\n<source media=\"(max-width: 767px)\" srcset=\"banner-main-mobile.jpg\"/>\n<img alt=\"Khu vườn học tập của Cô Thỏ Hồng\" src=\"banner-main.jpg\"/>\n</picture>\n</div>\n<div class=\"hidden\" id=\"app-context-banner\">\n<div class=\"flex items-center min-w-0\" id=\"header-learning-tabs\">\n<div class=\"hidden items-center\" id=\"header-level2-tab\">\n<button class=\"flex items-center space-x-1.5 shrink-0 transition-shadow duration-200\" onclick=\"returnToTopicLecture()\">\n<span id=\"header-level2-icon\">🔢</span><span class=\"truncate\" id=\"header-level2-title\">Chủ đề học</span>\n</button>\n</div>\n<div class=\"hidden items-center space-x-1\" id=\"header-level3-tab\"><span class=\"font-bold\">›</span><div class=\"truncate flex items-center\"><span class=\"truncate\" id=\"header-level3-title\">Mục nhỏ</span></div></div>\n<div class=\"hidden items-center space-x-1\" id=\"header-level4-tab\"><span class=\"font-bold\">›</span><div class=\"truncate flex items-center\"><span class=\"truncate\" id=\"header-level4-title\">Mục sâu</span></div></div>\n</div>\n</div>\n</section>\n<main class=\"w-full\" id=\"app-viewport\">\n<!-- VIEW 1: TRANG CHỦ 12 CHỦ ĐỀ -->\n<div class=\"w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2\" id=\"view-dashboard-grid\"></div>\n<!-- VIEW: MỤC 12 - HỌC TOÁN THEO PHƯƠNG PHÁP MỚI -->\n<div class=\"w-full hidden\" id=\"view-epsilon-method-hub\">\n<div class=\"w-full\" id=\"epsilon-method-content\"></div>\n</div>\n<!-- VIEW: 12.1 - HIỂU SỐ VÀ SỐ LƯỢNG -->\n<div class=\"w-full hidden\" id=\"view-number-sense\">\n<div class=\"w-full\" id=\"number-sense-content\"></div>\n</div>\n<!-- VIEW: 12.2 - HIỂU PHÉP CỘNG VÀ PHÉP TRỪ -->\n<div class=\"w-full hidden\" id=\"view-operation-sense\">\n<div class=\"w-full\" id=\"operation-sense-content\"></div>\n</div>\n<!-- MODULE BAI HOC: HIEN THI TRUC TIEP DANH SACH BAI -->\n<div class=\"w-full hidden pastel-card p-3 md:p-5\" id=\"view-bai-hoc-hub\">\n<div class=\"w-full max-w-6xl mx-auto\">\n<div class=\"grid grid-cols-[auto_1fr_auto] items-center gap-3 mb-3\">\n<div class=\"flex items-center gap-2 justify-self-start\" id=\"bai-hoc-semester-tabs\"></div>\n<div class=\"text-center min-w-0\">\n<h2 class=\"text-lg md:text-xl font-black text-purple-700 flex items-center justify-center gap-2\"><span>📖</span><span>Bài học Toán 1</span></h2>\n<p class=\"text-xs md:text-sm text-slate-500 font-bold mt-0.5\" id=\"bai-hoc-hub-subtitle\">Chọn bài và học ngay</p>\n</div>\n<div aria-hidden=\"true\" class=\"w-[180px] hidden md:block\"></div>\n</div>\n<div class=\"grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-2\" id=\"bai-hoc-grid\"></div>\n</div>\n</div>\n<!-- VIEW: NỘI DUNG MỘT BÀI HỌC -->\n<div class=\"w-full hidden pastel-card p-3 md:p-5 flex flex-col items-center min-h-[480px]\" id=\"view-bai-hoc-lesson\">\n<div class=\"w-full max-w-5xl\">\n<div class=\"flex items-start justify-between gap-3 mb-3\">\n<div class=\"min-w-0\">\n<div class=\"text-sm md:text-base font-extrabold text-purple-600 mb-1\" id=\"bai-hoc-lesson-meta\">📖 Bài học</div>\n<h2 class=\"text-lg md:text-xl font-black text-slate-800\" id=\"bai-hoc-lesson-title\"></h2>\n</div>\n<button class=\"px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 rounded-xl text-xs md:text-sm font-extrabold shrink-0\" id=\"btn-back-bai-hoc-list\" onclick=\"openBaiHocHub(activeBaiHocContext?.semester || 1)\">← Danh sách bài</button>\n</div>\n<div class=\"grid grid-cols-3 gap-2 mb-3\" id=\"bai-hoc-page-tabs\"></div>\n<div class=\"w-full\" id=\"bai-hoc-page-content\"></div>\n<div class=\"flex items-center justify-between gap-3 mt-3 pt-2 border-t border-pink-100\" id=\"bai-hoc-bottom-nav\"></div>\n</div>\n</div>\n<!-- VIEW 2: BÀI GIẢNG -->\n<div class=\"w-full hidden pastel-card p-4 md:p-6 flex flex-col justify-between items-center min-h-[480px]\" id=\"view-lecture\">\n<div class=\"w-full max-w-4xl flex flex-col items-center\">\n<h2 class=\"hidden\" id=\"lecture-title\"></h2>\n<div class=\"w-full bg-pink-50/40 p-3.5 md:p-4 rounded-2xl border-2 border-pink-100 mb-3\">\n<p class=\"text-base md:text-lg text-gray-700 leading-relaxed whitespace-pre-line text-center\" id=\"lecture-content\"></p>\n</div>\n<button class=\"w-full max-w-xs py-2 bg-purple-100 hover:bg-purple-200 text-purple-700 font-extrabold rounded-xl text-sm md:text-base pastel-btn flex items-center justify-center space-x-2 border-2 border-purple-200 shadow-sm mb-2.5\" onclick=\"speakLecture()\">\n<i class=\"fa-solid fa-volume-high text-base\"></i><span>Nghe cô đọc</span>\n</button>\n<div class=\"w-full pt-2 border-t border-pink-100 flex flex-col items-center\">\n<div class=\"grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-2xl\" id=\"lecture-subtopics-list\"></div>\n</div>\n</div>\n</div>\n<!-- VIEW 3: PHÒNG LÀM BÀI / THI CHUẨN 16:9 -->\n<div class=\"w-full hidden flex flex-col space-y-1.5\" id=\"view-quiz\">\n<!-- TOP BAR CỦA ĐỀ THI (ẨN HOÀN TOÀN TRONG CHẾ ĐỘ LUYỆN TẬP) -->\n<div class=\"w-full bg-white rounded-2xl p-2.5 border-2 border-pink-200 flex flex-wrap items-center justify-between gap-2.5 shadow-xs\" id=\"quiz-top-bar\">\n<div class=\"flex items-center space-x-2\" id=\"quiz-timer-container\">\n<div class=\"w-8 h-8 rounded-xl bg-pink-50 border border-pink-200 flex items-center justify-center text-pink-500 font-bold text-sm\">\n<i class=\"fa-solid fa-stopwatch\"></i>\n</div>\n<div>\n<span class=\"text-xs font-bold text-gray-400 uppercase tracking-wider block\">Thời gian</span>\n<span class=\"text-base font-black text-rose-500 tracking-wider\" id=\"quiz-timer-display\">40:00</span>\n</div>\n</div>\n<button class=\"ml-auto px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-black text-xs md:text-sm flex items-center space-x-1.5 transition-all shadow-sm pastel-btn\" id=\"btn-submit-quiz\" onclick=\"triggerSubmitQuizPrompt()\">\n<i class=\"fa-solid fa-circle-check\"></i>\n<span>Nộp bài thi</span>\n</button>\n</div>\n<!-- THẺ CARD LÀM BÀI CHÍNH -->\n<div class=\"w-full pastel-card p-3.5 md:p-5 flex flex-col justify-between min-h-[380px]\">\n<!-- HEADER TRONG CARD (CHỈ HIỆN KHI THI) -->\n<div class=\"hidden items-center justify-between flex-wrap gap-2 border-b border-pink-100 pb-2\" id=\"quiz-card-header\">\n<div class=\"flex items-center space-x-2\">\n<span class=\"px-2.5 py-1 bg-pink-100 text-pink-800 text-sm font-black rounded-lg\" id=\"q-badge-index\">CÂU 1 / 13</span>\n<span class=\"px-2.5 py-1 bg-pink-50 text-pink-700 border border-pink-200 text-sm font-bold rounded-lg flex items-center space-x-1\" id=\"q-badge-skill\">\n<i class=\"fa-solid fa-tag text-xs\"></i>\n<span id=\"q-skill-text\">Kiến thức cơ bản</span>\n</span>\n<span class=\"px-2 py-1 bg-amber-50 text-amber-700 border border-amber-200 text-sm font-bold rounded-lg\" id=\"q-badge-score\">(0.5 điểm)</span>\n</div>\n<button class=\"hidden px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-xl text-sm font-extrabold items-center space-x-1.5 transition-shadow duration-200 hover:shadow-[0_0_10px_rgba(99,102,241,0.5)] shadow-xs\" id=\"btn-roadmap-history\" onclick=\"openHistoryModal('LichSuTienTrinhTuan')\">\n<i class=\"fa-solid fa-chart-line\"></i>\n<span>Lịch sử Bài tập</span>\n</button>\n<button class=\"px-3 py-1.5 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 rounded-xl text-sm font-extrabold flex items-center space-x-1.5 transition-all pastel-btn shadow-xs\" onclick=\"speakCurrentQuestion()\">\n<i class=\"fa-solid fa-volume-high text-pink-600\"></i>\n<span>Nghe câu hỏi</span>\n</button>\n</div>\n<!-- KHU VỰC CÂU HỎI & ĐÁP ÁN -->\n<div class=\"w-full flex flex-col justify-center items-center flex-1 my-0.5\" id=\"question-box\"></div>\n<!-- ĐIỀU HƯỚNG ĐÁY -->\n<div class=\"w-full pt-1\" id=\"quiz-bottom-nav\">\n<!-- 1. GIAO DIỆN LUYỆN TẬP -->\n<div class=\"flex items-center justify-center gap-3 w-full\" id=\"nav-group-practice\">\n<button class=\"px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-extrabold rounded-2xl text-xs md:text-sm pastel-btn border border-gray-200 flex items-center justify-center space-x-1.5 shadow-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed\" id=\"btn-prev-q-prac\" onclick=\"prevQuestion()\">\n<i class=\"fa-solid fa-chevron-left\"></i><span>Câu trước</span>\n</button>\n<div class=\"px-5 py-1.5 bg-pink-50 border border-pink-200 text-pink-700 font-black rounded-full text-xs md:text-sm flex items-center justify-center shadow-xs select-none\" id=\"practice-step-indicator\">\n<span id=\"practice-step-text\">1/59</span>\n</div>\n<button class=\"px-6 py-2 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-black rounded-2xl text-xs md:text-sm pastel-btn shadow-md flex items-center justify-center space-x-1.5 transition-all\" id=\"btn-next-q-prac\" onclick=\"nextQuestion()\">\n<span id=\"btn-next-text-prac\">Câu tiếp theo</span>\n<i class=\"fa-solid fa-chevron-right ml-1\" id=\"btn-next-icon-prac\"></i>\n</button>\n</div>\n<!-- 2. GIAO DIỆN ĐỀ THI -->\n<div class=\"hidden items-center justify-between w-full\" id=\"nav-group-exam\">\n<button class=\"px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-extrabold rounded-xl text-xs md:text-sm pastel-btn border border-gray-200 flex items-center justify-center space-x-1.5 shadow-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed\" id=\"btn-prev-q-exam\" onclick=\"prevQuestion()\">\n<i class=\"fa-solid fa-chevron-left\"></i><span>Câu trước</span>\n</button>\n<div class=\"grid grid-cols-10 gap-1.5 max-w-xl mx-2\" id=\"quiz-pallet-container\"></div>\n<button class=\"px-5 py-2 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-black rounded-xl text-xs md:text-sm pastel-btn shadow-md flex items-center justify-center space-x-1.5 transition-all\" id=\"btn-next-q-exam\" onclick=\"nextQuestion()\">\n<span id=\"btn-next-text-exam\">Câu tiếp theo</span>\n<i class=\"fa-solid fa-chevron-right ml-1\" id=\"btn-next-icon-exam\"></i>\n</button>\n</div>\n</div>\n</div>\n</div>\n<!-- VIEW 4: BÀI TẬP THEO TỪNG BÀI SGK -->\n<div class=\"w-full hidden pastel-card p-3 md:p-5 flex flex-col justify-start items-center\" id=\"view-roadmap\">\n<div class=\"w-full max-w-6xl flex flex-col items-center\">\n<div class=\"flex flex-col sm:flex-row items-center justify-between w-full px-2 mb-2 gap-2\">\n<div>\n<h2 class=\"text-base md:text-lg font-extrabold text-indigo-600 flex items-center space-x-2\"><span>✏️</span><span>Bài tập</span></h2>\n<p class=\"text-[11px] md:text-xs text-gray-500 font-bold\">20 câu mỗi bài · đạt từ 80% để mở Bài tập tiếp theo.</p>\n</div>\n<div class=\"flex items-center gap-3 shrink-0\">\n<div class=\"flex items-center gap-2\" id=\"roadmap-semester-tabs\"></div>\n<button class=\"px-3 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-extrabold rounded-xl border border-indigo-200 text-xs pastel-btn flex items-center space-x-1.5 shadow-sm\" onclick=\"openHistoryModal('LichSuTienTrinhTuan')\">\n<i class=\"fa-solid fa-chart-line text-indigo-600\"></i><span>📊 Lịch sử Bài tập</span>\n</button>\n</div>\n</div>\n<div class=\"w-full flex justify-center items-center overflow-hidden bg-gradient-to-b from-pink-50/30 to-purple-50/30 rounded-2xl border-2 border-pink-100 p-1\" id=\"roadmap-svg-container\"></div>\n</div>\n</div>\n<!-- VIEW: TRUNG TÂM MINI GAME TOÁN 1 -->\n<div class=\"w-full hidden pastel-card p-3 md:p-5 flex flex-col items-center\" id=\"view-minigame-hub\">\n<div class=\"w-full max-w-5xl\">\n<div class=\"text-center mb-4\">\n<h2 class=\"text-base md:text-lg font-extrabold text-teal-600 flex items-center justify-center space-x-2\">\n<span>🎮</span><span>Trung tâm Mini Game Toán 1</span>\n</h2>\n<p class=\"text-[11px] md:text-xs text-gray-500 font-bold\">Học mà chơi - luyện tư duy Toán cùng Cô giáo Thỏ Hồng</p>\n</div>\n<div class=\"grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3\" id=\"minigame-grid\"></div>\n</div>\n</div>\n<!-- VIEW: MÀN CHƠI GAME -->\n<div class=\"w-full hidden pastel-card p-3 md:p-5 flex flex-col items-center\" id=\"view-game-play\">\n<div class=\"w-full max-w-5xl\">\n<div class=\"flex items-center justify-between mb-3 gap-2\">\n<h2 class=\"text-base md:text-lg font-extrabold text-teal-600 flex items-center gap-2 min-w-0\" id=\"game-play-title\"></h2>\n<button class=\"px-3 py-1.5 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-extrabold rounded-xl text-xs md:text-sm shadow-sm pastel-btn shrink-0\" onclick=\"openMiniGameHub()\">\n<i class=\"fa-solid fa-arrow-left\"></i> Chọn game khác\n                            </button>\n</div>\n<div class=\"w-full\" id=\"game-play-container\"></div>\n</div>\n</div>\n<!-- VIEW 5: ĐẤU TRƯỜNG ĐỀ THI (TAB RIÊNG) -->\n<div class=\"w-full hidden pastel-card p-5 md:p-7 flex flex-col justify-between items-center min-h-[480px]\" id=\"view-exam-hub\">\n<div class=\"w-full max-w-5xl\">\n<div class=\"text-center mb-5\">\n<h2 class=\"font-extrabold text-amber-600 text-lg md:text-xl flex items-center justify-center space-x-2\">\n<span>🏆</span><span>Đấu trường đề thi thử</span>\n</h2>\n<p class=\"text-xs md:text-sm text-gray-500 font-bold mt-1\">Thử sức các bộ đề thi chuẩn ma trận 13 câu - đánh giá theo năng lực</p>\n</div>\n<div class=\"grid grid-cols-1 md:grid-cols-3 gap-4\" id=\"exam-categories-grid\"></div>\n</div>\n</div>\n<!-- VIEW 6: MÀN HÌNH KẾT QUẢ & BÁO CÁO -->\n<div class=\"w-full hidden flex flex-col space-y-3\" id=\"view-result\">\n<div class=\"bg-gradient-to-tr from-rose-900 via-pink-950 to-rose-900 rounded-3xl p-4 sm:p-5 text-white shadow-xl relative overflow-hidden\">\n<div class=\"relative z-10 flex flex-col md:flex-row items-center justify-between gap-4\">\n<div class=\"space-y-1 text-center md:text-left\">\n<span class=\"px-3 py-0.5 bg-white/10 backdrop-blur-md rounded-full text-xs font-bold tracking-wider text-pink-200 border border-white/15 inline-block\" id=\"report-exam-badge\">\n                                    Kết quả bài thi\n                                </span>\n<h2 class=\"text-lg sm:text-xl font-black tracking-tight\" id=\"report-student-display\">Học sinh: --</h2>\n<p class=\"text-xs text-pink-200\" id=\"report-meta-display\">Lớp: -- | Mã số: -- | Thời gian: --</p>\n</div>\n<div class=\"flex items-center gap-3\">\n<div class=\"bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-4 py-2 text-center\">\n<span class=\"text-[10px] uppercase tracking-wider text-pink-200 font-bold block mb-0.5\">Tổng điểm</span>\n<div class=\"text-2xl sm:text-3xl font-black font-math text-amber-300\" id=\"report-total-score-val\">0.0</div>\n<span class=\"text-[9px] text-pink-200\">Thang điểm 10</span>\n</div>\n<div class=\"bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-4 py-2 text-center\">\n<span class=\"text-[10px] uppercase tracking-wider text-pink-200 font-bold block mb-0.5\">Độ chính xác</span>\n<div class=\"text-2xl sm:text-3xl font-black font-math text-emerald-300\" id=\"report-correct-ratio-val\">0/13</div>\n<span class=\"text-[9px] text-pink-200\">Câu đúng</span>\n</div>\n</div>\n</div>\n</div>\n<div class=\"bg-white rounded-3xl p-4 sm:p-5 border border-pink-100 soft-shadow-pink space-y-2.5\">\n<h3 class=\"text-sm sm:text-base font-black text-slate-800 tracking-tight flex items-center space-x-2\">\n<i class=\"fa-solid fa-chart-bar text-pink-600\"></i>\n<span>Bóc tách điểm số &amp; đánh giá năng lực</span>\n</h3>\n<div class=\"grid grid-cols-1 sm:grid-cols-2 gap-2\" id=\"report-topics-list\"></div>\n</div>\n<div class=\"grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-0.5\">\n<button class=\"py-2.5 px-3 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-black text-xs rounded-2xl shadow-xs transition-all flex items-center justify-center space-x-1.5 pastel-btn\" onclick=\"openReviewWrongModal()\">\n<i class=\"fa-solid fa-circle-question text-rose-500\"></i>\n<span>👉 Xem lại các câu làm sai</span>\n</button>\n<button class=\"py-2.5 px-3 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 font-black text-xs rounded-2xl shadow-xs transition-all flex items-center justify-center space-x-1.5 pastel-btn\" id=\"report-history-btn\" onclick=\"openHistoryModal('LichSuBaiThi_HK1')\">\n<i class=\"fa-solid fa-chart-line text-pink-600\"></i>\n<span>📊 Lịch sử &amp; biểu đồ tiến trình</span>\n</button>\n<button class=\"py-2.5 px-3 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-black text-xs rounded-2xl shadow-sm transition-all flex items-center justify-center space-x-1.5 pastel-btn\" id=\"report-next-action-btn\" onclick=\"handleNextExamFromReport()\">\n<span id=\"report-next-action-label\">🚀 Làm đề thi tiếp theo</span>\n<i class=\"fa-solid fa-arrow-right\"></i>\n</button>\n</div>\n</div>\n</main>\n</div>\n<div class=\"hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3\" id=\"modal-review-wrong\">\n<div class=\"bg-white rounded-3xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-pink-100 overflow-hidden\">\n<div class=\"p-3.5 border-b border-pink-100 flex items-center justify-between bg-rose-50/50\">\n<div class=\"flex items-center space-x-2 text-rose-800\">\n<i class=\"fa-solid fa-triangle-exclamation text-rose-600\"></i>\n<h3 class=\"font-black text-sm\">Chi tiết các câu trả lời chưa chính xác</h3>\n</div>\n<button class=\"w-7 h-7 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-slate-700\" onclick=\"closeReviewWrongModal()\"><i class=\"fa-solid fa-xmark\"></i></button>\n</div>\n<div class=\"p-4 overflow-y-auto space-y-3 flex-grow text-xs sm:text-sm\" id=\"review-wrong-content\"></div>\n<div class=\"p-3 border-t border-slate-100 flex justify-end bg-slate-50\">\n<button class=\"px-5 py-2 bg-slate-800 text-white font-bold rounded-xl text-xs pastel-btn\" onclick=\"closeReviewWrongModal()\">Đóng lại</button>\n</div>\n</div>\n</div>\n<div class=\"hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4\" id=\"modal-history-progress\">\n<div class=\"bg-white rounded-3xl max-w-5xl w-full max-h-[96vh] flex flex-col shadow-2xl border-2 border-pink-200 overflow-hidden\">\n<div class=\"p-4 sm:p-6 overflow-y-auto space-y-4 flex-grow bg-white\" id=\"printable-report-area\">\n<!-- TRANG 1: THÔNG TIN & BIỂU ĐỒ -->\n<div class=\"space-y-4 page-break-1\">\n<div class=\"p-3.5 sm:p-4 rounded-2xl border border-pink-200 bg-pink-50/70 flex flex-col md:flex-row items-center justify-between gap-3 shadow-xs\">\n<div class=\"flex items-center space-x-3 text-pink-950 flex-1\">\n<div class=\"w-10 h-10 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center shadow-xs shrink-0\">\n<i class=\"fa-solid fa-award text-xl\"></i>\n</div>\n<div>\n<h3 class=\"font-black text-base sm:text-lg text-pink-950\" id=\"hist-modal-title\">Kết quả tiến trình học tập</h3>\n<p class=\"text-xs font-bold text-pink-600 whitespace-nowrap\">Phân tích chuyên sâu theo năng lực &amp; nhận xét sư phạm chi tiết</p>\n</div>\n</div>\n<div class=\"bg-white/95 border-2 border-pink-200 px-4 py-2 rounded-2xl shadow-xs text-left shrink-0\">\n<div class=\"text-sm font-black text-slate-900 leading-tight\">\n                                Học sinh: <span class=\"text-pink-600\" id=\"hist-info-name\">--</span>\n</div>\n<div class=\"text-xs font-bold text-slate-600 mt-0.5\">\n                                Lớp: <span class=\"text-slate-900 font-extrabold\" id=\"hist-info-class\">--</span>  |  \n                                Mã số: <span class=\"text-slate-900 font-extrabold\" id=\"hist-info-code\">--</span>  |  \n                                Ngày sinh: <span class=\"text-slate-900 font-extrabold\" id=\"hist-info-dob\">--</span>\n</div>\n</div>\n<div class=\"flex items-center space-x-2 shrink-0\">\n<div class=\"text-xs font-bold text-slate-700 bg-white/95 px-3 py-2 rounded-xl border border-pink-200 text-center shadow-xs leading-snug\">\n<div>Ngày báo cáo</div>\n<div><span class=\"font-bold text-rose-600\" id=\"hist-report-date\">03/09/2026</span></div>\n</div>\n<button class=\"w-8 h-8 rounded-full bg-white border border-pink-200 flex items-center justify-center text-pink-400 hover:text-rose-600 transition-all shadow-xs no-print\" onclick=\"closeHistoryModal()\">\n<i class=\"fa-solid fa-xmark\"></i>\n</button>\n</div>\n</div>\n<div class=\"flex flex-col md:flex-row gap-4 w-full\">\n<div class=\"w-full md:w-[60%] bg-pink-50/40 border border-pink-100 rounded-2xl p-4 flex flex-col justify-between shadow-xs\">\n<h4 class=\"text-xs sm:text-sm font-black text-slate-800 mb-2 flex items-center space-x-1.5\">\n<i class=\"fa-solid fa-chart-line text-pink-600\"></i>\n<span>Biến thiên tổng điểm các bài thi (/10)</span>\n</h4>\n<div class=\"h-64 w-full relative\">\n<canvas id=\"progressChartCanvas\"></canvas>\n</div>\n</div>\n<div class=\"w-full md:w-[40%] bg-pink-50/40 border border-pink-100 rounded-2xl p-4 flex flex-col justify-between shadow-xs\">\n<h4 class=\"text-xs sm:text-sm font-black text-slate-800 mb-2 flex items-center space-x-1.5\">\n<i class=\"fa-solid fa-chart-bar text-rose-600\"></i>\n<span>Năng lực trung bình đã được đánh giá (%)</span>\n</h4>\n<div class=\"h-64 w-full relative\">\n<canvas id=\"topicRadarChartCanvas\"></canvas>\n</div>\n</div>\n</div>\n</div>\n<!-- TRANG 2: NHẬN XÉT SƯ PHẠM CHI TIẾT -->\n<div class=\"space-y-4 page-break-2\">\n<div class=\"bg-gradient-to-br from-amber-50/90 via-orange-50/60 to-rose-50/50 border border-amber-200/80 rounded-2xl p-4 space-y-3 shadow-xs\">\n<div class=\"flex items-center justify-between space-x-2.5 border-b border-amber-200/60 pb-1.5\">\n<div class=\"flex items-center space-x-2.5\">\n<div class=\"w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shadow-xs shrink-0\">\n<i class=\"fa-solid fa-award\"></i>\n</div>\n<div>\n<h4 class=\"text-base font-black text-amber-950 leading-tight\">Nhận xét sư phạm &amp; kế hoạch bồi dưỡng của giáo viên</h4>\n<p class=\"text-xs font-bold text-amber-700\">Đánh giá năng lực &amp; lời khuyên phụ huynh đồng hành</p>\n</div>\n</div>\n<button class=\"no-print shrink-0 px-3 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300 rounded-xl text-xs md:text-sm font-extrabold flex items-center space-x-1.5 transition-all pastel-btn shadow-xs whitespace-nowrap\" onclick=\"speakPedagogicalEvaluation()\">\n<i class=\"fa-solid fa-volume-high\"></i>\n<span>Nghe cô giáo đọc</span>\n</button>\n</div>\n<div class=\"space-y-2.5 text-xs sm:text-sm text-slate-800 leading-normal font-semibold\" id=\"pedagogical-evaluation-box\"></div>\n</div>\n</div>\n<!-- TRANG 3: BẢNG THỐNG KÊ CHI TIẾT TỪNG BÀI THI -->\n<div class=\"space-y-3 page-break-3\">\n<h4 class=\"text-base font-black text-slate-900 flex items-center space-x-2\">\n<i class=\"fa-solid fa-table text-pink-600\"></i>\n<span>Bảng thống kê điểm số chi tiết từng bài thi</span>\n</h4>\n<div class=\"border border-pink-200 rounded-2xl overflow-hidden shadow-xs bg-white overflow-x-auto\">\n<table class=\"w-full text-center text-xs border-collapse\">\n<thead class=\"bg-pink-100/70 text-pink-950 font-black border-b border-pink-200\">\n<tr class=\"divide-x divide-pink-200\">\n<th class=\"py-2.5 px-2 whitespace-nowrap\">Lần thi</th>\n<th class=\"py-2.5 px-2 whitespace-nowrap\">Đề / Bài</th>\n<th class=\"py-2.5 px-2 whitespace-nowrap text-rose-600\">Tổng điểm</th>\n<th class=\"py-2 px-1 leading-tight\">C1: Số học<br/><span class=\"text-[10px] text-pink-700\">(&amp; Hình học)</span></th>\n<th class=\"py-2 px-1 leading-tight\">C2: Phép tính<br/><span class=\"text-[10px] text-pink-700\">(Cộng &amp; Trừ)</span></th>\n<th class=\"py-2 px-1 leading-tight\">C3: Đo lường<br/><span class=\"text-[10px] text-pink-700\">(Thời gian)</span></th>\n<th class=\"py-2 px-1 leading-tight\">C4: Vị trí<br/><span class=\"text-[10px] text-pink-700\">(So sánh)</span></th>\n<th class=\"py-2 px-1 leading-tight\">C5: Giải toán<br/><span class=\"text-[10px] text-pink-700\">(Lời văn)</span></th>\n<th class=\"py-2 px-1 leading-tight\">C6: Dãy số<br/><span class=\"text-[10px] text-pink-700\">(Quy luật)</span></th>\n<th class=\"py-2.5 px-2 whitespace-nowrap\">Ngày làm</th>\n<th class=\"py-2.5 px-2 whitespace-nowrap\">Thời gian</th>\n</tr>\n</thead>\n<tbody class=\"divide-y divide-pink-100 font-bold text-slate-700\" id=\"hist-table-body\"></tbody>\n</table>\n</div>\n</div>\n</div>\n<div class=\"p-3.5 border-t border-pink-100 flex items-center justify-between bg-pink-50/40 no-print\">\n<button class=\"px-5 py-2.5 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white font-extrabold text-xs md:text-sm rounded-xl transition-all shadow-md pastel-btn flex items-center space-x-1.5\" onclick=\"exportReportToPDF()\">\n<i class=\"fa-solid fa-file-pdf\"></i>\n<span>Xuất PDF</span>\n</button>\n<button class=\"px-8 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl text-xs md:text-sm transition-all pastel-btn\" onclick=\"closeHistoryModal()\">\n                    Đóng lại\n                </button>\n</div>\n</div>\n</div>\n<div class=\"hidden fixed inset-0 z-[120] bg-slate-950/55 backdrop-blur-sm items-center justify-center p-4\" id=\"modal-app-dialog\" onclick=\"if(event.target===this) closeAppDialog(false)\">\n<div class=\"w-full max-w-md rounded-[28px] bg-white shadow-2xl ring-4 ring-pink-200 overflow-hidden\" id=\"app-dialog-panel\">\n<div class=\"bg-gradient-to-br from-pink-50 via-white to-purple-50 px-5 pt-5 pb-4 text-center\">\n<div class=\"mx-auto w-14 h-14 rounded-2xl bg-white border-2 border-pink-200 shadow-sm flex items-center justify-center text-3xl\" id=\"app-dialog-icon\">🐰</div>\n<h3 class=\"mt-3 text-lg font-black text-purple-800\" id=\"app-dialog-title\">Thông báo</h3>\n<div class=\"mt-2 text-sm md:text-base leading-7 font-semibold text-slate-700\" id=\"app-dialog-message\"></div>\n</div>\n<div class=\"px-4 py-3 bg-white border-t border-pink-100 flex gap-2 justify-center\">\n<button class=\"hidden min-w-[110px] px-5 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-black text-sm\" id=\"app-dialog-cancel\" onclick=\"closeAppDialog(false)\">Để sau</button>\n<button class=\"min-w-[120px] px-6 py-2.5 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-500 hover:brightness-105 text-white font-black text-sm shadow-md\" id=\"app-dialog-ok\" onclick=\"closeAppDialog(true)\">Đã hiểu</button>\n</div>\n</div>\n</div>";
+const MATH_RUNTIME_HTML_ = "<div class=\"w-full max-w-5xl flex flex-col space-y-1.5 md:space-y-2 p-1 md:p-2\" id=\"screen-dashboard\">\n<header class=\"app-main-header w-full bg-white/95 backdrop-blur-md rounded-2xl shadow-sm border-2 border-pink-200\">\n<button class=\"flex items-center justify-center bg-white border border-pink-300 shadow-sm shrink-0 overflow-hidden p-0 transition-shadow duration-200 hover:border-pink-400 hover:shadow-[0_0_18px_rgba(244,114,182,0.65)]\" id=\"btn-header-home\" onclick=\"goHome()\" title=\"Về trang chủ\">\n<img alt=\"Trang chủ Toán 1\" class=\"w-full h-full object-cover\" src=\"logo-home.png\"/>\n</button>\n<nav aria-label=\"Điều hướng chính\" id=\"main-module-tabs\">\n<div>\n<button class=\"main-module-tab\" data-tab=\"discover\" id=\"main-tab-discover\" onclick=\"openMainTab('discover')\"><span>🧭</span><span>Khám phá</span></button>\n<button class=\"main-module-tab\" data-tab=\"lessons\" id=\"main-tab-lessons\" onclick=\"openMainTab('lessons')\"><span>📖</span><span>Bài học</span><span class=\"hidden absolute -top-1 -right-1 text-[10px]\" id=\"bai-hoc-lock-icon\">🔒</span></button>\n<button class=\"main-module-tab\" data-tab=\"exercises\" id=\"main-tab-exercises\" onclick=\"openMainTab('exercises')\"><span>✏️</span><span>Bài tập</span><span class=\"hidden absolute -top-1 -right-1 text-[10px]\" id=\"roadmap-lock-icon\">🔒</span></button>\n<button class=\"main-module-tab\" data-tab=\"review\" id=\"main-tab-review\" onclick=\"openMainTab('review')\"><span>🧠</span><span>Ôn tập</span><span class=\"hidden absolute -top-1 -right-1 text-[10px]\" id=\"review-lock-icon\">🔒</span></button>\n<button class=\"main-module-tab\" data-tab=\"exams\" id=\"main-tab-exams\" onclick=\"openMainTab('exams')\"><span>🏆</span><span>Đề thi</span><span class=\"hidden absolute -top-1 -right-1 text-[10px]\" id=\"exam-lock-icon\">🔒</span></button>\n<button class=\"main-module-tab\" data-tab=\"games\" id=\"main-tab-games\" onclick=\"openMainTab('games')\"><span>🎮</span><span>Mini games</span><span class=\"hidden absolute -top-1 -right-1 text-[10px]\" id=\"minigame-lock-icon\">🔒</span></button>\n</div>\n</nav>\n<div class=\"flex items-center\" id=\"header-info-zone\">\n<div class=\"flex flex-col space-y-0.5 bg-pink-50/90 px-1.5 md:px-2.5 py-1 rounded-xl border border-pink-200 shadow-inner\" id=\"header-star-box\">\n<div class=\"flex items-center justify-between space-x-2 font-extrabold\">\n<span class=\"px-1.5 py-0.5 bg-emerald-500 text-white rounded text-[10px] shadow-sm flex items-center justify-center\"><i class=\"fa-solid fa-star md:mr-0.5\"></i><span class=\"hidden md:inline\"> Đúng</span></span>\n<span class=\"text-emerald-600 font-extrabold text-xs\" id=\"star-green-count\">0</span>\n</div>\n<div class=\"flex items-center justify-between space-x-2 font-extrabold\">\n<span class=\"px-1.5 py-0.5 bg-rose-500 text-white rounded text-[10px] shadow-sm flex items-center justify-center\"><i class=\"fa-solid fa-star md:mr-0.5\"></i><span class=\"hidden md:inline\"> Sai</span></span>\n<span class=\"text-rose-600 font-extrabold text-xs\" id=\"star-red-count\">0</span>\n</div>\n</div>\n<div class=\"text-xs font-bold text-gray-600 text-right\" id=\"user-info-box\"></div>\n</div>\n</header>\n<section aria-label=\"Không gian nhận diện và điều hướng\" id=\"app-banner-slot\">\n<div id=\"app-main-banner\">\n<picture>\n<source media=\"(max-width: 767px)\" srcset=\"banner-main-mobile.jpg\"/>\n<img alt=\"Khu vườn học tập của Cô Thỏ Hồng\" src=\"banner-main.jpg\"/>\n</picture>\n</div>\n<div class=\"hidden\" id=\"app-context-banner\">\n<div class=\"flex items-center min-w-0\" id=\"header-learning-tabs\">\n<div class=\"hidden items-center\" id=\"header-level2-tab\">\n<button class=\"flex items-center space-x-1.5 shrink-0 transition-shadow duration-200\" onclick=\"returnToTopicLecture()\">\n<span id=\"header-level2-icon\">🔢</span><span class=\"truncate\" id=\"header-level2-title\">Chủ đề học</span>\n</button>\n</div>\n<div class=\"hidden items-center space-x-1\" id=\"header-level3-tab\"><span class=\"font-bold\">›</span><div class=\"truncate flex items-center\"><span class=\"truncate\" id=\"header-level3-title\">Mục nhỏ</span></div></div>\n<div class=\"hidden items-center space-x-1\" id=\"header-level4-tab\"><span class=\"font-bold\">›</span><div class=\"truncate flex items-center\"><span class=\"truncate\" id=\"header-level4-title\">Mục sâu</span></div></div>\n</div>\n</div>\n</section>\n<main class=\"w-full\" id=\"app-viewport\">\n<!-- VIEW 1: TRANG CHỦ 12 CHỦ ĐỀ -->\n<div class=\"w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2\" id=\"view-dashboard-grid\"></div>\n<!-- VIEW: MỤC 12 - HỌC TOÁN THEO PHƯƠNG PHÁP MỚI -->\n<div class=\"w-full hidden\" id=\"view-epsilon-method-hub\">\n<div class=\"w-full\" id=\"epsilon-method-content\"></div>\n</div>\n<!-- VIEW: 12.1 - HIỂU SỐ VÀ SỐ LƯỢNG -->\n<div class=\"w-full hidden\" id=\"view-number-sense\">\n<div class=\"w-full\" id=\"number-sense-content\"></div>\n</div>\n<!-- VIEW: 12.2 - HIỂU PHÉP CỘNG VÀ PHÉP TRỪ -->\n<div class=\"w-full hidden\" id=\"view-operation-sense\">\n<div class=\"w-full\" id=\"operation-sense-content\"></div>\n</div>\n<!-- MODULE BAI HOC: HIEN THI TRUC TIEP DANH SACH BAI -->\n<div class=\"w-full hidden pastel-card p-3 md:p-5\" id=\"view-bai-hoc-hub\">\n<div class=\"w-full max-w-6xl mx-auto\">\n<div class=\"grid grid-cols-[auto_1fr_auto] items-center gap-3 mb-3\">\n<div class=\"flex items-center gap-2 justify-self-start\" id=\"bai-hoc-semester-tabs\"></div>\n<div class=\"text-center min-w-0\">\n<h2 class=\"text-lg md:text-xl font-black text-purple-700 flex items-center justify-center gap-2\"><span>📖</span><span>Bài học Toán 1</span></h2>\n<p class=\"text-xs md:text-sm text-slate-500 font-bold mt-0.5\" id=\"bai-hoc-hub-subtitle\">Chọn bài và học ngay</p>\n</div>\n<div aria-hidden=\"true\" class=\"w-[180px] hidden md:block\"></div>\n</div>\n<div class=\"grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-2\" id=\"bai-hoc-grid\"></div>\n</div>\n</div>\n<!-- VIEW: NỘI DUNG MỘT BÀI HỌC -->\n<div class=\"w-full hidden pastel-card p-3 md:p-5 flex flex-col items-center min-h-[480px]\" id=\"view-bai-hoc-lesson\">\n<div class=\"w-full max-w-5xl\">\n<div class=\"flex items-start justify-between gap-3 mb-3\">\n<div class=\"min-w-0\">\n<div class=\"text-sm md:text-base font-extrabold text-purple-600 mb-1\" id=\"bai-hoc-lesson-meta\">📖 Bài học</div>\n<h2 class=\"text-lg md:text-xl font-black text-slate-800\" id=\"bai-hoc-lesson-title\"></h2>\n</div>\n<button class=\"px-3 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 rounded-xl text-xs md:text-sm font-extrabold shrink-0\" id=\"btn-back-bai-hoc-list\" onclick=\"openBaiHocHub(activeBaiHocContext?.semester || 1)\">← Danh sách bài</button>\n</div>\n<div class=\"grid grid-cols-3 gap-2 mb-3\" id=\"bai-hoc-page-tabs\"></div>\n<div class=\"w-full\" id=\"bai-hoc-page-content\"></div>\n<div class=\"flex items-center justify-between gap-3 mt-3 pt-2 border-t border-pink-100\" id=\"bai-hoc-bottom-nav\"></div>\n</div>\n</div>\n<!-- VIEW 2: BÀI GIẢNG -->\n<div class=\"w-full hidden pastel-card p-4 md:p-6 flex flex-col justify-between items-center min-h-[480px]\" id=\"view-lecture\">\n<div class=\"w-full max-w-4xl flex flex-col items-center\">\n<div class=\"w-full flex flex-col items-center\">\n<div class=\"grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-2xl\" id=\"lecture-subtopics-list\"></div>\n</div>\n</div>\n</div>\n<!-- VIEW 3: PHÒNG LÀM BÀI / THI CHUẨN 16:9 -->\n<div class=\"w-full hidden flex flex-col space-y-1.5\" id=\"view-quiz\">\n<!-- TOP BAR CỦA ĐỀ THI (ẨN HOÀN TOÀN TRONG CHẾ ĐỘ LUYỆN TẬP) -->\n<div class=\"w-full bg-white rounded-2xl p-2.5 border-2 border-pink-200 flex flex-wrap items-center justify-between gap-2.5 shadow-xs\" id=\"quiz-top-bar\">\n<div class=\"flex items-center space-x-2\" id=\"quiz-timer-container\">\n<div class=\"w-8 h-8 rounded-xl bg-pink-50 border border-pink-200 flex items-center justify-center text-pink-500 font-bold text-sm\">\n<i class=\"fa-solid fa-stopwatch\"></i>\n</div>\n<div>\n<span class=\"text-xs font-bold text-gray-400 uppercase tracking-wider block\">Thời gian</span>\n<span class=\"text-base font-black text-rose-500 tracking-wider\" id=\"quiz-timer-display\">40:00</span>\n</div>\n</div>\n<button class=\"ml-auto px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-black text-xs md:text-sm flex items-center space-x-1.5 transition-all shadow-sm pastel-btn\" id=\"btn-submit-quiz\" onclick=\"triggerSubmitQuizPrompt()\">\n<i class=\"fa-solid fa-circle-check\"></i>\n<span>Nộp bài thi</span>\n</button>\n</div>\n<!-- THẺ CARD LÀM BÀI CHÍNH -->\n<div class=\"w-full pastel-card p-3.5 md:p-5 flex flex-col justify-between min-h-[380px]\">\n<!-- HEADER TRONG CARD (CHỈ HIỆN KHI THI) -->\n<div class=\"hidden items-center justify-between flex-wrap gap-2 border-b border-pink-100 pb-2\" id=\"quiz-card-header\">\n<div class=\"flex items-center space-x-2\">\n<span class=\"px-2.5 py-1 bg-pink-100 text-pink-800 text-sm font-black rounded-lg\" id=\"q-badge-index\">CÂU 1 / 13</span>\n<span class=\"px-2.5 py-1 bg-pink-50 text-pink-700 border border-pink-200 text-sm font-bold rounded-lg flex items-center space-x-1\" id=\"q-badge-skill\">\n<i class=\"fa-solid fa-tag text-xs\"></i>\n<span id=\"q-skill-text\">Kiến thức cơ bản</span>\n</span>\n<span class=\"px-2 py-1 bg-amber-50 text-amber-700 border border-amber-200 text-sm font-bold rounded-lg\" id=\"q-badge-score\">(0.5 điểm)</span>\n</div>\n<button class=\"hidden px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-xl text-sm font-extrabold items-center space-x-1.5 transition-shadow duration-200 hover:shadow-[0_0_10px_rgba(99,102,241,0.5)] shadow-xs\" id=\"btn-roadmap-history\" onclick=\"openHistoryModal('LichSuTienTrinhTuan')\">\n<i class=\"fa-solid fa-chart-line\"></i>\n<span>Lịch sử Bài tập</span>\n</button>\n<button class=\"px-3 py-1.5 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 rounded-xl text-sm font-extrabold flex items-center space-x-1.5 transition-all pastel-btn shadow-xs\" onclick=\"speakCurrentQuestion()\">\n<i class=\"fa-solid fa-volume-high text-pink-600\"></i>\n<span>Nghe câu hỏi</span>\n</button>\n</div>\n<!-- KHU VỰC CÂU HỎI & ĐÁP ÁN -->\n<div class=\"w-full flex flex-col justify-center items-center flex-1 my-0.5\" id=\"question-box\"></div>\n<!-- ĐIỀU HƯỚNG ĐÁY -->\n<div class=\"w-full pt-1\" id=\"quiz-bottom-nav\">\n<!-- 1. GIAO DIỆN LUYỆN TẬP -->\n<div class=\"flex items-center justify-center gap-3 w-full\" id=\"nav-group-practice\">\n<button class=\"px-5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-extrabold rounded-2xl text-xs md:text-sm pastel-btn border border-gray-200 flex items-center justify-center space-x-1.5 shadow-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed\" id=\"btn-prev-q-prac\" onclick=\"prevQuestion()\">\n<i class=\"fa-solid fa-chevron-left\"></i><span>Câu trước</span>\n</button>\n<div class=\"px-5 py-1.5 bg-pink-50 border border-pink-200 text-pink-700 font-black rounded-full text-xs md:text-sm flex items-center justify-center shadow-xs select-none\" id=\"practice-step-indicator\">\n<span id=\"practice-step-text\">1/59</span>\n</div>\n<button class=\"px-6 py-2 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-black rounded-2xl text-xs md:text-sm pastel-btn shadow-md flex items-center justify-center space-x-1.5 transition-all\" id=\"btn-next-q-prac\" onclick=\"nextQuestion()\">\n<span id=\"btn-next-text-prac\">Câu tiếp theo</span>\n<i class=\"fa-solid fa-chevron-right ml-1\" id=\"btn-next-icon-prac\"></i>\n</button>\n</div>\n<!-- 2. GIAO DIỆN ĐỀ THI -->\n<div class=\"hidden items-center justify-between w-full\" id=\"nav-group-exam\">\n<button class=\"px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-extrabold rounded-xl text-xs md:text-sm pastel-btn border border-gray-200 flex items-center justify-center space-x-1.5 shadow-sm transition-all disabled:opacity-40 disabled:cursor-not-allowed\" id=\"btn-prev-q-exam\" onclick=\"prevQuestion()\">\n<i class=\"fa-solid fa-chevron-left\"></i><span>Câu trước</span>\n</button>\n<div class=\"grid grid-cols-10 gap-1.5 max-w-xl mx-2\" id=\"quiz-pallet-container\"></div>\n<button class=\"px-5 py-2 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-black rounded-xl text-xs md:text-sm pastel-btn shadow-md flex items-center justify-center space-x-1.5 transition-all\" id=\"btn-next-q-exam\" onclick=\"nextQuestion()\">\n<span id=\"btn-next-text-exam\">Câu tiếp theo</span>\n<i class=\"fa-solid fa-chevron-right ml-1\" id=\"btn-next-icon-exam\"></i>\n</button>\n</div>\n</div>\n</div>\n</div>\n<!-- VIEW 4: BÀI TẬP THEO TỪNG BÀI SGK -->\n<div class=\"w-full hidden pastel-card p-3 md:p-5 flex flex-col justify-start items-center\" id=\"view-roadmap\">\n<div class=\"w-full max-w-6xl flex flex-col items-center\">\n<div class=\"flex flex-col sm:flex-row items-center justify-between w-full px-2 mb-2 gap-2\">\n<div>\n<h2 class=\"text-base md:text-lg font-extrabold text-indigo-600 flex items-center space-x-2\"><span>✏️</span><span>Bài tập</span></h2>\n<p class=\"text-[11px] md:text-xs text-gray-500 font-bold\">20 câu mỗi bài · đạt từ 80% để mở Bài tập tiếp theo.</p>\n</div>\n<div class=\"flex items-center gap-3 shrink-0\">\n<div class=\"flex items-center gap-2\" id=\"roadmap-semester-tabs\"></div>\n<button class=\"px-3 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-extrabold rounded-xl border border-indigo-200 text-xs pastel-btn flex items-center space-x-1.5 shadow-sm\" onclick=\"openHistoryModal('LichSuTienTrinhTuan')\">\n<i class=\"fa-solid fa-chart-line text-indigo-600\"></i><span>📊 Lịch sử Bài tập</span>\n</button>\n</div>\n</div>\n<div class=\"w-full flex justify-center items-center overflow-hidden bg-gradient-to-b from-pink-50/30 to-purple-50/30 rounded-2xl border-2 border-pink-100 p-1\" id=\"roadmap-svg-container\"></div>\n</div>\n</div>\n<!-- VIEW: TRUNG TÂM MINI GAME TOÁN 1 -->\n<div class=\"w-full hidden pastel-card p-3 md:p-5 flex flex-col items-center\" id=\"view-minigame-hub\">\n<div class=\"w-full max-w-5xl\">\n<div class=\"text-center mb-4\">\n<h2 class=\"text-base md:text-lg font-extrabold text-teal-600 flex items-center justify-center space-x-2\">\n<span>🎮</span><span>Trung tâm Mini Game Toán 1</span>\n</h2>\n<p class=\"text-[11px] md:text-xs text-gray-500 font-bold\">Học mà chơi - luyện tư duy Toán cùng Cô giáo Thỏ Hồng</p>\n</div>\n<div class=\"grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3\" id=\"minigame-grid\"></div>\n</div>\n</div>\n<!-- VIEW: MÀN CHƠI GAME -->\n<div class=\"w-full hidden pastel-card p-3 md:p-5 flex flex-col items-center\" id=\"view-game-play\">\n<div class=\"w-full max-w-5xl\">\n<div class=\"flex items-center justify-between mb-3 gap-2\">\n<h2 class=\"text-base md:text-lg font-extrabold text-teal-600 flex items-center gap-2 min-w-0\" id=\"game-play-title\"></h2>\n<button class=\"px-3 py-1.5 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-extrabold rounded-xl text-xs md:text-sm shadow-sm pastel-btn shrink-0\" onclick=\"openMiniGameHub()\">\n<i class=\"fa-solid fa-arrow-left\"></i> Chọn game khác\n                            </button>\n</div>\n<div class=\"w-full\" id=\"game-play-container\"></div>\n</div>\n</div>\n<!-- VIEW 5: ĐẤU TRƯỜNG ĐỀ THI (TAB RIÊNG) -->\n<div class=\"w-full hidden pastel-card p-5 md:p-7 flex flex-col justify-between items-center min-h-[480px]\" id=\"view-exam-hub\">\n<div class=\"w-full max-w-5xl\">\n<div class=\"text-center mb-5\">\n<h2 class=\"font-extrabold text-amber-600 text-lg md:text-xl flex items-center justify-center space-x-2\">\n<span>🏆</span><span>Đấu trường đề thi thử</span>\n</h2>\n<p class=\"text-xs md:text-sm text-gray-500 font-bold mt-1\">Thử sức các bộ đề thi chuẩn ma trận 13 câu - đánh giá theo năng lực</p>\n</div>\n<div class=\"grid grid-cols-1 md:grid-cols-3 gap-4\" id=\"exam-categories-grid\"></div>\n</div>\n</div>\n<!-- VIEW 6: MÀN HÌNH KẾT QUẢ & BÁO CÁO -->\n<div class=\"w-full hidden flex flex-col space-y-3\" id=\"view-result\">\n<div class=\"bg-gradient-to-tr from-rose-900 via-pink-950 to-rose-900 rounded-3xl p-4 sm:p-5 text-white shadow-xl relative overflow-hidden\">\n<div class=\"relative z-10 flex flex-col md:flex-row items-center justify-between gap-4\">\n<div class=\"space-y-1 text-center md:text-left\">\n<span class=\"px-3 py-0.5 bg-white/10 backdrop-blur-md rounded-full text-xs font-bold tracking-wider text-pink-200 border border-white/15 inline-block\" id=\"report-exam-badge\">\n                                    Kết quả bài thi\n                                </span>\n<h2 class=\"text-lg sm:text-xl font-black tracking-tight\" id=\"report-student-display\">Học sinh: --</h2>\n<p class=\"text-xs text-pink-200\" id=\"report-meta-display\">Lớp: -- | Mã số: -- | Thời gian: --</p>\n</div>\n<div class=\"flex items-center gap-3\">\n<div class=\"bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-4 py-2 text-center\">\n<span class=\"text-[10px] uppercase tracking-wider text-pink-200 font-bold block mb-0.5\">Tổng điểm</span>\n<div class=\"text-2xl sm:text-3xl font-black font-math text-amber-300\" id=\"report-total-score-val\">0.0</div>\n<span class=\"text-[9px] text-pink-200\">Thang điểm 10</span>\n</div>\n<div class=\"bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-4 py-2 text-center\">\n<span class=\"text-[10px] uppercase tracking-wider text-pink-200 font-bold block mb-0.5\">Độ chính xác</span>\n<div class=\"text-2xl sm:text-3xl font-black font-math text-emerald-300\" id=\"report-correct-ratio-val\">0/13</div>\n<span class=\"text-[9px] text-pink-200\">Câu đúng</span>\n</div>\n</div>\n</div>\n</div>\n<div class=\"bg-white rounded-3xl p-4 sm:p-5 border border-pink-100 soft-shadow-pink space-y-2.5\">\n<h3 class=\"text-sm sm:text-base font-black text-slate-800 tracking-tight flex items-center space-x-2\">\n<i class=\"fa-solid fa-chart-bar text-pink-600\"></i>\n<span>Bóc tách điểm số &amp; đánh giá năng lực</span>\n</h3>\n<div class=\"grid grid-cols-1 sm:grid-cols-2 gap-2\" id=\"report-topics-list\"></div>\n</div>\n<div class=\"grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-0.5\">\n<button class=\"py-2.5 px-3 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-black text-xs rounded-2xl shadow-xs transition-all flex items-center justify-center space-x-1.5 pastel-btn\" onclick=\"openReviewWrongModal()\">\n<i class=\"fa-solid fa-circle-question text-rose-500\"></i>\n<span>👉 Xem lại các câu làm sai</span>\n</button>\n<button class=\"py-2.5 px-3 bg-pink-50 hover:bg-pink-100 text-pink-700 border border-pink-200 font-black text-xs rounded-2xl shadow-xs transition-all flex items-center justify-center space-x-1.5 pastel-btn\" id=\"report-history-btn\" onclick=\"openHistoryModal('LichSuBaiThi_HK1')\">\n<i class=\"fa-solid fa-chart-line text-pink-600\"></i>\n<span>📊 Lịch sử &amp; biểu đồ tiến trình</span>\n</button>\n<button class=\"py-2.5 px-3 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-black text-xs rounded-2xl shadow-sm transition-all flex items-center justify-center space-x-1.5 pastel-btn\" id=\"report-next-action-btn\" onclick=\"handleNextExamFromReport()\">\n<span id=\"report-next-action-label\">🚀 Làm đề thi tiếp theo</span>\n<i class=\"fa-solid fa-arrow-right\"></i>\n</button>\n</div>\n</div>\n</main>\n</div>\n<div class=\"hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3\" id=\"modal-review-wrong\">\n<div class=\"bg-white rounded-3xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-pink-100 overflow-hidden\">\n<div class=\"p-3.5 border-b border-pink-100 flex items-center justify-between bg-rose-50/50\">\n<div class=\"flex items-center space-x-2 text-rose-800\">\n<i class=\"fa-solid fa-triangle-exclamation text-rose-600\"></i>\n<h3 class=\"font-black text-sm\">Chi tiết các câu trả lời chưa chính xác</h3>\n</div>\n<button class=\"w-7 h-7 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-slate-700\" onclick=\"closeReviewWrongModal()\"><i class=\"fa-solid fa-xmark\"></i></button>\n</div>\n<div class=\"p-4 overflow-y-auto space-y-3 flex-grow text-xs sm:text-sm\" id=\"review-wrong-content\"></div>\n<div class=\"p-3 border-t border-slate-100 flex justify-end bg-slate-50\">\n<button class=\"px-5 py-2 bg-slate-800 text-white font-bold rounded-xl text-xs pastel-btn\" onclick=\"closeReviewWrongModal()\">Đóng lại</button>\n</div>\n</div>\n</div>\n<div class=\"hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4\" id=\"modal-history-progress\">\n<div class=\"bg-white rounded-3xl max-w-5xl w-full max-h-[96vh] flex flex-col shadow-2xl border-2 border-pink-200 overflow-hidden\">\n<div class=\"p-4 sm:p-6 overflow-y-auto space-y-4 flex-grow bg-white\" id=\"printable-report-area\">\n<!-- TRANG 1: THÔNG TIN & BIỂU ĐỒ -->\n<div class=\"space-y-4 page-break-1\">\n<div class=\"p-3.5 sm:p-4 rounded-2xl border border-pink-200 bg-pink-50/70 flex flex-col md:flex-row items-center justify-between gap-3 shadow-xs\">\n<div class=\"flex items-center space-x-3 text-pink-950 flex-1\">\n<div class=\"w-10 h-10 rounded-2xl bg-pink-100 text-pink-600 flex items-center justify-center shadow-xs shrink-0\">\n<i class=\"fa-solid fa-award text-xl\"></i>\n</div>\n<div>\n<h3 class=\"font-black text-base sm:text-lg text-pink-950\" id=\"hist-modal-title\">Kết quả tiến trình học tập</h3>\n<p class=\"text-xs font-bold text-pink-600 whitespace-nowrap\">Phân tích chuyên sâu theo năng lực &amp; nhận xét sư phạm chi tiết</p>\n</div>\n</div>\n<div class=\"bg-white/95 border-2 border-pink-200 px-4 py-2 rounded-2xl shadow-xs text-left shrink-0\">\n<div class=\"text-sm font-black text-slate-900 leading-tight\">\n                                Học sinh: <span class=\"text-pink-600\" id=\"hist-info-name\">--</span>\n</div>\n<div class=\"text-xs font-bold text-slate-600 mt-0.5\">\n                                Lớp: <span class=\"text-slate-900 font-extrabold\" id=\"hist-info-class\">--</span>  |  \n                                Mã số: <span class=\"text-slate-900 font-extrabold\" id=\"hist-info-code\">--</span>  |  \n                                Ngày sinh: <span class=\"text-slate-900 font-extrabold\" id=\"hist-info-dob\">--</span>\n</div>\n</div>\n<div class=\"flex items-center space-x-2 shrink-0\">\n<div class=\"text-xs font-bold text-slate-700 bg-white/95 px-3 py-2 rounded-xl border border-pink-200 text-center shadow-xs leading-snug\">\n<div>Ngày báo cáo</div>\n<div><span class=\"font-bold text-rose-600\" id=\"hist-report-date\">03/09/2026</span></div>\n</div>\n<button class=\"w-8 h-8 rounded-full bg-white border border-pink-200 flex items-center justify-center text-pink-400 hover:text-rose-600 transition-all shadow-xs no-print\" onclick=\"closeHistoryModal()\">\n<i class=\"fa-solid fa-xmark\"></i>\n</button>\n</div>\n</div>\n<div class=\"flex flex-col md:flex-row gap-4 w-full\">\n<div class=\"w-full md:w-[60%] bg-pink-50/40 border border-pink-100 rounded-2xl p-4 flex flex-col justify-between shadow-xs\">\n<h4 class=\"text-xs sm:text-sm font-black text-slate-800 mb-2 flex items-center space-x-1.5\">\n<i class=\"fa-solid fa-chart-line text-pink-600\"></i>\n<span>Biến thiên tổng điểm các bài thi (/10)</span>\n</h4>\n<div class=\"h-64 w-full relative\">\n<canvas id=\"progressChartCanvas\"></canvas>\n</div>\n</div>\n<div class=\"w-full md:w-[40%] bg-pink-50/40 border border-pink-100 rounded-2xl p-4 flex flex-col justify-between shadow-xs\">\n<h4 class=\"text-xs sm:text-sm font-black text-slate-800 mb-2 flex items-center space-x-1.5\">\n<i class=\"fa-solid fa-chart-bar text-rose-600\"></i>\n<span>Năng lực trung bình đã được đánh giá (%)</span>\n</h4>\n<div class=\"h-64 w-full relative\">\n<canvas id=\"topicRadarChartCanvas\"></canvas>\n</div>\n</div>\n</div>\n</div>\n<!-- TRANG 2: NHẬN XÉT SƯ PHẠM CHI TIẾT -->\n<div class=\"space-y-4 page-break-2\">\n<div class=\"bg-gradient-to-br from-amber-50/90 via-orange-50/60 to-rose-50/50 border border-amber-200/80 rounded-2xl p-4 space-y-3 shadow-xs\">\n<div class=\"flex items-center justify-between space-x-2.5 border-b border-amber-200/60 pb-1.5\">\n<div class=\"flex items-center space-x-2.5\">\n<div class=\"w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shadow-xs shrink-0\">\n<i class=\"fa-solid fa-award\"></i>\n</div>\n<div>\n<h4 class=\"text-base font-black text-amber-950 leading-tight\">Nhận xét sư phạm &amp; kế hoạch bồi dưỡng của giáo viên</h4>\n<p class=\"text-xs font-bold text-amber-700\">Đánh giá năng lực &amp; lời khuyên phụ huynh đồng hành</p>\n</div>\n</div>\n<button class=\"no-print shrink-0 px-3 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-300 rounded-xl text-xs md:text-sm font-extrabold flex items-center space-x-1.5 transition-all pastel-btn shadow-xs whitespace-nowrap\" onclick=\"speakPedagogicalEvaluation()\">\n<i class=\"fa-solid fa-volume-high\"></i>\n<span>Nghe cô giáo đọc</span>\n</button>\n</div>\n<div class=\"space-y-2.5 text-xs sm:text-sm text-slate-800 leading-normal font-semibold\" id=\"pedagogical-evaluation-box\"></div>\n</div>\n</div>\n<!-- TRANG 3: BẢNG THỐNG KÊ CHI TIẾT TỪNG BÀI THI -->\n<div class=\"space-y-3 page-break-3\">\n<h4 class=\"text-base font-black text-slate-900 flex items-center space-x-2\">\n<i class=\"fa-solid fa-table text-pink-600\"></i>\n<span>Bảng thống kê điểm số chi tiết từng bài thi</span>\n</h4>\n<div class=\"border border-pink-200 rounded-2xl overflow-hidden shadow-xs bg-white overflow-x-auto\">\n<table class=\"w-full text-center text-xs border-collapse\">\n<thead class=\"bg-pink-100/70 text-pink-950 font-black border-b border-pink-200\">\n<tr class=\"divide-x divide-pink-200\">\n<th class=\"py-2.5 px-2 whitespace-nowrap\">Lần thi</th>\n<th class=\"py-2.5 px-2 whitespace-nowrap\">Đề / Bài</th>\n<th class=\"py-2.5 px-2 whitespace-nowrap text-rose-600\">Tổng điểm</th>\n<th class=\"py-2 px-1 leading-tight\">C1: Số học<br/><span class=\"text-[10px] text-pink-700\">(&amp; Hình học)</span></th>\n<th class=\"py-2 px-1 leading-tight\">C2: Phép tính<br/><span class=\"text-[10px] text-pink-700\">(Cộng &amp; Trừ)</span></th>\n<th class=\"py-2 px-1 leading-tight\">C3: Đo lường<br/><span class=\"text-[10px] text-pink-700\">(Thời gian)</span></th>\n<th class=\"py-2 px-1 leading-tight\">C4: Vị trí<br/><span class=\"text-[10px] text-pink-700\">(So sánh)</span></th>\n<th class=\"py-2 px-1 leading-tight\">C5: Giải toán<br/><span class=\"text-[10px] text-pink-700\">(Lời văn)</span></th>\n<th class=\"py-2 px-1 leading-tight\">C6: Dãy số<br/><span class=\"text-[10px] text-pink-700\">(Quy luật)</span></th>\n<th class=\"py-2.5 px-2 whitespace-nowrap\">Ngày làm</th>\n<th class=\"py-2.5 px-2 whitespace-nowrap\">Thời gian</th>\n</tr>\n</thead>\n<tbody class=\"divide-y divide-pink-100 font-bold text-slate-700\" id=\"hist-table-body\"></tbody>\n</table>\n</div>\n</div>\n</div>\n<div class=\"p-3.5 border-t border-pink-100 flex items-center justify-between bg-pink-50/40 no-print\">\n<button class=\"px-5 py-2.5 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white font-extrabold text-xs md:text-sm rounded-xl transition-all shadow-md pastel-btn flex items-center space-x-1.5\" onclick=\"exportReportToPDF()\">\n<i class=\"fa-solid fa-file-pdf\"></i>\n<span>Xuất PDF</span>\n</button>\n<button class=\"px-8 py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl text-xs md:text-sm transition-all pastel-btn\" onclick=\"closeHistoryModal()\">\n                    Đóng lại\n                </button>\n</div>\n</div>\n</div>\n<div class=\"hidden fixed inset-0 z-[120] bg-slate-950/55 backdrop-blur-sm items-center justify-center p-4\" id=\"modal-app-dialog\" onclick=\"if(event.target===this) closeAppDialog(false)\">\n<div class=\"w-full max-w-md rounded-[28px] bg-white shadow-2xl ring-4 ring-pink-200 overflow-hidden\" id=\"app-dialog-panel\">\n<div class=\"bg-gradient-to-br from-pink-50 via-white to-purple-50 px-5 pt-5 pb-4 text-center\">\n<div class=\"mx-auto w-14 h-14 rounded-2xl bg-white border-2 border-pink-200 shadow-sm flex items-center justify-center text-3xl\" id=\"app-dialog-icon\">🐰</div>\n<h3 class=\"mt-3 text-lg font-black text-purple-800\" id=\"app-dialog-title\">Thông báo</h3>\n<div class=\"mt-2 text-sm md:text-base leading-7 font-semibold text-slate-700\" id=\"app-dialog-message\"></div>\n</div>\n<div class=\"px-4 py-3 bg-white border-t border-pink-100 flex gap-2 justify-center\">\n<button class=\"hidden min-w-[110px] px-5 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-black text-sm\" id=\"app-dialog-cancel\" onclick=\"closeAppDialog(false)\">Để sau</button>\n<button class=\"min-w-[120px] px-6 py-2.5 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-500 hover:brightness-105 text-white font-black text-sm shadow-md\" id=\"app-dialog-ok\" onclick=\"closeAppDialog(true)\">Đã hiểu</button>\n</div>\n</div>\n</div>";
 const MATH_RUNTIME_CSS_ = "/*! tailwindcss v4.1.10 | MIT License | https://tailwindcss.com */\n@layer properties;\n#class1-math-runtime,#class1-math-runtime {\n  --color-red-200: oklch(88.5% 0.062 18.334);\n  --color-red-300: oklch(80.8% 0.114 19.571);\n  --color-red-400: oklch(70.4% 0.191 22.216);\n  --color-red-500: oklch(63.7% 0.237 25.331);\n  --color-red-600: oklch(57.7% 0.245 27.325);\n  --color-red-700: oklch(50.5% 0.213 27.518);\n  --color-red-800: oklch(44.4% 0.177 26.899);\n  --color-red-900: oklch(39.6% 0.141 25.723);\n  --color-orange-50: oklch(98% 0.016 73.684);\n  --color-orange-200: oklch(90.1% 0.076 70.697);\n  --color-orange-400: oklch(75% 0.183 55.934);\n  --color-orange-500: oklch(70.5% 0.213 47.604);\n  --color-orange-600: oklch(64.6% 0.222 41.116);\n  --color-amber-50: oklch(98.7% 0.022 95.277);\n  --color-amber-100: oklch(96.2% 0.059 95.617);\n  --color-amber-200: oklch(92.4% 0.12 95.746);\n  --color-amber-300: oklch(87.9% 0.169 91.605);\n  --color-amber-400: oklch(82.8% 0.189 84.429);\n  --color-amber-500: oklch(76.9% 0.188 70.08);\n  --color-amber-600: oklch(66.6% 0.179 58.318);\n  --color-amber-700: oklch(55.5% 0.163 48.998);\n  --color-amber-800: oklch(47.3% 0.137 46.201);\n  --color-amber-900: oklch(41.4% 0.112 45.904);\n  --color-amber-950: oklch(27.9% 0.077 45.635);\n  --color-yellow-50: oklch(98.7% 0.026 102.212);\n  --color-yellow-200: oklch(94.5% 0.129 101.54);\n  --color-green-100: oklch(96.2% 0.044 156.743);\n  --color-green-400: oklch(79.2% 0.209 151.711);\n  --color-green-800: oklch(44.8% 0.119 151.328);\n  --color-emerald-50: oklch(97.9% 0.021 166.113);\n  --color-emerald-100: oklch(95% 0.052 163.051);\n  --color-emerald-200: oklch(90.5% 0.093 164.15);\n  --color-emerald-300: oklch(84.5% 0.143 164.978);\n  --color-emerald-400: oklch(76.5% 0.177 163.223);\n  --color-emerald-500: oklch(69.6% 0.17 162.48);\n  --color-emerald-600: oklch(59.6% 0.145 163.225);\n  --color-emerald-700: oklch(50.8% 0.118 165.612);\n  --color-emerald-800: oklch(43.2% 0.095 166.913);\n  --color-emerald-900: oklch(37.8% 0.077 168.94);\n  --color-teal-500: oklch(70.4% 0.14 182.503);\n  --color-teal-600: oklch(60% 0.118 184.704);\n  --color-cyan-50: oklch(98.4% 0.019 200.873);\n  --color-cyan-100: oklch(95.6% 0.045 203.388);\n  --color-cyan-200: oklch(91.7% 0.08 205.041);\n  --color-cyan-300: oklch(86.5% 0.127 207.078);\n  --color-cyan-500: oklch(71.5% 0.143 215.221);\n  --color-cyan-600: oklch(60.9% 0.126 221.723);\n  --color-cyan-700: oklch(52% 0.105 223.128);\n  --color-cyan-800: oklch(45% 0.085 224.283);\n  --color-sky-50: oklch(97.7% 0.013 236.62);\n  --color-sky-100: oklch(95.1% 0.026 236.824);\n  --color-sky-200: oklch(90.1% 0.058 230.902);\n  --color-sky-300: oklch(82.8% 0.111 230.318);\n  --color-sky-400: oklch(74.6% 0.16 232.661);\n  --color-sky-500: oklch(68.5% 0.169 237.323);\n  --color-sky-600: oklch(58.8% 0.158 241.966);\n  --color-sky-700: oklch(50% 0.134 242.749);\n  --color-blue-50: oklch(97% 0.014 254.604);\n  --color-blue-100: oklch(93.2% 0.032 255.585);\n  --color-blue-200: oklch(88.2% 0.059 254.128);\n  --color-blue-300: oklch(80.9% 0.105 251.813);\n  --color-blue-400: oklch(70.7% 0.165 254.624);\n  --color-blue-700: oklch(48.8% 0.243 264.376);\n  --color-blue-800: oklch(42.4% 0.199 265.638);\n  --color-indigo-50: oklch(96.2% 0.018 272.314);\n  --color-indigo-100: oklch(93% 0.034 272.788);\n  --color-indigo-200: oklch(87% 0.065 274.039);\n  --color-indigo-300: oklch(78.5% 0.115 274.713);\n  --color-indigo-400: oklch(67.3% 0.182 276.935);\n  --color-indigo-500: oklch(58.5% 0.233 277.117);\n  --color-indigo-600: oklch(51.1% 0.262 276.966);\n  --color-indigo-700: oklch(45.7% 0.24 277.023);\n  --color-indigo-800: oklch(39.8% 0.195 277.366);\n  --color-violet-50: oklch(96.9% 0.016 293.756);\n  --color-violet-100: oklch(94.3% 0.029 294.588);\n  --color-violet-200: oklch(89.4% 0.057 293.283);\n  --color-violet-300: oklch(81.1% 0.111 293.571);\n  --color-violet-400: oklch(70.2% 0.183 293.541);\n  --color-violet-500: oklch(60.6% 0.25 292.717);\n  --color-violet-600: oklch(54.1% 0.281 293.009);\n  --color-violet-700: oklch(49.1% 0.27 292.581);\n  --color-violet-800: oklch(43.2% 0.232 292.759);\n  --color-purple-50: oklch(97.7% 0.014 308.299);\n  --color-purple-100: oklch(94.6% 0.033 307.174);\n  --color-purple-200: oklch(90.2% 0.063 306.703);\n  --color-purple-300: oklch(82.7% 0.119 306.383);\n  --color-purple-400: oklch(71.4% 0.203 305.504);\n  --color-purple-500: oklch(62.7% 0.265 303.9);\n  --color-purple-600: oklch(55.8% 0.288 302.321);\n  --color-purple-700: oklch(49.6% 0.265 301.924);\n  --color-purple-800: oklch(43.8% 0.218 303.724);\n  --color-fuchsia-50: oklch(97.7% 0.017 320.058);\n  --color-fuchsia-300: oklch(83.3% 0.145 321.434);\n  --color-fuchsia-400: oklch(74% 0.238 322.16);\n  --color-fuchsia-500: oklch(66.7% 0.295 322.15);\n  --color-fuchsia-600: oklch(59.1% 0.293 322.896);\n  --color-fuchsia-700: oklch(51.8% 0.253 323.949);\n  --color-pink-50: oklch(97.1% 0.014 343.198);\n  --color-pink-100: oklch(94.8% 0.028 342.258);\n  --color-pink-200: oklch(89.9% 0.061 343.231);\n  --color-pink-300: oklch(82.3% 0.12 346.018);\n  --color-pink-400: oklch(71.8% 0.202 349.761);\n  --color-pink-500: oklch(65.6% 0.241 354.308);\n  --color-pink-600: oklch(59.2% 0.249 0.584);\n  --color-pink-700: oklch(52.5% 0.223 3.958);\n  --color-pink-800: oklch(45.9% 0.187 3.815);\n  --color-pink-950: oklch(28.4% 0.109 3.907);\n  --color-rose-50: oklch(96.9% 0.015 12.422);\n  --color-rose-100: oklch(94.1% 0.03 12.58);\n  --color-rose-200: oklch(89.2% 0.058 10.001);\n  --color-rose-300: oklch(81% 0.117 11.638);\n  --color-rose-400: oklch(71.2% 0.194 13.428);\n  --color-rose-500: oklch(64.5% 0.246 16.439);\n  --color-rose-600: oklch(58.6% 0.253 17.585);\n  --color-rose-700: oklch(51.4% 0.222 16.935);\n  --color-rose-800: oklch(45.5% 0.188 13.697);\n  --color-rose-900: oklch(41% 0.159 10.272);\n  --color-slate-50: oklch(98.4% 0.003 247.858);\n  --color-slate-100: oklch(96.8% 0.007 247.896);\n  --color-slate-200: oklch(92.9% 0.013 255.508);\n  --color-slate-300: oklch(86.9% 0.022 252.894);\n  --color-slate-400: oklch(70.4% 0.04 256.788);\n  --color-slate-500: oklch(55.4% 0.046 257.417);\n  --color-slate-600: oklch(44.6% 0.043 257.281);\n  --color-slate-700: oklch(37.2% 0.044 257.287);\n  --color-slate-800: oklch(27.9% 0.041 260.031);\n  --color-slate-900: oklch(20.8% 0.042 265.755);\n  --color-slate-950: oklch(12.9% 0.042 264.695);\n  --color-gray-100: oklch(96.7% 0.003 264.542);\n  --color-gray-200: oklch(92.8% 0.006 264.531);\n  --color-gray-300: oklch(87.2% 0.01 258.338);\n  --color-gray-400: oklch(70.7% 0.022 261.325);\n  --color-gray-500: oklch(55.1% 0.027 264.364);\n  --color-gray-600: oklch(44.6% 0.03 256.802);\n  --color-gray-700: oklch(37.3% 0.034 259.733);\n  --color-gray-800: oklch(27.8% 0.033 256.848);\n  --color-gray-900: oklch(21% 0.034 264.665);\n  --color-black: #000;\n  --color-white: #fff;\n  --spacing: 0.25rem;\n  --container-xs: 20rem;\n  --container-md: 28rem;\n  --container-xl: 36rem;\n  --container-2xl: 42rem;\n  --container-3xl: 48rem;\n  --container-4xl: 56rem;\n  --container-5xl: 64rem;\n  --container-6xl: 72rem;\n  --text-xs: 1rem;\n  --text-xs--line-height: calc(1 / 0.75);\n  --text-sm: 1rem;\n  --text-sm--line-height: calc(1.25 / 0.875);\n  --text-base: 1rem;\n  --text-base--line-height: calc(1.5 / 1);\n  --text-lg: 1.125rem;\n  --text-lg--line-height: calc(1.75 / 1.125);\n  --text-xl: 1.25rem;\n  --text-xl--line-height: calc(1.75 / 1.25);\n  --text-2xl: 1.5rem;\n  --text-2xl--line-height: calc(2 / 1.5);\n  --text-3xl: 1.875rem;\n  --text-3xl--line-height: calc(2.25 / 1.875);\n  --text-4xl: 2.25rem;\n  --text-4xl--line-height: calc(2.5 / 2.25);\n  --text-5xl: 3rem;\n  --text-5xl--line-height: 1;\n  --text-6xl: 3.75rem;\n  --text-6xl--line-height: 1;\n  --text-7xl: 4.5rem;\n  --text-7xl--line-height: 1;\n  --text-8xl: 6rem;\n  --text-8xl--line-height: 1;\n  --font-weight-semibold: 600;\n  --font-weight-bold: 700;\n  --font-weight-extrabold: 800;\n  --font-weight-black: 900;\n  --tracking-tight: -0.025em;\n  --tracking-wide: 0.025em;\n  --tracking-wider: 0.05em;\n  --leading-tight: 1.25;\n  --leading-snug: 1.375;\n  --leading-normal: 1.5;\n  --leading-relaxed: 1.625;\n  --radius-lg: 0.5rem;\n  --radius-xl: 0.75rem;\n  --radius-2xl: 1rem;\n  --radius-3xl: 1.5rem;\n  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);\n  --blur-xs: 4px;\n  --blur-sm: 8px;\n  --blur-md: 12px;\n  --default-transition-duration: 150ms;\n  --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);\n}\n#class1-math-runtime .visible {\n  visibility: visible;\n}\n#class1-math-runtime .absolute {\n  position: absolute;\n}\n#class1-math-runtime .fixed {\n  position: fixed;\n}\n#class1-math-runtime .relative {\n  position: relative;\n}\n#class1-math-runtime .sticky {\n  position: sticky;\n}\n#class1-math-runtime .inset-0 {\n  inset: calc(var(--spacing) * 0);\n}\n#class1-math-runtime .inset-y-0 {\n  inset-block: calc(var(--spacing) * 0);\n}\n#class1-math-runtime .-top-1 {\n  top: calc(var(--spacing) * -1);\n}\n#class1-math-runtime .-top-8 {\n  top: calc(var(--spacing) * -8);\n}\n#class1-math-runtime .top-0 {\n  top: calc(var(--spacing) * 0);\n}\n#class1-math-runtime .top-2 {\n  top: calc(var(--spacing) * 2);\n}\n#class1-math-runtime .top-3 {\n  top: calc(var(--spacing) * 3);\n}\n#class1-math-runtime .top-\\[88px\\] {\n  top: 88px;\n}\n#class1-math-runtime .-right-1 {\n  right: calc(var(--spacing) * -1);\n}\n#class1-math-runtime .right-2 {\n  right: calc(var(--spacing) * 2);\n}\n#class1-math-runtime .right-3 {\n  right: calc(var(--spacing) * 3);\n}\n#class1-math-runtime .right-\\[44px\\] {\n  right: 44px;\n}\n#class1-math-runtime .right-\\[45px\\] {\n  right: 45px;\n}\n#class1-math-runtime .bottom-0 {\n  bottom: calc(var(--spacing) * 0);\n}\n#class1-math-runtime .bottom-3 {\n  bottom: calc(var(--spacing) * 3);\n}\n#class1-math-runtime .left-0 {\n  left: calc(var(--spacing) * 0);\n}\n#class1-math-runtime .left-1\\/2 {\n  left: calc(1/2 * 100%);\n}\n#class1-math-runtime .left-3 {\n  left: calc(var(--spacing) * 3);\n}\n#class1-math-runtime .left-\\[44px\\] {\n  left: 44px;\n}\n#class1-math-runtime .left-\\[45px\\] {\n  left: 45px;\n}\n#class1-math-runtime .z-10 {\n  z-index: 10;\n}\n#class1-math-runtime .z-50 {\n  z-index: 50;\n}\n#class1-math-runtime .z-\\[80\\] {\n  z-index: 80;\n}\n#class1-math-runtime .z-\\[90\\] {\n  z-index: 90;\n}\n#class1-math-runtime .z-\\[95\\] {\n  z-index: 95;\n}\n#class1-math-runtime .z-\\[120\\] {\n  z-index: 120;\n}\n#class1-math-runtime .col-span-full {\n  grid-column: 1 / -1;\n}\n#class1-math-runtime .container {\n  width: 100%;\n  @media (width >= 40rem) {\n    max-width: 40rem;\n  }\n  @media (width >= 48rem) {\n    max-width: 48rem;\n  }\n  @media (width >= 64rem) {\n    max-width: 64rem;\n  }\n  @media (width >= 80rem) {\n    max-width: 80rem;\n  }\n  @media (width >= 96rem) {\n    max-width: 96rem;\n  }\n}\n#class1-math-runtime .mx-2 {\n  margin-inline: calc(var(--spacing) * 2);\n}\n#class1-math-runtime .mx-auto {\n  margin-inline: auto;\n}\n#class1-math-runtime .my-0\\.5 {\n  margin-block: calc(var(--spacing) * 0.5);\n}\n#class1-math-runtime .my-1 {\n  margin-block: calc(var(--spacing) * 1);\n}\n#class1-math-runtime .my-2 {\n  margin-block: calc(var(--spacing) * 2);\n}\n#class1-math-runtime .my-3 {\n  margin-block: calc(var(--spacing) * 3);\n}\n#class1-math-runtime .my-4 {\n  margin-block: calc(var(--spacing) * 4);\n}\n#class1-math-runtime .my-auto {\n  margin-block: auto;\n}\n#class1-math-runtime .mt-0 {\n  margin-top: calc(var(--spacing) * 0);\n}\n#class1-math-runtime .mt-0\\.5 {\n  margin-top: calc(var(--spacing) * 0.5);\n}\n#class1-math-runtime .mt-1 {\n  margin-top: calc(var(--spacing) * 1);\n}\n#class1-math-runtime .mt-1\\.5 {\n  margin-top: calc(var(--spacing) * 1.5);\n}\n#class1-math-runtime .mt-2 {\n  margin-top: calc(var(--spacing) * 2);\n}\n#class1-math-runtime .mt-2\\.5 {\n  margin-top: calc(var(--spacing) * 2.5);\n}\n#class1-math-runtime .mt-3 {\n  margin-top: calc(var(--spacing) * 3);\n}\n#class1-math-runtime .mt-3\\.5 {\n  margin-top: calc(var(--spacing) * 3.5);\n}\n#class1-math-runtime .mt-4 {\n  margin-top: calc(var(--spacing) * 4);\n}\n#class1-math-runtime .mt-5 {\n  margin-top: calc(var(--spacing) * 5);\n}\n#class1-math-runtime .mt-6 {\n  margin-top: calc(var(--spacing) * 6);\n}\n#class1-math-runtime .mr-0\\.5 {\n  margin-right: calc(var(--spacing) * 0.5);\n}\n#class1-math-runtime .mr-1 {\n  margin-right: calc(var(--spacing) * 1);\n}\n#class1-math-runtime .mr-1\\.5 {\n  margin-right: calc(var(--spacing) * 1.5);\n}\n#class1-math-runtime .mr-2 {\n  margin-right: calc(var(--spacing) * 2);\n}\n#class1-math-runtime .mb-0\\.5 {\n  margin-bottom: calc(var(--spacing) * 0.5);\n}\n#class1-math-runtime .mb-1 {\n  margin-bottom: calc(var(--spacing) * 1);\n}\n#class1-math-runtime .mb-1\\.5 {\n  margin-bottom: calc(var(--spacing) * 1.5);\n}\n#class1-math-runtime .mb-2 {\n  margin-bottom: calc(var(--spacing) * 2);\n}\n#class1-math-runtime .mb-2\\.5 {\n  margin-bottom: calc(var(--spacing) * 2.5);\n}\n#class1-math-runtime .mb-3 {\n  margin-bottom: calc(var(--spacing) * 3);\n}\n#class1-math-runtime .mb-4 {\n  margin-bottom: calc(var(--spacing) * 4);\n}\n#class1-math-runtime .mb-5 {\n  margin-bottom: calc(var(--spacing) * 5);\n}\n#class1-math-runtime .ml-1 {\n  margin-left: calc(var(--spacing) * 1);\n}\n#class1-math-runtime .ml-1\\.5 {\n  margin-left: calc(var(--spacing) * 1.5);\n}\n#class1-math-runtime .ml-2 {\n  margin-left: calc(var(--spacing) * 2);\n}\n#class1-math-runtime .ml-4 {\n  margin-left: calc(var(--spacing) * 4);\n}\n#class1-math-runtime .ml-24 {\n  margin-left: calc(var(--spacing) * 24);\n}\n#class1-math-runtime .ml-auto {\n  margin-left: auto;\n}\n#class1-math-runtime .line-clamp-1 {\n  overflow: hidden;\n  display: -webkit-box;\n  -webkit-box-orient: vertical;\n  -webkit-line-clamp: 1;\n}\n#class1-math-runtime .line-clamp-2 {\n  overflow: hidden;\n  display: -webkit-box;\n  -webkit-box-orient: vertical;\n  -webkit-line-clamp: 2;\n}\n#class1-math-runtime .block {\n  display: block;\n}\n#class1-math-runtime .flex {\n  display: flex;\n}\n#class1-math-runtime .grid {\n  display: grid;\n}\n#class1-math-runtime .hidden {\n  display: none;\n}\n#class1-math-runtime .inline-block {\n  display: inline-block;\n}\n#class1-math-runtime .inline-flex {\n  display: inline-flex;\n}\n#class1-math-runtime .table {\n  display: table;\n}\n#class1-math-runtime .aspect-square {\n  aspect-ratio: 1 / 1;\n}\n#class1-math-runtime .h-1 {\n  height: calc(var(--spacing) * 1);\n}\n#class1-math-runtime .h-2 {\n  height: calc(var(--spacing) * 2);\n}\n#class1-math-runtime .h-5 {\n  height: calc(var(--spacing) * 5);\n}\n#class1-math-runtime .h-6 {\n  height: calc(var(--spacing) * 6);\n}\n#class1-math-runtime .h-7 {\n  height: calc(var(--spacing) * 7);\n}\n#class1-math-runtime .h-8 {\n  height: calc(var(--spacing) * 8);\n}\n#class1-math-runtime .h-9 {\n  height: calc(var(--spacing) * 9);\n}\n#class1-math-runtime .h-10 {\n  height: calc(var(--spacing) * 10);\n}\n#class1-math-runtime .h-11 {\n  height: calc(var(--spacing) * 11);\n}\n#class1-math-runtime .h-12 {\n  height: calc(var(--spacing) * 12);\n}\n#class1-math-runtime .h-14 {\n  height: calc(var(--spacing) * 14);\n}\n#class1-math-runtime .h-16 {\n  height: calc(var(--spacing) * 16);\n}\n#class1-math-runtime .h-20 {\n  height: calc(var(--spacing) * 20);\n}\n#class1-math-runtime .h-24 {\n  height: calc(var(--spacing) * 24);\n}\n#class1-math-runtime .h-28 {\n  height: calc(var(--spacing) * 28);\n}\n#class1-math-runtime .h-44 {\n  height: calc(var(--spacing) * 44);\n}\n#class1-math-runtime .h-64 {\n  height: calc(var(--spacing) * 64);\n}\n#class1-math-runtime .h-\\[50px\\] {\n  height: 50px;\n}\n#class1-math-runtime .h-\\[70px\\] {\n  height: 70px;\n}\n#class1-math-runtime .h-\\[78px\\] {\n  height: 78px;\n}\n#class1-math-runtime .h-\\[145px\\] {\n  height: 145px;\n}\n#class1-math-runtime .h-\\[150px\\] {\n  height: 150px;\n}\n#class1-math-runtime .h-\\[160px\\] {\n  height: 160px;\n}\n#class1-math-runtime .h-\\[190px\\] {\n  height: 190px;\n}\n#class1-math-runtime .h-\\[220px\\] {\n  height: 220px;\n}\n#class1-math-runtime .h-auto {\n  height: auto;\n}\n#class1-math-runtime .h-full {\n  height: 100%;\n}\n#class1-math-runtime .h-px {\n  height: 1px;\n}\n#class1-math-runtime .max-h-\\[85vh\\] {\n  max-height: 85vh;\n}\n#class1-math-runtime .max-h-\\[92vh\\] {\n  max-height: 92vh;\n}\n#class1-math-runtime .max-h-\\[96vh\\] {\n  max-height: 96vh;\n}\n#class1-math-runtime .max-h-\\[215px\\] {\n  max-height: 215px;\n}\n#class1-math-runtime .max-h-\\[220px\\] {\n  max-height: 220px;\n}\n#class1-math-runtime .max-h-\\[285px\\] {\n  max-height: 285px;\n}\n#class1-math-runtime .max-h-\\[300px\\] {\n  max-height: 300px;\n}\n#class1-math-runtime .max-h-\\[410px\\] {\n  max-height: 410px;\n}\n#class1-math-runtime .max-h-\\[430px\\] {\n  max-height: 430px;\n}\n#class1-math-runtime .max-h-\\[470px\\] {\n  max-height: 470px;\n}\n#class1-math-runtime .min-h-\\[48px\\] {\n  min-height: 48px;\n}\n#class1-math-runtime .min-h-\\[50px\\] {\n  min-height: 50px;\n}\n#class1-math-runtime .min-h-\\[52px\\] {\n  min-height: 52px;\n}\n#class1-math-runtime .min-h-\\[54px\\] {\n  min-height: 54px;\n}\n#class1-math-runtime .min-h-\\[60px\\] {\n  min-height: 60px;\n}\n#class1-math-runtime .min-h-\\[62px\\] {\n  min-height: 62px;\n}\n#class1-math-runtime .min-h-\\[64px\\] {\n  min-height: 64px;\n}\n#class1-math-runtime .min-h-\\[66px\\] {\n  min-height: 66px;\n}\n#class1-math-runtime .min-h-\\[68px\\] {\n  min-height: 68px;\n}\n#class1-math-runtime .min-h-\\[70px\\] {\n  min-height: 70px;\n}\n#class1-math-runtime .min-h-\\[72px\\] {\n  min-height: 72px;\n}\n#class1-math-runtime .min-h-\\[74px\\] {\n  min-height: 74px;\n}\n#class1-math-runtime .min-h-\\[82px\\] {\n  min-height: 82px;\n}\n#class1-math-runtime .min-h-\\[92px\\] {\n  min-height: 92px;\n}\n#class1-math-runtime .min-h-\\[98px\\] {\n  min-height: 98px;\n}\n#class1-math-runtime .min-h-\\[128px\\] {\n  min-height: 128px;\n}\n#class1-math-runtime .min-h-\\[142px\\] {\n  min-height: 142px;\n}\n#class1-math-runtime .min-h-\\[150px\\] {\n  min-height: 150px;\n}\n#class1-math-runtime .min-h-\\[170px\\] {\n  min-height: 170px;\n}\n#class1-math-runtime .min-h-\\[180px\\] {\n  min-height: 180px;\n}\n#class1-math-runtime .min-h-\\[230px\\] {\n  min-height: 230px;\n}\n#class1-math-runtime .min-h-\\[235px\\] {\n  min-height: 235px;\n}\n#class1-math-runtime .min-h-\\[250px\\] {\n  min-height: 250px;\n}\n#class1-math-runtime .min-h-\\[280px\\] {\n  min-height: 280px;\n}\n#class1-math-runtime .min-h-\\[300px\\] {\n  min-height: 300px;\n}\n#class1-math-runtime .min-h-\\[330px\\] {\n  min-height: 330px;\n}\n#class1-math-runtime .min-h-\\[350px\\] {\n  min-height: 350px;\n}\n#class1-math-runtime .min-h-\\[380px\\] {\n  min-height: 380px;\n}\n#class1-math-runtime .min-h-\\[390px\\] {\n  min-height: 390px;\n}\n#class1-math-runtime .min-h-\\[420px\\] {\n  min-height: 420px;\n}\n#class1-math-runtime .min-h-\\[480px\\] {\n  min-height: 480px;\n}\n#class1-math-runtime .min-h-full {\n  min-height: 100%;\n}\n#class1-math-runtime .w-3\\/4 {\n  width: calc(3/4 * 100%);\n}\n#class1-math-runtime .w-4\\/5 {\n  width: calc(4/5 * 100%);\n}\n#class1-math-runtime .w-5 {\n  width: calc(var(--spacing) * 5);\n}\n#class1-math-runtime .w-6 {\n  width: calc(var(--spacing) * 6);\n}\n#class1-math-runtime .w-7 {\n  width: calc(var(--spacing) * 7);\n}\n#class1-math-runtime .w-8 {\n  width: calc(var(--spacing) * 8);\n}\n#class1-math-runtime .w-9 {\n  width: calc(var(--spacing) * 9);\n}\n#class1-math-runtime .w-10 {\n  width: calc(var(--spacing) * 10);\n}\n#class1-math-runtime .w-11 {\n  width: calc(var(--spacing) * 11);\n}\n#class1-math-runtime .w-12 {\n  width: calc(var(--spacing) * 12);\n}\n#class1-math-runtime .w-14 {\n  width: calc(var(--spacing) * 14);\n}\n#class1-math-runtime .w-16 {\n  width: calc(var(--spacing) * 16);\n}\n#class1-math-runtime .w-20 {\n  width: calc(var(--spacing) * 20);\n}\n#class1-math-runtime .w-24 {\n  width: calc(var(--spacing) * 24);\n}\n#class1-math-runtime .w-28 {\n  width: calc(var(--spacing) * 28);\n}\n#class1-math-runtime .w-32 {\n  width: calc(var(--spacing) * 32);\n}\n#class1-math-runtime .w-64 {\n  width: calc(var(--spacing) * 64);\n}\n#class1-math-runtime .w-\\[70px\\] {\n  width: 70px;\n}\n#class1-math-runtime .w-\\[108px\\] {\n  width: 108px;\n}\n#class1-math-runtime .w-\\[150px\\] {\n  width: 150px;\n}\n#class1-math-runtime .w-\\[180px\\] {\n  width: 180px;\n}\n#class1-math-runtime .w-\\[210px\\] {\n  width: 210px;\n}\n#class1-math-runtime .w-\\[260px\\] {\n  width: 260px;\n}\n#class1-math-runtime .w-full {\n  width: 100%;\n}\n#class1-math-runtime .max-w-2xl {\n  max-width: var(--container-2xl);\n}\n#class1-math-runtime .max-w-3xl {\n  max-width: var(--container-3xl);\n}\n#class1-math-runtime .max-w-4xl {\n  max-width: var(--container-4xl);\n}\n#class1-math-runtime .max-w-5xl {\n  max-width: var(--container-5xl);\n}\n#class1-math-runtime .max-w-6xl {\n  max-width: var(--container-6xl);\n}\n#class1-math-runtime .max-w-\\[260px\\] {\n  max-width: 260px;\n}\n#class1-math-runtime .max-w-\\[330px\\] {\n  max-width: 330px;\n}\n#class1-math-runtime .max-w-\\[350px\\] {\n  max-width: 350px;\n}\n#class1-math-runtime .max-w-\\[360px\\] {\n  max-width: 360px;\n}\n#class1-math-runtime .max-w-\\[380px\\] {\n  max-width: 380px;\n}\n#class1-math-runtime .max-w-\\[390px\\] {\n  max-width: 390px;\n}\n#class1-math-runtime .max-w-\\[430px\\] {\n  max-width: 430px;\n}\n#class1-math-runtime .max-w-\\[620px\\] {\n  max-width: 620px;\n}\n#class1-math-runtime .max-w-\\[640px\\] {\n  max-width: 640px;\n}\n#class1-math-runtime .max-w-\\[650px\\] {\n  max-width: 650px;\n}\n#class1-math-runtime .max-w-\\[660px\\] {\n  max-width: 660px;\n}\n#class1-math-runtime .max-w-\\[680px\\] {\n  max-width: 680px;\n}\n#class1-math-runtime .max-w-\\[700px\\] {\n  max-width: 700px;\n}\n#class1-math-runtime .max-w-\\[720px\\] {\n  max-width: 720px;\n}\n#class1-math-runtime .max-w-\\[760px\\] {\n  max-width: 760px;\n}\n#class1-math-runtime .max-w-md {\n  max-width: var(--container-md);\n}\n#class1-math-runtime .max-w-none {\n  max-width: none;\n}\n#class1-math-runtime .max-w-xl {\n  max-width: var(--container-xl);\n}\n#class1-math-runtime .max-w-xs {\n  max-width: var(--container-xs);\n}\n#class1-math-runtime .min-w-0 {\n  min-width: calc(var(--spacing) * 0);\n}\n#class1-math-runtime .min-w-\\[52px\\] {\n  min-width: 52px;\n}\n#class1-math-runtime .min-w-\\[78px\\] {\n  min-width: 78px;\n}\n#class1-math-runtime .min-w-\\[110px\\] {\n  min-width: 110px;\n}\n#class1-math-runtime .min-w-\\[112px\\] {\n  min-width: 112px;\n}\n#class1-math-runtime .min-w-\\[120px\\] {\n  min-width: 120px;\n}\n#class1-math-runtime .min-w-\\[140px\\] {\n  min-width: 140px;\n}\n#class1-math-runtime .min-w-\\[180px\\] {\n  min-width: 180px;\n}\n#class1-math-runtime .min-w-\\[210px\\] {\n  min-width: 210px;\n}\n#class1-math-runtime .min-w-\\[860px\\] {\n  min-width: 860px;\n}\n#class1-math-runtime .flex-1 {\n  flex: 1;\n}\n#class1-math-runtime .shrink-0 {\n  flex-shrink: 0;\n}\n#class1-math-runtime .flex-grow {\n  flex-grow: 1;\n}\n#class1-math-runtime .border-collapse {\n  border-collapse: collapse;\n}\n#class1-math-runtime .origin-center {\n  transform-origin: center;\n}\n#class1-math-runtime .-translate-x-1\\/2 {\n  --tw-translate-x: calc(calc(1/2 * 100%) * -1);\n  translate: var(--tw-translate-x) var(--tw-translate-y);\n}\n#class1-math-runtime .-translate-y-1 {\n  --tw-translate-y: calc(var(--spacing) * -1);\n  translate: var(--tw-translate-x) var(--tw-translate-y);\n}\n#class1-math-runtime .-translate-y-3 {\n  --tw-translate-y: calc(var(--spacing) * -3);\n  translate: var(--tw-translate-x) var(--tw-translate-y);\n}\n#class1-math-runtime .-translate-y-4 {\n  --tw-translate-y: calc(var(--spacing) * -4);\n  translate: var(--tw-translate-x) var(--tw-translate-y);\n}\n#class1-math-runtime .translate-y-1 {\n  --tw-translate-y: calc(var(--spacing) * 1);\n  translate: var(--tw-translate-x) var(--tw-translate-y);\n}\n#class1-math-runtime .translate-y-2 {\n  --tw-translate-y: calc(var(--spacing) * 2);\n  translate: var(--tw-translate-x) var(--tw-translate-y);\n}\n#class1-math-runtime .translate-y-5 {\n  --tw-translate-y: calc(var(--spacing) * 5);\n  translate: var(--tw-translate-x) var(--tw-translate-y);\n}\n#class1-math-runtime .scale-90 {\n  --tw-scale-x: 90%;\n  --tw-scale-y: 90%;\n  --tw-scale-z: 90%;\n  scale: var(--tw-scale-x) var(--tw-scale-y);\n}\n#class1-math-runtime .scale-\\[0\\.58\\] {\n  scale: 0.58;\n}\n#class1-math-runtime .transform {\n  transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);\n}\n#class1-math-runtime .cursor-default {\n  cursor: default;\n}\n#class1-math-runtime .cursor-not-allowed {\n  cursor: not-allowed;\n}\n#class1-math-runtime .cursor-pointer {\n  cursor: pointer;\n}\n#class1-math-runtime .cursor-text {\n  cursor: text;\n}\n#class1-math-runtime .list-disc {\n  list-style-type: disc;\n}\n#class1-math-runtime .grid-cols-1 {\n  grid-template-columns: repeat(1, minmax(0, 1fr));\n}\n#class1-math-runtime .grid-cols-2 {\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n}\n#class1-math-runtime .grid-cols-3 {\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n}\n#class1-math-runtime .grid-cols-4 {\n  grid-template-columns: repeat(4, minmax(0, 1fr));\n}\n#class1-math-runtime .grid-cols-5 {\n  grid-template-columns: repeat(5, minmax(0, 1fr));\n}\n#class1-math-runtime .grid-cols-10 {\n  grid-template-columns: repeat(10, minmax(0, 1fr));\n}\n#class1-math-runtime .grid-cols-\\[0\\.9fr_1fr_1fr\\] {\n  grid-template-columns: 0.9fr 1fr 1fr;\n}\n#class1-math-runtime .grid-cols-\\[1fr_auto_1fr\\] {\n  grid-template-columns: 1fr auto 1fr;\n}\n#class1-math-runtime .grid-cols-\\[1fr_auto_1fr_auto_1fr\\] {\n  grid-template-columns: 1fr auto 1fr auto 1fr;\n}\n#class1-math-runtime .grid-cols-\\[42px_1fr\\] {\n  grid-template-columns: 42px 1fr;\n}\n#class1-math-runtime .grid-cols-\\[auto_1fr_auto\\] {\n  grid-template-columns: auto 1fr auto;\n}\n#class1-math-runtime .grid-rows-5 {\n  grid-template-rows: repeat(5, minmax(0, 1fr));\n}\n#class1-math-runtime .flex-col {\n  flex-direction: column;\n}\n#class1-math-runtime .flex-nowrap {\n  flex-wrap: nowrap;\n}\n#class1-math-runtime .flex-wrap {\n  flex-wrap: wrap;\n}\n#class1-math-runtime .items-center {\n  align-items: center;\n}\n#class1-math-runtime .items-end {\n  align-items: flex-end;\n}\n#class1-math-runtime .items-start {\n  align-items: flex-start;\n}\n#class1-math-runtime .items-stretch {\n  align-items: stretch;\n}\n#class1-math-runtime .justify-between {\n  justify-content: space-between;\n}\n#class1-math-runtime .justify-center {\n  justify-content: center;\n}\n#class1-math-runtime .justify-end {\n  justify-content: flex-end;\n}\n#class1-math-runtime .justify-start {\n  justify-content: flex-start;\n}\n#class1-math-runtime .justify-items-center {\n  justify-items: center;\n}\n#class1-math-runtime .gap-0 {\n  gap: calc(var(--spacing) * 0);\n}\n#class1-math-runtime .gap-0\\.5 {\n  gap: calc(var(--spacing) * 0.5);\n}\n#class1-math-runtime .gap-1 {\n  gap: calc(var(--spacing) * 1);\n}\n#class1-math-runtime .gap-1\\.5 {\n  gap: calc(var(--spacing) * 1.5);\n}\n#class1-math-runtime .gap-2 {\n  gap: calc(var(--spacing) * 2);\n}\n#class1-math-runtime .gap-2\\.5 {\n  gap: calc(var(--spacing) * 2.5);\n}\n#class1-math-runtime .gap-3 {\n  gap: calc(var(--spacing) * 3);\n}\n#class1-math-runtime .gap-4 {\n  gap: calc(var(--spacing) * 4);\n}\n#class1-math-runtime .gap-5 {\n  gap: calc(var(--spacing) * 5);\n}\n#class1-math-runtime .gap-6 {\n  gap: calc(var(--spacing) * 6);\n}\n#class1-math-runtime .gap-7 {\n  gap: calc(var(--spacing) * 7);\n}\n#class1-math-runtime .gap-8 {\n  gap: calc(var(--spacing) * 8);\n}\n#class1-math-runtime .gap-10 {\n  gap: calc(var(--spacing) * 10);\n}\n#class1-math-runtime .gap-20 {\n  gap: calc(var(--spacing) * 20);\n}\n#class1-math-runtime .gap-\\[2px\\] {\n  gap: 2px;\n}\n#class1-math-runtime .space-y-0\\.5 {\n  #class1-math-runtime :where(& > :not(:last-child)) {\n    --tw-space-y-reverse: 0;\n    margin-block-start: calc(calc(var(--spacing) * 0.5) * var(--tw-space-y-reverse));\n    margin-block-end: calc(calc(var(--spacing) * 0.5) * calc(1 - var(--tw-space-y-reverse)));\n  }\n}\n#class1-math-runtime .space-y-1 {\n  #class1-math-runtime :where(& > :not(:last-child)) {\n    --tw-space-y-reverse: 0;\n    margin-block-start: calc(calc(var(--spacing) * 1) * var(--tw-space-y-reverse));\n    margin-block-end: calc(calc(var(--spacing) * 1) * calc(1 - var(--tw-space-y-reverse)));\n  }\n}\n#class1-math-runtime .space-y-1\\.5 {\n  #class1-math-runtime :where(& > :not(:last-child)) {\n    --tw-space-y-reverse: 0;\n    margin-block-start: calc(calc(var(--spacing) * 1.5) * var(--tw-space-y-reverse));\n    margin-block-end: calc(calc(var(--spacing) * 1.5) * calc(1 - var(--tw-space-y-reverse)));\n  }\n}\n#class1-math-runtime .space-y-2 {\n  #class1-math-runtime :where(& > :not(:last-child)) {\n    --tw-space-y-reverse: 0;\n    margin-block-start: calc(calc(var(--spacing) * 2) * var(--tw-space-y-reverse));\n    margin-block-end: calc(calc(var(--spacing) * 2) * calc(1 - var(--tw-space-y-reverse)));\n  }\n}\n#class1-math-runtime .space-y-2\\.5 {\n  #class1-math-runtime :where(& > :not(:last-child)) {\n    --tw-space-y-reverse: 0;\n    margin-block-start: calc(calc(var(--spacing) * 2.5) * var(--tw-space-y-reverse));\n    margin-block-end: calc(calc(var(--spacing) * 2.5) * calc(1 - var(--tw-space-y-reverse)));\n  }\n}\n#class1-math-runtime .space-y-3 {\n  #class1-math-runtime :where(& > :not(:last-child)) {\n    --tw-space-y-reverse: 0;\n    margin-block-start: calc(calc(var(--spacing) * 3) * var(--tw-space-y-reverse));\n    margin-block-end: calc(calc(var(--spacing) * 3) * calc(1 - var(--tw-space-y-reverse)));\n  }\n}\n#class1-math-runtime .space-y-4 {\n  #class1-math-runtime :where(& > :not(:last-child)) {\n    --tw-space-y-reverse: 0;\n    margin-block-start: calc(calc(var(--spacing) * 4) * var(--tw-space-y-reverse));\n    margin-block-end: calc(calc(var(--spacing) * 4) * calc(1 - var(--tw-space-y-reverse)));\n  }\n}\n#class1-math-runtime .space-y-5 {\n  #class1-math-runtime :where(& > :not(:last-child)) {\n    --tw-space-y-reverse: 0;\n    margin-block-start: calc(calc(var(--spacing) * 5) * var(--tw-space-y-reverse));\n    margin-block-end: calc(calc(var(--spacing) * 5) * calc(1 - var(--tw-space-y-reverse)));\n  }\n}\n#class1-math-runtime .-space-x-3 {\n  #class1-math-runtime :where(& > :not(:last-child)) {\n    --tw-space-x-reverse: 0;\n    margin-inline-start: calc(calc(var(--spacing) * -3) * var(--tw-space-x-reverse));\n    margin-inline-end: calc(calc(var(--spacing) * -3) * calc(1 - var(--tw-space-x-reverse)));\n  }\n}\n#class1-math-runtime .space-x-1 {\n  #class1-math-runtime :where(& > :not(:last-child)) {\n    --tw-space-x-reverse: 0;\n    margin-inline-start: calc(calc(var(--spacing) * 1) * var(--tw-space-x-reverse));\n    margin-inline-end: calc(calc(var(--spacing) * 1) * calc(1 - var(--tw-space-x-reverse)));\n  }\n}\n#class1-math-runtime .space-x-1\\.5 {\n  #class1-math-runtime :where(& > :not(:last-child)) {\n    --tw-space-x-reverse: 0;\n    margin-inline-start: calc(calc(var(--spacing) * 1.5) * var(--tw-space-x-reverse));\n    margin-inline-end: calc(calc(var(--spacing) * 1.5) * calc(1 - var(--tw-space-x-reverse)));\n  }\n}\n#class1-math-runtime .space-x-2 {\n  #class1-math-runtime :where(& > :not(:last-child)) {\n    --tw-space-x-reverse: 0;\n    margin-inline-start: calc(calc(var(--spacing) * 2) * var(--tw-space-x-reverse));\n    margin-inline-end: calc(calc(var(--spacing) * 2) * calc(1 - var(--tw-space-x-reverse)));\n  }\n}\n#class1-math-runtime .space-x-2\\.5 {\n  #class1-math-runtime :where(& > :not(:last-child)) {\n    --tw-space-x-reverse: 0;\n    margin-inline-start: calc(calc(var(--spacing) * 2.5) * var(--tw-space-x-reverse));\n    margin-inline-end: calc(calc(var(--spacing) * 2.5) * calc(1 - var(--tw-space-x-reverse)));\n  }\n}\n#class1-math-runtime .space-x-3 {\n  #class1-math-runtime :where(& > :not(:last-child)) {\n    --tw-space-x-reverse: 0;\n    margin-inline-start: calc(calc(var(--spacing) * 3) * var(--tw-space-x-reverse));\n    margin-inline-end: calc(calc(var(--spacing) * 3) * calc(1 - var(--tw-space-x-reverse)));\n  }\n}\n#class1-math-runtime .divide-x {\n  #class1-math-runtime :where(& > :not(:last-child)) {\n    --tw-divide-x-reverse: 0;\n    border-inline-style: var(--tw-border-style);\n    border-inline-start-width: calc(1px * var(--tw-divide-x-reverse));\n    border-inline-end-width: calc(1px * calc(1 - var(--tw-divide-x-reverse)));\n  }\n}\n#class1-math-runtime .divide-y {\n  #class1-math-runtime :where(& > :not(:last-child)) {\n    --tw-divide-y-reverse: 0;\n    border-bottom-style: var(--tw-border-style);\n    border-top-style: var(--tw-border-style);\n    border-top-width: calc(1px * var(--tw-divide-y-reverse));\n    border-bottom-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));\n  }\n}\n#class1-math-runtime .divide-pink-100 {\n  #class1-math-runtime :where(& > :not(:last-child)) {\n    border-color: var(--color-pink-100);\n  }\n}\n#class1-math-runtime .divide-pink-200 {\n  #class1-math-runtime :where(& > :not(:last-child)) {\n    border-color: var(--color-pink-200);\n  }\n}\n#class1-math-runtime .justify-self-start {\n  justify-self: flex-start;\n}\n#class1-math-runtime .truncate {\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n#class1-math-runtime .overflow-auto {\n  overflow: auto;\n}\n#class1-math-runtime .overflow-hidden {\n  overflow: hidden;\n}\n#class1-math-runtime .overflow-visible {\n  overflow: visible;\n}\n#class1-math-runtime .overflow-x-auto {\n  overflow-x: auto;\n}\n#class1-math-runtime .overflow-y-auto {\n  overflow-y: auto;\n}\n#class1-math-runtime .rounded {\n  border-radius: 0.25rem;\n}\n#class1-math-runtime .rounded-2xl {\n  border-radius: var(--radius-2xl);\n}\n#class1-math-runtime .rounded-3xl {\n  border-radius: var(--radius-3xl);\n}\n#class1-math-runtime .rounded-\\[3px\\] {\n  border-radius: 3px;\n}\n#class1-math-runtime .rounded-\\[22px\\] {\n  border-radius: 22px;\n}\n#class1-math-runtime .rounded-\\[24px\\] {\n  border-radius: 24px;\n}\n#class1-math-runtime .rounded-\\[26px\\] {\n  border-radius: 26px;\n}\n#class1-math-runtime .rounded-\\[28px\\] {\n  border-radius: 28px;\n}\n#class1-math-runtime .rounded-\\[30px\\] {\n  border-radius: 30px;\n}\n#class1-math-runtime .rounded-full {\n  border-radius: calc(infinity * 1px);\n}\n#class1-math-runtime .rounded-lg {\n  border-radius: var(--radius-lg);\n}\n#class1-math-runtime .rounded-xl {\n  border-radius: var(--radius-xl);\n}\n#class1-math-runtime .rounded-t-xl {\n  border-top-left-radius: var(--radius-xl);\n  border-top-right-radius: var(--radius-xl);\n}\n#class1-math-runtime .border {\n  border-style: var(--tw-border-style);\n  border-width: 1px;\n}\n#class1-math-runtime .border-2 {\n  border-style: var(--tw-border-style);\n  border-width: 2px;\n}\n#class1-math-runtime .border-4 {\n  border-style: var(--tw-border-style);\n  border-width: 4px;\n}\n#class1-math-runtime .border-\\[3px\\] {\n  border-style: var(--tw-border-style);\n  border-width: 3px;\n}\n#class1-math-runtime .border-t {\n  border-top-style: var(--tw-border-style);\n  border-top-width: 1px;\n}\n#class1-math-runtime .border-t-2 {\n  border-top-style: var(--tw-border-style);\n  border-top-width: 2px;\n}\n#class1-math-runtime .border-r {\n  border-right-style: var(--tw-border-style);\n  border-right-width: 1px;\n}\n#class1-math-runtime .border-b {\n  border-bottom-style: var(--tw-border-style);\n  border-bottom-width: 1px;\n}\n#class1-math-runtime .border-b-\\[3px\\] {\n  border-bottom-style: var(--tw-border-style);\n  border-bottom-width: 3px;\n}\n#class1-math-runtime .border-b-\\[4px\\] {\n  border-bottom-style: var(--tw-border-style);\n  border-bottom-width: 4px;\n}\n#class1-math-runtime .border-dashed {\n  --tw-border-style: dashed;\n  border-style: dashed;\n}\n#class1-math-runtime .border-amber-100 {\n  border-color: var(--color-amber-100);\n}\n#class1-math-runtime .border-amber-200 {\n  border-color: var(--color-amber-200);\n}\n#class1-math-runtime .border-amber-200\\/60 {\n  border-color: color-mix(in srgb, oklch(92.4% 0.12 95.746) 60%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    border-color: color-mix(in oklab, var(--color-amber-200) 60%, transparent);\n  }\n}\n#class1-math-runtime .border-amber-200\\/80 {\n  border-color: color-mix(in srgb, oklch(92.4% 0.12 95.746) 80%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    border-color: color-mix(in oklab, var(--color-amber-200) 80%, transparent);\n  }\n}\n#class1-math-runtime .border-amber-300 {\n  border-color: var(--color-amber-300);\n}\n#class1-math-runtime .border-amber-400 {\n  border-color: var(--color-amber-400);\n}\n#class1-math-runtime .border-blue-100 {\n  border-color: var(--color-blue-100);\n}\n#class1-math-runtime .border-blue-200 {\n  border-color: var(--color-blue-200);\n}\n#class1-math-runtime .border-blue-300 {\n  border-color: var(--color-blue-300);\n}\n#class1-math-runtime .border-blue-400 {\n  border-color: var(--color-blue-400);\n}\n#class1-math-runtime .border-current\\/20 {\n  border-color: currentcolor;\n  @supports (color: color-mix(in lab, red, red)) {\n    border-color: color-mix(in oklab, currentcolor 20%, transparent);\n  }\n}\n#class1-math-runtime .border-cyan-100 {\n  border-color: var(--color-cyan-100);\n}\n#class1-math-runtime .border-cyan-200 {\n  border-color: var(--color-cyan-200);\n}\n#class1-math-runtime .border-cyan-300 {\n  border-color: var(--color-cyan-300);\n}\n#class1-math-runtime .border-cyan-500 {\n  border-color: var(--color-cyan-500);\n}\n#class1-math-runtime .border-emerald-100 {\n  border-color: var(--color-emerald-100);\n}\n#class1-math-runtime .border-emerald-200 {\n  border-color: var(--color-emerald-200);\n}\n#class1-math-runtime .border-emerald-300 {\n  border-color: var(--color-emerald-300);\n}\n#class1-math-runtime .border-emerald-400 {\n  border-color: var(--color-emerald-400);\n}\n#class1-math-runtime .border-emerald-500 {\n  border-color: var(--color-emerald-500);\n}\n#class1-math-runtime .border-emerald-600 {\n  border-color: var(--color-emerald-600);\n}\n#class1-math-runtime .border-fuchsia-300 {\n  border-color: var(--color-fuchsia-300);\n}\n#class1-math-runtime .border-gray-200 {\n  border-color: var(--color-gray-200);\n}\n#class1-math-runtime .border-green-400 {\n  border-color: var(--color-green-400);\n}\n#class1-math-runtime .border-indigo-100 {\n  border-color: var(--color-indigo-100);\n}\n#class1-math-runtime .border-indigo-200 {\n  border-color: var(--color-indigo-200);\n}\n#class1-math-runtime .border-indigo-300 {\n  border-color: var(--color-indigo-300);\n}\n#class1-math-runtime .border-orange-200 {\n  border-color: var(--color-orange-200);\n}\n#class1-math-runtime .border-pink-100 {\n  border-color: var(--color-pink-100);\n}\n#class1-math-runtime .border-pink-200 {\n  border-color: var(--color-pink-200);\n}\n#class1-math-runtime .border-pink-300 {\n  border-color: var(--color-pink-300);\n}\n#class1-math-runtime .border-pink-500 {\n  border-color: var(--color-pink-500);\n}\n#class1-math-runtime .border-purple-100 {\n  border-color: var(--color-purple-100);\n}\n#class1-math-runtime .border-purple-200 {\n  border-color: var(--color-purple-200);\n}\n#class1-math-runtime .border-purple-300 {\n  border-color: var(--color-purple-300);\n}\n#class1-math-runtime .border-purple-400 {\n  border-color: var(--color-purple-400);\n}\n#class1-math-runtime .border-red-400 {\n  border-color: var(--color-red-400);\n}\n#class1-math-runtime .border-red-500 {\n  border-color: var(--color-red-500);\n}\n#class1-math-runtime .border-rose-100 {\n  border-color: var(--color-rose-100);\n}\n#class1-math-runtime .border-rose-200 {\n  border-color: var(--color-rose-200);\n}\n#class1-math-runtime .border-rose-300 {\n  border-color: var(--color-rose-300);\n}\n#class1-math-runtime .border-rose-400 {\n  border-color: var(--color-rose-400);\n}\n#class1-math-runtime .border-rose-500 {\n  border-color: var(--color-rose-500);\n}\n#class1-math-runtime .border-sky-100 {\n  border-color: var(--color-sky-100);\n}\n#class1-math-runtime .border-sky-200 {\n  border-color: var(--color-sky-200);\n}\n#class1-math-runtime .border-sky-300 {\n  border-color: var(--color-sky-300);\n}\n#class1-math-runtime .border-slate-100 {\n  border-color: var(--color-slate-100);\n}\n#class1-math-runtime .border-slate-200 {\n  border-color: var(--color-slate-200);\n}\n#class1-math-runtime .border-slate-300 {\n  border-color: var(--color-slate-300);\n}\n#class1-math-runtime .border-violet-100 {\n  border-color: var(--color-violet-100);\n}\n#class1-math-runtime .border-violet-200 {\n  border-color: var(--color-violet-200);\n}\n#class1-math-runtime .border-violet-300 {\n  border-color: var(--color-violet-300);\n}\n#class1-math-runtime .border-violet-400 {\n  border-color: var(--color-violet-400);\n}\n#class1-math-runtime .border-violet-600 {\n  border-color: var(--color-violet-600);\n}\n#class1-math-runtime .border-white {\n  border-color: var(--color-white);\n}\n#class1-math-runtime .border-white\\/15 {\n  border-color: color-mix(in srgb, #fff 15%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    border-color: color-mix(in oklab, var(--color-white) 15%, transparent);\n  }\n}\n#class1-math-runtime .border-white\\/20 {\n  border-color: color-mix(in srgb, #fff 20%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    border-color: color-mix(in oklab, var(--color-white) 20%, transparent);\n  }\n}\n#class1-math-runtime .border-yellow-200 {\n  border-color: var(--color-yellow-200);\n}\n#class1-math-runtime .bg-\\[\\#fffdf4\\] {\n  background-color: #fffdf4;\n}\n#class1-math-runtime .bg-amber-50 {\n  background-color: var(--color-amber-50);\n}\n#class1-math-runtime .bg-amber-50\\/55 {\n  background-color: color-mix(in srgb, oklch(98.7% 0.022 95.277) 55%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-amber-50) 55%, transparent);\n  }\n}\n#class1-math-runtime .bg-amber-50\\/60 {\n  background-color: color-mix(in srgb, oklch(98.7% 0.022 95.277) 60%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-amber-50) 60%, transparent);\n  }\n}\n#class1-math-runtime .bg-amber-50\\/70 {\n  background-color: color-mix(in srgb, oklch(98.7% 0.022 95.277) 70%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-amber-50) 70%, transparent);\n  }\n}\n#class1-math-runtime .bg-amber-50\\/80 {\n  background-color: color-mix(in srgb, oklch(98.7% 0.022 95.277) 80%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-amber-50) 80%, transparent);\n  }\n}\n#class1-math-runtime .bg-amber-100 {\n  background-color: var(--color-amber-100);\n}\n#class1-math-runtime .bg-amber-200 {\n  background-color: var(--color-amber-200);\n}\n#class1-math-runtime .bg-amber-500 {\n  background-color: var(--color-amber-500);\n}\n#class1-math-runtime .bg-black\\/30 {\n  background-color: color-mix(in srgb, #000 30%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-black) 30%, transparent);\n  }\n}\n#class1-math-runtime .bg-blue-50 {\n  background-color: var(--color-blue-50);\n}\n#class1-math-runtime .bg-blue-50\\/65 {\n  background-color: color-mix(in srgb, oklch(97% 0.014 254.604) 65%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-blue-50) 65%, transparent);\n  }\n}\n#class1-math-runtime .bg-blue-100 {\n  background-color: var(--color-blue-100);\n}\n#class1-math-runtime .bg-cyan-50 {\n  background-color: var(--color-cyan-50);\n}\n#class1-math-runtime .bg-cyan-50\\/40 {\n  background-color: color-mix(in srgb, oklch(98.4% 0.019 200.873) 40%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-cyan-50) 40%, transparent);\n  }\n}\n#class1-math-runtime .bg-cyan-500 {\n  background-color: var(--color-cyan-500);\n}\n#class1-math-runtime .bg-emerald-50 {\n  background-color: var(--color-emerald-50);\n}\n#class1-math-runtime .bg-emerald-50\\/55 {\n  background-color: color-mix(in srgb, oklch(97.9% 0.021 166.113) 55%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-emerald-50) 55%, transparent);\n  }\n}\n#class1-math-runtime .bg-emerald-50\\/60 {\n  background-color: color-mix(in srgb, oklch(97.9% 0.021 166.113) 60%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-emerald-50) 60%, transparent);\n  }\n}\n#class1-math-runtime .bg-emerald-50\\/70 {\n  background-color: color-mix(in srgb, oklch(97.9% 0.021 166.113) 70%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-emerald-50) 70%, transparent);\n  }\n}\n#class1-math-runtime .bg-emerald-50\\/80 {\n  background-color: color-mix(in srgb, oklch(97.9% 0.021 166.113) 80%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-emerald-50) 80%, transparent);\n  }\n}\n#class1-math-runtime .bg-emerald-100 {\n  background-color: var(--color-emerald-100);\n}\n#class1-math-runtime .bg-emerald-400 {\n  background-color: var(--color-emerald-400);\n}\n#class1-math-runtime .bg-emerald-500 {\n  background-color: var(--color-emerald-500);\n}\n#class1-math-runtime .bg-emerald-600 {\n  background-color: var(--color-emerald-600);\n}\n#class1-math-runtime .bg-fuchsia-50\\/80 {\n  background-color: color-mix(in srgb, oklch(97.7% 0.017 320.058) 80%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-fuchsia-50) 80%, transparent);\n  }\n}\n#class1-math-runtime .bg-gray-100 {\n  background-color: var(--color-gray-100);\n}\n#class1-math-runtime .bg-green-100 {\n  background-color: var(--color-green-100);\n}\n#class1-math-runtime .bg-indigo-50 {\n  background-color: var(--color-indigo-50);\n}\n#class1-math-runtime .bg-indigo-50\\/40 {\n  background-color: color-mix(in srgb, oklch(96.2% 0.018 272.314) 40%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-indigo-50) 40%, transparent);\n  }\n}\n#class1-math-runtime .bg-indigo-50\\/65 {\n  background-color: color-mix(in srgb, oklch(96.2% 0.018 272.314) 65%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-indigo-50) 65%, transparent);\n  }\n}\n#class1-math-runtime .bg-indigo-50\\/70 {\n  background-color: color-mix(in srgb, oklch(96.2% 0.018 272.314) 70%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-indigo-50) 70%, transparent);\n  }\n}\n#class1-math-runtime .bg-indigo-50\\/80 {\n  background-color: color-mix(in srgb, oklch(96.2% 0.018 272.314) 80%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-indigo-50) 80%, transparent);\n  }\n}\n#class1-math-runtime .bg-orange-50 {\n  background-color: var(--color-orange-50);\n}\n#class1-math-runtime .bg-pink-50 {\n  background-color: var(--color-pink-50);\n}\n#class1-math-runtime .bg-pink-50\\/20 {\n  background-color: color-mix(in srgb, oklch(97.1% 0.014 343.198) 20%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-pink-50) 20%, transparent);\n  }\n}\n#class1-math-runtime .bg-pink-50\\/30 {\n  background-color: color-mix(in srgb, oklch(97.1% 0.014 343.198) 30%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-pink-50) 30%, transparent);\n  }\n}\n#class1-math-runtime .bg-pink-50\\/40 {\n  background-color: color-mix(in srgb, oklch(97.1% 0.014 343.198) 40%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-pink-50) 40%, transparent);\n  }\n}\n#class1-math-runtime .bg-pink-50\\/55 {\n  background-color: color-mix(in srgb, oklch(97.1% 0.014 343.198) 55%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-pink-50) 55%, transparent);\n  }\n}\n#class1-math-runtime .bg-pink-50\\/60 {\n  background-color: color-mix(in srgb, oklch(97.1% 0.014 343.198) 60%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-pink-50) 60%, transparent);\n  }\n}\n#class1-math-runtime .bg-pink-50\\/70 {\n  background-color: color-mix(in srgb, oklch(97.1% 0.014 343.198) 70%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-pink-50) 70%, transparent);\n  }\n}\n#class1-math-runtime .bg-pink-50\\/80 {\n  background-color: color-mix(in srgb, oklch(97.1% 0.014 343.198) 80%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-pink-50) 80%, transparent);\n  }\n}\n#class1-math-runtime .bg-pink-50\\/90 {\n  background-color: color-mix(in srgb, oklch(97.1% 0.014 343.198) 90%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-pink-50) 90%, transparent);\n  }\n}\n#class1-math-runtime .bg-pink-100 {\n  background-color: var(--color-pink-100);\n}\n#class1-math-runtime .bg-pink-100\\/70 {\n  background-color: color-mix(in srgb, oklch(94.8% 0.028 342.258) 70%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-pink-100) 70%, transparent);\n  }\n}\n#class1-math-runtime .bg-pink-500 {\n  background-color: var(--color-pink-500);\n}\n#class1-math-runtime .bg-purple-50 {\n  background-color: var(--color-purple-50);\n}\n#class1-math-runtime .bg-purple-50\\/60 {\n  background-color: color-mix(in srgb, oklch(97.7% 0.014 308.299) 60%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-purple-50) 60%, transparent);\n  }\n}\n#class1-math-runtime .bg-purple-50\\/70 {\n  background-color: color-mix(in srgb, oklch(97.7% 0.014 308.299) 70%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-purple-50) 70%, transparent);\n  }\n}\n#class1-math-runtime .bg-purple-50\\/80 {\n  background-color: color-mix(in srgb, oklch(97.7% 0.014 308.299) 80%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-purple-50) 80%, transparent);\n  }\n}\n#class1-math-runtime .bg-purple-100 {\n  background-color: var(--color-purple-100);\n}\n#class1-math-runtime .bg-purple-200 {\n  background-color: var(--color-purple-200);\n}\n#class1-math-runtime .bg-red-200 {\n  background-color: var(--color-red-200);\n}\n#class1-math-runtime .bg-rose-50 {\n  background-color: var(--color-rose-50);\n}\n#class1-math-runtime .bg-rose-50\\/40 {\n  background-color: color-mix(in srgb, oklch(96.9% 0.015 12.422) 40%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-rose-50) 40%, transparent);\n  }\n}\n#class1-math-runtime .bg-rose-50\\/50 {\n  background-color: color-mix(in srgb, oklch(96.9% 0.015 12.422) 50%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-rose-50) 50%, transparent);\n  }\n}\n#class1-math-runtime .bg-rose-50\\/60 {\n  background-color: color-mix(in srgb, oklch(96.9% 0.015 12.422) 60%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-rose-50) 60%, transparent);\n  }\n}\n#class1-math-runtime .bg-rose-50\\/70 {\n  background-color: color-mix(in srgb, oklch(96.9% 0.015 12.422) 70%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-rose-50) 70%, transparent);\n  }\n}\n#class1-math-runtime .bg-rose-50\\/80 {\n  background-color: color-mix(in srgb, oklch(96.9% 0.015 12.422) 80%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-rose-50) 80%, transparent);\n  }\n}\n#class1-math-runtime .bg-rose-100 {\n  background-color: var(--color-rose-100);\n}\n#class1-math-runtime .bg-rose-200 {\n  background-color: var(--color-rose-200);\n}\n#class1-math-runtime .bg-rose-300 {\n  background-color: var(--color-rose-300);\n}\n#class1-math-runtime .bg-rose-500 {\n  background-color: var(--color-rose-500);\n}\n#class1-math-runtime .bg-sky-50 {\n  background-color: var(--color-sky-50);\n}\n#class1-math-runtime .bg-sky-50\\/55 {\n  background-color: color-mix(in srgb, oklch(97.7% 0.013 236.62) 55%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-sky-50) 55%, transparent);\n  }\n}\n#class1-math-runtime .bg-sky-50\\/60 {\n  background-color: color-mix(in srgb, oklch(97.7% 0.013 236.62) 60%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-sky-50) 60%, transparent);\n  }\n}\n#class1-math-runtime .bg-sky-50\\/65 {\n  background-color: color-mix(in srgb, oklch(97.7% 0.013 236.62) 65%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-sky-50) 65%, transparent);\n  }\n}\n#class1-math-runtime .bg-sky-50\\/70 {\n  background-color: color-mix(in srgb, oklch(97.7% 0.013 236.62) 70%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-sky-50) 70%, transparent);\n  }\n}\n#class1-math-runtime .bg-sky-50\\/80 {\n  background-color: color-mix(in srgb, oklch(97.7% 0.013 236.62) 80%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-sky-50) 80%, transparent);\n  }\n}\n#class1-math-runtime .bg-sky-100 {\n  background-color: var(--color-sky-100);\n}\n#class1-math-runtime .bg-sky-200 {\n  background-color: var(--color-sky-200);\n}\n#class1-math-runtime .bg-sky-300 {\n  background-color: var(--color-sky-300);\n}\n#class1-math-runtime .bg-sky-500 {\n  background-color: var(--color-sky-500);\n}\n#class1-math-runtime .bg-slate-50 {\n  background-color: var(--color-slate-50);\n}\n#class1-math-runtime .bg-slate-50\\/70 {\n  background-color: color-mix(in srgb, oklch(98.4% 0.003 247.858) 70%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-slate-50) 70%, transparent);\n  }\n}\n#class1-math-runtime .bg-slate-100 {\n  background-color: var(--color-slate-100);\n}\n#class1-math-runtime .bg-slate-800 {\n  background-color: var(--color-slate-800);\n}\n#class1-math-runtime .bg-slate-900\\/50 {\n  background-color: color-mix(in srgb, oklch(20.8% 0.042 265.755) 50%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-slate-900) 50%, transparent);\n  }\n}\n#class1-math-runtime .bg-slate-900\\/55 {\n  background-color: color-mix(in srgb, oklch(20.8% 0.042 265.755) 55%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-slate-900) 55%, transparent);\n  }\n}\n#class1-math-runtime .bg-slate-900\\/60 {\n  background-color: color-mix(in srgb, oklch(20.8% 0.042 265.755) 60%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-slate-900) 60%, transparent);\n  }\n}\n#class1-math-runtime .bg-slate-950\\/55 {\n  background-color: color-mix(in srgb, oklch(12.9% 0.042 264.695) 55%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-slate-950) 55%, transparent);\n  }\n}\n#class1-math-runtime .bg-violet-50 {\n  background-color: var(--color-violet-50);\n}\n#class1-math-runtime .bg-violet-50\\/40 {\n  background-color: color-mix(in srgb, oklch(96.9% 0.016 293.756) 40%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-violet-50) 40%, transparent);\n  }\n}\n#class1-math-runtime .bg-violet-50\\/50 {\n  background-color: color-mix(in srgb, oklch(96.9% 0.016 293.756) 50%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-violet-50) 50%, transparent);\n  }\n}\n#class1-math-runtime .bg-violet-50\\/60 {\n  background-color: color-mix(in srgb, oklch(96.9% 0.016 293.756) 60%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-violet-50) 60%, transparent);\n  }\n}\n#class1-math-runtime .bg-violet-50\\/65 {\n  background-color: color-mix(in srgb, oklch(96.9% 0.016 293.756) 65%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-violet-50) 65%, transparent);\n  }\n}\n#class1-math-runtime .bg-violet-50\\/80 {\n  background-color: color-mix(in srgb, oklch(96.9% 0.016 293.756) 80%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-violet-50) 80%, transparent);\n  }\n}\n#class1-math-runtime .bg-violet-100 {\n  background-color: var(--color-violet-100);\n}\n#class1-math-runtime .bg-violet-200 {\n  background-color: var(--color-violet-200);\n}\n#class1-math-runtime .bg-violet-300 {\n  background-color: var(--color-violet-300);\n}\n#class1-math-runtime .bg-violet-400 {\n  background-color: var(--color-violet-400);\n}\n#class1-math-runtime .bg-white {\n  background-color: var(--color-white);\n}\n#class1-math-runtime .bg-white\\/10 {\n  background-color: color-mix(in srgb, #fff 10%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-white) 10%, transparent);\n  }\n}\n#class1-math-runtime .bg-white\\/70 {\n  background-color: color-mix(in srgb, #fff 70%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-white) 70%, transparent);\n  }\n}\n#class1-math-runtime .bg-white\\/75 {\n  background-color: color-mix(in srgb, #fff 75%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-white) 75%, transparent);\n  }\n}\n#class1-math-runtime .bg-white\\/80 {\n  background-color: color-mix(in srgb, #fff 80%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-white) 80%, transparent);\n  }\n}\n#class1-math-runtime .bg-white\\/85 {\n  background-color: color-mix(in srgb, #fff 85%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-white) 85%, transparent);\n  }\n}\n#class1-math-runtime .bg-white\\/90 {\n  background-color: color-mix(in srgb, #fff 90%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-white) 90%, transparent);\n  }\n}\n#class1-math-runtime .bg-white\\/95 {\n  background-color: color-mix(in srgb, #fff 95%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    background-color: color-mix(in oklab, var(--color-white) 95%, transparent);\n  }\n}\n#class1-math-runtime .bg-gradient-to-b {\n  --tw-gradient-position: to bottom in oklab;\n  background-image: linear-gradient(var(--tw-gradient-stops));\n}\n#class1-math-runtime .bg-gradient-to-br {\n  --tw-gradient-position: to bottom right in oklab;\n  background-image: linear-gradient(var(--tw-gradient-stops));\n}\n#class1-math-runtime .bg-gradient-to-r {\n  --tw-gradient-position: to right in oklab;\n  background-image: linear-gradient(var(--tw-gradient-stops));\n}\n#class1-math-runtime .bg-gradient-to-tr {\n  --tw-gradient-position: to top right in oklab;\n  background-image: linear-gradient(var(--tw-gradient-stops));\n}\n#class1-math-runtime .from-amber-50 {\n  --tw-gradient-from: var(--color-amber-50);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-amber-50\\/70 {\n  --tw-gradient-from: color-mix(in srgb, oklch(98.7% 0.022 95.277) 70%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-from: color-mix(in oklab, var(--color-amber-50) 70%, transparent);\n  }\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-amber-50\\/90 {\n  --tw-gradient-from: color-mix(in srgb, oklch(98.7% 0.022 95.277) 90%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-from: color-mix(in oklab, var(--color-amber-50) 90%, transparent);\n  }\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-amber-400 {\n  --tw-gradient-from: var(--color-amber-400);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-amber-500 {\n  --tw-gradient-from: var(--color-amber-500);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-cyan-50 {\n  --tw-gradient-from: var(--color-cyan-50);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-cyan-700 {\n  --tw-gradient-from: var(--color-cyan-700);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-emerald-50 {\n  --tw-gradient-from: var(--color-emerald-50);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-emerald-500 {\n  --tw-gradient-from: var(--color-emerald-500);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-fuchsia-400 {\n  --tw-gradient-from: var(--color-fuchsia-400);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-orange-400 {\n  --tw-gradient-from: var(--color-orange-400);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-pink-50 {\n  --tw-gradient-from: var(--color-pink-50);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-pink-50\\/30 {\n  --tw-gradient-from: color-mix(in srgb, oklch(97.1% 0.014 343.198) 30%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-from: color-mix(in oklab, var(--color-pink-50) 30%, transparent);\n  }\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-pink-50\\/70 {\n  --tw-gradient-from: color-mix(in srgb, oklch(97.1% 0.014 343.198) 70%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-from: color-mix(in oklab, var(--color-pink-50) 70%, transparent);\n  }\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-pink-100 {\n  --tw-gradient-from: var(--color-pink-100);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-pink-400 {\n  --tw-gradient-from: var(--color-pink-400);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-pink-500 {\n  --tw-gradient-from: var(--color-pink-500);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-purple-50 {\n  --tw-gradient-from: var(--color-purple-50);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-purple-400 {\n  --tw-gradient-from: var(--color-purple-400);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-purple-500 {\n  --tw-gradient-from: var(--color-purple-500);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-rose-600 {\n  --tw-gradient-from: var(--color-rose-600);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-rose-900 {\n  --tw-gradient-from: var(--color-rose-900);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-sky-50 {\n  --tw-gradient-from: var(--color-sky-50);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-violet-50 {\n  --tw-gradient-from: var(--color-violet-50);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-violet-400 {\n  --tw-gradient-from: var(--color-violet-400);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-white {\n  --tw-gradient-from: var(--color-white);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .from-yellow-50 {\n  --tw-gradient-from: var(--color-yellow-50);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .via-amber-50\\/20 {\n  --tw-gradient-via: color-mix(in srgb, oklch(98.7% 0.022 95.277) 20%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-via: color-mix(in oklab, var(--color-amber-50) 20%, transparent);\n  }\n  --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);\n  --tw-gradient-stops: var(--tw-gradient-via-stops);\n}\n#class1-math-runtime .via-emerald-50\\/20 {\n  --tw-gradient-via: color-mix(in srgb, oklch(97.9% 0.021 166.113) 20%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-via: color-mix(in oklab, var(--color-emerald-50) 20%, transparent);\n  }\n  --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);\n  --tw-gradient-stops: var(--tw-gradient-via-stops);\n}\n#class1-math-runtime .via-indigo-400 {\n  --tw-gradient-via: var(--color-indigo-400);\n  --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);\n  --tw-gradient-stops: var(--tw-gradient-via-stops);\n}\n#class1-math-runtime .via-orange-50\\/60 {\n  --tw-gradient-via: color-mix(in srgb, oklch(98% 0.016 73.684) 60%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-via: color-mix(in oklab, var(--color-orange-50) 60%, transparent);\n  }\n  --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);\n  --tw-gradient-stops: var(--tw-gradient-via-stops);\n}\n#class1-math-runtime .via-pink-50 {\n  --tw-gradient-via: var(--color-pink-50);\n  --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);\n  --tw-gradient-stops: var(--tw-gradient-via-stops);\n}\n#class1-math-runtime .via-pink-50\\/20 {\n  --tw-gradient-via: color-mix(in srgb, oklch(97.1% 0.014 343.198) 20%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-via: color-mix(in oklab, var(--color-pink-50) 20%, transparent);\n  }\n  --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);\n  --tw-gradient-stops: var(--tw-gradient-via-stops);\n}\n#class1-math-runtime .via-pink-950 {\n  --tw-gradient-via: var(--color-pink-950);\n  --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);\n  --tw-gradient-stops: var(--tw-gradient-via-stops);\n}\n#class1-math-runtime .via-purple-50\\/20 {\n  --tw-gradient-via: color-mix(in srgb, oklch(97.7% 0.014 308.299) 20%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-via: color-mix(in oklab, var(--color-purple-50) 20%, transparent);\n  }\n  --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);\n  --tw-gradient-stops: var(--tw-gradient-via-stops);\n}\n#class1-math-runtime .via-purple-400 {\n  --tw-gradient-via: var(--color-purple-400);\n  --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);\n  --tw-gradient-stops: var(--tw-gradient-via-stops);\n}\n#class1-math-runtime .via-rose-50\\/15 {\n  --tw-gradient-via: color-mix(in srgb, oklch(96.9% 0.015 12.422) 15%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-via: color-mix(in oklab, var(--color-rose-50) 15%, transparent);\n  }\n  --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);\n  --tw-gradient-stops: var(--tw-gradient-via-stops);\n}\n#class1-math-runtime .via-sky-50\\/20 {\n  --tw-gradient-via: color-mix(in srgb, oklch(97.7% 0.013 236.62) 20%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-via: color-mix(in oklab, var(--color-sky-50) 20%, transparent);\n  }\n  --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);\n  --tw-gradient-stops: var(--tw-gradient-via-stops);\n}\n#class1-math-runtime .via-violet-50\\/40 {\n  --tw-gradient-via: color-mix(in srgb, oklch(96.9% 0.016 293.756) 40%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-via: color-mix(in oklab, var(--color-violet-50) 40%, transparent);\n  }\n  --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);\n  --tw-gradient-stops: var(--tw-gradient-via-stops);\n}\n#class1-math-runtime .via-violet-600 {\n  --tw-gradient-via: var(--color-violet-600);\n  --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);\n  --tw-gradient-stops: var(--tw-gradient-via-stops);\n}\n#class1-math-runtime .via-white {\n  --tw-gradient-via: var(--color-white);\n  --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);\n  --tw-gradient-stops: var(--tw-gradient-via-stops);\n}\n#class1-math-runtime .to-amber-50 {\n  --tw-gradient-to: var(--color-amber-50);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-amber-50\\/20 {\n  --tw-gradient-to: color-mix(in srgb, oklch(98.7% 0.022 95.277) 20%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-to: color-mix(in oklab, var(--color-amber-50) 20%, transparent);\n  }\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-amber-500 {\n  --tw-gradient-to: var(--color-amber-500);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-emerald-50 {\n  --tw-gradient-to: var(--color-emerald-50);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-fuchsia-50 {\n  --tw-gradient-to: var(--color-fuchsia-50);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-indigo-50 {\n  --tw-gradient-to: var(--color-indigo-50);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-indigo-50\\/20 {\n  --tw-gradient-to: color-mix(in srgb, oklch(96.2% 0.018 272.314) 20%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-to: color-mix(in oklab, var(--color-indigo-50) 20%, transparent);\n  }\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-indigo-50\\/30 {\n  --tw-gradient-to: color-mix(in srgb, oklch(96.2% 0.018 272.314) 30%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-to: color-mix(in oklab, var(--color-indigo-50) 30%, transparent);\n  }\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-indigo-400 {\n  --tw-gradient-to: var(--color-indigo-400);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-indigo-500 {\n  --tw-gradient-to: var(--color-indigo-500);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-orange-50 {\n  --tw-gradient-to: var(--color-orange-50);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-orange-400 {\n  --tw-gradient-to: var(--color-orange-400);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-orange-500 {\n  --tw-gradient-to: var(--color-orange-500);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-pink-50 {\n  --tw-gradient-to: var(--color-pink-50);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-pink-50\\/40 {\n  --tw-gradient-to: color-mix(in srgb, oklch(97.1% 0.014 343.198) 40%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-to: color-mix(in oklab, var(--color-pink-50) 40%, transparent);\n  }\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-purple-50 {\n  --tw-gradient-to: var(--color-purple-50);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-purple-50\\/30 {\n  --tw-gradient-to: color-mix(in srgb, oklch(97.7% 0.014 308.299) 30%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-to: color-mix(in oklab, var(--color-purple-50) 30%, transparent);\n  }\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-purple-50\\/70 {\n  --tw-gradient-to: color-mix(in srgb, oklch(97.7% 0.014 308.299) 70%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-to: color-mix(in oklab, var(--color-purple-50) 70%, transparent);\n  }\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-purple-100 {\n  --tw-gradient-to: var(--color-purple-100);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-purple-500 {\n  --tw-gradient-to: var(--color-purple-500);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-purple-700 {\n  --tw-gradient-to: var(--color-purple-700);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-red-600 {\n  --tw-gradient-to: var(--color-red-600);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-rose-50 {\n  --tw-gradient-to: var(--color-rose-50);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-rose-50\\/50 {\n  --tw-gradient-to: color-mix(in srgb, oklch(96.9% 0.015 12.422) 50%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-to: color-mix(in oklab, var(--color-rose-50) 50%, transparent);\n  }\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-rose-50\\/60 {\n  --tw-gradient-to: color-mix(in srgb, oklch(96.9% 0.015 12.422) 60%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-to: color-mix(in oklab, var(--color-rose-50) 60%, transparent);\n  }\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-rose-400 {\n  --tw-gradient-to: var(--color-rose-400);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-rose-500 {\n  --tw-gradient-to: var(--color-rose-500);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-rose-900 {\n  --tw-gradient-to: var(--color-rose-900);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-sky-50 {\n  --tw-gradient-to: var(--color-sky-50);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-sky-50\\/20 {\n  --tw-gradient-to: color-mix(in srgb, oklch(97.7% 0.013 236.62) 20%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-to: color-mix(in oklab, var(--color-sky-50) 20%, transparent);\n  }\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-sky-50\\/30 {\n  --tw-gradient-to: color-mix(in srgb, oklch(97.7% 0.013 236.62) 30%, transparent);\n  @supports (color: color-mix(in lab, red, red)) {\n    --tw-gradient-to: color-mix(in oklab, var(--color-sky-50) 30%, transparent);\n  }\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-sky-400 {\n  --tw-gradient-to: var(--color-sky-400);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-teal-500 {\n  --tw-gradient-to: var(--color-teal-500);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-violet-50 {\n  --tw-gradient-to: var(--color-violet-50);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .to-violet-500 {\n  --tw-gradient-to: var(--color-violet-500);\n  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n}\n#class1-math-runtime .bg-clip-text {\n  background-clip: text;\n}\n#class1-math-runtime .object-contain {\n  object-fit: contain;\n}\n#class1-math-runtime .object-cover {\n  object-fit: cover;\n}\n#class1-math-runtime .p-0 {\n  padding: calc(var(--spacing) * 0);\n}\n#class1-math-runtime .p-1 {\n  padding: calc(var(--spacing) * 1);\n}\n#class1-math-runtime .p-2 {\n  padding: calc(var(--spacing) * 2);\n}\n#class1-math-runtime .p-2\\.5 {\n  padding: calc(var(--spacing) * 2.5);\n}\n#class1-math-runtime .p-3 {\n  padding: calc(var(--spacing) * 3);\n}\n#class1-math-runtime .p-3\\.5 {\n  padding: calc(var(--spacing) * 3.5);\n}\n#class1-math-runtime .p-4 {\n  padding: calc(var(--spacing) * 4);\n}\n#class1-math-runtime .p-5 {\n  padding: calc(var(--spacing) * 5);\n}\n#class1-math-runtime .p-6 {\n  padding: calc(var(--spacing) * 6);\n}\n#class1-math-runtime .px-1 {\n  padding-inline: calc(var(--spacing) * 1);\n}\n#class1-math-runtime .px-1\\.5 {\n  padding-inline: calc(var(--spacing) * 1.5);\n}\n#class1-math-runtime .px-2 {\n  padding-inline: calc(var(--spacing) * 2);\n}\n#class1-math-runtime .px-2\\.5 {\n  padding-inline: calc(var(--spacing) * 2.5);\n}\n#class1-math-runtime .px-3 {\n  padding-inline: calc(var(--spacing) * 3);\n}\n#class1-math-runtime .px-3\\.5 {\n  padding-inline: calc(var(--spacing) * 3.5);\n}\n#class1-math-runtime .px-4 {\n  padding-inline: calc(var(--spacing) * 4);\n}\n#class1-math-runtime .px-5 {\n  padding-inline: calc(var(--spacing) * 5);\n}\n#class1-math-runtime .px-6 {\n  padding-inline: calc(var(--spacing) * 6);\n}\n#class1-math-runtime .px-8 {\n  padding-inline: calc(var(--spacing) * 8);\n}\n#class1-math-runtime .py-0\\.5 {\n  padding-block: calc(var(--spacing) * 0.5);\n}\n#class1-math-runtime .py-1 {\n  padding-block: calc(var(--spacing) * 1);\n}\n#class1-math-runtime .py-1\\.5 {\n  padding-block: calc(var(--spacing) * 1.5);\n}\n#class1-math-runtime .py-2 {\n  padding-block: calc(var(--spacing) * 2);\n}\n#class1-math-runtime .py-2\\.5 {\n  padding-block: calc(var(--spacing) * 2.5);\n}\n#class1-math-runtime .py-3 {\n  padding-block: calc(var(--spacing) * 3);\n}\n#class1-math-runtime .py-3\\.5 {\n  padding-block: calc(var(--spacing) * 3.5);\n}\n#class1-math-runtime .py-4 {\n  padding-block: calc(var(--spacing) * 4);\n}\n#class1-math-runtime .py-5 {\n  padding-block: calc(var(--spacing) * 5);\n}\n#class1-math-runtime .py-6 {\n  padding-block: calc(var(--spacing) * 6);\n}\n#class1-math-runtime .py-8 {\n  padding-block: calc(var(--spacing) * 8);\n}\n#class1-math-runtime .py-14 {\n  padding-block: calc(var(--spacing) * 14);\n}\n#class1-math-runtime .py-16 {\n  padding-block: calc(var(--spacing) * 16);\n}\n#class1-math-runtime .pt-0 {\n  padding-top: calc(var(--spacing) * 0);\n}\n#class1-math-runtime .pt-0\\.5 {\n  padding-top: calc(var(--spacing) * 0.5);\n}\n#class1-math-runtime .pt-1 {\n  padding-top: calc(var(--spacing) * 1);\n}\n#class1-math-runtime .pt-2 {\n  padding-top: calc(var(--spacing) * 2);\n}\n#class1-math-runtime .pt-3 {\n  padding-top: calc(var(--spacing) * 3);\n}\n#class1-math-runtime .pt-4 {\n  padding-top: calc(var(--spacing) * 4);\n}\n#class1-math-runtime .pt-5 {\n  padding-top: calc(var(--spacing) * 5);\n}\n#class1-math-runtime .pr-3 {\n  padding-right: calc(var(--spacing) * 3);\n}\n#class1-math-runtime .pr-4 {\n  padding-right: calc(var(--spacing) * 4);\n}\n#class1-math-runtime .pb-1 {\n  padding-bottom: calc(var(--spacing) * 1);\n}\n#class1-math-runtime .pb-1\\.5 {\n  padding-bottom: calc(var(--spacing) * 1.5);\n}\n#class1-math-runtime .pb-2 {\n  padding-bottom: calc(var(--spacing) * 2);\n}\n#class1-math-runtime .pb-4 {\n  padding-bottom: calc(var(--spacing) * 4);\n}\n#class1-math-runtime .pb-\\[4px\\] {\n  padding-bottom: 4px;\n}\n#class1-math-runtime .pb-\\[5px\\] {\n  padding-bottom: 5px;\n}\n#class1-math-runtime .pl-4 {\n  padding-left: calc(var(--spacing) * 4);\n}\n#class1-math-runtime .pl-5 {\n  padding-left: calc(var(--spacing) * 5);\n}\n#class1-math-runtime .pl-10 {\n  padding-left: calc(var(--spacing) * 10);\n}\n#class1-math-runtime .pl-11 {\n  padding-left: calc(var(--spacing) * 11);\n}\n#class1-math-runtime .text-center {\n  text-align: center;\n}\n#class1-math-runtime .text-left {\n  text-align: left;\n}\n#class1-math-runtime .text-right {\n  text-align: right;\n}\n#class1-math-runtime .align-middle {\n  vertical-align: middle;\n}\n#class1-math-runtime .text-2xl {\n  font-size: var(--text-2xl);\n  line-height: var(--tw-leading, var(--text-2xl--line-height));\n}\n#class1-math-runtime .text-3xl {\n  font-size: var(--text-3xl);\n  line-height: var(--tw-leading, var(--text-3xl--line-height));\n}\n#class1-math-runtime .text-4xl {\n  font-size: var(--text-4xl);\n  line-height: var(--tw-leading, var(--text-4xl--line-height));\n}\n#class1-math-runtime .text-5xl {\n  font-size: var(--text-5xl);\n  line-height: var(--tw-leading, var(--text-5xl--line-height));\n}\n#class1-math-runtime .text-6xl {\n  font-size: var(--text-6xl);\n  line-height: var(--tw-leading, var(--text-6xl--line-height));\n}\n#class1-math-runtime .text-7xl {\n  font-size: var(--text-7xl);\n  line-height: var(--tw-leading, var(--text-7xl--line-height));\n}\n#class1-math-runtime .text-8xl {\n  font-size: var(--text-8xl);\n  line-height: var(--tw-leading, var(--text-8xl--line-height));\n}\n#class1-math-runtime .text-base {\n  font-size: var(--text-base);\n  line-height: var(--tw-leading, var(--text-base--line-height));\n}\n#class1-math-runtime .text-lg {\n  font-size: var(--text-lg);\n  line-height: var(--tw-leading, var(--text-lg--line-height));\n}\n#class1-math-runtime .text-sm {\n  font-size: var(--text-sm);\n  line-height: var(--tw-leading, var(--text-sm--line-height));\n}\n#class1-math-runtime .text-xl {\n  font-size: var(--text-xl);\n  line-height: var(--tw-leading, var(--text-xl--line-height));\n}\n#class1-math-runtime .text-xs {\n  font-size: var(--text-xs);\n  line-height: var(--tw-leading, var(--text-xs--line-height));\n}\n#class1-math-runtime .text-\\[9px\\] {\n  font-size: 16px;\n}\n#class1-math-runtime .text-\\[10px\\] {\n  font-size: 16px;\n}\n#class1-math-runtime .text-\\[11px\\] {\n  font-size: 16px;\n}\n#class1-math-runtime .text-\\[12px\\] {\n  font-size: 16px;\n}\n#class1-math-runtime .text-\\[13px\\] {\n  font-size: 16px;\n}\n#class1-math-runtime .text-\\[17px\\] {\n  font-size: 17px;\n}\n#class1-math-runtime .text-\\[24px\\] {\n  font-size: 24px;\n}\n#class1-math-runtime .text-\\[26px\\] {\n  font-size: 26px;\n}\n#class1-math-runtime .text-\\[27px\\] {\n  font-size: 27px;\n}\n#class1-math-runtime .text-\\[30px\\] {\n  font-size: 30px;\n}\n#class1-math-runtime .text-\\[34px\\] {\n  font-size: 34px;\n}\n#class1-math-runtime .text-\\[38px\\] {\n  font-size: 38px;\n}\n#class1-math-runtime .text-\\[42px\\] {\n  font-size: 42px;\n}\n#class1-math-runtime .text-\\[46px\\] {\n  font-size: 46px;\n}\n#class1-math-runtime .text-\\[52px\\] {\n  font-size: 52px;\n}\n#class1-math-runtime .text-\\[58px\\] {\n  font-size: 58px;\n}\n#class1-math-runtime .text-\\[60px\\] {\n  font-size: 60px;\n}\n#class1-math-runtime .text-\\[64px\\] {\n  font-size: 64px;\n}\n#class1-math-runtime .text-\\[70px\\] {\n  font-size: 70px;\n}\n#class1-math-runtime .text-\\[78px\\] {\n  font-size: 78px;\n}\n#class1-math-runtime .text-\\[82px\\] {\n  font-size: 82px;\n}\n#class1-math-runtime .text-\\[95px\\] {\n  font-size: 95px;\n}\n#class1-math-runtime .text-\\[110px\\] {\n  font-size: 110px;\n}\n#class1-math-runtime .text-\\[120px\\] {\n  font-size: 120px;\n}\n#class1-math-runtime .leading-5 {\n  --tw-leading: calc(var(--spacing) * 5);\n  line-height: calc(var(--spacing) * 5);\n}\n#class1-math-runtime .leading-7 {\n  --tw-leading: calc(var(--spacing) * 7);\n  line-height: calc(var(--spacing) * 7);\n}\n#class1-math-runtime .leading-\\[1\\.7\\] {\n  --tw-leading: 1.7;\n  line-height: 1.7;\n}\n#class1-math-runtime .leading-\\[1\\.22\\] {\n  --tw-leading: 1.22;\n  line-height: 1.22;\n}\n#class1-math-runtime .leading-\\[1\\.24\\] {\n  --tw-leading: 1.24;\n  line-height: 1.24;\n}\n#class1-math-runtime .leading-\\[1\\.25\\] {\n  --tw-leading: 1.25;\n  line-height: 1.25;\n}\n#class1-math-runtime .leading-none {\n  --tw-leading: 1;\n  line-height: 1;\n}\n#class1-math-runtime .leading-normal {\n  --tw-leading: var(--leading-normal);\n  line-height: var(--leading-normal);\n}\n#class1-math-runtime .leading-relaxed {\n  --tw-leading: var(--leading-relaxed);\n  line-height: var(--leading-relaxed);\n}\n#class1-math-runtime .leading-snug {\n  --tw-leading: var(--leading-snug);\n  line-height: var(--leading-snug);\n}\n#class1-math-runtime .leading-tight {\n  --tw-leading: var(--leading-tight);\n  line-height: var(--leading-tight);\n}\n#class1-math-runtime .font-black {\n  --tw-font-weight: var(--font-weight-black);\n  font-weight: var(--font-weight-black);\n}\n#class1-math-runtime .font-bold {\n  --tw-font-weight: var(--font-weight-bold);\n  font-weight: var(--font-weight-bold);\n}\n#class1-math-runtime .font-extrabold {\n  --tw-font-weight: var(--font-weight-extrabold);\n  font-weight: var(--font-weight-extrabold);\n}\n#class1-math-runtime .font-semibold {\n  --tw-font-weight: var(--font-weight-semibold);\n  font-weight: var(--font-weight-semibold);\n}\n#class1-math-runtime .tracking-\\[\\.16em\\] {\n  --tw-tracking: .16em;\n  letter-spacing: .16em;\n}\n#class1-math-runtime .tracking-\\[\\.26em\\] {\n  --tw-tracking: .26em;\n  letter-spacing: .26em;\n}\n#class1-math-runtime .tracking-\\[\\.35em\\] {\n  --tw-tracking: .35em;\n  letter-spacing: .35em;\n}\n#class1-math-runtime .tracking-\\[0\\.06em\\] {\n  --tw-tracking: 0.06em;\n  letter-spacing: 0.06em;\n}\n#class1-math-runtime .tracking-tight {\n  --tw-tracking: var(--tracking-tight);\n  letter-spacing: var(--tracking-tight);\n}\n#class1-math-runtime .tracking-wide {\n  --tw-tracking: var(--tracking-wide);\n  letter-spacing: var(--tracking-wide);\n}\n#class1-math-runtime .tracking-wider {\n  --tw-tracking: var(--tracking-wider);\n  letter-spacing: var(--tracking-wider);\n}\n#class1-math-runtime .break-words {\n  overflow-wrap: break-word;\n}\n#class1-math-runtime .whitespace-nowrap {\n  white-space: nowrap;\n}\n#class1-math-runtime .whitespace-pre-line {\n  white-space: pre-line;\n}\n#class1-math-runtime .text-amber-300 {\n  color: var(--color-amber-300);\n}\n#class1-math-runtime .text-amber-600 {\n  color: var(--color-amber-600);\n}\n#class1-math-runtime .text-amber-700 {\n  color: var(--color-amber-700);\n}\n#class1-math-runtime .text-amber-800 {\n  color: var(--color-amber-800);\n}\n#class1-math-runtime .text-amber-900 {\n  color: var(--color-amber-900);\n}\n#class1-math-runtime .text-amber-950 {\n  color: var(--color-amber-950);\n}\n#class1-math-runtime .text-blue-700 {\n  color: var(--color-blue-700);\n}\n#class1-math-runtime .text-blue-800 {\n  color: var(--color-blue-800);\n}\n#class1-math-runtime .text-cyan-500 {\n  color: var(--color-cyan-500);\n}\n#class1-math-runtime .text-cyan-600 {\n  color: var(--color-cyan-600);\n}\n#class1-math-runtime .text-cyan-700 {\n  color: var(--color-cyan-700);\n}\n#class1-math-runtime .text-cyan-800 {\n  color: var(--color-cyan-800);\n}\n#class1-math-runtime .text-emerald-300 {\n  color: var(--color-emerald-300);\n}\n#class1-math-runtime .text-emerald-500 {\n  color: var(--color-emerald-500);\n}\n#class1-math-runtime .text-emerald-600 {\n  color: var(--color-emerald-600);\n}\n#class1-math-runtime .text-emerald-700 {\n  color: var(--color-emerald-700);\n}\n#class1-math-runtime .text-emerald-800 {\n  color: var(--color-emerald-800);\n}\n#class1-math-runtime .text-emerald-900 {\n  color: var(--color-emerald-900);\n}\n#class1-math-runtime .text-fuchsia-500 {\n  color: var(--color-fuchsia-500);\n}\n#class1-math-runtime .text-fuchsia-600 {\n  color: var(--color-fuchsia-600);\n}\n#class1-math-runtime .text-fuchsia-700 {\n  color: var(--color-fuchsia-700);\n}\n#class1-math-runtime .text-gray-400 {\n  color: var(--color-gray-400);\n}\n#class1-math-runtime .text-gray-500 {\n  color: var(--color-gray-500);\n}\n#class1-math-runtime .text-gray-600 {\n  color: var(--color-gray-600);\n}\n#class1-math-runtime .text-gray-700 {\n  color: var(--color-gray-700);\n}\n#class1-math-runtime .text-gray-800 {\n  color: var(--color-gray-800);\n}\n#class1-math-runtime .text-gray-900 {\n  color: var(--color-gray-900);\n}\n#class1-math-runtime .text-green-800 {\n  color: var(--color-green-800);\n}\n#class1-math-runtime .text-indigo-500 {\n  color: var(--color-indigo-500);\n}\n#class1-math-runtime .text-indigo-600 {\n  color: var(--color-indigo-600);\n}\n#class1-math-runtime .text-indigo-700 {\n  color: var(--color-indigo-700);\n}\n#class1-math-runtime .text-indigo-800 {\n  color: var(--color-indigo-800);\n}\n#class1-math-runtime .text-orange-600 {\n  color: var(--color-orange-600);\n}\n#class1-math-runtime .text-pink-200 {\n  color: var(--color-pink-200);\n}\n#class1-math-runtime .text-pink-300 {\n  color: var(--color-pink-300);\n}\n#class1-math-runtime .text-pink-400 {\n  color: var(--color-pink-400);\n}\n#class1-math-runtime .text-pink-500 {\n  color: var(--color-pink-500);\n}\n#class1-math-runtime .text-pink-600 {\n  color: var(--color-pink-600);\n}\n#class1-math-runtime .text-pink-700 {\n  color: var(--color-pink-700);\n}\n#class1-math-runtime .text-pink-800 {\n  color: var(--color-pink-800);\n}\n#class1-math-runtime .text-pink-950 {\n  color: var(--color-pink-950);\n}\n#class1-math-runtime .text-purple-400 {\n  color: var(--color-purple-400);\n}\n#class1-math-runtime .text-purple-500 {\n  color: var(--color-purple-500);\n}\n#class1-math-runtime .text-purple-600 {\n  color: var(--color-purple-600);\n}\n#class1-math-runtime .text-purple-700 {\n  color: var(--color-purple-700);\n}\n#class1-math-runtime .text-purple-800 {\n  color: var(--color-purple-800);\n}\n#class1-math-runtime .text-red-500 {\n  color: var(--color-red-500);\n}\n#class1-math-runtime .text-red-800 {\n  color: var(--color-red-800);\n}\n#class1-math-runtime .text-red-900 {\n  color: var(--color-red-900);\n}\n#class1-math-runtime .text-rose-400 {\n  color: var(--color-rose-400);\n}\n#class1-math-runtime .text-rose-500 {\n  color: var(--color-rose-500);\n}\n#class1-math-runtime .text-rose-600 {\n  color: var(--color-rose-600);\n}\n#class1-math-runtime .text-rose-700 {\n  color: var(--color-rose-700);\n}\n#class1-math-runtime .text-rose-800 {\n  color: var(--color-rose-800);\n}\n#class1-math-runtime .text-sky-600 {\n  color: var(--color-sky-600);\n}\n#class1-math-runtime .text-sky-700 {\n  color: var(--color-sky-700);\n}\n#class1-math-runtime .text-slate-200 {\n  color: var(--color-slate-200);\n}\n#class1-math-runtime .text-slate-300 {\n  color: var(--color-slate-300);\n}\n#class1-math-runtime .text-slate-400 {\n  color: var(--color-slate-400);\n}\n#class1-math-runtime .text-slate-500 {\n  color: var(--color-slate-500);\n}\n#class1-math-runtime .text-slate-600 {\n  color: var(--color-slate-600);\n}\n#class1-math-runtime .text-slate-700 {\n  color: var(--color-slate-700);\n}\n#class1-math-runtime .text-slate-800 {\n  color: var(--color-slate-800);\n}\n#class1-math-runtime .text-slate-900 {\n  color: var(--color-slate-900);\n}\n#class1-math-runtime .text-teal-600 {\n  color: var(--color-teal-600);\n}\n#class1-math-runtime .text-transparent {\n  color: transparent;\n}\n#class1-math-runtime .text-violet-200 {\n  color: var(--color-violet-200);\n}\n#class1-math-runtime .text-violet-500 {\n  color: var(--color-violet-500);\n}\n#class1-math-runtime .text-violet-600 {\n  color: var(--color-violet-600);\n}\n#class1-math-runtime .text-violet-700 {\n  color: var(--color-violet-700);\n}\n#class1-math-runtime .text-violet-800 {\n  color: var(--color-violet-800);\n}\n#class1-math-runtime .text-white {\n  color: var(--color-white);\n}\n#class1-math-runtime .uppercase {\n  text-transform: uppercase;\n}\n#class1-math-runtime .underline {\n  text-decoration-line: underline;\n}\n#class1-math-runtime .decoration-4 {\n  text-decoration-thickness: 4px;\n}\n#class1-math-runtime .underline-offset-8 {\n  text-underline-offset: 8px;\n}\n#class1-math-runtime .placeholder-gray-300 {\n  #class1-math-runtime &::placeholder {\n    color: var(--color-gray-300);\n  }\n}\n#class1-math-runtime .accent-emerald-500 {\n  accent-color: var(--color-emerald-500);\n}\n#class1-math-runtime .opacity-0 {\n  opacity: 0%;\n}\n#class1-math-runtime .opacity-25 {\n  opacity: 25%;\n}\n#class1-math-runtime .opacity-30 {\n  opacity: 30%;\n}\n#class1-math-runtime .opacity-40 {\n  opacity: 40%;\n}\n#class1-math-runtime .opacity-45 {\n  opacity: 45%;\n}\n#class1-math-runtime .opacity-60 {\n  opacity: 60%;\n}\n#class1-math-runtime .opacity-70 {\n  opacity: 70%;\n}\n#class1-math-runtime .opacity-75 {\n  opacity: 75%;\n}\n#class1-math-runtime .opacity-80 {\n  opacity: 80%;\n}\n#class1-math-runtime .shadow {\n  --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));\n  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);\n}\n#class1-math-runtime .shadow-2xl {\n  --tw-shadow: 0 25px 50px -12px var(--tw-shadow-color, rgb(0 0 0 / 0.25));\n  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);\n}\n#class1-math-runtime .shadow-inner {\n  --tw-shadow: inset 0 2px 4px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.05));\n  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);\n}\n#class1-math-runtime .shadow-md {\n  --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1));\n  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);\n}\n#class1-math-runtime .shadow-sm {\n  --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));\n  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);\n}\n#class1-math-runtime .shadow-xl {\n  --tw-shadow: 0 20px 25px -5px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 8px 10px -6px var(--tw-shadow-color, rgb(0 0 0 / 0.1));\n  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);\n}\n#class1-math-runtime .shadow-xs {\n  --tw-shadow: 0 1px 2px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.05));\n  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);\n}\n#class1-math-runtime .ring {\n  --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);\n  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);\n}\n#class1-math-runtime .ring-2 {\n  --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);\n  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);\n}\n#class1-math-runtime .ring-4 {\n  --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);\n  box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);\n}\n#class1-math-runtime .ring-amber-200 {\n  --tw-ring-color: var(--color-amber-200);\n}\n#class1-math-runtime .ring-amber-300 {\n  --tw-ring-color: var(--color-amber-300);\n}\n#class1-math-runtime .ring-emerald-200 {\n  --tw-ring-color: var(--color-emerald-200);\n}\n#class1-math-runtime .ring-pink-200 {\n  --tw-ring-color: var(--color-pink-200);\n}\n#class1-math-runtime .ring-purple-200 {\n  --tw-ring-color: var(--color-purple-200);\n}\n#class1-math-runtime .ring-rose-200 {\n  --tw-ring-color: var(--color-rose-200);\n}\n#class1-math-runtime .ring-violet-200 {\n  --tw-ring-color: var(--color-violet-200);\n}\n#class1-math-runtime .grayscale-\\[25\\%\\] {\n  --tw-grayscale: grayscale(25%);\n  filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);\n}\n#class1-math-runtime .filter {\n  filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);\n}\n#class1-math-runtime .backdrop-blur-md {\n  --tw-backdrop-blur: blur(var(--blur-md));\n  -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);\n  backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);\n}\n#class1-math-runtime .backdrop-blur-sm {\n  --tw-backdrop-blur: blur(var(--blur-sm));\n  -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);\n  backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);\n}\n#class1-math-runtime .backdrop-blur-xs {\n  --tw-backdrop-blur: blur(var(--blur-xs));\n  -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);\n  backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);\n}\n#class1-math-runtime .transition-all {\n  transition-property: all;\n  transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));\n  transition-duration: var(--tw-duration, var(--default-transition-duration));\n}\n#class1-math-runtime .transition-colors {\n  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;\n  transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));\n  transition-duration: var(--tw-duration, var(--default-transition-duration));\n}\n#class1-math-runtime .transition-shadow {\n  transition-property: box-shadow;\n  transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));\n  transition-duration: var(--tw-duration, var(--default-transition-duration));\n}\n#class1-math-runtime .transition-transform {\n  transition-property: transform, translate, scale, rotate;\n  transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));\n  transition-duration: var(--tw-duration, var(--default-transition-duration));\n}\n#class1-math-runtime .duration-150 {\n  --tw-duration: 150ms;\n  transition-duration: 150ms;\n}\n#class1-math-runtime .duration-200 {\n  --tw-duration: 200ms;\n  transition-duration: 200ms;\n}\n#class1-math-runtime .duration-500 {\n  --tw-duration: 500ms;\n  transition-duration: 500ms;\n}\n#class1-math-runtime .ease-in-out {\n  --tw-ease: var(--ease-in-out);\n  transition-timing-function: var(--ease-in-out);\n}\n#class1-math-runtime .outline-none {\n  --tw-outline-style: none;\n  outline-style: none;\n}\n#class1-math-runtime .select-none {\n  -webkit-user-select: none;\n  user-select: none;\n}\n#class1-math-runtime .select-text {\n  -webkit-user-select: text;\n  user-select: text;\n}\n#class1-math-runtime .group-hover\\:scale-110 {\n  #class1-math-runtime &:is(:where(.group):hover *) {\n    @media (hover: hover) {\n      --tw-scale-x: 110%;\n      --tw-scale-y: 110%;\n      --tw-scale-z: 110%;\n      scale: var(--tw-scale-x) var(--tw-scale-y);\n    }\n  }\n}\n#class1-math-runtime .last\\:border-b-0 {\n  #class1-math-runtime &:last-child {\n    border-bottom-style: var(--tw-border-style);\n    border-bottom-width: 0px;\n  }\n}\n#class1-math-runtime .hover\\:-translate-y-0\\.5 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      --tw-translate-y: calc(var(--spacing) * -0.5);\n      translate: var(--tw-translate-x) var(--tw-translate-y);\n    }\n  }\n}\n#class1-math-runtime .hover\\:scale-105 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      --tw-scale-x: 105%;\n      --tw-scale-y: 105%;\n      --tw-scale-z: 105%;\n      scale: var(--tw-scale-x) var(--tw-scale-y);\n    }\n  }\n}\n#class1-math-runtime .hover\\:scale-\\[1\\.02\\] {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      scale: 1.02;\n    }\n  }\n}\n#class1-math-runtime .hover\\:scale-\\[1\\.03\\] {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      scale: 1.03;\n    }\n  }\n}\n#class1-math-runtime .hover\\:border-emerald-400 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      border-color: var(--color-emerald-400);\n    }\n  }\n}\n#class1-math-runtime .hover\\:border-fuchsia-400 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      border-color: var(--color-fuchsia-400);\n    }\n  }\n}\n#class1-math-runtime .hover\\:border-pink-400 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      border-color: var(--color-pink-400);\n    }\n  }\n}\n#class1-math-runtime .hover\\:border-purple-400 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      border-color: var(--color-purple-400);\n    }\n  }\n}\n#class1-math-runtime .hover\\:border-rose-400 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      border-color: var(--color-rose-400);\n    }\n  }\n}\n#class1-math-runtime .hover\\:border-violet-400 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      border-color: var(--color-violet-400);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-amber-50 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-amber-50);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-amber-50\\/30 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: color-mix(in srgb, oklch(98.7% 0.022 95.277) 30%, transparent);\n      @supports (color: color-mix(in lab, red, red)) {\n        background-color: color-mix(in oklab, var(--color-amber-50) 30%, transparent);\n      }\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-amber-100 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-amber-100);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-amber-100\\/80 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: color-mix(in srgb, oklch(96.2% 0.059 95.617) 80%, transparent);\n      @supports (color: color-mix(in lab, red, red)) {\n        background-color: color-mix(in oklab, var(--color-amber-100) 80%, transparent);\n      }\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-amber-200 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-amber-200);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-amber-600 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-amber-600);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-blue-100 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-blue-100);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-cyan-100\\/70 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: color-mix(in srgb, oklch(95.6% 0.045 203.388) 70%, transparent);\n      @supports (color: color-mix(in lab, red, red)) {\n        background-color: color-mix(in oklab, var(--color-cyan-100) 70%, transparent);\n      }\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-emerald-50 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-emerald-50);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-emerald-100 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-emerald-100);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-emerald-100\\/80 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: color-mix(in srgb, oklch(95% 0.052 163.051) 80%, transparent);\n      @supports (color: color-mix(in lab, red, red)) {\n        background-color: color-mix(in oklab, var(--color-emerald-100) 80%, transparent);\n      }\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-emerald-500 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-emerald-500);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-emerald-600 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-emerald-600);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-emerald-700 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-emerald-700);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-gray-200 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-gray-200);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-indigo-100 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-indigo-100);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-pink-50 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-pink-50);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-pink-50\\/30 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: color-mix(in srgb, oklch(97.1% 0.014 343.198) 30%, transparent);\n      @supports (color: color-mix(in lab, red, red)) {\n        background-color: color-mix(in oklab, var(--color-pink-50) 30%, transparent);\n      }\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-pink-50\\/50 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: color-mix(in srgb, oklch(97.1% 0.014 343.198) 50%, transparent);\n      @supports (color: color-mix(in lab, red, red)) {\n        background-color: color-mix(in oklab, var(--color-pink-50) 50%, transparent);\n      }\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-pink-100 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-pink-100);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-pink-100\\/70 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: color-mix(in srgb, oklch(94.8% 0.028 342.258) 70%, transparent);\n      @supports (color: color-mix(in lab, red, red)) {\n        background-color: color-mix(in oklab, var(--color-pink-100) 70%, transparent);\n      }\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-pink-100\\/80 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: color-mix(in srgb, oklch(94.8% 0.028 342.258) 80%, transparent);\n      @supports (color: color-mix(in lab, red, red)) {\n        background-color: color-mix(in oklab, var(--color-pink-100) 80%, transparent);\n      }\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-purple-50 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-purple-50);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-purple-100 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-purple-100);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-purple-200 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-purple-200);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-red-300 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-red-300);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-rose-100 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-rose-100);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-rose-200 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-rose-200);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-sky-100 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-sky-100);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-sky-100\\/80 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: color-mix(in srgb, oklch(95.1% 0.026 236.824) 80%, transparent);\n      @supports (color: color-mix(in lab, red, red)) {\n        background-color: color-mix(in oklab, var(--color-sky-100) 80%, transparent);\n      }\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-slate-200 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-slate-200);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-slate-900 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-slate-900);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-violet-50 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-violet-50);\n    }\n  }\n}\n#class1-math-runtime .hover\\:bg-violet-100 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      background-color: var(--color-violet-100);\n    }\n  }\n}\n#class1-math-runtime .hover\\:from-pink-200 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      --tw-gradient-from: var(--color-pink-200);\n      --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n    }\n  }\n}\n#class1-math-runtime .hover\\:from-pink-600 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      --tw-gradient-from: var(--color-pink-600);\n      --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n    }\n  }\n}\n#class1-math-runtime .hover\\:from-rose-700 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      --tw-gradient-from: var(--color-rose-700);\n      --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n    }\n  }\n}\n#class1-math-runtime .hover\\:to-purple-200 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      --tw-gradient-to: var(--color-purple-200);\n      --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n    }\n  }\n}\n#class1-math-runtime .hover\\:to-red-700 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      --tw-gradient-to: var(--color-red-700);\n      --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n    }\n  }\n}\n#class1-math-runtime .hover\\:to-rose-600 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      --tw-gradient-to: var(--color-rose-600);\n      --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));\n    }\n  }\n}\n#class1-math-runtime .hover\\:text-rose-500 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      color: var(--color-rose-500);\n    }\n  }\n}\n#class1-math-runtime .hover\\:text-rose-600 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      color: var(--color-rose-600);\n    }\n  }\n}\n#class1-math-runtime .hover\\:text-slate-700 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      color: var(--color-slate-700);\n    }\n  }\n}\n#class1-math-runtime .hover\\:opacity-100 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      opacity: 100%;\n    }\n  }\n}\n#class1-math-runtime .hover\\:shadow-\\[0_0_10px_rgba\\(99\\,102\\,241\\,0\\.5\\)\\] {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      --tw-shadow: 0 0 10px var(--tw-shadow-color, rgba(99,102,241,0.5));\n      box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);\n    }\n  }\n}\n#class1-math-runtime .hover\\:shadow-\\[0_0_18px_rgba\\(244\\,114\\,182\\,0\\.65\\)\\] {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      --tw-shadow: 0 0 18px var(--tw-shadow-color, rgba(244,114,182,0.65));\n      box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);\n    }\n  }\n}\n#class1-math-runtime .hover\\:shadow-md {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1));\n      box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);\n    }\n  }\n}\n#class1-math-runtime .hover\\:brightness-105 {\n  #class1-math-runtime &:hover {\n    @media (hover: hover) {\n      --tw-brightness: brightness(105%);\n      filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);\n    }\n  }\n}\n#class1-math-runtime .focus\\:border-amber-300 {\n  #class1-math-runtime &:focus {\n    border-color: var(--color-amber-300);\n  }\n}\n#class1-math-runtime .focus\\:border-pink-400 {\n  #class1-math-runtime &:focus {\n    border-color: var(--color-pink-400);\n  }\n}\n#class1-math-runtime .focus\\:outline-none {\n  #class1-math-runtime &:focus {\n    --tw-outline-style: none;\n    outline-style: none;\n  }\n}\n#class1-math-runtime .disabled\\:cursor-not-allowed {\n  #class1-math-runtime &:disabled {\n    cursor: not-allowed;\n  }\n}\n#class1-math-runtime .disabled\\:opacity-40 {\n  #class1-math-runtime &:disabled {\n    opacity: 40%;\n  }\n}\n#class1-math-runtime .sm\\:max-w-md {\n  @media (width >= 40rem) {\n    max-width: var(--container-md);\n  }\n}\n#class1-math-runtime .sm\\:grid-cols-2 {\n  @media (width >= 40rem) {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n}\n#class1-math-runtime .sm\\:grid-cols-3 {\n  @media (width >= 40rem) {\n    grid-template-columns: repeat(3, minmax(0, 1fr));\n  }\n}\n#class1-math-runtime .sm\\:flex-row {\n  @media (width >= 40rem) {\n    flex-direction: row;\n  }\n}\n#class1-math-runtime .sm\\:items-center {\n  @media (width >= 40rem) {\n    align-items: center;\n  }\n}\n#class1-math-runtime .sm\\:justify-between {\n  @media (width >= 40rem) {\n    justify-content: space-between;\n  }\n}\n#class1-math-runtime .sm\\:p-4 {\n  @media (width >= 40rem) {\n    padding: calc(var(--spacing) * 4);\n  }\n}\n#class1-math-runtime .sm\\:p-5 {\n  @media (width >= 40rem) {\n    padding: calc(var(--spacing) * 5);\n  }\n}\n#class1-math-runtime .sm\\:p-6 {\n  @media (width >= 40rem) {\n    padding: calc(var(--spacing) * 6);\n  }\n}\n#class1-math-runtime .sm\\:text-3xl {\n  @media (width >= 40rem) {\n    font-size: var(--text-3xl);\n    line-height: var(--tw-leading, var(--text-3xl--line-height));\n  }\n}\n#class1-math-runtime .sm\\:text-base {\n  @media (width >= 40rem) {\n    font-size: var(--text-base);\n    line-height: var(--tw-leading, var(--text-base--line-height));\n  }\n}\n#class1-math-runtime .sm\\:text-lg {\n  @media (width >= 40rem) {\n    font-size: var(--text-lg);\n    line-height: var(--tw-leading, var(--text-lg--line-height));\n  }\n}\n#class1-math-runtime .sm\\:text-sm {\n  @media (width >= 40rem) {\n    font-size: var(--text-sm);\n    line-height: var(--tw-leading, var(--text-sm--line-height));\n  }\n}\n#class1-math-runtime .sm\\:text-xl {\n  @media (width >= 40rem) {\n    font-size: var(--text-xl);\n    line-height: var(--tw-leading, var(--text-xl--line-height));\n  }\n}\n#class1-math-runtime .sm\\:whitespace-nowrap {\n  @media (width >= 40rem) {\n    white-space: nowrap;\n  }\n}\n#class1-math-runtime .md\\:top-\\[98px\\] {\n  @media (width >= 48rem) {\n    top: 98px;\n  }\n}\n#class1-math-runtime .md\\:right-\\[52px\\] {\n  @media (width >= 48rem) {\n    right: 52px;\n  }\n}\n#class1-math-runtime .md\\:right-\\[55px\\] {\n  @media (width >= 48rem) {\n    right: 55px;\n  }\n}\n#class1-math-runtime .md\\:left-\\[52px\\] {\n  @media (width >= 48rem) {\n    left: 52px;\n  }\n}\n#class1-math-runtime .md\\:left-\\[55px\\] {\n  @media (width >= 48rem) {\n    left: 55px;\n  }\n}\n#class1-math-runtime .md\\:col-span-2 {\n  @media (width >= 48rem) {\n    grid-column: span 2 / span 2;\n  }\n}\n#class1-math-runtime .md\\:mr-0\\.5 {\n  @media (width >= 48rem) {\n    margin-right: calc(var(--spacing) * 0.5);\n  }\n}\n#class1-math-runtime .md\\:mr-1 {\n  @media (width >= 48rem) {\n    margin-right: calc(var(--spacing) * 1);\n  }\n}\n#class1-math-runtime .md\\:ml-4 {\n  @media (width >= 48rem) {\n    margin-left: calc(var(--spacing) * 4);\n  }\n}\n#class1-math-runtime .md\\:block {\n  @media (width >= 48rem) {\n    display: block;\n  }\n}\n#class1-math-runtime .md\\:inline {\n  @media (width >= 48rem) {\n    display: inline;\n  }\n}\n#class1-math-runtime .md\\:h-7 {\n  @media (width >= 48rem) {\n    height: calc(var(--spacing) * 7);\n  }\n}\n#class1-math-runtime .md\\:h-9 {\n  @media (width >= 48rem) {\n    height: calc(var(--spacing) * 9);\n  }\n}\n#class1-math-runtime .md\\:h-11 {\n  @media (width >= 48rem) {\n    height: calc(var(--spacing) * 11);\n  }\n}\n#class1-math-runtime .md\\:h-12 {\n  @media (width >= 48rem) {\n    height: calc(var(--spacing) * 12);\n  }\n}\n#class1-math-runtime .md\\:h-14 {\n  @media (width >= 48rem) {\n    height: calc(var(--spacing) * 14);\n  }\n}\n#class1-math-runtime .md\\:h-16 {\n  @media (width >= 48rem) {\n    height: calc(var(--spacing) * 16);\n  }\n}\n#class1-math-runtime .md\\:h-18 {\n  @media (width >= 48rem) {\n    height: calc(var(--spacing) * 18);\n  }\n}\n#class1-math-runtime .md\\:h-\\[58px\\] {\n  @media (width >= 48rem) {\n    height: 58px;\n  }\n}\n#class1-math-runtime .md\\:h-\\[160px\\] {\n  @media (width >= 48rem) {\n    height: 160px;\n  }\n}\n#class1-math-runtime .md\\:h-\\[175px\\] {\n  @media (width >= 48rem) {\n    height: 175px;\n  }\n}\n#class1-math-runtime .md\\:h-\\[230px\\] {\n  @media (width >= 48rem) {\n    height: 230px;\n  }\n}\n#class1-math-runtime .md\\:min-h-\\[56px\\] {\n  @media (width >= 48rem) {\n    min-height: 56px;\n  }\n}\n#class1-math-runtime .md\\:min-h-\\[58px\\] {\n  @media (width >= 48rem) {\n    min-height: 58px;\n  }\n}\n#class1-math-runtime .md\\:min-h-\\[62px\\] {\n  @media (width >= 48rem) {\n    min-height: 62px;\n  }\n}\n#class1-math-runtime .md\\:min-h-\\[68px\\] {\n  @media (width >= 48rem) {\n    min-height: 68px;\n  }\n}\n#class1-math-runtime .md\\:min-h-\\[72px\\] {\n  @media (width >= 48rem) {\n    min-height: 72px;\n  }\n}\n#class1-math-runtime .md\\:min-h-\\[76px\\] {\n  @media (width >= 48rem) {\n    min-height: 76px;\n  }\n}\n#class1-math-runtime .md\\:min-h-\\[84px\\] {\n  @media (width >= 48rem) {\n    min-height: 84px;\n  }\n}\n#class1-math-runtime .md\\:min-h-\\[142px\\] {\n  @media (width >= 48rem) {\n    min-height: 142px;\n  }\n}\n#class1-math-runtime .md\\:min-h-\\[210px\\] {\n  @media (width >= 48rem) {\n    min-height: 210px;\n  }\n}\n#class1-math-runtime .md\\:min-h-\\[300px\\] {\n  @media (width >= 48rem) {\n    min-height: 300px;\n  }\n}\n#class1-math-runtime .md\\:min-h-\\[360px\\] {\n  @media (width >= 48rem) {\n    min-height: 360px;\n  }\n}\n#class1-math-runtime .md\\:min-h-\\[430px\\] {\n  @media (width >= 48rem) {\n    min-height: 430px;\n  }\n}\n#class1-math-runtime .md\\:min-h-\\[440px\\] {\n  @media (width >= 48rem) {\n    min-height: 440px;\n  }\n}\n#class1-math-runtime .md\\:min-h-\\[445px\\] {\n  @media (width >= 48rem) {\n    min-height: 445px;\n  }\n}\n#class1-math-runtime .md\\:min-h-\\[470px\\] {\n  @media (width >= 48rem) {\n    min-height: 470px;\n  }\n}\n#class1-math-runtime .md\\:w-7 {\n  @media (width >= 48rem) {\n    width: calc(var(--spacing) * 7);\n  }\n}\n#class1-math-runtime .md\\:w-9 {\n  @media (width >= 48rem) {\n    width: calc(var(--spacing) * 9);\n  }\n}\n#class1-math-runtime .md\\:w-11 {\n  @media (width >= 48rem) {\n    width: calc(var(--spacing) * 11);\n  }\n}\n#class1-math-runtime .md\\:w-12 {\n  @media (width >= 48rem) {\n    width: calc(var(--spacing) * 12);\n  }\n}\n#class1-math-runtime .md\\:w-14 {\n  @media (width >= 48rem) {\n    width: calc(var(--spacing) * 14);\n  }\n}\n#class1-math-runtime .md\\:w-16 {\n  @media (width >= 48rem) {\n    width: calc(var(--spacing) * 16);\n  }\n}\n#class1-math-runtime .md\\:w-24 {\n  @media (width >= 48rem) {\n    width: calc(var(--spacing) * 24);\n  }\n}\n#class1-math-runtime .md\\:w-\\[40\\%\\] {\n  @media (width >= 48rem) {\n    width: 40%;\n  }\n}\n#class1-math-runtime .md\\:w-\\[60\\%\\] {\n  @media (width >= 48rem) {\n    width: 60%;\n  }\n}\n#class1-math-runtime .md\\:w-\\[160px\\] {\n  @media (width >= 48rem) {\n    width: 160px;\n  }\n}\n#class1-math-runtime .md\\:w-\\[250px\\] {\n  @media (width >= 48rem) {\n    width: 250px;\n  }\n}\n#class1-math-runtime .md\\:w-\\[300px\\] {\n  @media (width >= 48rem) {\n    width: 300px;\n  }\n}\n#class1-math-runtime .md\\:min-w-\\[92px\\] {\n  @media (width >= 48rem) {\n    min-width: 92px;\n  }\n}\n#class1-math-runtime .md\\:min-w-\\[210px\\] {\n  @media (width >= 48rem) {\n    min-width: 210px;\n  }\n}\n#class1-math-runtime .md\\:scale-\\[0\\.62\\] {\n  @media (width >= 48rem) {\n    scale: 0.62;\n  }\n}\n#class1-math-runtime .md\\:columns-2 {\n  @media (width >= 48rem) {\n    columns: 2;\n  }\n}\n#class1-math-runtime .md\\:grid-cols-2 {\n  @media (width >= 48rem) {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n}\n#class1-math-runtime .md\\:grid-cols-3 {\n  @media (width >= 48rem) {\n    grid-template-columns: repeat(3, minmax(0, 1fr));\n  }\n}\n#class1-math-runtime .md\\:grid-cols-4 {\n  @media (width >= 48rem) {\n    grid-template-columns: repeat(4, minmax(0, 1fr));\n  }\n}\n#class1-math-runtime .md\\:grid-cols-7 {\n  @media (width >= 48rem) {\n    grid-template-columns: repeat(7, minmax(0, 1fr));\n  }\n}\n#class1-math-runtime .md\\:grid-cols-10 {\n  @media (width >= 48rem) {\n    grid-template-columns: repeat(10, minmax(0, 1fr));\n  }\n}\n#class1-math-runtime .md\\:grid-cols-\\[0\\.94fr_1\\.06fr\\] {\n  @media (width >= 48rem) {\n    grid-template-columns: 0.94fr 1.06fr;\n  }\n}\n#class1-math-runtime .md\\:grid-cols-\\[1\\.1fr_0\\.9fr\\] {\n  @media (width >= 48rem) {\n    grid-template-columns: 1.1fr 0.9fr;\n  }\n}\n#class1-math-runtime .md\\:grid-cols-\\[1\\.02fr_0\\.98fr\\] {\n  @media (width >= 48rem) {\n    grid-template-columns: 1.02fr 0.98fr;\n  }\n}\n#class1-math-runtime .md\\:grid-cols-\\[1\\.04fr_0\\.96fr\\] {\n  @media (width >= 48rem) {\n    grid-template-columns: 1.04fr 0.96fr;\n  }\n}\n#class1-math-runtime .md\\:grid-cols-\\[1\\.4fr_0\\.6fr\\] {\n  @media (width >= 48rem) {\n    grid-template-columns: 1.4fr 0.6fr;\n  }\n}\n#class1-math-runtime .md\\:grid-cols-\\[1\\.05fr_0\\.95fr\\] {\n  @media (width >= 48rem) {\n    grid-template-columns: 1.05fr 0.95fr;\n  }\n}\n#class1-math-runtime .md\\:grid-cols-\\[1\\.06fr_0\\.94fr\\] {\n  @media (width >= 48rem) {\n    grid-template-columns: 1.06fr 0.94fr;\n  }\n}\n#class1-math-runtime .md\\:grid-cols-\\[1\\.08fr_0\\.92fr\\] {\n  @media (width >= 48rem) {\n    grid-template-columns: 1.08fr 0.92fr;\n  }\n}\n#class1-math-runtime .md\\:grid-cols-\\[1\\.12fr_0\\.88fr\\] {\n  @media (width >= 48rem) {\n    grid-template-columns: 1.12fr 0.88fr;\n  }\n}\n#class1-math-runtime .md\\:grid-cols-\\[1\\.38fr_0\\.62fr\\] {\n  @media (width >= 48rem) {\n    grid-template-columns: 1.38fr 0.62fr;\n  }\n}\n#class1-math-runtime .md\\:grid-cols-\\[1fr_1\\.2fr\\] {\n  @media (width >= 48rem) {\n    grid-template-columns: 1fr 1.2fr;\n  }\n}\n#class1-math-runtime .md\\:grid-cols-\\[52px_1fr\\] {\n  @media (width >= 48rem) {\n    grid-template-columns: 52px 1fr;\n  }\n}\n#class1-math-runtime .md\\:flex-row {\n  @media (width >= 48rem) {\n    flex-direction: row;\n  }\n}\n#class1-math-runtime .md\\:gap-1 {\n  @media (width >= 48rem) {\n    gap: calc(var(--spacing) * 1);\n  }\n}\n#class1-math-runtime .md\\:gap-1\\.5 {\n  @media (width >= 48rem) {\n    gap: calc(var(--spacing) * 1.5);\n  }\n}\n#class1-math-runtime .md\\:gap-2 {\n  @media (width >= 48rem) {\n    gap: calc(var(--spacing) * 2);\n  }\n}\n#class1-math-runtime .md\\:gap-2\\.5 {\n  @media (width >= 48rem) {\n    gap: calc(var(--spacing) * 2.5);\n  }\n}\n#class1-math-runtime .md\\:gap-3 {\n  @media (width >= 48rem) {\n    gap: calc(var(--spacing) * 3);\n  }\n}\n#class1-math-runtime .md\\:gap-4 {\n  @media (width >= 48rem) {\n    gap: calc(var(--spacing) * 4);\n  }\n}\n#class1-math-runtime .md\\:gap-5 {\n  @media (width >= 48rem) {\n    gap: calc(var(--spacing) * 5);\n  }\n}\n#class1-math-runtime .md\\:gap-6 {\n  @media (width >= 48rem) {\n    gap: calc(var(--spacing) * 6);\n  }\n}\n#class1-math-runtime .md\\:gap-8 {\n  @media (width >= 48rem) {\n    gap: calc(var(--spacing) * 8);\n  }\n}\n#class1-math-runtime .md\\:gap-10 {\n  @media (width >= 48rem) {\n    gap: calc(var(--spacing) * 10);\n  }\n}\n#class1-math-runtime .md\\:gap-12 {\n  @media (width >= 48rem) {\n    gap: calc(var(--spacing) * 12);\n  }\n}\n#class1-math-runtime .md\\:gap-16 {\n  @media (width >= 48rem) {\n    gap: calc(var(--spacing) * 16);\n  }\n}\n#class1-math-runtime .md\\:space-y-2 {\n  @media (width >= 48rem) {\n    #class1-math-runtime :where(& > :not(:last-child)) {\n      --tw-space-y-reverse: 0;\n      margin-block-start: calc(calc(var(--spacing) * 2) * var(--tw-space-y-reverse));\n      margin-block-end: calc(calc(var(--spacing) * 2) * calc(1 - var(--tw-space-y-reverse)));\n    }\n  }\n}\n#class1-math-runtime .md\\:border-b-\\[4px\\] {\n  @media (width >= 48rem) {\n    border-bottom-style: var(--tw-border-style);\n    border-bottom-width: 4px;\n  }\n}\n#class1-math-runtime .md\\:border-b-\\[5px\\] {\n  @media (width >= 48rem) {\n    border-bottom-style: var(--tw-border-style);\n    border-bottom-width: 5px;\n  }\n}\n#class1-math-runtime .md\\:p-2 {\n  @media (width >= 48rem) {\n    padding: calc(var(--spacing) * 2);\n  }\n}\n#class1-math-runtime .md\\:p-3 {\n  @media (width >= 48rem) {\n    padding: calc(var(--spacing) * 3);\n  }\n}\n#class1-math-runtime .md\\:p-3\\.5 {\n  @media (width >= 48rem) {\n    padding: calc(var(--spacing) * 3.5);\n  }\n}\n#class1-math-runtime .md\\:p-4 {\n  @media (width >= 48rem) {\n    padding: calc(var(--spacing) * 4);\n  }\n}\n#class1-math-runtime .md\\:p-5 {\n  @media (width >= 48rem) {\n    padding: calc(var(--spacing) * 5);\n  }\n}\n#class1-math-runtime .md\\:p-6 {\n  @media (width >= 48rem) {\n    padding: calc(var(--spacing) * 6);\n  }\n}\n#class1-math-runtime .md\\:p-7 {\n  @media (width >= 48rem) {\n    padding: calc(var(--spacing) * 7);\n  }\n}\n#class1-math-runtime .md\\:p-8 {\n  @media (width >= 48rem) {\n    padding: calc(var(--spacing) * 8);\n  }\n}\n#class1-math-runtime .md\\:px-2 {\n  @media (width >= 48rem) {\n    padding-inline: calc(var(--spacing) * 2);\n  }\n}\n#class1-math-runtime .md\\:px-2\\.5 {\n  @media (width >= 48rem) {\n    padding-inline: calc(var(--spacing) * 2.5);\n  }\n}\n#class1-math-runtime .md\\:px-4 {\n  @media (width >= 48rem) {\n    padding-inline: calc(var(--spacing) * 4);\n  }\n}\n#class1-math-runtime .md\\:px-5 {\n  @media (width >= 48rem) {\n    padding-inline: calc(var(--spacing) * 5);\n  }\n}\n#class1-math-runtime .md\\:px-6 {\n  @media (width >= 48rem) {\n    padding-inline: calc(var(--spacing) * 6);\n  }\n}\n#class1-math-runtime .md\\:px-7 {\n  @media (width >= 48rem) {\n    padding-inline: calc(var(--spacing) * 7);\n  }\n}\n#class1-math-runtime .md\\:py-5 {\n  @media (width >= 48rem) {\n    padding-block: calc(var(--spacing) * 5);\n  }\n}\n#class1-math-runtime .md\\:py-6 {\n  @media (width >= 48rem) {\n    padding-block: calc(var(--spacing) * 6);\n  }\n}\n#class1-math-runtime .md\\:py-7 {\n  @media (width >= 48rem) {\n    padding-block: calc(var(--spacing) * 7);\n  }\n}\n#class1-math-runtime .md\\:pb-\\[5px\\] {\n  @media (width >= 48rem) {\n    padding-bottom: 5px;\n  }\n}\n#class1-math-runtime .md\\:pb-\\[6px\\] {\n  @media (width >= 48rem) {\n    padding-bottom: 6px;\n  }\n}\n#class1-math-runtime .md\\:text-left {\n  @media (width >= 48rem) {\n    text-align: left;\n  }\n}\n#class1-math-runtime .md\\:text-2xl {\n  @media (width >= 48rem) {\n    font-size: var(--text-2xl);\n    line-height: var(--tw-leading, var(--text-2xl--line-height));\n  }\n}\n#class1-math-runtime .md\\:text-3xl {\n  @media (width >= 48rem) {\n    font-size: var(--text-3xl);\n    line-height: var(--tw-leading, var(--text-3xl--line-height));\n  }\n}\n#class1-math-runtime .md\\:text-4xl {\n  @media (width >= 48rem) {\n    font-size: var(--text-4xl);\n    line-height: var(--tw-leading, var(--text-4xl--line-height));\n  }\n}\n#class1-math-runtime .md\\:text-5xl {\n  @media (width >= 48rem) {\n    font-size: var(--text-5xl);\n    line-height: var(--tw-leading, var(--text-5xl--line-height));\n  }\n}\n#class1-math-runtime .md\\:text-6xl {\n  @media (width >= 48rem) {\n    font-size: var(--text-6xl);\n    line-height: var(--tw-leading, var(--text-6xl--line-height));\n  }\n}\n#class1-math-runtime .md\\:text-8xl {\n  @media (width >= 48rem) {\n    font-size: var(--text-8xl);\n    line-height: var(--tw-leading, var(--text-8xl--line-height));\n  }\n}\n#class1-math-runtime .md\\:text-base {\n  @media (width >= 48rem) {\n    font-size: var(--text-base);\n    line-height: var(--tw-leading, var(--text-base--line-height));\n  }\n}\n#class1-math-runtime .md\\:text-lg {\n  @media (width >= 48rem) {\n    font-size: var(--text-lg);\n    line-height: var(--tw-leading, var(--text-lg--line-height));\n  }\n}\n#class1-math-runtime .md\\:text-sm {\n  @media (width >= 48rem) {\n    font-size: var(--text-sm);\n    line-height: var(--tw-leading, var(--text-sm--line-height));\n  }\n}\n#class1-math-runtime .md\\:text-xl {\n  @media (width >= 48rem) {\n    font-size: var(--text-xl);\n    line-height: var(--tw-leading, var(--text-xl--line-height));\n  }\n}\n#class1-math-runtime .md\\:text-xs {\n  @media (width >= 48rem) {\n    font-size: var(--text-xs);\n    line-height: var(--tw-leading, var(--text-xs--line-height));\n  }\n}\n#class1-math-runtime .md\\:text-\\[13px\\] {\n  @media (width >= 48rem) {\n    font-size: 16px;\n  }\n}\n#class1-math-runtime .md\\:text-\\[15px\\] {\n  @media (width >= 48rem) {\n    font-size: 16px;\n  }\n}\n#class1-math-runtime .md\\:text-\\[26px\\] {\n  @media (width >= 48rem) {\n    font-size: 26px;\n  }\n}\n#class1-math-runtime .md\\:text-\\[27px\\] {\n  @media (width >= 48rem) {\n    font-size: 27px;\n  }\n}\n#class1-math-runtime .md\\:text-\\[30px\\] {\n  @media (width >= 48rem) {\n    font-size: 30px;\n  }\n}\n#class1-math-runtime .md\\:text-\\[32px\\] {\n  @media (width >= 48rem) {\n    font-size: 32px;\n  }\n}\n#class1-math-runtime .md\\:text-\\[36px\\] {\n  @media (width >= 48rem) {\n    font-size: 36px;\n  }\n}\n#class1-math-runtime .md\\:text-\\[40px\\] {\n  @media (width >= 48rem) {\n    font-size: 40px;\n  }\n}\n#class1-math-runtime .md\\:text-\\[50px\\] {\n  @media (width >= 48rem) {\n    font-size: 50px;\n  }\n}\n#class1-math-runtime .md\\:text-\\[54px\\] {\n  @media (width >= 48rem) {\n    font-size: 54px;\n  }\n}\n#class1-math-runtime .md\\:text-\\[68px\\] {\n  @media (width >= 48rem) {\n    font-size: 68px;\n  }\n}\n#class1-math-runtime .md\\:text-\\[76px\\] {\n  @media (width >= 48rem) {\n    font-size: 76px;\n  }\n}\n#class1-math-runtime .md\\:text-\\[78px\\] {\n  @media (width >= 48rem) {\n    font-size: 78px;\n  }\n}\n#class1-math-runtime .md\\:text-\\[80px\\] {\n  @media (width >= 48rem) {\n    font-size: 80px;\n  }\n}\n#class1-math-runtime .md\\:text-\\[82px\\] {\n  @media (width >= 48rem) {\n    font-size: 82px;\n  }\n}\n#class1-math-runtime .md\\:text-\\[88px\\] {\n  @media (width >= 48rem) {\n    font-size: 88px;\n  }\n}\n#class1-math-runtime .md\\:text-\\[105px\\] {\n  @media (width >= 48rem) {\n    font-size: 105px;\n  }\n}\n#class1-math-runtime .md\\:text-\\[120px\\] {\n  @media (width >= 48rem) {\n    font-size: 120px;\n  }\n}\n#class1-math-runtime .md\\:text-\\[145px\\] {\n  @media (width >= 48rem) {\n    font-size: 145px;\n  }\n}\n#class1-math-runtime .md\\:text-\\[155px\\] {\n  @media (width >= 48rem) {\n    font-size: 155px;\n  }\n}\n#class1-math-runtime .lg\\:h-12 {\n  @media (width >= 64rem) {\n    height: calc(var(--spacing) * 12);\n  }\n}\n#class1-math-runtime .lg\\:h-16 {\n  @media (width >= 64rem) {\n    height: calc(var(--spacing) * 16);\n  }\n}\n#class1-math-runtime .lg\\:h-\\[52px\\] {\n  @media (width >= 64rem) {\n    height: 52px;\n  }\n}\n#class1-math-runtime .lg\\:h-\\[54px\\] {\n  @media (width >= 64rem) {\n    height: 54px;\n  }\n}\n#class1-math-runtime .lg\\:w-12 {\n  @media (width >= 64rem) {\n    width: calc(var(--spacing) * 12);\n  }\n}\n#class1-math-runtime .lg\\:w-16 {\n  @media (width >= 64rem) {\n    width: calc(var(--spacing) * 16);\n  }\n}\n#class1-math-runtime .lg\\:w-\\[52px\\] {\n  @media (width >= 64rem) {\n    width: 52px;\n  }\n}\n#class1-math-runtime .lg\\:w-\\[54px\\] {\n  @media (width >= 64rem) {\n    width: 54px;\n  }\n}\n#class1-math-runtime .lg\\:scale-\\[0\\.68\\] {\n  @media (width >= 64rem) {\n    scale: 0.68;\n  }\n}\n#class1-math-runtime .lg\\:grid-cols-2 {\n  @media (width >= 64rem) {\n    grid-template-columns: repeat(2, minmax(0, 1fr));\n  }\n}\n#class1-math-runtime .lg\\:grid-cols-3 {\n  @media (width >= 64rem) {\n    grid-template-columns: repeat(3, minmax(0, 1fr));\n  }\n}\n#class1-math-runtime .lg\\:grid-cols-4 {\n  @media (width >= 64rem) {\n    grid-template-columns: repeat(4, minmax(0, 1fr));\n  }\n}\n#class1-math-runtime .lg\\:grid-cols-6 {\n  @media (width >= 64rem) {\n    grid-template-columns: repeat(6, minmax(0, 1fr));\n  }\n}\n#class1-math-runtime .lg\\:grid-cols-\\[1\\.1fr_0\\.9fr\\] {\n  @media (width >= 64rem) {\n    grid-template-columns: 1.1fr 0.9fr;\n  }\n}\n#class1-math-runtime .lg\\:grid-cols-\\[1\\.15fr_0\\.85fr\\] {\n  @media (width >= 64rem) {\n    grid-template-columns: 1.15fr 0.85fr;\n  }\n}\n#class1-math-runtime .lg\\:gap-5 {\n  @media (width >= 64rem) {\n    gap: calc(var(--spacing) * 5);\n  }\n}\n#class1-math-runtime .lg\\:text-2xl {\n  @media (width >= 64rem) {\n    font-size: var(--text-2xl);\n    line-height: var(--tw-leading, var(--text-2xl--line-height));\n  }\n}\n#class1-math-runtime .lg\\:text-lg {\n  @media (width >= 64rem) {\n    font-size: var(--text-lg);\n    line-height: var(--tw-leading, var(--text-lg--line-height));\n  }\n}\n#class1-math-runtime .lg\\:text-xl {\n  @media (width >= 64rem) {\n    font-size: var(--text-xl);\n    line-height: var(--tw-leading, var(--text-xl--line-height));\n  }\n}\n#class1-math-runtime .lg\\:text-\\[22px\\] {\n  @media (width >= 64rem) {\n    font-size: 22px;\n  }\n}\n#class1-math-runtime .lg\\:text-\\[23px\\] {\n  @media (width >= 64rem) {\n    font-size: 23px;\n  }\n}\n#class1-math-runtime .lg\\:text-\\[24px\\] {\n  @media (width >= 64rem) {\n    font-size: 24px;\n  }\n}\n#class1-math-runtime .lg\\:text-\\[26px\\] {\n  @media (width >= 64rem) {\n    font-size: 26px;\n  }\n}\n#class1-math-runtime .lg\\:text-\\[27px\\] {\n  @media (width >= 64rem) {\n    font-size: 27px;\n  }\n}\n#class1-math-runtime .lg\\:text-\\[28px\\] {\n  @media (width >= 64rem) {\n    font-size: 28px;\n  }\n}\n#class1-math-runtime .lg\\:text-\\[30px\\] {\n  @media (width >= 64rem) {\n    font-size: 30px;\n  }\n}\n#class1-math-runtime .lg\\:text-\\[34px\\] {\n  @media (width >= 64rem) {\n    font-size: 34px;\n  }\n}\n#class1-math-runtime .lg\\:text-\\[36px\\] {\n  @media (width >= 64rem) {\n    font-size: 36px;\n  }\n}\n#class1-math-runtime .lg\\:text-\\[40px\\] {\n  @media (width >= 64rem) {\n    font-size: 40px;\n  }\n}\n#class1-math-runtime .lg\\:text-\\[44px\\] {\n  @media (width >= 64rem) {\n    font-size: 44px;\n  }\n}\n#class1-math-runtime .lg\\:text-\\[56px\\] {\n  @media (width >= 64rem) {\n    font-size: 56px;\n  }\n}\n#class1-math-runtime .lg\\:text-\\[60px\\] {\n  @media (width >= 64rem) {\n    font-size: 60px;\n  }\n}\n#class1-math-runtime .lg\\:text-\\[82px\\] {\n  @media (width >= 64rem) {\n    font-size: 82px;\n  }\n}\n#class1-math-runtime .lg\\:text-\\[90px\\] {\n  @media (width >= 64rem) {\n    font-size: 90px;\n  }\n}\n#class1-math-runtime .lg\\:text-\\[92px\\] {\n  @media (width >= 64rem) {\n    font-size: 92px;\n  }\n}\n#class1-math-runtime .lg\\:text-\\[96px\\] {\n  @media (width >= 64rem) {\n    font-size: 96px;\n  }\n}\n#class1-math-runtime .lg\\:text-\\[126px\\] {\n  @media (width >= 64rem) {\n    font-size: 126px;\n  }\n}\n#class1-math-runtime .lg\\:text-\\[128px\\] {\n  @media (width >= 64rem) {\n    font-size: 128px;\n  }\n}\n#class1-math-runtime .lg\\:text-\\[170px\\] {\n  @media (width >= 64rem) {\n    font-size: 170px;\n  }\n}\n#class1-math-runtime .lg\\:text-\\[180px\\] {\n  @media (width >= 64rem) {\n    font-size: 180px;\n  }\n}\n#class1-math-runtime .xl\\:grid-cols-3 {\n  @media (width >= 80rem) {\n    grid-template-columns: repeat(3, minmax(0, 1fr));\n  }\n}\n#class1-math-runtime .xl\\:grid-cols-8 {\n  @media (width >= 80rem) {\n    grid-template-columns: repeat(8, minmax(0, 1fr));\n  }\n}\n@property --tw-translate-x {\n  syntax: \"*\";\n  inherits: false;\n  initial-value: 0;\n}\n@property --tw-translate-y {\n  syntax: \"*\";\n  inherits: false;\n  initial-value: 0;\n}\n@property --tw-translate-z {\n  syntax: \"*\";\n  inherits: false;\n  initial-value: 0;\n}\n@property --tw-scale-x {\n  syntax: \"*\";\n  inherits: false;\n  initial-value: 1;\n}\n@property --tw-scale-y {\n  syntax: \"*\";\n  inherits: false;\n  initial-value: 1;\n}\n@property --tw-scale-z {\n  syntax: \"*\";\n  inherits: false;\n  initial-value: 1;\n}\n@property --tw-rotate-x {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-rotate-y {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-rotate-z {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-skew-x {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-skew-y {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-space-y-reverse {\n  syntax: \"*\";\n  inherits: false;\n  initial-value: 0;\n}\n@property --tw-space-x-reverse {\n  syntax: \"*\";\n  inherits: false;\n  initial-value: 0;\n}\n@property --tw-divide-x-reverse {\n  syntax: \"*\";\n  inherits: false;\n  initial-value: 0;\n}\n@property --tw-border-style {\n  syntax: \"*\";\n  inherits: false;\n  initial-value: solid;\n}\n@property --tw-divide-y-reverse {\n  syntax: \"*\";\n  inherits: false;\n  initial-value: 0;\n}\n@property --tw-gradient-position {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-gradient-from {\n  syntax: \"<color>\";\n  inherits: false;\n  initial-value: #0000;\n}\n@property --tw-gradient-via {\n  syntax: \"<color>\";\n  inherits: false;\n  initial-value: #0000;\n}\n@property --tw-gradient-to {\n  syntax: \"<color>\";\n  inherits: false;\n  initial-value: #0000;\n}\n@property --tw-gradient-stops {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-gradient-via-stops {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-gradient-from-position {\n  syntax: \"<length-percentage>\";\n  inherits: false;\n  initial-value: 0%;\n}\n@property --tw-gradient-via-position {\n  syntax: \"<length-percentage>\";\n  inherits: false;\n  initial-value: 50%;\n}\n@property --tw-gradient-to-position {\n  syntax: \"<length-percentage>\";\n  inherits: false;\n  initial-value: 100%;\n}\n@property --tw-leading {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-font-weight {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-tracking {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-shadow {\n  syntax: \"*\";\n  inherits: false;\n  initial-value: 0 0 #0000;\n}\n@property --tw-shadow-color {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-shadow-alpha {\n  syntax: \"<percentage>\";\n  inherits: false;\n  initial-value: 100%;\n}\n@property --tw-inset-shadow {\n  syntax: \"*\";\n  inherits: false;\n  initial-value: 0 0 #0000;\n}\n@property --tw-inset-shadow-color {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-inset-shadow-alpha {\n  syntax: \"<percentage>\";\n  inherits: false;\n  initial-value: 100%;\n}\n@property --tw-ring-color {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-ring-shadow {\n  syntax: \"*\";\n  inherits: false;\n  initial-value: 0 0 #0000;\n}\n@property --tw-inset-ring-color {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-inset-ring-shadow {\n  syntax: \"*\";\n  inherits: false;\n  initial-value: 0 0 #0000;\n}\n@property --tw-ring-inset {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-ring-offset-width {\n  syntax: \"<length>\";\n  inherits: false;\n  initial-value: 0px;\n}\n@property --tw-ring-offset-color {\n  syntax: \"*\";\n  inherits: false;\n  initial-value: #fff;\n}\n@property --tw-ring-offset-shadow {\n  syntax: \"*\";\n  inherits: false;\n  initial-value: 0 0 #0000;\n}\n@property --tw-blur {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-brightness {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-contrast {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-grayscale {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-hue-rotate {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-invert {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-opacity {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-saturate {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-sepia {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-drop-shadow {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-drop-shadow-color {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-drop-shadow-alpha {\n  syntax: \"<percentage>\";\n  inherits: false;\n  initial-value: 100%;\n}\n@property --tw-drop-shadow-size {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-backdrop-blur {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-backdrop-brightness {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-backdrop-contrast {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-backdrop-grayscale {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-backdrop-hue-rotate {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-backdrop-invert {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-backdrop-opacity {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-backdrop-saturate {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-backdrop-sepia {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-duration {\n  syntax: \"*\";\n  inherits: false;\n}\n@property --tw-ease {\n  syntax: \"*\";\n  inherits: false;\n}\n@layer properties {\n  @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {\n    #class1-math-runtime *,#class1-math-runtime ::before,#class1-math-runtime ::after,#class1-math-runtime ::backdrop {\n      --tw-translate-x: 0;\n      --tw-translate-y: 0;\n      --tw-translate-z: 0;\n      --tw-scale-x: 1;\n      --tw-scale-y: 1;\n      --tw-scale-z: 1;\n      --tw-rotate-x: initial;\n      --tw-rotate-y: initial;\n      --tw-rotate-z: initial;\n      --tw-skew-x: initial;\n      --tw-skew-y: initial;\n      --tw-space-y-reverse: 0;\n      --tw-space-x-reverse: 0;\n      --tw-divide-x-reverse: 0;\n      --tw-border-style: solid;\n      --tw-divide-y-reverse: 0;\n      --tw-gradient-position: initial;\n      --tw-gradient-from: #0000;\n      --tw-gradient-via: #0000;\n      --tw-gradient-to: #0000;\n      --tw-gradient-stops: initial;\n      --tw-gradient-via-stops: initial;\n      --tw-gradient-from-position: 0%;\n      --tw-gradient-via-position: 50%;\n      --tw-gradient-to-position: 100%;\n      --tw-leading: initial;\n      --tw-font-weight: initial;\n      --tw-tracking: initial;\n      --tw-shadow: 0 0 #0000;\n      --tw-shadow-color: initial;\n      --tw-shadow-alpha: 100%;\n      --tw-inset-shadow: 0 0 #0000;\n      --tw-inset-shadow-color: initial;\n      --tw-inset-shadow-alpha: 100%;\n      --tw-ring-color: initial;\n      --tw-ring-shadow: 0 0 #0000;\n      --tw-inset-ring-color: initial;\n      --tw-inset-ring-shadow: 0 0 #0000;\n      --tw-ring-inset: initial;\n      --tw-ring-offset-width: 0px;\n      --tw-ring-offset-color: #fff;\n      --tw-ring-offset-shadow: 0 0 #0000;\n      --tw-blur: initial;\n      --tw-brightness: initial;\n      --tw-contrast: initial;\n      --tw-grayscale: initial;\n      --tw-hue-rotate: initial;\n      --tw-invert: initial;\n      --tw-opacity: initial;\n      --tw-saturate: initial;\n      --tw-sepia: initial;\n      --tw-drop-shadow: initial;\n      --tw-drop-shadow-color: initial;\n      --tw-drop-shadow-alpha: 100%;\n      --tw-drop-shadow-size: initial;\n      --tw-backdrop-blur: initial;\n      --tw-backdrop-brightness: initial;\n      --tw-backdrop-contrast: initial;\n      --tw-backdrop-grayscale: initial;\n      --tw-backdrop-hue-rotate: initial;\n      --tw-backdrop-invert: initial;\n      --tw-backdrop-opacity: initial;\n      --tw-backdrop-saturate: initial;\n      --tw-backdrop-sepia: initial;\n      --tw-duration: initial;\n      --tw-ease: initial;\n    }\n  }\n}\n\n\n        #class1-math-runtime { background: #ffffff; }\n        #class1-math-runtime {\n            font-family: 'Quicksand', 'Nunito', sans-serif;\n            background: linear-gradient(135deg, #fdf2f8 0%, #fae8ff 50%, #f3e8ff 100%);\n            color: #4a4a4a;\n            user-select: none;\n            min-height: 100vh;\n            display: flex;\n            flex-direction: column;\n            align-items: center;\n            justify-content: flex-start;\n        }\n        #class1-math-runtime #screen-dashboard {\n            max-width: 82rem !important;\n        }\n\n        #class1-math-runtime .pastel-card {\n            background: #ffffff;\n            border-radius: 28px;\n            box-shadow: 0 12px 30px rgba(236, 72, 153, 0.12);\n            border: 3px solid #fbcfe8;\n        }\n        #class1-math-runtime .pastel-btn {\n            transition: all 0.2s ease;\n            box-shadow: 0 3px 10px rgba(0,0,0,0.05);\n        }\n        #class1-math-runtime .pastel-btn:hover {\n            transform: translateY(-2px);\n            box-shadow: 0 5px 15px rgba(0,0,0,0.09);\n        }\n        #class1-math-runtime .pastel-btn:active { transform: translateY(1px); }\n        @keyframes float {\n            0%, 100% { transform: translateY(0px); }\n            50% { transform: translateY(-6px); }\n        }\n        #class1-math-runtime .floating { animation: float 3s ease-in-out infinite; }\n        @keyframes sway {\n            0%, 100% { transform: translateY(0px) rotate(0deg); }\n            25% { transform: translateY(-5px) rotate(-7deg); }\n            75% { transform: translateY(-5px) rotate(7deg); }\n        }\n        #class1-math-runtime .swaying {\n            animation: sway 2.4s ease-in-out infinite;\n            display: inline-block;\n            transform-origin: bottom center;\n        }\n        @keyframes pulse-glow {\n            0%, 100% { filter: drop-shadow(0 0 6px rgba(236, 72, 153, 0.6)); transform: scale(1); }\n            50% { filter: drop-shadow(0 0 16px rgba(236, 72, 153, 0.9)); transform: scale(1.04); }\n        }\n        #class1-math-runtime .node-current {\n            animation: pulse-glow 2s infinite ease-in-out;\n            transform-origin: center;\n        }\n        #class1-math-runtime ::-webkit-scrollbar { width: 3px; height: 3px; }\n        #class1-math-runtime ::-webkit-scrollbar-track { background: #fdf2f8; }\n        #class1-math-runtime ::-webkit-scrollbar-thumb { background: #f472b6; border-radius: 10px; }\n        #class1-math-runtime ::-webkit-scrollbar-thumb:hover { background: #ec4899; }\n\n        /* TOAN1 UI V11 - 6 tab co dinh theo mau TV1 */\n        #class1-math-runtime .main-module-tab{\n            position:relative; min-height:46px; padding:7px 8px; border-radius:14px;\n            border:1.5px solid #f5c5df; background:linear-gradient(180deg,#fff,#fff8fc);\n            color:#7e3bb8; font-weight:900; font-size:16px; line-height:1.05;\n            display:flex; align-items:center; justify-content:center; gap:6px;\n            box-shadow:0 2px 7px rgba(109,40,217,.07);\n            transition:box-shadow .18s,border-color .18s,background .18s,color .18s;\n        }\n        #class1-math-runtime .main-module-tab:hover{border-color:#e879f9;box-shadow:0 0 13px rgba(217,70,239,.22);}\n        #class1-math-runtime .main-module-tab.is-active{\n            color:#fff; border-color:#d946ef;\n            background:linear-gradient(135deg,#ec4899 0%,#a855f7 55%,#7c3aed 100%);\n            box-shadow:0 5px 14px rgba(168,85,247,.28);\n        }\n        @media (min-width:768px){#class1-math-runtime .main-module-tab{min-height:50px;font-size:16px;}}\n\n        #class1-math-runtime .semester-switch-btn{\n            min-width:88px; height:34px; padding:0 14px; border-radius:12px;\n            font-weight:900; font-size:16px; transform:none !important;\n            transition:background .18s,color .18s,border-color .18s,box-shadow .18s,filter .18s !important;\n        }\n        #class1-math-runtime .semester-switch-btn:hover{transform:none !important;filter:brightness(1.04);}\n        #class1-math-runtime .semester-switch-btn.is-active{\n            color:#fff !important; background:linear-gradient(135deg,#ec4899 0%,#a855f7 100%) !important;\n            border:2px solid #c026d3 !important; box-shadow:0 5px 12px rgba(168,85,247,.28) !important;\n        }\n        #class1-math-runtime .semester-switch-btn.is-inactive{\n            color:#7e22ce !important; background:linear-gradient(135deg,#fff1f7 0%,#f5f3ff 100%) !important;\n            border:1.5px solid #e9d5ff !important; box-shadow:0 2px 6px rgba(126,34,206,.08) !important;\n        }\n\n        /* Toan 1 - breadcrumb header chi hien chu, bo icon de gon */\n        #class1-math-runtime #header-level2-icon { display:none !important; }\n        #class1-math-runtime #header-level2-title { margin-left:0 !important; }\n\n        @media (max-width:767px){\n            #class1-math-runtime #screen-login img[src=\"icon-512.png\"] {\n                border:none !important; border-radius:0 !important; box-shadow:none !important; background:transparent !important;\n            }\n            #class1-math-runtime .app-main-header{display:flex !important;flex-direction:column !important;align-items:stretch !important;gap:.35rem !important;padding:.35rem .45rem !important;}\n            #class1-math-runtime #header-nav-zone{display:flex !important;width:100% !important;min-width:0;justify-content:flex-start !important;overflow:hidden !important;}\n            #class1-math-runtime #btn-header-home{width:72px !important;height:48px !important;min-width:72px !important;}\n            #class1-math-runtime #header-learning-tabs{flex:1;min-width:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;}\n            #class1-math-runtime #header-learning-tabs::-webkit-scrollbar{display:none;}\n            #class1-math-runtime #header-level2-icon{display:none !important;}\n            #class1-math-runtime #header-level2-tab > button{padding-left:.5rem !important;padding-right:.5rem !important;column-gap:0 !important;}\n            #class1-math-runtime #header-info-zone{display:flex !important;width:100% !important;justify-content:flex-end !important;gap:.35rem !important;min-width:0;}\n            #class1-math-runtime #btn-toggle-autospeech{width:38px !important;height:38px !important;min-width:38px !important;}\n            #class1-math-runtime #header-star-box{transform:none !important;margin-left:0 !important;}\n            #class1-math-runtime #user-info-box{margin-left:auto !important;min-width:0;text-align:right;}\n            #class1-math-runtime .semester-switch-btn{min-width:76px;height:32px;padding:0 9px;font-size:16px;}\n        }\n\n        @media print {\n            #class1-math-runtime * { visibility: hidden; }\n            #class1-math-runtime #printable-report-area,#class1-math-runtime #printable-report-area * { visibility: visible; }\n            #class1-math-runtime #printable-report-area {\n                position: absolute !important;\n                left: 0 !important;\n                top: 0 !important;\n                width: 100% !important;\n                background: white !important;\n                padding: 10px !important;\n            }\n            #class1-math-runtime .no-print { display: none !important; }\n            #class1-math-runtime .page-break-1 { page-break-after: always; break-after: page; }\n            #class1-math-runtime .page-break-2 { page-break-before: always; break-before: page; page-break-after: always; break-after: page; }\n            #class1-math-runtime .page-break-3 { page-break-before: always; break-before: page; }\n        }\n    \n\n        /* =========================================================\n           TOAN 1 UI 2026-09-20 - APP SHELL THEO CHUAN TV1\n           Chi thay presentation/layout, giu nguyen engine va workflow.\n           ========================================================= */\n        #class1-math-runtime { background:#ffffff !important; }\n        #class1-math-runtime #screen-dashboard { max-width:82rem !important; background:transparent !important; }\n\n        #class1-math-runtime .app-main-header{\n            display:grid !important;\n            grid-template-columns:auto minmax(0,1fr) auto;\n            align-items:center;\n            gap:10px;\n            padding:7px 0 !important;\n            background:transparent !important;\n            border:0 !important;\n            box-shadow:none !important;\n            backdrop-filter:none !important;\n            -webkit-backdrop-filter:none !important;\n            border-radius:0 !important;\n        }\n        #class1-math-runtime #btn-header-home{\n            width:101px !important; min-width:101px !important; height:67px !important;\n            border-radius:16px !important; box-shadow:0 3px 10px rgba(76,29,149,.08) !important;\n        }\n        #class1-math-runtime #header-info-zone{width:auto !important;min-width:0;margin-left:0 !important;justify-content:flex-end !important;gap:7px !important;}\n        #class1-math-runtime #btn-toggle-autospeech{display:none !important;}\n        #class1-math-runtime #header-star-box{\n            background:#fff7fb !important;\n            height:62px !important;\n            min-height:62px !important;\n            padding:5px 8px !important;\n            justify-content:center !important;\n        }\n        #class1-math-runtime #header-star-box > div > span:first-child{font-size:16px !important;padding:3px 7px !important;}\n        #class1-math-runtime #header-star-box > div > span:first-child i{font-size:16px !important;}\n        #class1-math-runtime #star-green-count,#class1-math-runtime #star-red-count{font-size:16px !important;min-width:16px;text-align:center;}\n\n        #class1-math-runtime #main-module-tabs{width:100%;min-width:0;background:transparent !important;border:0 !important;border-radius:0 !important;padding:0 !important;box-shadow:none !important;}\n        #class1-math-runtime #main-module-tabs > div{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:7px;}\n        #class1-math-runtime .main-module-tab{\n            min-width:0;min-height:62px;padding:7px 5px;border-radius:16px;flex-direction:column;gap:3px;\n            font-size:16px;line-height:1.05;border-width:1.5px;box-shadow:0 3px 9px rgba(76,29,149,.08);\n            position:relative;overflow:visible;\n        }\n        #class1-math-runtime .main-module-tab > span:first-child{font-size:21px !important;line-height:1;}\n        #class1-math-runtime .main-module-tab::after{content:'';position:absolute;left:34%;right:34%;bottom:-5px;height:3px;border-radius:99px;opacity:0;transform:scaleX(.45);transition:all .18s ease;background:currentColor;}\n        #class1-math-runtime .main-module-tab.is-active::after{opacity:.95;transform:scaleX(1);}\n        #class1-math-runtime .main-module-tab[data-tab=\"discover\"]{background:#f3e8ff;color:#7c3aed;border-color:#ddd6fe;}\n        #class1-math-runtime .main-module-tab[data-tab=\"lessons\"]{background:#fce7f3;color:#db2777;border-color:#fbcfe8;}\n        #class1-math-runtime .main-module-tab[data-tab=\"exercises\"]{background:#e0f2fe;color:#0369a1;border-color:#bae6fd;}\n        #class1-math-runtime .main-module-tab[data-tab=\"review\"]{background:#fef3c7;color:#b45309;border-color:#fde68a;}\n        #class1-math-runtime .main-module-tab[data-tab=\"exams\"]{background:#dcfce7;color:#15803d;border-color:#bbf7d0;}\n        #class1-math-runtime .main-module-tab[data-tab=\"games\"]{background:#ede9fe;color:#6d28d9;border-color:#ddd6fe;}\n        #class1-math-runtime .main-module-tab[data-tab=\"discover\"].is-active{background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;border-color:#8b5cf6;box-shadow:0 7px 17px rgba(124,58,237,.27);}\n        #class1-math-runtime .main-module-tab[data-tab=\"lessons\"].is-active{background:linear-gradient(135deg,#f472b6,#ec4899);color:#fff;border-color:#ec4899;box-shadow:0 7px 17px rgba(236,72,153,.25);}\n        #class1-math-runtime .main-module-tab[data-tab=\"exercises\"].is-active{background:linear-gradient(135deg,#38bdf8,#0284c7);color:#fff;border-color:#0ea5e9;box-shadow:0 7px 17px rgba(14,165,233,.25);}\n        #class1-math-runtime .main-module-tab[data-tab=\"review\"].is-active{background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#fff;border-color:#f59e0b;box-shadow:0 7px 17px rgba(245,158,11,.25);}\n        #class1-math-runtime .main-module-tab[data-tab=\"exams\"].is-active{background:linear-gradient(135deg,#4ade80,#16a34a);color:#fff;border-color:#22c55e;box-shadow:0 7px 17px rgba(34,197,94,.24);}\n        #class1-math-runtime .main-module-tab[data-tab=\"games\"].is-active{background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;border-color:#7c3aed;box-shadow:0 7px 17px rgba(109,40,217,.25);}\n\n        #class1-math-runtime #app-banner-slot{width:100%;position:relative;}\n        #class1-math-runtime #app-main-banner{position:relative;width:100%;aspect-ratio:6/1;min-height:0;overflow:hidden;border-radius:0;border:0;box-shadow:none;background:#fff;}\n        #class1-math-runtime #app-main-banner picture{display:block;width:100%;height:100%;}\n        #class1-math-runtime #app-main-banner img{width:100%;height:100%;object-fit:cover;display:block;}\n        #class1-math-runtime .app-main-banner-copy{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);width:36%;text-align:center;pointer-events:none;text-shadow:0 2px 0 rgba(255,255,255,.9),0 3px 12px rgba(126,34,206,.12);}\n        #class1-math-runtime .app-main-banner-title{font-size:clamp(21px,2.35vw,34px);line-height:1;font-weight:900;color:#ec4899;letter-spacing:-.02em;}\n        #class1-math-runtime .app-main-banner-teacher{margin-top:5px;font-size:clamp(16px,1.15vw,17px);font-weight:900;color:#7e22ce;}\n        #class1-math-runtime #app-context-banner.hidden,#class1-math-runtime #app-main-banner.hidden{display:none !important;}\n        #class1-math-runtime #app-context-banner{position:relative;min-height:58px;overflow:hidden;border-radius:0;border:0 !important;background:none !important;box-shadow:none !important;display:flex;align-items:center;padding:7px 10px;}\n        #class1-math-runtime #app-context-banner::before{content:'';position:absolute;inset:0;background-image:url('banner-sub.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;transform:none;opacity:1;filter:none;pointer-events:none;z-index:0;}\n        #class1-math-runtime #header-learning-tabs{width:100% !important;max-width:none !important;flex:1 1 auto !important;min-width:0 !important;overflow-x:auto !important;overflow-y:hidden !important;scrollbar-width:none;gap:5px;position:relative;z-index:2;}\n        #class1-math-runtime #header-learning-tabs::-webkit-scrollbar{display:none;}\n        #class1-math-runtime #header-level2-tab,#class1-math-runtime #header-level3-tab,#class1-math-runtime #header-level4-tab{width:auto !important;min-width:0 !important;max-width:none !important;flex:0 0 auto !important;overflow:visible !important;}\n        #class1-math-runtime #header-level2-tab > button,#class1-math-runtime #header-level3-tab > div,#class1-math-runtime #header-level4-tab > div{height:38px !important;max-width:220px !important;min-width:0 !important;padding:0 12px !important;border-radius:13px !important;background:rgba(255,255,255,.50) !important;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);box-shadow:0 2px 7px rgba(76,29,149,.08) !important;}\n        #class1-math-runtime #header-level2-tab > button{color:#be185d !important;border:1.5px solid #f9a8d4 !important;}\n        #class1-math-runtime #header-level3-tab > div{color:#7e22ce !important;border:1.5px solid #d8b4fe !important;}\n        #class1-math-runtime #header-level4-tab > div{color:#b45309 !important;border:1.5px solid #fde68a !important;}\n        #class1-math-runtime #header-level2-title,#class1-math-runtime #header-level3-title,#class1-math-runtime #header-level4-title{font-size:16px !important;font-weight:900 !important;}\n        #class1-math-runtime #header-level3-tab > span,#class1-math-runtime #header-level4-tab > span{color:#c084fc !important;font-size:16px !important;}\n        #class1-math-runtime #header-level2-icon{display:none !important;}\n\n        #class1-math-runtime #app-footer{width:100%;max-width:82rem;min-height:76px;margin:10px auto 0;padding:0 14px;border-radius:0;background-image:url('footer-bg.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;display:flex;align-items:center;justify-content:center;text-align:center;color:#1827f2;border:0;box-shadow:none;}\n        #class1-math-runtime #app-footer .footer-title{font-size:17px;font-weight:900;line-height:1.35;text-shadow:0 1px 0 #fff;}\n        #class1-math-runtime #app-footer .footer-sub{font-size:16px;font-weight:800;line-height:1.35;color:#1827f2;text-shadow:0 1px 0 #fff;}\n\n        /* Root view: bo khung ngoai, chi giu card noi dung. */\n        #class1-math-runtime #view-bai-hoc-hub,#class1-math-runtime #view-roadmap,#class1-math-runtime #view-minigame-hub,#class1-math-runtime #view-exam-hub{background:transparent !important;border:0 !important;box-shadow:none !important;border-radius:0 !important;padding-left:0 !important;padding-right:0 !important;}\n        #class1-math-runtime #roadmap-svg-container{background:transparent !important;border:0 !important;border-radius:0 !important;box-shadow:none !important;padding-left:0 !important;padding-right:0 !important;}\n        #class1-math-runtime:has(#main-tab-review.is-active) #view-lecture{background:transparent !important;border:0 !important;box-shadow:none !important;border-radius:0 !important;padding-left:0 !important;padding-right:0 !important;}\n\n        /* Man nhanh: bo khung ngoai va chieu cao gia. */\n        #class1-math-runtime #view-lecture,#class1-math-runtime #view-bai-hoc-lesson,#class1-math-runtime #view-game-play{background:transparent !important;border:0 !important;box-shadow:none !important;border-radius:0 !important;min-height:0 !important;padding:8px 0 !important;}\n        #class1-math-runtime #view-quiz > .pastel-card{background:transparent !important;border:0 !important;box-shadow:none !important;border-radius:0 !important;min-height:0 !important;padding:8px 0 !important;}\n        #class1-math-runtime #view-lecture{justify-content:flex-start !important;gap:8px !important;}\n        #class1-math-runtime #view-lecture > .w-full{gap:8px !important;}\n        #class1-math-runtime #view-lecture .mb-3,#class1-math-runtime #view-lecture .mb-2\\.5{margin-bottom:8px !important;}\n        #class1-math-runtime #view-lecture .mt-2\\.5{margin-top:8px !important;}\n        #class1-math-runtime #view-lecture .pt-2{padding-top:8px !important;}\n        #class1-math-runtime #view-quiz{gap:8px !important;}\n        #class1-math-runtime #view-quiz #question-box{margin-top:4px !important;margin-bottom:4px !important;}\n        /* Khoảng cách đáp án -> điều hướng = xấp xỉ 1/2 chiều cao nút Câu tiếp theo. */\n        #class1-math-runtime #view-quiz #quiz-bottom-nav{padding-top:22px !important;}\n        #class1-math-runtime #btn-next-q-prac,#class1-math-runtime #btn-next-q-exam{height:43px !important;min-height:43px !important;padding-top:0 !important;padding-bottom:0 !important;}\n\n        @media (max-width:767px){\n            #class1-math-runtime .app-main-header{display:grid !important;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto;gap:7px !important;padding:7px 0 !important;}\n            #class1-math-runtime #btn-header-home{grid-column:1;grid-row:1;width:86px !important;min-width:86px !important;height:58px !important;justify-self:start;}\n            #class1-math-runtime #header-info-zone{grid-column:2;grid-row:1;justify-self:end !important;width:auto !important;gap:5px !important;}\n            #class1-math-runtime #main-module-tabs{grid-column:1 / 3;grid-row:2;width:100% !important;}\n            #class1-math-runtime #main-module-tabs > div{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;}\n            #class1-math-runtime .main-module-tab{min-height:52px;flex-direction:row;gap:6px;font-size:16px;padding:6px 8px;border-radius:15px;}\n            #class1-math-runtime .main-module-tab > span:first-child{font-size:18px !important;}\n            #class1-math-runtime .main-module-tab::after{bottom:-4px;height:2px;}\n            #class1-math-runtime #header-star-box{transform:none !important;margin-left:0 !important;height:52px !important;min-height:52px !important;padding:3px 6px !important;}\n            #class1-math-runtime #header-star-box > div > span:first-child{font-size:16px !important;padding:2px 5px !important;}\n            #class1-math-runtime #header-star-box > div > span:first-child i{font-size:16px !important;}\n            #class1-math-runtime #star-green-count,#class1-math-runtime #star-red-count{font-size:16px !important;}\n            #class1-math-runtime #user-info-box{margin-left:0 !important;min-width:0;text-align:right;}\n            #class1-math-runtime #user-info-box .admin-manage-label{display:none !important;}\n            #class1-math-runtime #user-info-box button[title=\"Quản lý tài khoản\"]{width:34px !important;padding-left:0 !important;padding-right:0 !important;justify-content:center !important;}\n            #class1-math-runtime #app-main-banner{aspect-ratio:4/1;border-radius:0;}\n            #class1-math-runtime .app-main-banner-copy{width:39%;left:51%;top:49%;}\n            #class1-math-runtime .app-main-banner-title{font-size:clamp(16px,4.2vw,20px);}\n            #class1-math-runtime .app-main-banner-teacher{font-size:clamp(16px,2.8vw,16px);margin-top:2px;}\n            #class1-math-runtime #app-context-banner{min-height:52px;border-radius:0;padding:6px 8px;}\n            #class1-math-runtime #header-learning-tabs{gap:4px;}\n            #class1-math-runtime #header-level2-tab > button,#class1-math-runtime #header-level3-tab > div,#class1-math-runtime #header-level4-tab > div{height:34px !important;max-width:150px !important;padding:0 9px !important;border-radius:11px !important;}\n            #class1-math-runtime #header-level2-title,#class1-math-runtime #header-level3-title,#class1-math-runtime #header-level4-title{font-size:16px !important;}\n            #class1-math-runtime #app-footer{min-height:64px;margin-top:8px;border-radius:0;}\n            #class1-math-runtime #app-footer .footer-title{font-size:16px;}\n            #class1-math-runtime #app-footer .footer-sub{font-size:16px;}\n            #class1-math-runtime #view-lecture,#class1-math-runtime #view-bai-hoc-lesson,#class1-math-runtime #view-game-play,#class1-math-runtime #view-quiz > .pastel-card{padding-top:6px !important;padding-bottom:6px !important;}\n        }\n\n\n        /* TOAN 1 - CHUAN BANNER / FOOTER / NEN THEO TV1 2026-09-22 */\n        #class1-math-runtime,#class1-math-runtime,#class1-math-runtime #screen-dashboard,#class1-math-runtime #app-viewport,#class1-math-runtime #view-dashboard-grid { background:#ffffff !important; }\n\n        /* Khám phá: giữ pastel nhẹ theo nhóm, bỏ shadow để nền trang thật sự thoáng. */\n        #class1-math-runtime #view-dashboard-grid .pastel-card,#class1-math-runtime #view-dashboard-grid .pastel-card:hover {\n            box-shadow:none !important;\n            border-width:1px !important;\n        }\n        #class1-math-runtime #view-dashboard-grid .pastel-card:has(h3.text-pink-700)    { background:rgba(253,242,248,.82) !important; }\n        #class1-math-runtime #view-dashboard-grid .pastel-card:has(h3.text-purple-700)  { background:rgba(250,245,255,.84) !important; }\n        #class1-math-runtime #view-dashboard-grid .pastel-card:has(h3.text-blue-700)    { background:rgba(239,246,255,.86) !important; }\n        #class1-math-runtime #view-dashboard-grid .pastel-card:has(h3.text-fuchsia-700) { background:rgba(253,244,255,.84) !important; }\n        #class1-math-runtime #view-dashboard-grid .pastel-card:has(h3.text-emerald-700) { background:rgba(236,253,245,.86) !important; }\n        #class1-math-runtime #view-dashboard-grid .pastel-card:has(h3.text-indigo-700)  { background:rgba(238,242,255,.86) !important; }\n        #class1-math-runtime #view-dashboard-grid .pastel-card:has(h3.text-amber-700)   { background:rgba(255,251,235,.88) !important; }\n        #class1-math-runtime #view-dashboard-grid .pastel-card:has(h3.text-rose-700)    { background:rgba(255,241,242,.86) !important; }\n        #class1-math-runtime #view-dashboard-grid .pastel-card:has(h3.text-teal-700)    { background:rgba(240,253,250,.88) !important; }\n        #class1-math-runtime #view-dashboard-grid .pastel-card:has(h3.text-yellow-700)  { background:rgba(254,252,232,.90) !important; }\n\n        /* Toán 1 - tăng cỡ chữ 6 tab chính trên header cho cân với tiêu đề card Khám phá. */\n        @media (min-width:768px){\n            #class1-math-runtime .main-module-tab{ font-size:16px !important; }\n        }\n\n        /* Breadcrumb desktop: tự giãn theo nội dung, tối đa 440px như TV1. */\n        @media (min-width:768px){\n            #class1-math-runtime #header-level2-tab > button,#class1-math-runtime #header-level3-tab > div,#class1-math-runtime #header-level4-tab > div {\n                width:auto !important; min-width:0 !important; max-width:440px !important;\n                padding-left:18px !important; padding-right:18px !important;\n            }\n            #class1-math-runtime #header-level2-title,#class1-math-runtime #header-level3-title,#class1-math-runtime #header-level4-title {\n                font-size:16px !important; max-width:400px !important; overflow:hidden !important;\n                text-overflow:ellipsis !important; white-space:nowrap !important;\n            }\n        }\n\n    \n        /* TOAN 1 - FOOTER 8:1 DONG BO TV2 2026-09-22 */\n        #class1-math-runtime #app-footer {\n            aspect-ratio: 8 / 1 !important;\n            min-height: 0 !important;\n            height: auto !important;\n            background-image: url('footer-bg.jpg') !important;\n            background-size: cover !important;\n            background-position: center !important;\n            background-repeat: no-repeat !important;\n        }\n\n        @media (max-width: 767px) {\n            #class1-math-runtime #app-footer {\n                aspect-ratio: 8 / 1 !important;\n                min-height: 0 !important;\n                height: auto !important;\n            }\n        }\n\n\n        /* TOAN 1 - FOOTER RONG BANG BANNER */\n        #class1-math-runtime #app-footer {\n            width: calc(100% - 1rem) !important;\n            max-width: 82rem !important;\n            box-sizing: border-box !important;\n        }\n\n        @media (max-width: 767px) {\n            #class1-math-runtime #app-footer {\n                width: calc(100% - 0.5rem) !important;\n                max-width: none !important;\n            }\n        }\n\n\n        /* TOAN 1 - MOBILE: NUT QUAN LY CHI GIU ICON */\n        @media (max-width: 767px) {\n            #class1-math-runtime #user-info-box button[title=\"Quản lý tài khoản\"] {\n                width: 34px !important;\n                min-width: 34px !important;\n                padding-left: 0 !important;\n                padding-right: 0 !important;\n                justify-content: center !important;\n                font-size: 0 !important;\n                overflow: hidden !important;\n                white-space: nowrap !important;\n            }\n\n            #class1-math-runtime #user-info-box button[title=\"Quản lý tài khoản\"] i {\n                font-size: 16px !important;\n                margin: 0 !important;\n            }\n\n            #class1-math-runtime #user-info-box button[title=\"Quản lý tài khoản\"] .admin-manage-label {\n                display: none !important;\n            }\n        }\n\n\n        /* TOAN 1 - MOBILE: TANG CO CHU HEADER VA CARD KHAM PHA */\n        @media (max-width: 767px) {\n            #class1-math-runtime .main-module-tab {\n                font-size: 16px !important;\n                font-weight: 900 !important;\n            }\n            #class1-math-runtime #view-dashboard-grid .pastel-card h3 {\n                font-size: 18px !important;\n                line-height: 1.25 !important;\n            }\n            #class1-math-runtime #view-dashboard-grid .pastel-card > div:last-child {\n                font-size: 16px !important;\n                line-height: 1.45 !important;\n            }\n        }\n\n\n\n        /* =========================================================\n           MỤC 12 - HỌC TOÁN THEO PHƯƠNG PHÁP MỚI / EPSILON METHOD\n           ========================================================= */\n        #class1-math-runtime #view-epsilon-method-hub,#class1-math-runtime #view-number-sense,#class1-math-runtime #view-operation-sense{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;}\n        #class1-math-runtime .em-hero{border:1.5px solid #e9d5ff;border-radius:28px;background:linear-gradient(135deg,#fff7fb 0%,#faf5ff 46%,#eff6ff 100%);padding:20px 22px;display:flex;align-items:center;justify-content:space-between;gap:20px;box-shadow:0 7px 20px rgba(126,34,206,.06);}\n        #class1-math-runtime .em-hero-flow{max-width:390px;border-radius:20px;background:rgba(255,255,255,.88);border:1px solid #d8b4fe;padding:11px 14px;text-align:center;font-size:16px;line-height:1.55;font-weight:900;color:#7e22ce;}\n        #class1-math-runtime .em-track-card{width:100%;border:2px solid #ede9fe;border-radius:24px;background:linear-gradient(180deg,#fff,#fdfcff);padding:17px;box-shadow:0 5px 16px rgba(76,29,149,.06);transition:transform .16s,box-shadow .16s,border-color .16s;}\n        #class1-math-runtime .em-track-card:hover{transform:translateY(-2px);box-shadow:0 11px 25px rgba(76,29,149,.10);border-color:#d8b4fe;}\n        #class1-math-runtime .em-track-icon{width:48px;height:48px;border-radius:17px;background:linear-gradient(135deg,#fce7f3,#ede9fe,#dbeafe);display:flex;align-items:center;justify-content:center;font-size:25px;flex:0 0 auto;}\n        #class1-math-runtime .em-method-badge{flex:0 0 auto;border-radius:999px;border:1px solid #f0abfc;background:#fdf4ff;color:#a21caf;padding:5px 9px;font-size:16px;font-weight:900;}\n        #class1-math-runtime .em-stat-pill{border-radius:999px;border:1px solid #e2e8f0;background:#f8fafc;padding:5px 9px;}\n\n        /* 12.1 - EPSILON NUMBER SENSE */\n        #class1-math-runtime .ns-hero{border:1.5px solid #fbcfe8;border-radius:26px;background:linear-gradient(135deg,#fff7fb 0%,#faf5ff 52%,#f0f9ff 100%);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:18px;}\n        #class1-math-runtime .ns-hero-flow{max-width:360px;border-radius:18px;background:rgba(255,255,255,.82);border:1px solid #e9d5ff;padding:10px 13px;text-align:center;font-size:16px;line-height:1.45;font-weight:900;color:#7e22ce;}\n        #class1-math-runtime .ns-journey-card{width:100%;border:1.5px solid #ede9fe;border-radius:22px;background:#fff;padding:14px;box-shadow:0 4px 13px rgba(76,29,149,.06);transition:transform .16s,box-shadow .16s,border-color .16s;}\n        #class1-math-runtime .ns-journey-card:hover{transform:translateY(-2px);box-shadow:0 9px 22px rgba(76,29,149,.10);border-color:#d8b4fe;}\n        #class1-math-runtime .ns-journey-icon{width:42px;height:42px;border-radius:15px;background:linear-gradient(135deg,#fce7f3,#ede9fe);display:flex;align-items:center;justify-content:center;font-size:22px;flex:0 0 auto;}\n        #class1-math-runtime .ns-teacher-bubble{display:flex;align-items:flex-start;gap:10px;border:1.5px solid #fbcfe8;border-radius:20px;background:linear-gradient(135deg,#fff1f7,#fff);padding:12px 14px;}\n        #class1-math-runtime .ns-listen-btn{flex:0 0 auto;border-radius:14px;border:1px solid #fbcfe8;background:#fff;color:#be185d;padding:7px 10px;font-size:16px;font-weight:900;white-space:nowrap;}\n        #class1-math-runtime .ns-listen-btn:hover{background:#fdf2f8;}\n        #class1-math-runtime .ns-workspace{border:1.5px solid #e9d5ff;border-radius:26px;background:linear-gradient(180deg,#fff 0%,#fdfcff 100%);padding:16px;min-height:340px;display:flex;flex-direction:column;justify-content:center;box-shadow:0 5px 18px rgba(76,29,149,.05);}\n        #class1-math-runtime .ns-visual-box{min-height:126px;border-radius:22px;border:2px dashed #ddd6fe;background:linear-gradient(135deg,#faf5ff,#fff7ed);padding:18px;display:flex;align-items:center;justify-content:center;}\n        #class1-math-runtime .ns-object-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;}\n        #class1-math-runtime .ns-static-object{display:inline-flex;align-items:center;justify-content:center;min-width:42px;min-height:42px;font-size:38px;line-height:1.05;}\n        #class1-math-runtime .ns-choice{min-height:56px;border-radius:17px;border:2px solid #e9d5ff;background:#fff;padding:10px 12px;font-size:18px;font-weight:900;color:#4c1d95;box-shadow:0 3px 8px rgba(76,29,149,.06);transition:all .15s;}\n        #class1-math-runtime .ns-choice:hover{border-color:#c084fc;background:#faf5ff;transform:translateY(-1px);}\n        #class1-math-runtime .ns-primary-btn{border-radius:16px;background:linear-gradient(135deg,#ec4899,#8b5cf6);color:#fff;padding:10px 16px;font-weight:900;font-size:16px;box-shadow:0 5px 13px rgba(168,85,247,.20);}\n        #class1-math-runtime .ns-secondary-btn{border-radius:14px;background:#fff;border:1.5px solid #e9d5ff;color:#7e22ce;padding:9px 13px;font-weight:900;font-size:16px;}\n        #class1-math-runtime .ns-evidence-pill{display:inline-flex;align-items:center;border-radius:999px;background:#f8fafc;border:1px solid #e2e8f0;padding:5px 9px;font-size:16px;font-weight:900;color:#64748b;}\n        #class1-math-runtime .ns-touch-object{position:relative;width:68px;height:68px;border-radius:20px;border:2px solid #e9d5ff;background:#fff;font-size:38px;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(76,29,149,.06);transition:all .15s;}\n        #class1-math-runtime .ns-touch-object.is-counted{background:#ecfdf5;border-color:#6ee7b7;transform:scale(.95);}\n        #class1-math-runtime .ns-count-badge{position:absolute;right:-6px;top:-8px;width:26px;height:26px;border-radius:999px;background:#10b981;color:white;font-size:16px;display:flex;align-items:center;justify-content:center;border:2px solid white;}\n        #class1-math-runtime .ns-bank,#class1-math-runtime .ns-tray,#class1-math-runtime .ns-group-card,#class1-math-runtime .ns-whole-card,#class1-math-runtime .ns-part-card{border-radius:20px;border:1.5px solid #e9d5ff;background:#fafaff;padding:14px;text-align:center;}\n        #class1-math-runtime .ns-tray{min-height:155px;background:linear-gradient(180deg,#fff7fb,#fff);border-style:dashed;border-color:#f9a8d4;}\n        #class1-math-runtime .ns-bank-object{width:54px;height:54px;border-radius:16px;border:1.5px solid #e9d5ff;background:white;font-size:30px;cursor:grab;}\n        #class1-math-runtime .ns-symbol-card{max-width:560px;margin:0 auto;border-radius:22px;border:2px solid #ddd6fe;background:linear-gradient(135deg,#f5f3ff,#fff);padding:22px;font-size:34px;font-weight:900;line-height:1.5;color:#4c1d95;}\n        #class1-math-runtime .ns-frame{max-width:460px;margin:0 auto;display:grid;grid-template-columns:repeat(5,minmax(48px,1fr));border:3px solid #7c3aed;border-radius:14px;overflow:hidden;background:#fff;}\n        #class1-math-runtime .ns-frame.ns-frame-10{grid-template-rows:repeat(2,68px);}\n        #class1-math-runtime .ns-frame-cell{height:76px;border-right:2px solid #c4b5fd;border-bottom:2px solid #c4b5fd;background:white;font-size:42px;font-weight:900;color:#ec4899;}\n        #class1-math-runtime .ns-frame-cell:nth-child(5n){border-right:0;}\n        #class1-math-runtime .ns-frame-cell.is-filled{background:#fdf2f8;}\n\n        /* 12.2 - EPSILON OPERATIONAL SENSE */\n        #class1-math-runtime .os-hero{border:1.5px solid #ddd6fe;border-radius:26px;background:linear-gradient(135deg,#faf5ff 0%,#eef2ff 52%,#eff6ff 100%);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:18px;}\n        #class1-math-runtime .os-hero-flow{max-width:390px;border-radius:18px;background:rgba(255,255,255,.85);border:1px solid #c7d2fe;padding:10px 13px;text-align:center;font-size:16px;line-height:1.45;font-weight:900;color:#5b21b6;}\n        #class1-math-runtime .os-journey-icon{width:42px;height:42px;border-radius:15px;background:linear-gradient(135deg,#ede9fe,#dbeafe);display:flex;align-items:center;justify-content:center;font-size:22px;flex:0 0 auto;}\n        #class1-math-runtime .os-teacher-bubble{border-color:#ddd6fe;background:linear-gradient(135deg,#faf5ff,#fff);}\n        #class1-math-runtime .os-bank-object{width:54px;height:54px;border-radius:16px;border:1.5px solid #c7d2fe;background:white;font-size:30px;cursor:pointer;box-shadow:0 3px 8px rgba(79,70,229,.06);transition:all .15s;}\n        #class1-math-runtime .os-bank-object:hover{transform:translateY(-2px);border-color:#8b5cf6;}\n        #class1-math-runtime .os-action-object{position:relative;width:68px;height:68px;border-radius:20px;border:2px solid #ddd6fe;background:#fff;font-size:38px;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(79,70,229,.06);transition:all .15s;}\n        #class1-math-runtime .os-action-object.is-removed{opacity:.42;transform:translateY(-12px) scale(.88);border-style:dashed;border-color:#fb7185;background:#fff1f2;}\n        #class1-math-runtime .os-action-object.is-selected{background:#eef2ff;border-color:#818cf8;transform:scale(.94);}\n        #class1-math-runtime .os-away-mark{position:absolute;right:-5px;top:-8px;width:26px;height:26px;border-radius:999px;background:#f43f5e;color:white;font-size:16px;display:flex;align-items:center;justify-content:center;border:2px solid white;}\n        #class1-math-runtime .os-story-card{border:1.5px solid #c7d2fe;border-radius:18px;background:#fff;padding:12px;text-align:center;min-height:86px;display:flex;flex-direction:column;justify-content:center;}\n        #class1-math-runtime .os-story-label{font-size:16px;font-weight:900;color:#6366f1;letter-spacing:.08em;}\n        #class1-math-runtime .os-story-value{font-size:30px;line-height:1.1;font-weight:900;color:#312e81;margin-top:5px;}\n        #class1-math-runtime .os-pair-row{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(42px,1fr);gap:5px;}\n        #class1-math-runtime .os-pair-cell{min-height:50px;border-radius:13px;border:1px solid #dbeafe;background:#fff;display:flex;align-items:center;justify-content:center;font-size:29px;}\n        #class1-math-runtime .os-balance{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:12px;max-width:720px;margin:0 auto;}\n        #class1-math-runtime .os-balance-pan{min-height:110px;border-radius:20px 20px 28px 28px;border:2px solid #c7d2fe;background:linear-gradient(180deg,#fff,#eef2ff);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#312e81;box-shadow:0 8px 0 -4px #c7d2fe;}\n        #class1-math-runtime .os-path-cell{width:48px;height:48px;border-radius:14px;border:1.5px solid #c7d2fe;background:white;display:flex;align-items:center;justify-content:center;font-weight:900;color:#475569;transition:all .15s;}\n        #class1-math-runtime .os-path-cell.is-current{background:linear-gradient(135deg,#8b5cf6,#4f46e5);color:white;border-color:#4f46e5;transform:translateY(-3px) scale(1.08);box-shadow:0 6px 14px rgba(79,70,229,.25);}\n\n        @media(max-width:767px){\n            #class1-math-runtime .em-hero,#class1-math-runtime .ns-hero,#class1-math-runtime .os-hero{padding:14px;align-items:flex-start;flex-direction:column;}\n            #class1-math-runtime .em-hero-flow,#class1-math-runtime .ns-hero-flow,#class1-math-runtime .os-hero-flow{max-width:none;width:100%;}\n            #class1-math-runtime .em-track-card{padding:14px;}\n            #class1-math-runtime .ns-workspace{padding:12px;min-height:300px}#class1-math-runtime .ns-static-object{font-size:31px;min-width:34px;min-height:34px}#class1-math-runtime .ns-touch-object{width:58px;height:58px;font-size:31px}#class1-math-runtime .ns-choice{min-height:50px;font-size:16px}#class1-math-runtime .ns-frame-cell{height:60px;font-size:34px}#class1-math-runtime .ns-frame.ns-frame-10{grid-template-rows:repeat(2,58px)}#class1-math-runtime .ns-symbol-card{font-size:28px;padding:16px;}\n            #class1-math-runtime .ns-teacher-bubble{flex-wrap:wrap}#class1-math-runtime .ns-listen-btn{margin-left:34px;}\n            #class1-math-runtime .os-action-object{width:58px;height:58px;font-size:31px}#class1-math-runtime .os-story-card{padding:8px;min-height:74px}#class1-math-runtime .os-story-value{font-size:25px}#class1-math-runtime .os-balance-pan{min-height:90px;font-size:22px}#class1-math-runtime .os-path-cell{width:42px;height:42px}#class1-math-runtime .os-pair-cell{min-height:44px;font-size:24px}\n        }\n\n\n#class1-math-runtime{width:100%;max-width:100%;font-family:'Quicksand','Nunito',system-ui,sans-serif;color:#4a4a4a;user-select:none;position:relative;}\n#class1-math-runtime #screen-dashboard{width:100%!important;max-width:100%!important;padding:0!important;margin:0!important;}\n#class1-math-runtime .app-main-header,#class1-math-runtime #app-banner-slot{display:none!important;}\n#class1-math-runtime #app-viewport{width:100%!important;max-width:100%!important;margin-bottom:0!important;padding-bottom:0!important;}\n/* Module Toán: bỏ khoảng đệm đáy của khung Lớp 1 để nội dung chạm sát footer. */\n#content-stage:has(#class1-math-runtime){padding-bottom:0!important;}\n#content-stage:has(#class1-math-runtime)+.app-footer{margin-top:0!important;}\n#class1-math-runtime #view-dashboard-grid{align-items:stretch;}\n#class1-math-runtime .fixed{position:fixed;}\n#class1-math-runtime img{max-width:100%;}\n#class1-math-runtime button,#class1-math-runtime input,#class1-math-runtime select,#class1-math-runtime textarea{font:inherit;}\n#class1-math-runtime [hidden]{display:none!important;}\n\n/* Class 1 compact vertical layout: tiết kiệm chiều cao, sát banner và footer. */\n#class1-math-runtime{min-height:0!important;height:auto!important;display:block!important;}\n#class1-math-runtime #screen-dashboard{min-height:0!important;height:auto!important;gap:0!important;}\n#class1-math-runtime #screen-dashboard > *{margin-block-start:0!important;margin-block-end:0!important;}\n#class1-math-runtime #app-viewport{min-height:0!important;height:auto!important;margin-top:0!important;margin-bottom:0!important;padding-top:0!important;padding-bottom:0!important;}\n#content-stage:has(#class1-math-runtime){min-height:0!important;padding:.12rem .05rem 0!important;}\n#content-stage:has(#class1-math-runtime)+.app-footer{margin-top:0!important;}\n#class1-math-runtime #view-dashboard-grid,\n#class1-math-runtime #view-epsilon-method-hub,\n#class1-math-runtime #view-number-sense,\n#class1-math-runtime #view-operation-sense,\n#class1-math-runtime #view-bai-hoc-hub,\n#class1-math-runtime #view-bai-hoc-lesson,\n#class1-math-runtime #view-lecture,\n#class1-math-runtime #view-quiz,\n#class1-math-runtime #view-roadmap,\n#class1-math-runtime #view-minigame-hub,\n#class1-math-runtime #view-game-play,\n#class1-math-runtime #view-exam-hub,\n#class1-math-runtime #view-result{margin-top:0!important;margin-bottom:0!important;}\n#class1-math-runtime #view-bai-hoc-hub,\n#class1-math-runtime #view-bai-hoc-lesson,\n#class1-math-runtime #view-lecture,\n#class1-math-runtime #view-roadmap,\n#class1-math-runtime #view-minigame-hub,\n#class1-math-runtime #view-game-play,\n#class1-math-runtime #view-exam-hub{min-height:0!important;padding-top:.35rem!important;padding-bottom:.35rem!important;}\n#class1-math-runtime #view-exam-hub{justify-content:flex-start!important;}\n#class1-math-runtime #view-quiz{gap:.3rem!important;}\n#class1-math-runtime #view-quiz > .pastel-card{min-height:0!important;padding-top:.35rem!important;padding-bottom:.35rem!important;}\n#class1-math-runtime #view-quiz #question-box{margin-top:0!important;margin-bottom:0!important;}\n#class1-math-runtime #view-dashboard-grid{padding-top:0!important;padding-bottom:0!important;}\n\n@media(max-width:767px){\n  #content-stage:has(#class1-math-runtime){padding-top:.08rem!important;padding-bottom:0!important;}\n  #class1-math-runtime #view-bai-hoc-hub,\n  #class1-math-runtime #view-bai-hoc-lesson,\n  #class1-math-runtime #view-lecture,\n  #class1-math-runtime #view-roadmap,\n  #class1-math-runtime #view-minigame-hub,\n  #class1-math-runtime #view-game-play,\n  #class1-math-runtime #view-exam-hub,\n  #class1-math-runtime #view-quiz > .pastel-card{padding-top:.25rem!important;padding-bottom:.25rem!important;}\n}\n";
 
 const MATH_SHELL_BREADCRUMB_CSS_ = `
@@ -8950,11 +10381,526 @@ body:has(#class1-math-runtime) #class1-math-runtime #view-quiz #practice-step-te
 }
 `;
 
+
+const MATH_MUC1011_LAYOUT_CSS_ = `
+/* Khám phá Toán 10 & 11: 4 lựa chọn 2x2, lời nhắc và manh mối dễ đọc. */
+#class1-math-runtime #view-quiz .math-muc1011-options {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+}
+#class1-math-runtime #view-quiz .math-muc1011-options .option-btn {
+    min-width:0;
+    min-height:70px;
+    padding:10px 12px;
+    gap:8px;
+}
+#class1-math-runtime #view-quiz .math-muc1011-options .opt-text {
+    min-width:0;
+    overflow-wrap:anywhere;
+}
+#class1-math-runtime #view-quiz .math-muc1011-visual {
+    font-size:19px;
+    line-height:1.4;
+}
+#class1-math-runtime #view-quiz .math-muc1011-visual .text-xs,
+#class1-math-runtime #view-quiz .math-muc1011-visual .text-sm {
+    font-size:17px!important;
+    line-height:1.35;
+}
+#class1-math-runtime #view-quiz .math-muc1011-visual .math-muc1011-label,
+#class1-math-runtime #view-quiz .math-muc1011-guide {
+    font-size:18px!important;
+    line-height:1.4;
+}
+@media (max-width:520px) {
+    #class1-math-runtime #view-quiz .math-muc1011-options {gap:8px;}
+    #class1-math-runtime #view-quiz .math-muc1011-options .option-btn {
+        padding:9px 8px;
+        gap:5px;
+        min-height:66px;
+    }
+    #class1-math-runtime #view-quiz .math-muc1011-options .option-btn strong {
+        width:auto;
+        font-size:18px!important;
+    }
+    #class1-math-runtime #view-quiz .math-muc1011-options .opt-text {
+        font-size:17px!important;
+    }
+    #class1-math-runtime #view-quiz .math-muc1011-visual {font-size:18px;}
+    #class1-math-runtime #view-quiz .math-muc1011-visual .math-muc1011-label,
+    #class1-math-runtime #view-quiz .math-muc1011-guide {font-size:17px!important;}
+}
+`;
+
+const MATH_MUC2_GUIDE_CSS_ = `
+/* Muc 2 phep cong: so dem tren khung 10 o duoc phong to va trung mau vien.
+   Khong doc TTS khi cham tung hinh; nut nghe huong dan/cau hoi giu nguyen. */
+#class1-math-runtime #view-quiz .muc2-ten-label {
+    height:30px;display:flex;align-items:center;justify-content:center;
+    font-size:24px!important;line-height:1!important;font-weight:900!important;
+    color:var(--muc2-ten-accent)!important;
+}
+#class1-math-runtime #view-quiz .muc2-ten-label--hidden {color:transparent!important;}
+#class1-math-runtime #view-quiz .muc2-ten-cell {border-color:var(--muc2-ten-accent)!important;}
+@media(min-width:768px){
+    #class1-math-runtime #view-quiz .muc2-ten-label {font-size:27px!important;height:32px;}
+}
+/* Mau chu huong dan rieng muc 2/3: 17px mobile, 19px desktop, khong phu thuoc Tailwind build. */
+#class1-math-runtime #view-quiz .muc2-teacher-instruction {
+    max-width:100%;font-size:17px!important;line-height:1.38!important;
+}
+@media(min-width:768px) {
+    #class1-math-runtime #view-quiz .muc2-teacher-instruction {font-size:19px!important;}
+}
+/* Muc 4/5: chu phep tinh lon, huong dan hai buoc va so do de be tu dem.
+   Khong phu thuoc cac lop Tailwind tu do co the chua duoc bien dich. */
+#class1-math-runtime #view-quiz .muc2-reduced-equation {
+    font-size:30px!important;line-height:1.26!important;
+    letter-spacing:.01em;font-weight:900!important;
+}
+@media(min-width:768px){
+    #class1-math-runtime #view-quiz .muc2-reduced-equation {font-size:36px!important;}
+}
+#class1-math-runtime #view-quiz .muc2-reduced-guide {
+    width:100%;max-width:680px;background:#fff7ed;border:1px solid #fed7aa;
+    border-radius:16px;padding:8px 10px;box-shadow:0 2px 5px rgba(100,80,150,.05);
+}
+#class1-math-runtime #view-quiz .muc2-reduced-guide-head {
+    display:flex;align-items:center;justify-content:space-between;gap:8px 12px;flex-wrap:wrap;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-guide-title {
+    text-align:left;font-size:17px;line-height:1.35;font-weight:900;color:#9a3412;
+    margin:0;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-guide-step {
+    display:flex;align-items:flex-start;gap:8px;color:#7c2d12;
+    font-size:17px;line-height:1.36;font-weight:750;margin-top:3px;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-guide-bullet {
+    flex:0 0 25px;height:25px;display:inline-flex;align-items:center;justify-content:center;
+    border:1px solid #fdba74;border-radius:9px;background:#ffedd5;
+    color:#c2410c;font-size:16px;font-weight:900;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-ten-cell {
+    min-width:0;height:41px;border:1px solid #cbd5e1;
+    border-radius:12px;display:flex;align-items:center;justify-content:center;
+    position:relative;overflow:hidden;background:#f8fafc;cursor:pointer;
+    transition:background .14s,border-color .14s;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-ten-cell.is-selected-known {
+    background:#ede9fe;border-color:#7c3aed;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-ten-cell.is-selected-missing {
+    background:#fce7f3;border-color:#db2777;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-ten-cell:disabled {cursor:default;opacity:1;}
+#class1-math-runtime #view-quiz .muc2-reduced-frame-caption {
+    margin-bottom:5px;text-align:center;font-size:16px;line-height:1.25;font-weight:750;color:#475569;
+}
+#class1-math-runtime #view-quiz .muc2-role-known {
+    background:#f5f3ff!important;border-color:#7c3aed!important;color:#6d28d9!important;
+}
+#class1-math-runtime #view-quiz .muc2-role-missing {
+    background:#fdf2f8!important;border-color:#db2777!important;color:#be185d!important;
+}
+@media(min-width:768px){
+    #class1-math-runtime #view-quiz .muc2-reduced-guide-title {font-size:18px;}
+    #class1-math-runtime #view-quiz .muc2-reduced-guide-step {font-size:18px;}
+    #class1-math-runtime #view-quiz .muc2-reduced-ten-cell {height:50px;}
+    #class1-math-runtime #view-quiz .muc2-reduced-emoji {font-size:29px;}
+}
+/* Muc 4/5: nut doc huong dan va day 0–10 thao tac tung buoc, khong lo dap an som. */
+#class1-math-runtime #view-quiz .muc2-reduced-guide-listen {
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    min-height:36px;padding:6px 12px;border:1px solid #fdba74;
+    border-radius:13px;background:#fff;color:#c2410c;font-size:16px;font-weight:900;
+    box-shadow:0 2px 7px rgba(124,45,18,.07);
+}
+#class1-math-runtime #view-quiz .muc2-reduced-guide-listen .fa-volume-high {color:#e11d48;font-size:18px;}
+/* Muc 4/5: giam chi khoang dem, giu nguyen co chu/hinh va 11 o so. */
+#class1-math-runtime #view-quiz .muc2-reduced-stage {padding:0!important;width:100%;}
+#class1-math-runtime #view-quiz .muc2-reduced-content {row-gap:8px!important;}
+#class1-math-runtime #view-quiz .muc2-reduced-bond {height:140px!important;}
+@media(min-width:768px){
+    #class1-math-runtime #view-quiz .muc2-reduced-bond {height:156px!important;}
+}
+@media(max-width:520px){
+    #class1-math-runtime #view-quiz .muc2-reduced-guide-head {gap:6px;}
+    #class1-math-runtime #view-quiz .muc2-reduced-guide-listen {font-size:15px;padding:6px 10px;}
+}
+/* Cộng: nhìn rõ ? + a = b và a + ? = b tương đương nhau. */
+#class1-math-runtime #view-quiz .muc2-swap-demo {
+    width:100%;max-width:680px;padding:7px 10px 8px;
+    border:1px solid #ddd6fe;border-radius:15px;background:#faf5ff;
+    display:flex;flex-direction:column;align-items:center;gap:5px;
+}
+#class1-math-runtime #view-quiz .muc2-swap-head {
+    width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;
+}
+#class1-math-runtime #view-quiz .muc2-swap-head strong {
+    font-size:16px;font-weight:900;color:#6d28d9;
+}
+#class1-math-runtime #view-quiz .muc2-swap-trigger {
+    font-size:16px;font-weight:900;padding:5px 10px;border:1px solid #c4b5fd;
+    background:#fff;color:#6d28d9;border-radius:10px;
+}
+#class1-math-runtime #view-quiz .muc2-swap-math {
+    display:grid;grid-template-columns:42px 24px 42px 24px 42px;
+    gap:6px;align-items:center;justify-content:center;
+    font-weight:900;font-size:23px;text-align:center;
+}
+#class1-math-runtime #view-quiz .muc2-swap-token {
+    width:42px;height:38px;display:flex;justify-content:center;align-items:center;
+    border:2px solid;border-radius:12px;
+    transition:transform .55s cubic-bezier(.2,.8,.2,1);
+}
+#class1-math-runtime #view-quiz .muc2-swap-token-first,
+#class1-math-runtime #view-quiz .muc2-swap-token-second {position:relative;}
+#class1-math-runtime #view-quiz .muc2-swap-demo.is-swapped .muc2-swap-token-first {transform:translateX(78px);}
+#class1-math-runtime #view-quiz .muc2-swap-demo.is-swapped .muc2-swap-token-second {transform:translateX(-78px);}
+#class1-math-runtime #view-quiz .muc2-swap-op {color:#475569;}
+#class1-math-runtime #view-quiz .muc2-swap-explanation {
+    font-size:16px;font-weight:800;line-height:1.3;color:#6d28d9;text-align:center;
+}
+@media(prefers-reduced-motion:reduce){
+    #class1-math-runtime #view-quiz .muc2-swap-token {transition:none;}
+}
+#class1-math-runtime #view-quiz .muc2-equation-unknown {
+    color:#db2777;font-weight:900;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-number-line {
+    width:100%;max-width:720px;border:1px solid #ddd6fe;border-radius:17px;
+    background:#fff;padding:10px 10px 9px;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-number-line-head {
+    display:grid;grid-template-columns:auto minmax(0,1fr) auto;
+    align-items:center;gap:5px 10px;margin-bottom:9px;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-number-line-title {
+    font-size:18px;font-weight:900;color:#7e22ce;white-space:nowrap;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-number-line-message {
+    font-size:18px;font-weight:800;color:#475569;line-height:1.3;text-align:center;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-number-line-counter {
+    font-size:18px;font-weight:900;color:#0f766e;white-space:nowrap;text-align:right;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-step-value {
+    display:inline-block;color:#dc2626;font-size:24px;line-height:1;font-weight:900;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-number-line-grid {
+    display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:4px;width:100%;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-number-line-cell {
+    width:100%;min-width:0;height:42px;padding:0;display:flex;align-items:center;justify-content:center;
+    border:1px solid #cbd5e1;border-radius:9px;background:#fff;
+    color:#475569;font-size:16px;font-weight:900;line-height:1;
+    position:relative;transition:box-shadow .12s;opacity:1!important;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-number-line-cell.is-start {
+    background:#7c3aed;border:2px solid #6d28d9;color:#fff;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-number-line-cell.is-goal:not(.is-start) {
+    border:2px dashed #7c3aed;color:#6d28d9;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-number-line-cell.is-visited:not(.is-start) {
+    border:2px solid #ec4899;
+    box-shadow:0 0 0 2px rgba(236,72,153,.2),0 0 7px rgba(236,72,153,.17);
+    color:#be185d;
+}
+#class1-math-runtime #view-quiz .muc2-line-flag {
+    position:absolute;right:-1px;top:-15px;line-height:1;font-size:17px;
+    font-weight:900;color:#7c3aed;pointer-events:none;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-number-line-cell.is-start .muc2-line-flag {color:#db2777;}
+#class1-math-runtime #view-quiz .muc2-reduced-number-line-cell.is-next:not(:disabled):hover {
+    border-color:#a78bfa;box-shadow:0 0 0 2px rgba(167,139,250,.2);cursor:pointer;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-number-line-cell:disabled {cursor:default;}
+#class1-math-runtime #view-quiz .muc2-reduced-number-line-cell.is-next:focus-visible,
+#class1-math-runtime #view-quiz .muc2-reduced-number-line-reset:focus-visible,
+#class1-math-runtime #view-quiz .muc2-reduced-guide-listen:focus-visible,
+#class1-math-runtime #view-quiz .muc2-swap-trigger:focus-visible,
+#class1-math-runtime #view-quiz .muc2-reduced-ten-cell:focus-visible {
+    outline:3px solid #9333ea;outline-offset:2px;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-number-line-bottom {
+    display:flex;justify-content:flex-end;padding-top:7px;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-number-line-reset {
+    border:1px solid #ddd6fe;border-radius:10px;padding:4px 8px;
+    background:#faf5ff;color:#7e22ce;font-size:14px;font-weight:900;white-space:nowrap;
+}
+@media(min-width:768px){
+    #class1-math-runtime #view-quiz .muc2-reduced-number-line-cell {height:48px;font-size:20px;}
+    #class1-math-runtime #view-quiz .muc2-reduced-number-line-title {font-size:19px;}
+    #class1-math-runtime #view-quiz .muc2-reduced-number-line-message {font-size:19px;}
+    #class1-math-runtime #view-quiz .muc2-reduced-number-line-counter {font-size:19px;}
+    #class1-math-runtime #view-quiz .muc2-reduced-step-value {font-size:27px;}
+}
+@media(max-width:950px){
+    #class1-math-runtime #view-quiz .muc2-reduced-number-line-head {grid-template-columns:1fr auto;}
+    #class1-math-runtime #view-quiz .muc2-reduced-number-line-message {grid-column:1/-1;grid-row:2;}
+}
+@media(max-width:400px){
+    #class1-math-runtime #view-quiz .muc2-reduced-number-line {padding:8px 6px;}
+    #class1-math-runtime #view-quiz .muc2-reduced-number-line-grid {gap:2px;}
+    #class1-math-runtime #view-quiz .muc2-reduced-number-line-cell {height:37px;font-size:15px;border-radius:6px;}
+}
+/* Muc 6: khong co hinh, huong dan hay loi giai; chi co day so 0-10 tuy chon. */
+#class1-math-runtime #view-quiz .muc2-independent-stage {
+    display:flex;flex-direction:column;align-items:center;gap:12px;
+}
+#class1-math-runtime #view-quiz .muc2-independent-number-toggle {
+    display:flex;flex-wrap:wrap;gap:9px;justify-content:center;
+}
+#class1-math-runtime #view-quiz .muc2-independent-number-toggle button {
+    min-height:42px;padding:7px 14px;border:1px solid #ddd6fe;border-radius:13px;
+    background:#fff;color:#7c3aed;font-size:16px;font-weight:900;
+}
+#class1-math-runtime #view-quiz .muc2-independent-number-toggle button.is-selected {
+    background:#f3e8ff;border-color:#a855f7;box-shadow:0 2px 7px rgba(126,34,206,.09);
+}
+#class1-math-runtime #view-quiz .muc2-independent-neutral {
+    background:#fff;border-color:#e2e8f0;
+}
+#class1-math-runtime #view-quiz .muc2-reduced-number-line-cell.muc2-neutral-number {
+    background:#f8fafc!important;border:1px solid #cbd5e1!important;
+    color:#64748b!important;box-shadow:none!important;cursor:default;opacity:1!important;
+}
+#class1-math-runtime .math-muc2-level-picker {
+    display:block!important;
+}
+#class1-math-runtime .math-muc2-level-heading {
+    display:flex;align-items:center;flex-wrap:wrap;gap:10px;
+    padding:12px 5px 16px;
+}
+#class1-math-runtime .math-muc2-level-heading h2 {
+    font-size:23px;font-weight:900;color:#7c3aed;
+}
+#class1-math-runtime .math-muc2-level-heading span {
+    color:#475569;font-size:16px;font-weight:700;
+}
+#class1-math-runtime .math-muc2-level-back {
+    background:#fff;border:1px solid #ddd6fe;color:#7c3aed;border-radius:12px;
+    padding:10px 13px;font-size:16px;font-weight:900;
+}
+#class1-math-runtime .math-muc2-level-cards {
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;
+}
+#class1-math-runtime .math-muc2-level-card {
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;
+    min-height:198px;padding:20px;text-align:center;border:1px solid #f9a8d4;
+    border-radius:22px;background:linear-gradient(140deg,#fdf2f8,#faf5ff);color:#6d28d9;
+    box-shadow:0 3px 10px rgba(109,40,217,.06);
+}
+#class1-math-runtime .math-muc2-level-card--advanced {
+    border-color:#a5b4fc;background:linear-gradient(140deg,#eef2ff,#ecfeff);
+}
+#class1-math-runtime .math-muc2-level-card .math-muc2-level-icon {font-size:28px;}
+#class1-math-runtime .math-muc2-level-card strong {font-size:21px;font-weight:900;}
+#class1-math-runtime .math-muc2-level-card span:not(.math-muc2-level-icon) {font-size:16px;color:#475569;font-weight:700;}
+#class1-math-runtime .math-muc2-level-card b {
+    color:#be185d;background:#fff;border:1px solid #fbcfe8;
+    border-radius:20px;padding:6px 10px;font-size:16px;
+}
+#class1-math-runtime .math-muc2-level-card:hover,
+#class1-math-runtime .math-muc2-level-card:focus-visible {border-color:#a855f7;box-shadow:0 4px 16px rgba(126,34,206,.13);}
+@media(max-width:600px){
+    #class1-math-runtime .math-muc2-level-cards {grid-template-columns:1fr;}
+}
+/* Chapter 2: six equal-status cards in a 3 x 2 desktop grid. */
+#class1-math-runtime #lecture-subtopics-list.math-muc2-equal-grid {
+    grid-auto-rows:minmax(0,1fr);
+}
+#class1-math-runtime #lecture-subtopics-list.math-muc2-equal-grid > button.math-guide-intro-card:first-child {
+    grid-column:auto!important;
+    min-height:145px!important;
+    background:#f5f3ff!important;
+    border-color:#ddd6fe!important;
+}
+#class1-math-runtime #lecture-subtopics-list > button.math-subtopic-card:not(.math-guide-intro-card) {
+    background:var(--math-sub-bg)!important;
+}
+#class1-math-runtime .math-muc2-range {
+    margin:5px 0 0;
+    color:var(--math-sub-title);font-size:15px;font-weight:750;line-height:1.3;
+}
+#class1-math-runtime .muc2-guide{width:100%;max-width:1000px;margin:0 auto;color:#334155;font-size:16px;}
+#class1-math-runtime .muc2-guide button{cursor:pointer;}
+#class1-math-runtime .muc2-guide button:disabled{opacity:.55;cursor:default;}
+#class1-math-runtime .muc2-guide button:focus-visible{outline:3px solid #a855f7;outline-offset:3px;}
+#class1-math-runtime .muc2-guide-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;}
+#class1-math-runtime .muc2-guide-eyebrow{font-size:14px;font-weight:900;color:#db2777;}
+#class1-math-runtime .muc2-guide-header h2{font-size:24px;line-height:1.25;font-weight:900;color:#6d28d9;margin:4px 0;}
+#class1-math-runtime .muc2-guide-header p{font-size:15px;font-weight:700;color:#64748b;}
+#class1-math-runtime .muc2-guide-lesson-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:15px 0 10px;}
+#class1-math-runtime .muc2-guide-lesson-btn{min-height:49px;border-radius:16px;border:1px solid #e9d5ff;background:#faf5ff;color:#7e22ce;font-weight:900;font-size:17px;}
+#class1-math-runtime .muc2-guide-lesson-btn.is-active{background:linear-gradient(90deg,#ec4899,#9333ea);border-color:#a855f7;color:#fff;box-shadow:0 5px 15px rgba(168,85,247,.20);}
+#class1-math-runtime .muc2-guide-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:10px 0;}
+#class1-math-runtime .muc2-guide-step{display:flex;align-items:center;justify-content:center;gap:7px;padding:9px 5px;border-radius:13px;background:#f8fafc;border:1px solid #e2e8f0;color:#64748b;font-size:13px;font-weight:850;text-align:center;}
+#class1-math-runtime .muc2-guide-step span{display:flex;align-items:center;justify-content:center;flex:0 0 25px;height:25px;border-radius:50%;background:#e2e8f0;color:#475569;font-weight:900;}
+#class1-math-runtime .muc2-guide-step.is-active{background:#fdf2f8;border-color:#f9a8d4;color:#be185d;}
+#class1-math-runtime .muc2-guide-step.is-active span{background:#db2777;color:#fff;}
+#class1-math-runtime .muc2-guide-step.is-done{background:#ecfdf5;border-color:#a7f3d0;color:#047857;}
+#class1-math-runtime .muc2-guide-step.is-done span{background:#059669;color:#fff;}
+#class1-math-runtime .muc2-guide-voice{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;margin-bottom:12px;border-radius:15px;background:#faf5ff;border:1px solid #e9d5ff;}
+#class1-math-runtime .muc2-guide-voice-label{font-weight:900;color:#6d28d9;}
+#class1-math-runtime .muc2-guide-voice-button{padding:9px 15px;border:1px solid #ddd6fe;border-radius:12px;background:#fff;color:#7c3aed;font-weight:900;white-space:nowrap;}
+#class1-math-runtime .muc2-guide-panel{border:1px solid #fbcfe8;border-radius:22px;padding:17px;background:linear-gradient(130deg,#fff8fc,#fff 46%,#f0fdfa);text-align:center;}
+#class1-math-runtime .muc2-guide-panel h3{font-size:21px;line-height:1.3;font-weight:900;color:#7e22ce;margin-bottom:6px;}
+#class1-math-runtime .muc2-guide-panel > p{font-size:16px;font-weight:700;line-height:1.55;color:#475569;max-width:750px;margin:0 auto 12px;}
+#class1-math-runtime .muc2-guide-groups{display:flex;align-items:center;justify-content:center;gap:10px;margin:13px auto;flex-wrap:wrap;}
+#class1-math-runtime .muc2-guide-tray{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;padding:14px 12px;min-height:108px;min-width:175px;max-width:100%;background:#fff;border:1px solid #ddd6fe;border-radius:18px;}
+#class1-math-runtime .muc2-guide-tray--wide{max-width:650px;margin:13px auto;}
+#class1-math-runtime .muc2-guide-tray strong{font-size:15px;font-weight:900;color:#6d28d9;}
+#class1-math-runtime .muc2-guide-tray.is-waiting{border-style:dashed;background:#f8fafc;}
+#class1-math-runtime .muc2-guide-dots{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px;min-height:37px;max-width:100%;}
+#class1-math-runtime .muc2-guide-dot{width:38px;height:38px;display:inline-flex;flex:0 0 38px;border-radius:50%;border:2px solid rgba(255,255,255,.95);box-shadow:0 3px 9px rgba(51,65,85,.13),inset 0 2px 6px rgba(255,255,255,.6);position:relative;}
+#class1-math-runtime .muc2-guide-dot--pink{background:linear-gradient(145deg,#f9a8d4,#ec4899);}
+#class1-math-runtime .muc2-guide-dot--mint{background:linear-gradient(145deg,#a7f3d0,#10b981);}
+#class1-math-runtime .muc2-guide-dot.is-removed{opacity:.3;box-shadow:none;}
+#class1-math-runtime .muc2-guide-dot.is-removed:after{content:'×';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#be123c;font-size:30px;font-weight:900;opacity:1;}
+#class1-math-runtime .muc2-guide-symbol{font-size:36px;line-height:1;font-weight:900;color:#9333ea;}
+#class1-math-runtime .muc2-guide-placeholder{font-size:15px;font-weight:750;color:#94a3b8;}
+#class1-math-runtime .muc2-guide-caption{font-size:14px;font-weight:700;color:#64748b;}
+#class1-math-runtime .muc2-guide-equation{margin:13px auto;font-size:43px;line-height:1.2;font-weight:950;letter-spacing:.03em;color:#4338ca;}
+#class1-math-runtime .muc2-guide-equation span{color:#db2777;}
+#class1-math-runtime .muc2-guide-equation b{color:#db2777;}
+#class1-math-runtime .muc2-guide-primary,#class1-math-runtime .muc2-guide-secondary{min-height:43px;display:inline-flex;align-items:center;justify-content:center;border-radius:14px;padding:10px 17px;font-size:15px;font-weight:900;transition:filter .16s,border-color .16s;}
+#class1-math-runtime .muc2-guide-primary{background:linear-gradient(90deg,#ec4899,#9333ea);color:#fff;border:1px solid #a855f7;box-shadow:0 5px 12px rgba(168,85,247,.17);}
+#class1-math-runtime .muc2-guide-secondary{background:#fff;color:#7c3aed;border:1px solid #ddd6fe;}
+#class1-math-runtime .muc2-guide-secondary.is-active{background:#f3e8ff;border-color:#c084fc;}
+#class1-math-runtime .muc2-guide-feedback{margin:12px auto;padding:11px 14px;border:1px solid #ddd6fe;border-radius:14px;background:#f5f3ff;color:#6d28d9;font-weight:800;max-width:710px;}
+#class1-math-runtime .muc2-guide-feedback.is-good{background:#ecfdf5;border-color:#a7f3d0;color:#047857;}
+#class1-math-runtime .muc2-guide-feedback.is-try{background:#fff7ed;border-color:#fed7aa;color:#9a3412;}
+#class1-math-runtime .muc2-guide-bank{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:12px;margin:12px auto;border:1px dashed #6ee7b7;border-radius:16px;background:#ecfdf5;max-width:430px;}
+#class1-math-runtime .muc2-guide-tap-dot{padding:4px;border-radius:50%;background:transparent;touch-action:manipulation;}
+#class1-math-runtime .muc2-guide-tap-dot:not(:disabled):hover{background:#e9d5ff;}
+#class1-math-runtime .muc2-guide-progress{font-size:15px;font-weight:800;color:#475569;margin:12px auto;}
+#class1-math-runtime .muc2-guide-progress strong{font-size:18px;color:#db2777;}
+#class1-math-runtime .muc2-guide-model-buttons,#class1-math-runtime .muc2-guide-actions{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:13px auto;}
+#class1-math-runtime .muc2-guide-quiz-count{display:inline-flex;border-radius:999px;background:#fce7f3;color:#be185d;border:1px solid #fbcfe8;padding:5px 13px;font-size:14px;font-weight:900;margin-bottom:11px;}
+#class1-math-runtime .muc2-guide-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;max-width:430px;margin:16px auto;}
+#class1-math-runtime .muc2-guide-choice{min-height:63px;font-size:28px;font-weight:900;color:#6d28d9;border-radius:16px;border:1px solid #ddd6fe;background:#faf5ff;}
+#class1-math-runtime .muc2-guide-choice.is-correct{background:#d1fae5;color:#047857;border-color:#34d399;}
+#class1-math-runtime .muc2-guide-choice.is-wrong{background:#ffedd5;color:#c2410c;border-color:#fdba74;}
+#class1-math-runtime .muc2-guide-hint{padding:13px;border:1px solid #fde68a;background:#fffbeb;color:#92400e;border-radius:17px;max-width:670px;margin:13px auto;}
+#class1-math-runtime .muc2-guide-hint p{font-weight:800;color:#92400e;}
+#class1-math-runtime .muc2-guide-complete{padding:27px 15px;}
+#class1-math-runtime .muc2-guide-trophy{font-size:48px;line-height:1.1;margin-bottom:8px;}
+#class1-math-runtime .muc2-guide-bottom{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:14px 0 0;min-height:46px;}
+@media(max-width:640px){
+    #class1-math-runtime .muc2-guide-header h2{font-size:21px;}
+    #class1-math-runtime .muc2-guide-panel{padding:13px 9px;}
+    #class1-math-runtime .muc2-guide-steps{grid-template-columns:repeat(2,minmax(0,1fr));}
+    #class1-math-runtime .muc2-guide-step{font-size:12px;}
+    #class1-math-runtime .muc2-guide-voice{flex-wrap:wrap;justify-content:center;}
+    #class1-math-runtime .muc2-guide-tray{min-width:115px;padding:10px 7px;}
+    #class1-math-runtime .muc2-guide-dot{width:30px;height:30px;flex-basis:30px;}
+    #class1-math-runtime .muc2-guide-dots{gap:5px;}
+    #class1-math-runtime .muc2-guide-symbol{font-size:28px;}
+    #class1-math-runtime .muc2-guide-equation{font-size:36px;}
+    #class1-math-runtime .muc2-guide-primary,#class1-math-runtime .muc2-guide-secondary{font-size:14px;}
+}
+`;
+
+
+const MATH_TOPIC3_PLACE_VALUE_CSS_ = `
+/* Khám phá 3.1 (JSON 3.2): trực quan bó chục - đơn vị rời, không ảnh hưởng Bài tập/Đề thi. */
+#class1-math-runtime #view-quiz .topic3-pv-layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:14px;width:100%;align-items:stretch;padding:2px 0;}
+#class1-math-runtime #view-quiz .topic3-pv-visual-panel,#class1-math-runtime #view-quiz .topic3-pv-question-panel{min-width:0;border:1px solid #fbcfe8;border-radius:25px;box-shadow:0 2px 4px rgba(15,23,42,.06);}
+#class1-math-runtime #view-quiz .topic3-pv-visual-panel{background:linear-gradient(135deg,#fff9ed,#fff 52%,#eff6ff);padding:13px 13px 15px;}
+#class1-math-runtime #view-quiz .topic3-pv-topline{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+#class1-math-runtime #view-quiz .topic3-pv-teacher{font-size:17px;line-height:1.35;font-weight:900;color:#7e22ce;flex:1 1 230px;}
+#class1-math-runtime #view-quiz .topic3-pv-guide-btn{flex:0 0 auto;border:1px solid #e9d5ff;border-radius:13px;background:#fff;color:#7c3aed;font-size:15px;font-weight:900;min-height:41px;padding:7px 10px;}
+#class1-math-runtime #view-quiz .topic3-pv-heading{display:flex;justify-content:center;align-items:center;gap:12px;margin:8px auto 10px;font-size:19px;font-weight:900;color:#475569;}
+#class1-math-runtime #view-quiz .topic3-pv-heading strong{font-size:49px;line-height:1.08;letter-spacing:.03em;}
+#class1-math-runtime #view-quiz .topic3-pv-digit-tens{color:#7c3aed;}
+#class1-math-runtime #view-quiz .topic3-pv-digit-ones{color:#0284c7;}
+#class1-math-runtime #view-quiz .topic3-pv-groups{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,.85fr);gap:9px;align-items:stretch;}
+#class1-math-runtime #view-quiz .topic3-pv-group{border:1px solid #ddd6fe;border-radius:17px;background:#faf5ff;padding:10px 7px;min-width:0;text-align:center;display:flex;flex-direction:column;align-items:center;gap:5px;}
+#class1-math-runtime #view-quiz .topic3-pv-ones{border-color:#bae6fd;background:#f0f9ff;}
+#class1-math-runtime #view-quiz .topic3-pv-group h4{font-size:19px;line-height:1.25;font-weight:900;color:#6d28d9;margin:0;}
+#class1-math-runtime #view-quiz .topic3-pv-ones h4{color:#0369a1;}
+#class1-math-runtime #view-quiz .topic3-pv-group p{font-size:15px;line-height:1.25;font-weight:800;color:#64748b;margin:0 0 5px;}
+#class1-math-runtime #view-quiz .topic3-pv-rods{display:grid;grid-template-columns:repeat(5,42px);gap:5px;justify-content:center;align-content:center;flex:1 1 auto;min-height:98px;}
+#class1-math-runtime #view-quiz .topic3-pv-rod{width:42px;height:83px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(5,minmax(0,1fr));gap:2px;align-content:center;padding:5px;border:2px solid #c4b5fd;background:#fff;border-radius:11px;cursor:pointer;touch-action:manipulation;transition:background .15s,border-color .15s,box-shadow .15s;}
+#class1-math-runtime #view-quiz .topic3-pv-small-square{display:block;border-radius:3px;background:#a78bfa;border:1px solid #8b5cf6;}
+#class1-math-runtime #view-quiz .topic3-pv-rod.is-counted{background:#ede9fe;border-color:#7c3aed;box-shadow:0 0 0 2px #ddd6fe;}
+#class1-math-runtime #view-quiz .topic3-pv-rod.is-counted .topic3-pv-small-square{background:#7c3aed;}
+#class1-math-runtime #view-quiz .topic3-pv-units{display:grid;grid-template-columns:repeat(3,40px);gap:8px;justify-content:center;align-content:center;flex:1 1 auto;min-height:98px;}
+#class1-math-runtime #view-quiz .topic3-pv-unit{width:40px;height:40px;background:#fff;border:2px solid #7dd3fc;border-radius:50%;display:flex;justify-content:center;align-items:center;cursor:pointer;touch-action:manipulation;transition:background .15s,border-color .15s,box-shadow .15s;}
+#class1-math-runtime #view-quiz .topic3-pv-unit span{width:21px;height:21px;background:#38bdf8;border:1px solid #0284c7;border-radius:50%;}
+#class1-math-runtime #view-quiz .topic3-pv-unit.is-counted{background:#dbeafe;border-color:#0284c7;box-shadow:0 0 0 2px #bae6fd;}
+#class1-math-runtime #view-quiz .topic3-pv-unit.is-counted span{background:#0369a1;}
+#class1-math-runtime #view-quiz .topic3-pv-zero{font-size:56px;font-weight:900;line-height:1.8;color:#94a3b8;}
+#class1-math-runtime #view-quiz .topic3-pv-count{align-self:stretch;background:#fff;border:1px solid #ddd6fe;border-radius:11px;padding:6px 3px;font-size:16px;font-weight:900;color:#6d28d9;}
+#class1-math-runtime #view-quiz .topic3-pv-ones .topic3-pv-count{color:#0369a1;border-color:#bae6fd;}
+#class1-math-runtime #view-quiz .topic3-pv-count b{font-size:24px;color:#dc2626;}
+#class1-math-runtime #view-quiz .topic3-pv-bottom-note{text-align:center;font-size:16px;font-weight:850;color:#7c3aed;line-height:1.4;margin:9px 0 0;}
+#class1-math-runtime #view-quiz .topic3-pv-solution{margin:11px 0 0;border:1px solid #86efac;border-radius:15px;background:#ecfdf5;padding:10px;text-align:center;font-size:17px;font-weight:900;line-height:1.45;color:#047857;}
+#class1-math-runtime #view-quiz .topic3-pv-solution>div{margin-top:3px;font-size:24px;color:#dc2626;}
+#class1-math-runtime #view-quiz .topic3-pv-question-panel{background:#fff;padding:16px 13px;display:flex;flex-direction:column;justify-content:center;}
+#class1-math-runtime #view-quiz .topic3-pv-question-panel h3{text-align:center;font-size:clamp(21px,2.2vw,27px);font-weight:900;line-height:1.42;color:#0f172a;margin:0 0 7px;}
+#class1-math-runtime #view-quiz .topic3-pv-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:10px;}
+#class1-math-runtime #view-quiz .topic3-pv-option{min-height:85px;min-width:0;padding:9px 7px;background:#fffafb;border:1px solid #f9a8d4;border-radius:16px;font-size:17px;line-height:1.3;font-weight:900;color:#334155;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:5px;overflow-wrap:anywhere;}
+#class1-math-runtime #view-quiz .topic3-pv-option strong{font-size:19px;color:#db2777;}
+#class1-math-runtime #view-quiz .topic3-pv-option:hover:not(:disabled){background:#fdf2f8;border-color:#ec4899;}
+#class1-math-runtime #view-quiz .topic3-pv-option.bg-green-100{background:#dcfce7;border-color:#4ade80;color:#166534;}
+#class1-math-runtime #view-quiz .topic3-pv-option.bg-red-200{background:#fecaca;border-color:#ef4444;color:#991b1b;}
+#class1-math-runtime #view-quiz .topic3-pv-option .option-icon{font-size:15px;}
+#class1-math-runtime #view-quiz .topic3-pv-try-again{margin:11px 0 0;font-size:16px;line-height:1.4;text-align:center;font-weight:900;color:#9a3412;background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:9px;}
+#class1-math-runtime #view-quiz .topic3-pv-rod:focus-visible,#class1-math-runtime #view-quiz .topic3-pv-unit:focus-visible{outline:3px solid #ec4899;outline-offset:3px;}
+@media(max-width:950px){#class1-math-runtime #view-quiz .topic3-pv-layout{grid-template-columns:1fr;}#class1-math-runtime #view-quiz .topic3-pv-question-panel{padding:15px;}#class1-math-runtime #view-quiz .topic3-pv-option{min-height:70px;}}
+@media(max-width:530px){#class1-math-runtime #view-quiz .topic3-pv-visual-panel{padding:9px;}#class1-math-runtime #view-quiz .topic3-pv-topline{justify-content:center;}#class1-math-runtime #view-quiz .topic3-pv-groups{grid-template-columns:1fr;}#class1-math-runtime #view-quiz .topic3-pv-rods{min-height:76px;}#class1-math-runtime #view-quiz .topic3-pv-rod{height:78px;}#class1-math-runtime #view-quiz .topic3-pv-unit{width:40px;height:40px;}#class1-math-runtime #view-quiz .topic3-pv-units{min-height:50px;}#class1-math-runtime #view-quiz .topic3-pv-question-panel h3{font-size:22px;}#class1-math-runtime #view-quiz .topic3-pv-option{font-size:16px;padding:8px 5px;}}
+`;
+
+
+const MATH_TOPIC3_READ_WRITE_CSS_ = `
+/* Khám phá Mục 3.2 (mã nguồn dữ liệu 3.1) - hai chiều đọc/viết số 0–100. */
+#class1-math-runtime #view-quiz .topic3-rw-layout{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:14px;width:100%;align-items:stretch;padding:2px 0;}
+#class1-math-runtime #view-quiz .topic3-rw-visual,#class1-math-runtime #view-quiz .topic3-rw-question{border:1px solid #fbcfe8;border-radius:25px;box-shadow:0 2px 4px rgba(15,23,42,.05);padding:18px;min-width:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;}
+#class1-math-runtime #view-quiz .topic3-rw-visual{background:linear-gradient(135deg,#fff9ed,#fff 50%,#eff6ff);min-height:350px;gap:15px;}
+#class1-math-runtime #view-quiz .topic3-rw-question{background:#fff;padding:18px 14px;}
+#class1-math-runtime #view-quiz .topic3-rw-label{font-size:19px;font-weight:900;color:#7c3aed;}
+#class1-math-runtime #view-quiz .topic3-rw-large-number{font-size:clamp(80px,11vw,132px);font-weight:900;line-height:1.2;color:#db2777;text-shadow:2px 3px 0 #fce7f3;}
+#class1-math-runtime #view-quiz .topic3-rw-large-word{font-size:clamp(32px,4vw,53px);line-height:1.35;font-weight:900;color:#6d28d9;max-width:630px;}
+#class1-math-runtime #view-quiz .topic3-rw-reminder{font-size:17px;font-weight:800;color:#64748b;}
+#class1-math-runtime #view-quiz .topic3-rw-listen{display:inline-flex;align-items:center;gap:9px;justify-content:center;min-height:46px;padding:9px 15px;border:1px solid #f9a8d4;border-radius:15px;background:#fdf2f8;color:#db2777;font-size:17px;font-weight:900;}
+#class1-math-runtime #view-quiz .topic3-rw-question h3{font-size:clamp(22px,2.4vw,29px);font-weight:900;line-height:1.4;color:#0f172a;margin:0 0 8px;}
+#class1-math-runtime #view-quiz #topic3-rw-answer-host{width:100%;display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:9px;}
+#class1-math-runtime #view-quiz .topic3-rw-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;width:100%;}
+#class1-math-runtime #view-quiz .topic3-rw-option{display:flex;align-items:center;justify-content:center;gap:7px;min-width:0;min-height:94px;padding:10px 8px;border-radius:16px;border:1px solid #f9a8d4;background:#fffafb;color:#334155;font-size:18px;font-weight:900;line-height:1.3;text-align:center;overflow-wrap:anywhere;transition:background .15s,border-color .15s;}
+#class1-math-runtime #view-quiz .topic3-rw-option strong{color:#db2777;font-size:20px;flex-shrink:0;}
+#class1-math-runtime #view-quiz .topic3-rw-option.bg-green-100{background:#dcfce7;border-color:#4ade80;color:#166534;}
+#class1-math-runtime #view-quiz .topic3-rw-option.bg-red-200{background:#fecaca;border-color:#ef4444;color:#991b1b;}
+#class1-math-runtime #view-quiz .topic3-rw-slots{display:flex;align-items:center;justify-content:center;gap:13px;flex-wrap:wrap;margin:3px 0 7px;}
+#class1-math-runtime #view-quiz .topic3-rw-slot-wrap{display:flex;flex-direction:column;align-items:center;gap:5px;font-size:15px;font-weight:900;color:#64748b;}
+#class1-math-runtime #view-quiz .topic3-rw-slot{display:flex;align-items:center;justify-content:center;width:68px;height:79px;border:2px dashed #c4b5fd;border-radius:17px;background:#faf5ff;color:#7c3aed;font-size:47px;font-weight:900;line-height:1.1;}
+#class1-math-runtime #view-quiz .topic3-rw-slot.is-solved{border-style:solid;border-color:#86efac;background:#f0fdf4;color:#dc2626;}
+#class1-math-runtime #view-quiz .topic3-rw-keypad{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;width:100%;max-width:450px;}
+#class1-math-runtime #view-quiz .topic3-rw-digit{min-height:54px;border-radius:14px;background:#fdf2f8;border:1px solid #f9a8d4;color:#db2777;font-size:27px;font-weight:900;}
+#class1-math-runtime #view-quiz .topic3-rw-digit:hover:not(:disabled){background:#fce7f3;border-color:#ec4899;}
+#class1-math-runtime #view-quiz .topic3-rw-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;width:100%;}
+#class1-math-runtime #view-quiz .topic3-rw-clear,#class1-math-runtime #view-quiz .topic3-rw-check{padding:8px 10px;border-radius:13px;min-height:43px;font-size:15px;font-weight:900;border:1px solid #ddd6fe;background:#f5f3ff;color:#7c3aed;}
+#class1-math-runtime #view-quiz .topic3-rw-check{border-color:#c084fc;background:linear-gradient(90deg,#ec4899,#8b5cf6);color:white;}
+#class1-math-runtime #view-quiz .topic3-rw-hint-btn{border:1px solid #fde68a;border-radius:13px;background:#fffbeb;color:#92400e;padding:8px 13px;font-size:16px;font-weight:900;min-height:42px;}
+#class1-math-runtime #view-quiz .topic3-rw-hint,#class1-math-runtime #view-quiz .topic3-rw-success,#class1-math-runtime #view-quiz .topic3-rw-try{border-radius:14px;padding:10px 11px;width:100%;font-size:17px;font-weight:850;line-height:1.45;text-align:center;}
+#class1-math-runtime #view-quiz .topic3-rw-hint{border:1px solid #fde68a;background:#fffbeb;color:#92400e;}
+#class1-math-runtime #view-quiz .topic3-rw-success{border:1px solid #86efac;background:#ecfdf5;color:#047857;}
+#class1-math-runtime #view-quiz .topic3-rw-try{border:1px solid #fecaca;background:#fff1f2;color:#9f1239;}
+#class1-math-runtime #view-quiz .topic3-rw-digit:disabled,#class1-math-runtime #view-quiz .topic3-rw-clear:disabled,#class1-math-runtime #view-quiz .topic3-rw-check:disabled{opacity:.55;cursor:default;}
+@media(max-width:900px){#class1-math-runtime #view-quiz .topic3-rw-layout{grid-template-columns:1fr;}#class1-math-runtime #view-quiz .topic3-rw-visual{min-height:180px;padding:14px;}#class1-math-runtime #view-quiz .topic3-rw-question{padding:13px;}}
+@media(max-width:500px){#class1-math-runtime #view-quiz .topic3-rw-large-number{font-size:78px;}#class1-math-runtime #view-quiz .topic3-rw-large-word{font-size:33px;}#class1-math-runtime #view-quiz .topic3-rw-option{min-height:86px;font-size:16px;gap:4px;}#class1-math-runtime #view-quiz .topic3-rw-digit{min-height:48px;font-size:25px;}#class1-math-runtime #view-quiz .topic3-rw-slot{width:61px;height:73px;font-size:42px;}#class1-math-runtime #view-quiz .topic3-rw-clear,#class1-math-runtime #view-quiz .topic3-rw-check{font-size:14px;padding:8px;}}
+`;
+
 function ensureMathStyles_() {
     if (document.getElementById(MATH_MODULE_STYLE_ID_)) return;
     const style = document.createElement('style');
     style.id = MATH_MODULE_STYLE_ID_;
-    style.textContent = MATH_RUNTIME_CSS_ + MATH_SHELL_BREADCRUMB_CSS_ + MATH_HUB_CARD_CSS_ + MATH_EXPLORE_ICON_TEXT_CSS_ + MATH_SUBTOPIC_CARD_CSS_ + MATH_QUIZ_FONT_CSS_;
+    style.textContent = MATH_RUNTIME_CSS_ + MATH_SHELL_BREADCRUMB_CSS_ + MATH_HUB_CARD_CSS_ + MATH_EXPLORE_ICON_TEXT_CSS_ + MATH_SUBTOPIC_CARD_CSS_ + MATH_QUIZ_FONT_CSS_ + MATH_MUC1011_LAYOUT_CSS_ + MATH_MUC2_GUIDE_CSS_ + MATH_TOPIC3_PLACE_VALUE_CSS_ + MATH_TOPIC3_READ_WRITE_CSS_;
     document.head.appendChild(style);
 }
 
@@ -9182,6 +11128,7 @@ async function renderClass1Math_(ctx) {
 
 function destroyClass1Math_() {
     mathModuleDestroyed_ = true;
+    muc2GuideState_ = null;
     try { stopSpeaking(); } catch (_) {}
     try { clearInterval(quizTimerInterval); } catch (_) {}
     try { stopActiveMiniGame_(); } catch (_) {}
