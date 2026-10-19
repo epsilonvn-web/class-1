@@ -1,6 +1,6 @@
 {
   "schema_version": "L1_MATH_EXERCISES_V2",
-  "data_version": "V2_SGK_VBT_2026-10-04",
+  "data_version": "2026-10-19-SGK-REVISION-JSON",
   "subject": "Toán",
   "grade": 1,
   "curriculum": "Kết nối tri thức với cuộc sống",
@@ -57,7 +57,7 @@
       "exercise_id": "T1_BT21",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk2.json",
       "sub_ids": [
         "3.1",
         "3.2"
@@ -72,7 +72,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B21",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 21: Đọc, viết và cấu tạo số có hai chữ số theo chục và đơn vị; hiểu 10 đơn vị tạo thành 1 chục. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -130,8 +130,10 @@
       "source_alignment": {
         "sgk_page_start": 4,
         "vbt_page_start": 4,
-        "lesson_goal": "Đọc, viết và cấu tạo số có hai chữ số theo chục và đơn vị; hiểu 10 đơn vị tạo thành 1 chục."
-      }
+        "lesson_goal": "Đọc, viết và cấu tạo số có hai chữ số theo chục và đơn vị; hiểu 10 đơn vị tạo thành 1 chục.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank"
     },
     {
       "bai": 22,
@@ -140,7 +142,7 @@
       "exercise_id": "T1_BT22",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk2.json",
       "sub_ids": [
         "3.3"
       ],
@@ -154,7 +156,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B22",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 22: So sánh hai số có hai chữ số theo hàng chục trước, rồi đến hàng đơn vị khi cần. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -200,8 +202,10 @@
       "source_alignment": {
         "sgk_page_start": 16,
         "vbt_page_start": 16,
-        "lesson_goal": "So sánh hai số có hai chữ số theo hàng chục trước, rồi đến hàng đơn vị khi cần."
-      }
+        "lesson_goal": "So sánh hai số có hai chữ số theo hàng chục trước, rồi đến hàng đơn vị khi cần.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank"
     },
     {
       "bai": 23,
@@ -210,7 +214,7 @@
       "exercise_id": "T1_BT23",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk2.json",
       "sub_ids": [
         "4.1",
         "4.2",
@@ -229,7 +233,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B23",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 23: Đọc bảng số 1-100, tìm số còn thiếu và nhận ra quy luật tăng/giảm theo hàng, cột. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -335,8 +339,10 @@
       "source_alignment": {
         "sgk_page_start": 22,
         "vbt_page_start": 22,
-        "lesson_goal": "Đọc bảng số 1-100, tìm số còn thiếu và nhận ra quy luật tăng/giảm theo hàng, cột."
-      }
+        "lesson_goal": "Đọc bảng số 1-100, tìm số còn thiếu và nhận ra quy luật tăng/giảm theo hàng, cột.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank"
     },
     {
       "bai": 25,
@@ -345,7 +351,7 @@
       "exercise_id": "T1_BT25",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk2.json",
       "sub_ids": [
         "7.1",
         "7.2"
@@ -360,7 +366,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B25",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 25: So sánh độ dài hai vật bằng quan sát có căn thẳng một đầu hoặc bằng cách đo/đối chiếu phù hợp. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -414,8 +420,10 @@
       "source_alignment": {
         "sgk_page_start": 28,
         "vbt_page_start": 28,
-        "lesson_goal": "So sánh độ dài hai vật bằng quan sát có căn thẳng một đầu hoặc bằng cách đo/đối chiếu phù hợp."
-      }
+        "lesson_goal": "So sánh độ dài hai vật bằng quan sát có căn thẳng một đầu hoặc bằng cách đo/đối chiếu phù hợp.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank"
     },
     {
       "bai": 26,
@@ -424,7 +432,7 @@
       "exercise_id": "T1_BT26",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk2.json",
       "sub_ids": [
         "7.3",
         "7.4"
@@ -439,7 +447,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B26",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 26: Hiểu cần dùng cùng một đơn vị khi đo; làm quen với đơn vị xăng-ti-mét (cm) và cách đọc số đo. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -496,8 +504,10 @@
       "source_alignment": {
         "sgk_page_start": 32,
         "vbt_page_start": 32,
-        "lesson_goal": "Hiểu cần dùng cùng một đơn vị khi đo; làm quen với đơn vị xăng-ti-mét (cm) và cách đọc số đo."
-      }
+        "lesson_goal": "Hiểu cần dùng cùng một đơn vị khi đo; làm quen với đơn vị xăng-ti-mét (cm) và cách đọc số đo.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank"
     },
     {
       "bai": 27,
@@ -506,7 +516,7 @@
       "exercise_id": "T1_BT27",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk2.json",
       "sub_ids": [
         "7.3",
         "7.4",
@@ -523,7 +533,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B27",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 27: Ước lượng độ dài hợp lí, chọn dụng cụ/đơn vị phù hợp, đo và so sánh kết quả với ước lượng. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -606,8 +616,10 @@
       "source_alignment": {
         "sgk_page_start": 36,
         "vbt_page_start": 37,
-        "lesson_goal": "Ước lượng độ dài hợp lí, chọn dụng cụ/đơn vị phù hợp, đo và so sánh kết quả với ước lượng."
-      }
+        "lesson_goal": "Ước lượng độ dài hợp lí, chọn dụng cụ/đơn vị phù hợp, đo và so sánh kết quả với ước lượng.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank"
     },
     {
       "bai": 29,
@@ -616,7 +628,7 @@
       "exercise_id": "T1_BT29",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk2.json",
       "sub_ids": [
         "2.11",
         "9.3"
@@ -632,7 +644,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B29",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 29: Cộng số có hai chữ số với số có một chữ số không nhớ bằng cách cộng hàng đơn vị và giữ nguyên hàng chục. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -698,8 +710,11 @@
       "source_alignment": {
         "sgk_page_start": 44,
         "vbt_page_start": 45,
-        "lesson_goal": "Cộng số có hai chữ số với số có một chữ số không nhớ bằng cách cộng hàng đơn vị và giữ nguyên hàng chục."
-      }
+        "lesson_goal": "Cộng số có hai chữ số với số có một chữ số không nhớ bằng cách cộng hàng đơn vị và giữ nguyên hàng chục.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank",
+      "exercise_topic_code_note": "Mã 2.11–2.14 ở Bài tập HK2 dành riêng cộng/trừ không nhớ 2 chữ số, không đồng nghĩa mã cùng tên ở Khám phá."
     },
     {
       "bai": 30,
@@ -708,7 +723,7 @@
       "exercise_id": "T1_BT30",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk2.json",
       "sub_ids": [
         "2.12",
         "9.3"
@@ -724,7 +739,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B30",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 30: Cộng hai số có hai chữ số không nhớ bằng cách cộng đơn vị với đơn vị, chục với chục. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -790,8 +805,11 @@
       "source_alignment": {
         "sgk_page_start": 48,
         "vbt_page_start": 49,
-        "lesson_goal": "Cộng hai số có hai chữ số không nhớ bằng cách cộng đơn vị với đơn vị, chục với chục."
-      }
+        "lesson_goal": "Cộng hai số có hai chữ số không nhớ bằng cách cộng đơn vị với đơn vị, chục với chục.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank",
+      "exercise_topic_code_note": "Mã 2.11–2.14 ở Bài tập HK2 dành riêng cộng/trừ không nhớ 2 chữ số, không đồng nghĩa mã cùng tên ở Khám phá."
     },
     {
       "bai": 31,
@@ -800,7 +818,7 @@
       "exercise_id": "T1_BT31",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk2.json",
       "sub_ids": [
         "2.13",
         "9.4"
@@ -816,7 +834,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B31",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 31: Trừ số có một chữ số khỏi số có hai chữ số không nhớ bằng cách trừ ở hàng đơn vị và giữ hàng chục. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -882,8 +900,11 @@
       "source_alignment": {
         "sgk_page_start": 52,
         "vbt_page_start": 53,
-        "lesson_goal": "Trừ số có một chữ số khỏi số có hai chữ số không nhớ bằng cách trừ ở hàng đơn vị và giữ hàng chục."
-      }
+        "lesson_goal": "Trừ số có một chữ số khỏi số có hai chữ số không nhớ bằng cách trừ ở hàng đơn vị và giữ hàng chục.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank",
+      "exercise_topic_code_note": "Mã 2.11–2.14 ở Bài tập HK2 dành riêng cộng/trừ không nhớ 2 chữ số, không đồng nghĩa mã cùng tên ở Khám phá."
     },
     {
       "bai": 32,
@@ -892,7 +913,7 @@
       "exercise_id": "T1_BT32",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk2.json",
       "sub_ids": [
         "2.14",
         "9.4"
@@ -908,7 +929,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B32",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 32: Trừ hai số có hai chữ số không nhớ bằng cách trừ đơn vị với đơn vị, chục với chục. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -974,8 +995,11 @@
       "source_alignment": {
         "sgk_page_start": 58,
         "vbt_page_start": 59,
-        "lesson_goal": "Trừ hai số có hai chữ số không nhớ bằng cách trừ đơn vị với đơn vị, chục với chục."
-      }
+        "lesson_goal": "Trừ hai số có hai chữ số không nhớ bằng cách trừ đơn vị với đơn vị, chục với chục.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank",
+      "exercise_topic_code_note": "Mã 2.11–2.14 ở Bài tập HK2 dành riêng cộng/trừ không nhớ 2 chữ số, không đồng nghĩa mã cùng tên ở Khám phá."
     },
     {
       "bai": 34,
@@ -984,7 +1008,7 @@
       "exercise_id": "T1_BT34",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk2.json",
       "sub_ids": [
         "8.1",
         "8.2"
@@ -999,7 +1023,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B34",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 34: Nhận biết kim giờ, kim phút và đọc giờ đúng khi kim phút chỉ số 12. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -1053,8 +1077,10 @@
       "source_alignment": {
         "sgk_page_start": 72,
         "vbt_page_start": 73,
-        "lesson_goal": "Nhận biết kim giờ, kim phút và đọc giờ đúng khi kim phút chỉ số 12."
-      }
+        "lesson_goal": "Nhận biết kim giờ, kim phút và đọc giờ đúng khi kim phút chỉ số 12.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank"
     },
     {
       "bai": 35,
@@ -1063,7 +1089,7 @@
       "exercise_id": "T1_BT35",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk2.json",
       "sub_ids": [
         "8.3",
         "8.4",
@@ -1079,7 +1105,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B35",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 35: Biết một tuần có 7 ngày, gọi đúng thứ tự từ thứ Hai đến Chủ nhật và xác định ngày liền trước/liền sau. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -1143,8 +1169,10 @@
       "source_alignment": {
         "sgk_page_start": 76,
         "vbt_page_start": 77,
-        "lesson_goal": "Biết một tuần có 7 ngày, gọi đúng thứ tự từ thứ Hai đến Chủ nhật và xác định ngày liền trước/liền sau."
-      }
+        "lesson_goal": "Biết một tuần có 7 ngày, gọi đúng thứ tự từ thứ Hai đến Chủ nhật và xác định ngày liền trước/liền sau.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank"
     },
     {
       "bai": 36,
@@ -1153,7 +1181,7 @@
       "exercise_id": "T1_BT36",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk2.json",
       "sub_ids": [
         "8.1",
         "8.2",
@@ -1172,7 +1200,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B36",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 36: Vận dụng xem lịch và giờ để xác định thứ, ngày và thời điểm trong các tình huống thực tế đơn giản. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -1266,8 +1294,10 @@
       "source_alignment": {
         "sgk_page_start": 80,
         "vbt_page_start": 81,
-        "lesson_goal": "Vận dụng xem lịch và giờ để xác định thứ, ngày và thời điểm trong các tình huống thực tế đơn giản."
-      }
+        "lesson_goal": "Vận dụng xem lịch và giờ để xác định thứ, ngày và thời điểm trong các tình huống thực tế đơn giản.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank"
     }
   ],
   "competency_definitions": {
@@ -6784,7 +6814,7 @@
             "32"
           ],
           "a": "22",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+1=2; chục: 2+0=2; kết quả 22.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -6802,7 +6832,7 @@
             "23"
           ],
           "a": "23",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+2=3; chục: 2+0=2; kết quả 23.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -6820,7 +6850,7 @@
             "25"
           ],
           "a": "24",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+3=4; chục: 2+0=2; kết quả 24.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -6838,7 +6868,7 @@
             "24"
           ],
           "a": "25",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+4=5; chục: 2+0=2; kết quả 25.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -6856,7 +6886,7 @@
             "36"
           ],
           "a": "26",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+5=6; chục: 2+0=2; kết quả 26.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -6874,7 +6904,7 @@
             "27"
           ],
           "a": "27",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+6=7; chục: 2+0=2; kết quả 27.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -6892,7 +6922,7 @@
             "29"
           ],
           "a": "28",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+7=8; chục: 2+0=2; kết quả 28.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -6910,7 +6940,7 @@
             "28"
           ],
           "a": "29",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+8=9; chục: 2+0=2; kết quả 29.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -6928,7 +6958,7 @@
             "33"
           ],
           "a": "23",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 2+1=3; chục: 2+0=2; kết quả 23.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -6946,7 +6976,7 @@
             "24"
           ],
           "a": "24",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 2+2=4; chục: 2+0=2; kết quả 24.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -6964,7 +6994,7 @@
             "26"
           ],
           "a": "25",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 2+3=5; chục: 2+0=2; kết quả 25.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -6982,7 +7012,7 @@
             "25"
           ],
           "a": "26",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 2+4=6; chục: 2+0=2; kết quả 26.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -7000,7 +7030,7 @@
             "37"
           ],
           "a": "27",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 2+5=7; chục: 2+0=2; kết quả 27.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -7018,7 +7048,7 @@
             "28"
           ],
           "a": "28",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 2+6=8; chục: 2+0=2; kết quả 28.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -7036,7 +7066,7 @@
             "30"
           ],
           "a": "29",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 2+7=9; chục: 2+0=2; kết quả 29.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -7054,7 +7084,7 @@
             "23"
           ],
           "a": "24",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 3+1=4; chục: 2+0=2; kết quả 24.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -7072,7 +7102,7 @@
             "35"
           ],
           "a": "25",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 3+2=5; chục: 2+0=2; kết quả 25.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -7090,7 +7120,7 @@
             "26"
           ],
           "a": "26",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 3+3=6; chục: 2+0=2; kết quả 26.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -7108,7 +7138,7 @@
             "28"
           ],
           "a": "27",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 3+4=7; chục: 2+0=2; kết quả 27.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -7126,7 +7156,7 @@
             "27"
           ],
           "a": "28",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 3+5=8; chục: 2+0=2; kết quả 28.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -7144,7 +7174,7 @@
             "39"
           ],
           "a": "29",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 3+6=9; chục: 2+0=2; kết quả 29.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -7162,7 +7192,7 @@
             "25"
           ],
           "a": "25",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 4+1=5; chục: 2+0=2; kết quả 25.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -7180,7 +7210,7 @@
             "27"
           ],
           "a": "26",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 4+2=6; chục: 2+0=2; kết quả 26.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -7198,7 +7228,7 @@
             "26"
           ],
           "a": "27",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 4+3=7; chục: 2+0=2; kết quả 27.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -7216,7 +7246,7 @@
             "38"
           ],
           "a": "28",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 4+4=8; chục: 2+0=2; kết quả 28.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -7234,7 +7264,7 @@
             "29"
           ],
           "a": "29",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 4+5=9; chục: 2+0=2; kết quả 29.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -7252,7 +7282,7 @@
             "27"
           ],
           "a": "26",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 5+1=6; chục: 2+0=2; kết quả 26.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -7270,7 +7300,7 @@
             "26"
           ],
           "a": "27",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 5+2=7; chục: 2+0=2; kết quả 27.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -7288,7 +7318,7 @@
             "38"
           ],
           "a": "28",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 5+3=8; chục: 2+0=2; kết quả 28.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -7306,7 +7336,7 @@
             "29"
           ],
           "a": "29",
-          "h": "Cộng hàng đơn vị trước rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 5+4=9; chục: 2+0=2; kết quả 29.",
           "img": "",
           "sub_name": "Cộng số có hai chữ số với số có một chữ số",
           "sub": "Cộng số có hai chữ số với số có một chữ số",
@@ -7324,7 +7354,7 @@
             "33"
           ],
           "a": "32",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+1=2; chục: 2+1=3; kết quả 32.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7342,7 +7372,7 @@
             "32"
           ],
           "a": "33",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+2=3; chục: 2+1=3; kết quả 33.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7360,7 +7390,7 @@
             "44"
           ],
           "a": "34",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+3=4; chục: 2+1=3; kết quả 34.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7378,7 +7408,7 @@
             "35"
           ],
           "a": "35",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+4=5; chục: 2+1=3; kết quả 35.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7396,7 +7426,7 @@
             "37"
           ],
           "a": "36",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+5=6; chục: 2+1=3; kết quả 36.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7414,7 +7444,7 @@
             "36"
           ],
           "a": "37",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+6=7; chục: 2+1=3; kết quả 37.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7432,7 +7462,7 @@
             "48"
           ],
           "a": "38",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+7=8; chục: 2+1=3; kết quả 38.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7450,7 +7480,7 @@
             "39"
           ],
           "a": "39",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+8=9; chục: 2+1=3; kết quả 39.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7468,7 +7498,7 @@
             "42"
           ],
           "a": "41",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+0=1; chục: 2+2=4; kết quả 41.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7486,7 +7516,7 @@
             "41"
           ],
           "a": "42",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+1=2; chục: 2+2=4; kết quả 42.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7504,7 +7534,7 @@
             "53"
           ],
           "a": "43",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+2=3; chục: 2+2=4; kết quả 43.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7522,7 +7552,7 @@
             "44"
           ],
           "a": "44",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+3=4; chục: 2+2=4; kết quả 44.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7540,7 +7570,7 @@
             "46"
           ],
           "a": "45",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+4=5; chục: 2+2=4; kết quả 45.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7558,7 +7588,7 @@
             "45"
           ],
           "a": "46",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+5=6; chục: 2+2=4; kết quả 46.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7576,7 +7606,7 @@
             "57"
           ],
           "a": "47",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+6=7; chục: 2+2=4; kết quả 47.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7594,7 +7624,7 @@
             "48"
           ],
           "a": "48",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+7=8; chục: 2+2=4; kết quả 48.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7612,7 +7642,7 @@
             "50"
           ],
           "a": "49",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+8=9; chục: 2+2=4; kết quả 49.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7630,7 +7660,7 @@
             "50"
           ],
           "a": "51",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+0=1; chục: 2+3=5; kết quả 51.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7648,7 +7678,7 @@
             "62"
           ],
           "a": "52",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+1=2; chục: 2+3=5; kết quả 52.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7666,7 +7696,7 @@
             "53"
           ],
           "a": "53",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+2=3; chục: 2+3=5; kết quả 53.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7684,7 +7714,7 @@
             "55"
           ],
           "a": "54",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+3=4; chục: 2+3=5; kết quả 54.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7702,7 +7732,7 @@
             "54"
           ],
           "a": "55",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+4=5; chục: 2+3=5; kết quả 55.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7720,7 +7750,7 @@
             "66"
           ],
           "a": "56",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+5=6; chục: 2+3=5; kết quả 56.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7738,7 +7768,7 @@
             "57"
           ],
           "a": "57",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+6=7; chục: 2+3=5; kết quả 57.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7756,7 +7786,7 @@
             "59"
           ],
           "a": "58",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+7=8; chục: 2+3=5; kết quả 58.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7774,7 +7804,7 @@
             "58"
           ],
           "a": "59",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1+8=9; chục: 2+3=5; kết quả 59.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7792,7 +7822,7 @@
             "43"
           ],
           "a": "33",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 2+1=3; chục: 2+1=3; kết quả 33.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7810,7 +7840,7 @@
             "34"
           ],
           "a": "34",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 2+2=4; chục: 2+1=3; kết quả 34.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7828,7 +7858,7 @@
             "36"
           ],
           "a": "35",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 2+3=5; chục: 2+1=3; kết quả 35.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7846,7 +7876,7 @@
             "35"
           ],
           "a": "36",
-          "h": "Cộng đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 2+4=6; chục: 2+1=3; kết quả 36.",
           "img": "",
           "sub_name": "Cộng hai số có hai chữ số",
           "sub": "Cộng hai số có hai chữ số",
@@ -7864,7 +7894,7 @@
             "30"
           ],
           "a": "20",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1−1=0; chục: 2−0=2; kết quả 20.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -7882,7 +7912,7 @@
             "21"
           ],
           "a": "21",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 2−1=1; chục: 2−0=2; kết quả 21.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -7900,7 +7930,7 @@
             "21"
           ],
           "a": "20",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 2−2=0; chục: 2−0=2; kết quả 20.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -7918,7 +7948,7 @@
             "21"
           ],
           "a": "22",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 3−1=2; chục: 2−0=2; kết quả 22.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -7936,7 +7966,7 @@
             "31"
           ],
           "a": "21",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 3−2=1; chục: 2−0=2; kết quả 21.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -7954,7 +7984,7 @@
             "20"
           ],
           "a": "20",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 3−3=0; chục: 2−0=2; kết quả 20.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -7972,7 +8002,7 @@
             "24"
           ],
           "a": "23",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 4−1=3; chục: 2−0=2; kết quả 23.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -7990,7 +8020,7 @@
             "21"
           ],
           "a": "22",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 4−2=2; chục: 2−0=2; kết quả 22.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8008,7 +8038,7 @@
             "31"
           ],
           "a": "21",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 4−3=1; chục: 2−0=2; kết quả 21.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8026,7 +8056,7 @@
             "20"
           ],
           "a": "20",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 4−4=0; chục: 2−0=2; kết quả 20.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8044,7 +8074,7 @@
             "25"
           ],
           "a": "24",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 5−1=4; chục: 2−0=2; kết quả 24.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8062,7 +8092,7 @@
             "22"
           ],
           "a": "23",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 5−2=3; chục: 2−0=2; kết quả 23.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8080,7 +8110,7 @@
             "32"
           ],
           "a": "22",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 5−3=2; chục: 2−0=2; kết quả 22.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8098,7 +8128,7 @@
             "21"
           ],
           "a": "21",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 5−4=1; chục: 2−0=2; kết quả 21.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8116,7 +8146,7 @@
             "21"
           ],
           "a": "20",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 5−5=0; chục: 2−0=2; kết quả 20.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8134,7 +8164,7 @@
             "24"
           ],
           "a": "25",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 6−1=5; chục: 2−0=2; kết quả 25.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8152,7 +8182,7 @@
             "34"
           ],
           "a": "24",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 6−2=4; chục: 2−0=2; kết quả 24.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8170,7 +8200,7 @@
             "23"
           ],
           "a": "23",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 6−3=3; chục: 2−0=2; kết quả 23.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8188,7 +8218,7 @@
             "23"
           ],
           "a": "22",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 6−4=2; chục: 2−0=2; kết quả 22.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8206,7 +8236,7 @@
             "20"
           ],
           "a": "21",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 6−5=1; chục: 2−0=2; kết quả 21.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8224,7 +8254,7 @@
             "30"
           ],
           "a": "20",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 6−6=0; chục: 2−0=2; kết quả 20.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8242,7 +8272,7 @@
             "26"
           ],
           "a": "26",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 7−1=6; chục: 2−0=2; kết quả 26.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8260,7 +8290,7 @@
             "26"
           ],
           "a": "25",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 7−2=5; chục: 2−0=2; kết quả 25.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8278,7 +8308,7 @@
             "23"
           ],
           "a": "24",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 7−3=4; chục: 2−0=2; kết quả 24.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8296,7 +8326,7 @@
             "33"
           ],
           "a": "23",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 7−4=3; chục: 2−0=2; kết quả 23.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8314,7 +8344,7 @@
             "22"
           ],
           "a": "22",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 7−5=2; chục: 2−0=2; kết quả 22.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8332,7 +8362,7 @@
             "22"
           ],
           "a": "21",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 7−6=1; chục: 2−0=2; kết quả 21.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8350,7 +8380,7 @@
             "19"
           ],
           "a": "20",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 7−7=0; chục: 2−0=2; kết quả 20.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8368,7 +8398,7 @@
             "37"
           ],
           "a": "27",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 8−1=7; chục: 2−0=2; kết quả 27.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8386,7 +8416,7 @@
             "26"
           ],
           "a": "26",
-          "h": "Trừ ở hàng đơn vị rồi giữ nguyên hàng chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 8−2=6; chục: 2−0=2; kết quả 26.",
           "img": "",
           "sub_name": "Trừ số có một chữ số khỏi số có hai chữ số",
           "sub": "Trừ số có một chữ số khỏi số có hai chữ số",
@@ -8404,7 +8434,7 @@
             "11"
           ],
           "a": "10",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 0−0=0; chục: 3−2=1; kết quả 10.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8422,7 +8452,7 @@
             "19"
           ],
           "a": "20",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1−1=0; chục: 3−1=2; kết quả 20.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8440,7 +8470,7 @@
             "21"
           ],
           "a": "11",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1−0=1; chục: 3−2=1; kết quả 11.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8458,7 +8488,7 @@
             "10"
           ],
           "a": "10",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1−1=0; chục: 3−2=1; kết quả 10.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8476,7 +8506,7 @@
             "2"
           ],
           "a": "1",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 1−0=1; chục: 3−3=0; kết quả 1.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8494,7 +8524,7 @@
             "20"
           ],
           "a": "21",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 2−1=1; chục: 3−1=2; kết quả 21.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8512,7 +8542,7 @@
             "30"
           ],
           "a": "20",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 2−2=0; chục: 3−1=2; kết quả 20.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8530,7 +8560,7 @@
             "12"
           ],
           "a": "12",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 2−0=2; chục: 3−2=1; kết quả 12.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8548,7 +8578,7 @@
             "12"
           ],
           "a": "11",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 2−1=1; chục: 3−2=1; kết quả 11.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8566,7 +8596,7 @@
             "9"
           ],
           "a": "10",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 2−2=0; chục: 3−2=1; kết quả 10.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8584,7 +8614,7 @@
             "12"
           ],
           "a": "2",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 2−0=2; chục: 3−3=0; kết quả 2.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8602,7 +8632,7 @@
             "1"
           ],
           "a": "1",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 2−1=1; chục: 3−3=0; kết quả 1.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8620,7 +8650,7 @@
             "23"
           ],
           "a": "22",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 3−1=2; chục: 3−1=2; kết quả 22.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8638,7 +8668,7 @@
             "20"
           ],
           "a": "21",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 3−2=1; chục: 3−1=2; kết quả 21.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8656,7 +8686,7 @@
             "30"
           ],
           "a": "20",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 3−3=0; chục: 3−1=2; kết quả 20.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8674,7 +8704,7 @@
             "13"
           ],
           "a": "13",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 3−0=3; chục: 3−2=1; kết quả 13.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8692,7 +8722,7 @@
             "13"
           ],
           "a": "12",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 3−1=2; chục: 3−2=1; kết quả 12.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8710,7 +8740,7 @@
             "10"
           ],
           "a": "11",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 3−2=1; chục: 3−2=1; kết quả 11.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8728,7 +8758,7 @@
             "20"
           ],
           "a": "10",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 3−3=0; chục: 3−2=1; kết quả 10.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8746,7 +8776,7 @@
             "3"
           ],
           "a": "3",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 3−0=3; chục: 3−3=0; kết quả 3.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8764,7 +8794,7 @@
             "3"
           ],
           "a": "2",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 3−1=2; chục: 3−3=0; kết quả 2.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8782,7 +8812,7 @@
             "0"
           ],
           "a": "1",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 3−2=1; chục: 3−3=0; kết quả 1.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8800,7 +8830,7 @@
             "33"
           ],
           "a": "23",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 4−1=3; chục: 3−1=2; kết quả 23.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8818,7 +8848,7 @@
             "22"
           ],
           "a": "22",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 4−2=2; chục: 3−1=2; kết quả 22.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8836,7 +8866,7 @@
             "22"
           ],
           "a": "21",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 4−3=1; chục: 3−1=2; kết quả 21.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8854,7 +8884,7 @@
             "19"
           ],
           "a": "20",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 4−4=0; chục: 3−1=2; kết quả 20.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8872,7 +8902,7 @@
             "24"
           ],
           "a": "14",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 4−0=4; chục: 3−2=1; kết quả 14.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8890,7 +8920,7 @@
             "13"
           ],
           "a": "13",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 4−1=3; chục: 3−2=1; kết quả 13.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8908,7 +8938,7 @@
             "13"
           ],
           "a": "12",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 4−2=2; chục: 3−2=1; kết quả 12.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -8926,7 +8956,7 @@
             "10"
           ],
           "a": "11",
-          "h": "Trừ đơn vị với đơn vị, chục với chục.",
+          "h": "Đặt đơn vị thẳng đơn vị, chục thẳng chục. Đơn vị: 4−3=1; chục: 3−2=1; kết quả 11.",
           "img": "",
           "sub_name": "Trừ hai số có hai chữ số",
           "sub": "Trừ hai số có hai chữ số",
@@ -30384,5 +30414,7 @@
     34,
     35,
     36
-  ]
+  ],
+  "question_bank_sub_id_scope": "Codes in Bài tập pools are local to Bài tập; they must not be assumed to match all codes in Khám phá.",
+  "sgk_practice_review_note": "16 bài luyện tập/ôn tập SGK được bổ sung ở Bài học và Ôn tập. Chưa thêm vào thứ tự mở khóa Bài tập khi chưa có migration backend an toàn."
 }

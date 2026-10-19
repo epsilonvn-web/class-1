@@ -1,6 +1,6 @@
 {
   "schema_version": "L1_MATH_EXERCISES_V2",
-  "data_version": "V2_SGK_VBT_2026-10-04",
+  "data_version": "2026-10-19-SGK-REVISION-JSON",
   "subject": "Toán",
   "grade": 1,
   "curriculum": "Kết nối tri thức với cuộc sống",
@@ -44,7 +44,7 @@
       "exercise_id": "T1_BT01",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk1.json",
       "sub_ids": [
         "1.1"
       ],
@@ -58,7 +58,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B01",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 1: Nhận biết số lượng từ 0 đến 5; đọc, viết và ghép đúng số với nhóm đồ vật tương ứng. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -103,8 +103,10 @@
       "source_alignment": {
         "sgk_page_start": 8,
         "vbt_page_start": 4,
-        "lesson_goal": "Nhận biết số lượng từ 0 đến 5; đọc, viết và ghép đúng số với nhóm đồ vật tương ứng."
-      }
+        "lesson_goal": "Nhận biết số lượng từ 0 đến 5; đọc, viết và ghép đúng số với nhóm đồ vật tương ứng.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank"
     },
     {
       "bai": 2,
@@ -113,7 +115,7 @@
       "exercise_id": "T1_BT02",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk1.json",
       "sub_ids": [
         "1.2"
       ],
@@ -127,7 +129,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B02",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 2: Mở rộng việc đếm, đọc và viết đến 10; nhận biết mối liên hệ giữa số và số lượng. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -172,8 +174,10 @@
       "source_alignment": {
         "sgk_page_start": 14,
         "vbt_page_start": 10,
-        "lesson_goal": "Mở rộng việc đếm, đọc và viết đến 10; nhận biết mối liên hệ giữa số và số lượng."
-      }
+        "lesson_goal": "Mở rộng việc đếm, đọc và viết đến 10; nhận biết mối liên hệ giữa số và số lượng.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank"
     },
     {
       "bai": 3,
@@ -182,7 +186,7 @@
       "exercise_id": "T1_BT03",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk1.json",
       "sub_ids": [
         "1.3"
       ],
@@ -196,7 +200,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B03",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 3: So sánh hai nhóm đồ vật bằng ghép tương ứng một-một và dùng đúng các từ nhiều hơn, ít hơn, bằng nhau. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -241,8 +245,10 @@
       "source_alignment": {
         "sgk_page_start": 20,
         "vbt_page_start": 16,
-        "lesson_goal": "So sánh hai nhóm đồ vật bằng ghép tương ứng một-một và dùng đúng các từ nhiều hơn, ít hơn, bằng nhau."
-      }
+        "lesson_goal": "So sánh hai nhóm đồ vật bằng ghép tương ứng một-một và dùng đúng các từ nhiều hơn, ít hơn, bằng nhau.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank"
     },
     {
       "bai": 4,
@@ -251,7 +257,7 @@
       "exercise_id": "T1_BT04",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk1.json",
       "sub_ids": [
         "1.4"
       ],
@@ -265,7 +271,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B04",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 4: So sánh các số trong phạm vi 10 và sử dụng đúng các dấu >, <, =. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -314,8 +320,10 @@
       "source_alignment": {
         "sgk_page_start": 24,
         "vbt_page_start": 19,
-        "lesson_goal": "So sánh các số trong phạm vi 10 và sử dụng đúng các dấu >, <, =."
-      }
+        "lesson_goal": "So sánh các số trong phạm vi 10 và sử dụng đúng các dấu >, <, =.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank"
     },
     {
       "bai": 5,
@@ -324,7 +332,7 @@
       "exercise_id": "T1_BT05",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk1.json",
       "sub_ids": [
         "1.5"
       ],
@@ -338,7 +346,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B05",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 5: Nhận biết một số có thể được tách thành hai phần theo nhiều cách và gộp hai phần để tạo lại số ban đầu. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -383,8 +391,10 @@
       "source_alignment": {
         "sgk_page_start": 32,
         "vbt_page_start": 27,
-        "lesson_goal": "Nhận biết một số có thể được tách thành hai phần theo nhiều cách và gộp hai phần để tạo lại số ban đầu."
-      }
+        "lesson_goal": "Nhận biết một số có thể được tách thành hai phần theo nhiều cách và gộp hai phần để tạo lại số ban đầu.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank"
     },
     {
       "bai": 7,
@@ -393,7 +403,7 @@
       "exercise_id": "T1_BT07",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk1.json",
       "sub_ids": [
         "5.1"
       ],
@@ -407,7 +417,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B07",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 7: Nhận dạng bốn hình phẳng cơ bản trong nhiều kích thước, màu sắc và hướng đặt khác nhau. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -451,8 +461,10 @@
       "source_alignment": {
         "sgk_page_start": 46,
         "vbt_page_start": 41,
-        "lesson_goal": "Nhận dạng bốn hình phẳng cơ bản trong nhiều kích thước, màu sắc và hướng đặt khác nhau."
-      }
+        "lesson_goal": "Nhận dạng bốn hình phẳng cơ bản trong nhiều kích thước, màu sắc và hướng đặt khác nhau.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank"
     },
     {
       "bai": 8,
@@ -461,7 +473,7 @@
       "exercise_id": "T1_BT08",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk1.json",
       "sub_ids": [
         "5.1"
       ],
@@ -475,7 +487,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B08",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 8: Ghép các hình phẳng đơn giản thành hình mới và nhận ra một hình có thể được phân tích thành các mảnh nhỏ. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -519,8 +531,10 @@
       "source_alignment": {
         "sgk_page_start": 50,
         "vbt_page_start": 45,
-        "lesson_goal": "Ghép các hình phẳng đơn giản thành hình mới và nhận ra một hình có thể được phân tích thành các mảnh nhỏ."
-      }
+        "lesson_goal": "Ghép các hình phẳng đơn giản thành hình mới và nhận ra một hình có thể được phân tích thành các mảnh nhỏ.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank"
     },
     {
       "bai": 10,
@@ -529,7 +543,7 @@
       "exercise_id": "T1_BT10",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk1.json",
       "sub_ids": [
         "2.1",
         "2.2",
@@ -547,7 +561,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B10",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 10: Hiểu phép cộng là gộp hai nhóm hoặc thêm vào một nhóm; viết và tính phép cộng có kết quả không quá 10. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -636,8 +650,10 @@
       "source_alignment": {
         "sgk_page_start": 56,
         "vbt_page_start": 51,
-        "lesson_goal": "Hiểu phép cộng là gộp hai nhóm hoặc thêm vào một nhóm; viết và tính phép cộng có kết quả không quá 10."
-      }
+        "lesson_goal": "Hiểu phép cộng là gộp hai nhóm hoặc thêm vào một nhóm; viết và tính phép cộng có kết quả không quá 10.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank"
     },
     {
       "bai": 11,
@@ -646,7 +662,7 @@
       "exercise_id": "T1_BT11",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk1.json",
       "sub_ids": [
         "2.6",
         "2.7",
@@ -663,7 +679,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B11",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 11: Hiểu phép trừ là bớt/tách một phần khỏi nhóm ban đầu và tính phép trừ trong phạm vi 10. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -741,8 +757,10 @@
       "source_alignment": {
         "sgk_page_start": 68,
         "vbt_page_start": 62,
-        "lesson_goal": "Hiểu phép trừ là bớt/tách một phần khỏi nhóm ban đầu và tính phép trừ trong phạm vi 10."
-      }
+        "lesson_goal": "Hiểu phép trừ là bớt/tách một phần khỏi nhóm ban đầu và tính phép trừ trong phạm vi 10.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank"
     },
     {
       "bai": 12,
@@ -751,7 +769,7 @@
       "exercise_id": "T1_BT12",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk1.json",
       "sub_ids": [
         "2.4",
         "2.5",
@@ -768,7 +786,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B12",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 12: Hệ thống hóa các phép cộng và phép trừ trong phạm vi 10, nhận ra quan hệ giữa các phép tính cùng một bộ số. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -846,8 +864,10 @@
       "source_alignment": {
         "sgk_page_start": 80,
         "vbt_page_start": 74,
-        "lesson_goal": "Hệ thống hóa các phép cộng và phép trừ trong phạm vi 10, nhận ra quan hệ giữa các phép tính cùng một bộ số."
-      }
+        "lesson_goal": "Hệ thống hóa các phép cộng và phép trừ trong phạm vi 10, nhận ra quan hệ giữa các phép tính cùng một bộ số.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank"
     },
     {
       "bai": 14,
@@ -856,7 +876,7 @@
       "exercise_id": "T1_BT14",
       "question_count": 20,
       "candidate_pool_target": 30,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk1.json",
       "sub_ids": [
         "5.2"
       ],
@@ -870,7 +890,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B14",
       "lesson_image": "",
-      "instructions": "Làm 20 câu. Mỗi câu tính vào một năng lực chính. Có thể làm lại với bộ câu khác trong cùng pool, hạn chế lặp câu gần đây.",
+      "instructions": "Bài 14: Nhận biết khối lập phương và khối hộp chữ nhật qua mô hình và đồ vật thực tế. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 30,
@@ -914,8 +934,10 @@
       "source_alignment": {
         "sgk_page_start": 92,
         "vbt_page_start": 86,
-        "lesson_goal": "Nhận biết khối lập phương và khối hộp chữ nhật qua mô hình và đồ vật thực tế."
-      }
+        "lesson_goal": "Nhận biết khối lập phương và khối hộp chữ nhật qua mô hình và đồ vật thực tế.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank"
     },
     {
       "bai": 15,
@@ -924,7 +946,7 @@
       "exercise_id": "T1_BT15",
       "question_count": 20,
       "candidate_pool_target": 60,
-      "source": "Ngân hàng nội bộ trong bai_tap_toan_1.json",
+      "source": "Ngân hàng câu hỏi nội bộ trong bai_tap_toan_1_hk1.json",
       "sub_ids": [
         "6.1",
         "6.2",
@@ -943,7 +965,7 @@
       "mode": "scored_practice",
       "lesson_id": "T1_B15",
       "lesson_image": "",
-      "instructions": "Làm 20 câu được chọn trong 6 kỹ năng của Bài 15. Câu hỏi dùng tranh hoặc mô hình trực quan; các câu tổng hợp được dùng ở mức khó hơn.",
+      "instructions": "Bài 15: Mô tả và xác định vị trí tương đối bằng các từ trước - sau, trên - dưới, trái - phải, ở giữa. Bé làm đủ 20 câu, đạt 16 câu đúng trở lên (80%) để mở bài tập tiếp theo. Nếu sai, xem giải thích và luyện lại.",
       "attempt_blueprint": {
         "total_scored_questions": 20,
         "candidate_pool_target": 60,
@@ -1057,8 +1079,10 @@
       "source_alignment": {
         "sgk_page_start": 96,
         "vbt_page_start": 90,
-        "lesson_goal": "Mô tả và xác định vị trí tương đối bằng các từ trước - sau, trên - dưới, trái - phải, ở giữa."
-      }
+        "lesson_goal": "Mô tả và xác định vị trí tương đối bằng các từ trước - sau, trên - dưới, trái - phải, ở giữa.",
+        "reviewed_scope": "Đối chiếu trọng tâm bài SGK; không lấy kiến thức của bài học về sau chỉ để đủ câu."
+      },
+      "question_bank_sub_id_scope": "semester_exercise_bank"
     }
   ],
   "competency_definitions": {
@@ -19874,5 +19898,7 @@
     12,
     14,
     15
-  ]
+  ],
+  "question_bank_sub_id_scope": "Codes in Bài tập pools are local to Bài tập; they must not be assumed to match all codes in Khám phá.",
+  "sgk_practice_review_note": "16 bài luyện tập/ôn tập SGK được bổ sung ở Bài học và Ôn tập. Chưa thêm vào thứ tự mở khóa Bài tập khi chưa có migration backend an toàn."
 }

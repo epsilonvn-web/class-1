@@ -1,6 +1,6 @@
 {
   "schema_version": "L1_MATH_LESSONS_V2",
-  "data_version": "V1_SGK_VBT_2026-09-20",
+  "data_version": "2026-10-19-SGK-REVISION-JSON",
   "subject": "Toán",
   "grade": 1,
   "curriculum": "Kết nối tri thức với cuộc sống",
@@ -42,27 +42,10 @@
     35,
     36
   ],
-  "skipped_sgk_lessons": [
-    6,
-    9,
-    13,
-    16,
-    17,
-    18,
-    19,
-    20,
-    24,
-    28,
-    33,
-    37,
-    38,
-    39,
-    40,
-    41
-  ],
-  "skipped_rule": "Bỏ các bài “Luyện tập chung” và các bài Ôn tập học kì/cuối năm khỏi module Bài học. Chúng vẫn là nguồn tham chiếu cho Bài tập và Ôn tập.",
+  "skipped_sgk_lessons": [],
+  "skipped_rule": "Đã bổ sung 16 bài Luyện tập chung/Ôn tập SGK thành bài học 3 trang. Tiến trình chấm điểm Bài tập giữ nguyên 25 mục cũ để bảo vệ lịch sử và quyền mở khóa; cần đối chiếu backend trước khi triển khai 16 bài tập chấm điểm mới.",
   "rules": {
-    "bai_hoc": "25 bài học thực theo đúng số bài gốc SGK. Mỗi bài có 3 trang: Khám phá → Luyện cùng cô → Ghi nhớ & Vận dụng. Nội dung biên soạn mới, bám SGK/VBT.",
+    "bai_hoc": "Đủ 41 bài theo SGK (25 bài kiến thức + 16 bài luyện tập/ôn tập), mỗi bài 3 trang: Khám phá → Luyện cùng cô → Ghi nhớ & Vận dụng.",
     "images": "Ảnh bài học không bắt buộc ở mọi bài. Ưu tiên dùng imageId từ assets/data/shared_image_catalog.json và tái sử dụng ảnh phù hợp; mô hình toán cần độ chính xác hoặc tương tác thì dựng bằng HTML/SVG/UI. Trường visual_asset.planned trong từng bài là placeholder cũ, không phải đường dẫn bắt buộc và không dùng làm nguồn render."
   },
   "bai_hoc": [
@@ -95,6 +78,11 @@
               "heading": "Đọc - viết - biểu diễn",
               "text": "Một số có thể nhìn theo ba cách: nhóm đồ vật, chữ số và tên đọc.",
               "example": "●●● ↔ 3 ↔ ba."
+            },
+            {
+              "heading": "Quan sát cách viết số",
+              "text": "Dùng ngón tay viết số trong không khí, sau đó viết trong ô li trên giấy; chú ý chiều đi của nét.",
+              "example": "0: nét cong khép kín; 1: nét xiên/nghiêng và nét thẳng; 2: nét cong kết hợp nét xiên/ngang; 3: hai nét cong; 4: nét xiên/ngang và nét thẳng; 5: nét ngang, thẳng và cong."
             }
           ],
           "visual_models": [
@@ -105,18 +93,22 @@
             {
               "type": "number_trace",
               "instruction": "Quan sát hướng viết và tô theo nét các số 0-5."
+            },
+            {
+              "type": "writing_on_paper",
+              "instruction": "Con đọc và viết lần lượt các số 0, 1, 2, 3, 4, 5 vào vở. Đây là luyện viết trên giấy, không phải bảng tô nét tương tác trên web."
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: Nhận biết số lượng từ 0 đến 5; đọc, viết và ghép đúng số với nhóm đồ vật tương ứng.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: Nhận biết số lượng từ 0 đến 5; đọc, viết và ghép đúng số với nhóm đồ vật tương ứng. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "choice",
@@ -155,11 +147,15 @@
             {
               "type": "connection",
               "prompt": "Con hãy tìm quanh mình một nhóm có 1 đến 5 đồ vật và nói số lượng của nhóm đó."
+            },
+            {
+              "type": "connection",
+              "prompt": "Bé hãy viết các chữ số 0–5 trong ô li trên giấy, đọc to từng số và tự đối chiếu với số mẫu để kiểm tra chiều nét."
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -176,9 +172,9 @@
             "Nhầm số 0 với số 6 khi quan sát nhanh."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -233,7 +229,11 @@
           }
         ],
         "ui_note": "Số 0, cách viết số và nối số với nhóm vật vẫn dựng bằng UI/emoji/SVG để chủ động số lượng."
-      }
+      },
+      "exercise_sub_ids": [
+        "1.1"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
     },
     {
       "bai": 2,
@@ -264,6 +264,11 @@
               "heading": "Số 10",
               "text": "Số 10 gồm hai chữ số 1 và 0, đọc là mười.",
               "example": "10 ngón tay trên hai bàn tay."
+            },
+            {
+              "heading": "Quan sát cách viết số",
+              "text": "Dùng ngón tay viết số trong không khí, sau đó viết trong ô li trên giấy; chú ý chiều đi của nét.",
+              "example": "6: nét cong có vòng; 7: nét ngang và nét xiên; 8: hai vòng cong; 9: vòng cong và nét xuống; 10: viết số 1 rồi số 0."
             }
           ],
           "visual_models": [
@@ -274,18 +279,22 @@
             {
               "type": "number_line",
               "instruction": "Điền các số còn thiếu trên dãy từ 0 đến 10."
+            },
+            {
+              "type": "writing_on_paper",
+              "instruction": "Con đọc và viết lần lượt các số 6, 7, 8, 9, 10 vào vở. Đây là luyện viết trên giấy, không phải bảng tô nét tương tác trên web."
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: Mở rộng việc đếm, đọc và viết đến 10; nhận biết mối liên hệ giữa số và số lượng.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: Mở rộng việc đếm, đọc và viết đến 10; nhận biết mối liên hệ giữa số và số lượng. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "choice",
@@ -324,11 +333,15 @@
             {
               "type": "connection",
               "prompt": "Con hãy dùng ngón tay hoặc que tính để biểu diễn một số từ 6 đến 10."
+            },
+            {
+              "type": "connection",
+              "prompt": "Bé hãy viết các chữ số 6–10 trong ô li trên giấy, đọc to từng số và tự đối chiếu với số mẫu để kiểm tra chiều nét."
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -345,9 +358,9 @@
             "Đếm thiếu hoặc lặp khi nhóm có nhiều đồ vật."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -356,7 +369,7 @@
         "TOAN_C1"
       ],
       "sub_ids": [
-        "1.1"
+        "1.2"
       ],
       "content_status": "sgk_vbt_aligned_original_v1",
       "navigation_model": "3_pages",
@@ -402,7 +415,11 @@
           }
         ],
         "ui_note": "Các số 6-9 và khung 5/10 vẫn dựng bằng UI để thay đổi số lượng chính xác."
-      }
+      },
+      "exercise_sub_ids": [
+        "1.2"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
     },
     {
       "bai": 3,
@@ -446,15 +463,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: So sánh hai nhóm đồ vật bằng ghép tương ứng một-một và dùng đúng các từ nhiều hơn, ít hơn, bằng nhau.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: So sánh hai nhóm đồ vật bằng ghép tương ứng một-một và dùng đúng các từ nhiều hơn, ít hơn, bằng nhau. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "choice",
@@ -501,8 +518,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -519,9 +536,9 @@
             "Nhầm “A ít hơn B” với “B ít hơn A”."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -530,7 +547,7 @@
         "TOAN_C4"
       ],
       "sub_ids": [
-        "1.2"
+        "1.3"
       ],
       "content_status": "sgk_vbt_aligned_original_v1",
       "navigation_model": "3_pages",
@@ -576,7 +593,11 @@
           }
         ],
         "ui_note": "Ghép từng đôi nên làm bằng thao tác kéo/nối để bé hiểu bản chất."
-      }
+      },
+      "exercise_sub_ids": [
+        "1.3"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
     },
     {
       "bai": 4,
@@ -620,15 +641,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: So sánh các số trong phạm vi 10 và sử dụng đúng các dấu >, <, =.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: So sánh các số trong phạm vi 10 và sử dụng đúng các dấu >, <, =. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "choice",
@@ -675,8 +696,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -693,9 +714,9 @@
             "So sánh hình dạng chữ số thay vì giá trị số."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -704,8 +725,7 @@
         "TOAN_C4"
       ],
       "sub_ids": [
-        "1.2",
-        "1.3"
+        "1.4"
       ],
       "content_status": "sgk_vbt_aligned_original_v1",
       "navigation_model": "3_pages",
@@ -751,7 +771,11 @@
           }
         ],
         "ui_note": "Dấu >, <, = và dãy số phải dựng bằng UI để tránh ảnh làm bé đoán."
-      }
+      },
+      "exercise_sub_ids": [
+        "1.4"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
     },
     {
       "bai": 5,
@@ -795,15 +819,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: Nhận biết một số có thể được tách thành hai phần theo nhiều cách và gộp hai phần để tạo lại số ban đầu.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: Nhận biết một số có thể được tách thành hai phần theo nhiều cách và gộp hai phần để tạo lại số ban đầu. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "fill",
@@ -845,8 +869,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -863,9 +887,9 @@
             "Chỉ nhớ một cách tách và bỏ qua các cách khác."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -874,7 +898,7 @@
         "TOAN_C2"
       ],
       "sub_ids": [
-        "2.1"
+        "1.5"
       ],
       "content_status": "sgk_vbt_aligned_original_v1",
       "navigation_model": "3_pages",
@@ -915,7 +939,187 @@
           }
         ],
         "ui_note": "Các cách tách khác nên dùng chấm/que hai màu kéo thả."
-      }
+      },
+      "exercise_sub_ids": [
+        "1.5"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
+    },
+    {
+      "bai": 6,
+      "semester": 1,
+      "source_title": "Luyện tập chung",
+      "theme": "Các số từ 0 đến 10",
+      "lesson_id": "T1_B06",
+      "estimated_minutes": 18,
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "discovery",
+          "title": "Khám phá",
+          "goal": "Củng cố đếm, so sánh và tách - gộp số đến 10.",
+          "intro": "Cô Thỏ Hồng cùng bé ôn kiến thức SGK Bài 6.",
+          "concept_blocks": [
+            {
+              "heading": "Nhớ lại kiến thức",
+              "text": "Đếm đúng các nhóm trong phạm vi 10.",
+              "example": "Số nằm giữa 4 và 6 trên dãy đếm là số nào? → 5. Thứ tự đếm là 4, 5, 6."
+            },
+            {
+              "heading": "Cách làm từng bước",
+              "text": "So sánh nhiều hơn, ít hơn, bằng nhau bằng số lượng.",
+              "example": "Số 8 gồm 1 và mấy? → 7. Gộp 1 với 7 được 8."
+            },
+            {
+              "heading": "Tự kiểm tra",
+              "text": "Tách một nhóm thành hai phần rồi gộp lại.",
+              "example": "Tên số “mười” được viết bằng chữ số nào? → 10. “mười” viết bằng chữ số 10."
+            }
+          ],
+          "visual_models": [
+            {
+              "type": "teacher_example",
+              "instruction": "Nhìn ví dụ, nói rõ số lượng hoặc phép tính đang được sử dụng; dùng que tính/chấm tròn nếu cần."
+            },
+            {
+              "type": "self_explain",
+              "instruction": "Tự kiểm tra bằng cách đếm lại, vẽ hình đơn giản hoặc dùng phép tính ngược khi thích hợp."
+            }
+          ],
+          "teacher_prompts": [
+            "Con đã biết những kiến thức nào trong chủ đề này? Hãy kể một ví dụ.",
+            "Con thử nói từng bước trước khi chọn đáp án nhé."
+          ]
+        },
+        {
+          "page_no": 2,
+          "page_type": "guided_practice",
+          "title": "Luyện cùng cô",
+          "recall": "Bài 6: Củng cố đếm, so sánh và tách - gộp số đến 10. Trước khi chọn, con hãy nói cách nghĩ rồi mới kiểm tra.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Tên số “hai” được viết bằng chữ số nào?",
+              "options": [
+                "2",
+                "1",
+                "0",
+                "4"
+              ],
+              "answer": 0,
+              "explanation": "“hai” viết bằng chữ số 2."
+            },
+            {
+              "type": "choice",
+              "prompt": "Sau số 4 là số mấy?",
+              "options": [
+                "4",
+                "3",
+                "5",
+                "10"
+              ],
+              "answer": 2,
+              "explanation": "Đếm thêm một: 4 rồi đến 5."
+            },
+            {
+              "type": "choice",
+              "prompt": "Trong hai số 7 và 0, số nào lớn hơn?",
+              "options": [
+                "9",
+                "3",
+                "7",
+                "10"
+              ],
+              "answer": 2,
+              "explanation": "7 đứng sau số còn lại trên dãy số từ 0 đến 10."
+            },
+            {
+              "type": "choice",
+              "prompt": "Số nằm giữa 6 và 8 trên dãy đếm là số nào?",
+              "options": [
+                "2",
+                "9",
+                "3",
+                "7"
+              ],
+              "answer": 3,
+              "explanation": "Thứ tự đếm là 6, 7, 8."
+            },
+            {
+              "type": "connection",
+              "prompt": "Con lấy giấy, que tính hoặc các vật quanh nhà để tự tạo một câu hỏi tương tự. Nói rõ vì sao con chọn đáp án đó."
+            }
+          ],
+          "extra_examples": [
+            "Làm với đồ vật/nháp trước khi nhìn bốn lựa chọn.",
+            "Nếu sai, xem lại ý chính ở Trang 1 rồi thử câu tương tự."
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Ghi nhớ & Vận dụng",
+          "key_points": [
+            "Đếm đúng các nhóm trong phạm vi 10.",
+            "So sánh nhiều hơn, ít hơn, bằng nhau bằng số lượng.",
+            "Tách một nhóm thành hai phần rồi gộp lại."
+          ],
+          "common_mistakes": [
+            "Nhìn số lượng mà bỏ qua vật nhỏ.",
+            "Nhầm chiều dấu lớn hơn và bé hơn."
+          ],
+          "self_check": [
+            "Con nêu được một ví dụ đúng trong bài này.",
+            "Con hiểu vì sao đáp án đúng chứ không chỉ chọn may mắn.",
+            "Con có thể tự tạo một câu tương tự để luyện thêm."
+          ],
+          "finish_prompt": "Bé hãy tự tạo một bài toán/bài hình giống nội dung vừa ôn và giải thích kết quả cho Cô Thỏ Hồng."
+        }
+      ],
+      "competency_links": [
+        "TOAN_C1",
+        "TOAN_C4",
+        "TOAN_C6"
+      ],
+      "sub_ids": [
+        "1.1",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "1.6"
+      ],
+      "content_status": "review_lesson_sgk_2026_10_19",
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Khám phá",
+        "Luyện cùng cô",
+        "Ghi nhớ & Vận dụng"
+      ],
+      "assessment_note": "Bài học luyện tập/ôn tập không tự sinh đánh giá 6 năng lực chính thức. Bài tập có chấm điểm là luồng riêng.",
+      "lesson_image": "",
+      "source_references": {
+        "sgk": {
+          "title": "Toán 1 - Tập 1 - Kết nối tri thức với cuộc sống",
+          "page_start": 38
+        },
+        "vbt": {
+          "title": "Vở bài tập Toán 1 - Tập 1 - Kết nối tri thức với cuộc sống"
+        }
+      },
+      "sgk_alignment": {
+        "reviewed_against": "Mục lục và cấu trúc Toán 1 Kết nối tri thức",
+        "core_focus": "Củng cố đếm, so sánh và tách - gộp số đến 10.",
+        "status": "sgk_topic_aligned",
+        "copyright_note": "Ví dụ/câu hỏi viết mới, không sao chép nguyên văn."
+      },
+      "image_plan": {
+        "strategy": "text_symbols_and_existing_ui",
+        "catalog_images": [],
+        "ui_note": "Không tạo ID hình hay đường dẫn giả khi chưa đối chiếu catalog."
+      },
+      "sgk_review_sub_code": "13.1",
+      "sgk_lesson_kind": "practice_or_review"
     },
     {
       "bai": 7,
@@ -959,15 +1163,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: Nhận dạng bốn hình phẳng cơ bản trong nhiều kích thước, màu sắc và hướng đặt khác nhau.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: Nhận dạng bốn hình phẳng cơ bản trong nhiều kích thước, màu sắc và hướng đặt khác nhau. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "choice",
@@ -1014,8 +1218,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -1032,9 +1236,9 @@
             "Nhầm hình phẳng với hình khối."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -1078,7 +1282,11 @@
         "strategy": "generated_ui_only",
         "catalog_images": [],
         "ui_note": "Hình vuông, tròn, tam giác, chữ nhật cần SVG/HTML chuẩn hình; không dùng ảnh raster chỉ để minh họa."
-      }
+      },
+      "exercise_sub_ids": [
+        "5.1"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
     },
     {
       "bai": 8,
@@ -1122,15 +1330,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: Ghép các hình phẳng đơn giản thành hình mới và nhận ra một hình có thể được phân tích thành các mảnh nhỏ.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: Ghép các hình phẳng đơn giản thành hình mới và nhận ra một hình có thể được phân tích thành các mảnh nhỏ. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "choice",
@@ -1177,8 +1385,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -1195,9 +1403,9 @@
             "Chỉ nhìn màu mà bỏ qua hình dạng và vị trí."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -1252,7 +1460,180 @@
           }
         ],
         "ui_note": "Ghép/xoay/tách hình vẫn phải làm bằng SVG/HTML tương tác; ảnh catalog chỉ tạo ngữ cảnh và giúp bé liên hệ hình học với đồ vật đời sống."
-      }
+      },
+      "exercise_sub_ids": [
+        "5.1"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
+    },
+    {
+      "bai": 9,
+      "semester": 1,
+      "source_title": "Luyện tập chung",
+      "theme": "Làm quen hình phẳng",
+      "lesson_id": "T1_B09",
+      "estimated_minutes": 18,
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "discovery",
+          "title": "Khám phá",
+          "goal": "Nhận biết, phân loại và ghép các hình phẳng cơ bản.",
+          "intro": "Cô Thỏ Hồng cùng bé ôn kiến thức SGK Bài 9.",
+          "concept_blocks": [
+            {
+              "heading": "Nhớ lại kiến thức",
+              "text": "Nhận biết hình tròn, hình vuông, hình tam giác, hình chữ nhật.",
+              "example": "Biển báo tam giác xoay xuống vẫn là hình nào? → Hình tam giác. Xoay hình không làm thay đổi dạng hình: vẫn là hình tam giác."
+            },
+            {
+              "heading": "Cách làm từng bước",
+              "text": "Một hình không đổi tên khi xoay hoặc đổi màu.",
+              "example": "Bé chọn tên hình phẳng theo đặc điểm: ba cạnh thẳng. → Hình tam giác. Đặc điểm ba cạnh thẳng thuộc hình tam giác."
+            },
+            {
+              "heading": "Tự kiểm tra",
+              "text": "Phân tích hình ghép bằng các hình đã học.",
+              "example": "Tờ giấy gấp dạng vuông gần giống hình phẳng nào? → Hình vuông. Tờ giấy gấp dạng vuông có dạng hình vuông."
+            }
+          ],
+          "visual_models": [
+            {
+              "type": "teacher_example",
+              "instruction": "Nhìn ví dụ, nói rõ số lượng hoặc phép tính đang được sử dụng; dùng que tính/chấm tròn nếu cần."
+            },
+            {
+              "type": "self_explain",
+              "instruction": "Tự kiểm tra bằng cách đếm lại, vẽ hình đơn giản hoặc dùng phép tính ngược khi thích hợp."
+            }
+          ],
+          "teacher_prompts": [
+            "Con đã biết những kiến thức nào trong chủ đề này? Hãy kể một ví dụ.",
+            "Con thử nói từng bước trước khi chọn đáp án nhé."
+          ]
+        },
+        {
+          "page_no": 2,
+          "page_type": "guided_practice",
+          "title": "Luyện cùng cô",
+          "recall": "Bài 9: Nhận biết, phân loại và ghép các hình phẳng cơ bản. Trước khi chọn, con hãy nói cách nghĩ rồi mới kiểm tra.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Mặt bàn cờ ô vuông gần giống hình phẳng nào?",
+              "options": [
+                "Hình chữ nhật",
+                "Hình tròn",
+                "Hình tam giác",
+                "Hình vuông"
+              ],
+              "answer": 3,
+              "explanation": "Mặt bàn cờ ô vuông có dạng hình vuông."
+            },
+            {
+              "type": "choice",
+              "prompt": "Đếm các cạnh thẳng của hình vuông. Có mấy cạnh?",
+              "options": [
+                "4",
+                "3",
+                "0",
+                "5"
+              ],
+              "answer": 0,
+              "explanation": "Hình vuông có 4 cạnh thẳng."
+            },
+            {
+              "type": "choice",
+              "prompt": "Nhìn các kí hiệu hình phẳng: △ △ △ ○ ○ ○ . Có bao nhiêu tam giác?",
+              "options": [
+                "5",
+                "6",
+                "0",
+                "3"
+              ],
+              "answer": 3,
+              "explanation": "Đếm 3 kí hiệu △, đó là 3 hình tam giác."
+            },
+            {
+              "type": "choice",
+              "prompt": "Khung ảnh chữ nhật đặt đứng vẫn là hình nào?",
+              "options": [
+                "Hình chữ nhật",
+                "Hình vuông",
+                "Hình tam giác",
+                "Hình tròn"
+              ],
+              "answer": 0,
+              "explanation": "Xoay hình không làm thay đổi dạng hình: vẫn là hình chữ nhật."
+            },
+            {
+              "type": "connection",
+              "prompt": "Con lấy giấy, que tính hoặc các vật quanh nhà để tự tạo một câu hỏi tương tự. Nói rõ vì sao con chọn đáp án đó."
+            }
+          ],
+          "extra_examples": [
+            "Làm với đồ vật/nháp trước khi nhìn bốn lựa chọn.",
+            "Nếu sai, xem lại ý chính ở Trang 1 rồi thử câu tương tự."
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Ghi nhớ & Vận dụng",
+          "key_points": [
+            "Nhận biết hình tròn, hình vuông, hình tam giác, hình chữ nhật.",
+            "Một hình không đổi tên khi xoay hoặc đổi màu.",
+            "Phân tích hình ghép bằng các hình đã học."
+          ],
+          "common_mistakes": [
+            "Nhầm hình vuông với hình chữ nhật khi xoay hình.",
+            "Đếm thiếu những hình nằm trong hình ghép."
+          ],
+          "self_check": [
+            "Con nêu được một ví dụ đúng trong bài này.",
+            "Con hiểu vì sao đáp án đúng chứ không chỉ chọn may mắn.",
+            "Con có thể tự tạo một câu tương tự để luyện thêm."
+          ],
+          "finish_prompt": "Bé hãy tự tạo một bài toán/bài hình giống nội dung vừa ôn và giải thích kết quả cho Cô Thỏ Hồng."
+        }
+      ],
+      "competency_links": [
+        "TOAN_C1"
+      ],
+      "sub_ids": [
+        "5.1"
+      ],
+      "content_status": "review_lesson_sgk_2026_10_19",
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Khám phá",
+        "Luyện cùng cô",
+        "Ghi nhớ & Vận dụng"
+      ],
+      "assessment_note": "Bài học luyện tập/ôn tập không tự sinh đánh giá 6 năng lực chính thức. Bài tập có chấm điểm là luồng riêng.",
+      "lesson_image": "",
+      "source_references": {
+        "sgk": {
+          "title": "Toán 1 - Tập 1 - Kết nối tri thức với cuộc sống",
+          "page_start": 54
+        },
+        "vbt": {
+          "title": "Vở bài tập Toán 1 - Tập 1 - Kết nối tri thức với cuộc sống"
+        }
+      },
+      "sgk_alignment": {
+        "reviewed_against": "Mục lục và cấu trúc Toán 1 Kết nối tri thức",
+        "core_focus": "Nhận biết, phân loại và ghép các hình phẳng cơ bản.",
+        "status": "sgk_topic_aligned",
+        "copyright_note": "Ví dụ/câu hỏi viết mới, không sao chép nguyên văn."
+      },
+      "image_plan": {
+        "strategy": "text_symbols_and_existing_ui",
+        "catalog_images": [],
+        "ui_note": "Không tạo ID hình hay đường dẫn giả khi chưa đối chiếu catalog."
+      },
+      "sgk_review_sub_code": "13.2",
+      "sgk_lesson_kind": "practice_or_review"
     },
     {
       "bai": 10,
@@ -1296,15 +1677,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: Hiểu phép cộng là gộp hai nhóm hoặc thêm vào một nhóm; viết và tính phép cộng có kết quả không quá 10.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: Hiểu phép cộng là gộp hai nhóm hoặc thêm vào một nhóm; viết và tính phép cộng có kết quả không quá 10. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "fill",
@@ -1346,8 +1727,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -1364,9 +1745,9 @@
             "Đếm lại sai khi gộp hai nhóm."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -1377,8 +1758,10 @@
       ],
       "sub_ids": [
         "2.1",
-        "9.1",
-        "9.2"
+        "2.2",
+        "2.3",
+        "2.4",
+        "2.5"
       ],
       "content_status": "sgk_vbt_aligned_original_v1",
       "navigation_model": "3_pages",
@@ -1419,7 +1802,15 @@
           }
         ],
         "ui_note": "Thao tác gộp nhóm và sơ đồ phần-tổng vẫn dựng bằng UI."
-      }
+      },
+      "exercise_sub_ids": [
+        "2.1",
+        "2.2",
+        "2.3",
+        "2.4",
+        "2.5"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
     },
     {
       "bai": 11,
@@ -1463,15 +1854,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: Hiểu phép trừ là bớt/tách một phần khỏi nhóm ban đầu và tính phép trừ trong phạm vi 10.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: Hiểu phép trừ là bớt/tách một phần khỏi nhóm ban đầu và tính phép trừ trong phạm vi 10. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "fill",
@@ -1513,8 +1904,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -1531,9 +1922,9 @@
             "Dùng phép cộng cho tình huống “bớt đi”."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -1543,9 +1934,10 @@
         "TOAN_C5"
       ],
       "sub_ids": [
-        "2.1",
-        "9.1",
-        "9.2"
+        "2.6",
+        "2.7",
+        "2.8",
+        "2.9"
       ],
       "content_status": "sgk_vbt_aligned_original_v1",
       "navigation_model": "3_pages",
@@ -1586,7 +1978,14 @@
           }
         ],
         "ui_note": "Vật bị bớt phải được ẩn/gạch/di chuyển bằng UI để số còn lại chính xác."
-      }
+      },
+      "exercise_sub_ids": [
+        "2.6",
+        "2.7",
+        "2.8",
+        "2.9"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
     },
     {
       "bai": 12,
@@ -1630,15 +2029,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: Hệ thống hóa các phép cộng và phép trừ trong phạm vi 10, nhận ra quan hệ giữa các phép tính cùng một bộ số.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: Hệ thống hóa các phép cộng và phép trừ trong phạm vi 10, nhận ra quan hệ giữa các phép tính cùng một bộ số. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "fill",
@@ -1675,8 +2074,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -1693,9 +2092,9 @@
             "Nhầm tổng với một trong hai phần khi viết phép trừ."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -1704,7 +2103,10 @@
         "TOAN_C2"
       ],
       "sub_ids": [
-        "2.1"
+        "2.4",
+        "2.5",
+        "2.9",
+        "2.10"
       ],
       "content_status": "sgk_vbt_aligned_original_v1",
       "navigation_model": "3_pages",
@@ -1739,7 +2141,192 @@
         "strategy": "generated_ui_only",
         "catalog_images": [],
         "ui_note": "Bảng cộng/trừ và fact family phải dựng bằng UI để thay đổi số và kiểm tra đáp án."
-      }
+      },
+      "exercise_sub_ids": [
+        "2.4",
+        "2.5",
+        "2.9",
+        "2.10"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
+    },
+    {
+      "bai": 13,
+      "semester": 1,
+      "source_title": "Luyện tập chung",
+      "theme": "Phép cộng và phép trừ trong phạm vi 10",
+      "lesson_id": "T1_B13",
+      "estimated_minutes": 18,
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "discovery",
+          "title": "Khám phá",
+          "goal": "Củng cố tính cộng, trừ và tìm số còn thiếu trong phạm vi 10.",
+          "intro": "Cô Thỏ Hồng cùng bé ôn kiến thức SGK Bài 13.",
+          "concept_blocks": [
+            {
+              "heading": "Nhớ lại kiến thức",
+              "text": "Cộng là gộp hoặc thêm vào; trừ là bớt hoặc tìm phần còn lại.",
+              "example": "Điền số: 3 − □ = 2. → 1. Vì 2 + 1 = 3 nên 3 − 1 = 2."
+            },
+            {
+              "heading": "Cách làm từng bước",
+              "text": "Dùng mối quan hệ giữa cộng và trừ để thử lại.",
+              "example": "Tính theo thứ tự: 7 + 2 − 1 = ? → 8. Tính từng bước từ trái sang phải, được 8."
+            },
+            {
+              "heading": "Tự kiểm tra",
+              "text": "Tính lần lượt từng bước khi có hai phép tính.",
+              "example": "Tính: 3 + 1 = ? → 4. Gộp 3 và 1 được 4."
+            }
+          ],
+          "visual_models": [
+            {
+              "type": "teacher_example",
+              "instruction": "Nhìn ví dụ, nói rõ số lượng hoặc phép tính đang được sử dụng; dùng que tính/chấm tròn nếu cần."
+            },
+            {
+              "type": "self_explain",
+              "instruction": "Tự kiểm tra bằng cách đếm lại, vẽ hình đơn giản hoặc dùng phép tính ngược khi thích hợp."
+            }
+          ],
+          "teacher_prompts": [
+            "Con đã biết những kiến thức nào trong chủ đề này? Hãy kể một ví dụ.",
+            "Con thử nói từng bước trước khi chọn đáp án nhé."
+          ]
+        },
+        {
+          "page_no": 2,
+          "page_type": "guided_practice",
+          "title": "Luyện cùng cô",
+          "recall": "Bài 13: Củng cố tính cộng, trừ và tìm số còn thiếu trong phạm vi 10. Trước khi chọn, con hãy nói cách nghĩ rồi mới kiểm tra.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Tính: 7 + 1 = ?",
+              "options": [
+                "7",
+                "6",
+                "9",
+                "8"
+              ],
+              "answer": 3,
+              "explanation": "Gộp 7 và 1 được 8."
+            },
+            {
+              "type": "choice",
+              "prompt": "Tính: 9 − 4 = ?",
+              "options": [
+                "5",
+                "4",
+                "7",
+                "2"
+              ],
+              "answer": 0,
+              "explanation": "Từ 9 bớt 4 còn 5."
+            },
+            {
+              "type": "choice",
+              "prompt": "Điền số: 2 + □ = 10.",
+              "options": [
+                "7",
+                "10",
+                "9",
+                "8"
+              ],
+              "answer": 3,
+              "explanation": "Ta cần thêm 8 vào 2 để được 10."
+            },
+            {
+              "type": "choice",
+              "prompt": "Điền số: 9 − □ = 4.",
+              "options": [
+                "4",
+                "10",
+                "5",
+                "8"
+              ],
+              "answer": 2,
+              "explanation": "Vì 4 + 5 = 9 nên 9 − 5 = 4."
+            },
+            {
+              "type": "connection",
+              "prompt": "Con lấy giấy, que tính hoặc các vật quanh nhà để tự tạo một câu hỏi tương tự. Nói rõ vì sao con chọn đáp án đó."
+            }
+          ],
+          "extra_examples": [
+            "Làm với đồ vật/nháp trước khi nhìn bốn lựa chọn.",
+            "Nếu sai, xem lại ý chính ở Trang 1 rồi thử câu tương tự."
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Ghi nhớ & Vận dụng",
+          "key_points": [
+            "Cộng là gộp hoặc thêm vào; trừ là bớt hoặc tìm phần còn lại.",
+            "Dùng mối quan hệ giữa cộng và trừ để thử lại.",
+            "Tính lần lượt từng bước khi có hai phép tính."
+          ],
+          "common_mistakes": [
+            "Lấy phép cộng thay cho phép trừ khi tình huống bớt đi.",
+            "Tính nhầm thứ tự ở phép tính hai bước."
+          ],
+          "self_check": [
+            "Con nêu được một ví dụ đúng trong bài này.",
+            "Con hiểu vì sao đáp án đúng chứ không chỉ chọn may mắn.",
+            "Con có thể tự tạo một câu tương tự để luyện thêm."
+          ],
+          "finish_prompt": "Bé hãy tự tạo một bài toán/bài hình giống nội dung vừa ôn và giải thích kết quả cho Cô Thỏ Hồng."
+        }
+      ],
+      "competency_links": [
+        "TOAN_C2"
+      ],
+      "sub_ids": [
+        "2.1",
+        "2.2",
+        "2.3",
+        "2.4",
+        "2.5",
+        "2.6",
+        "2.7",
+        "2.8",
+        "2.9",
+        "2.10"
+      ],
+      "content_status": "review_lesson_sgk_2026_10_19",
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Khám phá",
+        "Luyện cùng cô",
+        "Ghi nhớ & Vận dụng"
+      ],
+      "assessment_note": "Bài học luyện tập/ôn tập không tự sinh đánh giá 6 năng lực chính thức. Bài tập có chấm điểm là luồng riêng.",
+      "lesson_image": "",
+      "source_references": {
+        "sgk": {
+          "title": "Toán 1 - Tập 1 - Kết nối tri thức với cuộc sống",
+          "page_start": 86
+        },
+        "vbt": {
+          "title": "Vở bài tập Toán 1 - Tập 1 - Kết nối tri thức với cuộc sống"
+        }
+      },
+      "sgk_alignment": {
+        "reviewed_against": "Mục lục và cấu trúc Toán 1 Kết nối tri thức",
+        "core_focus": "Củng cố tính cộng, trừ và tìm số còn thiếu trong phạm vi 10.",
+        "status": "sgk_topic_aligned",
+        "copyright_note": "Ví dụ/câu hỏi viết mới, không sao chép nguyên văn."
+      },
+      "image_plan": {
+        "strategy": "text_symbols_and_existing_ui",
+        "catalog_images": [],
+        "ui_note": "Không tạo ID hình hay đường dẫn giả khi chưa đối chiếu catalog."
+      },
+      "sgk_review_sub_code": "13.3",
+      "sgk_lesson_kind": "practice_or_review"
     },
     {
       "bai": 14,
@@ -1783,15 +2370,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: Nhận biết khối lập phương và khối hộp chữ nhật qua mô hình và đồ vật thực tế.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: Nhận biết khối lập phương và khối hộp chữ nhật qua mô hình và đồ vật thực tế. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "choice",
@@ -1838,8 +2425,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -1856,9 +2443,9 @@
             "Cho rằng mọi hộp đều là khối lập phương."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -1913,7 +2500,11 @@
           }
         ],
         "ui_note": "Khối lập phương/hộp chữ nhật vẫn phải dạy bằng mô hình 3D/SVG có thể quan sát rõ các mặt; ảnh đời sống chỉ dùng cho bước liên hệ và nhận dạng."
-      }
+      },
+      "exercise_sub_ids": [
+        "5.2"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
     },
     {
       "bai": 15,
@@ -1961,15 +2552,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: Mô tả và xác định vị trí bằng trên - dưới, trước - sau - ở giữa, trái - phải; đọc thứ tự trong hàng và nhận biết các mặt nhìn thấy của khối trong tình huống trực quan.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: Mô tả và xác định vị trí bằng trên - dưới, trước - sau - ở giữa, trái - phải; đọc thứ tự trong hàng và nhận biết các mặt nhìn thấy của khối trong tình huống trực quan. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "choice",
@@ -2016,8 +2607,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -2034,9 +2625,9 @@
             "Nhầm trái/phải khi đổi hướng nhìn."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -2101,7 +2692,896 @@
           }
         ],
         "ui_note": "Mặt trước/mặt trên/mặt bên của khối vẫn dựng bằng mô hình màu tương tác."
-      }
+      },
+      "exercise_sub_ids": [
+        "6.1",
+        "6.2",
+        "6.3",
+        "6.4",
+        "6.5",
+        "6.6"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
+    },
+    {
+      "bai": 16,
+      "semester": 1,
+      "source_title": "Luyện tập chung",
+      "theme": "Hình khối và vị trí",
+      "lesson_id": "T1_B16",
+      "estimated_minutes": 18,
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "discovery",
+          "title": "Khám phá",
+          "goal": "Nhận biết hình khối và xác định vị trí, thứ tự không gian.",
+          "intro": "Cô Thỏ Hồng cùng bé ôn kiến thức SGK Bài 16.",
+          "concept_blocks": [
+            {
+              "heading": "Nhớ lại kiến thức",
+              "text": "Phân biệt khối lập phương và khối hộp chữ nhật.",
+              "example": "Chiếc hộp ở phía trước cây xanh. Cây xanh ở đâu so với chiếc hộp? → Phía sau. Chiếc hộp phía trước cây nên cây ở phía sau chiếc hộp."
+            },
+            {
+              "heading": "Cách làm từng bước",
+              "text": "Dùng đúng bên trái - bên phải, phía trên - phía dưới.",
+              "example": "Hộp sữa dạng hộp chữ nhật có dạng gần giống khối nào? → Khối hộp chữ nhật. Dựa vào hình dạng của hộp sữa dạng hộp chữ nhật để nhận biết khối hộp chữ nhật."
+            },
+            {
+              "heading": "Tự kiểm tra",
+              "text": "Luôn xác định vật mốc trước khi nói vị trí.",
+              "example": "Quả bóng ở trên chiếc bàn. Chiếc bàn ở đâu so với quả bóng? → Phía dưới. Quả bóng ở trên bàn nên bàn ở phía dưới quả bóng."
+            }
+          ],
+          "visual_models": [
+            {
+              "type": "teacher_example",
+              "instruction": "Nhìn ví dụ, nói rõ số lượng hoặc phép tính đang được sử dụng; dùng que tính/chấm tròn nếu cần."
+            },
+            {
+              "type": "self_explain",
+              "instruction": "Tự kiểm tra bằng cách đếm lại, vẽ hình đơn giản hoặc dùng phép tính ngược khi thích hợp."
+            }
+          ],
+          "teacher_prompts": [
+            "Con đã biết những kiến thức nào trong chủ đề này? Hãy kể một ví dụ.",
+            "Con thử nói từng bước trước khi chọn đáp án nhé."
+          ]
+        },
+        {
+          "page_no": 2,
+          "page_type": "guided_practice",
+          "title": "Luyện cùng cô",
+          "recall": "Bài 16: Nhận biết hình khối và xác định vị trí, thứ tự không gian. Trước khi chọn, con hãy nói cách nghĩ rồi mới kiểm tra.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Gấu bông ở trên chiếc bàn. Chiếc bàn ở đâu so với gấu bông?",
+              "options": [
+                "Bên trái",
+                "Phía dưới",
+                "Phía trên",
+                "Bên phải"
+              ],
+              "answer": 1,
+              "explanation": "Gấu bông ở trên bàn nên bàn ở phía dưới gấu bông."
+            },
+            {
+              "type": "choice",
+              "prompt": "Trong hàng từ trái sang phải: 🐰 — 🐻 — 🐸. Con gấu ở vị trí nào?",
+              "options": [
+                "Thứ nhất",
+                "Thứ ba",
+                "Thứ hai",
+                "Thứ tư"
+              ],
+              "answer": 2,
+              "explanation": "Đếm từ trái qua phải; vật ở giữa là thứ hai."
+            },
+            {
+              "type": "choice",
+              "prompt": "Cái cặp ở bên trái quả bóng. Quả bóng ở đâu so với cái cặp?",
+              "options": [
+                "Phía trên",
+                "Bên phải",
+                "Bên trái",
+                "Phía dưới"
+              ],
+              "answer": 1,
+              "explanation": "Đổi vật mốc: khi cái cặp ở bên trái bóng, bóng ở bên phải cái cặp."
+            },
+            {
+              "type": "choice",
+              "prompt": "Quyển sách ở phía trước cây xanh. Cây xanh ở đâu so với quyển sách?",
+              "options": [
+                "Phía trước",
+                "Ở giữa",
+                "Bên phải",
+                "Phía sau"
+              ],
+              "answer": 3,
+              "explanation": "Quyển sách phía trước cây nên cây ở phía sau quyển sách."
+            },
+            {
+              "type": "connection",
+              "prompt": "Con lấy giấy, que tính hoặc các vật quanh nhà để tự tạo một câu hỏi tương tự. Nói rõ vì sao con chọn đáp án đó."
+            }
+          ],
+          "extra_examples": [
+            "Làm với đồ vật/nháp trước khi nhìn bốn lựa chọn.",
+            "Nếu sai, xem lại ý chính ở Trang 1 rồi thử câu tương tự."
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Ghi nhớ & Vận dụng",
+          "key_points": [
+            "Phân biệt khối lập phương và khối hộp chữ nhật.",
+            "Dùng đúng bên trái - bên phải, phía trên - phía dưới.",
+            "Luôn xác định vật mốc trước khi nói vị trí."
+          ],
+          "common_mistakes": [
+            "Chỉ dựa vào màu thay vì dạng khối.",
+            "Quên nêu rõ vật mốc khi so sánh vị trí."
+          ],
+          "self_check": [
+            "Con nêu được một ví dụ đúng trong bài này.",
+            "Con hiểu vì sao đáp án đúng chứ không chỉ chọn may mắn.",
+            "Con có thể tự tạo một câu tương tự để luyện thêm."
+          ],
+          "finish_prompt": "Bé hãy tự tạo một bài toán/bài hình giống nội dung vừa ôn và giải thích kết quả cho Cô Thỏ Hồng."
+        }
+      ],
+      "competency_links": [
+        "TOAN_C1",
+        "TOAN_C4"
+      ],
+      "sub_ids": [
+        "5.2",
+        "6.1",
+        "6.2",
+        "6.3",
+        "6.4",
+        "6.5",
+        "6.6"
+      ],
+      "content_status": "review_lesson_sgk_2026_10_19",
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Khám phá",
+        "Luyện cùng cô",
+        "Ghi nhớ & Vận dụng"
+      ],
+      "assessment_note": "Bài học luyện tập/ôn tập không tự sinh đánh giá 6 năng lực chính thức. Bài tập có chấm điểm là luồng riêng.",
+      "lesson_image": "",
+      "source_references": {
+        "sgk": {
+          "title": "Toán 1 - Tập 1 - Kết nối tri thức với cuộc sống",
+          "page_start": 100
+        },
+        "vbt": {
+          "title": "Vở bài tập Toán 1 - Tập 1 - Kết nối tri thức với cuộc sống"
+        }
+      },
+      "sgk_alignment": {
+        "reviewed_against": "Mục lục và cấu trúc Toán 1 Kết nối tri thức",
+        "core_focus": "Nhận biết hình khối và xác định vị trí, thứ tự không gian.",
+        "status": "sgk_topic_aligned",
+        "copyright_note": "Ví dụ/câu hỏi viết mới, không sao chép nguyên văn."
+      },
+      "image_plan": {
+        "strategy": "text_symbols_and_existing_ui",
+        "catalog_images": [],
+        "ui_note": "Không tạo ID hình hay đường dẫn giả khi chưa đối chiếu catalog."
+      },
+      "sgk_review_sub_code": "13.4",
+      "sgk_lesson_kind": "practice_or_review"
+    },
+    {
+      "bai": 17,
+      "semester": 1,
+      "source_title": "Ôn tập các số trong phạm vi 10",
+      "theme": "Ôn tập học kì I",
+      "lesson_id": "T1_B17",
+      "estimated_minutes": 18,
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "discovery",
+          "title": "Khám phá",
+          "goal": "Ôn đọc, viết, đếm, so sánh, tách - gộp các số đến 10.",
+          "intro": "Cô Thỏ Hồng cùng bé ôn kiến thức SGK Bài 17.",
+          "concept_blocks": [
+            {
+              "heading": "Nhớ lại kiến thức",
+              "text": "Đếm và viết các số từ 0 đến 10.",
+              "example": "Số nằm giữa 8 và 10 trên dãy đếm là số nào? → 9. Thứ tự đếm là 8, 9, 10."
+            },
+            {
+              "heading": "Cách làm từng bước",
+              "text": "So sánh và sắp xếp số đúng thứ tự.",
+              "example": "Số 9 gồm 3 và mấy? → 6. Gộp 3 với 6 được 9."
+            },
+            {
+              "heading": "Tự kiểm tra",
+              "text": "Nhận biết số liền trước, liền sau và tách - gộp.",
+              "example": "Sau số 4 là số mấy? → 5. Đếm thêm một: 4 rồi đến 5."
+            }
+          ],
+          "visual_models": [
+            {
+              "type": "teacher_example",
+              "instruction": "Nhìn ví dụ, nói rõ số lượng hoặc phép tính đang được sử dụng; dùng que tính/chấm tròn nếu cần."
+            },
+            {
+              "type": "self_explain",
+              "instruction": "Tự kiểm tra bằng cách đếm lại, vẽ hình đơn giản hoặc dùng phép tính ngược khi thích hợp."
+            }
+          ],
+          "teacher_prompts": [
+            "Con đã biết những kiến thức nào trong chủ đề này? Hãy kể một ví dụ.",
+            "Con thử nói từng bước trước khi chọn đáp án nhé."
+          ]
+        },
+        {
+          "page_no": 2,
+          "page_type": "guided_practice",
+          "title": "Luyện cùng cô",
+          "recall": "Bài 17: Ôn đọc, viết, đếm, so sánh, tách - gộp các số đến 10. Trước khi chọn, con hãy nói cách nghĩ rồi mới kiểm tra.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Tên số “sáu” được viết bằng chữ số nào?",
+              "options": [
+                "7",
+                "1",
+                "6",
+                "3"
+              ],
+              "answer": 2,
+              "explanation": "“sáu” viết bằng chữ số 6."
+            },
+            {
+              "type": "choice",
+              "prompt": "Sau số 3 là số mấy?",
+              "options": [
+                "5",
+                "2",
+                "4",
+                "8"
+              ],
+              "answer": 2,
+              "explanation": "Đếm thêm một: 3 rồi đến 4."
+            },
+            {
+              "type": "choice",
+              "prompt": "Trong hai số 6 và 3, số nào lớn hơn?",
+              "options": [
+                "6",
+                "10",
+                "9",
+                "1"
+              ],
+              "answer": 0,
+              "explanation": "6 đứng sau số còn lại trên dãy số từ 0 đến 10."
+            },
+            {
+              "type": "choice",
+              "prompt": "Số nằm giữa 6 và 8 trên dãy đếm là số nào?",
+              "options": [
+                "2",
+                "8",
+                "4",
+                "7"
+              ],
+              "answer": 3,
+              "explanation": "Thứ tự đếm là 6, 7, 8."
+            },
+            {
+              "type": "connection",
+              "prompt": "Con lấy giấy, que tính hoặc các vật quanh nhà để tự tạo một câu hỏi tương tự. Nói rõ vì sao con chọn đáp án đó."
+            }
+          ],
+          "extra_examples": [
+            "Làm với đồ vật/nháp trước khi nhìn bốn lựa chọn.",
+            "Nếu sai, xem lại ý chính ở Trang 1 rồi thử câu tương tự."
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Ghi nhớ & Vận dụng",
+          "key_points": [
+            "Đếm và viết các số từ 0 đến 10.",
+            "So sánh và sắp xếp số đúng thứ tự.",
+            "Nhận biết số liền trước, liền sau và tách - gộp."
+          ],
+          "common_mistakes": [
+            "Quên số 0 khi đếm từ 0.",
+            "Viết dãy số thiếu một số."
+          ],
+          "self_check": [
+            "Con nêu được một ví dụ đúng trong bài này.",
+            "Con hiểu vì sao đáp án đúng chứ không chỉ chọn may mắn.",
+            "Con có thể tự tạo một câu tương tự để luyện thêm."
+          ],
+          "finish_prompt": "Bé hãy tự tạo một bài toán/bài hình giống nội dung vừa ôn và giải thích kết quả cho Cô Thỏ Hồng."
+        }
+      ],
+      "competency_links": [
+        "TOAN_C1",
+        "TOAN_C4",
+        "TOAN_C6"
+      ],
+      "sub_ids": [
+        "1.1",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "1.6"
+      ],
+      "content_status": "review_lesson_sgk_2026_10_19",
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Khám phá",
+        "Luyện cùng cô",
+        "Ghi nhớ & Vận dụng"
+      ],
+      "assessment_note": "Bài học luyện tập/ôn tập không tự sinh đánh giá 6 năng lực chính thức. Bài tập có chấm điểm là luồng riêng.",
+      "lesson_image": "",
+      "source_references": {
+        "sgk": {
+          "title": "Toán 1 - Tập 1 - Kết nối tri thức với cuộc sống",
+          "page_start": 102
+        },
+        "vbt": {
+          "title": "Vở bài tập Toán 1 - Tập 1 - Kết nối tri thức với cuộc sống"
+        }
+      },
+      "sgk_alignment": {
+        "reviewed_against": "Mục lục và cấu trúc Toán 1 Kết nối tri thức",
+        "core_focus": "Ôn đọc, viết, đếm, so sánh, tách - gộp các số đến 10.",
+        "status": "sgk_topic_aligned",
+        "copyright_note": "Ví dụ/câu hỏi viết mới, không sao chép nguyên văn."
+      },
+      "image_plan": {
+        "strategy": "text_symbols_and_existing_ui",
+        "catalog_images": [],
+        "ui_note": "Không tạo ID hình hay đường dẫn giả khi chưa đối chiếu catalog."
+      },
+      "sgk_review_sub_code": "13.5",
+      "sgk_lesson_kind": "practice_or_review"
+    },
+    {
+      "bai": 18,
+      "semester": 1,
+      "source_title": "Ôn tập phép cộng, phép trừ trong phạm vi 10",
+      "theme": "Ôn tập học kì I",
+      "lesson_id": "T1_B18",
+      "estimated_minutes": 18,
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "discovery",
+          "title": "Khám phá",
+          "goal": "Ôn tính cộng, trừ, tìm số còn thiếu và liên hệ phép tính.",
+          "intro": "Cô Thỏ Hồng cùng bé ôn kiến thức SGK Bài 18.",
+          "concept_blocks": [
+            {
+              "heading": "Nhớ lại kiến thức",
+              "text": "Tính cộng/trừ đúng trong phạm vi 10.",
+              "example": "Điền số: 6 − □ = 1. → 5. Vì 1 + 5 = 6 nên 6 − 5 = 1."
+            },
+            {
+              "heading": "Cách làm từng bước",
+              "text": "Tìm số còn thiếu bằng cách tách - gộp.",
+              "example": "Tính theo thứ tự: 7 + 1 − 1 = ? → 7. Tính từng bước từ trái sang phải, được 7."
+            },
+            {
+              "heading": "Tự kiểm tra",
+              "text": "Kiểm tra phép trừ bằng phép cộng.",
+              "example": "Tính: 2 + 2 = ? → 4. Gộp 2 và 2 được 4."
+            }
+          ],
+          "visual_models": [
+            {
+              "type": "teacher_example",
+              "instruction": "Nhìn ví dụ, nói rõ số lượng hoặc phép tính đang được sử dụng; dùng que tính/chấm tròn nếu cần."
+            },
+            {
+              "type": "self_explain",
+              "instruction": "Tự kiểm tra bằng cách đếm lại, vẽ hình đơn giản hoặc dùng phép tính ngược khi thích hợp."
+            }
+          ],
+          "teacher_prompts": [
+            "Con đã biết những kiến thức nào trong chủ đề này? Hãy kể một ví dụ.",
+            "Con thử nói từng bước trước khi chọn đáp án nhé."
+          ]
+        },
+        {
+          "page_no": 2,
+          "page_type": "guided_practice",
+          "title": "Luyện cùng cô",
+          "recall": "Bài 18: Ôn tính cộng, trừ, tìm số còn thiếu và liên hệ phép tính. Trước khi chọn, con hãy nói cách nghĩ rồi mới kiểm tra.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Tính: 7 + 2 = ?",
+              "options": [
+                "4",
+                "8",
+                "9",
+                "5"
+              ],
+              "answer": 2,
+              "explanation": "Gộp 7 và 2 được 9."
+            },
+            {
+              "type": "choice",
+              "prompt": "Tính: 10 − 5 = ?",
+              "options": [
+                "4",
+                "5",
+                "3",
+                "0"
+              ],
+              "answer": 1,
+              "explanation": "Từ 10 bớt 5 còn 5."
+            },
+            {
+              "type": "choice",
+              "prompt": "Điền số: 2 + □ = 3.",
+              "options": [
+                "8",
+                "3",
+                "1",
+                "2"
+              ],
+              "answer": 2,
+              "explanation": "Ta cần thêm 1 vào 2 để được 3."
+            },
+            {
+              "type": "choice",
+              "prompt": "Điền số: 10 − □ = 7.",
+              "options": [
+                "5",
+                "4",
+                "3",
+                "6"
+              ],
+              "answer": 2,
+              "explanation": "Vì 7 + 3 = 10 nên 10 − 3 = 7."
+            },
+            {
+              "type": "connection",
+              "prompt": "Con lấy giấy, que tính hoặc các vật quanh nhà để tự tạo một câu hỏi tương tự. Nói rõ vì sao con chọn đáp án đó."
+            }
+          ],
+          "extra_examples": [
+            "Làm với đồ vật/nháp trước khi nhìn bốn lựa chọn.",
+            "Nếu sai, xem lại ý chính ở Trang 1 rồi thử câu tương tự."
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Ghi nhớ & Vận dụng",
+          "key_points": [
+            "Tính cộng/trừ đúng trong phạm vi 10.",
+            "Tìm số còn thiếu bằng cách tách - gộp.",
+            "Kiểm tra phép trừ bằng phép cộng."
+          ],
+          "common_mistakes": [
+            "Quên trừ đi số đã bớt.",
+            "Cộng sai khi hai số gộp thành 10."
+          ],
+          "self_check": [
+            "Con nêu được một ví dụ đúng trong bài này.",
+            "Con hiểu vì sao đáp án đúng chứ không chỉ chọn may mắn.",
+            "Con có thể tự tạo một câu tương tự để luyện thêm."
+          ],
+          "finish_prompt": "Bé hãy tự tạo một bài toán/bài hình giống nội dung vừa ôn và giải thích kết quả cho Cô Thỏ Hồng."
+        }
+      ],
+      "competency_links": [
+        "TOAN_C2"
+      ],
+      "sub_ids": [
+        "2.1",
+        "2.2",
+        "2.3",
+        "2.4",
+        "2.5",
+        "2.6",
+        "2.7",
+        "2.8",
+        "2.9",
+        "2.10"
+      ],
+      "content_status": "review_lesson_sgk_2026_10_19",
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Khám phá",
+        "Luyện cùng cô",
+        "Ghi nhớ & Vận dụng"
+      ],
+      "assessment_note": "Bài học luyện tập/ôn tập không tự sinh đánh giá 6 năng lực chính thức. Bài tập có chấm điểm là luồng riêng.",
+      "lesson_image": "",
+      "source_references": {
+        "sgk": {
+          "title": "Toán 1 - Tập 1 - Kết nối tri thức với cuộc sống",
+          "page_start": 106
+        },
+        "vbt": {
+          "title": "Vở bài tập Toán 1 - Tập 1 - Kết nối tri thức với cuộc sống"
+        }
+      },
+      "sgk_alignment": {
+        "reviewed_against": "Mục lục và cấu trúc Toán 1 Kết nối tri thức",
+        "core_focus": "Ôn tính cộng, trừ, tìm số còn thiếu và liên hệ phép tính.",
+        "status": "sgk_topic_aligned",
+        "copyright_note": "Ví dụ/câu hỏi viết mới, không sao chép nguyên văn."
+      },
+      "image_plan": {
+        "strategy": "text_symbols_and_existing_ui",
+        "catalog_images": [],
+        "ui_note": "Không tạo ID hình hay đường dẫn giả khi chưa đối chiếu catalog."
+      },
+      "sgk_review_sub_code": "13.6",
+      "sgk_lesson_kind": "practice_or_review"
+    },
+    {
+      "bai": 19,
+      "semester": 1,
+      "source_title": "Ôn tập hình học",
+      "theme": "Ôn tập học kì I",
+      "lesson_id": "T1_B19",
+      "estimated_minutes": 18,
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "discovery",
+          "title": "Khám phá",
+          "goal": "Ôn hình phẳng, hình khối và nhận biết hình trong thực tế.",
+          "intro": "Cô Thỏ Hồng cùng bé ôn kiến thức SGK Bài 19.",
+          "concept_blocks": [
+            {
+              "heading": "Nhớ lại kiến thức",
+              "text": "Gọi đúng tên bốn hình phẳng.",
+              "example": "Hộp quà dạng hộp dài gần giống dạng khối nào? → Khối hộp chữ nhật. Hộp quà dạng hộp dài có dạng gần giống khối hộp chữ nhật."
+            },
+            {
+              "heading": "Cách làm từng bước",
+              "text": "Nhận biết khối lập phương và khối hộp chữ nhật.",
+              "example": "Bé hãy tìm đúng tên của hình được mô tả: hình có ba cạnh thẳng. → Hình tam giác. Đặc điểm đã mô tả là của hình tam giác."
+            },
+            {
+              "heading": "Tự kiểm tra",
+              "text": "Dùng hình quen thuộc để quan sát vật quanh mình.",
+              "example": "Quan sát mặt biển báo tam giác. Mặt ấy gần giống hình nào? → Hình tam giác. Mặt biển báo tam giác gần giống hình tam giác."
+            }
+          ],
+          "visual_models": [
+            {
+              "type": "teacher_example",
+              "instruction": "Nhìn ví dụ, nói rõ số lượng hoặc phép tính đang được sử dụng; dùng que tính/chấm tròn nếu cần."
+            },
+            {
+              "type": "self_explain",
+              "instruction": "Tự kiểm tra bằng cách đếm lại, vẽ hình đơn giản hoặc dùng phép tính ngược khi thích hợp."
+            }
+          ],
+          "teacher_prompts": [
+            "Con đã biết những kiến thức nào trong chủ đề này? Hãy kể một ví dụ.",
+            "Con thử nói từng bước trước khi chọn đáp án nhé."
+          ]
+        },
+        {
+          "page_no": 2,
+          "page_type": "guided_practice",
+          "title": "Luyện cùng cô",
+          "recall": "Bài 19: Ôn hình phẳng, hình khối và nhận biết hình trong thực tế. Trước khi chọn, con hãy nói cách nghĩ rồi mới kiểm tra.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Quan sát mặt chiếc đĩa tròn. Mặt ấy gần giống hình nào?",
+              "options": [
+                "Hình tròn",
+                "Hình tam giác",
+                "Hình chữ nhật",
+                "Hình vuông"
+              ],
+              "answer": 0,
+              "explanation": "Mặt chiếc đĩa tròn gần giống hình tròn."
+            },
+            {
+              "type": "choice",
+              "prompt": "Hình tam giác có bao nhiêu cạnh thẳng?",
+              "options": [
+                "1",
+                "3",
+                "2",
+                "5"
+              ],
+              "answer": 1,
+              "explanation": "Hình tam giác có 3 cạnh thẳng."
+            },
+            {
+              "type": "choice",
+              "prompt": "Trong dãy hình sau có bao nhiêu hình tam giác?\n△ △ □",
+              "options": [
+                "7",
+                "5",
+                "2",
+                "1"
+              ],
+              "answer": 2,
+              "explanation": "Có 2 kí hiệu △, mỗi kí hiệu là một hình tam giác."
+            },
+            {
+              "type": "choice",
+              "prompt": "Xúc xắc sáu mặt vuông gần giống dạng khối nào?",
+              "options": [
+                "Hình tam giác",
+                "Khối hộp chữ nhật",
+                "Hình tròn",
+                "Khối lập phương"
+              ],
+              "answer": 3,
+              "explanation": "Xúc xắc sáu mặt vuông có dạng gần giống khối lập phương."
+            },
+            {
+              "type": "connection",
+              "prompt": "Con lấy giấy, que tính hoặc các vật quanh nhà để tự tạo một câu hỏi tương tự. Nói rõ vì sao con chọn đáp án đó."
+            }
+          ],
+          "extra_examples": [
+            "Làm với đồ vật/nháp trước khi nhìn bốn lựa chọn.",
+            "Nếu sai, xem lại ý chính ở Trang 1 rồi thử câu tương tự."
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Ghi nhớ & Vận dụng",
+          "key_points": [
+            "Gọi đúng tên bốn hình phẳng.",
+            "Nhận biết khối lập phương và khối hộp chữ nhật.",
+            "Dùng hình quen thuộc để quan sát vật quanh mình."
+          ],
+          "common_mistakes": [
+            "Nhầm hình phẳng với hình khối.",
+            "Quên rằng hình có thể nằm nghiêng hoặc xoay."
+          ],
+          "self_check": [
+            "Con nêu được một ví dụ đúng trong bài này.",
+            "Con hiểu vì sao đáp án đúng chứ không chỉ chọn may mắn.",
+            "Con có thể tự tạo một câu tương tự để luyện thêm."
+          ],
+          "finish_prompt": "Bé hãy tự tạo một bài toán/bài hình giống nội dung vừa ôn và giải thích kết quả cho Cô Thỏ Hồng."
+        }
+      ],
+      "competency_links": [
+        "TOAN_C1"
+      ],
+      "sub_ids": [
+        "5.1",
+        "5.2"
+      ],
+      "content_status": "review_lesson_sgk_2026_10_19",
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Khám phá",
+        "Luyện cùng cô",
+        "Ghi nhớ & Vận dụng"
+      ],
+      "assessment_note": "Bài học luyện tập/ôn tập không tự sinh đánh giá 6 năng lực chính thức. Bài tập có chấm điểm là luồng riêng.",
+      "lesson_image": "",
+      "source_references": {
+        "sgk": {
+          "title": "Toán 1 - Tập 1 - Kết nối tri thức với cuộc sống",
+          "page_start": 110
+        },
+        "vbt": {
+          "title": "Vở bài tập Toán 1 - Tập 1 - Kết nối tri thức với cuộc sống"
+        }
+      },
+      "sgk_alignment": {
+        "reviewed_against": "Mục lục và cấu trúc Toán 1 Kết nối tri thức",
+        "core_focus": "Ôn hình phẳng, hình khối và nhận biết hình trong thực tế.",
+        "status": "sgk_topic_aligned",
+        "copyright_note": "Ví dụ/câu hỏi viết mới, không sao chép nguyên văn."
+      },
+      "image_plan": {
+        "strategy": "text_symbols_and_existing_ui",
+        "catalog_images": [],
+        "ui_note": "Không tạo ID hình hay đường dẫn giả khi chưa đối chiếu catalog."
+      },
+      "sgk_review_sub_code": "13.7",
+      "sgk_lesson_kind": "practice_or_review"
+    },
+    {
+      "bai": 20,
+      "semester": 1,
+      "source_title": "Ôn tập chung",
+      "theme": "Ôn tập học kì I",
+      "lesson_id": "T1_B20",
+      "estimated_minutes": 18,
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "discovery",
+          "title": "Khám phá",
+          "goal": "Tổng hợp các số, phép tính, hình học, vị trí đã học trong HK1.",
+          "intro": "Cô Thỏ Hồng cùng bé ôn kiến thức SGK Bài 20.",
+          "concept_blocks": [
+            {
+              "heading": "Nhớ lại kiến thức",
+              "text": "Ôn các số và cộng/trừ trong phạm vi 10.",
+              "example": "Hộp bánh dạng hộp chữ nhật có dạng gần giống khối nào? → Khối hộp chữ nhật. Dựa vào hình dạng của hộp bánh dạng hộp chữ nhật để nhận biết khối hộp chữ nhật."
+            },
+            {
+              "heading": "Cách làm từng bước",
+              "text": "Nhận dạng hình phẳng, hình khối.",
+              "example": "Bé có 6 chiếc bút chì, mẹ cho thêm 3 chiếc. Bé có tất cả bao nhiêu chiếc? → 9. Thêm vào là cộng: 6+3=9 (chiếc)."
+            },
+            {
+              "heading": "Tự kiểm tra",
+              "text": "Xác định vị trí trái - phải, trước - sau.",
+              "example": "Sau số 7 là số mấy? → 8. Đếm thêm một: 7 rồi đến 8."
+            }
+          ],
+          "visual_models": [
+            {
+              "type": "teacher_example",
+              "instruction": "Nhìn ví dụ, nói rõ số lượng hoặc phép tính đang được sử dụng; dùng que tính/chấm tròn nếu cần."
+            },
+            {
+              "type": "self_explain",
+              "instruction": "Tự kiểm tra bằng cách đếm lại, vẽ hình đơn giản hoặc dùng phép tính ngược khi thích hợp."
+            }
+          ],
+          "teacher_prompts": [
+            "Con đã biết những kiến thức nào trong chủ đề này? Hãy kể một ví dụ.",
+            "Con thử nói từng bước trước khi chọn đáp án nhé."
+          ]
+        },
+        {
+          "page_no": 2,
+          "page_type": "guided_practice",
+          "title": "Luyện cùng cô",
+          "recall": "Bài 20: Tổng hợp các số, phép tính, hình học, vị trí đã học trong HK1. Trước khi chọn, con hãy nói cách nghĩ rồi mới kiểm tra.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Sau số 0 là số mấy?",
+              "options": [
+                "5",
+                "6",
+                "2",
+                "1"
+              ],
+              "answer": 3,
+              "explanation": "Đếm thêm một: 0 rồi đến 1."
+            },
+            {
+              "type": "choice",
+              "prompt": "Điền số: 6 − □ = 2.",
+              "options": [
+                "8",
+                "9",
+                "4",
+                "1"
+              ],
+              "answer": 2,
+              "explanation": "Vì 2 + 4 = 6 nên 6 − 4 = 2."
+            },
+            {
+              "type": "choice",
+              "prompt": "Quan sát mặt tờ giấy vuông. Mặt ấy gần giống hình nào?",
+              "options": [
+                "Hình tròn",
+                "Hình tam giác",
+                "Hình vuông",
+                "Hình chữ nhật"
+              ],
+              "answer": 2,
+              "explanation": "Mặt tờ giấy vuông gần giống hình vuông."
+            },
+            {
+              "type": "choice",
+              "prompt": "Khối đồ chơi vuông đều các mặt có dạng gần giống khối nào?",
+              "options": [
+                "Khối lập phương",
+                "Hình tròn",
+                "Khối hộp chữ nhật",
+                "Hình tam giác"
+              ],
+              "answer": 0,
+              "explanation": "Dựa vào hình dạng của khối đồ chơi vuông đều các mặt để nhận biết khối lập phương."
+            },
+            {
+              "type": "connection",
+              "prompt": "Con lấy giấy, que tính hoặc các vật quanh nhà để tự tạo một câu hỏi tương tự. Nói rõ vì sao con chọn đáp án đó."
+            }
+          ],
+          "extra_examples": [
+            "Làm với đồ vật/nháp trước khi nhìn bốn lựa chọn.",
+            "Nếu sai, xem lại ý chính ở Trang 1 rồi thử câu tương tự."
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Ghi nhớ & Vận dụng",
+          "key_points": [
+            "Ôn các số và cộng/trừ trong phạm vi 10.",
+            "Nhận dạng hình phẳng, hình khối.",
+            "Xác định vị trí trái - phải, trước - sau."
+          ],
+          "common_mistakes": [
+            "Tính vội trước khi hiểu câu hỏi.",
+            "Bỏ sót dữ kiện vị trí trong tình huống."
+          ],
+          "self_check": [
+            "Con nêu được một ví dụ đúng trong bài này.",
+            "Con hiểu vì sao đáp án đúng chứ không chỉ chọn may mắn.",
+            "Con có thể tự tạo một câu tương tự để luyện thêm."
+          ],
+          "finish_prompt": "Bé hãy tự tạo một bài toán/bài hình giống nội dung vừa ôn và giải thích kết quả cho Cô Thỏ Hồng."
+        }
+      ],
+      "competency_links": [
+        "TOAN_C1",
+        "TOAN_C2",
+        "TOAN_C5",
+        "TOAN_C6"
+      ],
+      "sub_ids": [
+        "1.1",
+        "1.4",
+        "1.5",
+        "2.4",
+        "2.9",
+        "5.1",
+        "5.2",
+        "6.1",
+        "6.3"
+      ],
+      "content_status": "review_lesson_sgk_2026_10_19",
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Khám phá",
+        "Luyện cùng cô",
+        "Ghi nhớ & Vận dụng"
+      ],
+      "assessment_note": "Bài học luyện tập/ôn tập không tự sinh đánh giá 6 năng lực chính thức. Bài tập có chấm điểm là luồng riêng.",
+      "lesson_image": "",
+      "source_references": {
+        "sgk": {
+          "title": "Toán 1 - Tập 1 - Kết nối tri thức với cuộc sống",
+          "page_start": 112
+        },
+        "vbt": {
+          "title": "Vở bài tập Toán 1 - Tập 1 - Kết nối tri thức với cuộc sống"
+        }
+      },
+      "sgk_alignment": {
+        "reviewed_against": "Mục lục và cấu trúc Toán 1 Kết nối tri thức",
+        "core_focus": "Tổng hợp các số, phép tính, hình học, vị trí đã học trong HK1.",
+        "status": "sgk_topic_aligned",
+        "copyright_note": "Ví dụ/câu hỏi viết mới, không sao chép nguyên văn."
+      },
+      "image_plan": {
+        "strategy": "text_symbols_and_existing_ui",
+        "catalog_images": [],
+        "ui_note": "Không tạo ID hình hay đường dẫn giả khi chưa đối chiếu catalog."
+      },
+      "sgk_review_sub_code": "13.8",
+      "sgk_lesson_kind": "practice_or_review"
     },
     {
       "bai": 21,
@@ -2145,15 +3625,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: Đọc, viết và cấu tạo số có hai chữ số theo chục và đơn vị; hiểu 10 đơn vị tạo thành 1 chục.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: Đọc, viết và cấu tạo số có hai chữ số theo chục và đơn vị; hiểu 10 đơn vị tạo thành 1 chục. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "fill",
@@ -2195,8 +3675,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -2213,9 +3693,9 @@
             "Viết số tròn chục thành một chữ số, ví dụ 6 thay cho 60."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -2271,7 +3751,12 @@
           }
         ],
         "ui_note": "Số có hai chữ số phải dùng bó chục/que đơn vị và bảng giá trị hàng động."
-      }
+      },
+      "exercise_sub_ids": [
+        "3.1",
+        "3.2"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
     },
     {
       "bai": 22,
@@ -2315,15 +3800,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: So sánh hai số có hai chữ số theo hàng chục trước, rồi đến hàng đơn vị khi cần.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: So sánh hai số có hai chữ số theo hàng chục trước, rồi đến hàng đơn vị khi cần. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "choice",
@@ -2370,8 +3855,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -2388,9 +3873,9 @@
             "Đảo chiều dấu > và <."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -2434,7 +3919,11 @@
         "strategy": "generated_ui_only",
         "catalog_images": [],
         "ui_note": "So sánh số hai chữ số phụ thuộc chục và đơn vị; dùng khay chục-đơn vị động để không gây nhiễu."
-      }
+      },
+      "exercise_sub_ids": [
+        "3.3"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
     },
     {
       "bai": 23,
@@ -2478,15 +3967,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: Đọc bảng số 1-100, tìm số còn thiếu và nhận ra quy luật tăng/giảm theo hàng, cột.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: Đọc bảng số 1-100, tìm số còn thiếu và nhận ra quy luật tăng/giảm theo hàng, cột. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "fill",
@@ -2523,8 +4012,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -2541,9 +4030,9 @@
             "Quên xử lý mép bảng khi số ở đầu/cuối hàng."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -2603,7 +4092,192 @@
           }
         ],
         "ui_note": "Bảng 1-100 chính vẫn phải dựng bằng HTML/SVG để bấm ô và tô hàng/cột."
-      }
+      },
+      "exercise_sub_ids": [
+        "4.1",
+        "4.2",
+        "4.3",
+        "4.4",
+        "4.5",
+        "4.6"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
+    },
+    {
+      "bai": 24,
+      "semester": 2,
+      "source_title": "Luyện tập chung",
+      "theme": "Các số đến 100",
+      "lesson_id": "T1_B24",
+      "estimated_minutes": 18,
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "discovery",
+          "title": "Khám phá",
+          "goal": "Củng cố đọc, viết, so sánh và điền số trong bảng 1–100.",
+          "intro": "Cô Thỏ Hồng cùng bé ôn kiến thức SGK Bài 24.",
+          "concept_blocks": [
+            {
+              "heading": "Nhớ lại kiến thức",
+              "text": "Số có hai chữ số gồm hàng chục và hàng đơn vị.",
+              "example": "Trong bảng các số 1–100, số ở ngay dưới 12 (cùng cột, hàng sau) là bao nhiêu? → 22. Đi xuống một hàng trong bảng 100 số là thêm 10: 12+10=22."
+            },
+            {
+              "heading": "Cách làm từng bước",
+              "text": "So sánh hàng chục trước, rồi đến hàng đơn vị.",
+              "example": "Số 29 có chữ số hàng đơn vị là mấy? → 9. Đọc chữ số cuối bên phải của 29, ta được 9."
+            },
+            {
+              "heading": "Tự kiểm tra",
+              "text": "Trong bảng 100, đi sang phải thường tăng 1, xuống dưới tăng 10.",
+              "example": "Số 86 gồm mấy chục và mấy đơn vị? → 8 chục và 6 đơn vị. Số 86 có chữ số hàng chục là 8, hàng đơn vị là 6."
+            }
+          ],
+          "visual_models": [
+            {
+              "type": "teacher_example",
+              "instruction": "Nhìn ví dụ, nói rõ số lượng hoặc phép tính đang được sử dụng; dùng que tính/chấm tròn nếu cần."
+            },
+            {
+              "type": "self_explain",
+              "instruction": "Tự kiểm tra bằng cách đếm lại, vẽ hình đơn giản hoặc dùng phép tính ngược khi thích hợp."
+            }
+          ],
+          "teacher_prompts": [
+            "Con đã biết những kiến thức nào trong chủ đề này? Hãy kể một ví dụ.",
+            "Con thử nói từng bước trước khi chọn đáp án nhé."
+          ]
+        },
+        {
+          "page_no": 2,
+          "page_type": "guided_practice",
+          "title": "Luyện cùng cô",
+          "recall": "Bài 24: Củng cố đọc, viết, so sánh và điền số trong bảng 1–100. Trước khi chọn, con hãy nói cách nghĩ rồi mới kiểm tra.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Số 63 gồm mấy chục và mấy đơn vị?",
+              "options": [
+                "6 chục và 3 đơn vị",
+                "6 chục và 4 đơn vị",
+                "3 chục và 6 đơn vị",
+                "5 chục và 3 đơn vị"
+              ],
+              "answer": 0,
+              "explanation": "Số 63 có chữ số hàng chục là 6, hàng đơn vị là 3."
+            },
+            {
+              "type": "choice",
+              "prompt": "Trong hai số 81 và 60, số nào lớn hơn?",
+              "options": [
+                "78",
+                "81",
+                "79",
+                "76"
+              ],
+              "answer": 1,
+              "explanation": "So hàng chục trước rồi so hàng đơn vị nếu cùng số chục: 81 lớn hơn."
+            },
+            {
+              "type": "choice",
+              "prompt": "Số liền sau của 56 là số nào?",
+              "options": [
+                "56",
+                "60",
+                "57",
+                "52"
+              ],
+              "answer": 2,
+              "explanation": "Số liền sau lớn hơn 56 đúng 1."
+            },
+            {
+              "type": "choice",
+              "prompt": "Trong bảng các số 1–100, số ở ngay dưới 21 (cùng cột, hàng sau) là bao nhiêu?",
+              "options": [
+                "34",
+                "26",
+                "29",
+                "31"
+              ],
+              "answer": 3,
+              "explanation": "Đi xuống một hàng trong bảng 100 số là thêm 10: 21+10=31."
+            },
+            {
+              "type": "connection",
+              "prompt": "Con lấy giấy, que tính hoặc các vật quanh nhà để tự tạo một câu hỏi tương tự. Nói rõ vì sao con chọn đáp án đó."
+            }
+          ],
+          "extra_examples": [
+            "Làm với đồ vật/nháp trước khi nhìn bốn lựa chọn.",
+            "Nếu sai, xem lại ý chính ở Trang 1 rồi thử câu tương tự."
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Ghi nhớ & Vận dụng",
+          "key_points": [
+            "Số có hai chữ số gồm hàng chục và hàng đơn vị.",
+            "So sánh hàng chục trước, rồi đến hàng đơn vị.",
+            "Trong bảng 100, đi sang phải thường tăng 1, xuống dưới tăng 10."
+          ],
+          "common_mistakes": [
+            "Nhầm 2 chục 5 đơn vị thành 52.",
+            "Chỉ so hàng đơn vị khi hai số có chục khác nhau."
+          ],
+          "self_check": [
+            "Con nêu được một ví dụ đúng trong bài này.",
+            "Con hiểu vì sao đáp án đúng chứ không chỉ chọn may mắn.",
+            "Con có thể tự tạo một câu tương tự để luyện thêm."
+          ],
+          "finish_prompt": "Bé hãy tự tạo một bài toán/bài hình giống nội dung vừa ôn và giải thích kết quả cho Cô Thỏ Hồng."
+        }
+      ],
+      "competency_links": [
+        "TOAN_C1",
+        "TOAN_C4",
+        "TOAN_C6"
+      ],
+      "sub_ids": [
+        "3.1",
+        "3.2",
+        "3.3",
+        "3.4",
+        "4.1",
+        "4.2"
+      ],
+      "content_status": "review_lesson_sgk_2026_10_19",
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Khám phá",
+        "Luyện cùng cô",
+        "Ghi nhớ & Vận dụng"
+      ],
+      "assessment_note": "Bài học luyện tập/ôn tập không tự sinh đánh giá 6 năng lực chính thức. Bài tập có chấm điểm là luồng riêng.",
+      "lesson_image": "",
+      "source_references": {
+        "sgk": {
+          "title": "Toán 1 - Tập 2 - Kết nối tri thức với cuộc sống",
+          "page_start": 24
+        },
+        "vbt": {
+          "title": "Vở bài tập Toán 1 - Tập 2 - Kết nối tri thức với cuộc sống"
+        }
+      },
+      "sgk_alignment": {
+        "reviewed_against": "Mục lục và cấu trúc Toán 1 Kết nối tri thức",
+        "core_focus": "Củng cố đọc, viết, so sánh và điền số trong bảng 1–100.",
+        "status": "sgk_topic_aligned",
+        "copyright_note": "Ví dụ/câu hỏi viết mới, không sao chép nguyên văn."
+      },
+      "image_plan": {
+        "strategy": "text_symbols_and_existing_ui",
+        "catalog_images": [],
+        "ui_note": "Không tạo ID hình hay đường dẫn giả khi chưa đối chiếu catalog."
+      },
+      "sgk_review_sub_code": "13.9",
+      "sgk_lesson_kind": "practice_or_review"
     },
     {
       "bai": 25,
@@ -2647,15 +4321,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: So sánh độ dài hai vật bằng quan sát có căn thẳng một đầu hoặc bằng cách đo/đối chiếu phù hợp.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: So sánh độ dài hai vật bằng quan sát có căn thẳng một đầu hoặc bằng cách đo/đối chiếu phù hợp. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "choice",
@@ -2702,8 +4376,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -2720,9 +4394,9 @@
             "Nhầm chiều dài với độ to hoặc diện tích."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -2767,7 +4441,12 @@
         "strategy": "generated_ui_only",
         "catalog_images": [],
         "ui_note": "So sánh dài-ngắn cần hai vật cùng vạch xuất phát; nên dựng trực tiếp để kiểm soát chính xác."
-      }
+      },
+      "exercise_sub_ids": [
+        "7.1",
+        "7.2"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
     },
     {
       "bai": 26,
@@ -2811,15 +4490,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: Hiểu cần dùng cùng một đơn vị khi đo; làm quen với đơn vị xăng-ti-mét (cm) và cách đọc số đo.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: Hiểu cần dùng cùng một đơn vị khi đo; làm quen với đơn vị xăng-ti-mét (cm) và cách đọc số đo. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "choice",
@@ -2861,8 +4540,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -2879,9 +4558,9 @@
             "Dùng các đơn vị không bằng nhau để đo rồi so kết quả."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -2937,7 +4616,12 @@
           }
         ],
         "ui_note": "Vạch cm và thao tác đặt thước phải dựng bằng UI chính xác."
-      }
+      },
+      "exercise_sub_ids": [
+        "7.3",
+        "7.4"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
     },
     {
       "bai": 27,
@@ -2981,15 +4665,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: Ước lượng độ dài hợp lí, chọn dụng cụ/đơn vị phù hợp, đo và so sánh kết quả với ước lượng.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: Ước lượng độ dài hợp lí, chọn dụng cụ/đơn vị phù hợp, đo và so sánh kết quả với ước lượng. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "choice",
@@ -3036,8 +4720,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -3054,9 +4738,9 @@
             "Chọn số đo phi thực tế mà không kiểm tra."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -3115,7 +4799,188 @@
           }
         ],
         "ui_note": "Kết quả đo phải lấy từ mô hình/thước tương tác, không suy từ kích thước pixel của ảnh."
-      }
+      },
+      "exercise_sub_ids": [
+        "7.3",
+        "7.4",
+        "7.5",
+        "7.6"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
+    },
+    {
+      "bai": 28,
+      "semester": 2,
+      "source_title": "Luyện tập chung",
+      "theme": "Đo độ dài",
+      "lesson_id": "T1_B28",
+      "estimated_minutes": 18,
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "discovery",
+          "title": "Khám phá",
+          "goal": "Củng cố so sánh, ước lượng và đo độ dài bằng xăng-ti-mét.",
+          "intro": "Cô Thỏ Hồng cùng bé ôn kiến thức SGK Bài 28.",
+          "concept_blocks": [
+            {
+              "heading": "Nhớ lại kiến thức",
+              "text": "Muốn so độ dài, căn hai vật cùng một đầu.",
+              "example": "Dụng cụ nào phù hợp để đo độ dài quyển vở? → Thước có vạch cm. Dùng thước có chia vạch xăng-ti-mét để đo độ dài quyển vở."
+            },
+            {
+              "heading": "Cách làm từng bước",
+              "text": "Đơn vị xăng-ti-mét viết là cm.",
+              "example": "Hai que có độ dài 15 cm và 12 cm. Phát biểu nào đúng? → Que 15 cm dài hơn. Vì 15 > 12 nên que 15 cm dài hơn."
+            },
+            {
+              "heading": "Tự kiểm tra",
+              "text": "Đặt thước đúng vạch 0 và đọc độ dài ở đầu kia.",
+              "example": "Một dải ruy băng dài 16 cm, dải kia dài 7 cm. Dải dài hơn có độ dài bao nhiêu xăng-ti-mét? → 16 cm. So 16 với 7; số lớn hơn là 16."
+            }
+          ],
+          "visual_models": [
+            {
+              "type": "teacher_example",
+              "instruction": "Nhìn ví dụ, nói rõ số lượng hoặc phép tính đang được sử dụng; dùng que tính/chấm tròn nếu cần."
+            },
+            {
+              "type": "self_explain",
+              "instruction": "Tự kiểm tra bằng cách đếm lại, vẽ hình đơn giản hoặc dùng phép tính ngược khi thích hợp."
+            }
+          ],
+          "teacher_prompts": [
+            "Con đã biết những kiến thức nào trong chủ đề này? Hãy kể một ví dụ.",
+            "Con thử nói từng bước trước khi chọn đáp án nhé."
+          ]
+        },
+        {
+          "page_no": 2,
+          "page_type": "guided_practice",
+          "title": "Luyện cùng cô",
+          "recall": "Bài 28: Củng cố so sánh, ước lượng và đo độ dài bằng xăng-ti-mét. Trước khi chọn, con hãy nói cách nghĩ rồi mới kiểm tra.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Một dải ruy băng dài 13 cm, dải kia dài 8 cm. Dải dài hơn có độ dài bao nhiêu xăng-ti-mét?",
+              "options": [
+                "8 cm",
+                "12 cm",
+                "13 cm",
+                "16 cm"
+              ],
+              "answer": 2,
+              "explanation": "So 13 với 8; số lớn hơn là 13."
+            },
+            {
+              "type": "choice",
+              "prompt": "Đặt đầu thước ở vạch 0 cm, đầu kia của đoạn thẳng ở vạch 7 cm. Đoạn dài bao nhiêu?",
+              "options": [
+                "6 cm",
+                "7 cm",
+                "2 cm",
+                "12 cm"
+              ],
+              "answer": 1,
+              "explanation": "Từ vạch 0 đến vạch 7 là 7 cm."
+            },
+            {
+              "type": "choice",
+              "prompt": "Que thứ nhất dài 12 cm, que thứ hai dài 7 cm. Hai que chênh nhau bao nhiêu xăng-ti-mét?",
+              "options": [
+                "6 cm",
+                "5 cm",
+                "0 cm",
+                "4 cm"
+              ],
+              "answer": 1,
+              "explanation": "Tính 12 − 7 = 5 (cm)."
+            },
+            {
+              "type": "choice",
+              "prompt": "Dụng cụ nào phù hợp để đo độ dài chiếc bút chì?",
+              "options": [
+                "Thước có vạch cm",
+                "Lịch tuần",
+                "Đồng hồ",
+                "Cân đĩa"
+              ],
+              "answer": 0,
+              "explanation": "Dùng thước có chia vạch xăng-ti-mét để đo độ dài chiếc bút chì."
+            },
+            {
+              "type": "connection",
+              "prompt": "Con lấy giấy, que tính hoặc các vật quanh nhà để tự tạo một câu hỏi tương tự. Nói rõ vì sao con chọn đáp án đó."
+            }
+          ],
+          "extra_examples": [
+            "Làm với đồ vật/nháp trước khi nhìn bốn lựa chọn.",
+            "Nếu sai, xem lại ý chính ở Trang 1 rồi thử câu tương tự."
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Ghi nhớ & Vận dụng",
+          "key_points": [
+            "Muốn so độ dài, căn hai vật cùng một đầu.",
+            "Đơn vị xăng-ti-mét viết là cm.",
+            "Đặt thước đúng vạch 0 và đọc độ dài ở đầu kia."
+          ],
+          "common_mistakes": [
+            "Đặt vật lệch vạch 0 nhưng lấy ngay số vạch cuối.",
+            "Quên ghi đơn vị cm khi báo số đo."
+          ],
+          "self_check": [
+            "Con nêu được một ví dụ đúng trong bài này.",
+            "Con hiểu vì sao đáp án đúng chứ không chỉ chọn may mắn.",
+            "Con có thể tự tạo một câu tương tự để luyện thêm."
+          ],
+          "finish_prompt": "Bé hãy tự tạo một bài toán/bài hình giống nội dung vừa ôn và giải thích kết quả cho Cô Thỏ Hồng."
+        }
+      ],
+      "competency_links": [
+        "TOAN_C3"
+      ],
+      "sub_ids": [
+        "7.1",
+        "7.2",
+        "7.3",
+        "7.4",
+        "7.5",
+        "7.6"
+      ],
+      "content_status": "review_lesson_sgk_2026_10_19",
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Khám phá",
+        "Luyện cùng cô",
+        "Ghi nhớ & Vận dụng"
+      ],
+      "assessment_note": "Bài học luyện tập/ôn tập không tự sinh đánh giá 6 năng lực chính thức. Bài tập có chấm điểm là luồng riêng.",
+      "lesson_image": "",
+      "source_references": {
+        "sgk": {
+          "title": "Toán 1 - Tập 2 - Kết nối tri thức với cuộc sống",
+          "page_start": 40
+        },
+        "vbt": {
+          "title": "Vở bài tập Toán 1 - Tập 2 - Kết nối tri thức với cuộc sống"
+        }
+      },
+      "sgk_alignment": {
+        "reviewed_against": "Mục lục và cấu trúc Toán 1 Kết nối tri thức",
+        "core_focus": "Củng cố so sánh, ước lượng và đo độ dài bằng xăng-ti-mét.",
+        "status": "sgk_topic_aligned",
+        "copyright_note": "Ví dụ/câu hỏi viết mới, không sao chép nguyên văn."
+      },
+      "image_plan": {
+        "strategy": "text_symbols_and_existing_ui",
+        "catalog_images": [],
+        "ui_note": "Không tạo ID hình hay đường dẫn giả khi chưa đối chiếu catalog."
+      },
+      "sgk_review_sub_code": "13.10",
+      "sgk_lesson_kind": "practice_or_review"
     },
     {
       "bai": 29,
@@ -3159,15 +5024,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: Cộng số có hai chữ số với số có một chữ số không nhớ bằng cách cộng hàng đơn vị và giữ nguyên hàng chục.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: Cộng số có hai chữ số với số có một chữ số không nhớ bằng cách cộng hàng đơn vị và giữ nguyên hàng chục. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "fill",
@@ -3209,8 +5074,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -3227,9 +5092,9 @@
             "Cộng nhầm cả hàng chục với số một chữ số."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -3239,9 +5104,8 @@
         "TOAN_C5"
       ],
       "sub_ids": [
-        "2.3",
-        "9.1",
-        "9.2"
+        "2.11",
+        "9.3"
       ],
       "content_status": "sgk_vbt_aligned_original_v1",
       "navigation_model": "3_pages",
@@ -3276,7 +5140,12 @@
         "strategy": "generated_ui_only",
         "catalog_images": [],
         "ui_note": "Cộng số hai chữ số với một chữ số cần bó chục/que đơn vị và đặt tính theo cột."
-      }
+      },
+      "exercise_sub_ids": [
+        "2.11",
+        "9.3"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
     },
     {
       "bai": 30,
@@ -3320,15 +5189,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: Cộng hai số có hai chữ số không nhớ bằng cách cộng đơn vị với đơn vị, chục với chục.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: Cộng hai số có hai chữ số không nhớ bằng cách cộng đơn vị với đơn vị, chục với chục. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "fill",
@@ -3370,8 +5239,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -3388,9 +5257,9 @@
             "Gộp sai chục với đơn vị."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -3400,9 +5269,8 @@
         "TOAN_C5"
       ],
       "sub_ids": [
-        "2.3",
-        "9.1",
-        "9.2"
+        "2.12",
+        "9.3"
       ],
       "content_status": "sgk_vbt_aligned_original_v1",
       "navigation_model": "3_pages",
@@ -3437,7 +5305,12 @@
         "strategy": "generated_ui_only",
         "catalog_images": [],
         "ui_note": "Cộng hai số hai chữ số cần mô hình chục-đơn vị động và đặt tính theo cột."
-      }
+      },
+      "exercise_sub_ids": [
+        "2.12",
+        "9.3"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
     },
     {
       "bai": 31,
@@ -3481,15 +5354,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: Trừ số có một chữ số khỏi số có hai chữ số không nhớ bằng cách trừ ở hàng đơn vị và giữ hàng chục.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: Trừ số có một chữ số khỏi số có hai chữ số không nhớ bằng cách trừ ở hàng đơn vị và giữ hàng chục. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "fill",
@@ -3531,8 +5404,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -3549,9 +5422,9 @@
             "Trừ số một chữ số khỏi cả hai hàng."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -3561,9 +5434,8 @@
         "TOAN_C5"
       ],
       "sub_ids": [
-        "2.3",
-        "9.1",
-        "9.2"
+        "2.13",
+        "9.4"
       ],
       "content_status": "sgk_vbt_aligned_original_v1",
       "navigation_model": "3_pages",
@@ -3598,7 +5470,12 @@
         "strategy": "generated_ui_only",
         "catalog_images": [],
         "ui_note": "Trừ số hai chữ số cho một chữ số cần gạch/bớt que đơn vị trực tiếp."
-      }
+      },
+      "exercise_sub_ids": [
+        "2.13",
+        "9.4"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
     },
     {
       "bai": 32,
@@ -3642,15 +5519,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: Trừ hai số có hai chữ số không nhớ bằng cách trừ đơn vị với đơn vị, chục với chục.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: Trừ hai số có hai chữ số không nhớ bằng cách trừ đơn vị với đơn vị, chục với chục. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "fill",
@@ -3692,8 +5569,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -3710,9 +5587,9 @@
             "Trừ chéo hàng chục với hàng đơn vị."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -3722,9 +5599,8 @@
         "TOAN_C5"
       ],
       "sub_ids": [
-        "2.3",
-        "9.1",
-        "9.2"
+        "2.14",
+        "9.4"
       ],
       "content_status": "sgk_vbt_aligned_original_v1",
       "navigation_model": "3_pages",
@@ -3759,7 +5635,185 @@
         "strategy": "generated_ui_only",
         "catalog_images": [],
         "ui_note": "Trừ hai số hai chữ số cần mô hình chục-đơn vị động và đặt tính theo cột."
-      }
+      },
+      "exercise_sub_ids": [
+        "2.14",
+        "9.4"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
+    },
+    {
+      "bai": 33,
+      "semester": 2,
+      "source_title": "Luyện tập chung",
+      "theme": "Cộng, trừ không nhớ trong phạm vi 100",
+      "lesson_id": "T1_B33",
+      "estimated_minutes": 18,
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "discovery",
+          "title": "Khám phá",
+          "goal": "Củng cố đặt tính và tính cộng, trừ không nhớ trong phạm vi 100.",
+          "intro": "Cô Thỏ Hồng cùng bé ôn kiến thức SGK Bài 33.",
+          "concept_blocks": [
+            {
+              "heading": "Nhớ lại kiến thức",
+              "text": "Đặt hàng chục thẳng hàng chục, đơn vị thẳng đơn vị.",
+              "example": "Đặt tính rồi trừ không mượn: 45 − 23 = ? → 22. Đơn vị 5−3=2; chục 4−2=2; kết quả 22."
+            },
+            {
+              "heading": "Cách làm từng bước",
+              "text": "Tính hàng đơn vị và hàng chục riêng.",
+              "example": "Một giỏ có 31 quả cam, bán 1 quả. Trong giỏ còn bao nhiêu quả? → 30. Bớt đi dùng phép trừ: 31−1=30 (quả)."
+            },
+            {
+              "heading": "Tự kiểm tra",
+              "text": "Chỉ dùng phép tính không nhớ/không mượn trong phạm vi bài học.",
+              "example": "Tính không nhớ: 76 + 3 = ? → 79. Đơn vị: 6+3=9; giữ 7 chục, được 79."
+            }
+          ],
+          "visual_models": [
+            {
+              "type": "teacher_example",
+              "instruction": "Nhìn ví dụ, nói rõ số lượng hoặc phép tính đang được sử dụng; dùng que tính/chấm tròn nếu cần."
+            },
+            {
+              "type": "self_explain",
+              "instruction": "Tự kiểm tra bằng cách đếm lại, vẽ hình đơn giản hoặc dùng phép tính ngược khi thích hợp."
+            }
+          ],
+          "teacher_prompts": [
+            "Con đã biết những kiến thức nào trong chủ đề này? Hãy kể một ví dụ.",
+            "Con thử nói từng bước trước khi chọn đáp án nhé."
+          ]
+        },
+        {
+          "page_no": 2,
+          "page_type": "guided_practice",
+          "title": "Luyện cùng cô",
+          "recall": "Bài 33: Củng cố đặt tính và tính cộng, trừ không nhớ trong phạm vi 100. Trước khi chọn, con hãy nói cách nghĩ rồi mới kiểm tra.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Tính không nhớ: 55 + 4 = ?",
+              "options": [
+                "57",
+                "59",
+                "56",
+                "61"
+              ],
+              "answer": 1,
+              "explanation": "Đơn vị: 5+4=9; giữ 5 chục, được 59."
+            },
+            {
+              "type": "choice",
+              "prompt": "Đặt tính rồi cộng không nhớ: 26 + 22 = ?",
+              "options": [
+                "48",
+                "50",
+                "43",
+                "49"
+              ],
+              "answer": 0,
+              "explanation": "Cộng hàng đơn vị 6+2=8; hàng chục 2+2=4; được 48."
+            },
+            {
+              "type": "choice",
+              "prompt": "Tính không mượn: 41 − 1 = ?",
+              "options": [
+                "42",
+                "37",
+                "43",
+                "40"
+              ],
+              "answer": 3,
+              "explanation": "Hàng đơn vị: 1−1=0, giữ 4 chục, được 40."
+            },
+            {
+              "type": "choice",
+              "prompt": "Đặt tính rồi trừ không mượn: 43 − 13 = ?",
+              "options": [
+                "25",
+                "27",
+                "30",
+                "28"
+              ],
+              "answer": 2,
+              "explanation": "Đơn vị 3−3=0; chục 4−1=3; kết quả 30."
+            },
+            {
+              "type": "connection",
+              "prompt": "Con lấy giấy, que tính hoặc các vật quanh nhà để tự tạo một câu hỏi tương tự. Nói rõ vì sao con chọn đáp án đó."
+            }
+          ],
+          "extra_examples": [
+            "Làm với đồ vật/nháp trước khi nhìn bốn lựa chọn.",
+            "Nếu sai, xem lại ý chính ở Trang 1 rồi thử câu tương tự."
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Ghi nhớ & Vận dụng",
+          "key_points": [
+            "Đặt hàng chục thẳng hàng chục, đơn vị thẳng đơn vị.",
+            "Tính hàng đơn vị và hàng chục riêng.",
+            "Chỉ dùng phép tính không nhớ/không mượn trong phạm vi bài học."
+          ],
+          "common_mistakes": [
+            "Đặt số một chữ số dưới cột chục.",
+            "Nhầm cộng hoặc trừ ở hàng đơn vị."
+          ],
+          "self_check": [
+            "Con nêu được một ví dụ đúng trong bài này.",
+            "Con hiểu vì sao đáp án đúng chứ không chỉ chọn may mắn.",
+            "Con có thể tự tạo một câu tương tự để luyện thêm."
+          ],
+          "finish_prompt": "Bé hãy tự tạo một bài toán/bài hình giống nội dung vừa ôn và giải thích kết quả cho Cô Thỏ Hồng."
+        }
+      ],
+      "competency_links": [
+        "TOAN_C2",
+        "TOAN_C5"
+      ],
+      "sub_ids": [
+        "2.11",
+        "2.12",
+        "2.13",
+        "2.14"
+      ],
+      "content_status": "review_lesson_sgk_2026_10_19",
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Khám phá",
+        "Luyện cùng cô",
+        "Ghi nhớ & Vận dụng"
+      ],
+      "assessment_note": "Bài học luyện tập/ôn tập không tự sinh đánh giá 6 năng lực chính thức. Bài tập có chấm điểm là luồng riêng.",
+      "lesson_image": "",
+      "source_references": {
+        "sgk": {
+          "title": "Toán 1 - Tập 2 - Kết nối tri thức với cuộc sống",
+          "page_start": 64
+        },
+        "vbt": {
+          "title": "Vở bài tập Toán 1 - Tập 2 - Kết nối tri thức với cuộc sống"
+        }
+      },
+      "sgk_alignment": {
+        "reviewed_against": "Mục lục và cấu trúc Toán 1 Kết nối tri thức",
+        "core_focus": "Củng cố đặt tính và tính cộng, trừ không nhớ trong phạm vi 100.",
+        "status": "sgk_topic_aligned",
+        "copyright_note": "Ví dụ/câu hỏi viết mới, không sao chép nguyên văn."
+      },
+      "image_plan": {
+        "strategy": "text_symbols_and_existing_ui",
+        "catalog_images": [],
+        "ui_note": "Không tạo ID hình hay đường dẫn giả khi chưa đối chiếu catalog."
+      },
+      "sgk_review_sub_code": "13.11",
+      "sgk_lesson_kind": "practice_or_review"
     },
     {
       "bai": 34,
@@ -3803,15 +5857,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: Nhận biết kim giờ, kim phút và đọc giờ đúng khi kim phút chỉ số 12.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: Nhận biết kim giờ, kim phút và đọc giờ đúng khi kim phút chỉ số 12. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "choice",
@@ -3858,8 +5912,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -3876,9 +5930,9 @@
             "Thấy kim phút ở 12 rồi đọc 12 giờ bất kể kim giờ."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -3944,7 +5998,12 @@
           }
         ],
         "ui_note": "Ảnh catalog dùng để nhận biết đồng hồ trong đời sống; mặt đồng hồ, kim giờ và kim phút của bài học phải dựng bằng UI/SVG để đọc giờ chính xác."
-      }
+      },
+      "exercise_sub_ids": [
+        "8.1",
+        "8.2"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
     },
     {
       "bai": 35,
@@ -3988,15 +6047,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: Biết một tuần có 7 ngày, gọi đúng thứ tự từ thứ Hai đến Chủ nhật và xác định ngày liền trước/liền sau.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: Biết một tuần có 7 ngày, gọi đúng thứ tự từ thứ Hai đến Chủ nhật và xác định ngày liền trước/liền sau. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "fill",
@@ -4038,8 +6097,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -4056,9 +6115,9 @@
             "Nhầm ngày liền trước với ngày liền sau."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -4104,7 +6163,13 @@
         "strategy": "generated_ui_only",
         "catalog_images": [],
         "ui_note": "Bảy ngày, hôm qua-hôm nay-ngày mai nên dùng thẻ ngày/vòng tuần tương tác."
-      }
+      },
+      "exercise_sub_ids": [
+        "8.3",
+        "8.4",
+        "8.5"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
     },
     {
       "bai": 36,
@@ -4148,15 +6213,15 @@
             }
           ],
           "teacher_prompts": [
-            "Con hãy nói điều con quan sát được trước khi tính hoặc chọn đáp án.",
-            "Nếu chưa chắc, con dùng đồ vật, chấm tròn, que tính hoặc sơ đồ để kiểm tra."
+            "Con hãy quan sát và nói lại mục tiêu: Vận dụng xem lịch và giờ để xác định thứ, ngày và thời điểm trong các tình huống thực tế đơn giản.",
+            "Trước khi làm, con chỉ ra số, hình, vật mốc hoặc phép tính sẽ giúp mình giải quyết câu hỏi."
           ]
         },
         {
           "page_no": 2,
           "page_type": "guided_practice",
           "title": "Luyện cùng cô",
-          "recall": "Làm từng bước: quan sát - nói cách nghĩ - chọn phép/quan hệ phù hợp - kiểm tra lại.",
+          "recall": "Hãy nhớ điều quan trọng của bài: Vận dụng xem lịch và giờ để xác định thứ, ngày và thời điểm trong các tình huống thực tế đơn giản. Con làm mẫu từng bước, rồi tự kiểm tra kết quả.",
           "items": [
             {
               "type": "fill",
@@ -4198,8 +6263,8 @@
             }
           ],
           "extra_examples": [
-            "Ưu tiên giải thích bằng lời hoặc mô hình trước khi nhẩm nhanh.",
-            "Nếu sai, quay lại mô hình trực quan ở Trang 1 để tìm nguyên nhân."
+            "Với câu khó, con vẽ sơ đồ, xếp que tính hoặc chỉ vào hình trước khi trả lời.",
+            "Nếu chưa đúng, đọc gợi ý và thử một ví dụ có số nhỏ hơn, rồi quay lại."
           ]
         },
         {
@@ -4216,9 +6281,9 @@
             "Nhầm ngày liền sau khi chuyển sang tháng mới."
           ],
           "self_check": [
-            "Con có thể giải thích bằng lời vì sao đáp án đúng.",
-            "Con có thể làm lại một ví dụ tương tự mà không cần nhìn mẫu.",
-            "Con biết kiểm tra kết quả bằng cách khác khi có thể."
+            "Con giải thích được kiến thức chính của bài bằng một ví dụ.",
+            "Con trả lời đúng câu thực hành mà không cần xem trước đáp án.",
+            "Con biết tự kiểm tra bằng cách đếm lại, quan sát hoặc tính ngược khi phù hợp."
           ],
           "finish_prompt": "Con hãy nói lại một điều quan trọng nhất của bài và tự tạo một ví dụ mới."
         }
@@ -4283,12 +6348,908 @@
           }
         ],
         "ui_note": "Lịch tháng, ngày, thứ và giờ phải dựng bằng UI; ảnh chỉ đại diện hoạt động."
-      }
+      },
+      "exercise_sub_ids": [
+        "8.1",
+        "8.2",
+        "8.3",
+        "8.4",
+        "8.5",
+        "8.6"
+      ],
+      "sub_id_source": "semester_exercise_bank; discovery_topic_subcodes_are_separate"
+    },
+    {
+      "bai": 37,
+      "semester": 2,
+      "source_title": "Luyện tập chung",
+      "theme": "Thời gian, giờ và lịch",
+      "lesson_id": "T1_B37",
+      "estimated_minutes": 18,
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "discovery",
+          "title": "Khám phá",
+          "goal": "Củng cố xem giờ đúng, đọc ngày trong tuần và lịch.",
+          "intro": "Cô Thỏ Hồng cùng bé ôn kiến thức SGK Bài 37.",
+          "concept_blocks": [
+            {
+              "heading": "Nhớ lại kiến thức",
+              "text": "Giờ đúng có kim phút chỉ số 12.",
+              "example": "Ngày trên lịch được ghi là 18. Ngày liền sau có số ngày là mấy? → 19. Ngày kế tiếp là 18+1=19."
+            },
+            {
+              "heading": "Cách làm từng bước",
+              "text": "Một tuần có bảy ngày; biết thứ hôm qua và ngày mai.",
+              "example": "Trên lịch, thứ Hai tuần này là ngày 13. Thứ Hai tuần sau là ngày nào? → 20. Qua một tuần là thêm 7 ngày: 13+7=20."
+            },
+            {
+              "heading": "Tự kiểm tra",
+              "text": "Đọc đúng sự kiện theo ngày và giờ ghi trên lịch.",
+              "example": "Kim phút ở số 12, kim giờ ở số 5. Đồng hồ chỉ mấy giờ? → 5 giờ. Kim phút ở 12 nghĩa là giờ đúng; kim giờ ở 5 nên là 5 giờ."
+            }
+          ],
+          "visual_models": [
+            {
+              "type": "teacher_example",
+              "instruction": "Nhìn ví dụ, nói rõ số lượng hoặc phép tính đang được sử dụng; dùng que tính/chấm tròn nếu cần."
+            },
+            {
+              "type": "self_explain",
+              "instruction": "Tự kiểm tra bằng cách đếm lại, vẽ hình đơn giản hoặc dùng phép tính ngược khi thích hợp."
+            }
+          ],
+          "teacher_prompts": [
+            "Con đã biết những kiến thức nào trong chủ đề này? Hãy kể một ví dụ.",
+            "Con thử nói từng bước trước khi chọn đáp án nhé."
+          ]
+        },
+        {
+          "page_no": 2,
+          "page_type": "guided_practice",
+          "title": "Luyện cùng cô",
+          "recall": "Bài 37: Củng cố xem giờ đúng, đọc ngày trong tuần và lịch. Trước khi chọn, con hãy nói cách nghĩ rồi mới kiểm tra.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Kim phút ở số 12, kim giờ ở số 3. Đồng hồ chỉ mấy giờ?",
+              "options": [
+                "2 giờ",
+                "3 giờ",
+                "5 giờ",
+                "4 giờ"
+              ],
+              "answer": 1,
+              "explanation": "Kim phút ở 12 nghĩa là giờ đúng; kim giờ ở 3 nên là 3 giờ."
+            },
+            {
+              "type": "choice",
+              "prompt": "Hôm nay là Thứ Hai. Ngày mai là thứ mấy?",
+              "options": [
+                "Thứ Ba",
+                "Chủ Nhật",
+                "Thứ Tư",
+                "Thứ Hai"
+              ],
+              "answer": 0,
+              "explanation": "Sau Thứ Hai là Thứ Ba."
+            },
+            {
+              "type": "choice",
+              "prompt": "Hôm nay là Thứ Ba. Hôm qua là thứ mấy?",
+              "options": [
+                "Thứ Ba",
+                "Thứ Hai",
+                "Thứ Tư",
+                "Thứ Năm"
+              ],
+              "answer": 1,
+              "explanation": "Thứ đứng trước Thứ Ba là Thứ Hai."
+            },
+            {
+              "type": "choice",
+              "prompt": "Ngày trên lịch được ghi là 12. Ngày liền sau có số ngày là mấy?",
+              "options": [
+                "11",
+                "10",
+                "18",
+                "13"
+              ],
+              "answer": 3,
+              "explanation": "Ngày kế tiếp là 12+1=13."
+            },
+            {
+              "type": "connection",
+              "prompt": "Con lấy giấy, que tính hoặc các vật quanh nhà để tự tạo một câu hỏi tương tự. Nói rõ vì sao con chọn đáp án đó."
+            }
+          ],
+          "extra_examples": [
+            "Làm với đồ vật/nháp trước khi nhìn bốn lựa chọn.",
+            "Nếu sai, xem lại ý chính ở Trang 1 rồi thử câu tương tự."
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Ghi nhớ & Vận dụng",
+          "key_points": [
+            "Giờ đúng có kim phút chỉ số 12.",
+            "Một tuần có bảy ngày; biết thứ hôm qua và ngày mai.",
+            "Đọc đúng sự kiện theo ngày và giờ ghi trên lịch."
+          ],
+          "common_mistakes": [
+            "Đọc kim phút thành kim giờ.",
+            "Nhầm thứ tự ngày Chủ Nhật và Thứ Hai tuần sau."
+          ],
+          "self_check": [
+            "Con nêu được một ví dụ đúng trong bài này.",
+            "Con hiểu vì sao đáp án đúng chứ không chỉ chọn may mắn.",
+            "Con có thể tự tạo một câu tương tự để luyện thêm."
+          ],
+          "finish_prompt": "Bé hãy tự tạo một bài toán/bài hình giống nội dung vừa ôn và giải thích kết quả cho Cô Thỏ Hồng."
+        }
+      ],
+      "competency_links": [
+        "TOAN_C3"
+      ],
+      "sub_ids": [
+        "8.1",
+        "8.2",
+        "8.3",
+        "8.4",
+        "8.5",
+        "8.6"
+      ],
+      "content_status": "review_lesson_sgk_2026_10_19",
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Khám phá",
+        "Luyện cùng cô",
+        "Ghi nhớ & Vận dụng"
+      ],
+      "assessment_note": "Bài học luyện tập/ôn tập không tự sinh đánh giá 6 năng lực chính thức. Bài tập có chấm điểm là luồng riêng.",
+      "lesson_image": "",
+      "source_references": {
+        "sgk": {
+          "title": "Toán 1 - Tập 2 - Kết nối tri thức với cuộc sống",
+          "page_start": 84
+        },
+        "vbt": {
+          "title": "Vở bài tập Toán 1 - Tập 2 - Kết nối tri thức với cuộc sống"
+        }
+      },
+      "sgk_alignment": {
+        "reviewed_against": "Mục lục và cấu trúc Toán 1 Kết nối tri thức",
+        "core_focus": "Củng cố xem giờ đúng, đọc ngày trong tuần và lịch.",
+        "status": "sgk_topic_aligned",
+        "copyright_note": "Ví dụ/câu hỏi viết mới, không sao chép nguyên văn."
+      },
+      "image_plan": {
+        "strategy": "text_symbols_and_existing_ui",
+        "catalog_images": [],
+        "ui_note": "Không tạo ID hình hay đường dẫn giả khi chưa đối chiếu catalog."
+      },
+      "sgk_review_sub_code": "13.12",
+      "sgk_lesson_kind": "practice_or_review"
+    },
+    {
+      "bai": 38,
+      "semester": 2,
+      "source_title": "Ôn tập các số và phép tính trong phạm vi 10",
+      "theme": "Ôn tập cuối năm",
+      "lesson_id": "T1_B38",
+      "estimated_minutes": 18,
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "discovery",
+          "title": "Khám phá",
+          "goal": "Củng cố số và phép cộng, trừ trong phạm vi 10.",
+          "intro": "Cô Thỏ Hồng cùng bé ôn kiến thức SGK Bài 38.",
+          "concept_blocks": [
+            {
+              "heading": "Nhớ lại kiến thức",
+              "text": "Đọc, đếm và so sánh số đến 10.",
+              "example": "Số nằm giữa 6 và 8 trên dãy đếm là số nào? → 7. Thứ tự đếm là 6, 7, 8."
+            },
+            {
+              "heading": "Cách làm từng bước",
+              "text": "Cộng/trừ trong phạm vi 10.",
+              "example": "Tính theo thứ tự: 6 + 3 − 2 = ? → 7. Tính từng bước từ trái sang phải, được 7."
+            },
+            {
+              "heading": "Tự kiểm tra",
+              "text": "Biết tìm số còn thiếu để kiểm tra phép tính.",
+              "example": "Tên số “hai” được viết bằng chữ số nào? → 2. “hai” viết bằng chữ số 2."
+            }
+          ],
+          "visual_models": [
+            {
+              "type": "teacher_example",
+              "instruction": "Nhìn ví dụ, nói rõ số lượng hoặc phép tính đang được sử dụng; dùng que tính/chấm tròn nếu cần."
+            },
+            {
+              "type": "self_explain",
+              "instruction": "Tự kiểm tra bằng cách đếm lại, vẽ hình đơn giản hoặc dùng phép tính ngược khi thích hợp."
+            }
+          ],
+          "teacher_prompts": [
+            "Con đã biết những kiến thức nào trong chủ đề này? Hãy kể một ví dụ.",
+            "Con thử nói từng bước trước khi chọn đáp án nhé."
+          ]
+        },
+        {
+          "page_no": 2,
+          "page_type": "guided_practice",
+          "title": "Luyện cùng cô",
+          "recall": "Bài 38: Củng cố số và phép cộng, trừ trong phạm vi 10. Trước khi chọn, con hãy nói cách nghĩ rồi mới kiểm tra.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Tên số “năm” được viết bằng chữ số nào?",
+              "options": [
+                "5",
+                "10",
+                "8",
+                "3"
+              ],
+              "answer": 0,
+              "explanation": "“năm” viết bằng chữ số 5."
+            },
+            {
+              "type": "choice",
+              "prompt": "Tính: 7 − 2 = ?",
+              "options": [
+                "7",
+                "8",
+                "10",
+                "5"
+              ],
+              "answer": 3,
+              "explanation": "Từ 7 bớt 2 còn 5."
+            },
+            {
+              "type": "choice",
+              "prompt": "Trong hai số 4 và 3, số nào lớn hơn?",
+              "options": [
+                "4",
+                "2",
+                "5",
+                "6"
+              ],
+              "answer": 0,
+              "explanation": "4 đứng sau số còn lại trên dãy số từ 0 đến 10."
+            },
+            {
+              "type": "choice",
+              "prompt": "Điền số: 10 − □ = 7.",
+              "options": [
+                "7",
+                "6",
+                "3",
+                "5"
+              ],
+              "answer": 2,
+              "explanation": "Vì 7 + 3 = 10 nên 10 − 3 = 7."
+            },
+            {
+              "type": "connection",
+              "prompt": "Con lấy giấy, que tính hoặc các vật quanh nhà để tự tạo một câu hỏi tương tự. Nói rõ vì sao con chọn đáp án đó."
+            }
+          ],
+          "extra_examples": [
+            "Làm với đồ vật/nháp trước khi nhìn bốn lựa chọn.",
+            "Nếu sai, xem lại ý chính ở Trang 1 rồi thử câu tương tự."
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Ghi nhớ & Vận dụng",
+          "key_points": [
+            "Đọc, đếm và so sánh số đến 10.",
+            "Cộng/trừ trong phạm vi 10.",
+            "Biết tìm số còn thiếu để kiểm tra phép tính."
+          ],
+          "common_mistakes": [
+            "Nhầm phép cộng và phép trừ.",
+            "Bỏ qua số 0 khi điền dãy số."
+          ],
+          "self_check": [
+            "Con nêu được một ví dụ đúng trong bài này.",
+            "Con hiểu vì sao đáp án đúng chứ không chỉ chọn may mắn.",
+            "Con có thể tự tạo một câu tương tự để luyện thêm."
+          ],
+          "finish_prompt": "Bé hãy tự tạo một bài toán/bài hình giống nội dung vừa ôn và giải thích kết quả cho Cô Thỏ Hồng."
+        }
+      ],
+      "competency_links": [
+        "TOAN_C1",
+        "TOAN_C2",
+        "TOAN_C4",
+        "TOAN_C6"
+      ],
+      "sub_ids": [
+        "1.1",
+        "1.4",
+        "1.5",
+        "2.4",
+        "2.9"
+      ],
+      "content_status": "review_lesson_sgk_2026_10_19",
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Khám phá",
+        "Luyện cùng cô",
+        "Ghi nhớ & Vận dụng"
+      ],
+      "assessment_note": "Bài học luyện tập/ôn tập không tự sinh đánh giá 6 năng lực chính thức. Bài tập có chấm điểm là luồng riêng.",
+      "lesson_image": "",
+      "source_references": {
+        "sgk": {
+          "title": "Toán 1 - Tập 2 - Kết nối tri thức với cuộc sống",
+          "page_start": 88
+        },
+        "vbt": {
+          "title": "Vở bài tập Toán 1 - Tập 2 - Kết nối tri thức với cuộc sống"
+        }
+      },
+      "sgk_alignment": {
+        "reviewed_against": "Mục lục và cấu trúc Toán 1 Kết nối tri thức",
+        "core_focus": "Củng cố số và phép cộng, trừ trong phạm vi 10.",
+        "status": "sgk_topic_aligned",
+        "copyright_note": "Ví dụ/câu hỏi viết mới, không sao chép nguyên văn."
+      },
+      "image_plan": {
+        "strategy": "text_symbols_and_existing_ui",
+        "catalog_images": [],
+        "ui_note": "Không tạo ID hình hay đường dẫn giả khi chưa đối chiếu catalog."
+      },
+      "sgk_review_sub_code": "13.13",
+      "sgk_lesson_kind": "practice_or_review"
+    },
+    {
+      "bai": 39,
+      "semester": 2,
+      "source_title": "Ôn tập các số và phép tính trong phạm vi 100",
+      "theme": "Ôn tập cuối năm",
+      "lesson_id": "T1_B39",
+      "estimated_minutes": 18,
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "discovery",
+          "title": "Khám phá",
+          "goal": "Ôn các số đến 100 và cộng, trừ không nhớ.",
+          "intro": "Cô Thỏ Hồng cùng bé ôn kiến thức SGK Bài 39.",
+          "concept_blocks": [
+            {
+              "heading": "Nhớ lại kiến thức",
+              "text": "Nắm được chục, đơn vị và thứ tự số.",
+              "example": "Trong bảng các số 1–100, số ở ngay dưới 86 (cùng cột, hàng sau) là bao nhiêu? → 96. Đi xuống một hàng trong bảng 100 số là thêm 10: 86+10=96."
+            },
+            {
+              "heading": "Cách làm từng bước",
+              "text": "So sánh hai số có hai chữ số.",
+              "example": "Một giỏ có 21 quả cam, bán 1 quả. Trong giỏ còn bao nhiêu quả? → 20. Bớt đi dùng phép trừ: 21−1=20 (quả)."
+            },
+            {
+              "heading": "Tự kiểm tra",
+              "text": "Đặt tính và tính cộng/trừ không nhớ đến 100.",
+              "example": "Số 59 gồm mấy chục và mấy đơn vị? → 5 chục và 9 đơn vị. Số 59 có chữ số hàng chục là 5, hàng đơn vị là 9."
+            }
+          ],
+          "visual_models": [
+            {
+              "type": "teacher_example",
+              "instruction": "Nhìn ví dụ, nói rõ số lượng hoặc phép tính đang được sử dụng; dùng que tính/chấm tròn nếu cần."
+            },
+            {
+              "type": "self_explain",
+              "instruction": "Tự kiểm tra bằng cách đếm lại, vẽ hình đơn giản hoặc dùng phép tính ngược khi thích hợp."
+            }
+          ],
+          "teacher_prompts": [
+            "Con đã biết những kiến thức nào trong chủ đề này? Hãy kể một ví dụ.",
+            "Con thử nói từng bước trước khi chọn đáp án nhé."
+          ]
+        },
+        {
+          "page_no": 2,
+          "page_type": "guided_practice",
+          "title": "Luyện cùng cô",
+          "recall": "Bài 39: Ôn các số đến 100 và cộng, trừ không nhớ. Trước khi chọn, con hãy nói cách nghĩ rồi mới kiểm tra.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Số 97 gồm mấy chục và mấy đơn vị?",
+              "options": [
+                "8 chục và 7 đơn vị",
+                "7 chục và 9 đơn vị",
+                "9 chục và 7 đơn vị",
+                "9 chục và 8 đơn vị"
+              ],
+              "answer": 2,
+              "explanation": "Số 97 có chữ số hàng chục là 9, hàng đơn vị là 7."
+            },
+            {
+              "type": "choice",
+              "prompt": "Đặt tính rồi cộng không nhớ: 74 + 23 = ?",
+              "options": [
+                "100",
+                "97",
+                "99",
+                "95"
+              ],
+              "answer": 1,
+              "explanation": "Cộng hàng đơn vị 4+3=7; hàng chục 7+2=9; được 97."
+            },
+            {
+              "type": "choice",
+              "prompt": "Số liền sau của 65 là số nào?",
+              "options": [
+                "66",
+                "67",
+                "64",
+                "71"
+              ],
+              "answer": 0,
+              "explanation": "Số liền sau lớn hơn 65 đúng 1."
+            },
+            {
+              "type": "choice",
+              "prompt": "Đặt tính rồi trừ không mượn: 24 − 14 = ?",
+              "options": [
+                "15",
+                "7",
+                "12",
+                "10"
+              ],
+              "answer": 3,
+              "explanation": "Đơn vị 4−4=0; chục 2−1=1; kết quả 10."
+            },
+            {
+              "type": "connection",
+              "prompt": "Con lấy giấy, que tính hoặc các vật quanh nhà để tự tạo một câu hỏi tương tự. Nói rõ vì sao con chọn đáp án đó."
+            }
+          ],
+          "extra_examples": [
+            "Làm với đồ vật/nháp trước khi nhìn bốn lựa chọn.",
+            "Nếu sai, xem lại ý chính ở Trang 1 rồi thử câu tương tự."
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Ghi nhớ & Vận dụng",
+          "key_points": [
+            "Nắm được chục, đơn vị và thứ tự số.",
+            "So sánh hai số có hai chữ số.",
+            "Đặt tính và tính cộng/trừ không nhớ đến 100."
+          ],
+          "common_mistakes": [
+            "Cộng hàng chục với hàng đơn vị.",
+            "Áp dụng nhầm phép tính có nhớ ngoài phạm vi bài."
+          ],
+          "self_check": [
+            "Con nêu được một ví dụ đúng trong bài này.",
+            "Con hiểu vì sao đáp án đúng chứ không chỉ chọn may mắn.",
+            "Con có thể tự tạo một câu tương tự để luyện thêm."
+          ],
+          "finish_prompt": "Bé hãy tự tạo một bài toán/bài hình giống nội dung vừa ôn và giải thích kết quả cho Cô Thỏ Hồng."
+        }
+      ],
+      "competency_links": [
+        "TOAN_C1",
+        "TOAN_C2",
+        "TOAN_C4",
+        "TOAN_C5",
+        "TOAN_C6"
+      ],
+      "sub_ids": [
+        "3.1",
+        "3.2",
+        "3.3",
+        "4.1",
+        "4.2",
+        "2.11",
+        "2.12",
+        "2.13",
+        "2.14"
+      ],
+      "content_status": "review_lesson_sgk_2026_10_19",
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Khám phá",
+        "Luyện cùng cô",
+        "Ghi nhớ & Vận dụng"
+      ],
+      "assessment_note": "Bài học luyện tập/ôn tập không tự sinh đánh giá 6 năng lực chính thức. Bài tập có chấm điểm là luồng riêng.",
+      "lesson_image": "",
+      "source_references": {
+        "sgk": {
+          "title": "Toán 1 - Tập 2 - Kết nối tri thức với cuộc sống",
+          "page_start": 94
+        },
+        "vbt": {
+          "title": "Vở bài tập Toán 1 - Tập 2 - Kết nối tri thức với cuộc sống"
+        }
+      },
+      "sgk_alignment": {
+        "reviewed_against": "Mục lục và cấu trúc Toán 1 Kết nối tri thức",
+        "core_focus": "Ôn các số đến 100 và cộng, trừ không nhớ.",
+        "status": "sgk_topic_aligned",
+        "copyright_note": "Ví dụ/câu hỏi viết mới, không sao chép nguyên văn."
+      },
+      "image_plan": {
+        "strategy": "text_symbols_and_existing_ui",
+        "catalog_images": [],
+        "ui_note": "Không tạo ID hình hay đường dẫn giả khi chưa đối chiếu catalog."
+      },
+      "sgk_review_sub_code": "13.14",
+      "sgk_lesson_kind": "practice_or_review"
+    },
+    {
+      "bai": 40,
+      "semester": 2,
+      "source_title": "Ôn tập hình học và đo lường",
+      "theme": "Ôn tập cuối năm",
+      "lesson_id": "T1_B40",
+      "estimated_minutes": 18,
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "discovery",
+          "title": "Khám phá",
+          "goal": "Ôn hình phẳng, hình khối, vị trí và đo độ dài.",
+          "intro": "Cô Thỏ Hồng cùng bé ôn kiến thức SGK Bài 40.",
+          "concept_blocks": [
+            {
+              "heading": "Nhớ lại kiến thức",
+              "text": "Nhận biết hình phẳng, hình khối trong đời sống.",
+              "example": "Chiếc hộp ở phía trước cây xanh. Cây xanh ở đâu so với chiếc hộp? → Phía sau. Chiếc hộp phía trước cây nên cây ở phía sau chiếc hộp."
+            },
+            {
+              "heading": "Cách làm từng bước",
+              "text": "So độ dài và đọc số đo bằng cm.",
+              "example": "Bé hãy tìm đúng tên của hình được mô tả: hình có ba cạnh thẳng. → Hình tam giác. Đặc điểm đã mô tả là của hình tam giác."
+            },
+            {
+              "heading": "Tự kiểm tra",
+              "text": "Xác định vị trí, thứ tự trong một hàng.",
+              "example": "Một dải ruy băng dài 13 cm, dải kia dài 7 cm. Dải dài hơn có độ dài bao nhiêu xăng-ti-mét? → 13 cm. So 13 với 7; số lớn hơn là 13."
+            }
+          ],
+          "visual_models": [
+            {
+              "type": "teacher_example",
+              "instruction": "Nhìn ví dụ, nói rõ số lượng hoặc phép tính đang được sử dụng; dùng que tính/chấm tròn nếu cần."
+            },
+            {
+              "type": "self_explain",
+              "instruction": "Tự kiểm tra bằng cách đếm lại, vẽ hình đơn giản hoặc dùng phép tính ngược khi thích hợp."
+            }
+          ],
+          "teacher_prompts": [
+            "Con đã biết những kiến thức nào trong chủ đề này? Hãy kể một ví dụ.",
+            "Con thử nói từng bước trước khi chọn đáp án nhé."
+          ]
+        },
+        {
+          "page_no": 2,
+          "page_type": "guided_practice",
+          "title": "Luyện cùng cô",
+          "recall": "Bài 40: Ôn hình phẳng, hình khối, vị trí và đo độ dài. Trước khi chọn, con hãy nói cách nghĩ rồi mới kiểm tra.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Quan sát mặt chiếc đĩa tròn. Mặt ấy gần giống hình nào?",
+              "options": [
+                "Hình tam giác",
+                "Hình vuông",
+                "Hình chữ nhật",
+                "Hình tròn"
+              ],
+              "answer": 3,
+              "explanation": "Mặt chiếc đĩa tròn gần giống hình tròn."
+            },
+            {
+              "type": "choice",
+              "prompt": "Đặt đầu thước ở vạch 0 cm, đầu kia của đoạn thẳng ở vạch 18 cm. Đoạn dài bao nhiêu?",
+              "options": [
+                "18 cm",
+                "13 cm",
+                "15 cm",
+                "20 cm"
+              ],
+              "answer": 0,
+              "explanation": "Từ vạch 0 đến vạch 18 là 18 cm."
+            },
+            {
+              "type": "choice",
+              "prompt": "Cái cặp ở bên trái quả bóng. Quả bóng ở đâu so với cái cặp?",
+              "options": [
+                "Bên phải",
+                "Phía dưới",
+                "Bên trái",
+                "Phía trên"
+              ],
+              "answer": 0,
+              "explanation": "Đổi vật mốc: khi cái cặp ở bên trái bóng, bóng ở bên phải cái cặp."
+            },
+            {
+              "type": "choice",
+              "prompt": "Xúc xắc sáu mặt vuông gần giống dạng khối nào?",
+              "options": [
+                "Khối hộp chữ nhật",
+                "Khối lập phương",
+                "Hình tròn",
+                "Hình tam giác"
+              ],
+              "answer": 1,
+              "explanation": "Xúc xắc sáu mặt vuông có dạng gần giống khối lập phương."
+            },
+            {
+              "type": "connection",
+              "prompt": "Con lấy giấy, que tính hoặc các vật quanh nhà để tự tạo một câu hỏi tương tự. Nói rõ vì sao con chọn đáp án đó."
+            }
+          ],
+          "extra_examples": [
+            "Làm với đồ vật/nháp trước khi nhìn bốn lựa chọn.",
+            "Nếu sai, xem lại ý chính ở Trang 1 rồi thử câu tương tự."
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Ghi nhớ & Vận dụng",
+          "key_points": [
+            "Nhận biết hình phẳng, hình khối trong đời sống.",
+            "So độ dài và đọc số đo bằng cm.",
+            "Xác định vị trí, thứ tự trong một hàng."
+          ],
+          "common_mistakes": [
+            "Nhầm vật thật với hình phẳng.",
+            "Đọc sai vạch trên thước."
+          ],
+          "self_check": [
+            "Con nêu được một ví dụ đúng trong bài này.",
+            "Con hiểu vì sao đáp án đúng chứ không chỉ chọn may mắn.",
+            "Con có thể tự tạo một câu tương tự để luyện thêm."
+          ],
+          "finish_prompt": "Bé hãy tự tạo một bài toán/bài hình giống nội dung vừa ôn và giải thích kết quả cho Cô Thỏ Hồng."
+        }
+      ],
+      "competency_links": [
+        "TOAN_C1",
+        "TOAN_C3",
+        "TOAN_C4"
+      ],
+      "sub_ids": [
+        "5.1",
+        "5.2",
+        "6.1",
+        "6.3",
+        "7.1",
+        "7.4"
+      ],
+      "content_status": "review_lesson_sgk_2026_10_19",
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Khám phá",
+        "Luyện cùng cô",
+        "Ghi nhớ & Vận dụng"
+      ],
+      "assessment_note": "Bài học luyện tập/ôn tập không tự sinh đánh giá 6 năng lực chính thức. Bài tập có chấm điểm là luồng riêng.",
+      "lesson_image": "",
+      "source_references": {
+        "sgk": {
+          "title": "Toán 1 - Tập 2 - Kết nối tri thức với cuộc sống",
+          "page_start": 100
+        },
+        "vbt": {
+          "title": "Vở bài tập Toán 1 - Tập 2 - Kết nối tri thức với cuộc sống"
+        }
+      },
+      "sgk_alignment": {
+        "reviewed_against": "Mục lục và cấu trúc Toán 1 Kết nối tri thức",
+        "core_focus": "Ôn hình phẳng, hình khối, vị trí và đo độ dài.",
+        "status": "sgk_topic_aligned",
+        "copyright_note": "Ví dụ/câu hỏi viết mới, không sao chép nguyên văn."
+      },
+      "image_plan": {
+        "strategy": "text_symbols_and_existing_ui",
+        "catalog_images": [],
+        "ui_note": "Không tạo ID hình hay đường dẫn giả khi chưa đối chiếu catalog."
+      },
+      "sgk_review_sub_code": "13.15",
+      "sgk_lesson_kind": "practice_or_review"
+    },
+    {
+      "bai": 41,
+      "semester": 2,
+      "source_title": "Ôn tập chung",
+      "theme": "Ôn tập cuối năm",
+      "lesson_id": "T1_B41",
+      "estimated_minutes": 18,
+      "pages": [
+        {
+          "page_no": 1,
+          "page_type": "discovery",
+          "title": "Khám phá",
+          "goal": "Tổng ôn các số, phép tính, hình học, đo độ dài, thời gian và lịch.",
+          "intro": "Cô Thỏ Hồng cùng bé ôn kiến thức SGK Bài 41.",
+          "concept_blocks": [
+            {
+              "heading": "Nhớ lại kiến thức",
+              "text": "Lựa chọn đúng phép tính theo tình huống.",
+              "example": "Số 31 có chữ số hàng đơn vị là mấy? → 1. Đọc chữ số cuối bên phải của 31, ta được 1."
+            },
+            {
+              "heading": "Cách làm từng bước",
+              "text": "Vận dụng số đến 100, đo độ dài và xem lịch.",
+              "example": "Tính không nhớ: 34 + 5 = ? → 39. Đơn vị: 4+5=9; giữ 3 chục, được 39."
+            },
+            {
+              "heading": "Tự kiểm tra",
+              "text": "Kiểm tra kết quả bằng mô hình hoặc phép tính ngược.",
+              "example": "Đặt đầu thước ở vạch 0 cm, đầu kia của đoạn thẳng ở vạch 5 cm. Đoạn dài bao nhiêu? → 5 cm. Từ vạch 0 đến vạch 5 là 5 cm."
+            }
+          ],
+          "visual_models": [
+            {
+              "type": "teacher_example",
+              "instruction": "Nhìn ví dụ, nói rõ số lượng hoặc phép tính đang được sử dụng; dùng que tính/chấm tròn nếu cần."
+            },
+            {
+              "type": "self_explain",
+              "instruction": "Tự kiểm tra bằng cách đếm lại, vẽ hình đơn giản hoặc dùng phép tính ngược khi thích hợp."
+            }
+          ],
+          "teacher_prompts": [
+            "Con đã biết những kiến thức nào trong chủ đề này? Hãy kể một ví dụ.",
+            "Con thử nói từng bước trước khi chọn đáp án nhé."
+          ]
+        },
+        {
+          "page_no": 2,
+          "page_type": "guided_practice",
+          "title": "Luyện cùng cô",
+          "recall": "Bài 41: Tổng ôn các số, phép tính, hình học, đo độ dài, thời gian và lịch. Trước khi chọn, con hãy nói cách nghĩ rồi mới kiểm tra.",
+          "items": [
+            {
+              "type": "choice",
+              "prompt": "Trong hai số 75 và 57, số nào lớn hơn?",
+              "options": [
+                "76",
+                "72",
+                "70",
+                "75"
+              ],
+              "answer": 3,
+              "explanation": "So hàng chục trước rồi so hàng đơn vị nếu cùng số chục: 75 lớn hơn."
+            },
+            {
+              "type": "choice",
+              "prompt": "Tính không mượn: 42 − 1 = ?",
+              "options": [
+                "46",
+                "41",
+                "36",
+                "43"
+              ],
+              "answer": 1,
+              "explanation": "Hàng đơn vị: 2−1=1, giữ 4 chục, được 41."
+            },
+            {
+              "type": "choice",
+              "prompt": "Dụng cụ nào phù hợp để đo độ dài chiếc bút chì?",
+              "options": [
+                "Cân đĩa",
+                "Đồng hồ",
+                "Thước có vạch cm",
+                "Lịch tuần"
+              ],
+              "answer": 2,
+              "explanation": "Dùng thước có chia vạch xăng-ti-mét để đo độ dài chiếc bút chì."
+            },
+            {
+              "type": "choice",
+              "prompt": "Trên lịch, thứ Hai tuần này là ngày 16. Thứ Hai tuần sau là ngày nào?",
+              "options": [
+                "28",
+                "25",
+                "23",
+                "21"
+              ],
+              "answer": 2,
+              "explanation": "Qua một tuần là thêm 7 ngày: 16+7=23."
+            },
+            {
+              "type": "connection",
+              "prompt": "Con lấy giấy, que tính hoặc các vật quanh nhà để tự tạo một câu hỏi tương tự. Nói rõ vì sao con chọn đáp án đó."
+            }
+          ],
+          "extra_examples": [
+            "Làm với đồ vật/nháp trước khi nhìn bốn lựa chọn.",
+            "Nếu sai, xem lại ý chính ở Trang 1 rồi thử câu tương tự."
+          ]
+        },
+        {
+          "page_no": 3,
+          "page_type": "summary",
+          "title": "Ghi nhớ & Vận dụng",
+          "key_points": [
+            "Lựa chọn đúng phép tính theo tình huống.",
+            "Vận dụng số đến 100, đo độ dài và xem lịch.",
+            "Kiểm tra kết quả bằng mô hình hoặc phép tính ngược."
+          ],
+          "common_mistakes": [
+            "Đọc thiếu dữ kiện của bài toán.",
+            "Quên kiểm tra xem kết quả có hợp lí không."
+          ],
+          "self_check": [
+            "Con nêu được một ví dụ đúng trong bài này.",
+            "Con hiểu vì sao đáp án đúng chứ không chỉ chọn may mắn.",
+            "Con có thể tự tạo một câu tương tự để luyện thêm."
+          ],
+          "finish_prompt": "Bé hãy tự tạo một bài toán/bài hình giống nội dung vừa ôn và giải thích kết quả cho Cô Thỏ Hồng."
+        }
+      ],
+      "competency_links": [
+        "TOAN_C1",
+        "TOAN_C2",
+        "TOAN_C3",
+        "TOAN_C4",
+        "TOAN_C6"
+      ],
+      "sub_ids": [
+        "1.4",
+        "2.4",
+        "3.1",
+        "3.3",
+        "5.1",
+        "7.4",
+        "8.1",
+        "8.3",
+        "2.11",
+        "2.14"
+      ],
+      "content_status": "review_lesson_sgk_2026_10_19",
+      "navigation_model": "3_pages",
+      "learning_flow": [
+        "Khám phá",
+        "Luyện cùng cô",
+        "Ghi nhớ & Vận dụng"
+      ],
+      "assessment_note": "Bài học luyện tập/ôn tập không tự sinh đánh giá 6 năng lực chính thức. Bài tập có chấm điểm là luồng riêng.",
+      "lesson_image": "",
+      "source_references": {
+        "sgk": {
+          "title": "Toán 1 - Tập 2 - Kết nối tri thức với cuộc sống",
+          "page_start": 104
+        },
+        "vbt": {
+          "title": "Vở bài tập Toán 1 - Tập 2 - Kết nối tri thức với cuộc sống"
+        }
+      },
+      "sgk_alignment": {
+        "reviewed_against": "Mục lục và cấu trúc Toán 1 Kết nối tri thức",
+        "core_focus": "Tổng ôn các số, phép tính, hình học, đo độ dài, thời gian và lịch.",
+        "status": "sgk_topic_aligned",
+        "copyright_note": "Ví dụ/câu hỏi viết mới, không sao chép nguyên văn."
+      },
+      "image_plan": {
+        "strategy": "text_symbols_and_existing_ui",
+        "catalog_images": [],
+        "ui_note": "Không tạo ID hình hay đường dẫn giả khi chưa đối chiếu catalog."
+      },
+      "sgk_review_sub_code": "13.16",
+      "sgk_lesson_kind": "practice_or_review"
     }
   ],
-  "content_status": {
-    "bai_hoc": "25/25 bài học đã dựng nội dung V1 theo SGK/VBT"
-  },
+  "content_status": "all_41_sgk_lessons_present; exercise_progress_sequence_unchanged_25",
   "copyright_policy": "Chỉ bám mục tiêu, cấu trúc kiến thức và dạng hoạt động của SGK/VBT Kết nối tri thức; nội dung giải thích, ví dụ và câu hỏi hướng dẫn trong JSON được biên soạn mới.",
   "competency_definitions": {
     "TOAN_C1": {
@@ -4342,5 +7303,48 @@
     "vbt_tap_2": "T1 - Vo bai tap Toan 1 - Tap 2 -  kết nối tri thức với cuộc sống.pdf"
   },
   "image_mapping_version": "2026-10-03-v1",
-  "image_catalog_required": "assets/data/shared_image_catalog.json"
+  "image_catalog_required": "assets/data/shared_image_catalog.json",
+  "lesson_display_sequence": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41
+  ]
 }

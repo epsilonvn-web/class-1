@@ -7157,7 +7157,7 @@
     {
       "id": 8,
       "name": "THỜI GIAN, GIỜ VÀ LỊCH",
-      "desc": "Nhận biết kim đồng hồ, xem giờ đúng, liên hệ giờ với sinh hoạt, học thứ tự các ngày trong tuần, hôm qua - hôm nay - ngày mai, đọc lịch hoạt động và vận dụng tổng hợp.",
+      "desc": "Xem giờ đúng, sinh hoạt theo giờ, ngày trong tuần; đọc lịch tháng, thời khóa biểu và vận dụng.",
       "qs": [
         {
           "id": 8000,
@@ -9733,8 +9733,8 @@
           "a": "Tiếng Việt",
           "h": "Đọc đúng hàng ngày và đúng cột buổi sáng/buổi chiều.",
           "img": "",
-          "sub_name": "Đọc thời khóa biểu và lịch hoạt động",
-          "sub": "Đọc thời khóa biểu và lịch hoạt động",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
           "muc8_type": "schedule",
           "muc8_visual": {
             "schedule": {
@@ -9777,8 +9777,8 @@
           "a": "Bơi",
           "h": "Đọc đúng hàng ngày và đúng cột buổi sáng/buổi chiều.",
           "img": "",
-          "sub_name": "Đọc thời khóa biểu và lịch hoạt động",
-          "sub": "Đọc thời khóa biểu và lịch hoạt động",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
           "muc8_type": "schedule",
           "muc8_visual": {
             "schedule": {
@@ -9821,8 +9821,8 @@
           "a": "2",
           "h": "Đọc đúng hàng ngày và đúng cột buổi sáng/buổi chiều.",
           "img": "",
-          "sub_name": "Đọc thời khóa biểu và lịch hoạt động",
-          "sub": "Đọc thời khóa biểu và lịch hoạt động",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
           "muc8_type": "schedule",
           "muc8_visual": {
             "schedule": {
@@ -9865,8 +9865,8 @@
           "a": "Thứ Năm",
           "h": "Đọc đúng hàng ngày và đúng cột buổi sáng/buổi chiều.",
           "img": "",
-          "sub_name": "Đọc thời khóa biểu và lịch hoạt động",
-          "sub": "Đọc thời khóa biểu và lịch hoạt động",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
           "muc8_type": "schedule",
           "muc8_visual": {
             "schedule": {
@@ -9909,8 +9909,8 @@
           "a": "Toán",
           "h": "Đọc đúng hàng ngày và đúng cột buổi sáng/buổi chiều.",
           "img": "",
-          "sub_name": "Đọc thời khóa biểu và lịch hoạt động",
-          "sub": "Đọc thời khóa biểu và lịch hoạt động",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
           "muc8_type": "schedule",
           "muc8_visual": {
             "schedule": {
@@ -9953,8 +9953,8 @@
           "a": "Đá bóng",
           "h": "Đọc đúng hàng ngày và đúng cột buổi sáng/buổi chiều.",
           "img": "",
-          "sub_name": "Đọc thời khóa biểu và lịch hoạt động",
-          "sub": "Đọc thời khóa biểu và lịch hoạt động",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
           "muc8_type": "schedule",
           "muc8_visual": {
             "schedule": {
@@ -9997,8 +9997,8 @@
           "a": "2",
           "h": "Đọc đúng hàng ngày và đúng cột buổi sáng/buổi chiều.",
           "img": "",
-          "sub_name": "Đọc thời khóa biểu và lịch hoạt động",
-          "sub": "Đọc thời khóa biểu và lịch hoạt động",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
           "muc8_type": "schedule",
           "muc8_visual": {
             "schedule": {
@@ -10041,8 +10041,8 @@
           "a": "Thứ Tư, Thứ Sáu",
           "h": "Đọc đúng hàng ngày và đúng cột buổi sáng/buổi chiều.",
           "img": "",
-          "sub_name": "Đọc thời khóa biểu và lịch hoạt động",
-          "sub": "Đọc thời khóa biểu và lịch hoạt động",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
           "muc8_type": "schedule",
           "muc8_visual": {
             "schedule": {
@@ -10085,8 +10085,8 @@
           "a": "Âm nhạc",
           "h": "Đọc đúng hàng ngày và đúng cột buổi sáng/buổi chiều.",
           "img": "",
-          "sub_name": "Đọc thời khóa biểu và lịch hoạt động",
-          "sub": "Đọc thời khóa biểu và lịch hoạt động",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
           "muc8_type": "schedule",
           "muc8_visual": {
             "schedule": {
@@ -10129,8 +10129,8 @@
           "a": "Vẽ tranh",
           "h": "Đọc đúng hàng ngày và đúng cột buổi sáng/buổi chiều.",
           "img": "",
-          "sub_name": "Đọc thời khóa biểu và lịch hoạt động",
-          "sub": "Đọc thời khóa biểu và lịch hoạt động",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
           "muc8_type": "schedule",
           "muc8_visual": {
             "schedule": {
@@ -10173,8 +10173,8 @@
           "a": "2",
           "h": "Đọc đúng hàng ngày và đúng cột buổi sáng/buổi chiều.",
           "img": "",
-          "sub_name": "Đọc thời khóa biểu và lịch hoạt động",
-          "sub": "Đọc thời khóa biểu và lịch hoạt động",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
           "muc8_type": "schedule",
           "muc8_visual": {
             "schedule": {
@@ -10217,8 +10217,8 @@
           "a": "Thứ Ba",
           "h": "Đọc đúng hàng ngày và đúng cột buổi sáng/buổi chiều.",
           "img": "",
-          "sub_name": "Đọc thời khóa biểu và lịch hoạt động",
-          "sub": "Đọc thời khóa biểu và lịch hoạt động",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
           "muc8_type": "schedule",
           "muc8_visual": {
             "schedule": {
@@ -10261,8 +10261,8 @@
           "a": "Mỹ thuật",
           "h": "Đọc đúng hàng ngày và đúng cột buổi sáng/buổi chiều.",
           "img": "",
-          "sub_name": "Đọc thời khóa biểu và lịch hoạt động",
-          "sub": "Đọc thời khóa biểu và lịch hoạt động",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
           "muc8_type": "schedule",
           "muc8_visual": {
             "schedule": {
@@ -10305,8 +10305,8 @@
           "a": "Bơi",
           "h": "Đọc đúng hàng ngày và đúng cột buổi sáng/buổi chiều.",
           "img": "",
-          "sub_name": "Đọc thời khóa biểu và lịch hoạt động",
-          "sub": "Đọc thời khóa biểu và lịch hoạt động",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
           "muc8_type": "schedule",
           "muc8_visual": {
             "schedule": {
@@ -10349,8 +10349,8 @@
           "a": "2",
           "h": "Đọc đúng hàng ngày và đúng cột buổi sáng/buổi chiều.",
           "img": "",
-          "sub_name": "Đọc thời khóa biểu và lịch hoạt động",
-          "sub": "Đọc thời khóa biểu và lịch hoạt động",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
           "muc8_type": "schedule",
           "muc8_visual": {
             "schedule": {
@@ -10393,8 +10393,8 @@
           "a": "Thứ Hai, Thứ Năm",
           "h": "Đọc đúng hàng ngày và đúng cột buổi sáng/buổi chiều.",
           "img": "",
-          "sub_name": "Đọc thời khóa biểu và lịch hoạt động",
-          "sub": "Đọc thời khóa biểu và lịch hoạt động",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
           "muc8_type": "schedule",
           "muc8_visual": {
             "schedule": {
@@ -10437,8 +10437,8 @@
           "a": "Tiếng Việt",
           "h": "Đọc đúng hàng ngày và đúng cột buổi sáng/buổi chiều.",
           "img": "",
-          "sub_name": "Đọc thời khóa biểu và lịch hoạt động",
-          "sub": "Đọc thời khóa biểu và lịch hoạt động",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
           "muc8_type": "schedule",
           "muc8_visual": {
             "schedule": {
@@ -10481,8 +10481,8 @@
           "a": "Cầu lông",
           "h": "Đọc đúng hàng ngày và đúng cột buổi sáng/buổi chiều.",
           "img": "",
-          "sub_name": "Đọc thời khóa biểu và lịch hoạt động",
-          "sub": "Đọc thời khóa biểu và lịch hoạt động",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
           "muc8_type": "schedule",
           "muc8_visual": {
             "schedule": {
@@ -10525,8 +10525,8 @@
           "a": "2",
           "h": "Đọc đúng hàng ngày và đúng cột buổi sáng/buổi chiều.",
           "img": "",
-          "sub_name": "Đọc thời khóa biểu và lịch hoạt động",
-          "sub": "Đọc thời khóa biểu và lịch hoạt động",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
           "muc8_type": "schedule",
           "muc8_visual": {
             "schedule": {
@@ -10569,8 +10569,8 @@
           "a": "Thứ Sáu",
           "h": "Đọc đúng hàng ngày và đúng cột buổi sáng/buổi chiều.",
           "img": "",
-          "sub_name": "Đọc thời khóa biểu và lịch hoạt động",
-          "sub": "Đọc thời khóa biểu và lịch hoạt động",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
           "muc8_type": "schedule",
           "muc8_visual": {
             "schedule": {
@@ -11528,6 +11528,582 @@
             "highlight_day": "Thứ Sáu",
             "title": "Lịch trong tuần"
           }
+        },
+        {
+          "id": 8150,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Xem lịch tháng 2 năm 2026. Ngày 13 là thứ mấy?",
+          "o": [
+            "Chủ nhật",
+            "Thứ Hai",
+            "Thứ Sáu",
+            "Thứ Bảy"
+          ],
+          "a": "Thứ Sáu",
+          "h": "Con xem lịch tháng 2: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 2,
+            "focus_date": 13,
+            "task": "weekday"
+          }
+        },
+        {
+          "id": 8151,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Trong tháng 2 năm 2026, ngày Chủ nhật đầu tiên là ngày bao nhiêu?",
+          "o": [
+            "4",
+            "1",
+            "2",
+            "3"
+          ],
+          "a": "1",
+          "h": "Con xem lịch tháng 2: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 2,
+            "focus_date": null,
+            "task": "first_sunday"
+          }
+        },
+        {
+          "id": 8152,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Tháng 2 năm 2026 có bao nhiêu ngày?",
+          "o": [
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "a": "28",
+          "h": "Con xem lịch tháng 2: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 2,
+            "focus_date": null,
+            "task": "days_in_month"
+          }
+        },
+        {
+          "id": 8153,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Trong tháng 2 năm 2026, ngày Thứ Hai đầu tiên là ngày bao nhiêu?",
+          "o": [
+            "1",
+            "3",
+            "4",
+            "2"
+          ],
+          "a": "2",
+          "h": "Con xem lịch tháng 2: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 2,
+            "focus_date": null,
+            "task": "first_monday"
+          }
+        },
+        {
+          "id": 8154,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Xem lịch tháng 3 năm 2026. Ngày 12 là thứ mấy?",
+          "o": [
+            "Chủ nhật",
+            "Thứ Năm",
+            "Thứ Sáu",
+            "Thứ Bảy"
+          ],
+          "a": "Thứ Năm",
+          "h": "Con xem lịch tháng 3: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 3,
+            "focus_date": 12,
+            "task": "weekday"
+          }
+        },
+        {
+          "id": 8155,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Trong tháng 3 năm 2026, ngày Chủ nhật đầu tiên là ngày bao nhiêu?",
+          "o": [
+            "2",
+            "3",
+            "4",
+            "1"
+          ],
+          "a": "1",
+          "h": "Con xem lịch tháng 3: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 3,
+            "focus_date": null,
+            "task": "first_sunday"
+          }
+        },
+        {
+          "id": 8156,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Tháng 3 năm 2026 có bao nhiêu ngày?",
+          "o": [
+            "29",
+            "30",
+            "31",
+            "28"
+          ],
+          "a": "31",
+          "h": "Con xem lịch tháng 3: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 3,
+            "focus_date": null,
+            "task": "days_in_month"
+          }
+        },
+        {
+          "id": 8157,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Trong tháng 3 năm 2026, ngày Thứ Hai đầu tiên là ngày bao nhiêu?",
+          "o": [
+            "4",
+            "2",
+            "1",
+            "3"
+          ],
+          "a": "2",
+          "h": "Con xem lịch tháng 3: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 3,
+            "focus_date": null,
+            "task": "first_monday"
+          }
+        },
+        {
+          "id": 8158,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Xem lịch tháng 4 năm 2026. Ngày 9 là thứ mấy?",
+          "o": [
+            "Thứ Năm",
+            "Thứ Sáu",
+            "Thứ Bảy",
+            "Chủ nhật"
+          ],
+          "a": "Thứ Năm",
+          "h": "Con xem lịch tháng 4: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 4,
+            "focus_date": 9,
+            "task": "weekday"
+          }
+        },
+        {
+          "id": 8159,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Trong tháng 4 năm 2026, ngày Chủ nhật đầu tiên là ngày bao nhiêu?",
+          "o": [
+            "3",
+            "5",
+            "1",
+            "2"
+          ],
+          "a": "5",
+          "h": "Con xem lịch tháng 4: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 4,
+            "focus_date": null,
+            "task": "first_sunday"
+          }
+        },
+        {
+          "id": 8160,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Tháng 4 năm 2026 có bao nhiêu ngày?",
+          "o": [
+            "30",
+            "31",
+            "28",
+            "29"
+          ],
+          "a": "30",
+          "h": "Con xem lịch tháng 4: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 4,
+            "focus_date": null,
+            "task": "days_in_month"
+          }
+        },
+        {
+          "id": 8161,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Trong tháng 4 năm 2026, ngày Thứ Hai đầu tiên là ngày bao nhiêu?",
+          "o": [
+            "1",
+            "2",
+            "3",
+            "6"
+          ],
+          "a": "6",
+          "h": "Con xem lịch tháng 4: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 4,
+            "focus_date": null,
+            "task": "first_monday"
+          }
+        },
+        {
+          "id": 8162,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Xem lịch tháng 5 năm 2026. Ngày 18 là thứ mấy?",
+          "o": [
+            "Thứ Ba",
+            "Thứ Tư",
+            "Thứ Năm",
+            "Thứ Hai"
+          ],
+          "a": "Thứ Hai",
+          "h": "Con xem lịch tháng 5: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 5,
+            "focus_date": 18,
+            "task": "weekday"
+          }
+        },
+        {
+          "id": 8163,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Trong tháng 5 năm 2026, ngày Chủ nhật đầu tiên là ngày bao nhiêu?",
+          "o": [
+            "1",
+            "2",
+            "4",
+            "3"
+          ],
+          "a": "3",
+          "h": "Con xem lịch tháng 5: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 5,
+            "focus_date": null,
+            "task": "first_sunday"
+          }
+        },
+        {
+          "id": 8164,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Tháng 5 năm 2026 có bao nhiêu ngày?",
+          "o": [
+            "31",
+            "28",
+            "29",
+            "30"
+          ],
+          "a": "31",
+          "h": "Con xem lịch tháng 5: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 5,
+            "focus_date": null,
+            "task": "days_in_month"
+          }
+        },
+        {
+          "id": 8165,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Trong tháng 5 năm 2026, ngày Thứ Hai đầu tiên là ngày bao nhiêu?",
+          "o": [
+            "3",
+            "4",
+            "1",
+            "2"
+          ],
+          "a": "4",
+          "h": "Con xem lịch tháng 5: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 5,
+            "focus_date": null,
+            "task": "first_monday"
+          }
+        },
+        {
+          "id": 8166,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Xem lịch tháng 9 năm 2026. Ngày 22 là thứ mấy?",
+          "o": [
+            "Thứ Năm",
+            "Thứ Sáu",
+            "Thứ Ba",
+            "Thứ Tư"
+          ],
+          "a": "Thứ Ba",
+          "h": "Con xem lịch tháng 9: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 9,
+            "focus_date": 22,
+            "task": "weekday"
+          }
+        },
+        {
+          "id": 8167,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Trong tháng 9 năm 2026, ngày Chủ nhật đầu tiên là ngày bao nhiêu?",
+          "o": [
+            "3",
+            "6",
+            "1",
+            "2"
+          ],
+          "a": "6",
+          "h": "Con xem lịch tháng 9: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 9,
+            "focus_date": null,
+            "task": "first_sunday"
+          }
+        },
+        {
+          "id": 8168,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Tháng 9 năm 2026 có bao nhiêu ngày?",
+          "o": [
+            "28",
+            "29",
+            "30",
+            "31"
+          ],
+          "a": "30",
+          "h": "Con xem lịch tháng 9: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 9,
+            "focus_date": null,
+            "task": "days_in_month"
+          }
+        },
+        {
+          "id": 8169,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Trong tháng 9 năm 2026, ngày Thứ Hai đầu tiên là ngày bao nhiêu?",
+          "o": [
+            "1",
+            "2",
+            "3",
+            "7"
+          ],
+          "a": "7",
+          "h": "Con xem lịch tháng 9: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 9,
+            "focus_date": null,
+            "task": "first_monday"
+          }
+        },
+        {
+          "id": 8170,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Xem lịch tháng 10 năm 2026. Ngày 16 là thứ mấy?",
+          "o": [
+            "Thứ Hai",
+            "Thứ Sáu",
+            "Thứ Bảy",
+            "Chủ nhật"
+          ],
+          "a": "Thứ Sáu",
+          "h": "Con xem lịch tháng 10: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 10,
+            "focus_date": 16,
+            "task": "weekday"
+          }
+        },
+        {
+          "id": 8171,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Trong tháng 10 năm 2026, ngày Chủ nhật đầu tiên là ngày bao nhiêu?",
+          "o": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "a": "4",
+          "h": "Con xem lịch tháng 10: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 10,
+            "focus_date": null,
+            "task": "first_sunday"
+          }
+        },
+        {
+          "id": 8172,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Tháng 10 năm 2026 có bao nhiêu ngày?",
+          "o": [
+            "29",
+            "30",
+            "31",
+            "28"
+          ],
+          "a": "31",
+          "h": "Con xem lịch tháng 10: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 10,
+            "focus_date": null,
+            "task": "days_in_month"
+          }
+        },
+        {
+          "id": 8173,
+          "sub_code": "8.5",
+          "tag": "TOAN_C3",
+          "q": "Trong tháng 10 năm 2026, ngày Thứ Hai đầu tiên là ngày bao nhiêu?",
+          "o": [
+            "3",
+            "5",
+            "1",
+            "2"
+          ],
+          "a": "5",
+          "h": "Con xem lịch tháng 10: các cột là các thứ trong tuần, các ô là ngày. Tìm đúng hàng và cột để đọc câu trả lời.",
+          "img": "",
+          "sub_name": "Đọc lịch tháng và thời khóa biểu",
+          "sub": "Đọc lịch tháng và thời khóa biểu",
+          "muc8_type": "month_calendar",
+          "muc8_visual": {
+            "year": 2026,
+            "month": 10,
+            "focus_date": null,
+            "task": "first_monday"
+          }
         }
       ],
       "sub_topics": [
@@ -11549,7 +12125,7 @@
         },
         {
           "code": "8.5",
-          "name": "Đọc thời khóa biểu và lịch hoạt động"
+          "name": "Đọc lịch tháng và thời khóa biểu"
         },
         {
           "code": "8.6",
@@ -11557,8 +12133,8 @@
         }
       ],
       "l_title": "Thời gian, giờ và lịch",
-      "l_content": "Học theo 6 chặng: xem giờ đúng → giờ trong sinh hoạt → các ngày trong tuần → hôm qua/hôm nay/ngày mai → đọc thời khóa biểu/lịch hoạt động → tổng hợp.",
-      "l_audio": "Mục Thời gian, giờ và lịch có sáu chặng. Con quan sát đồng hồ, lịch tuần và bảng hoạt động để trả lời. Hãy nhìn hình trước rồi mới chọn đáp án."
+      "l_content": "Học theo 6 chặng: xem giờ đúng → giờ sinh hoạt → ngày trong tuần → hôm qua/hôm nay/ngày mai → đọc lịch tháng và thời khóa biểu → tổng hợp.",
+      "l_audio": "Cô Thỏ Hồng cùng con xem đồng hồ, tìm thứ và ngày trên tờ lịch tháng, rồi đọc thời khóa biểu. Quan sát hình trước khi chọn đáp án nhé."
     },
     {
       "id": 9,
