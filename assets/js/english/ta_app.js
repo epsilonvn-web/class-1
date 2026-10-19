@@ -497,9 +497,10 @@ const TA1_LEARNING_ICONS_ = Object.freeze(['📘','🌟','🧩','🎯','📚','�
 function ta1LearningIconFor_(index, fallback = '') {
     return fallback || TA1_LEARNING_ICONS_[Math.abs(Number(index) || 0) % TA1_LEARNING_ICONS_.length];
 }
-function ta1LearningCardHtml_({ action, icon='📘', title='', titleVi='', descEn='', descVi='', badge='', index=0, locked=false, forcedPalette='' }) {
+function ta1LearningCardHtml_({ action, icon='📘', title='', titleVi='', descEn='', descVi='', badge='', index=0, locked=false, forcedPalette='', tag='' }) {
     const palette = forcedPalette || ['pink','violet','sky','fuchsia','mint','peach'][Math.abs(Number(index)||0)%6];
     return `<button type="button" onclick="${action}" class="l1-en-learning-card l1-en-learning-card--${palette}${locked?' is-locked':''}" ${locked?'aria-label="Bài học chưa mở khóa"':''}>
+      ${tag ? `<span class="l1-en-learning-tag">${escapeHtml(tag)}</span>` : ''}
       <span class="l1-en-learning-top">
         <span class="l1-en-learning-icon" aria-hidden="true"><span class="l1-en-learning-icon-glyph">${escapeHtml(icon)}</span></span>
         <span class="l1-en-learning-heading"><span class="l1-en-learning-title">${escapeHtml(title)}</span>${titleVi ? `<span class="l1-en-learning-title-vi">${escapeHtml(titleVi)}</span>` : ''}</span>
@@ -525,14 +526,11 @@ function renderVocabularyLevelHub_(questions = []) {
     document.getElementById('wrap-mix-all-subtopics')?.classList.add('hidden');
     const title = document.getElementById('lecture-title');
     const content = document.getElementById('lecture-content');
-    const view = document.getElementById('view-lecture');
     const list = document.getElementById('lecture-subtopics-list');
     if (title) title.textContent = '2. Vocabulary';
-    const intro = '160 words · 4 levels · 40 words each · Flashcards, Word-picture Puzzle, Listen and Choose, Speak & Check.\n160 từ · 4 cấp độ · 40 từ mỗi cấp · bốn cách học dùng chung một Vocabulary Master.';
-    if (content) { content.textContent = intro; content.style.whiteSpace = 'pre-line'; }
-    if (view) view.dataset.audioText = '';
-    const speakBtn = view?.querySelector('button[onclick="speakLecture()"]'); if (speakBtn) speakBtn.classList.add('hidden');
-    content?.parentElement?.classList.remove('hidden');
+    // Mục 2: xóa lời giới thiệu, mở thẳng các thẻ Level như mục 1.
+    if (content) content.textContent = '';
+    prepareTa1CompactExploreHub_();
 
     const counts = {};
     activeVocabularyHubQuestions.forEach(q => { const lv = getVocabularyCurriculumLevel_(q); counts[lv] = (counts[lv] || 0) + 1; });
@@ -751,14 +749,11 @@ function renderSharedVocabActivityLevelHub_(topicNum, questions = []) {
     document.getElementById('wrap-mix-all-subtopics')?.classList.add('hidden');
     const title = document.getElementById('lecture-title');
     const content = document.getElementById('lecture-content');
-    const view = document.getElementById('view-lecture');
     const list = document.getElementById('lecture-subtopics-list');
     if (title) title.textContent = config.title;
-    const intro = `Use the same 160-word Vocabulary Master · 4 levels · 40 words each. ${config.shortEn}\nDùng chung Vocabulary Master 160 từ · 4 cấp độ · 40 từ mỗi cấp. ${config.shortVi}`;
-    if (content) { content.textContent = intro; content.style.whiteSpace = 'pre-line'; }
-    if (view) view.dataset.audioText = '';
-    const speakBtn = view?.querySelector('button[onclick="speakLecture()"]'); if (speakBtn) speakBtn.classList.add('hidden');
-    content?.parentElement?.classList.remove('hidden');
+    // Mục 3-5: xóa lời giới thiệu, mở thẳng các thẻ Level như mục 1.
+    if (content) content.textContent = '';
+    prepareTa1CompactExploreHub_();
     const counts = {};
     activeSharedVocabMasterQuestions_.forEach(q => { const lv = getVocabularyCurriculumLevel_(q); counts[lv] = (counts[lv] || 0) + 1; });
     if (list) {
@@ -1947,19 +1942,21 @@ async function openAlphabetIPA() {
 // Four independent choices: children can learn Alphabet without having to learn IPA.
 function renderAlphaIPAMenu() {
     document.getElementById('lecture-title').textContent = '1. Alphabet & IPA';
-    const introduction = 'Cô Thỏ Hồng 🐰🌸 mời con học 26 chữ cái trước, rồi luyện nghe và ghi nhớ nhé!\nBảng IPA và phần luyện IPA là lựa chọn nâng cao, con có thể học khi đã sẵn sàng.';
-    document.getElementById('lecture-content').textContent = introduction;
-    document.getElementById('view-lecture').dataset.audioText = introduction;
+    // Mục 1: mở thẳng 4 thẻ học, không có đoạn giới thiệu hay nút nghe giới thiệu.
+    // Xóa nội dung cũ thay vì giữ một đoạn văn ẩn trong DOM. Chỉ ẩn khung dùng chung;
+    // những mục khác vẫn có thể hiện lại khung và nút qua showLectureAndSubtopics().
+    document.getElementById('lecture-content').textContent = '';
+    prepareTa1CompactExploreHub_();
     const list = document.getElementById('lecture-subtopics-list');
     const items = [
         { title:'1.1 Alphabet (A–Z)', vi:'Bảng chữ cái', en:'26 English letters', desc:'Học tên và cách đọc chữ cái', icon:'🔠', badge:'26 chữ', action:'openAlphabetMenu(0)', palette:'pink' },
-        { title:'1.2 IPA Sounds', vi:'Bảng ngữ âm IPA', en:'44 English sounds', desc:'Học ký hiệu và cách nhận biết âm', icon:'🗣️', badge:'44 âm', action:'openIPAMenu(0)', palette:'sky' },
+        { title:'1.2 IPA Sounds', vi:'Bảng ngữ âm IPA', en:'44 English sounds', desc:'Học ký hiệu và cách nhận biết âm', icon:'🗣️', badge:'44 âm', action:'openIPAMenu(0)', palette:'sky', tag:'Nâng cao' },
         { title:'1.3 Alphabet Practice', vi:'Luyện bảng chữ cái', en:'Listen · Read · Sequence', desc:'Nghe, chọn phiên âm và điền chữ', icon:'🎧', badge:'78 câu', action:'openAlphabetPractice()', palette:'violet' },
-        { title:'1.4 IPA Practice', vi:'Luyện ký hiệu âm', en:'Identify IPA symbols', desc:'Nghe từ mẫu và chọn ký hiệu âm', icon:'🔊', badge:'44 câu', action:'openIPAPractice()', palette:'mint' }
+        { title:'1.4 IPA Practice', vi:'Luyện ký hiệu âm', en:'Identify IPA symbols', desc:'Nghe từ mẫu và chọn ký hiệu âm', icon:'🔊', badge:'44 câu', action:'openIPAPractice()', palette:'mint', tag:'Nâng cao' }
     ];
     list.innerHTML = items.map((it,i) => ta1LearningCardHtml_({
         action:it.action,icon:it.icon,title:it.title,titleVi:it.vi,
-        descEn:it.en,descVi:it.desc,badge:it.badge,index:i,forcedPalette:it.palette
+        descEn:it.en,descVi:it.desc,badge:it.badge,index:i,forcedPalette:it.palette,tag:it.tag || ''
     })).join('');
     list.dataset.alphabetIpaMenu = 'true';
     setSubtopicGridColumns(4);
@@ -1981,54 +1978,54 @@ function openAlphabetMenu(index = 0) {
     if (index < 0) index = 0;
     if (index >= ALPHABET_DATA.length) index = ALPHABET_DATA.length - 1;
     currentAlphabetIndex = index;
-    updateNavTabs("1. Alphabet & IPA", "🔤", "Alphabet A-Z");
+    updateNavTabs("1. Alphabet & IPA", "🔤", "1.1 Alphabet A–Z");
     switchAppView('view-alphabet');
 
     const item = ALPHABET_DATA[index];
     const keyboardHtml = ALPHABET_DATA.map((alpha, idx) => {
         const isActive = idx === currentAlphabetIndex;
-        return `<button onclick="openAlphabetMenu(${idx})" class="l1-en-learning-letter-key pastel-btn flex flex-col items-center justify-center rounded-xl p-1.5 shadow-sm cursor-pointer ${isActive ? 'bg-pink-500 text-white border-2 border-pink-600 ring-2 ring-pink-200' : 'bg-white text-gray-700 border border-gray-200 hover:bg-pink-50 hover:border-pink-300'} min-w-[52px] min-h-[52px]">
-            <span class="text-base font-black">${alpha.letter}</span>
-            <span class="font-bold ${isActive ? 'text-white' : 'text-pink-600'} text-xs md:text-sm">${escapeHtml(alphabetIpaAmerican_(alpha.letter, alpha.ipaName))}</span>
+        return `<button onclick="openAlphabetMenu(${idx})" class="l1-en-learning-letter-key l1-en-alphaipa-letter-key pastel-btn flex flex-col items-center justify-center rounded-xl p-1.5 shadow-sm cursor-pointer ${isActive ? 'bg-pink-500 text-white border-2 border-pink-600 ring-2 ring-pink-200' : 'bg-white text-gray-700 border border-gray-200 hover:bg-pink-50 hover:border-pink-300'} min-w-[52px] min-h-[52px]">
+            <span class="l1-en-alphaipa-key-symbol text-base font-black">${escapeHtml(alpha.letter)}</span>
+            <span class="l1-en-alphaipa-key-caption font-bold ${isActive ? 'text-white' : 'text-pink-600'} text-xs md:text-sm">${escapeHtml(alphabetIpaAmerican_(alpha.letter, alpha.ipaName))}</span>
         </button>`;
     }).join('');
 
     const wordCard = (w, idx) => `
-        <div onclick="speakAlphaWord(${index},${idx})" class="card-hover bg-white border-2 border-emerald-300 hover:border-emerald-500 rounded-xl p-2.5 flex flex-col items-center justify-center cursor-pointer shadow-sm">
-            ${englishWordCardVisual_(w, 'w-16 h-16 mb-1')}
-            <div class="flex items-center gap-1"><span class="text-sm font-black text-emerald-800">${escapeHtml(w.en)}</span><span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-700 font-bold">${w.pos || ''}</span></div>
-            <div class="text-emerald-600 text-base mt-0.5">${w.ipa}</div>
-            <div class="text-xs font-extrabold text-gray-600 my-0.5">${escapeHtml(w.vi)}</div>
-            <div class="text-[10px] font-bold text-gray-400 mb-1.5">"${escapeHtml(w.ex || '')}"</div>
-            <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[9px] font-black px-2 py-0.5 rounded-lg">🔊 Listen</span>
+        <div onclick="speakAlphaWord(${index},${idx})" class="l1-en-alphaipa-word-card card-hover bg-white border-2 border-emerald-300 hover:border-emerald-500 rounded-xl p-2.5 flex flex-col items-center justify-center cursor-pointer shadow-sm">
+            ${englishWordCardVisual_(w, 'l1-en-alphaipa-word-visual w-16 h-16 mb-1')}
+            <div class="flex items-center gap-1"><span class="l1-en-alphaipa-word-title text-sm font-black text-emerald-800">${escapeHtml(w.en)}</span><span class="l1-en-alphaipa-word-pos text-[9px] px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-700 font-bold">${escapeHtml(w.pos || '')}</span></div>
+            <div class="l1-en-alphaipa-word-ipa text-emerald-600 text-base mt-0.5">${escapeHtml(w.ipa || '')}</div>
+            <div class="l1-en-alphaipa-word-vi text-xs font-extrabold text-gray-600 my-0.5">${escapeHtml(w.vi)}</div>
+            <div class="l1-en-alphaipa-word-ex text-[10px] font-bold text-gray-400 mb-1.5">"${escapeHtml(w.ex || '')}"</div>
+            <span class="l1-en-alphaipa-word-listen bg-emerald-50 text-emerald-700 border border-emerald-200 text-[9px] font-black px-2 py-0.5 rounded-lg">🔊 Listen</span>
         </div>`;
 
     document.getElementById('alphaipa-content').innerHTML = `
-        <div class="w-full max-w-4xl flex flex-col items-center">
+        <div class="l1-en-alphaipa-layout l1-en-alphaipa-alphabet w-full max-w-4xl flex flex-col items-center">
             <div class="mb-2 text-center">
-                <h2 class="text-lg md:text-xl font-black text-pink-600 mb-0.5">🔤 ENGLISH ALPHABET & PHONICS (A-Z)</h2>
-                <p class="text-xs font-bold text-gray-500">Bấm vào chữ cái hoặc từ mẫu để nghe phát âm:</p>
-                <button onclick="speakAlphabetLetter(${index})" class="pastel-btn mt-1.5 bg-pink-100 hover:bg-pink-200 text-pink-700 border border-pink-300 font-extrabold px-3.5 py-1 rounded-xl text-xs flex items-center justify-center gap-1 mx-auto shadow-sm cursor-pointer">
+                <h2 class="l1-en-alphaipa-heading text-lg md:text-xl font-black text-pink-600 mb-0.5">🔤 ENGLISH ALPHABET & PHONICS (A-Z)</h2>
+                <p class="l1-en-alphaipa-instruction text-xs font-bold text-gray-500">Bấm vào chữ cái hoặc từ mẫu để nghe phát âm:</p>
+                <button onclick="speakAlphabetLetter(${index})" class="l1-en-alphaipa-listen-btn pastel-btn mt-1.5 bg-pink-100 hover:bg-pink-200 text-pink-700 border border-pink-300 font-extrabold px-3.5 py-1 rounded-xl text-xs flex items-center justify-center gap-1 mx-auto shadow-sm cursor-pointer">
                     <i class="fa-solid fa-volume-high"></i><span>Listen to Letter ${item.letter}</span>
                 </button>
             </div>
-            <div class="bg-pink-50/60 border-2 border-dashed border-pink-300 rounded-2xl p-3 md:p-3.5 w-full mb-3 shadow-sm">
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 items-stretch">
-                    <div onclick="speakAlphabetLetter(${index})" class="card-hover bg-white border-2 border-pink-400 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer shadow-sm bg-gradient-to-b from-white to-pink-50">
-                        <div class="text-5xl md:text-6xl font-black text-pink-600 mb-1">${item.name}</div>
-                        <div class="text-xs font-extrabold text-gray-600 mb-2">Cách đọc: <b class="text-purple-600 text-lg">${escapeHtml(alphabetIpaAmerican_(item.letter, item.ipaName))}</b></div>
-                        <span class="bg-pink-100 text-pink-700 text-[10px] font-black px-2.5 py-0.5 rounded-full border border-pink-200">👆 Tap to Listen</span>
+            <div class="l1-en-alphaipa-examples-bg bg-pink-50/60 border-2 border-dashed border-pink-300 rounded-2xl p-3 md:p-3.5 w-full mb-3 shadow-sm">
+                <div class="l1-en-alphaipa-examples-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 items-stretch">
+                    <div onclick="speakAlphabetLetter(${index})" class="l1-en-alphaipa-focus-card card-hover bg-white border-2 border-pink-400 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer shadow-sm bg-gradient-to-b from-white to-pink-50">
+                        <div class="l1-en-alphaipa-focus-symbol text-5xl md:text-6xl font-black text-pink-600 mb-1">${escapeHtml(item.name || item.letter)}</div>
+                        <div class="l1-en-alphaipa-focus-subtitle text-xs font-extrabold text-gray-600 mb-2">Cách đọc: <b class="l1-en-alphaipa-focus-ipa text-purple-600 text-lg">${escapeHtml(alphabetIpaAmerican_(item.letter, item.ipaName))}</b></div>
+                        <span class="l1-en-alphaipa-focus-listen bg-pink-100 text-pink-700 text-[10px] font-black px-2.5 py-0.5 rounded-full border border-pink-200">👆 Tap to Listen</span>
                     </div>
                     ${wordCard(item.word1, 1)}${wordCard(item.word2, 2)}${wordCard(item.word3, 3)}
                 </div>
             </div>
-            <div class="bg-white border border-gray-200 rounded-2xl p-2.5 w-full shadow-inner mb-2.5">
+            <div class="l1-en-alphaipa-keyboard bg-white border border-gray-200 rounded-2xl p-2.5 w-full shadow-inner mb-2.5">
                 <div class="flex flex-wrap items-center justify-center gap-1">${keyboardHtml}</div>
             </div>
-            <div class="flex items-center justify-center space-x-3 mt-1">
-                <button onclick="openAlphabetMenu(${index - 1})" class="pastel-btn bg-sky-50 hover:bg-sky-100 text-sky-600 border-2 border-sky-300 font-black text-xs md:text-sm px-4 py-2 rounded-xl shadow-sm flex items-center space-x-1 cursor-pointer ${index <= 0 ? 'opacity-40 pointer-events-none' : ''}"><i class="fa-solid fa-arrow-left"></i><span>Previous</span></button>
-                <button onclick="openAlphabetPractice()" class="pastel-btn bg-amber-400 hover:bg-amber-500 text-amber-900 border-2 border-amber-500 font-black text-xs md:text-sm px-5 py-2 rounded-xl shadow-sm flex items-center gap-1.5 cursor-pointer"><span>🎧 Alphabet Practice</span></button>
-                <button onclick="openAlphabetMenu(${index + 1})" class="pastel-btn bg-emerald-500 hover:bg-emerald-600 text-white font-black text-xs md:text-sm px-5 py-2 rounded-xl shadow-sm flex items-center space-x-1 cursor-pointer ${index >= ALPHABET_DATA.length - 1 ? 'opacity-40 pointer-events-none' : ''}"><span>Next</span><i class="fa-solid fa-arrow-right"></i></button>
+            <div class="l1-en-alphaipa-actions flex items-center justify-center space-x-3 mt-1">
+                <button onclick="openAlphabetMenu(${index - 1})" class="l1-en-alphaipa-nav-btn pastel-btn bg-sky-50 hover:bg-sky-100 text-sky-600 border-2 border-sky-300 font-black text-xs md:text-sm px-4 py-2 rounded-xl shadow-sm flex items-center space-x-1 cursor-pointer ${index <= 0 ? 'opacity-40 pointer-events-none' : ''}"><i class="fa-solid fa-arrow-left"></i><span>Previous</span></button>
+                <button onclick="openAlphabetPractice()" class="l1-en-alphaipa-nav-btn pastel-btn bg-amber-400 hover:bg-amber-500 text-amber-900 border-2 border-amber-500 font-black text-xs md:text-sm px-5 py-2 rounded-xl shadow-sm flex items-center gap-1.5 cursor-pointer"><span>🎧 Alphabet Practice</span></button>
+                <button onclick="openAlphabetMenu(${index + 1})" class="l1-en-alphaipa-nav-btn pastel-btn bg-emerald-500 hover:bg-emerald-600 text-white font-black text-xs md:text-sm px-5 py-2 rounded-xl shadow-sm flex items-center space-x-1 cursor-pointer ${index >= ALPHABET_DATA.length - 1 ? 'opacity-40 pointer-events-none' : ''}"><span>Next</span><i class="fa-solid fa-arrow-right"></i></button>
             </div>
         </div>`;
     speakAlphabetLetter(index);
@@ -2043,7 +2040,7 @@ function openIPAMenu(index = 0) {
     if (index < 0) index = 0;
     if (index >= IPA_DATA.length) index = IPA_DATA.length - 1;
     currentIPAIndex = index;
-    updateNavTabs("1. Alphabet & IPA", "🔤", "Bảng ngữ âm IPA (44 âm)");
+    updateNavTabs("1. Alphabet & IPA", "🔤", "1.2 IPA Sounds");
     switchAppView('view-alphabet');
 
     const item = IPA_DATA[currentIPAIndex];
@@ -2052,20 +2049,21 @@ function openIPAMenu(index = 0) {
         let badgeColor = isActive ? 'bg-pink-600 text-white border-pink-700' : 'bg-pink-50 text-pink-700 border-pink-200 hover:bg-pink-100';
         if (snd.type === 'vowel_di') badgeColor = isActive ? 'bg-purple-600 text-white border-purple-700' : 'bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100';
         else if (snd.type && snd.type.startsWith('consonant')) badgeColor = isActive ? 'bg-emerald-600 text-white border-emerald-700' : 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100';
-        return `<button onclick="openIPAMenu(${idx})" class="l1-en-learning-sound-key pastel-btn flex flex-col items-center justify-center rounded-xl p-1 shadow-sm border ${badgeColor} min-w-[50px] min-h-[46px] cursor-pointer ${isActive ? 'ring-2 ring-pink-300 font-black' : ''}">
-            <span class="text-base md:text-lg font-black">${snd.ipa}</span>
-            <span class="text-[8px] font-bold opacity-80 line-clamp-1">${(snd.name || '').split(' ')[0]}</span>
+        return `<button onclick="openIPAMenu(${idx})" class="l1-en-learning-sound-key l1-en-alphaipa-sound-key pastel-btn flex flex-col items-center justify-center rounded-xl p-1 shadow-sm border ${badgeColor} min-w-[50px] min-h-[46px] cursor-pointer ${isActive ? 'ring-2 ring-pink-300 font-black' : ''}">
+            <span class="l1-en-alphaipa-key-symbol text-base md:text-lg font-black">${escapeHtml(snd.ipa || '')}</span>
+            <span class="l1-en-alphaipa-key-caption text-[8px] font-bold opacity-80 line-clamp-1">${escapeHtml((snd.name || '').split(' ')[0])}</span>
         </button>`;
     }).join('');
 
+    // Same four-card row as 1.1: one focused sound, then three vocabulary examples.
     const examplesHtml = (item.words || []).map((w, wIdx) => `
-        <div onclick="speakIPAExampleWord(${currentIPAIndex},${wIdx})" class="card-hover bg-white border-2 border-emerald-300 hover:border-emerald-500 rounded-xl p-2.5 flex flex-col items-center justify-center cursor-pointer shadow-sm text-center">
-            ${englishWordCardVisual_(w, 'w-16 h-16 mb-1')}
-            <div class="flex items-center gap-1"><span class="text-sm md:text-base font-black text-emerald-800">${escapeHtml(w.word)}</span><span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-700 font-bold">${w.pos || ''}</span></div>
-            <div class="text-emerald-600 text-sm md:text-base font-bold my-0.5">${w.ipa}</div>
-            <div class="text-xs font-extrabold text-gray-700">${escapeHtml(w.vi)}</div>
-            <div class="text-[10px] font-bold text-gray-400 mt-1 italic">"${escapeHtml(w.ex || '')}"</div>
-            <span class="mt-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-[9px] font-black px-2.5 py-0.5 rounded-lg">🔊 Listen Word</span>
+        <div onclick="speakIPAExampleWord(${currentIPAIndex},${wIdx})" class="l1-en-alphaipa-word-card card-hover bg-white border-2 border-emerald-300 hover:border-emerald-500 rounded-xl p-2.5 flex flex-col items-center justify-center cursor-pointer shadow-sm text-center">
+            ${englishWordCardVisual_(w, 'l1-en-alphaipa-word-visual w-16 h-16 mb-1')}
+            <div class="flex items-center gap-1"><span class="l1-en-alphaipa-word-title text-sm font-black text-emerald-800">${escapeHtml(w.word || '')}</span><span class="l1-en-alphaipa-word-pos text-[9px] px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-700 font-bold">${escapeHtml(w.pos || '')}</span></div>
+            <div class="l1-en-alphaipa-word-ipa text-emerald-600 text-base mt-0.5">${escapeHtml(w.ipa || '')}</div>
+            <div class="l1-en-alphaipa-word-vi text-xs font-extrabold text-gray-600 my-0.5">${escapeHtml(w.vi || '')}</div>
+            <div class="l1-en-alphaipa-word-ex text-[10px] font-bold text-gray-400 mb-1.5">"${escapeHtml(w.ex || '')}"</div>
+            <span class="l1-en-alphaipa-word-listen bg-emerald-50 text-emerald-700 border border-emerald-200 text-[9px] font-black px-2 py-0.5 rounded-lg">🔊 Listen</span>
         </div>`).join('');
 
     let typeTag = 'Nguyên âm đơn (Monophthong)', typeBg = 'bg-pink-100 text-pink-700 border-pink-300';
@@ -2074,49 +2072,39 @@ function openIPAMenu(index = 0) {
     else if (item.type === 'consonant_voiced') { typeTag = 'Phụ âm hữu thanh (Voiced)'; typeBg = 'bg-emerald-100 text-emerald-700 border-emerald-300'; }
 
     document.getElementById('alphaipa-content').innerHTML = `
-        <div class="w-full max-w-5xl flex flex-col items-center">
+        <div class="l1-en-alphaipa-layout l1-en-alphaipa-ipa w-full max-w-4xl flex flex-col items-center">
             <div class="mb-2 text-center w-full">
-                <div class="flex items-center justify-between flex-wrap gap-1 mb-1">
-                    <span class="text-xs font-black bg-pink-100 text-pink-700 px-3 py-1 rounded-xl shadow-sm">Âm ${currentIPAIndex + 1} / ${IPA_DATA.length} IPA</span>
-                    <h2 class="text-base md:text-xl font-black text-pink-600 flex items-center justify-center gap-1.5"><span>🗣️</span><span>BẢNG PHIÊN ÂM QUỐC TẾ IPA</span><span>🎙️</span></h2>
-                    <button onclick="openIPAPractice()" class="pastel-btn bg-amber-400 hover:bg-amber-500 text-amber-900 border-2 border-amber-500 text-xs font-black px-3.5 py-1 rounded-xl shadow-sm flex items-center gap-1 cursor-pointer"><span>🔊 IPA Practice</span></button>
-                </div>
-                <p class="text-xs font-bold text-gray-500">Bấm vào bất kỳ âm IPA nào để nghe phát âm chuẩn và xem hướng dẫn chi tiết:</p>
+                <h2 class="l1-en-alphaipa-heading text-lg md:text-xl font-black text-pink-600 mb-0.5">🗣️ BẢNG PHIÊN ÂM QUỐC TẾ IPA</h2>
+                <p class="l1-en-alphaipa-instruction text-xs font-bold text-gray-500">Âm ${currentIPAIndex + 1}/${IPA_DATA.length} · Chạm vào ký hiệu hoặc từ mẫu để nghe phát âm:</p>
+                <button onclick="speakIPASound(${currentIPAIndex})" class="l1-en-alphaipa-listen-btn pastel-btn mt-1.5 bg-pink-100 hover:bg-pink-200 text-pink-700 border border-pink-300 font-extrabold px-3.5 py-1 rounded-xl text-xs flex items-center justify-center gap-1 mx-auto shadow-sm cursor-pointer">
+                    <i class="fa-solid fa-volume-high"></i><span>Listen to Sound ${escapeHtml(item.ipa || '')}</span>
+                </button>
             </div>
-            <div class="bg-gradient-to-r from-pink-50/80 via-purple-50/80 to-indigo-50/80 border-2 border-dashed border-pink-300 rounded-2xl p-3 md:p-4 w-full mb-3 shadow-sm">
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-stretch">
-                    <div class="md:col-span-5 bg-white/95 rounded-2xl p-3 border border-pink-200 shadow-sm flex flex-col items-center justify-between text-center">
-                        <div>
-                            <span class="text-[10px] md:text-xs font-black uppercase px-2.5 py-0.5 rounded-full border ${typeBg} inline-block mb-1.5">${typeTag}</span>
-                            <div onclick="speakIPASound(${currentIPAIndex})" class="cursor-pointer group">
-                                <div class="text-5xl md:text-6xl font-black text-pink-600 drop-shadow-sm group-hover:scale-105 transition transform">${item.ipa}</div>
-                                <div class="text-xs md:text-sm font-black text-purple-700 mt-1">${escapeHtml(item.name)}</div>
-                            </div>
-                        </div>
-                        <div class="my-2.5 bg-amber-50/80 border border-amber-200 rounded-xl p-2.5 text-left w-full shadow-inner">
-                            <div class="text-[11px] font-black text-amber-800 uppercase tracking-wide flex items-center gap-1 mb-1"><i class="fa-solid fa-lightbulb text-amber-500"></i><span>Hướng dẫn phát âm chuẩn:</span></div>
-                            <p class="text-xs font-bold text-gray-700 leading-relaxed">${escapeHtml(item.guide || '')}</p>
-                        </div>
-                        <div class="flex items-center justify-center gap-2 w-full mt-auto">
-                            <button onclick="speakIPASound(${currentIPAIndex})" class="pastel-btn flex-1 bg-pink-500 hover:bg-pink-600 text-white font-black text-xs py-2 px-3 rounded-xl shadow-md flex items-center justify-center gap-1.5 cursor-pointer"><i class="fa-solid fa-volume-high"></i><span>Nghe âm ${item.ipa}</span></button>
-                            <button onclick="speakIPAGuideVietnamese(${currentIPAIndex})" class="pastel-btn bg-purple-100 hover:bg-purple-200 text-purple-700 border border-purple-300 font-black text-xs py-2 px-2.5 rounded-xl shadow-sm flex items-center justify-center gap-1 cursor-pointer"><i class="fa-solid fa-language"></i><span>Đọc hướng dẫn</span></button>
-                        </div>
+            <div class="l1-en-alphaipa-examples-bg bg-pink-50/60 border-2 border-dashed border-pink-300 rounded-2xl p-3 md:p-3.5 w-full mb-3 shadow-sm">
+                <div class="l1-en-alphaipa-examples-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 items-stretch">
+                    <div onclick="speakIPASound(${currentIPAIndex})" class="l1-en-alphaipa-focus-card card-hover bg-white border-2 border-pink-400 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer shadow-sm bg-gradient-to-b from-white to-pink-50">
+                        <span class="l1-en-alphaipa-type text-[10px] font-black px-2.5 py-0.5 rounded-full border ${typeBg} mb-1">${escapeHtml(typeTag)}</span>
+                        <div class="l1-en-alphaipa-focus-symbol text-5xl md:text-6xl font-black text-pink-600 mb-1">${escapeHtml(item.ipa || '')}</div>
+                        <div class="l1-en-alphaipa-focus-subtitle text-xs font-extrabold text-purple-700 mb-2">${escapeHtml(item.name || '')}</div>
+                        <span class="l1-en-alphaipa-focus-listen bg-pink-100 text-pink-700 text-[10px] font-black px-2.5 py-0.5 rounded-full border border-pink-200">👆 Tap to Listen</span>
                     </div>
-                    <div class="md:col-span-7 flex flex-col justify-between">
-                        <div class="text-left mb-1.5 flex items-center justify-between">
-                            <span class="text-xs font-black text-emerald-800 uppercase tracking-wider flex items-center gap-1"><i class="fa-solid fa-star text-amber-400"></i><span>3 VÍ DỤ TỪ VỰNG CHUẨN CỦA ÂM ${item.ipa}:</span></span>
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 flex-1 items-stretch">${examplesHtml}</div>
-                        <div class="mt-2 text-center text-[11px] font-bold text-gray-400">👆 Chạm vào từng thẻ để nghe phát âm từ vựng và câu ví dụ sinh động!</div>
+                    ${examplesHtml}
+                </div>
+                <div class="l1-en-alphaipa-guide mt-2.5 bg-white/90 border border-amber-200 rounded-xl p-3 flex flex-wrap items-center gap-2.5 w-full">
+                    <div class="flex-1 min-w-[210px]">
+                        <div class="l1-en-alphaipa-guide-title font-black text-amber-800"><i class="fa-solid fa-lightbulb text-amber-500"></i> Hướng dẫn phát âm chuẩn:</div>
+                        <p class="l1-en-alphaipa-guide-copy font-bold text-gray-700 leading-relaxed">${escapeHtml(item.guide || '')}</p>
                     </div>
+                    <button onclick="speakIPAGuideVietnamese(${currentIPAIndex})" class="l1-en-alphaipa-guide-btn pastel-btn bg-purple-100 hover:bg-purple-200 text-purple-700 border border-purple-300 font-black px-3 py-2 rounded-xl shadow-sm flex items-center justify-center gap-1.5 cursor-pointer"><i class="fa-solid fa-language"></i><span>Đọc hướng dẫn</span></button>
                 </div>
             </div>
-            <div class="bg-white border border-gray-200 rounded-2xl p-2.5 w-full shadow-inner mb-2.5">
+            <div class="l1-en-alphaipa-keyboard bg-white border border-gray-200 rounded-2xl p-2.5 w-full shadow-inner mb-2.5">
                 <div class="flex flex-wrap items-center justify-center gap-1">${soundButtonsHtml}</div>
             </div>
-            <div class="flex items-center justify-center space-x-3">
-                <button onclick="openIPAMenu(${currentIPAIndex - 1})" class="pastel-btn bg-sky-50 hover:bg-sky-100 text-sky-600 border-2 border-sky-300 font-black text-sm px-5 py-2 rounded-xl shadow-sm flex items-center space-x-1.5 cursor-pointer ${currentIPAIndex <= 0 ? 'opacity-40 pointer-events-none' : ''}"><i class="fa-solid fa-arrow-left"></i><span>Previous Sound</span></button>
-                <button onclick="openIPAMenu(${currentIPAIndex + 1})" class="pastel-btn bg-amber-400 hover:bg-amber-500 text-amber-900 border-2 border-amber-500 font-black text-sm px-6 py-2 rounded-xl shadow-md flex items-center space-x-1.5 cursor-pointer ${currentIPAIndex >= IPA_DATA.length - 1 ? 'opacity-40 pointer-events-none' : ''}"><span>Next Sound</span><i class="fa-solid fa-arrow-right"></i></button>
+            <div class="l1-en-alphaipa-actions flex items-center justify-center space-x-3 mt-1">
+                <button onclick="openIPAMenu(${currentIPAIndex - 1})" class="l1-en-alphaipa-nav-btn pastel-btn bg-sky-50 hover:bg-sky-100 text-sky-600 border-2 border-sky-300 font-black text-xs md:text-sm px-4 py-2 rounded-xl shadow-sm flex items-center space-x-1 cursor-pointer ${currentIPAIndex <= 0 ? 'opacity-40 pointer-events-none' : ''}"><i class="fa-solid fa-arrow-left"></i><span>Previous</span></button>
+                <button onclick="openIPAPractice()" class="l1-en-alphaipa-nav-btn pastel-btn bg-amber-400 hover:bg-amber-500 text-amber-900 border-2 border-amber-500 font-black text-xs md:text-sm px-5 py-2 rounded-xl shadow-sm flex items-center gap-1.5 cursor-pointer"><span>🔊 IPA Practice</span></button>
+                <button onclick="openIPAMenu(${currentIPAIndex + 1})" class="l1-en-alphaipa-nav-btn pastel-btn bg-emerald-500 hover:bg-emerald-600 text-white font-black text-xs md:text-sm px-5 py-2 rounded-xl shadow-sm flex items-center space-x-1 cursor-pointer ${currentIPAIndex >= IPA_DATA.length - 1 ? 'opacity-40 pointer-events-none' : ''}"><span>Next</span><i class="fa-solid fa-arrow-right"></i></button>
             </div>
         </div>`;
     speakIPASound(currentIPAIndex);
@@ -5997,6 +5985,95 @@ const ENGLISH_RUNTIME_CSS_ = "/*! tailwindcss v4.1.10 | MIT License | https://ta
 
 
 const ENGLISH_HUB_UI_OVERRIDES_ = `
+/* TA1 · Explore 1.1 & 1.2: equal four-card learning layouts, 20% larger elements.
+   CSS sizes rather than scaling the whole page, so narrow screens still reflow. */
+#class1-english-runtime .l1-en-alphaipa-layout{
+  width:100%!important;
+  max-width:67.2rem!important; /* 56rem in original 1.1 x 1.2 */
+  min-width:0;
+}
+#class1-english-runtime .l1-en-alphaipa-heading{
+  font-size:21.6px!important;
+  line-height:1.22!important;
+}
+#class1-english-runtime .l1-en-alphaipa-instruction{
+  font-size:14.4px!important;
+  line-height:1.45!important;
+}
+#class1-english-runtime .l1-en-alphaipa-listen-btn,
+#class1-english-runtime .l1-en-alphaipa-nav-btn,
+#class1-english-runtime .l1-en-alphaipa-guide-btn{
+  font-size:15px!important;
+  min-height:40px;
+  padding:9px 15px!important;
+  line-height:1.2!important;
+}
+#class1-english-runtime .l1-en-alphaipa-examples-grid{gap:12px!important;}
+#class1-english-runtime .l1-en-alphaipa-examples-bg{padding:15px!important;}
+#class1-english-runtime .l1-en-alphaipa-word-card,
+#class1-english-runtime .l1-en-alphaipa-focus-card{
+  min-width:0;
+  padding:14px!important;
+  text-align:center;
+}
+#class1-english-runtime .l1-en-alphaipa-word-visual{
+  width:76.8px!important;
+  height:76.8px!important;
+  min-width:0;
+  font-size:43px!important;
+  flex-shrink:0;
+  object-fit:cover;
+}
+#class1-english-runtime .l1-en-alphaipa-word-title{font-size:16.8px!important;line-height:1.3!important;overflow-wrap:anywhere;}
+#class1-english-runtime .l1-en-alphaipa-word-pos{font-size:11px!important;}
+#class1-english-runtime .l1-en-alphaipa-word-ipa{font-size:19.2px!important;line-height:1.25!important;overflow-wrap:anywhere;}
+#class1-english-runtime .l1-en-alphaipa-word-vi{font-size:14.4px!important;line-height:1.3!important;}
+#class1-english-runtime .l1-en-alphaipa-word-ex{font-size:12px!important;line-height:1.3!important;overflow-wrap:anywhere;}
+#class1-english-runtime .l1-en-alphaipa-word-listen{font-size:11px!important;line-height:1.3!important;}
+#class1-english-runtime .l1-en-alphaipa-focus-symbol{
+  font-size:57.6px!important;
+  line-height:1.1!important;
+  max-width:100%;
+  overflow-wrap:anywhere;
+}
+#class1-english-runtime .l1-en-alphaipa-focus-subtitle{font-size:14.4px!important;line-height:1.3!important;}
+#class1-english-runtime .l1-en-alphaipa-focus-ipa{font-size:21.6px!important;}
+#class1-english-runtime .l1-en-alphaipa-focus-listen,
+#class1-english-runtime .l1-en-alphaipa-type{font-size:12px!important;line-height:1.3!important;}
+#class1-english-runtime .l1-en-alphaipa-keyboard{padding:12px!important;}
+#class1-english-runtime .l1-en-alphaipa-letter-key{
+  min-width:62.4px!important;
+  min-height:62.4px!important;
+  padding:7px!important;
+}
+#class1-english-runtime .l1-en-alphaipa-sound-key{
+  min-width:60px!important;
+  min-height:55.2px!important;
+  padding:6px!important;
+}
+#class1-english-runtime .l1-en-alphaipa-letter-key .l1-en-alphaipa-key-symbol{font-size:19.2px!important;line-height:1.2!important;}
+#class1-english-runtime .l1-en-alphaipa-letter-key .l1-en-alphaipa-key-caption{font-size:14.4px!important;line-height:1.2!important;}
+#class1-english-runtime .l1-en-alphaipa-sound-key .l1-en-alphaipa-key-symbol{font-size:21.6px!important;line-height:1.2!important;}
+#class1-english-runtime .l1-en-alphaipa-sound-key .l1-en-alphaipa-key-caption{font-size:11.5px!important;line-height:1.2!important;}
+#class1-english-runtime .l1-en-alphaipa-guide-title{font-size:14.4px!important;line-height:1.4!important;}
+#class1-english-runtime .l1-en-alphaipa-guide-copy{font-size:14.4px!important;line-height:1.55!important;}
+#class1-english-runtime .l1-en-alphaipa-actions{flex-wrap:wrap;gap:10px!important;margin-left:0!important;margin-right:0!important;}
+#class1-english-runtime .l1-en-alphaipa-actions > button{margin-left:0!important;margin-right:0!important;}
+@media(min-width:768px){
+  #class1-english-runtime .l1-en-alphaipa-heading{font-size:24px!important;}
+  #class1-english-runtime .l1-en-alphaipa-focus-symbol{font-size:72px!important;}
+  #class1-english-runtime .l1-en-alphaipa-focus-subtitle{font-size:16.8px!important;}
+  #class1-english-runtime .l1-en-alphaipa-letter-key .l1-en-alphaipa-key-caption{font-size:16.8px!important;}
+  #class1-english-runtime .l1-en-alphaipa-listen-btn,
+  #class1-english-runtime .l1-en-alphaipa-nav-btn,
+  #class1-english-runtime .l1-en-alphaipa-guide-btn{font-size:16.8px!important;min-height:44px;}
+}
+@media(max-width:639px){
+  #class1-english-runtime .l1-en-alphaipa-examples-bg{padding:10px!important;}
+  #class1-english-runtime .l1-en-alphaipa-word-card,
+  #class1-english-runtime .l1-en-alphaipa-focus-card{padding:10px!important;}
+}
+
 /* Class 1 English: fix clipped/undersized shared sub-banner on mobile.
    Desktop preserves the shared banner aspect ratio and pill styling. */
 @media (max-width:767px) {
@@ -6254,6 +6331,7 @@ const ENGLISH_UNIFIED_LEARNING_CARDS_CSS_ = `
 /* Epsilon Edu TA1 - dung chung kieu the cua Kham pha cho tat ca menu hoc. */
 #class1-english-runtime .l1-en-learning-card{
   --lc-bg:#fff1f7;--lc-border:#f9a8d4;--lc-ink:#be185d;--lc-icon:#fce7f3;--lc-glow:rgba(236,72,153,.10);
+  position:relative;
   display:flex!important; flex-direction:column; justify-content:space-between; gap:7px;
   min-width:0;width:100%;min-height:143px;padding:12px 12px 10px!important;
   text-align:left;cursor:pointer; border:1px solid var(--lc-border)!important;
@@ -6297,6 +6375,14 @@ const ENGLISH_UNIFIED_LEARNING_CARDS_CSS_ = `
 #class1-english-runtime .l1-en-learning-card .l1-en-learning-title-vi{
   display:block;color:#1f2937!important;font-size:14px!important;font-weight:800!important;
   line-height:1.22!important;overflow-wrap:anywhere;
+}
+#class1-english-runtime .l1-en-learning-card .l1-en-learning-tag{
+  position:absolute;top:10px;right:12px;z-index:2;
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:24px;padding:3px 10px;border-radius:999px;
+  background:linear-gradient(90deg,#f59e0b,#ef4444);
+  color:#fff;font-size:12px!important;font-weight:900!important;line-height:1.1!important;
+  box-shadow:0 4px 10px rgba(239,68,68,.18);
 }
 #class1-english-runtime .l1-en-learning-card .l1-en-learning-bottom{
   display:flex;align-items:flex-end;justify-content:space-between;gap:8px;width:100%;min-width:0;
@@ -6615,6 +6701,10 @@ const ENGLISH_UNIFIED_LEARNING_CARDS_CSS_ = `
   font-size:14px!important;
   padding:5px 11px!important;
 }
+#class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"] .l1-en-learning-tag{
+  top:10px;
+  right:12px;
+}
 @media(max-width:767px){
  #class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"]{
   grid-template-columns:1fr!important;
@@ -6623,6 +6713,12 @@ const ENGLISH_UNIFIED_LEARNING_CARDS_CSS_ = `
  }
  #class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"] .l1-en-learning-card{
   min-height:170px!important;
+ }
+ #class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"] .l1-en-learning-tag{
+  top:9px;
+  right:10px;
+  font-size:11px!important;
+  padding:3px 9px;
  }
 }
 @media(hover:hover) and (pointer:fine){
