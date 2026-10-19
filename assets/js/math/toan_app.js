@@ -13,13 +13,13 @@ const MATH_MODULE_RUNTIME_ID_ = 'class1-math-runtime';
 // ==========================================
 const TOPICS_CONFIG = [
     { id: 1, title: "1. Các số đến 10", desc: "Đọc, viết, đếm và so sánh số 0-10", icon: "🔢", color: "pink" },
-    { id: 2, title: "2. Phép cộng và phép trừ", desc: "Tách - gộp và thực hiện phép cộng, phép trừ", icon: "➕", color: "purple" },
-    { id: 3, title: "3. Các số trong phạm vi 100", desc: "Đọc, viết, cấu tạo, so sánh, sắp xếp và đặc điểm số đến 100", icon: "💯", color: "indigo" },
+    { id: 2, title: "2. Phép cộng, phép trừ trong phạm vi 10", desc: "Gộp, bớt và tính trong phạm vi 10", icon: "➕", color: "purple" },
+    { id: 3, title: "3. Các số trong phạm vi 100", desc: "Đọc, viết, so sánh số và cộng trừ không nhớ đến 100", icon: "💯", color: "indigo" },
     { id: 4, title: "4. Dãy số và quy luật", desc: "Liền trước - liền sau, số còn thiếu và quy luật dãy số", icon: "🔗", color: "cyan" },
     { id: 5, title: "5. Hình học", desc: "Nhận biết hình phẳng, hình khối, lắp ghép và đếm hình", icon: "📐", color: "amber" },
     { id: 6, title: "6. Vị trí và không gian", desc: "Trên - dưới, trước - sau, trái - phải, thứ tự, các mặt của khối và tổng hợp", icon: "🧭", color: "violet" },
     { id: 7, title: "7. Độ dài và đo độ dài", desc: "Dài - ngắn, cao - thấp, gang tay - sải tay - bước chân, xăng-ti-mét, ước lượng và đo", icon: "📏", color: "emerald" },
-    { id: 8, title: "8. Thời gian, giờ và lịch", desc: "Xem giờ đúng, sinh hoạt theo giờ, ngày trong tuần, hôm qua - hôm nay - ngày mai và đọc lịch hoạt động", icon: "⏰", color: "blue" },
+    { id: 8, title: "8. Thời gian, giờ và lịch", desc: "Xem giờ đúng, ngày trong tuần, lịch tháng và lịch hoạt động", icon: "⏰", color: "blue" },
     { id: 9, title: "9. Giải toán bằng câu chuyện", desc: "Hiểu tình huống → chọn phép tính → trả lời bài toán bằng tranh", icon: "📝", color: "rose" },
     { id: 10, title: "10. Toán tư duy nâng cao", desc: "Tìm số bí mật • Chuỗi số • Chữ số • Ô số • Hình học tư duy • Bài toán quan hệ", icon: "🧠", color: "yellow" },
     { id: 11, title: "11. Xưởng thử thách Toán", desc: "Thám tử Toán • Manh mối • Đúng sai • Tuổi - ngày - giờ • Puzzle tổng hợp", icon: "🕵️", color: "purple" },
@@ -41,11 +41,12 @@ const MATH_SUBTOPIC_ICONS_ = {
     1: ['\u{1F522}', '\u2696\uFE0F', '\u{1F9E9}', '\u{1F9EE}'],
     2: ['\u{1F430}', '\u2795', '\u2796', '\u{1F9EE}', '\u{1F3AF}'],
     // Mục 3: sáu icon riêng theo thứ tự học mới, tránh lặp icon số.
-    3: ['🧱', '🔢', '⚖️', '📊', '🧩', '🔍'],
+    3: ['🧱', '🔢', '⚖️', '📊', '🧩', '🔍', '🧮'],
     5: ['\u{1F4D0}', '\u{1F535}', '\u{1F9E9}', '\u{1F9CA}', '\u{1F50D}', '\u{1F537}']
 };
 
 function mathSubtopicIcon_(topicNum, displayIndex, label) {
+    if (Number(topicNum) === 4 && displayIndex === 7) return '💯';
     const defined = MATH_SUBTOPIC_ICONS_[Number(topicNum)];
     if (defined && defined[displayIndex - 1]) return defined[displayIndex - 1];
     const name = String(label || '').toLocaleLowerCase('vi');
@@ -359,7 +360,10 @@ function normalizeQuestion(q) {
         muc2_instruction: typeof q.muc2_instruction === 'string' ? q.muc2_instruction : '',
         // Số gốc của Khám phá 3.2: cùng 50 số, mỗi lượt chia đều đọc và viết.
         muc3_rw_number: Number.isSafeInteger(q.muc3_rw_number) ? q.muc3_rw_number : null,
+        muc3_vertical: q.muc3_vertical && typeof q.muc3_vertical === 'object' ? q.muc3_vertical : null,
         exercise_mode: q.exercise_mode ?? q.mode ?? '',
+        muc4_type: q.muc4_type ?? '',
+        muc4_visual: normalizeVisualMedia_(q.muc4_visual ?? null),
         muc5_type: q.muc5_type ?? '',
         muc5_visual: normalizeVisualMedia_(q.muc5_visual ?? null),
         muc6_type: q.muc6_type ?? '',
@@ -4037,6 +4041,11 @@ function buildPracticeCycleQuestions_(pool) {
             ['result', 'second', 'first'].includes(q?._muc2_variant_kind));
     if (isMuc2GuidedVariants) return buildMuc2BalancedVariantCycle_(source);
     if (source.every(q => String(q?.sub_topic || '') === '3.1')) return buildTopic3ReadWriteCycle_(source);
+    if (source.every(q => String(q?.sub_topic || '') === '4.7')) {
+        // Day theo 4 hoat dong, chi tron cau trong moi hoat dong.
+        return ['chart_rule','chart_find','chart_fill','chart_piece']
+            .flatMap(mode => shuffleArray(source.filter(q => q.muc4_type === mode)));
+    }
     const isTopic35 = source.every(q => String(q?.sub_topic || '') === '3.5');
     if (!isTopic35) return shuffleArray(source);
 
@@ -4457,6 +4466,13 @@ function startTopicQuiz(topicNum, topicName, questions, subLabel) {
     wrongAttemptsByQ = {};
     topic3PlaceValueUiState_ = {};
     topic3ReadWriteUiState_ = {};
+    topic37Guided_ = true; // Mỗi lượt bắt đầu có hỗ trợ; bé có thể chuyển chế độ bất kỳ lúc nào.
+    muc5ComposeCompleted_.clear();
+    muc7RulerPracticeState_ = {questionId:null,marks:[]};
+    muc8SelectedDate_ = {questionId:null,date:null};
+    muc9GuideState_ = {questionId:null,step:0};
+    topic47SelectedPiece_ = {questionId:null, option:null};
+    topic47HintState_ = {questionId:null, shown:false};
     if (Number(topicNum) === 2) resetMuc2UiState_(); // Muc 4/5 mac dinh hien hinh huong dan; Muc 6 van khong co goi y.
     quizWrongAnswers = []; 
     quizAnsweredLog = []; 
@@ -6151,6 +6167,183 @@ function buildFoundationQuestionLayout(q, speakerHtml) {
         </div>`;
 }
 
+
+// ==========================================
+// KHÁM PHÁ 3.7: CỘNG / TRỪ KHÔNG NHỚ TRONG PHẠM VI 100
+// 4 dạng × 25 câu = 100 câu trộn chung; hai chế độ dùng cùng câu và tiến độ.
+// ==========================================
+let topic37Guided_ = true;
+
+function isTopic37Vertical_(q) {
+    const stage = String(q?.sub_topic || '');
+    if (Number(activeTopicId) !== 3 || activeRoadmapContext || activeExamContext ||
+        !['3.7','3.8'].includes(stage)) return false;
+    const x = q?.muc3_vertical;
+    if (!x || !Number.isSafeInteger(x.a) || !Number.isSafeInteger(x.b) ||
+        !['+','-'].includes(x.op) || x.a < 10 || x.a > 99 || x.b < 1 || x.b > 99) return false;
+    const missing = x.missing || 'result';
+    if ((stage === '3.7' && missing !== 'result') ||
+        (stage === '3.8' && !['a','b'].includes(missing))) return false;
+    const result = x.op === '+' ? x.a + x.b : x.a - x.b;
+    const tensA = Math.floor(x.a/10), tensB = Math.floor(x.b/10);
+    const onesA = x.a%10, onesB = x.b%10;
+    const valid = result >= 10 && result <= 99 &&
+        (x.op === '+' ? (onesA + onesB <= 9 && tensA + tensB <= 9) :
+                        (onesA >= onesB && tensA >= tensB));
+    const expected = missing === 'a' ? x.a : missing === 'b' ? x.b : result;
+    return valid && String(expected) === String(q.answer);
+}
+
+function topic37SetMode_(guided) {
+    const q = activeQuestionsList?.[currentQIndex];
+    if (!isTopic37Vertical_(q)) return;
+    topic37Guided_ = Boolean(guided);
+    refreshTopic37Vertical_(q);
+}
+
+function topic37HintLines_(q, solved) {
+    const x=q.muc3_vertical, missing=x.missing;
+    const a=x.a, b=x.b, op=x.op, result=op==='+'?a+b:a-b;
+    let first, second, opChar, rule;
+    if (op === '+') {
+        first = result; second = missing === 'a' ? b : a; opChar = '&minus;';
+        rule = 'Mu\u1ed1n t\u00ecm s\u1ed1 h\u1ea1ng: l\u1ea5y t\u1ed5ng tr\u1eeb s\u1ed1 h\u1ea1ng \u0111\u00e3 bi\u1ebft.';
+    } else if (missing === 'a') {
+        first = result; second = b; opChar = '+';
+        rule = 'Mu\u1ed1n t\u00ecm s\u1ed1 b\u1ecb tr\u1eeb: l\u1ea5y hi\u1ec7u c\u1ed9ng s\u1ed1 tr\u1eeb.';
+    } else {
+        first = a; second = result; opChar = '&minus;';
+        rule = 'Mu\u1ed1n t\u00ecm s\u1ed1 tr\u1eeb: l\u1ea5y s\u1ed1 b\u1ecb tr\u1eeb tr\u1eeb hi\u1ec7u.';
+    }
+    const units = opChar === '+' ? first%10 + second%10 : first%10 - second%10;
+    const tens = opChar === '+' ? Math.floor(first/10) + Math.floor(second/10)
+                                 : Math.floor(first/10) - Math.floor(second/10);
+    const unitStep = `<p><strong>\u0110\u01a1n v\u1ecb:</strong> ${first%10} ${opChar} ${second%10} = <b>${solved ? units : '?'}</b></p>`;
+    const tensStep = missing === 'b' && b < 10
+        ? '<p><strong>Ch\u1ee5c:</strong> Gi\u1eef nguy\u00ean, kh\u00f4ng c\u1ea7n t\u00ednh.</p>'
+        : `<p><strong>Ch\u1ee5c:</strong> ${Math.floor(first/10)} ${opChar} ${Math.floor(second/10)} = <b>${solved ? tens : '?'}</b></p>`;
+    return unitStep + tensStep + `<span>${rule}</span>`;
+}
+
+function buildTopic37VerticalVisual_(q) {
+    const x = q.muc3_vertical, a = x.a, b = x.b, op = x.op;
+    const missing = x.missing || 'result';
+    const solved = userAnswers[currentQIndex] === String(q.answer);
+    const mode = topic37Guided_ ? 'is-guided' : 'is-independent';
+    const ta=Math.floor(a/10),ua=a%10,tb=b>=10?Math.floor(b/10):'',ub=b%10;
+    const result = op === '+' ? a+b : a-b;
+    const tr=Math.floor(result/10),ur=result%10;
+    const symbol=op==='+'?'+':'\u2212';
+    const wrong = (wrongAttemptsByQ[currentQIndex]||[]).length > 0 && !solved;
+    const cell=(value,kind,unknown=false) => `<span class="topic37-digit topic37-${kind}${unknown && solved ? ' topic37-revealed' : ''}${unknown && !solved ? ' topic37-unknown' : ''}">${unknown&&!solved?'?':value===''?'&nbsp;':value}</span>`;
+    const topCells = missing === 'a' ? cell(ta,'tens',true)+cell(ua,'ones',true) : cell(ta,'tens')+cell(ua,'ones');
+    const bottomCells = missing === 'b'
+        ? (b >= 10 ? cell(tb,'tens',true) : cell('','tens')) + cell(ub,'ones',true)
+        : cell(tb,'tens')+cell(ub,'ones');
+    let answerCells;
+    if (missing === 'result') {
+        answerCells = solved ? cell(tr,'answer',true)+cell(ur,'answer',true)
+                             : cell('?','placeholder')+cell('?','placeholder');
+    } else {
+        answerCells = cell(tr,'tens') + cell(ur,'ones');
+    }
+    let hint = '';
+    if (topic37Guided_) {
+        if (missing === 'result') {
+            const unitResult = op === '+' ? ua+ub : ua-ub;
+            const tensResult = op === '+' ? ta+(tb===''?0:tb) : ta-(tb===''?0:tb);
+            hint = `<div class="topic37-mini-steps">
+                <p><strong>\u0110\u01a1n v\u1ecb:</strong> ${ua} ${symbol} ${ub} = <b>${solved?unitResult:'?'}</b></p>
+                <p><strong>Ch\u1ee5c:</strong> ${ta} ${symbol} ${tb===''?'0':tb} = <b>${solved?tensResult:'?'}</b></p>
+                <span>Con t\u00ednh t\u1eebng c\u1ed9t ri\u00eang, t\u1eeb ph\u1ea3i sang tr\u00e1i nh\u00e9!</span>
+            </div>`;
+        } else {
+            hint = `<div class="topic37-mini-steps">${topic37HintLines_(q,solved)}</div>`;
+        }
+    }
+    const solvedText = missing === 'result'
+        ? `<div class="topic37-solved" role="status">\u2713 ${a} ${symbol} ${b} = <strong>${result}</strong></div>`
+        : `<div class="topic37-solved" role="status">\u2713 S\u1ed1 c\u00f2n thi\u1ebfu l\u00e0 <strong>${q.answer}</strong>.</div>`;
+    const spokenA=missing==='a'&&!solved?'?':a;
+    const spokenB=missing==='b'&&!solved?'?':b;
+    const spokenResult=missing==='result'&&!solved?'?':result;
+    return `<div class="topic37-visual ${mode}" aria-label="\u0110\u1eb7t t\u00ednh ${spokenA} ${symbol} ${spokenB} = ${spokenResult}">
+        <div class="topic37-vertical-board">
+            <div class="topic37-column-label topic37-header-tens">CH\u1ee4C</div>
+            <div class="topic37-column-label topic37-header-ones">\u0110\u01a0N V\u1eca</div>
+            <div class="topic37-divider" aria-hidden="true"></div>
+            <span class="topic37-sign" aria-label="${op==='+'?'C\u1ed9ng':'Tr\u1eeb'}">${symbol}</span>
+            ${topCells}${bottomCells}
+            <span class="topic37-horizontal-line" aria-hidden="true"></span>
+            <span class="topic37-result ${solved?'is-solved':''} ${missing!=='result'?'is-known':''}" aria-live="polite">${answerCells}</span>
+        </div>
+        ${hint}
+        ${solved ? solvedText : (wrong?'<p class="topic37-try" role="status">Con th\u1eed l\u1ea1i nh\u00e9! Nh\u00ecn k\u1ef9 t\u1eebng h\u00e0ng \u0111\u1ec3 t\u00ednh.</p>':'')}
+    </div>`;
+}
+
+function refreshTopic37Vertical_(q) {
+    if (!isTopic37Vertical_(q)) return;
+    const host=document.getElementById('topic37-visual-host');
+    if(host) host.innerHTML=buildTopic37VerticalVisual_(q);
+    const prompt=document.getElementById('topic37-question-expression');
+    if(prompt) prompt.innerHTML=topic37QuestionExpressionHtml_(q);
+    const yes=document.getElementById('topic37-mode-guided');
+    const no=document.getElementById('topic37-mode-independent');
+    if(yes&&no){
+        yes.classList.toggle('is-selected',topic37Guided_);
+        no.classList.toggle('is-selected',!topic37Guided_);
+        yes.setAttribute('aria-pressed',String(topic37Guided_));
+        no.setAttribute('aria-pressed',String(!topic37Guided_));
+    }
+}
+
+function topic37QuestionExpressionHtml_(q) {
+    const x=q.muc3_vertical, {a,b,op}=x;
+    const missing=x.missing||'result';
+    const solved=userAnswers[currentQIndex]===String(q.answer);
+    const symbol=op==='+'?'+':'\u2212';
+    const result=op==='+'?a+b:a-b;
+    const markup=v=>`<span class="${solved?'topic37-question-answer':'topic37-question-mark'}">${solved?v:'?'}</span>`;
+    return `${missing==='a'?markup(a):a} ${symbol} ${missing==='b'?markup(b):b} = ${missing==='result'?markup(result):result}`;
+}
+
+function topic37SpeakQuestion_(q, solved=false) {
+    const x=q.muc3_vertical, missing=x.missing||'result';
+    const word=x.op==='+'?'c\u1ed9ng':'tr\u1eeb';
+    const result=x.op==='+'?x.a+x.b:x.a-x.b;
+    if(solved) return `${x.a} ${word} ${x.b} b\u1eb1ng ${result}.`;
+    if(missing==='a') return `B\u00e9 \u01a1i, m\u1ea5y ${word} ${x.b} b\u1eb1ng ${result}?`;
+    if(missing==='b') return `B\u00e9 \u01a1i, ${x.a} ${word} m\u1ea5y b\u1eb1ng ${result}?`;
+    return `B\u00e9 \u01a1i, ${x.a} ${word} ${x.b} b\u1eb1ng m\u1ea5y?`;
+}
+
+function buildTopic37VerticalLayout_(q, speakerHtml) {
+    // 3.7 va 3.8 chung mot bo khung, doi che do khong doi cau hoi dang lam.
+    const stage = getTopic3Stage_(q);
+    const opts = (q.options || []).map((opt,idx) => `
+        <button type="button" data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${escapeHtml(escapeJsString_(opt))}')"
+                class="topic37-option option-btn pastel-btn"><strong>${String.fromCharCode(65+idx)}.</strong> ${escapeHtml(opt)}</button>`).join('');
+    return `<section class="topic37-layout${stage === '3.8' ? ' topic38-layout' : ''}" data-math-stage="${stage}">
+        <div class="topic37-mode-control" role="group" aria-label="Chọn cách học">
+            <button type="button" id="topic37-mode-guided" class="topic37-mode-choice"
+                aria-pressed="${String(topic37Guided_)}" onclick="topic37SetMode_(true)">🐰 Có gợi ý</button>
+            <button type="button" id="topic37-mode-independent" class="topic37-mode-choice"
+                aria-pressed="${String(!topic37Guided_)}" onclick="topic37SetMode_(false)">✏️ Tự làm</button>
+        </div>
+        <div class="topic37-two-panels">
+            <div class="topic37-model-panel">
+                <div id="topic37-visual-host">${buildTopic37VerticalVisual_(q)}</div>
+            </div>
+            <div class="topic37-question-panel">
+                <h3 id="topic37-question-expression" class="topic37-question-expression" aria-label="Phép tính cần tìm số">${topic37QuestionExpressionHtml_(q)}</h3>
+                ${speakerHtml}
+                <div class="topic37-options">${opts}</div>
+            </div>
+        </div>
+    </section>`;
+}
+
 let topic3ReadWriteUiState_ = {};
 
 function isTopic3ReadWrite_(q) {
@@ -6609,6 +6802,310 @@ function topic3SortReset_() {
 
 function getTopic4SequenceStage_(q) {
     return String(q?.sub_topic || '');
+}
+
+// ==========================================
+// KHAM PHA 4.6 - QUY LUAT EMOJI (SGK KNTT: day hinh lap lai)
+// Cac cau so cu van dung layout cu; cac cau moi ve hinh moi co layout nay.
+// ==========================================
+function isTopic46EmojiPractice_(q) {
+    return !activeExamContext && !activeRoadmapContext &&
+        Number(activeTopicId) === 4 && String(q?.sub_topic || '') === '4.6' &&
+        q?.muc4_type === 'emoji_pattern' &&
+        Array.isArray(q?.muc4_visual?.sequence) &&
+        q.muc4_visual.sequence.length >= 4 && q.muc4_visual.sequence.length <= 9;
+}
+
+function topic46EmojiPatternStripHtml_(q) {
+    if (!isTopic46EmojiPractice_(q)) return '';
+    const seq = q.muc4_visual.sequence;
+    const missingIndex = Number(q.muc4_visual.missing_index);
+    const solved = userAnswers[currentQIndex] === q.answer;
+    return `<div class="w-full flex items-stretch justify-center gap-1 sm:gap-1.5" role="img" aria-label="Dãy emoji có một hình còn thiếu">${seq.map((item,i) => {
+        const isHole = i === missingIndex && item === '?';
+        const shown = isHole ? (solved ? q.answer : '?') : item;
+        const tone = isHole
+            ? (solved ? 'border-emerald-400 bg-emerald-50' : 'border-dashed border-pink-400 bg-pink-50')
+            : 'border-violet-200 bg-white';
+        return `<span class="flex-1 min-w-0 aspect-square max-w-[76px] rounded-lg sm:rounded-xl border ${tone} inline-flex items-center justify-center leading-none select-none" style="font-size:clamp(24px,2.6vw,36px)" ${isHole ? 'aria-label="Ô trống cần tìm"' : ''}>${escapeHtml(shown)}</span>`;
+    }).join('')}</div>`;
+}
+
+function topic46EmojiPatternSolutionHtml_(q) {
+    if (!isTopic46EmojiPractice_(q) || userAnswers[currentQIndex] !== q.answer) return '';
+    const explanation = String(q?.explanation || q?.hint || '').trim();
+    return `<div class="mt-3 rounded-2xl border border-emerald-300 bg-emerald-50 px-3 py-3 text-sm md:text-base font-bold text-emerald-800 text-center">🐰 ${escapeHtml(explanation)}</div>`;
+}
+
+function buildTopic46EmojiPatternLayout_(q, speakerHtml) {
+    const options=(q.options || []).map((opt,i) => {
+        const letter=String.fromCharCode(65+i);
+        return `<button data-opt="${escapeHtml(opt)}" onclick="checkAnswer('${escapeJsString_(opt)}')" class="option-btn w-full min-h-[76px] sm:min-h-[90px] rounded-2xl border border-violet-200 bg-purple-50/50 hover:bg-purple-100/70 px-2.5 py-2 font-extrabold text-slate-800 transition-all shadow-xs pastel-btn flex items-center justify-center gap-3" style="min-height:72px" aria-label="Đáp án ${letter}: ${escapeHtml(opt)}"><strong class="text-violet-600 text-lg sm:text-xl">${letter}.</strong><span class="opt-text leading-none" style="font-size:clamp(36px,3vw,44px)">${escapeHtml(opt)}</span><span class="option-icon"></span></button>`;
+    }).join('');
+    return `<div class="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[1.08fr_0.92fr] gap-3 md:gap-4 items-stretch">
+        <div class="rounded-[26px] border border-purple-200 bg-gradient-to-br from-pink-50 via-white to-blue-50 px-3 py-5 sm:p-5 flex flex-col justify-center min-w-0">
+            <div class="text-center text-sm sm:text-base font-black text-violet-700 mb-3">🔎 Quan sát dãy hình</div>
+            <div id="topic46-emoji-sequence">${topic46EmojiPatternStripHtml_(q)}</div>
+            <div id="topic46-emoji-solution">${topic46EmojiPatternSolutionHtml_(q)}</div>
+        </div>
+        <div class="rounded-[26px] border border-purple-100 bg-white px-3 py-4 sm:p-5 flex flex-col justify-center min-w-0">
+            <h3 class="text-xl md:text-2xl lg:text-[26px] leading-snug text-center font-black text-slate-900">${escapeHtml(q.question_text)}</h3>
+            ${speakerHtml}
+            <div class="grid grid-cols-2 gap-2.5 mt-3">${options}</div>
+            <div id="topic46-emoji-nudge" class="text-center text-sm md:text-base font-bold text-violet-700 mt-3">🐰 Con tìm nhóm hình đang lặp lại nhé!</div>
+        </div>
+    </div>`;
+}
+
+function refreshTopic46EmojiPatternFeedback_(q) {
+    if (!isTopic46EmojiPractice_(q)) return;
+    const sequence = document.getElementById('topic46-emoji-sequence');
+    const solution = document.getElementById('topic46-emoji-solution');
+    const nudge = document.getElementById('topic46-emoji-nudge');
+    if (sequence) sequence.innerHTML = topic46EmojiPatternStripHtml_(q);
+    if (solution) solution.innerHTML = topic46EmojiPatternSolutionHtml_(q);
+    if (nudge) nudge.textContent = userAnswers[currentQIndex] === q.answer
+        ? '🌟 Giỏi lắm! Con đã tìm đúng quy luật.'
+        : ((wrongAttemptsByQ[currentQIndex] || []).length > 0
+            ? '🐰 Con đọc lại nhóm hình từ đầu rồi thử lần nữa nhé!'
+            : '🐰 Con tìm nhóm hình đang lặp lại nhé!');
+}
+
+// ==========================================
+// KHAM PHA 4.7 - BANG 100 SO (SGK KNTT BAI 23)
+// Tuong tac that: chon o / dien o trong / ghep manh 2x2.
+// Chi kich hoat trong Kham pha; khong anh huong Bai tap, De thi va lich su.
+// ==========================================
+let topic47SelectedPiece_ = { questionId: null, option: null };
+let topic47HintState_ = { questionId: null, shown: false };
+
+function isTopic47Practice_(q) {
+    return !activeExamContext && !activeRoadmapContext &&
+        Number(activeTopicId) === 4 && String(q?.sub_topic || '') === '4.7' &&
+        ['chart_rule', 'chart_find', 'chart_fill', 'chart_piece'].includes(String(q?.muc4_type || ''));
+}
+function topic47Meta_(q) {
+    const meta = q?.muc4_visual || {};
+    const mode = String(q?.muc4_type || '');
+    const num = Number(meta.anchor);
+    const target = Number(meta.target);
+    const valid = n => Number.isSafeInteger(n) && n >= 1 && n <= 100;
+    if (!['chart_rule', 'chart_find', 'chart_fill', 'chart_piece'].includes(mode) || !valid(target)) return null;
+    const anchor = valid(num) ? num : target;
+    if (mode === 'chart_piece' && (anchor > 89 || anchor % 10 === 0 ||
+        ![anchor,anchor+1,anchor+10,anchor+11].every(valid))) return null;
+    return { mode, anchor, target, direction: String(meta.direction || ''),
+        mask: mode === 'chart_piece' ? [anchor, anchor+1, anchor+10, anchor+11] :
+            (mode === 'chart_fill' ? [target] : []) };
+}
+function topic47IsSolved_(q) {
+    return userAnswers[currentQIndex] !== undefined && String(userAnswers[currentQIndex]) === String(q.answer);
+}
+function topic47HintText_(meta) {
+    if (meta.mode === 'chart_rule') {
+        if (meta.direction === 'left') return 'Cô làm mẫu: từ 24 sang trái một ô là 23. Con xem số giảm bao nhiêu nhé!';
+        if (meta.direction === 'right') return 'Cô làm mẫu: từ 12 sang phải một ô là 13. Con xem số tăng bao nhiêu nhé!';
+        if (meta.direction === 'up') return 'Cô làm mẫu: từ 42 lên trên một hàng là 32. Con giữ nguyên cột nhé!';
+        return 'Cô làm mẫu: từ 12 xuống dưới một hàng là 22. Con giữ nguyên cột nhé!';
+    }
+    if (meta.mode === 'chart_find') return 'Hàng đầu tiên là 1 đến 10; mỗi hàng tiếp theo gồm 10 số. Con đếm cột từ trái sang phải nhé!';
+    if (meta.mode === 'chart_fill') return 'Con nhìn số liền trước, liền sau hoặc số ngay phía trên ô trống; không cần đếm lại cả bảng.';
+    return 'Một mảnh 2 × 2 có hai số cạnh nhau hơn kém 1; hai số cùng cột ở hai hàng liền nhau hơn kém 10.';
+}
+function topic47BoardHtml_(q) {
+    const meta = topic47Meta_(q);
+    if (!meta) return '';
+    const solved = topic47IsSolved_(q);
+    const blank = new Set(meta.mask);
+    let cells = '';
+    for (let n = 1; n <= 100; n++) {
+        const masked = blank.has(n) && !solved;
+        const filled = blank.has(n) && solved;
+        const anchor = n === meta.anchor && meta.mode === 'chart_rule';
+        const isFocus = n === meta.target && meta.mode === 'chart_find' && solved;
+        const isTens = n % 10 === 0;
+        const background = masked ? '#fff1f2' : (filled || isFocus ? '#dcfce7' : (anchor ? '#e9d5ff' : (isTens ? '#ecfeff' : ((Math.floor((n-1)/10)%2 === 0) ? '#ffffff' : '#f8fafc'))));
+        const foreground = masked ? '#be185d' : (filled ? '#dc2626' : (anchor ? '#6d28d9' : '#334155'));
+        const stroke = masked ? '#f9a8d4' : (filled || isFocus ? '#86efac' : (anchor ? '#c4b5fd' : '#dbeafe'));
+        const label = masked ? 'Ô trống cần điền' : `Ô số ${n}`;
+        cells += `<button type="button" data-t47-cell="${n}" aria-label="${label}" onclick="topic47TapCell_(${n})" class="math-47-cell" style="background:${background};color:${foreground};border:1px solid ${stroke};font-weight:${anchor||isTens||filled?'900':'800'};border-radius:5px;min-width:0;min-height:33px;cursor:pointer;font-size:clamp(13px,1.15vw,17px);transition:background .15s" ${solved?'disabled':''}>${masked ? '?' : n}</button>`;
+    }
+    const dropAttr = meta.mode === 'chart_piece'
+        ? 'ondragover="event.preventDefault()" ondrop="topic47DropPiece_(event)"' : '';
+    return `<div ${dropAttr} class="math-47-grid" role="group" aria-label="Bảng các số từ 1 đến 100" style="display:grid;grid-template-columns:repeat(10,minmax(32px,1fr));gap:3px;min-width:350px;width:100%;max-width:560px;margin-inline:auto;">${cells}</div>`;
+}
+function topic47PieceNumbers_(opt) {
+    const values = String(opt || '').match(/\d+/g) || [];
+    return values.length === 4 && values.every(s => Number(s) >= 1 && Number(s) <= 100) ? values : [];
+}
+function topic47OptionsHtml_(q, meta) {
+    return (q.options || []).map((opt, idx) => {
+        const letter = String.fromCharCode(65 + idx);
+        if (meta.mode === 'chart_piece') {
+            const digits = topic47PieceNumbers_(opt);
+            if (digits.length !== 4) return '';
+            const numberTiles = digits.map(n => `<span style="min-height:38px;display:flex;justify-content:center;align-items:center;border:1px solid #c4b5fd;border-radius:7px;background:#fff;color:#5b21b6;font-weight:900;font-size:19px">${escapeHtml(n)}</span>`).join('');
+            return `<button type="button" draggable="true" ondragstart="topic47StartDrag_(event,${idx})" onclick="topic47SelectPiece_(${idx})" data-opt="${escapeHtml(opt)}" data-t47-piece="${idx}" class="option-btn math-47-piece" style="border:1px solid #ddd6fe;background:#faf5ff;border-radius:15px;padding:10px;min-height:110px;cursor:grab;text-align:left;transition:box-shadow .15s"><span style="display:block;font-size:15px;font-weight:900;color:#be185d;margin-bottom:5px">Mảnh ${letter}</span><span style="display:grid;grid-template-columns:repeat(2,minmax(32px,1fr));gap:3px">${numberTiles}</span></button>`;
+        }
+        return `<button type="button" data-opt="${escapeHtml(opt)}" onclick="topic47ChooseOption_(${idx})" class="option-btn" style="min-height:59px;border:1px solid #c4b5fd;background:#faf5ff;border-radius:14px;padding:10px 13px;font-weight:900;color:#4c1d95;font-size:clamp(19px,1.8vw,26px);text-align:center;cursor:pointer"><span style="color:#be185d;font-size:17px;margin-right:9px">${letter}.</span>${escapeHtml(opt)}</button>`;
+    }).join('');
+}
+function topic47SolutionHtml_(q) {
+    if (!topic47IsSolved_(q)) return '';
+    return `<div class="mt-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-emerald-900 text-base md:text-lg font-extrabold" role="status"><strong>✓ Con làm đúng rồi!</strong><div class="mt-1">${escapeHtml(q.explanation || q.hint || '')}</div></div>`;
+}
+function buildTopic47Layout_(q, speakerHtml) {
+    const meta = topic47Meta_(q);
+    if (!meta) return '';
+    const isPiece = meta.mode === 'chart_piece';
+    const intro = isPiece ? 'Chọn một mảnh rồi chạm vào ô ? trên bảng, hoặc kéo mảnh vào bảng.'
+        : meta.mode === 'chart_find' ? 'Con có thể chạm trực tiếp vào ô số trên bảng hoặc chọn đáp án bên phải.'
+        : meta.mode === 'chart_fill' ? 'Quan sát các số xung quanh dấu ? rồi chọn số để điền vào ô trống.'
+        : 'Quan sát ô màu tím và quy luật của các hàng, cột. Con có thể chạm ô số để trả lời.';
+    const stage = {chart_rule:'Quan sát quy luật',chart_find:'Tìm số',chart_fill:'Điền số còn thiếu',chart_piece:'Ghép mảnh bảng số'}[meta.mode];
+    const hintVisible = topic47HintState_.questionId === q.question_id && topic47HintState_.shown;
+    return `<style>
+#class1-math-runtime .math-47-layout{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:16px;align-items:start;width:100%;max-width:1200px;margin:0 auto;}
+#class1-math-runtime .math-47-cell:focus-visible,#class1-math-runtime .math-47-piece:focus-visible{outline:3px solid #a855f7;outline-offset:2px;}
+#class1-math-runtime .math-47-cell:hover:not(:disabled){background:#e0f2fe!important;}
+@media(max-width:767px){#class1-math-runtime .math-47-layout{grid-template-columns:minmax(0,1fr);gap:12px;}}
+</style><div class="math-47-layout">
+        <section class="rounded-3xl border border-sky-100 bg-gradient-to-br from-cyan-50 via-white to-violet-50 p-3 md:p-4 min-w-0" aria-label="Bảng 100 số tương tác">
+            <div class="flex items-center justify-between flex-wrap gap-2 mb-2"><strong class="text-base md:text-lg text-cyan-800">🔢 Bảng 1–100</strong><span class="rounded-full bg-purple-100 text-purple-700 px-3 py-1 text-sm font-extrabold">${stage}</span></div>
+            <p class="text-sm md:text-base text-slate-600 font-bold mb-3">Đi sang phải +1 · Đi xuống +10</p>
+            <div class="w-full overflow-x-auto pb-1" id="topic47-grid-host">${topic47BoardHtml_(q)}</div>
+            <p class="text-sm md:text-base text-cyan-900 font-bold mt-2">🐰 ${escapeHtml(intro)}</p>
+            <div id="topic47-solution-host">${topic47SolutionHtml_(q)}</div>
+        </section>
+        <section class="rounded-3xl border border-purple-100 bg-white p-3 md:p-5 min-w-0">
+            <h3 class="text-xl md:text-2xl font-black text-slate-900 text-center leading-snug">${escapeHtml(q.question_text)}</h3>
+            ${speakerHtml}
+            <div class="grid grid-cols-2 gap-2.5 mt-3">${topic47OptionsHtml_(q,meta)}</div>
+            ${isPiece ? `<button type="button" onclick="topic47PlacePiece_()" id="topic47-place-btn" class="w-full mt-3 py-3 px-4 rounded-2xl font-extrabold text-white bg-gradient-to-r from-pink-500 to-purple-600 shadow-sm">Ghép mảnh đã chọn vào bảng →</button>` : ''}
+            <p id="topic47-status" role="status" aria-live="polite" class="text-center text-sm md:text-base font-bold text-indigo-700 mt-2 min-h-[24px]"></p>
+            <button type="button" onclick="topic47ToggleHint_()" class="w-full mt-2 rounded-xl border border-cyan-200 bg-cyan-50 px-3 py-2 text-cyan-800 font-extrabold text-base">🐰 ${hintVisible?'Ẩn gợi ý':'Cô gợi ý'}</button>
+            <div id="topic47-hint" ${hintVisible?'':'hidden'} class="mt-2 rounded-xl border border-cyan-100 bg-cyan-50/60 p-3 text-cyan-900 font-bold text-base md:text-lg">${escapeHtml(topic47HintText_(meta))}</div>
+        </section>
+    </div>`;
+}
+function topic47SetStatus_(message) {
+    const host = document.getElementById('topic47-status');
+    if (host) host.textContent = String(message || '');
+}
+function topic47RefreshUi_(q) {
+    if (!isTopic47Practice_(q)) return;
+    const chart = document.getElementById('topic47-grid-host');
+    if (chart) chart.innerHTML = topic47BoardHtml_(q);
+    const sol = document.getElementById('topic47-solution-host');
+    if (sol) sol.innerHTML = topic47SolutionHtml_(q);
+    const chosen = topic47SelectedPiece_.questionId === q.question_id ? topic47SelectedPiece_.option : null;
+    const wrong = new Set((wrongAttemptsByQ[currentQIndex] || []).map(String));
+    document.querySelectorAll('#question-box .option-btn[data-opt]').forEach(el => {
+        const opt = String(el.getAttribute('data-opt') || '');
+        const isCorrect = topic47IsSolved_(q) && opt === String(q.answer);
+        const isWrong = wrong.has(opt);
+        if (isCorrect) { el.style.background = '#dcfce7'; el.style.borderColor = '#34d399'; el.style.color = '#065f46'; el.disabled = true; }
+        else if (isWrong) { el.style.background = '#ffe4e6'; el.style.borderColor = '#fb7185'; el.style.color = '#9f1239'; el.disabled = true; }
+        else { el.style.background = '#faf5ff'; el.style.borderColor = '#ddd6fe'; }
+        el.style.boxShadow = !el.disabled && opt === chosen ? '0 0 0 3px #c4b5fd' : '';
+    });
+    const btn = document.getElementById('topic47-place-btn');
+    if (btn) {
+        btn.disabled = topic47IsSolved_(q);
+        btn.textContent = topic47IsSolved_(q) ? '✓ Đã ghép đúng' : 'Ghép mảnh đã chọn vào bảng →';
+        btn.style.opacity = topic47IsSolved_(q) ? '0.72' : '1';
+    }
+}
+function topic47TapCell_(number) {
+    const q = activeQuestionsList[currentQIndex];
+    if (!isTopic47Practice_(q) || topic47IsSolved_(q)) return;
+    const meta = topic47Meta_(q);
+    const n = Number(number);
+    if (!Number.isSafeInteger(n) || n < 1 || n > 100) return;
+    if (meta.mode === 'chart_piece') {
+        if (meta.mask.includes(n)) topic47PlacePiece_();
+        else topic47SetStatus_(`Con vừa chạm ô số ${n}. Hãy tìm mảnh ghép cho bốn ô ? nhé!`);
+        return;
+    }
+    if (meta.mode === 'chart_fill') {
+        topic47SetStatus_(meta.mask.includes(n)
+            ? 'Đây là ô cần điền. Con chọn một trong bốn số ở bên phải nhé!'
+            : `Đây là số ${n}. Con quan sát các ô gần dấu ? để tìm quy luật nhé!`);
+        return;
+    }
+    const answer = String(n);
+    if (!q.options.map(String).includes(answer)) {
+        topic47SetStatus_('Con hãy thử tìm một trong bốn số gợi ý bên phải nhé!');
+        return;
+    }
+    if ((wrongAttemptsByQ[currentQIndex] || []).includes(answer)) return;
+    checkAnswer(answer);
+    topic47RefreshUi_(q);
+    if (!topic47IsSolved_(q)) topic47SetStatus_('Con thử đi sang trái/phải một ô hoặc lên/xuống một hàng để kiểm tra nhé!');
+}
+function topic47ChooseOption_(index) {
+    const q = activeQuestionsList[currentQIndex];
+    if (!isTopic47Practice_(q) || topic47IsSolved_(q)) return;
+    const idx = Number(index);
+    if (!Number.isSafeInteger(idx) || idx < 0 || idx >= q.options.length) return;
+    const opt = String(q.options[idx]);
+    if ((wrongAttemptsByQ[currentQIndex] || []).includes(opt)) return;
+    if (topic47Meta_(q).mode === 'chart_piece') return topic47SelectPiece_(idx);
+    checkAnswer(opt);
+    topic47RefreshUi_(q);
+    if (!topic47IsSolved_(q)) topic47SetStatus_('Chưa đúng rồi. Con hãy quan sát kỹ bảng số và thử lại nhé!');
+}
+function topic47SelectPiece_(index) {
+    const q = activeQuestionsList[currentQIndex];
+    if (!isTopic47Practice_(q) || topic47Meta_(q).mode !== 'chart_piece' || topic47IsSolved_(q)) return;
+    const idx = Number(index);
+    if (!Number.isSafeInteger(idx) || idx < 0 || idx >= q.options.length) return;
+    const opt = String(q.options[idx]);
+    if ((wrongAttemptsByQ[currentQIndex] || []).includes(opt)) return;
+    topic47SelectedPiece_ = { questionId: q.question_id, option: opt };
+    topic47RefreshUi_(q);
+    topic47SetStatus_('Đã chọn mảnh! Con chạm vào bốn ô ? hoặc nút Ghép mảnh nhé.');
+}
+function topic47PlacePiece_() {
+    const q = activeQuestionsList[currentQIndex];
+    if (!isTopic47Practice_(q) || topic47Meta_(q).mode !== 'chart_piece' || topic47IsSolved_(q)) return;
+    const opt = topic47SelectedPiece_.questionId === q.question_id ? topic47SelectedPiece_.option : null;
+    if (!opt) {
+        topic47SetStatus_('Con chọn một mảnh A, B, C hoặc D trước nhé!');
+        return;
+    }
+    if ((wrongAttemptsByQ[currentQIndex] || []).includes(opt)) return;
+    checkAnswer(opt);
+    topic47SelectedPiece_ = { questionId: q.question_id, option: null };
+    topic47RefreshUi_(q);
+    if (topic47IsSolved_(q)) topic47SetStatus_('Con ghép đúng rồi! Bốn ô đã được điền vào bảng.');
+    else topic47SetStatus_('Mảnh này chưa khớp! Con tìm mảnh có số tăng 1 theo hàng ngang và tăng 10 theo hàng dọc nhé.');
+}
+function topic47StartDrag_(event,index) {
+    const q = activeQuestionsList[currentQIndex];
+    if (!isTopic47Practice_(q) || topic47Meta_(q).mode !== 'chart_piece' || topic47IsSolved_(q)) return;
+    if ((wrongAttemptsByQ[currentQIndex] || []).includes(String(q.options[index]))) return;
+    if (event?.dataTransfer) {
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain',String(index));
+    }
+}
+function topic47DropPiece_(event) {
+    event?.preventDefault?.();
+    const index = String(event?.dataTransfer?.getData('text/plain') || '');
+    if (!/^[0-3]$/.test(index)) return;
+    topic47SelectPiece_(Number(index));
+    topic47PlacePiece_();
+}
+function topic47ToggleHint_() {
+    const q = activeQuestionsList[currentQIndex];
+    if (!isTopic47Practice_(q)) return;
+    const shown = topic47HintState_.questionId === q.question_id && topic47HintState_.shown;
+    topic47HintState_ = { questionId: q.question_id, shown: !shown };
+    const hint = document.getElementById('topic47-hint');
+    if (hint) hint.hidden = shown;
+    const btn = document.querySelector('#question-box button[onclick="topic47ToggleHint_()"]');
+    if (btn) btn.textContent = shown ? '🐰 Cô gợi ý' : '🐰 Ẩn gợi ý';
 }
 
 function getTopic4NeighbourMeta_(q) {
@@ -7226,6 +7723,64 @@ function muc5AdvancedCountSvg_(pattern) {
     return `<svg viewBox="0 0 240 190" class="w-full max-w-[430px] h-auto" aria-hidden="true">${body}</svg>`;
 }
 
+// Mục 5.3: ghép hình có thao tác kéo-thả và chạm (mobile/keyboard).
+// Không ghi điểm bằng việc ghép thử; chỉ 4 đáp án chính được checkAnswer chấm điểm.
+const muc5ComposeCompleted_ = new Set();
+const MUC5_PIECES_ = Object.freeze(['circle','triangle','square','rectangle']);
+function muc5ComposeCanInteract_(q) {
+    return Number(activeTopicId) === 5 && !activeExamContext && !activeRoadmapContext &&
+        q?.muc5_type === 'compose_missing';
+}
+function muc5ComposeTryPiece_(shape) {
+    const q = activeQuestionsList[currentQIndex];
+    if (!muc5ComposeCanInteract_(q) || !MUC5_PIECES_.includes(shape)) return;
+    const id = Number(q.question_id);
+    if (muc5ComposeCompleted_.has(id)) return;
+    const correct = shape === q.muc5_visual?.missing;
+    const status = document.getElementById('muc5-compose-feedback');
+    if (correct) {
+        muc5ComposeCompleted_.add(id);
+        const scene = document.getElementById('muc5-compose-scene-host');
+        if (scene) scene.innerHTML = muc5ComposeSceneSvg_(q.muc5_visual.scene, null, false);
+        if (status) {
+            status.textContent = '✓ Mảnh đã khớp! Con hãy gọi tên hình vừa ghép rồi chọn đáp án.';
+            status.className = 'mt-2 rounded-xl border border-emerald-200 bg-emerald-50 p-2 text-sm md:text-base font-bold text-emerald-800';
+        }
+        document.querySelectorAll('[data-muc5-piece]').forEach(el => { el.disabled = true; el.draggable = false; });
+    } else if (status) {
+        status.textContent = 'Mảnh chưa vừa khít. Con quan sát chỗ trống và thử lại nhé!';
+        status.className = 'mt-2 rounded-xl border border-rose-200 bg-rose-50 p-2 text-sm md:text-base font-bold text-rose-800';
+    }
+}
+function muc5ComposeDrag_(ev, shape) {
+    if (!ev?.dataTransfer || !MUC5_PIECES_.includes(shape)) return;
+    ev.dataTransfer.setData('text/plain', shape);
+    ev.dataTransfer.effectAllowed = 'move';
+}
+function muc5ComposeDrop_(ev) {
+    ev?.preventDefault?.();
+    const piece = String(ev?.dataTransfer?.getData('text/plain') || '');
+    if (MUC5_PIECES_.includes(piece)) muc5ComposeTryPiece_(piece);
+}
+function muc5ComposePracticeHtml_(q) {
+    if (!muc5ComposeCanInteract_(q)) return '';
+    const v = q.muc5_visual || {};
+    const done = muc5ComposeCompleted_.has(Number(q.question_id)) ||
+        userAnswers[currentQIndex] === q.answer;
+    const tiles = MUC5_PIECES_.map((kind) => `<button type="button" data-muc5-piece="${kind}" draggable="${done?'false':'true'}"
+        ondragstart="muc5ComposeDrag_(event,'${kind}')" onclick="muc5ComposeTryPiece_('${kind}')"
+        ${done?'disabled':''} aria-label="Chọn ${muc5ShapeName_(kind)}"
+        class="flex flex-col items-center justify-center rounded-xl border border-purple-200 bg-white min-h-[80px] px-1 py-2 text-purple-800 font-extrabold hover:border-pink-400 focus-visible:outline-2 focus-visible:outline-pink-500 disabled:opacity-55">
+        ${muc5ShapeSvg_(kind,{size:46,color:'#ddd6fe',stroke:'#7e22ce'})}
+        <span class="text-sm">${escapeHtml(muc5ShapeName_(kind))}</span></button>`).join('');
+    return `<div class="mt-3 w-full rounded-2xl border border-purple-200 bg-violet-50/60 p-3">
+        <div class="text-center text-sm md:text-base font-black text-purple-800">🧩 Bé thử lắp ghép</div>
+        <p class="my-2 text-center text-sm font-bold text-slate-600">Kéo mảnh vào hình, hoặc chạm mảnh trên điện thoại.</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">${tiles}</div>
+        <div id="muc5-compose-feedback" role="status" aria-live="polite" class="mt-2 text-center text-sm font-bold text-slate-600">${done ? '✓ Hình đã hoàn chỉnh!' : 'Chọn mảnh có đường bao khớp ô trống.'}</div>
+    </div>`;
+}
+
 function buildMuc5SceneVisual_(q) {
     const v = q?.muc5_visual || {};
     const t = q?.muc5_type || '';
@@ -7242,7 +7797,10 @@ function buildMuc5SceneVisual_(q) {
         return `<div class="flex flex-col items-center"><div class="rounded-3xl border-2 border-violet-100 bg-white p-5 shadow-sm">${muc5ShapeSvg_(v.target,{size:150,color:v.color||'#93c5fd',rotate:v.rotate||0})}</div><div class="mt-2 text-sm font-bold text-slate-500">Con nhìn kĩ số cạnh và các góc của hình nhé.</div></div>`;
     }
     if (t === 'compose_missing' || t === 'compose_parts') {
-        return `<div class="w-full max-w-xl rounded-[28px] border-2 border-pink-100 bg-gradient-to-br from-white to-sky-50 p-4 shadow-sm"><div class="text-center text-sm md:text-base font-black text-violet-700 mb-2">${t === 'compose_missing' ? 'Chỗ trống cần mảnh nào?' : 'Con tách hình lớn thành các mảnh nhỏ nhé.'}</div><div class="flex items-center justify-center">${muc5ComposeSceneSvg_(v.scene, v.missing, t === 'compose_missing')}</div><div class="mt-1 text-center text-xs md:text-sm font-bold text-slate-500">${escapeHtml(v.scene||'hình ghép')} · Có thể xoay mảnh khi ghép.</div></div>`;
+        return `<div class="w-full max-w-xl rounded-[28px] border-2 border-pink-100 bg-gradient-to-br from-white to-sky-50 p-4 shadow-sm"><div class="text-center text-sm md:text-base font-black text-violet-700 mb-2">${t === 'compose_missing' ? 'Chỗ trống cần mảnh nào?' : 'Con tách hình lớn thành các mảnh nhỏ nhé.'}</div><div id="muc5-compose-scene-host" class="flex items-center justify-center rounded-xl border border-dashed border-purple-200 bg-white/70"
+            ondragover="event.preventDefault()" ondrop="muc5ComposeDrop_(event)" aria-label="Vùng đặt mảnh ghép">${muc5ComposeSceneSvg_(v.scene, v.missing, t === 'compose_missing' && !muc5ComposeCompleted_.has(Number(q.question_id)) && userAnswers[currentQIndex] !== q.answer)}</div>
+            ${t === 'compose_missing' ? muc5ComposePracticeHtml_(q) : ''}
+            <div class="mt-2 text-center text-sm font-bold text-slate-500">${escapeHtml(v.scene||'hình ghép')}</div></div>`;
     }
     if (t === 'solid_identify') {
         return `<div class="rounded-[28px] border-2 border-sky-100 bg-white p-5 shadow-sm">${muc5SolidSvg_(v.solid,{size:v.solid==='cuboid'?180:155,fill1:'#dbeafe',fill2:'#93c5fd',fill3:'#60a5fa'})}</div>`;
@@ -7564,13 +8122,57 @@ function muc7ReasoningSvg_(visual) {
     return `<svg viewBox="0 0 520 330" class="w-full h-auto max-h-[410px]" role="img" aria-label="Mô hình suy luận đo độ dài"><rect x="25" y="18" width="470" height="290" rx="28" fill="#f8fafc" stroke="#cbd5e1" stroke-width="3"></rect>${inner}</svg>`;
 }
 
+// Mục 7.4: bé đánh dấu 2 đầu vật trên thước, không chỉ xem hình tĩnh.
+let muc7RulerPracticeState_ = {questionId:null, marks:[]};
+function muc7RulerPracticeHtml_(q) {
+    const v = q?.muc7_visual || {};
+    if (Number(activeTopicId)!==7 || activeRoadmapContext || activeExamContext || q?.muc7_type!=='ruler_read') return '';
+    const max = Math.max(10, Math.min(15, Number(v.max || 15)));
+    const marks = muc7RulerPracticeState_.questionId===q.question_id ? muc7RulerPracticeState_.marks : [];
+    const buttons = Array.from({length:max+1},(_,i)=>`<button type="button" onclick="muc7RulerTap_(${i})"
+      aria-label="Chọn vạch ${i}" aria-pressed="${marks.includes(i)?'true':'false'}"
+      class="shrink-0 w-[42px] h-[44px] rounded-lg border ${marks.includes(i)?'border-emerald-500 bg-emerald-200 text-emerald-900':'border-emerald-200 bg-white text-emerald-800 hover:bg-emerald-100'} font-black text-base">${i}</button>`).join('');
+    let message = 'Chạm vạch đầu vật, rồi chạm vạch cuối vật.';
+    if (marks.length === 1) message = `Đầu thứ nhất: vạch ${marks[0]}. Con tìm vạch ở đầu còn lại nhé.`;
+    if (marks.length === 2) {
+        const start = Number(v.start || 0), end = start + Number(v.length || 0);
+        const correct = marks[0] === start && marks[1] === end;
+        message = correct ? '✓ Hai đầu vật đã được đánh dấu đúng. Con đếm số khoảng xăng-ti-mét giữa hai vạch nhé!' :
+            'Hai vạch chưa trùng hai đầu của vật. Hãy nhìn lại hình và chọn từ đầu nhé.';
+    }
+    return `<section class="mt-3 rounded-2xl border border-emerald-200 bg-emerald-50/70 p-3 w-full" aria-label="Tự đánh dấu hai đầu vật trên thước">
+      <p class="text-center text-sm md:text-base font-black text-emerald-800">📏 Bé thử đo trên thước</p>
+      <div class="mt-2 w-full overflow-x-auto pb-2" style="scrollbar-width:thin"><div class="flex gap-1 min-w-max">${buttons}</div></div>
+      <div id="muc7-ruler-hint" role="status" aria-live="polite" class="mt-1 text-center text-sm font-bold text-emerald-900">${escapeHtml(message)}</div>
+      <button type="button" onclick="muc7RulerReset_()" class="mt-2 mx-auto block rounded-full border border-emerald-200 bg-white px-4 py-1.5 text-sm font-black text-emerald-700 hover:bg-emerald-100">↻ Đánh dấu lại</button>
+    </section>`;
+}
+function muc7RulerTap_(mark) {
+    const q = activeQuestionsList[currentQIndex];
+    if (Number(activeTopicId)!==7 || activeRoadmapContext || activeExamContext || q?.muc7_type!=='ruler_read') return;
+    const max = Math.max(10, Math.min(15, Number(q.muc7_visual?.max || 15)));
+    if (!Number.isSafeInteger(mark) || mark<0 || mark>max) return;
+    if (muc7RulerPracticeState_.questionId!==q.question_id) muc7RulerPracticeState_={questionId:q.question_id,marks:[]};
+    if (muc7RulerPracticeState_.marks.length===2) muc7RulerPracticeState_.marks=[];
+    muc7RulerPracticeState_.marks.push(mark);
+    const host=document.getElementById('muc7-ruler-practice-host');
+    if (host) host.innerHTML=muc7RulerPracticeHtml_(q);
+}
+function muc7RulerReset_() {
+    const q=activeQuestionsList[currentQIndex];
+    if (!q || Number(activeTopicId)!==7 || activeRoadmapContext || activeExamContext) return;
+    muc7RulerPracticeState_={questionId:q.question_id,marks:[]};
+    const host=document.getElementById('muc7-ruler-practice-host');
+    if (host) host.innerHTML=muc7RulerPracticeHtml_(q);
+}
+
 function muc7VisualHtml_(q) {
     const t=String(q?.muc7_type||'');
     const v=q?.muc7_visual||{};
     if(t==='length_pair'||t==='length_set') return muc7LengthVisualSvg_(v,false);
     if(t==='height_pair'||t==='height_set') return muc7LengthVisualSvg_(v,true);
     if(t==='nonstandard') return muc7NonstandardSvg_(v);
-    if(t==='ruler_read') return muc7RulerSvg_(v);
+    if(t==='ruler_read') return `<div class="w-full">${muc7RulerSvg_(v)}<div id="muc7-ruler-practice-host">${muc7RulerPracticeHtml_(q)}</div></div>`;
     if(t==='ruler_placement') return muc7RulerPlacementSvg_(v);
     if(t==='estimate') return muc7EstimateSvg_(v);
     if(t==='fit_case') return muc7MeasuredSetSvg_(v,true);
@@ -7645,11 +8247,46 @@ function muc8ScheduleHtml_(v) {
     return `<div class="w-full max-w-2xl rounded-[24px] border-2 border-blue-200 bg-white overflow-hidden shadow-sm"><div class="bg-blue-100 px-4 py-2 text-center text-lg font-black text-blue-800">${escapeHtml(v?.title||'Lịch hoạt động')}</div><div class="grid grid-cols-[0.9fr_1fr_1fr] text-center font-black text-sm md:text-base"><div class="bg-slate-100 p-2 border-r border-b">Ngày</div><div class="bg-amber-100 p-2 border-r border-b">🌤 Buổi sáng</div><div class="bg-sky-100 p-2 border-b">🌇 Buổi chiều</div>${rows.map(([d,val])=>{const hi=d===v?.highlight_day;return `<div class="p-2 border-r border-b ${hi?'bg-blue-50 text-blue-800':'bg-white'}">${escapeHtml(d)}</div><div class="p-2 border-r border-b ${hi?'bg-blue-50':''}">${escapeHtml(val[0])}</div><div class="p-2 border-b ${hi?'bg-blue-50':''}">${escapeHtml(val[1])}</div>`}).join('')}</div></div>`;
 }
 
+// Mục 8.5: đọc lịch THÁNG thật (thứ/ngày/tháng), độc lập ngày máy học sinh.
+let muc8SelectedDate_ = {questionId:null, date:null};
+function muc8CalendarMonthHtml_(v,qid) {
+    const year = Number(v?.year), month = Number(v?.month);
+    if (!Number.isSafeInteger(year)||year<2000||year>2100||!Number.isSafeInteger(month)||month<1||month>12) return '';
+    const dayCount = new Date(Date.UTC(year,month,0)).getUTCDate();
+    const leading = (new Date(Date.UTC(year,month-1,1)).getUTCDay()+6)%7;
+    const picked = muc8SelectedDate_.questionId === qid ? muc8SelectedDate_.date : null;
+    const days = [];
+    for(let i=0;i<leading;i++) days.push('<span aria-hidden="true" class="h-[43px]"></span>');
+    for(let d=1;d<=dayCount;d++) {
+        const focus = Number(v?.focus_date)===d;
+        const chosen = picked===d;
+        days.push(`<button type="button" aria-label="Ngày ${d} tháng ${month}" aria-pressed="${chosen?'true':'false'}"
+            onclick="muc8SelectCalendarDate_(${d})" class="h-[43px] rounded-lg border font-black text-base md:text-lg focus-visible:outline-2 focus-visible:outline-blue-500 ${chosen?'bg-blue-600 border-blue-700 text-white shadow-sm':focus?'bg-amber-100 border-amber-400 text-amber-900':'bg-white border-blue-100 text-slate-800 hover:bg-blue-100'}">${d}</button>`);
+    }
+    const labels=['T2','T3','T4','T5','T6','T7','CN'];
+    return `<div class="w-full max-w-[440px] rounded-[22px] border border-blue-200 bg-white p-3 shadow-sm">
+        <div class="mb-3 text-center text-lg md:text-xl font-black text-blue-800">Lịch tháng ${month} năm ${year}</div>
+        <div class="grid grid-cols-7 gap-1.5">${labels.map((l,i)=>`<span class="text-center rounded-lg py-2 font-black text-sm ${i===6?'text-rose-700 bg-rose-50':'text-blue-800 bg-blue-50'}">${l}</span>`).join('')}${days.join('')}</div>
+        <p id="muc8-calendar-status" role="status" aria-live="polite" class="mt-3 text-center text-sm md:text-base font-bold text-blue-800">${picked ? `Con đã chọn ngày ${picked}. Hãy nhìn cột thứ ở phía trên.`:'Chạm vào ngày muốn tìm để quan sát thứ trong tuần.'}</p>
+    </div>`;
+}
+function muc8SelectCalendarDate_(date) {
+    const q=activeQuestionsList[currentQIndex];
+    if(Number(activeTopicId)!==8||activeExamContext||activeRoadmapContext||q?.muc8_type!=='month_calendar')return;
+    const v=q.muc8_visual||{};
+    const count=new Date(Date.UTC(Number(v.year),Number(v.month),0)).getUTCDate();
+    if(!Number.isSafeInteger(date)||date<1||date>count)return;
+    muc8SelectedDate_={questionId:q.question_id,date};
+    const host=document.getElementById('muc8-calendar-host');
+    if(host) host.innerHTML=muc8CalendarMonthHtml_(v,q.question_id);
+}
+
 function muc8VisualHtml_(q) {
     const t=String(q?.muc8_type||''); const v=q?.muc8_visual||{};
     if (t==='clock') return `<div class="flex flex-col items-center justify-center">${muc8ClockSvg_(v.hour,v.minute||0,{size:330})}<div class="mt-2 rounded-full bg-blue-50 border border-blue-200 px-4 py-1.5 text-sm font-black text-blue-700">Kim dài màu đen · Kim ngắn màu đỏ</div></div>`;
     if (t==='activity_clock') return `<div class="w-full grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-3 items-center"><div class="rounded-[22px] overflow-hidden border-2 border-blue-100 bg-white"><img src="${escapeHtml(v.image||q.image_url||'')}" alt="Hoạt động hằng ngày" class="w-full max-h-[300px] object-contain"></div><div class="flex flex-col items-center">${muc8ClockSvg_(v.hour,v.minute||0,{size:245})}<div class="mt-1 rounded-full border border-rose-200 bg-rose-50 px-3 py-1 text-sm font-black text-rose-700">${escapeHtml(v.activity||'Hoạt động')} · ${escapeHtml(v.period||'')}</div></div></div>`;
     if (t==='week') return muc8WeekStripHtml_(v);
+    if (t==='month_calendar') return `<div id="muc8-calendar-host" class="w-full flex justify-center">${muc8CalendarMonthHtml_(v,q.question_id)}</div>`;
     if (t==='date_strip') return muc8DateStripHtml_(v);
     if (t==='schedule') return muc8ScheduleHtml_(v);
     if (t==='combo') return `<div class="w-full flex flex-col items-center gap-3">${muc8DateStripHtml_(v)}<div class="w-full border-t-2 border-dashed border-blue-200 pt-3 flex justify-center">${muc8ClockSvg_(v.hour,v.minute||0,{size:235})}</div></div>`;
@@ -7663,7 +8300,7 @@ function muc8StageGuide_(q) {
     if (s==='8.2') return 'Quan sát đồng hồ rồi liên hệ với hoạt động trong tranh.';
     if (s==='8.3') return 'Đọc các ngày theo thứ tự từ Thứ Hai đến Chủ nhật.';
     if (s==='8.4') return 'Hôm qua lùi 1 ngày; ngày mai tiến 1 ngày.';
-    if (s==='8.5') return 'Đọc đúng hàng ngày và đúng cột buổi sáng hoặc buổi chiều.';
+    if (s==='8.5') return q?.muc8_type === 'month_calendar' ? 'Tìm ngày trong tờ lịch, xem cột thứ rồi kiểm tra kết quả.' : 'Đọc đúng hàng ngày và đúng cột buổi sáng hoặc buổi chiều.';
     if (s==='8.6') return 'Câu tổng hợp: tách từng dữ kiện về ngày, giờ và lịch rồi xử lí.';
     return 'Quan sát hình thật kĩ rồi trả lời.';
 }
@@ -7692,6 +8329,36 @@ function muc9StageGuide_(q) {
     return 'Quan sát tranh và các thẻ dữ kiện rồi kể lại câu chuyện toán học.';
 }
 
+// Mục 9: hỗ trợ bé tự phân tích một bài toán, không tiết lộ đáp án trước khi làm.
+let muc9GuideState_ = {questionId:null,step:0};
+function muc9GuideHtml_(q) {
+    if(Number(activeTopicId)!==9 || activeExamContext || activeRoadmapContext) return '';
+    const v=q?.muc9_visual || {};
+    const before=Number(v.before), changed=Number(v.change);
+    if(!Number.isSafeInteger(before)||!Number.isSafeInteger(changed))return '';
+    const step=muc9GuideState_.questionId===q.question_id ? muc9GuideState_.step : 0;
+    const part=String(v.item||'đồ vật');
+    const steps=[
+       'Đọc câu chuyện và tìm số lượng lúc ban đầu.',
+       `Ban đầu có ${before} ${part}. Sau đó câu chuyện nhắc đến ${changed} ${part}.`,
+       'Con hãy kể: nhóm đồ vật tăng hay giảm? Dùng sơ đồ hai phần để nghĩ về phép tính.',
+       'Con tự chọn phép tính và đáp án. Khi đúng, cô sẽ giải thích cách làm.'
+    ];
+    const next=step<3?`<button type="button" onclick="muc9GuideNext_()" class="mt-2 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 px-4 py-2 text-white text-sm md:text-base font-black shadow-sm">${step===0?'🐰 Cô hướng dẫn':'Bước tiếp theo →'}</button>`:'<span class="text-sm font-bold text-emerald-800">✓ Con thử tự giải nhé!</span>';
+    return `<section class="rounded-2xl border border-rose-200 bg-rose-50/70 p-3 text-center" aria-label="Cô Thỏ Hồng hướng dẫn giải toán">
+        <div class="text-sm font-black text-rose-800">🐰 Cô Thỏ Hồng · ${step===0?'Bắt đầu':`Bước ${step}/3`}</div>
+        <p role="status" aria-live="polite" class="mt-2 text-sm md:text-base font-bold text-slate-700">${escapeHtml(steps[step])}</p>${next}
+    </section>`;
+}
+function muc9GuideNext_() {
+    const q=activeQuestionsList[currentQIndex];
+    if(Number(activeTopicId)!==9 || activeRoadmapContext || activeExamContext || !q?.muc9_visual)return;
+    if(muc9GuideState_.questionId!==q.question_id)muc9GuideState_={questionId:q.question_id,step:0};
+    muc9GuideState_.step=Math.min(3,muc9GuideState_.step+1);
+    const host=document.getElementById('muc9-guide-host');
+    if(host)host.innerHTML=muc9GuideHtml_(q);
+}
+
 function muc9VisualHtml_(q) {
     const v=q?.muc9_visual||{};
     const before=Number(v.before);
@@ -7717,7 +8384,7 @@ function muc9VisualHtml_(q) {
         const value='?';
         resultCard=`<div class="flex-1 min-w-[112px] rounded-2xl border-2 border-rose-200 bg-rose-50 px-3 py-2 text-center shadow-sm"><div class="text-xs md:text-sm font-black text-rose-700">CẦN TÌM</div><div class="text-2xl md:text-3xl font-black text-slate-900">${escapeHtml(String(value))}</div><div class="text-xs md:text-sm font-bold text-slate-600">Con suy nghĩ nhé</div></div>`;
     }
-    return `<div class="w-full h-full flex flex-col justify-center gap-3"><div class="w-full min-h-[235px] flex items-center justify-center rounded-[22px] bg-white border border-rose-100 overflow-hidden p-2">${imageHtml}</div><div class="flex items-stretch justify-center gap-2 md:gap-3 flex-wrap">${beforeCard}${changeCard}${resultCard}</div></div>`;
+    return `<div class="w-full h-full flex flex-col justify-center gap-3"><div class="w-full min-h-[235px] flex items-center justify-center rounded-[22px] bg-white border border-rose-100 overflow-hidden p-2">${imageHtml}</div><div class="flex items-stretch justify-center gap-2 md:gap-3 flex-wrap">${beforeCard}${changeCard}${resultCard}</div><div id="muc9-guide-host">${muc9GuideHtml_(q)}</div></div>`;
 }
 
 function buildMuc9SolutionHtml_(q) {
@@ -8083,6 +8750,18 @@ function loadQuestion() {
         html = buildTopic3SortLayout_(q, practiceSpeakerBtnHtml);
     } else if (isTopic3Practice && getTopic3Stage_(q) === '3.5') {
         html = buildTopic35QuestionLayout_(q, practiceSpeakerBtnHtml);
+    } else if (isTopic3Practice && getTopic3Stage_(q) === '3.8') {
+        // 3.8 LUON dung dung khung dat tinh doc cua 3.7, khong roi ve trac nghiem chung.
+        // Neu JSON/JS khong dong bo thi bao loi than thien, khong hien mot cau hoi thieu huong dan.
+        html = isTopic37Vertical_(q)
+            ? buildTopic37VerticalLayout_(q, practiceSpeakerBtnHtml)
+            : `<div class="max-w-xl mx-auto rounded-2xl border border-pink-200 bg-pink-50 p-5 text-center font-bold text-pink-700">Bài này chưa tải đủ nội dung. Bé hãy tải lại trang để tiếp tục nhé!</div>`;
+    } else if (isTopic3Practice && isTopic37Vertical_(q)) {
+        html = buildTopic37VerticalLayout_(q, practiceSpeakerBtnHtml);
+    } else if (isTopic4Practice && isTopic46EmojiPractice_(q)) {
+        html = buildTopic46EmojiPatternLayout_(q, practiceSpeakerBtnHtml);
+    } else if (isTopic4Practice && getTopic4SequenceStage_(q) === '4.7' && isTopic47Practice_(q)) {
+        html = buildTopic47Layout_(q, practiceSpeakerBtnHtml);
     } else if (isTopic4Practice && getTopic4SequenceStage_(q) === '4.1') {
         html = buildTopic4Sub41Layout_(q, practiceSpeakerBtnHtml);
     } else if (isTopic5Practice) {
@@ -8180,8 +8859,11 @@ function loadQuestion() {
     document.getElementById('question-box').innerHTML = html;
 
     restoreQuestionState(q);
+    refreshTopic37Vertical_(q);
     refreshTopic3PlaceValueTryAgain_(q);
     refreshTopic4Sub41SolutionHost_(q);
+    refreshTopic46EmojiPatternFeedback_(q);
+    topic47RefreshUi_(q);
     refreshTopic3CompareSolutionHost_(q);
     renderTopic3SortInteractive_(q);
     refreshTopic35FeedbackHost_(q);
@@ -8414,7 +9096,10 @@ function checkAnswer(selectedOpt) {
         refreshTopic3PlaceValueHost_(q);
         refreshTopic3PlaceValueTryAgain_(q);
         refreshTopic3RwHost_(q);
+        refreshTopic37Vertical_(q);
         refreshTopic4Sub41SolutionHost_(q);
+        refreshTopic46EmojiPatternFeedback_(q);
+        topic47RefreshUi_(q);
         refreshTopic3CompareSolutionHost_(q);
         renderTopic3SortInteractive_(q);
         refreshTopic35FeedbackHost_(q);
@@ -8436,11 +9121,15 @@ function checkAnswer(selectedOpt) {
         const isAutoNextPractice = /^(?:1|2|6|7|8)\./.test(String(q.sub_topic || ''));
         if (isTopic3ReadWrite_(q)) {
             speakVietnamese(`Đúng rồi! Số ${q.muc3_rw_number} đọc là ${q._topic3_rw_word}.`, 0.96);
+        } else if (isTopic37Vertical_(q)) {
+            speakVietnamese(`Đúng rồi! ${topic37SpeakQuestion_(q,true)}`, 0.96);
         } else if (isTopic3PlaceValuePractice_(q)) {
             const meta = getTopic3PlaceValueMeta_(q);
             speakVietnamese(`Đúng rồi! Số ${meta.num} gồm ${meta.tens} chục và ${meta.ones} đơn vị. ${meta.tens} chục là ${meta.tens * 10}, thêm ${meta.ones} đơn vị được ${meta.num}.`, 0.96);
         } else if (isMuc2ReflectivePractice_(q)) {
             if (!speakMuc2Correct_(q)) speakVietnamese('Đúng rồi!', 0.96);
+        } else if (isTopic46EmojiPractice_(q)) {
+            speakVietnamese('Giỏi lắm! Con đã tìm đúng hình theo quy luật.', 0.96);
         } else if (isAutoNextPractice) {
             setTimeout(() => nextQuestion(), 650);
         } else if (!speakMuc5SelectedShape_(q, selectedOpt)) {
@@ -8463,6 +9152,8 @@ function checkAnswer(selectedOpt) {
         });
 
         playAudio('wrong');
+        refreshTopic37Vertical_(q);
+        refreshTopic46EmojiPatternFeedback_(q);
         refreshTopic3PlaceValueTryAgain_(q);
         refreshTopic3RwHost_(q);
         speakMuc5SelectedShape_(q, selectedOpt);
@@ -9403,6 +10094,11 @@ function speakCurrentQuestion() {
     if (isTopic3ReadWrite_(q)) {
         return speakVietnamese(q.audio_text || 'Bé ơi, con hãy đọc và viết số nhé!', 0.96);
     }
+    // Mục 3.7: đọc phép tính, không đọc đáp án trước khi bé chọn đúng.
+    if (isTopic37Vertical_(q)) {
+        const solved = userAnswers[currentQIndex] === q.answer;
+        return speakVietnamese(topic37SpeakQuestion_(q,solved), 0.96);
+    }
     // Cấu tạo số: lời hỏi ngắn, gần gũi với bé; giữ nguyên câu hỏi gốc trong JSON.
     if (isTopic3PlaceValuePractice_(q)) {
         const meta = getTopic3PlaceValueMeta_(q);
@@ -9553,14 +10249,7 @@ function showLoadingOverlay(msg) {
         el = document.createElement('div');
         el.id = 'loading-overlay';
         el.className = 'fixed inset-0 bg-black/30 flex items-center justify-center z-50';
-        el.innerHTML = `<div class="bg-white px-6 py-4 rounded-2xl shadow-xl font-extrabold text-pink-600 flex items-center space-x-3"><i class="fa-solid fa-spinner fa-spin"></i><span id="loading-overlay-text"></span></div>
-/* Bài tập Toán: chữ rõ hơn và ưu tiên mô hình trực quan. */
-#class1-math-runtime #view-quiz.roadmap-exercise-mode #question-box h3{font-size:clamp(20px,2.05vw,28px)!important;line-height:1.35!important;}
-#class1-math-runtime #view-quiz.roadmap-exercise-mode #question-box .option-btn{font-size:clamp(17px,1.55vw,22px)!important;}
-#class1-math-runtime #view-quiz.roadmap-exercise-mode #question-box .opt-text{font-size:clamp(17px,1.55vw,22px)!important;line-height:1.3!important;}
-#class1-math-runtime #view-quiz.roadmap-exercise-mode #question-box{width:100%!important;max-width:none!important;}
-@media(max-width:767px){#class1-math-runtime #view-quiz.roadmap-exercise-mode #question-box h3{font-size:20px!important}#class1-math-runtime #view-quiz.roadmap-exercise-mode #question-box .option-btn,#class1-math-runtime #view-quiz.roadmap-exercise-mode #question-box .opt-text{font-size:17px!important}}
-`;
+        el.innerHTML = `<div class="bg-white px-6 py-4 rounded-2xl shadow-xl font-extrabold text-pink-600 flex items-center space-x-3"><i class="fa-solid fa-spinner fa-spin"></i><span id="loading-overlay-text"></span></div>`;
         document.body.appendChild(el);
     }
     document.getElementById('loading-overlay-text').textContent = msg;
@@ -9702,6 +10391,7 @@ const __mathInlineBridgeGetters_ = {
     "topic3RwResetDigits_": () => topic3RwResetDigits_,
     "topic3RwSubmit_": () => topic3RwSubmit_,
     "topic3RwToggleHint_": () => topic3RwToggleHint_,
+    "topic37SetMode_": () => topic37SetMode_,
     "topic3PlaceValueTap_": () => topic3PlaceValueTap_,
     "topic3PlaceValueSpeakGuide_": () => topic3PlaceValueSpeakGuide_,
     "topic3SortPickNumber_": () => topic3SortPickNumber_,
@@ -9710,6 +10400,20 @@ const __mathInlineBridgeGetters_ = {
     "topic3SortChoose_": () => topic3SortChoose_,
     "topic3SortUndo_": () => topic3SortUndo_,
     "topic3SortReset_": () => topic3SortReset_,
+    "muc5ComposeTryPiece_": () => muc5ComposeTryPiece_,
+    "muc5ComposeDrag_": () => muc5ComposeDrag_,
+    "muc5ComposeDrop_": () => muc5ComposeDrop_,
+    "topic47TapCell_": () => topic47TapCell_,
+    "topic47ChooseOption_": () => topic47ChooseOption_,
+    "topic47SelectPiece_": () => topic47SelectPiece_,
+    "topic47PlacePiece_": () => topic47PlacePiece_,
+    "topic47StartDrag_": () => topic47StartDrag_,
+    "topic47DropPiece_": () => topic47DropPiece_,
+    "topic47ToggleHint_": () => topic47ToggleHint_,
+    "muc7RulerTap_": () => muc7RulerTap_,
+    "muc7RulerReset_": () => muc7RulerReset_,
+    "muc8SelectCalendarDate_": () => muc8SelectCalendarDate_,
+    "muc9GuideNext_": () => muc9GuideNext_,
     "checkAnswer": () => checkAnswer,
     "prevQuestion": () => prevQuestion,
     "nextQuestion": () => nextQuestion,
@@ -10340,6 +11044,14 @@ const MATH_SUBTOPIC_CARD_CSS_ = `
 `;
 
 const MATH_QUIZ_FONT_CSS_ = `
+/* Bài tập Toán: chữ rõ hơn và ưu tiên mô hình trực quan. */
+#class1-math-runtime #view-quiz.roadmap-exercise-mode #question-box h3{font-size:clamp(20px,2.05vw,28px)!important;line-height:1.35!important;}
+#class1-math-runtime #view-quiz.roadmap-exercise-mode #question-box .option-btn{font-size:clamp(17px,1.55vw,22px)!important;}
+#class1-math-runtime #view-quiz.roadmap-exercise-mode #question-box .opt-text{font-size:clamp(17px,1.55vw,22px)!important;line-height:1.3!important;}
+#class1-math-runtime #view-quiz.roadmap-exercise-mode #question-box{width:100%!important;max-width:none!important;}
+@media(max-width:767px){#class1-math-runtime #view-quiz.roadmap-exercise-mode #question-box h3{font-size:20px!important}#class1-math-runtime #view-quiz.roadmap-exercise-mode #question-box .option-btn,#class1-math-runtime #view-quiz.roadmap-exercise-mode #question-box .opt-text{font-size:17px!important}}
+
+
 /* Chu chi rieng man tra loi Toan: khong thay doi card Khám phá, de thi, hay noi dung hoc. */
 #class1-math-runtime #view-quiz #question-box .math-quiz-standard-question {
     font-size:clamp(22px,2.2vw,26px)!important;
@@ -10896,11 +11608,64 @@ const MATH_TOPIC3_READ_WRITE_CSS_ = `
 @media(max-width:500px){#class1-math-runtime #view-quiz .topic3-rw-large-number{font-size:78px;}#class1-math-runtime #view-quiz .topic3-rw-large-word{font-size:33px;}#class1-math-runtime #view-quiz .topic3-rw-option{min-height:86px;font-size:16px;gap:4px;}#class1-math-runtime #view-quiz .topic3-rw-digit{min-height:48px;font-size:25px;}#class1-math-runtime #view-quiz .topic3-rw-slot{width:61px;height:73px;font-size:42px;}#class1-math-runtime #view-quiz .topic3-rw-clear,#class1-math-runtime #view-quiz .topic3-rw-check{font-size:14px;padding:8px;}}
 `;
 
+
+const MATH_TOPIC37_VERTICAL_CSS_ = `
+/* Khám phá 3.7: đặt tính dọc cùng một mẫu cho hai chế độ */
+#class1-math-runtime #view-quiz .topic37-layout{display:flex;flex-direction:column;gap:12px;max-width:960px;width:100%;margin:0 auto;}
+#class1-math-runtime #view-quiz .topic37-mode-control{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;}
+#class1-math-runtime #view-quiz .topic37-mode-choice{min-height:44px;min-width:156px;padding:8px 16px;border-radius:16px;border:1px solid #e9d5ff;background:#faf5ff;color:#6d28d9;font-size:17px;font-weight:900;transition:background .15s,border-color .15s;}
+#class1-math-runtime #view-quiz .topic37-mode-choice.is-selected{color:#fff;border-color:#a855f7;background:linear-gradient(90deg,#ec4899,#8b5cf6);box-shadow:0 3px 9px rgba(168,85,247,.15);}
+#class1-math-runtime #view-quiz .topic37-two-panels{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:13px;align-items:stretch;}
+#class1-math-runtime #view-quiz .topic37-model-panel,#class1-math-runtime #view-quiz .topic37-question-panel{min-width:0;border-radius:24px;border:1px solid #fbcfe8;padding:14px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+#class1-math-runtime #view-quiz .topic37-model-panel{background:linear-gradient(135deg,#fff9e8,#fff 58%,#f5f3ff);}
+#class1-math-runtime #view-quiz #topic37-visual-host{width:100%;display:flex;justify-content:center;}
+#class1-math-runtime #view-quiz .topic37-visual{width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;}
+#class1-math-runtime #view-quiz .topic37-vertical-board{position:relative;display:grid;grid-template-columns:repeat(2,74px);grid-template-rows:25px 51px 51px 5px 51px;gap:0 5px;justify-content:center;padding-left:31px;font-variant-numeric:tabular-nums;}
+#class1-math-runtime #view-quiz .topic37-column-label{font-size:15px;text-align:center;font-weight:900;white-space:nowrap;align-self:center;letter-spacing:.01em;}
+#class1-math-runtime #view-quiz .topic37-header-tens{grid-column:1;grid-row:1;color:#2563eb;}
+#class1-math-runtime #view-quiz .topic37-header-ones{grid-column:2;grid-row:1;color:#15803d;}
+#class1-math-runtime #view-quiz .topic37-vertical-board>.topic37-digit{font-size:42px;line-height:1.12;font-weight:950;text-align:center;align-self:center;z-index:1;}
+#class1-math-runtime #view-quiz .topic37-digit.topic37-tens{color:#2563eb;}
+#class1-math-runtime #view-quiz .topic37-digit.topic37-ones{color:#15803d;}
+#class1-math-runtime #view-quiz .topic37-sign{position:absolute;left:2px;top:95px;font-size:33px;font-weight:900;line-height:1;color:#ec4899;}
+#class1-math-runtime #view-quiz .topic37-horizontal-line{grid-column:1/3;grid-row:4;height:0;border-top:3px solid #334155;align-self:center;z-index:2;}
+#class1-math-runtime #view-quiz .topic37-divider{position:absolute;left:calc(31px + 74px + 2px);top:25px;bottom:7px;border-left:1px dashed #94a3b8;pointer-events:none;opacity:.65;}
+#class1-math-runtime #view-quiz .topic37-result{grid-column:1/3;grid-row:5;display:grid;grid-template-columns:repeat(2,74px);column-gap:5px;align-items:center;justify-content:center;text-align:center;font-size:42px;line-height:1.12;font-weight:950;color:#cbd5e1;}
+#class1-math-runtime #view-quiz .topic37-result .topic37-answer{color:#dc2626;}
+#class1-math-runtime #view-quiz .topic37-vertical-board>.topic37-digit.topic37-revealed{color:#dc2626!important;}
+#class1-math-runtime #view-quiz .topic37-vertical-board>.topic37-digit.topic37-unknown{color:#7c3aed;}
+#class1-math-runtime #view-quiz .topic37-result.is-known .topic37-tens{color:#2563eb;}
+#class1-math-runtime #view-quiz .topic37-result.is-known .topic37-ones{color:#15803d;}
+#class1-math-runtime #view-quiz .topic37-visual.is-independent .topic37-result.is-known .topic37-digit{color:#111827;}
+#class1-math-runtime #view-quiz .topic37-result .topic37-placeholder{color:#cbd5e1;}
+#class1-math-runtime #view-quiz .topic37-visual.is-independent .topic37-column-label,#class1-math-runtime #view-quiz .topic37-visual.is-independent .topic37-divider{visibility:hidden;}
+#class1-math-runtime #view-quiz .topic37-visual.is-independent .topic37-tens,#class1-math-runtime #view-quiz .topic37-visual.is-independent .topic37-ones{color:#111827;}
+#class1-math-runtime #view-quiz .topic37-visual.is-independent .topic37-sign{color:#111827;}
+#class1-math-runtime #view-quiz .topic37-mini-steps{box-sizing:border-box;width:100%;max-width:390px;border:1px solid #dbeafe;border-radius:15px;background:#eff6ff;padding:10px 12px;display:grid;gap:4px;text-align:center;color:#1e40af;}
+#class1-math-runtime #view-quiz .topic37-mini-steps p{margin:0;line-height:1.4;font-size:21px;font-weight:850;}
+#class1-math-runtime #view-quiz .topic37-mini-steps strong{color:#1d4ed8;}
+#class1-math-runtime #view-quiz .topic37-mini-steps span{font-size:18px;font-weight:800;color:#475569;}
+#class1-math-runtime #view-quiz .topic37-solved{font-size:17px;font-weight:900;color:#166534;text-align:center;border:1px solid #bbf7d0;border-radius:12px;background:#f0fdf4;padding:6px 13px;}
+#class1-math-runtime #view-quiz .topic37-solved strong{color:#dc2626;}
+#class1-math-runtime #view-quiz .topic37-try{font-size:15px;color:#9f1239;text-align:center;font-weight:800;border-radius:13px;background:#fff1f2;padding:7px 12px;}
+#class1-math-runtime #view-quiz .topic37-question-panel .topic37-question-expression{margin:0;font-size:clamp(30px,3vw,40px);font-weight:950;color:#0f172a;text-align:center;line-height:1.25;white-space:nowrap;font-variant-numeric:tabular-nums;}
+#class1-math-runtime #view-quiz .topic37-question-expression .topic37-question-mark{color:#7c3aed;}
+#class1-math-runtime #view-quiz .topic37-question-expression .topic37-question-answer{color:#dc2626;}
+#class1-math-runtime #view-quiz .topic37-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;width:100%;margin-top:9px;}
+#class1-math-runtime #view-quiz .topic37-option{display:flex;gap:8px;align-items:center;justify-content:center;min-height:66px;padding:10px;border-radius:15px;border:1px solid #f9a8d4;background:#fff7fb;color:#6b21a8;font-size:28px;line-height:1.25;font-weight:900;}
+#class1-math-runtime #view-quiz .topic37-option strong{color:#db2777;font-size:20px;}
+#class1-math-runtime #view-quiz .topic37-option.bg-green-100{border-color:#4ade80;background:#dcfce7;color:#166534;}
+#class1-math-runtime #view-quiz .topic37-option.bg-red-200{border-color:#ef4444;background:#fecaca;color:#991b1b;}
+#class1-math-runtime #view-quiz .topic37-option:disabled{cursor:default;}
+#class1-math-runtime #view-quiz .topic37-mode-choice:focus-visible,#class1-math-runtime #view-quiz .topic37-option:focus-visible{outline:3px solid #a855f7;outline-offset:2px;}
+@media(max-width:750px){#class1-math-runtime #view-quiz .topic37-two-panels{grid-template-columns:1fr;}#class1-math-runtime #view-quiz .topic37-model-panel{padding:9px;}#class1-math-runtime #view-quiz .topic37-question-panel{padding:12px;}#class1-math-runtime #view-quiz .topic37-vertical-board{grid-template-columns:repeat(2,67px);grid-template-rows:23px 48px 48px 5px 48px;}#class1-math-runtime #view-quiz .topic37-result{grid-template-columns:repeat(2,67px);font-size:39px;}#class1-math-runtime #view-quiz .topic37-vertical-board>.topic37-digit{font-size:39px;}#class1-math-runtime #view-quiz .topic37-divider{left:calc(31px + 67px + 2px);}#class1-math-runtime #view-quiz .topic37-sign{top:91px;}#class1-math-runtime #view-quiz .topic37-mini-steps{max-width:420px;}#class1-math-runtime #view-quiz .topic37-option{min-height:53px;font-size:23px;}#class1-math-runtime #view-quiz .topic37-mode-choice{min-width:128px;font-size:16px;}}
+`;
+
 function ensureMathStyles_() {
     if (document.getElementById(MATH_MODULE_STYLE_ID_)) return;
     const style = document.createElement('style');
     style.id = MATH_MODULE_STYLE_ID_;
-    style.textContent = MATH_RUNTIME_CSS_ + MATH_SHELL_BREADCRUMB_CSS_ + MATH_HUB_CARD_CSS_ + MATH_EXPLORE_ICON_TEXT_CSS_ + MATH_SUBTOPIC_CARD_CSS_ + MATH_QUIZ_FONT_CSS_ + MATH_MUC1011_LAYOUT_CSS_ + MATH_MUC2_GUIDE_CSS_ + MATH_TOPIC3_PLACE_VALUE_CSS_ + MATH_TOPIC3_READ_WRITE_CSS_;
+    style.textContent = MATH_RUNTIME_CSS_ + MATH_SHELL_BREADCRUMB_CSS_ + MATH_HUB_CARD_CSS_ + MATH_EXPLORE_ICON_TEXT_CSS_ + MATH_SUBTOPIC_CARD_CSS_ + MATH_QUIZ_FONT_CSS_ + MATH_MUC1011_LAYOUT_CSS_ + MATH_MUC2_GUIDE_CSS_ + MATH_TOPIC3_PLACE_VALUE_CSS_ + MATH_TOPIC3_READ_WRITE_CSS_ + MATH_TOPIC37_VERTICAL_CSS_;
     document.head.appendChild(style);
 }
 
