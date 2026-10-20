@@ -3479,10 +3479,195 @@ const MUC2_GUIDE_TRACKS_ = Object.freeze({
     }
 });
 const MUC2_GUIDE_STEPS_ = ['Cô làm mẫu', 'Bé làm cùng cô', 'Hiểu bản chất', 'Bé tự làm'];
+const MUC2_GUIDE_LESSON_META_ = Object.freeze({
+    concept: { title: 'Phép cộng, phép trừ là gì?', icon: '🍬' },
+    add: { title: 'Học phép cộng', icon: '➕' },
+    sub: { title: 'Học phép trừ', icon: '➖' }
+});
 let muc2GuideState_ = null;
 
 function muc2GuideTrack_() {
     return MUC2_GUIDE_TRACKS_[muc2GuideState_?.lesson] || MUC2_GUIDE_TRACKS_.add;
+}
+
+function muc2GuideIsConcept_() {
+    return muc2GuideState_?.lesson === 'concept';
+}
+
+function muc2GuideCurrentMeta_() {
+    return MUC2_GUIDE_LESSON_META_[muc2GuideState_?.lesson] || MUC2_GUIDE_LESSON_META_.add;
+}
+
+// Tổng kẹo của bé từ 2 đến 10; mỗi ngăn có thể có 0 viên.
+// Các số nguyên không âm của hai ngăn luôn cộng lại đúng bằng tổng.
+function muc2GuideConceptTotal_() {
+    const raw = Number(muc2GuideState_?.conceptTotal);
+    return Number.isFinite(raw) ? Math.max(2, Math.min(10, Math.round(raw))) : 10;
+}
+
+function muc2GuideConceptClamp_(value) {
+    const raw = Number(value);
+    return Number.isFinite(raw) ? Math.max(0, Math.min(muc2GuideConceptTotal_(), Math.round(raw))) : 0;
+}
+
+// Cập nhật trực tiếp vùng học, không tạo lại tay kéo trong lúc giữ pointer capture.
+function muc2GuideConceptRefresh_(rebuildCells = false) {
+    if (!muc2GuideIsConcept_()) return;
+    const host = document.querySelector('#class1-math-runtime .muc2-concept-panel');
+    if (!host) return;
+    const total = muc2GuideConceptTotal_();
+    const left = muc2GuideConceptClamp_(muc2GuideState_.conceptLeft);
+    const right = total - left;
+    const box = host.querySelector('.muc2-concept-box');
+    if (!box) return;
+
+    if (rebuildCells) {
+        box.querySelectorAll('[data-muc2-candy-index]').forEach(node => node.remove());
+        const dividerNode = box.querySelector('.muc2-concept-divider');
+        for (let i = 0; i < total; i++) {
+            const cell = document.createElement('span');
+            cell.setAttribute('data-muc2-candy-index', String(i));
+            cell.className = 'muc2-concept-cell';
+            cell.setAttribute('aria-hidden', 'true');
+            cell.textContent = '🍬';
+            box.insertBefore(cell, dividerNode);
+        }
+        box.style.gridTemplateColumns = `repeat(${total}, minmax(0, 1fr))`;
+        box.style.width = `${Math.max(4, total) * 10}%`;
+        box.setAttribute('aria-label', `Hộp kẹo có ${total} viên, chia thành hai ngăn`);
+    }
+    box.querySelectorAll('[data-muc2-candy-index]').forEach(cell => {
+        const index = Number(cell.getAttribute('data-muc2-candy-index'));
+        cell.classList.toggle('is-left', index < left);
+        cell.classList.toggle('is-right', index >= left);
+    });
+    host.querySelectorAll('[data-muc2-concept-value]').forEach(node => {
+        const value = node.getAttribute('data-muc2-concept-value');
+        node.textContent = String(value === 'left' ? left : value === 'right' ? right : total);
+    });
+    const position = `${left * 100 / total}%`;
+    const divider = box.querySelector('.muc2-concept-divider');
+    if (divider) {
+        divider.style.left = position;
+    }
+    const grip = box.querySelector('.muc2-concept-grip');
+    if (grip) {
+        grip.style.left = position;
+        grip.setAttribute('aria-valuemax', String(total));
+        grip.setAttribute('aria-valuenow', String(left));
+        grip.setAttribute('aria-valuetext', `Ngăn trái ${left} viên, ngăn phải ${right} viên, tổng ${total} viên`);
+        grip.setAttribute('aria-label', `Gạt thanh để chia ${total} viên kẹo`);
+    }
+    const minus = host.querySelector('[data-muc2-concept-action="minus"]');
+    const plus = host.querySelector('[data-muc2-concept-action="plus"]');
+    if (minus) minus.disabled = total === 2;
+    if (plus) plus.disabled = total === 10;
+}
+
+function muc2GuideConceptSet_(value) {
+    if (!muc2GuideState_ || !muc2GuideIsConcept_()) return;
+    const left = muc2GuideConceptClamp_(value);
+    if (muc2GuideState_.conceptLeft === left) return;
+    stopSpeaking(); // Kéo không tự đọc, hủy phát thanh đang chạy.
+    muc2GuideState_.conceptLeft = left;
+    muc2GuideConceptRefresh_();
+}
+
+function muc2GuideConceptChangeTotal_(delta) {
+    if (!muc2GuideState_ || !muc2GuideIsConcept_() || !Number.isInteger(delta) || Math.abs(delta) !== 1) return;
+    const current = muc2GuideConceptTotal_();
+    const total = Math.max(2, Math.min(10, current + delta));
+    if (total === current) return;
+    stopSpeaking();
+    muc2GuideState_.conceptTotal = total;
+    muc2GuideState_.conceptLeft = Math.min(muc2GuideState_.conceptLeft, total);
+    muc2GuideConceptRefresh_(true);
+}
+
+// Tay nam chinh la vung keo: chuot va man hinh cam ung dung Pointer Events.
+// Khong render lai input/DOM trong luc keo, de khong mat pointer capture.
+function muc2GuideConceptGrab_(event) {
+    if (!muc2GuideIsConcept_() || (event.pointerType === 'mouse' && event.button !== 0)) return;
+    const grip = event.currentTarget;
+    const box = grip.closest('.muc2-concept-box');
+    if (!box) return;
+    const rect = box.getBoundingClientRect();
+    if (rect.width <= 0) return;
+    grip.dataset.muc2Pointer = String(event.pointerId);
+    // Tay nam o dung vach chia nen keo theo ti le 0-10, khong nhay gia tri khi cham.
+    const value = muc2GuideConceptClamp_(muc2GuideState_.conceptLeft);
+    grip.dataset.muc2GrabOffset = String(event.clientX - (rect.left + rect.width * value / muc2GuideConceptTotal_()));
+    grip.classList.add('is-dragging');
+    stopSpeaking();
+    if (typeof grip.setPointerCapture === 'function') {
+        try { grip.setPointerCapture(event.pointerId); } catch (_) { /* optional browser support */ }
+    }
+    event.preventDefault();
+}
+
+function muc2GuideConceptDrag_(event) {
+    const grip = event.currentTarget;
+    if (!muc2GuideIsConcept_() || grip.dataset.muc2Pointer !== String(event.pointerId)) return;
+    const box = grip.closest('.muc2-concept-box');
+    if (!box) return;
+    const rect = box.getBoundingClientRect();
+    if (rect.width <= 0) return;
+    const grabOffset = Number(grip.dataset.muc2GrabOffset) || 0;
+    const part = (event.clientX - grabOffset - rect.left) / rect.width;
+    muc2GuideConceptSet_(Math.round(Math.max(0, Math.min(1, part)) * muc2GuideConceptTotal_()));
+    event.preventDefault();
+}
+
+function muc2GuideConceptRelease_(event) {
+    const grip = event.currentTarget;
+    if (grip.dataset.muc2Pointer !== String(event.pointerId)) return;
+    delete grip.dataset.muc2Pointer;
+    delete grip.dataset.muc2GrabOffset;
+    grip.classList.remove('is-dragging');
+    try {
+        if (grip.hasPointerCapture && grip.hasPointerCapture(event.pointerId)) grip.releasePointerCapture(event.pointerId);
+    } catch (_) { /* pointer already released */ }
+}
+
+function muc2GuideConceptLost_(event) {
+    const grip = event.currentTarget;
+    if (grip.dataset.muc2Pointer !== String(event.pointerId)) return;
+    delete grip.dataset.muc2Pointer;
+    delete grip.dataset.muc2GrabOffset;
+    grip.classList.remove('is-dragging');
+}
+
+function muc2GuideConceptKey_(event) {
+    if (!muc2GuideIsConcept_()) return;
+    const n = muc2GuideConceptClamp_(muc2GuideState_.conceptLeft);
+    const key = event.key;
+    const next = (key === 'ArrowLeft' || key === 'ArrowDown') ? n - 1
+        : (key === 'ArrowRight' || key === 'ArrowUp') ? n + 1
+        : key === 'Home' ? 0 : key === 'End' ? muc2GuideConceptTotal_() : null;
+    if (next === null) return;
+    event.preventDefault();
+    muc2GuideConceptSet_(next);
+}
+
+function muc2GuideConceptNarration_() {
+    const total = muc2GuideConceptTotal_();
+    const left = muc2GuideConceptClamp_(muc2GuideState_?.conceptLeft ?? 5);
+    const right = total - left;
+    const describeSide = (side, value, color) => value === 0
+        ? `Ngăn bên ${side}, màu ${color}, chưa có viên kẹo nào.`
+        : `Ngăn bên ${side}, màu ${color}, có ${value} viên kẹo.`;
+    return [
+        'Bé ơi, mình cùng khám phá hộp kẹo nhé!',
+        `Bé có tất cả ${total} viên kẹo.`,
+        describeSide('trái', left, 'xanh dương'),
+        describeSide('phải', right, 'xanh lá'),
+        `Hai ngăn gộp lại được ${total} viên kẹo.`,
+        `${left} cộng ${right} bằng ${total}.`,
+        `Đổi chỗ hai ngăn, ${right} cộng ${left} vẫn bằng ${total}.`,
+        `${total} trừ ${left} bằng ${right}.`,
+        `${total} trừ ${right} bằng ${left}.`,
+        `Khi bé gạt thanh chia, số kẹo của mỗi ngăn có thể thay đổi, nhưng tổng vẫn là ${total}. Nếu bé bấm cộng hoặc trừ để thêm hay bớt kẹo, tổng sẽ thay đổi theo. Bé thử tiếp nhé!`
+    ].join(' ');
 }
 
 function muc2GuideDot_(color, muted = false, extra = '') {
@@ -3495,11 +3680,12 @@ function muc2GuideDots_(count, color, mutedCount = 0) {
     ).join('');
 }
 
-function openMuc2Guide_(lesson = 'add') {
+function openMuc2Guide_(lesson = 'concept') {
     if (Number(pendingTopicQuiz?.topicNum) !== 2) return;
     stopSpeaking();
     muc2GuideState_ = {
-        lesson: MUC2_GUIDE_TRACKS_[lesson] ? lesson : 'add',
+        lesson: MUC2_GUIDE_LESSON_META_[lesson] ? lesson : 'concept',
+        conceptTotal: 10, conceptLeft: 5,
         step: 0, demoRevealed: false, guidedPicked: [],
         seenModels: { add:false, sub:false }, shownModel: '',
         quizIndex: 0, quizSolved: false, quizHint: false,
@@ -3511,13 +3697,14 @@ function openMuc2Guide_(lesson = 'add') {
     document.getElementById('nav-group-practice')?.classList.add('hidden');
     document.getElementById('nav-group-exam')?.classList.add('hidden');
     document.getElementById('view-quiz')?.classList.remove('roadmap-exercise-mode');
-    updateDiscoverBreadcrumb_(pendingTopicQuiz.topicName, '➕', `1. Học cùng Cô Thỏ Hồng · ${muc2GuideTrack_().title}`);
+    const crumbTitle = muc2GuideCurrentMeta_().title;
+    updateDiscoverBreadcrumb_(pendingTopicQuiz.topicName, '➕', `2.1 Học cùng Cô Thỏ Hồng · ${crumbTitle}`);
     switchAppView('view-quiz');
     renderMuc2Guide_();
 }
 
 function muc2GuideSelectLesson_(lesson) {
-    if (!MUC2_GUIDE_TRACKS_[lesson] || !muc2GuideState_) return;
+    if (!MUC2_GUIDE_LESSON_META_[lesson] || !muc2GuideState_) return;
     openMuc2Guide_(lesson);
 }
 
@@ -3532,6 +3719,10 @@ function muc2GuideExit_() {
 
 function muc2GuideSpeak_() {
     if (!muc2GuideState_) return;
+    if (muc2GuideIsConcept_()) {
+        speakVietnamese(muc2GuideConceptNarration_(), 0.94);
+        return;
+    }
     const track = muc2GuideTrack_();
     if (muc2GuideState_.step === 3 && !muc2GuideState_.quizCompleted) {
         const [a,b] = track.quiz[muc2GuideState_.quizIndex];
@@ -3745,34 +3936,92 @@ function muc2GuideQuizHtml_() {
     </div>`;
 }
 
+function muc2GuideConceptHtml_() {
+    const total = muc2GuideConceptTotal_();
+    const left = muc2GuideConceptClamp_(muc2GuideState_?.conceptLeft ?? 5);
+    const right = total - left;
+    const position = `${left * 100 / total}%`;
+    const cells = Array.from({ length: total }, (_, i) => `<span data-muc2-candy-index="${i}" class="muc2-concept-cell ${i < left ? 'is-left' : 'is-right'}" aria-hidden="true">🍬</span>`).join('');
+    return `<div class="muc2-guide-panel muc2-concept-panel">
+        <div class="muc2-concept-layout">
+            <div class="muc2-concept-main">
+                <div class="muc2-concept-main-head">
+                    <div>
+                        <div class="muc2-concept-kicker">🍬 Hộp kẹo của bé</div>
+                        <h3>Phép cộng, phép trừ là gì?</h3>
+                    </div>
+                    <button type="button" class="muc2-guide-voice-button" onclick="muc2GuideSpeak_()"><i class="fa-solid fa-volume-high" aria-hidden="true"></i> Nghe cô giảng bài</button>
+                </div>
+                <p class="muc2-concept-intro">Bé bấm <b>+</b> hoặc <b>−</b> để thêm, bớt kẹo. Sau đó kéo thanh chia để chuyển kẹo giữa hai ngăn. Bấm <strong>“Nghe cô giảng bài”</strong> khi bé đã gạt xong nhé!</p>
+                <div class="muc2-concept-total" aria-label="Điều chỉnh tổng số kẹo từ 2 đến 10">
+                    <div class="muc2-concept-total-title">🍬 Số kẹo bé có <small>(2–10 viên)</small></div>
+                    <div class="muc2-concept-total-controls">
+                        <button type="button" class="muc2-concept-total-btn" data-muc2-concept-action="minus" onclick="muc2GuideConceptChangeTotal_(-1)" aria-label="Bớt một viên kẹo" ${total === 2 ? 'disabled' : ''}>−</button>
+                        <strong class="muc2-concept-total-value" data-muc2-concept-value="total" aria-live="polite" aria-atomic="true">${total}</strong>
+                        <button type="button" class="muc2-concept-total-btn" data-muc2-concept-action="plus" onclick="muc2GuideConceptChangeTotal_(1)" aria-label="Thêm một viên kẹo" ${total === 10 ? 'disabled' : ''}>+</button>
+                    </div>
+                </div>
+                <div class="muc2-concept-box" style="grid-template-columns:repeat(${total},minmax(0,1fr));width:${Math.max(4,total)*10}%" role="group" aria-label="Hộp kẹo có ${total} viên, chia thành hai ngăn">${cells}
+                    <span class="muc2-concept-divider" style="left:${position}" aria-hidden="true"></span>
+                    <span class="muc2-concept-grip" style="left:${position}" role="slider" tabindex="0" aria-label="Gạt thanh để chia ${total} viên kẹo" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${left}" aria-valuetext="Ngăn trái ${left} viên, ngăn phải ${right} viên, tổng ${total} viên"
+                        onpointerdown="muc2GuideConceptGrab_(event)" onpointermove="muc2GuideConceptDrag_(event)" onpointerup="muc2GuideConceptRelease_(event)" onpointercancel="muc2GuideConceptRelease_(event)" onlostpointercapture="muc2GuideConceptLost_(event)" onkeydown="muc2GuideConceptKey_(event)">
+                        <b class="is-left" aria-hidden="true">←</b><i aria-hidden="true"></i><b class="is-right" aria-hidden="true">→</b>
+                    </span>
+                </div>
+                <div class="muc2-concept-slider-scale"><strong>↔ Kéo thanh ở giữa để chia kẹo</strong></div>
+                <div class="muc2-concept-labels">
+                    <div class="muc2-concept-label is-left">Ngăn bên trái: <strong data-muc2-concept-value="left">${left}</strong></div>
+                    <div class="muc2-concept-label is-right">Ngăn bên phải: <strong data-muc2-concept-value="right">${right}</strong></div>
+                </div>
+                <div class="muc2-concept-note">
+                    Con có <span class="is-red" data-muc2-concept-value="total">${total}</span> cái kẹo, con để <span class="is-red" data-muc2-concept-value="total">${total}</span> cái kẹo này vào 2 ngăn xanh dương và xanh lá. Dù số lượng kẹo mỗi ngăn thay đổi thì con vẫn có <span class="is-red" data-muc2-concept-value="total">${total}</span> cái kẹo.
+                </div>
+            </div>
+            <div class="muc2-concept-side">
+                <div class="muc2-concept-math is-add">
+                    <div class="muc2-concept-math-title">➕ Phép cộng</div>
+                    <div class="muc2-concept-eq"><span class="is-left" data-muc2-concept-value="left">${left}</span> + <span class="is-right" data-muc2-concept-value="right">${right}</span> = <b data-muc2-concept-value="total">${total}</b></div>
+                    <div class="muc2-concept-eq"><span class="is-right" data-muc2-concept-value="right">${right}</span> + <span class="is-left" data-muc2-concept-value="left">${left}</span> = <b data-muc2-concept-value="total">${total}</b></div>
+                    <p>Đổi chỗ hai ngăn thì tổng số kẹo vẫn không đổi.</p>
+                </div>
+                <div class="muc2-concept-math is-sub">
+                    <div class="muc2-concept-math-title">➖ Phép trừ</div>
+                    <div class="muc2-concept-eq"><b data-muc2-concept-value="total">${total}</b> − <span class="is-left" data-muc2-concept-value="left">${left}</span> = <span class="is-right" data-muc2-concept-value="right">${right}</span></div>
+                    <div class="muc2-concept-eq"><b data-muc2-concept-value="total">${total}</b> − <span class="is-right" data-muc2-concept-value="right">${right}</span> = <span class="is-left" data-muc2-concept-value="left">${left}</span></div>
+                    <p>Lấy tổng số kẹo bớt đi một ngăn thì sẽ ra số kẹo của ngăn còn lại.</p>
+                </div>
+            </div>
+        </div>
+    </div>`;
+}
+
 function renderMuc2Guide_() {
     const state = muc2GuideState_;
     const host = document.getElementById('question-box');
     if (!state || !host || Number(pendingTopicQuiz?.topicNum) !== 2) return;
     const track = muc2GuideTrack_();
+    const isConcept = muc2GuideIsConcept_();
+    const currentMeta = muc2GuideCurrentMeta_();
     const htmlByStep = [muc2GuideDemoHtml_, muc2GuideTogetherHtml_, muc2GuideUnderstandHtml_, muc2GuideQuizHtml_];
+    const lessonTabs = Object.entries(MUC2_GUIDE_LESSON_META_).map(([key,item]) => `<button type="button" class="muc2-guide-lesson-btn ${state.lesson===key?'is-active':''}" aria-pressed="${state.lesson===key}" onclick="muc2GuideSelectLesson_('${key}')">${item.icon} ${item.title}</button>`).join('');
+    const stepsHtml = isConcept ? '' : `<div class="muc2-guide-steps" aria-label="Các bước học">${MUC2_GUIDE_STEPS_.map((label,i)=>`<div class="muc2-guide-step ${state.step===i?'is-active':(state.step>i?'is-done':'')}" ${state.step===i?'aria-current="step"':''}><span>${state.step>i?'✓':(i+1)}</span><strong>${label}</strong></div>`).join('')}</div>`;
+    const voiceHtml = isConcept ? '' : `<div class="muc2-guide-voice"><div class="muc2-guide-voice-label">${track.icon} ${escapeHtml(track.title)} · ${MUC2_GUIDE_STEPS_[state.step]}</div><button type="button" class="muc2-guide-voice-button" onclick="muc2GuideSpeak_()"><i class="fa-solid fa-volume-high" aria-hidden="true"></i> Nghe cô giảng</button></div>`;
+    const bodyHtml = isConcept ? muc2GuideConceptHtml_() : htmlByStep[state.step]();
+    const bottomHtml = isConcept ? `<div class="muc2-guide-bottom"><span></span><button type="button" class="muc2-guide-primary" onclick="muc2GuideSelectLesson_('add')">Sang học phép cộng →</button></div>` : `<div class="muc2-guide-bottom">${state.step>0 ? `<button type="button" class="muc2-guide-secondary" onclick="muc2GuideSetStep_(${state.step-1})">← Bước trước</button>` : '<span></span>'}${state.step<3 ? `<button type="button" class="muc2-guide-primary" onclick="muc2GuideSetStep_(${state.step+1})" ${muc2GuideReady_()?'':'disabled'}>Tiếp tục →</button>` : '<span></span>'}</div>`;
     host.innerHTML = `<section class="muc2-guide" aria-label="Học phép cộng và phép trừ cùng Cô Thỏ Hồng">
         <div class="muc2-guide-header">
             <div><div class="muc2-guide-eyebrow">🐰 HỌC CÙNG CÔ THỎ HỒNG</div>
                 <h2>Hiểu rồi mình mới luyện nhé!</h2>
-                <p>Bé nhìn, làm cùng cô, hiểu cách tính rồi tự thử sức.</p></div>
+                ${isConcept ? '' : `<p>Bé nhìn, làm cùng cô, hiểu cách tính rồi tự thử sức.</p>`}</div>
             <button type="button" class="muc2-guide-secondary" onclick="muc2GuideExit_()">← Về Mục 2</button>
         </div>
-        <div class="muc2-guide-lesson-tabs" role="group" aria-label="Chọn bài học">
-            ${Object.entries(MUC2_GUIDE_TRACKS_).map(([key,item])=>`<button type="button" class="muc2-guide-lesson-btn ${state.lesson===key?'is-active':''}" aria-pressed="${state.lesson===key}" onclick="muc2GuideSelectLesson_('${key}')">${item.icon} ${item.title}</button>`).join('')}
-        </div>
-        <div class="muc2-guide-steps" aria-label="Các bước học">
-            ${MUC2_GUIDE_STEPS_.map((label,i)=>`<div class="muc2-guide-step ${state.step===i?'is-active':(state.step>i?'is-done':'')}" ${state.step===i?'aria-current="step"':''}><span>${state.step>i?'✓':(i+1)}</span><strong>${label}</strong></div>`).join('')}
-        </div>
-        <div class="muc2-guide-voice"><div class="muc2-guide-voice-label">${track.icon} ${escapeHtml(track.title)} · ${MUC2_GUIDE_STEPS_[state.step]}</div>
-            <button type="button" class="muc2-guide-voice-button" onclick="muc2GuideSpeak_()"><i class="fa-solid fa-volume-high" aria-hidden="true"></i> Nghe cô giảng</button>
-        </div>
-        ${htmlByStep[state.step]()}
-        <div class="muc2-guide-bottom">
-            ${state.step>0 ? `<button type="button" class="muc2-guide-secondary" onclick="muc2GuideSetStep_(${state.step-1})">← Bước trước</button>` : '<span></span>'}
-            ${state.step<3 ? `<button type="button" class="muc2-guide-primary" onclick="muc2GuideSetStep_(${state.step+1})" ${muc2GuideReady_()?'':'disabled'}>Tiếp tục →</button>` : '<span></span>'}
-        </div>
+        <div class="muc2-guide-lesson-tabs" role="group" aria-label="Chọn bài học">${lessonTabs}</div>
+        ${stepsHtml}
+        ${voiceHtml}
+        ${bodyHtml}
+        ${bottomHtml}
     </section>`;
+
 }
 
 function showLectureAndSubtopics(topicNum, topicName, topicObj) {
@@ -3924,7 +4173,7 @@ function showLectureAndSubtopics(topicNum, topicName, topicObj) {
                 <div class="math-subtopic-head">
                     <span class="math-subtopic-icon" aria-hidden="true">🐰</span>
                     <div class="min-w-0">
-                        <h3 class="math-subtopic-title">1. Học cùng Cô Thỏ Hồng</h3>
+                        <h3 class="math-subtopic-title">2.1 Học cùng Cô Thỏ Hồng</h3>
                         <p class="math-muc2-range">Phạm vi 10</p>
                     </div>
                 </div>
@@ -10356,6 +10605,13 @@ const __mathInlineBridgeGetters_ = {
     "muc2GuideSelectLesson_": () => muc2GuideSelectLesson_,
     "muc2GuideExit_": () => muc2GuideExit_,
     "muc2GuideSpeak_": () => muc2GuideSpeak_,
+    "muc2GuideConceptSet_": () => muc2GuideConceptSet_,
+    "muc2GuideConceptChangeTotal_": () => muc2GuideConceptChangeTotal_,
+    "muc2GuideConceptGrab_": () => muc2GuideConceptGrab_,
+    "muc2GuideConceptDrag_": () => muc2GuideConceptDrag_,
+    "muc2GuideConceptRelease_": () => muc2GuideConceptRelease_,
+    "muc2GuideConceptLost_": () => muc2GuideConceptLost_,
+    "muc2GuideConceptKey_": () => muc2GuideConceptKey_,
     "muc2GuideSetStep_": () => muc2GuideSetStep_,
     "muc2GuideRevealDemo_": () => muc2GuideRevealDemo_,
     "muc2GuidePick_": () => muc2GuidePick_,
@@ -11439,7 +11695,7 @@ const MATH_MUC2_GUIDE_CSS_ = `
     margin:5px 0 0;
     color:var(--math-sub-title);font-size:15px;font-weight:750;line-height:1.3;
 }
-#class1-math-runtime .muc2-guide{width:100%;max-width:1000px;margin:0 auto;color:#334155;font-size:16px;}
+#class1-math-runtime .muc2-guide{width:100%;max-width:1180px;margin:0 auto;color:#334155;font-size:16px;}
 #class1-math-runtime .muc2-guide button{cursor:pointer;}
 #class1-math-runtime .muc2-guide button:disabled{opacity:.55;cursor:default;}
 #class1-math-runtime .muc2-guide button:focus-visible{outline:3px solid #a855f7;outline-offset:3px;}
@@ -11447,8 +11703,8 @@ const MATH_MUC2_GUIDE_CSS_ = `
 #class1-math-runtime .muc2-guide-eyebrow{font-size:14px;font-weight:900;color:#db2777;}
 #class1-math-runtime .muc2-guide-header h2{font-size:24px;line-height:1.25;font-weight:900;color:#6d28d9;margin:4px 0;}
 #class1-math-runtime .muc2-guide-header p{font-size:15px;font-weight:700;color:#64748b;}
-#class1-math-runtime .muc2-guide-lesson-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:15px 0 10px;}
-#class1-math-runtime .muc2-guide-lesson-btn{min-height:49px;border-radius:16px;border:1px solid #e9d5ff;background:#faf5ff;color:#7e22ce;font-weight:900;font-size:17px;}
+#class1-math-runtime .muc2-guide-lesson-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:15px 0 10px;}
+#class1-math-runtime .muc2-guide-lesson-btn{min-height:54px;border-radius:16px;border:1px solid #e9d5ff;background:#faf5ff;color:#7e22ce;font-weight:900;font-size:20px;}
 #class1-math-runtime .muc2-guide-lesson-btn.is-active{background:linear-gradient(90deg,#ec4899,#9333ea);border-color:#a855f7;color:#fff;box-shadow:0 5px 15px rgba(168,85,247,.20);}
 #class1-math-runtime .muc2-guide-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:10px 0;}
 #class1-math-runtime .muc2-guide-step{display:flex;align-items:center;justify-content:center;gap:7px;padding:9px 5px;border-radius:13px;background:#f8fafc;border:1px solid #e2e8f0;color:#64748b;font-size:13px;font-weight:850;text-align:center;}
@@ -11480,7 +11736,7 @@ const MATH_MUC2_GUIDE_CSS_ = `
 #class1-math-runtime .muc2-guide-equation{margin:13px auto;font-size:43px;line-height:1.2;font-weight:950;letter-spacing:.03em;color:#4338ca;}
 #class1-math-runtime .muc2-guide-equation span{color:#db2777;}
 #class1-math-runtime .muc2-guide-equation b{color:#db2777;}
-#class1-math-runtime .muc2-guide-primary,#class1-math-runtime .muc2-guide-secondary{min-height:43px;display:inline-flex;align-items:center;justify-content:center;border-radius:14px;padding:10px 17px;font-size:15px;font-weight:900;transition:filter .16s,border-color .16s;}
+#class1-math-runtime .muc2-guide-primary,#class1-math-runtime .muc2-guide-secondary{min-height:43px;display:inline-flex;align-items:center;justify-content:center;border-radius:14px;padding:10px 17px;font-size:16px;font-weight:900;transition:filter .16s,border-color .16s;}
 #class1-math-runtime .muc2-guide-primary{background:linear-gradient(90deg,#ec4899,#9333ea);color:#fff;border:1px solid #a855f7;box-shadow:0 5px 12px rgba(168,85,247,.17);}
 #class1-math-runtime .muc2-guide-secondary{background:#fff;color:#7c3aed;border:1px solid #ddd6fe;}
 #class1-math-runtime .muc2-guide-secondary.is-active{background:#f3e8ff;border-color:#c084fc;}
@@ -11503,9 +11759,56 @@ const MATH_MUC2_GUIDE_CSS_ = `
 #class1-math-runtime .muc2-guide-complete{padding:27px 15px;}
 #class1-math-runtime .muc2-guide-trophy{font-size:48px;line-height:1.1;margin-bottom:8px;}
 #class1-math-runtime .muc2-guide-bottom{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:14px 0 0;min-height:46px;}
+#class1-math-runtime .muc2-concept-panel{padding:15px;background:linear-gradient(135deg,#fffafc,#fff 46%,#eff6ff);}
+#class1-math-runtime .muc2-concept-layout{display:grid;grid-template-columns:minmax(0,2.35fr) minmax(0,1fr);gap:16px;align-items:stretch;}
+#class1-math-runtime .muc2-concept-main,#class1-math-runtime .muc2-concept-math{border:1px solid #e9d5ff;border-radius:20px;background:#fff;padding:14px;}
+#class1-math-runtime .muc2-concept-side{display:grid;grid-template-rows:1fr 1fr;gap:12px;}
+#class1-math-runtime .muc2-concept-main-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:8px;}
+#class1-math-runtime .muc2-concept-kicker{font-size:26px;font-weight:900;color:#db2777;margin-bottom:8px;line-height:1.25;}
+#class1-math-runtime .muc2-concept-main h3{font-size:35px;line-height:1.18;margin:0;color:#7e22ce;}
+#class1-math-runtime .muc2-concept-intro{font-size:18px;font-weight:800;color:#475569;line-height:1.62;max-width:none;margin:0 0 16px;}
+#class1-math-runtime .muc2-concept-total{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding:12px 16px;background:linear-gradient(100deg,#fff1f8,#f5f3ff);border:1px solid #e9d5ff;border-radius:18px;}
+#class1-math-runtime .muc2-concept-total-title{font-size:21px;font-weight:900;color:#7c3aed;line-height:1.4;}
+#class1-math-runtime .muc2-concept-total-title small{font-size:16px;font-weight:800;color:#64748b;white-space:nowrap;}
+#class1-math-runtime .muc2-concept-total-controls{display:flex;align-items:center;justify-content:center;gap:13px;}
+#class1-math-runtime .muc2-concept-total-btn{display:grid;place-items:center;width:52px;height:52px;border-radius:16px;border:1px solid #ddd6fe;color:#7c3aed;background:transparent;font-size:38px;font-weight:900;line-height:1;box-shadow:none;touch-action:manipulation;}
+#class1-math-runtime .muc2-concept-total-btn:disabled{opacity:.38;cursor:not-allowed;box-shadow:none;}
+#class1-math-runtime .muc2-concept-total-btn:focus-visible{outline:3px solid #7c3aed;outline-offset:3px;}
+#class1-math-runtime .muc2-concept-total-value{min-width:44px;text-align:center;color:#dc2626;font-size:38px;font-weight:950;line-height:1.1;}
+#class1-math-runtime .muc2-concept-box{position:relative;display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:0;padding:0;margin:64px auto 12px;border-radius:18px;border:1px solid #cbd5e1;background:#f8fafc;isolation:isolate;overflow:visible;min-height:84px;}
+#class1-math-runtime .muc2-concept-cell{display:flex;align-items:center;justify-content:center;min-width:0;height:84px;font-size:clamp(24px,2.9vw,37px);border-right:2px solid rgba(255,255,255,.92);box-shadow:inset 0 2px 6px rgba(255,255,255,.48);}
+#class1-math-runtime .muc2-concept-cell:first-child{border-radius:15px 0 0 15px;}
+#class1-math-runtime .muc2-concept-cell:nth-last-child(3){border-right:0;border-radius:0 15px 15px 0;}
+#class1-math-runtime .muc2-concept-cell.is-left{background:linear-gradient(145deg,#93c5fd,#2563eb);}
+#class1-math-runtime .muc2-concept-cell.is-right{background:linear-gradient(145deg,#86efac,#16a34a);}
+#class1-math-runtime .muc2-concept-divider{pointer-events:none;position:absolute;top:-2px;bottom:-4px;width:6px;transform:translateX(-50%);z-index:2;background:linear-gradient(180deg,#a855f7,#7c3aed);border-radius:999px;box-shadow:0 0 0 2px rgba(255,255,255,.95),0 8px 20px rgba(76,29,149,.24);}
+#class1-math-runtime .muc2-concept-grip{position:absolute;top:0;transform:translate(-50%,-100%);z-index:6;display:flex;align-items:center;justify-content:center;gap:2px;min-width:84px;height:52px;padding:6px 4px;border-radius:20px;background:linear-gradient(90deg,#d946ef,#7c3aed);border:2px solid #fff;box-shadow:0 6px 16px rgba(109,40,217,.27);cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;}
+#class1-math-runtime .muc2-concept-grip.is-dragging{cursor:grabbing;filter:brightness(1.06);box-shadow:0 9px 20px rgba(109,40,217,.37);}
+#class1-math-runtime .muc2-concept-grip:focus-visible{outline:3px solid #4f46e5;outline-offset:3px;}
+#class1-math-runtime .muc2-concept-grip b{display:grid;place-items:center;flex:0 0 30px;width:30px;height:35px;border-radius:11px;background:rgba(255,255,255,.96);font-size:30px;font-weight:950;line-height:1;}
+#class1-math-runtime .muc2-concept-grip b.is-left{color:#2563eb;}
+#class1-math-runtime .muc2-concept-grip b.is-right{color:#16a34a;}
+#class1-math-runtime .muc2-concept-grip i{display:block;flex:0 0 6px;width:6px;height:5px;border-radius:999px;background:#fff;}
+#class1-math-runtime .muc2-concept-labels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0 0;}
+#class1-math-runtime .muc2-concept-label{padding:12px 16px;border-radius:16px;font-size:20px;font-weight:900;border:1px solid #dbeafe;}
+#class1-math-runtime .muc2-concept-label strong{font-size:30px;}
+#class1-math-runtime .muc2-concept-label.is-left{background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe;}
+#class1-math-runtime .muc2-concept-label.is-right{background:#ecfdf5;color:#15803d;border-color:#bbf7d0;}
+#class1-math-runtime .muc2-concept-note{margin-top:14px;padding:14px 16px;border-radius:18px;border:1px solid #fecdd3;background:linear-gradient(135deg,#fff1f2,#fff7ed);font-size:20px;font-weight:900;line-height:1.65;color:#7c2d12;}
+#class1-math-runtime .muc2-concept-note .is-red{color:#dc2626;font-size:1.22em;}
+#class1-math-runtime .muc2-concept-slider-scale{display:flex;justify-content:center;align-items:center;text-align:center;gap:5px;font-size:17px;font-weight:900;color:#64748b;margin-top:5px;}
+#class1-math-runtime .muc2-concept-slider-scale strong{color:#7c3aed;text-align:center;font-size:20px;}
+#class1-math-runtime .muc2-concept-math{display:flex;flex-direction:column;justify-content:center;text-align:left;}
+#class1-math-runtime .muc2-concept-math-title{font-size:28px;font-weight:900;color:#7e22ce;margin-bottom:10px;}
+#class1-math-runtime .muc2-concept-eq{font-size:45px;line-height:1.24;font-weight:950;color:#312e81;margin:4px 0;}
+#class1-math-runtime .muc2-concept-eq .is-left{color:#2563eb;}
+#class1-math-runtime .muc2-concept-eq .is-right{color:#16a34a;}
+#class1-math-runtime .muc2-concept-eq b{color:#dc2626;}
+#class1-math-runtime .muc2-concept-math p{font-size:18px;font-weight:800;line-height:1.58;color:#475569;margin:12px 0 0;}
 @media(max-width:640px){
     #class1-math-runtime .muc2-guide-header h2{font-size:21px;}
     #class1-math-runtime .muc2-guide-panel{padding:13px 9px;}
+    #class1-math-runtime .muc2-guide-lesson-tabs{grid-template-columns:1fr;}
     #class1-math-runtime .muc2-guide-steps{grid-template-columns:repeat(2,minmax(0,1fr));}
     #class1-math-runtime .muc2-guide-step{font-size:12px;}
     #class1-math-runtime .muc2-guide-voice{flex-wrap:wrap;justify-content:center;}
@@ -11514,7 +11817,22 @@ const MATH_MUC2_GUIDE_CSS_ = `
     #class1-math-runtime .muc2-guide-dots{gap:5px;}
     #class1-math-runtime .muc2-guide-symbol{font-size:28px;}
     #class1-math-runtime .muc2-guide-equation{font-size:36px;}
-    #class1-math-runtime .muc2-guide-primary,#class1-math-runtime .muc2-guide-secondary{font-size:14px;}
+    #class1-math-runtime .muc2-concept-layout{grid-template-columns:1fr;}
+    #class1-math-runtime .muc2-concept-total{justify-content:center;text-align:center;padding:11px 9px;}
+    #class1-math-runtime .muc2-concept-total-title{font-size:18px;}
+    #class1-math-runtime .muc2-concept-total-btn{width:50px;height:50px;font-size:34px;}
+    #class1-math-runtime .muc2-concept-total-value{font-size:34px;}
+    #class1-math-runtime .muc2-concept-box{margin-top:64px;min-height:58px;}
+    #class1-math-runtime .muc2-concept-cell{height:58px;font-size:clamp(17px,4.1vw,24px);}
+    #class1-math-runtime .muc2-concept-divider{top:-2px;bottom:-2px;width:5px;}
+    #class1-math-runtime .muc2-concept-grip{min-width:68px;height:48px;padding:5px 3px;gap:1px;border-radius:17px;}
+    #class1-math-runtime .muc2-concept-grip b{flex-basis:24px;width:24px;height:33px;font-size:27px;}
+    #class1-math-runtime .muc2-concept-grip i{width:5px;flex-basis:5px;}
+    #class1-math-runtime .muc2-concept-slider-scale strong{font-size:14px;}
+    #class1-math-runtime .muc2-concept-labels{grid-template-columns:1fr;}
+    #class1-math-runtime .muc2-concept-eq{font-size:31px;}
+    #class1-math-runtime .muc2-concept-note{font-size:17px;padding:12px 14px;}
+    #class1-math-runtime .muc2-guide-primary,#class1-math-runtime .muc2-guide-secondary{font-size:15px;}
 }
 `;
 
