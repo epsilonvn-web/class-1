@@ -2202,7 +2202,8 @@
         max-width:100%;
         height:57px;
         min-height:57px;
-        margin-left:auto;
+        /* Keep Install, Score and Account as a contiguous right-aligned group. */
+        margin-left:0;
         overflow:hidden;
         padding:3px 6px;
         gap:0;
@@ -2261,6 +2262,248 @@
         font-size:14px;
       }
       .app-header #account-button.user-btn{padding-inline:2px;}
+    }
+
+
+    /* LOP 1 - dong bo bo cuc HEADER voi LOP 2 (2026-10-21).
+       Desktop: 1 hang; tablet: Home + cong cu / 6 tab o hang hai;
+       mobile: Home + cong cu sticky, 6 tab chia 3 x 2 va cuon theo trang.
+       Chi doi layout; giu DOM, id, logic tai khoan/PWA/diem. */
+    @media (min-width:1176px) {
+      .app-header {
+        grid-template-columns:112px minmax(0,1fr) auto;
+        grid-template-rows:74px;
+        gap:6px;
+      }
+      .app-header .primary-nav {
+        grid-auto-flow:column;
+        grid-auto-columns:minmax(0,1fr);
+        overflow:visible;
+        gap:6px;
+      }
+      .app-header .primary-nav .nav-tab {
+        min-width:0;
+        height:74px;
+        min-height:74px;
+      }
+      .app-header .header-tools .install-btn:not(.hidden) {
+        flex:0 0 68px;
+        width:68px;
+        min-width:68px;
+        height:74px;
+        min-height:74px;
+        padding:4px 3px;
+      }
+    }
+    @media (min-width:768px) and (max-width:1175px) {
+      .app-header {
+        grid-template-columns:96px minmax(0,1fr);
+        grid-template-rows:74px 74px;
+        gap:6px;
+        padding:6px 0;
+        align-items:stretch;
+      }
+      .app-header .header-sticky-row {display:contents;}
+      .app-header .home-btn {
+        grid-column:1;
+        grid-row:1;
+        width:96px;
+        height:74px;
+        min-height:74px;
+      }
+      .app-header .header-tools {
+        grid-column:2;
+        grid-row:1;
+        display:flex;
+        align-items:stretch;
+        justify-content:flex-end;
+        flex-wrap:nowrap;
+        gap:6px;
+        min-width:0;
+        height:74px;
+      }
+      .app-header .header-tools .install-btn:not(.hidden) {
+        flex:0 0 68px;
+        width:68px;
+        min-width:68px;
+        height:74px;
+        min-height:74px;
+        padding:4px 3px;
+      }
+      .app-header .header-tools #score-box:not(.hidden) {
+        display:grid;
+        flex:0 0 auto;
+        height:74px;
+        min-height:74px;
+        align-content:center;
+        white-space:nowrap;
+      }
+      .app-header #account-button.user-btn {
+        flex:0 1 auto;
+        width:max-content;
+        min-width:0;
+        max-width:min(290px,45vw);
+        height:74px;
+        min-height:74px;
+        max-height:74px;
+        padding:4px 9px;
+        overflow:hidden;
+      }
+      .app-header #account-button .user-btn-name:not(.guest-auth-label) {
+        white-space:nowrap;
+        overflow-wrap:normal;
+        line-height:1.08;
+      }
+      .app-header .primary-nav {
+        grid-column:1/-1;
+        grid-row:2;
+        display:grid;
+        grid-template-columns:repeat(6,minmax(0,1fr));
+        grid-auto-columns:auto;
+        grid-auto-flow:row;
+        gap:6px;
+        width:100%;
+        min-width:0;
+        margin:0;
+        padding:0;
+        overflow:visible;
+        align-items:stretch;
+      }
+      .app-header .primary-nav .nav-tab {
+        width:100%;
+        min-width:0;
+        height:74px;
+        min-height:74px;
+        max-height:74px;
+        padding:4px 4px;
+        font-size:20px;
+        line-height:1.08;
+        overflow-wrap:normal;
+      }
+    }
+    @media (max-width:767px) {
+      .app-header .header-sticky-row {
+        grid-template-columns:clamp(72px,23vw,96px) minmax(0,1fr);
+        grid-template-rows:74px;
+        gap:6px;
+        min-height:84px;
+        padding:5px 0;
+        align-items:stretch;
+      }
+      .app-header .header-sticky-row .home-btn {
+        height:74px;
+        min-height:74px;
+        width:100%;
+      }
+      .app-header .header-sticky-row .header-tools {
+        height:74px;
+        min-height:74px;
+        align-items:stretch;
+        gap:4px;
+      }
+      .app-header .header-tools .install-btn:not(.hidden) {
+        flex:0 0 62px;
+        width:62px;
+        min-width:62px;
+        height:74px;
+        min-height:74px;
+        font-size:20px;
+        padding:4px 2px;
+      }
+      .app-header .header-tools #score-box:not(.hidden) {
+        display:grid;
+        flex:0 0 auto;
+        width:max-content;
+        min-width:44px;
+        height:74px;
+        min-height:74px;
+        max-height:74px;
+        grid-template-columns:max-content max-content;
+        justify-content:center;
+        align-content:center;
+        gap:2px 2px;
+        padding:4px 3px;
+        font-size:clamp(15px,3.5vw,19px);
+        white-space:nowrap;
+      }
+      .app-header #account-button.user-btn {
+        flex:0 1 auto;
+        width:max-content;
+        min-width:0;
+        max-width:100%;
+        height:74px;
+        min-height:74px;
+        max-height:74px;
+        overflow:hidden;
+        padding:4px 6px;
+      }
+      .app-header #account-button .user-btn-name:not(.guest-auth-label) {
+        font-size:clamp(13px,3.65vw,19px)!important;
+        white-space:nowrap;
+        overflow-wrap:normal;
+        letter-spacing:-.035em;
+        line-height:1.08;
+      }
+      .app-header .primary-nav {
+        display:grid;
+        grid-template-columns:repeat(3,minmax(0,1fr));
+        grid-auto-columns:auto;
+        grid-auto-flow:row;
+        gap:6px;
+        margin:6px 0 0;
+        padding:0;
+        overflow:visible;
+      }
+      .app-header .primary-nav .nav-tab {
+        width:100%;
+        min-width:0;
+        height:74px;
+        min-height:74px;
+        max-height:74px;
+        padding:4px 3px;
+        font-size:20px;
+        line-height:1.07;
+      }
+      .app-header .primary-nav .nav-tab .tab-icon {font-size:22px;}
+    }
+    @media (max-width:400px) {
+      /* Chia lai vai pixel du phong cho ten bon tu, khong cat chu. */
+      .app-header .header-sticky-row {
+        grid-template-columns:clamp(70px,20vw,80px) minmax(0,1fr);
+      }
+      .app-header .header-tools .install-btn:not(.hidden) {
+        flex-basis:60px;
+        width:60px;
+        min-width:60px;
+      }
+      .app-header #account-button.user-btn {padding-left:4px;padding-right:4px;}
+      .app-header #account-button .user-btn-name:not(.guest-auth-label) {
+        letter-spacing:-.055em;
+      }
+    }
+    @media (max-width:390px) {
+      .app-header:has(#score-box:not(.hidden)):has(.install-btn:not(.hidden))
+      #account-button:not(.is-guest-auth) .user-btn-avatar {display:none;}
+    }
+    @media (max-width:360px) {
+      .app-header .header-sticky-row {
+        grid-template-columns:62px minmax(0,1fr);
+        gap:3px;
+      }
+      .app-header .header-sticky-row .header-tools {gap:1px;}
+      .app-header .header-tools .install-btn:not(.hidden) {
+        flex-basis:50px;
+        width:50px;
+        min-width:50px;
+      }
+      .app-header .header-tools #score-box:not(.hidden) {
+        min-width:40px;
+        gap:1px;
+        padding:3px 2px;
+        font-size:15px;
+      }
+      .app-header #account-button.user-btn {padding:3px 1px;}
+      .app-header #account-button .user-btn-name:not(.guest-auth-label) {letter-spacing:-.068em;}
     }
   </style>
 </head>
