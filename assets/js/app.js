@@ -479,6 +479,7 @@
 
   const el = {
     nav: document.getElementById("primary-nav"),
+    headerTools: document.querySelector(".app-header .header-tools"),
     homeButton: document.getElementById("home-button"),
     content: document.getElementById("content-stage"),
     mainBanner: document.getElementById("main-banner"),
@@ -1613,11 +1614,22 @@
     ];
   }
 
-  function renderNav() {
-    const tabs = state.screen === "subject" ? SUBJECT_TABS : homeTabsForCurrentUser();
-    el.nav.replaceChildren();
+  const mobileAdminMedia = window.matchMedia("(max-width: 767px)");
 
-    tabs.forEach((tab, index) => {
+  function renderNav() {
+    const isAdmin = !!(state.auth.user && state.auth.user.role === "admin");
+    const mobileAdmin = isAdmin && mobileAdminMedia.matches;
+    const tabs = state.screen === "subject" ? SUBJECT_TABS : homeTabsForCurrentUser();
+    // Only mobile Admin needs an extra Management button while visiting a subject.
+    const renderedTabs = mobileAdmin && state.screen === "subject"
+      ? [...tabs, ADMIN_HOME_TAB]
+      : tabs;
+    // Rebuild one live button per render; never leave an obsolete Admin button
+    // after logout, navigation, or a pending-request badge refresh.
+    el.nav.replaceChildren();
+    el.headerTools.querySelector(".admin-header-tab")?.remove();
+
+    renderedTabs.forEach((tab, index) => {
       const button = document.createElement("button");
       button.type = "button";
       button.className = `nav-tab tone-${tab.tone}`;
@@ -1660,23 +1672,28 @@
         button.appendChild(badge);
       }
 
-      if (state.screen === "subject" && tab.id !== "discover" && !hasPremiumAccess(state.subjectId)) {
+      if (state.screen === "subject" && tab.id !== "discover" && tab.id !== "admin" && !hasPremiumAccess(state.subjectId)) {
         button.classList.add("is-locked");
         button.title = "Cần Trial/VIP của môn";
       }
 
       button.addEventListener("click", () => {
-        if (state.screen === "subject") {
-          openSubjectTab(tab.id);
-          return;
-        }
         if (tab.id === "admin") {
           openAdmin();
           return;
         }
+        if (state.screen === "subject") {
+          openSubjectTab(tab.id);
+          return;
+        }
         openHomeTab(tab.id);
       });
-      el.nav.appendChild(button);
+      if (mobileAdmin && tab.id === "admin") {
+        button.classList.add("admin-header-tab");
+        el.headerTools.insertBefore(button, el.scoreBox);
+      } else {
+        el.nav.appendChild(button);
+      }
     });
   }
 
@@ -2846,7 +2863,7 @@
       el.accountButton.setAttribute("aria-label", "Đang kiểm tra tài khoản");
     } else if (state.auth.user) {
       avatar.textContent = state.auth.user.avatarEmoji || "🐰";
-      label.textContent = state.auth.user.name || "Tài khoản";
+      label.textContent = state.auth.user.role === "admin" ? "Admin" : (state.auth.user.name || "Tài khoản");
       el.accountButton.title = `${state.auth.user.name} · ${state.auth.user.userId}${state.auth.user.role === "admin" ? " · Admin" : ""}`;
       el.accountButton.setAttribute("aria-label", `Tài khoản ${state.auth.user.name}${state.auth.user.role === "admin" ? ", Admin" : ""}`);
       if (state.auth.user.role === "admin") {
@@ -4263,6 +4280,12 @@
     updateInstallVisibility();
     showToast("Đã cài App.");
   });
+
+  if (mobileAdminMedia.addEventListener) {
+    mobileAdminMedia.addEventListener("change", renderNav);
+  } else {
+    mobileAdminMedia.addListener(renderNav);
+  }
 
   window.addEventListener("focus", () => {
     refreshAdminPendingBadge(false);
