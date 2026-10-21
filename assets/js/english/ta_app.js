@@ -1223,12 +1223,16 @@ function highlightVocabularyTarget_(text, word) {
     const rx = new RegExp(`(${esc})`, 'ig');
     return raw.split(rx).map(part => part.toLowerCase() === target.toLowerCase() ? `<span class="text-fuchsia-600 font-black bg-fuchsia-50 px-1 rounded">${escapeHtml(part)}</span>` : escapeHtml(part)).join('');
 }
+function vocabularyListenButtonHtml_(onclickExpr, label = 'Listen', size = 'sm', extraClass = '') {
+    return `<button type="button" onclick="${onclickExpr}" class="ta1-unified-listen ${extraClass}" title="${escapeHtml(label)}" aria-label="${escapeHtml(label)}"><i class="fa-solid fa-volume-high" aria-hidden="true"></i><span class="ta1-listen-caption">Listen</span></button>`;
+}
+
 function vocabularyExamplesHtml_(q, reveal = true) {
     if (!reveal) return '<div class="h-full min-h-[150px]"></div>';
     const examples = (Array.isArray(q?.examples) ? q.examples : []).slice(0,3);
     const vi = (Array.isArray(q?.examples_vi) ? q.examples_vi : []).slice(0,3);
     if (!examples.length) return '';
-    return `<div class="vocab-examples-title font-black text-fuchsia-600 mb-2">⭐ 3 EXAMPLE SENTENCES:</div><div class="space-y-2">${examples.map((ex,i) => `<div class="bg-white rounded-2xl border border-fuchsia-100 px-3 py-2 text-left"><div class="flex items-center gap-2"><div class="vocab-example-en flex-1 min-w-0 font-bold text-slate-700">${highlightVocabularyTarget_(ex, q.word)}</div><button onclick="speakVocabularyExample_(${i})" class="w-9 h-9 shrink-0 rounded-xl bg-sky-100 text-sky-600 hover:bg-sky-200" title="Listen"><i class="fa-solid fa-volume-high text-xs"></i></button></div>${vi[i] ? `<div class="vocab-example-vi mt-1 font-bold text-slate-500">${escapeHtml(vi[i])}</div>` : ''}</div>`).join('')}</div>`;
+    return `<div class="vocab-examples-title font-black text-fuchsia-600 mb-2">⭐ 3 EXAMPLE SENTENCES:</div><div class="space-y-2">${examples.map((ex,i) => `<div class="bg-white rounded-2xl border border-fuchsia-100 px-3 py-2 text-left"><div class="flex items-center gap-2"><div class="vocab-example-en flex-1 min-w-0 font-bold text-slate-700">${highlightVocabularyTarget_(ex, q.word)}</div>${vocabularyListenButtonHtml_(`speakVocabularyExample_(${i})`, 'Listen', 'sm', 'shrink-0')}</div>${vi[i] ? `<div class="vocab-example-vi mt-1 font-bold text-slate-500">${escapeHtml(vi[i])}</div>` : ''}</div>`).join('')}</div>`;
 }
 function speakVocabularyExample_(i) {
     const q = activeQuestionsList[currentQIndex];
@@ -1463,7 +1467,7 @@ function renderVocabularySharedStudy_(q) {
 
     let body = '';
     if (activeVocabularyStudyMode === 'flashcard') {
-        body = `<div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-stretch"><section class="rounded-3xl border border-pink-200 bg-pink-50/40 p-3 shadow-sm flex flex-col"><div class="vocab-study-image-frame vocab-flashcard-image-frame rounded-3xl bg-white mb-1">${visual}</div><div class="relative w-full flex flex-col items-center justify-center px-12 text-center min-h-[84px]"><div class="flex items-center justify-center gap-2 flex-wrap"><div class="vocab-main-word font-black text-slate-900 leading-tight">${escapeHtml(q.word || '')}</div>${q.part_of_speech ? `<span class="vocab-part-of-speech px-2 py-1 rounded-full bg-violet-100 text-violet-700 font-black">${escapeHtml(String(q.part_of_speech).toUpperCase())}</span>` : ''}</div>${q.ipa ? `<div class="vocab-main-ipa mt-1 font-black text-sky-700">/${escapeHtml(String(q.ipa).replace(/^\/+|\/+$/g,''))}/</div>` : ''}<div class="vocab-main-meaning mt-1 font-black text-violet-700">${escapeHtml(q.vietnamese || '')}</div><button onclick="speakVocabularyTarget_()" class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-sky-100 text-sky-600 hover:bg-sky-200"><i class="fa-solid fa-volume-high"></i></button></div></section><section class="rounded-3xl border border-fuchsia-200 bg-gradient-to-br from-pink-50/60 via-white to-violet-50/60 p-3 shadow-sm">${vocabularyExamplesHtml_(q,true)}</section></div>`;
+        body = `<div class="grid grid-cols-1 md:grid-cols-2 gap-3 items-stretch"><section class="rounded-3xl border border-pink-200 bg-pink-50/40 p-3 shadow-sm flex flex-col"><div class="vocab-study-image-frame vocab-flashcard-image-frame rounded-3xl bg-white mb-1">${visual}</div><div class="w-full flex flex-col items-center justify-center px-4 text-center min-h-[84px]"><div class="flex items-center justify-center gap-2 flex-wrap"><div class="vocab-main-word font-black text-slate-900 leading-tight">${escapeHtml(q.word || '')}</div>${q.part_of_speech ? `<span class="vocab-part-of-speech px-2 py-1 rounded-full bg-violet-100 text-violet-700 font-black">${escapeHtml(String(q.part_of_speech).toUpperCase())}</span>` : ''}</div>${q.ipa ? `<div class="vocab-main-ipa mt-1 font-black text-sky-700">/${escapeHtml(String(q.ipa).replace(/^\/+|\/+$/g,''))}/</div>` : ''}<div class="vocab-main-meaning mt-1 font-black text-violet-700">${escapeHtml(q.vietnamese || '')}</div><div class="mt-3 flex justify-center">${vocabularyListenButtonHtml_('speakVocabularyTarget_()', 'Listen', 'lg')}</div></div></section><section class="rounded-3xl border border-fuchsia-200 bg-gradient-to-br from-pink-50/60 via-white to-violet-50/60 p-3 shadow-sm">${vocabularyExamplesHtml_(q,true)}</section></div>`;
     } else if (activeVocabularyStudyMode === 'picture') {
         const options = getVocabularyChoiceOptions_(q); q.answer = q.word; q.options = options;
         const solved = userAnswers[currentQIndex] === q.answer;
@@ -7649,12 +7653,151 @@ const ENGLISH_MOBILE_LAYOUT_CSS_ = `
   #class1-english-runtime #view-quiz #btn-next-q-exam {grid-row:2;grid-column:2;}
 }
 `;
-function ensureEnglishStyles_(){if(document.getElementById(ENGLISH_MODULE_STYLE_ID_))return;const style=document.createElement('style');style.id=ENGLISH_MODULE_STYLE_ID_;style.textContent=ENGLISH_RUNTIME_CSS_+ENGLISH_HUB_UI_OVERRIDES_+ENGLISH_EXPLORE_ICON_TEXT_CSS_+ENGLISH_UNIFIED_LEARNING_CARDS_CSS_+TA1_REMOVE_LETTER_CSS_+TA1_FILL_MISSING_CSS_+TA1_ODD_ONE_CSS_+TA1_READING_ILLUSTRATION_CSS_+ENGLISH_MOBILE_LAYOUT_CSS_;document.head.appendChild(style);}
+/* A single theme for the dedicated English Listen controls across all screens.
+   Keep the 20px, regular-weight label irrespective of legacy utility classes. */
+const ENGLISH_UNIFIED_LISTEN_BUTTON_CSS_ = `
+#class1-english-runtime .ta1-unified-listen {
+  box-sizing:border-box!important;
+  display:inline-flex!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:center!important;
+  flex-wrap:nowrap!important;
+  gap:8px!important;
+  width:max-content!important;
+  min-width:110px!important;
+  max-width:100%!important;
+  min-height:44px!important;
+  height:auto!important;
+  padding:8px 15px!important;
+  border:1px solid #0f766e!important;
+  border-radius:12px!important;
+  background:linear-gradient(90deg,#0369a1 0%,#0e7490 50%,#047857 100%)!important;
+  color:#fff!important;
+  font-family:'Nunito','Quicksand',sans-serif!important;
+  font-size:20px!important;
+  font-weight:400!important;
+  line-height:1.15!important;
+  letter-spacing:normal!important;
+  text-align:center!important;
+  text-decoration:none!important;
+  white-space:nowrap!important;
+  box-shadow:0 3px 9px rgba(14,116,144,.20)!important;
+  cursor:pointer;
+  transition:filter .16s ease,box-shadow .16s ease!important;
+}
+#class1-english-runtime .ta1-unified-listen > .ta1-listen-caption {
+  display:inline!important;
+  color:#fff!important;
+  font-size:20px!important;
+  font-weight:400!important;
+  line-height:1.15!important;
+  white-space:nowrap!important;
+  margin:0!important;
+  padding:0!important;
+}
+#class1-english-runtime .ta1-unified-listen > .fa-volume-high {
+  display:inline-block!important;
+  color:#fff!important;
+  font-size:20px!important;
+  line-height:1!important;
+  margin:0!important;
+  flex-shrink:0!important;
+}
+#class1-english-runtime button.ta1-unified-listen:hover:not(:disabled) {
+  filter:brightness(1.08)!important;
+  box-shadow:0 4px 12px rgba(14,116,144,.25)!important;
+}
+#class1-english-runtime button.ta1-unified-listen:focus-visible {
+  outline:3px solid #67e8f9!important;
+  outline-offset:3px!important;
+}
+#class1-english-runtime button.ta1-unified-listen:disabled {
+  opacity:.48!important;
+  cursor:not-allowed!important;
+}
+/* These labels are inside clickable Alphabet/IPA cards, not separate buttons. */
+#class1-english-runtime .ta1-unified-listen.l1-en-alphaipa-word-listen,
+#class1-english-runtime .ta1-unified-listen.l1-en-alphaipa-focus-listen {
+  min-height:38px!important;
+  min-width:0!important;
+  padding:6px 11px!important;
+  pointer-events:none;
+}
+`;
+function ensureEnglishStyles_(){if(document.getElementById(ENGLISH_MODULE_STYLE_ID_))return;const style=document.createElement('style');style.id=ENGLISH_MODULE_STYLE_ID_;style.textContent=ENGLISH_RUNTIME_CSS_+ENGLISH_HUB_UI_OVERRIDES_+ENGLISH_EXPLORE_ICON_TEXT_CSS_+ENGLISH_UNIFIED_LEARNING_CARDS_CSS_+TA1_REMOVE_LETTER_CSS_+TA1_FILL_MISSING_CSS_+TA1_ODD_ONE_CSS_+TA1_READING_ILLUSTRATION_CSS_+ENGLISH_MOBILE_LAYOUT_CSS_+ENGLISH_UNIFIED_LISTEN_BUTTON_CSS_;document.head.appendChild(style);}
 function ensureEnglishDependency_(tag,id,url){if(document.getElementById(id))return;const exists=[...document.querySelectorAll(tag)].some(el=>String(tag==='link'?el.href:el.src)===String(new URL(url,document.baseURI).href));if(exists)return;const el=document.createElement(tag);el.id=id;if(tag==='link'){el.rel='stylesheet';el.href=url;}else{el.src=url;el.async=true;}document.head.appendChild(el);}
 function ensureEnglishDependencies_(){ensureEnglishDependency_('link','class1-english-fontawesome','https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');ensureEnglishDependency_('link','class1-english-fonts','https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;700;800&display=swap');ensureEnglishDependency_('script','class1-english-chartjs','https://cdn.jsdelivr.net/npm/chart.js');ensureEnglishDependency_('script','class1-english-confetti','https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js');ensureEnglishDependency_('script','class1-english-html2pdf','https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js');}
-function mountEnglishRuntime_(){if(!englishModuleCtx_?.host)throw new Error('ENGLISH_MODULE_HOST_MISSING');ensureEnglishStyles_();ensureEnglishDependencies_();englishModuleCtx_.host.innerHTML=`<div id="${ENGLISH_MODULE_RUNTIME_ID_}">${ENGLISH_RUNTIME_HTML_}</div>`;englishModuleRoot_=document.getElementById(ENGLISH_MODULE_RUNTIME_ID_);installEnglishInlineBridge_();syncClass1EnglishState_();resetStars();try{updateAutoSpeechButtonUI();}catch(_){}primeEnglishAudio_();englishModuleMounted_=true;}
+// Presentational only: do not change any audio handler, state or quiz answer button.
+// Dynamic views (Vocabulary/Quiz/Lessons/Reports/Games) re-create their DOM, so
+// a root-scoped observer styles newly inserted *dedicated* listening controls.
+let englishListenButtonsObserver_ = null;
+function isEnglishDedicatedListenButton_(button) {
+  if (!button || button.tagName !== 'BUTTON') return false;
+  // Word tiles/answer choices can *also* replay audio, but their text is study
+  // material and must never be replaced by the generic Listen label.
+  if (button.matches('.lesson-chip,.option-btn,.l1-ap-option,.l1-c2-choice,[data-opt],[data-ta1-choice]')) return false;
+  if (button.matches('.l1-fm-replay,.l1-rl-replay,.l1-en-alphaipa-listen-btn,.l1-ap-listen,.l1-c2-listen,.ns-listen-btn')) return true;
+  const onclick = String(button.getAttribute('onclick') || '').trim();
+  const hasSpeaker = !!button.querySelector('.fa-volume-high,.fa-volume-up,.fa-volume-low,.fa-volume-down,.fa-volume-off');
+  const label = String(button.textContent || '').replace(/\s+/g,' ').trim();
+  const isSpeechAction = /^(?:return\s+)?speak[A-Za-z0-9_]*\s*\(/.test(onclick);
+  if (isSpeechAction && !button.matches('[onclick^="speakLessonWord_"]')) {
+    return hasSpeaker || /(?:🔊|\bListen\b|\bHear model\b|\bNghe\b|Đọc hướng dẫn)/i.test(label);
+  }
+  // Also cover standalone icon/Listen buttons wired via addEventListener in
+  // a game script; do not touch navigation cards or answer-option content.
+  if (!hasSpeaker && !label.includes('🔊')) return false;
+  const plainLabel = label.replace(/🔊/g,'').trim();
+  // Icon-only toggles (sound on/off) are not unconditionally a Listen action.
+  return !!plainLabel && !/^Listen\s+and\b/i.test(plainLabel)
+    && /^(?:Listen(?:\b|$)|Nghe(?:\b|$)|Hear model\b)/i.test(plainLabel);
+}
+function buildEnglishListenContents_(element) {
+  // Keep the old context for screen readers ("Listen Passage", "Nghe từ", etc.).
+  if (!element.hasAttribute('aria-label')) {
+    const previous = String(element.textContent || '').replace(/🔊/g, '').replace(/\s+/g, ' ').trim();
+    element.setAttribute('aria-label', previous || 'Listen');
+  }
+  const icon = document.createElement('i');
+  icon.className = 'fa-solid fa-volume-high';
+  icon.setAttribute('aria-hidden', 'true');
+  const caption = document.createElement('span');
+  caption.className = 'ta1-listen-caption';
+  caption.textContent = 'Listen';
+  element.classList.add('ta1-unified-listen');
+  element.replaceChildren(icon, caption);
+}
+function unifyEnglishListenNodes_(node) {
+  if (!node || node.nodeType !== 1) return;
+  const decorate = el => {
+    if (el.matches('button')) {
+      if (el.classList.contains('ta1-unified-listen')) return;
+      if (isEnglishDedicatedListenButton_(el)) buildEnglishListenContents_(el);
+    } else if (el.matches('.l1-en-alphaipa-word-listen,.l1-en-alphaipa-focus-listen')
+      && !el.classList.contains('ta1-unified-listen')) {
+      buildEnglishListenContents_(el);
+    }
+  };
+  decorate(node);
+  node.querySelectorAll('button,.l1-en-alphaipa-word-listen,.l1-en-alphaipa-focus-listen').forEach(decorate);
+}
+function observeEnglishListenButtons_() {
+  englishListenButtonsObserver_?.disconnect();
+  englishListenButtonsObserver_ = null;
+  if (!englishModuleRoot_) return;
+  unifyEnglishListenNodes_(englishModuleRoot_);
+  if (typeof MutationObserver !== 'function') return;
+  englishListenButtonsObserver_ = new MutationObserver(changes => {
+    for (const change of changes) {
+      for (const node of change.addedNodes) unifyEnglishListenNodes_(node);
+    }
+  });
+  englishListenButtonsObserver_.observe(englishModuleRoot_, { childList:true, subtree:true });
+}
+function mountEnglishRuntime_(){if(!englishModuleCtx_?.host)throw new Error('ENGLISH_MODULE_HOST_MISSING');ensureEnglishStyles_();ensureEnglishDependencies_();englishModuleCtx_.host.innerHTML=`<div id="${ENGLISH_MODULE_RUNTIME_ID_}">${ENGLISH_RUNTIME_HTML_}</div>`;englishModuleRoot_=document.getElementById(ENGLISH_MODULE_RUNTIME_ID_);observeEnglishListenButtons_();installEnglishInlineBridge_();syncClass1EnglishState_();resetStars();try{updateAutoSpeechButtonUI();}catch(_){}primeEnglishAudio_();englishModuleMounted_=true;}
 async function bootstrapEnglishRuntime_(){if(!englishModuleMounted_||!englishModuleRoot_||!englishModuleRoot_.isConnected||englishModuleRoot_.parentElement!==englishModuleCtx_.host){mountEnglishRuntime_();await loadSharedImageCatalog_();await Promise.resolve(renderDashboardGrid());await Promise.resolve(renderExamHubGrid());}else syncClass1EnglishState_();}
 async function renderClass1English_(ctx){englishModuleDestroyed_=false;englishModuleCtx_=ctx||null;await bootstrapEnglishRuntime_();const tab=String(ctx?.tabId||'discover');englishModuleLastTab_=tab;if(tab!=='games')stopActiveMiniGame_();if(tab==='lessons')return openBaiHocHub(1);if(tab==='exercises')return openRoadmap(1);if(tab==='review')return openReviewTab();if(tab==='exams')return openExamHub();if(tab==='games')return openMiniGameHub();return goHome();}
-function destroyClass1English_(){englishModuleDestroyed_=true;try{stopVocabularySpeechCheck_();}catch(_){}try{stopSpeaking();}catch(_){}try{clearInterval(quizTimerInterval);}catch(_){}try{stopActiveMiniGame_();}catch(_){}try{removeEnglishGameGlobals_();}catch(_){}try{histLineChartInstance?.destroy?.();}catch(_){}try{histBarChartInstance?.destroy?.();}catch(_){}try{document.getElementById('modal-friendly-dialog')?.remove();}catch(_){}try{document.getElementById('premium-access-modal')?.remove();}catch(_){}try{document.getElementById('ta1-minigame-theme-styles')?.remove();}catch(_){}englishModuleCtx_?.hooks?.clearDetail?.();resetClass1EnglishBreadcrumb_();englishModuleCtx_?.hooks?.setScore?.(0,0);removeEnglishInlineBridge_();if(englishModuleRoot_?.isConnected)englishModuleRoot_.remove();englishModuleRoot_=null;englishModuleMounted_=false;englishModuleAudioPrimed_=false;englishModuleCtx_=null;}
+function destroyClass1English_(){englishModuleDestroyed_=true;englishListenButtonsObserver_?.disconnect();englishListenButtonsObserver_=null;try{stopVocabularySpeechCheck_();}catch(_){}try{stopSpeaking();}catch(_){}try{clearInterval(quizTimerInterval);}catch(_){}try{stopActiveMiniGame_();}catch(_){}try{removeEnglishGameGlobals_();}catch(_){}try{histLineChartInstance?.destroy?.();}catch(_){}try{histBarChartInstance?.destroy?.();}catch(_){}try{document.getElementById('modal-friendly-dialog')?.remove();}catch(_){}try{document.getElementById('premium-access-modal')?.remove();}catch(_){}try{document.getElementById('ta1-minigame-theme-styles')?.remove();}catch(_){}englishModuleCtx_?.hooks?.clearDetail?.();resetClass1EnglishBreadcrumb_();englishModuleCtx_?.hooks?.setScore?.(0,0);removeEnglishInlineBridge_();if(englishModuleRoot_?.isConnected)englishModuleRoot_.remove();englishModuleRoot_=null;englishModuleMounted_=false;englishModuleAudioPrimed_=false;englishModuleCtx_=null;}
 window.CLASS1_SUBJECT_MODULES=window.CLASS1_SUBJECT_MODULES||{};window.CLASS1_SUBJECT_MODULES.english=Object.freeze({render:renderClass1English_,destroy:destroyClass1English_});
 })();
