@@ -1282,6 +1282,10 @@ function setFairyBreadcrumbActions_(libraryKey = null, categoryId = null, storyI
     } else {
         setBreadcrumbAction_(5, null);
     }
+
+    // The outer banner was refreshed before the click actions were attached.
+    // Rebuild it now so the story library and series breadcrumbs are buttons.
+    syncClass1BannerTV1_();
 }
 
 function returnToCurrentDiscoverTopic_() {
@@ -2493,7 +2497,7 @@ async function openThoNhacStory_(storyId) {
     const sourceLine = [story.series, story.source_family, story.country].filter(Boolean).join(' · ');
     if (contentEl) {
         contentEl.innerHTML = `
-            <div class="max-w-5xl mx-auto rounded-2xl bg-gradient-to-br from-white via-pink-50/30 to-purple-50/40 border-2 border-purple-100 px-3 md:px-4 py-2.5 shadow-sm text-left">
+            <div class="tv-fairy-reader-card w-full mx-auto rounded-2xl bg-gradient-to-br from-white via-pink-50/30 to-purple-50/40 border-2 border-purple-100 px-3 md:px-4 py-2.5 shadow-sm text-left">
                 <div class="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-2 mb-1.5">
                     <div class="min-w-0">
                         <div class="font-black text-xl md:text-2xl text-purple-800 leading-tight">${escapeHtml(story.title || '')}</div>
@@ -6898,6 +6902,17 @@ const TV_CHILD_TA_PARITY_CSS_ = `
 
 
 const TV_FAIRY_CARD_GRID_CSS_ = `
+/* Only the active story reading view expands to the full Class 1 width. */
+#class1-vietnamese-runtime #screen-dashboard:has(#view-lecture:not(.hidden) .tv-fairy-reader-card){
+    width:100%!important;
+    max-width:82rem!important;
+}
+#class1-vietnamese-runtime #view-lecture .tv-fairy-reader-card{
+    box-sizing:border-box;
+    width:100%;
+    max-width:82rem;
+    margin-inline:auto;
+}
 /* Muc 12: cac the danh muc va danh sach truyen phai chia cot bang nhau.
    Tieu de/mo ta toi da 2 dong, khong ep chu xuong tung tu. */
 #class1-vietnamese-runtime #lecture-subtopics-list.tv-fairy-card-grid{
