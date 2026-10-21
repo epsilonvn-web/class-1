@@ -2107,13 +2107,12 @@
       #content-stage :is(#class1-math-runtime,#class1-vietnamese-runtime,#class1-english-runtime) #view-quiz :is(#nav-group-practice,#nav-group-exam):not(.hidden) {gap:5px !important;}
     }
 
-    /* Lop 1: sticky header, high enough to remain above lesson content.
-       Desktop: entire one-row header. Mobile: Home/tools row only. */
+    /* Lop 1: header cuon cung noi dung tren desktop, tablet va mobile.
+       Giu nguyen bo cuc 1/2 hang, khong ghim khi cuon. */
     @media (min-width:768px){
       .app-header{
-        position:sticky;
-        top:0;
-        z-index:60;
+        position:relative;
+        z-index:20;
         background:var(--page);
         box-shadow:0 4px 13px rgba(76,29,149,.075);
       }
@@ -2124,13 +2123,11 @@
     }
 
     @media (max-width:767px){
-      /* Flatten the semantic header, so only the top row sticks for the
-         lifetime of the app-shell; the six lesson tabs scroll normally. */
+      /* Giu hang Home/cong cu va cac tab trong luong cuon cua trang. */
       .app-header{display:contents;}
       .app-header .header-sticky-row{
-        position:sticky;
-        top:0;
-        z-index:60;
+        position:relative;
+        z-index:20;
         display:grid;
         grid-template-columns:clamp(62px,19vw,86px) minmax(0,1fr);
         align-items:center;
@@ -2267,7 +2264,7 @@
 
     /* LOP 1 - dong bo bo cuc HEADER voi LOP 2 (2026-10-21).
        Desktop: 1 hang; tablet: Home + cong cu / 6 tab o hang hai;
-       mobile: Home + cong cu sticky, 6 tab chia 3 x 2 va cuon theo trang.
+       mobile: Home + cong cu o hang tren, 6 tab chia 3 x 2; ca hai cuon theo trang.
        Chi doi layout; giu DOM, id, logic tai khoan/PWA/diem. */
     @media (min-width:1176px) {
       .app-header {
