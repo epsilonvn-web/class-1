@@ -6994,7 +6994,7 @@ const ENGLISH_UNIFIED_LEARNING_CARDS_CSS_ = `
 }
 /* Vocabulary/lesson choice buttons: honor readable bilingual lines at 20px. */
 #class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid > .l1-en-learning-mode-tab{
-  height:auto!important;min-height:106px;padding:10px 9px!important;
+  height:auto!important;min-height:76px;padding:6px 9px!important;
   align-self:stretch;overflow:visible;
 }
 #class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid .l1-en-learning-mode-label,
@@ -7050,13 +7050,13 @@ const ENGLISH_UNIFIED_LEARNING_CARDS_CSS_ = `
     width:min(145px,45vw);
   }
   #class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid > .l1-en-learning-mode-tab{
-    min-height:116px;
+    min-height:80px;
   }
 }
 @media(max-width:440px){
   #class1-english-runtime .l1-en-vocab-study .l1-en-vocab-mode-grid > .l1-en-learning-mode-tab{
-    min-height:146px!important;height:auto!important;
-    padding:10px 6px!important;
+    min-height:106px!important;height:auto!important;
+    padding:7px 6px!important;
   }
 }
 
