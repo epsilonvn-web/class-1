@@ -1475,7 +1475,7 @@ function renderVocabularySharedStudy_(q) {
         const options = getVocabularyChoiceOptions_(q); q.answer = q.word; q.options = options;
         body = `<div class="min-h-[275px] flex flex-col items-center justify-center"><div class="vocab-listen-prompt font-black text-slate-900 mb-1">Listen and choose.</div><div class="vocab-listen-vi font-bold text-slate-500 mb-3">Nghe và chọn từ đúng</div><button onclick="speakVocabularyTarget_()" class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-pink-500 to-violet-500 text-white shadow-lg hover:scale-105 transition-transform flex items-center justify-center mb-4"><i class="fa-solid fa-volume-high text-3xl"></i></button><div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full max-w-3xl">${options.map(optionHtml).join('')}</div></div>`;
     }
-    document.getElementById('question-box').innerHTML = `<div class="l1-en-vocab-study w-full max-w-5xl mx-auto px-1 md:px-2 -mt-2">${tabs}${body}</div>`;
+    document.getElementById('question-box').innerHTML = `<div class="l1-en-vocab-study w-full mx-auto px-1 md:px-2 -mt-2" style="width:100%;max-width:82rem">${tabs}${body}</div>`;
     restoreQuestionState(q);
     if (userAnswers[currentQIndex] === q.answer) revealVocabularyAfterCorrect_();
     updateNavButtons();
