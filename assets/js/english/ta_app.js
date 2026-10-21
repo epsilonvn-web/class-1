@@ -1733,8 +1733,7 @@ async function renderDashboardGrid() {
                 <div class="l1-en-explore-icon w-10 h-10 bg-violet-100 rounded-2xl flex items-center justify-center text-xl font-extrabold text-violet-600 shadow-inner group-hover:scale-110 transition-transform shrink-0">🔤</div>
                 <div class="min-w-0"><h3 class="font-extrabold text-violet-700 text-lg md:text-xl leading-snug"><span class="card-title-bi"><span class="en">1. Alphabet & IPA</span><span class="vi">Bảng chữ cái & phiên âm</span></span></h3></div>
             </div>
-            <div class="flex justify-between items-end gap-2 mt-0.5 pt-0.5 border-t border-violet-100">
-                <div class="l1-en-explore-desc min-w-0 leading-snug"><div class="text-[15px] md:text-base font-bold text-gray-600">Letters & sounds</div><div class="text-sm md:text-[15px] font-bold text-gray-400 mt-0.5">Chữ cái & âm</div></div>
+            <div class="l1-en-explore-foot flex justify-end items-center mt-auto pt-1 border-t border-violet-100">
                 <span class="bg-violet-100 text-violet-700 px-2.5 py-1 rounded-full text-xs md:text-sm font-extrabold shrink-0">26 chữ + 44 âm</span>
             </div>
         </div>`;
@@ -1752,8 +1751,7 @@ async function renderDashboardGrid() {
                     <div class="l1-en-explore-icon w-10 h-10 bg-${t.color}-100 rounded-2xl flex items-center justify-center text-xl font-extrabold text-${t.color}-600 shadow-inner group-hover:scale-110 transition-transform shrink-0">${t.icon}</div>
                     <div class="min-w-0"><h3 class="font-extrabold text-${t.color}-700 text-lg md:text-xl leading-snug"><span class="card-title-bi"><span class="en">${t.title}</span><span class="vi">${t.titleVi || ''}</span></span></h3></div>
                 </div>
-                <div class="flex justify-between items-end gap-2 mt-0.5 pt-0.5 border-t border-pink-100">
-                    <div class="l1-en-explore-desc min-w-0 leading-snug"><div class="text-[15px] md:text-base font-bold text-gray-600">${t.descEn || ''}</div><div class="text-sm md:text-[15px] font-bold text-gray-400 mt-0.5">${t.descVi || ''}</div></div>
+                <div class="l1-en-explore-foot flex justify-end items-center mt-auto pt-1 border-t border-pink-100">
                     <span class="bg-${t.color}-50 text-${t.color}-600 px-2.5 py-1 rounded-full text-xs md:text-sm font-extrabold shrink-0">${countLabel}</span>
                 </div>
             </div>`;
@@ -6140,9 +6138,8 @@ body:has(#class1-english-runtime) #sub-pill.english-sub-breadcrumbs .english-bre
 #class1-english-runtime #view-dashboard-grid{gap:6px!important;}
 #class1-english-runtime #view-dashboard-grid .pastel-card{min-height:88px!important;padding-top:2px!important;padding-bottom:8px!important;}
 #class1-english-runtime #view-dashboard-grid .pastel-card > div:first-child{margin-top:0!important;}
-#class1-english-runtime #view-dashboard-grid .pastel-card > div:nth-child(2){margin-top:0!important;padding-top:0!important;padding-bottom:1px!important;}
+#class1-english-runtime #view-dashboard-grid .l1-en-explore-foot{padding-bottom:0!important;}
 #class1-english-runtime #view-dashboard-grid .card-title-bi .vi{color:#111827!important;margin-top:0!important;line-height:1.08!important;}
-#class1-english-runtime #view-dashboard-grid .pastel-card > div:nth-child(2) > div:first-child > div:nth-child(2){color:#111827!important;margin-top:0!important;line-height:1.08!important;}
 
 /* BAI HOC - font lon hon va card pastel da mau */
 /* Chuẩn đọc mới: phần chữ phụ của hub Bài học không nhỏ hơn cỡ chữ thân bài ở trang Liên hệ. */
@@ -6235,7 +6232,7 @@ const ENGLISH_EXPLORE_ICON_TEXT_CSS_ = `
 
 /* Class 1 English | Only Explore hub cards (Alphabet & IPA and topics). */
 #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card{
-    min-height:146px!important;padding:12px 12px 10px!important;
+    min-height:136px!important;padding:12px 12px 10px!important;
     transition:border-color .18s ease,box-shadow .18s ease!important;
 }
 #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .l1-en-explore-head{
@@ -6252,21 +6249,17 @@ const ENGLISH_EXPLORE_ICON_TEXT_CSS_ = `
     transform:none;transition:transform .18s ease,box-shadow .18s ease!important;
 }
 #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .card-title-bi .en{
-    font-size:20px!important;font-weight:900!important;line-height:1.18!important;
+    font-size:24px!important;font-weight:900!important;line-height:1.18!important;overflow-wrap:anywhere!important;
 }
 #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .card-title-bi .vi{
-    font-size:20px!important;line-height:1.2!important;margin-top:3px!important;
+    font-size:22px!important;line-height:1.2!important;margin-top:3px!important;overflow-wrap:anywhere!important;
 }
-#class1-english-runtime #view-dashboard-grid > .l1-en-explore-card > div:nth-child(2){
-    margin-top:8px!important;padding-top:8px!important;padding-bottom:0!important;gap:7px!important;
+/* Chỉ còn nhãn đếm ở chân card; hai dòng mô tả đã được bỏ khỏi HTML. */
+#class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .l1-en-explore-foot{
+    display:flex!important;justify-content:flex-end!important;align-items:center!important;
+    margin-top:auto!important;padding-top:7px!important;padding-bottom:0!important;gap:0!important;
 }
-#class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .l1-en-explore-desc > div:first-child{
-    font-size:20px!important;line-height:1.28!important;
-}
-#class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .l1-en-explore-desc > div:nth-child(2){
-    font-size:20px!important;line-height:1.25!important;
-}
-#class1-english-runtime #view-dashboard-grid > .l1-en-explore-card > div:nth-child(2) > span:last-child{
+#class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .l1-en-explore-foot > span{
     flex:0 0 auto!important;white-space:nowrap!important;font-size:20px!important;
 }
 @media(hover:hover) and (pointer:fine){
@@ -6275,17 +6268,19 @@ const ENGLISH_EXPLORE_ICON_TEXT_CSS_ = `
     box-shadow:0 6px 14px rgba(109,40,217,.22),inset 0 1px 2px rgba(255,255,255,.9)!important;
   }
 }
+@media(max-width:767px){
+  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .card-title-bi .en{font-size:22px!important;}
+  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .card-title-bi .vi{font-size:21px!important;}
+}
 @media(max-width:560px){
-  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card{min-height:132px!important;padding:10px!important;}
+  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card{min-height:124px!important;padding:10px!important;}
   #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .l1-en-explore-icon{
     width:52px!important;height:52px!important;min-width:52px!important;min-height:52px!important;
     flex-basis:52px!important;font-size:31px!important;border-radius:15px!important;
   }
-  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .card-title-bi .en{font-size:20px!important;}
-  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .card-title-bi .vi{font-size:20px!important;}
-  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .l1-en-explore-desc > div:first-child{font-size:20px!important;}
-  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .l1-en-explore-desc > div:nth-child(2){font-size:20px!important;}
-  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card > div:nth-child(2) > span:last-child{font-size:20px!important;}
+  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .card-title-bi .en{font-size:22px!important;}
+  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .card-title-bi .vi{font-size:21px!important;}
+  #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .l1-en-explore-foot > span{font-size:20px!important;}
 }
 @media(prefers-reduced-motion:reduce){
   #class1-english-runtime #view-dashboard-grid > .l1-en-explore-card .l1-en-explore-icon{transition:none!important;}
@@ -6369,11 +6364,11 @@ const ENGLISH_UNIFIED_LEARNING_CARDS_CSS_ = `
 }
 #class1-english-runtime .l1-en-learning-card .l1-en-learning-heading{display:flex;flex:1 1 auto;min-width:0;flex-direction:column;gap:3px;}
 #class1-english-runtime .l1-en-learning-card .l1-en-learning-title{
-  display:block;color:var(--lc-ink)!important;font-size:20px!important;font-weight:900!important;
+  display:block;color:var(--lc-ink)!important;font-size:24px!important;font-weight:900!important;
   line-height:1.18!important;overflow-wrap:anywhere;
 }
 #class1-english-runtime .l1-en-learning-card .l1-en-learning-title-vi{
-  display:block;color:#1f2937!important;font-size:20px!important;font-weight:800!important;
+  display:block;color:#1f2937!important;font-size:22px!important;font-weight:800!important;
   line-height:1.22!important;overflow-wrap:anywhere;
 }
 #class1-english-runtime .l1-en-learning-card .l1-en-learning-tag{
@@ -6458,11 +6453,15 @@ const ENGLISH_UNIFIED_LEARNING_CARDS_CSS_ = `
 #class1-english-runtime #view-alphabet .card-hover:hover{
   transform:none!important;translate:none!important;scale:1!important;box-shadow:none!important;border-color:#c084fc!important;
 }
+@media(max-width:767px){
+ #class1-english-runtime .l1-en-learning-card .l1-en-learning-title{font-size:22px!important;}
+ #class1-english-runtime .l1-en-learning-card .l1-en-learning-title-vi{font-size:21px!important;}
+}
 @media(max-width:560px){
  #class1-english-runtime .l1-en-learning-card{min-height:132px;padding:10px!important;border-radius:18px!important;}
  #class1-english-runtime .l1-en-learning-card .l1-en-learning-icon{width:52px;height:52px;min-width:52px;min-height:52px;flex-basis:52px;font-size:31px;border-radius:15px;}
- #class1-english-runtime .l1-en-learning-card .l1-en-learning-title{font-size:20px!important;}
- #class1-english-runtime .l1-en-learning-card .l1-en-learning-title-vi{font-size:20px!important;}
+ #class1-english-runtime .l1-en-learning-card .l1-en-learning-title{font-size:22px!important;}
+ #class1-english-runtime .l1-en-learning-card .l1-en-learning-title-vi{font-size:21px!important;}
  #class1-english-runtime .l1-en-learning-card .l1-en-learning-desc-en{font-size:20px!important;}
  #class1-english-runtime .l1-en-learning-card .l1-en-learning-desc-vi{font-size:20px!important;}
  #class1-english-runtime .l1-en-learning-card .l1-en-learning-badge{font-size:20px!important;padding:4px 8px;}
@@ -6718,12 +6717,16 @@ const ENGLISH_UNIFIED_LEARNING_CARDS_CSS_ = `
 }
 #class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"] .l1-en-learning-heading{gap:4px!important;}
 #class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"] .l1-en-learning-title{
-  font-size:22px!important;
+  font-size:24px!important;
   line-height:1.16!important;
 }
 #class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"] .l1-en-learning-title-vi{
-  font-size:20px!important;
+  font-size:22px!important;
   line-height:1.22!important;
+}
+@media(max-width:767px){
+ #class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"] .l1-en-learning-title{font-size:22px!important;}
+ #class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"] .l1-en-learning-title-vi{font-size:21px!important;}
 }
 #class1-english-runtime #lecture-subtopics-list[data-alphabet-ipa-menu="true"] .l1-en-learning-desc-en{
   font-size:20px!important;
