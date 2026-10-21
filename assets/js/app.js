@@ -39,8 +39,8 @@
 
   // Module học theo môn: chỉ nạp khi người dùng thực sự mở môn đó.
   const SUBJECT_MODULE_SCRIPTS = Object.freeze({
-    math: "assets/js/math/toan_app.js?v=class1-math-2",
-    vietnamese: "assets/js/vietnamese/tv_app.js?v=class1-tv-1",
+    math: "assets/js/math/toan_app.js?v=class1-mobile-nav-20261021",
+    vietnamese: "assets/js/vietnamese/tv_app.js?v=class1-mobile-nav-20261021",
     english: "assets/js/english/ta_app.js?v=class1-ta-1"
   });
   // Games/Tools/AI Lab ngoài Trang chủ: mỗi module con là một file JS độc lập và chỉ tải khi mở.
