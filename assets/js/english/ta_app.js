@@ -7381,7 +7381,272 @@ const TA1_READING_ILLUSTRATION_CSS_ = `
 }
 #class1-english-runtime small,#class1-english-runtime sub,#class1-english-runtime sup{font-size:inherit;}
 `;
-function ensureEnglishStyles_(){if(document.getElementById(ENGLISH_MODULE_STYLE_ID_))return;const style=document.createElement('style');style.id=ENGLISH_MODULE_STYLE_ID_;style.textContent=ENGLISH_RUNTIME_CSS_+ENGLISH_HUB_UI_OVERRIDES_+ENGLISH_EXPLORE_ICON_TEXT_CSS_+ENGLISH_UNIFIED_LEARNING_CARDS_CSS_+TA1_REMOVE_LETTER_CSS_+TA1_FILL_MISSING_CSS_+TA1_ODD_ONE_CSS_+TA1_READING_ILLUSTRATION_CSS_;document.head.appendChild(style);}
+const ENGLISH_MOBILE_LAYOUT_CSS_ = `
+/* Epsilon Edu - English module: mobile-only responsive adjustments.
+   Intentionally appended after the module's legacy CSS; desktop unchanged. */
+@media (max-width: 767px) {
+  /* The subject module draws its own breadcrumb CSS *after* index.html.
+     Let long level/topic names wrap instead of being cut to 34/40px. */
+  body:has(#class1-english-runtime) #sub-banner {
+    height:auto!important;
+    min-height:64px;
+    aspect-ratio:auto!important;
+    align-items:stretch!important;
+    padding:10px 11px!important;
+    overflow:visible!important;
+  }
+  body:has(#class1-english-runtime) #sub-banner #sub-pill.english-sub-breadcrumbs {
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:stretch!important;
+    flex-wrap:nowrap!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    min-height:0!important;
+    height:auto!important;
+    padding:0!important;
+    gap:7px!important;
+    overflow:visible!important;
+    white-space:normal!important;
+  }
+  body:has(#class1-english-runtime) #sub-banner #sub-pill.english-sub-breadcrumbs .english-breadcrumb-sep {
+    display:none!important;
+  }
+  body:has(#class1-english-runtime) #sub-banner #sub-pill.english-sub-breadcrumbs .english-breadcrumb-tab {
+    display:flex!important;
+    flex:0 0 auto!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+    min-height:43px!important;
+    padding:8px 12px!important;
+    align-items:center!important;
+    justify-content:center!important;
+    border-radius:13px!important;
+    overflow:visible!important;
+    white-space:normal!important;
+    overflow-wrap:break-word!important;
+    word-break:normal!important;
+    text-overflow:clip!important;
+    line-height:1.24!important;
+    text-align:center!important;
+  }
+
+  #class1-english-runtime #app-viewport,
+  #class1-english-runtime #view-quiz,
+  #class1-english-runtime #view-lecture,
+  #class1-english-runtime #view-bai-hoc-lesson,
+  #class1-english-runtime #view-roadmap,
+  #class1-english-runtime #view-alphabet {
+    min-width:0;
+    max-width:100%;
+  }
+  #class1-english-runtime #view-quiz #question-box,
+  #class1-english-runtime #view-quiz #question-box > div,
+  #class1-english-runtime #view-quiz .ta1-horizontal-split > * {
+    min-width:0;
+    max-width:100%;
+  }
+  #class1-english-runtime #view-quiz #question-box .option-btn {
+    min-width:0;
+    max-width:100%;
+    white-space:normal;
+    overflow-wrap:break-word;
+    line-height:1.28;
+  }
+  #class1-english-runtime #view-quiz #question-box .opt-text {
+    min-width:0;
+    white-space:normal;
+    overflow-wrap:break-word;
+  }
+  /* Evaluation badges and the listen button must not compete for one row. */
+  #class1-english-runtime #view-quiz #quiz-card-header:not(.hidden) {
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:center!important;
+    align-items:stretch!important;
+    gap:9px!important;
+    height:auto!important;
+  }
+  #class1-english-runtime #view-quiz #quiz-card-header > div:first-child {
+    display:flex!important;
+    flex-wrap:wrap!important;
+    align-items:center!important;
+    justify-content:center!important;
+    max-width:100%;
+    gap:6px!important;
+  }
+  #class1-english-runtime #view-quiz #quiz-card-header > button:not(.hidden) {
+    align-self:center!important;
+    max-width:100%;
+    min-height:44px;
+    height:auto!important;
+    margin-inline:auto!important;
+    padding:8px 12px!important;
+    display:inline-flex;
+    justify-content:center;
+    white-space:normal;
+    text-align:center;
+    line-height:1.25;
+  }
+  /* Listen buttons belong on a centered line after the question/guidance. */
+  #class1-english-runtime #view-quiz #question-box button[onclick="speakCurrentQuestion()"],
+  #class1-english-runtime #view-quiz #question-box button[onclick="speakFillSentence_()"],
+  #class1-english-runtime #view-quiz #question-box button[onclick="speakReadingPassage_()"],
+  #class1-english-runtime #view-bai-hoc-lesson button[onclick^="speakLessonPractice_"] {
+    width:max-content;
+    max-width:100%;
+    height:auto!important;
+    min-height:44px!important;
+    margin:8px auto!important;
+    padding:8px 14px!important;
+    align-self:center!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:7px!important;
+    white-space:normal!important;
+    text-align:center!important;
+    line-height:1.25!important;
+  }
+  #class1-english-runtime #view-quiz #question-box button[onclick="speakCurrentQuestion()"] span.block {
+    font-size:14px!important;
+    line-height:1.25!important;
+  }
+  #class1-english-runtime #view-quiz #question-box > div > div:has(> button[onclick="speakReadingPassage_()"]),
+  #class1-english-runtime #view-bai-hoc-lesson div:has(> button[onclick^="speakLessonPractice_"]) {
+    flex-direction:column!important;
+    align-items:stretch!important;
+    justify-content:center!important;
+    gap:8px!important;
+    height:auto!important;
+    min-width:0;
+  }
+  #class1-english-runtime #view-quiz #question-box > div > div:has(> button[onclick="speakReadingPassage_()"]) > div:first-child {
+    align-self:center!important;
+    max-width:100%;
+    white-space:normal;
+    text-align:center;
+  }
+  #class1-english-runtime #view-lecture button[onclick="speakLecture()"] {
+    width:max-content!important;
+    max-width:100%!important;
+    height:auto!important;
+    min-height:44px!important;
+    margin:8px auto!important;
+    padding:8px 15px!important;
+    white-space:normal!important;
+    line-height:1.25!important;
+  }
+  #class1-english-runtime .ns-teacher-bubble {
+    flex-direction:column!important;
+    align-items:stretch!important;
+    gap:8px!important;
+    min-width:0;
+  }
+  #class1-english-runtime .ns-teacher-bubble .ns-listen-btn {
+    align-self:center!important;
+    margin:0 auto!important;
+    max-width:100%;
+    white-space:normal!important;
+    min-height:44px;
+  }
+
+  /* Identical Previous/Next sizes; 1/50 counter stays the same height. */
+  #class1-english-runtime #view-quiz #quiz-bottom-nav {
+    box-sizing:border-box;
+    width:100%;
+    min-width:0;
+    margin-top:0!important;
+    padding-top:26px!important;
+  }
+  #class1-english-runtime #view-quiz #nav-group-practice:not(.hidden) {
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;
+    gap:7px!important;
+    align-items:stretch!important;
+    width:100%;
+  }
+  #class1-english-runtime #view-quiz :is(#btn-prev-q-prac,#btn-next-q-prac,#btn-prev-q-exam,#btn-next-q-exam) {
+    box-sizing:border-box;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:5px!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    height:52px!important;
+    min-height:52px!important;
+    padding:0 5px!important;
+    border:1px solid #D8B4FE!important;
+    border-radius:14px!important;
+    color:#fff!important;
+    background:linear-gradient(90deg,#EC4899,#A855F7,#7C3AED)!important;
+    font-size:clamp(15px,4.2vw,20px)!important;
+    font-weight:900!important;
+    line-height:1.15!important;
+    white-space:nowrap!important;
+    text-align:center!important;
+    box-shadow:0 3px 9px rgba(168,85,247,.17);
+  }
+  #class1-english-runtime #view-quiz :is(#btn-prev-q-prac,#btn-next-q-prac,#btn-prev-q-exam,#btn-next-q-exam):disabled {
+    opacity:.38!important;
+    cursor:not-allowed;
+  }
+  #class1-english-runtime #view-quiz #practice-step-indicator {
+    box-sizing:border-box;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    min-width:57px!important;
+    max-width:92px!important;
+    width:auto!important;
+    height:52px!important;
+    min-height:52px!important;
+    padding:0 7px!important;
+    border-radius:14px!important;
+    font-size:clamp(16px,4.2vw,20px)!important;
+    font-weight:900!important;
+    white-space:nowrap!important;
+  }
+  #class1-english-runtime #view-quiz #practice-step-text {
+    font-size:inherit!important;
+    white-space:nowrap!important;
+  }
+  /* Exams: palette on its own full-width row; navigation occupies row 2. */
+  #class1-english-runtime #view-quiz #nav-group-exam:not(.hidden) {
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    align-items:stretch!important;
+    gap:8px!important;
+    width:100%!important;
+  }
+  #class1-english-runtime #view-quiz #quiz-pallet-container {
+    grid-row:1;
+    grid-column:1/-1;
+    display:grid!important;
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    gap:6px!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    margin:0!important;
+  }
+  #class1-english-runtime #view-quiz #quiz-pallet-container > button {
+    box-sizing:border-box;
+    width:100%!important;
+    min-width:0!important;
+    min-height:40px;
+    padding:4px!important;
+    font-size:16px!important;
+  }
+  #class1-english-runtime #view-quiz #btn-prev-q-exam {grid-row:2;grid-column:1;}
+  #class1-english-runtime #view-quiz #btn-next-q-exam {grid-row:2;grid-column:2;}
+}
+`;
+function ensureEnglishStyles_(){if(document.getElementById(ENGLISH_MODULE_STYLE_ID_))return;const style=document.createElement('style');style.id=ENGLISH_MODULE_STYLE_ID_;style.textContent=ENGLISH_RUNTIME_CSS_+ENGLISH_HUB_UI_OVERRIDES_+ENGLISH_EXPLORE_ICON_TEXT_CSS_+ENGLISH_UNIFIED_LEARNING_CARDS_CSS_+TA1_REMOVE_LETTER_CSS_+TA1_FILL_MISSING_CSS_+TA1_ODD_ONE_CSS_+TA1_READING_ILLUSTRATION_CSS_+ENGLISH_MOBILE_LAYOUT_CSS_;document.head.appendChild(style);}
 function ensureEnglishDependency_(tag,id,url){if(document.getElementById(id))return;const exists=[...document.querySelectorAll(tag)].some(el=>String(tag==='link'?el.href:el.src)===String(new URL(url,document.baseURI).href));if(exists)return;const el=document.createElement(tag);el.id=id;if(tag==='link'){el.rel='stylesheet';el.href=url;}else{el.src=url;el.async=true;}document.head.appendChild(el);}
 function ensureEnglishDependencies_(){ensureEnglishDependency_('link','class1-english-fontawesome','https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');ensureEnglishDependency_('link','class1-english-fonts','https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@500;700;800&display=swap');ensureEnglishDependency_('script','class1-english-chartjs','https://cdn.jsdelivr.net/npm/chart.js');ensureEnglishDependency_('script','class1-english-confetti','https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js');ensureEnglishDependency_('script','class1-english-html2pdf','https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js');}
 function mountEnglishRuntime_(){if(!englishModuleCtx_?.host)throw new Error('ENGLISH_MODULE_HOST_MISSING');ensureEnglishStyles_();ensureEnglishDependencies_();englishModuleCtx_.host.innerHTML=`<div id="${ENGLISH_MODULE_RUNTIME_ID_}">${ENGLISH_RUNTIME_HTML_}</div>`;englishModuleRoot_=document.getElementById(ENGLISH_MODULE_RUNTIME_ID_);installEnglishInlineBridge_();syncClass1EnglishState_();resetStars();try{updateAutoSpeechButtonUI();}catch(_){}primeEnglishAudio_();englishModuleMounted_=true;}
