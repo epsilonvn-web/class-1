@@ -2505,6 +2505,71 @@
       .app-header #account-button.user-btn {padding:3px 1px;}
       .app-header #account-button .user-btn-name:not(.guest-auth-label) {letter-spacing:-.068em;}
     }
+
+
+    @media (min-width:768px) and (max-width:1175px){
+      .app-header .primary-nav:has(> .nav-tab[data-id="admin"]){
+        grid-template-columns:repeat(7,minmax(0,1fr));
+      }
+    }
+
+    /* Admin mobile: one-line Management label, icon above text. */
+    @media (max-width:767px){
+      .app-header .header-tools > .admin-header-tab {
+        order:2;
+        flex:0 0 86px;
+        width:86px;
+        min-width:0;
+        min-height:74px;
+        height:74px;
+        padding:5px 3px 4px;
+        border-radius:14px;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        gap:3px;
+        font-size:19px;
+        line-height:1.1;
+        white-space:nowrap;
+        overflow:visible;
+      }
+      .app-header .header-tools > .admin-header-tab .tab-icon {
+        font-size:23px;
+        line-height:1;
+        flex:0 0 auto;
+      }
+      .app-header .header-tools > .admin-header-tab > span:not(.tab-icon):not(.nav-alert-badge) {
+        display:block;
+        max-width:100%;
+        white-space:nowrap;
+        overflow-wrap:normal;
+        word-break:normal;
+      }
+      .app-header .header-tools > .admin-header-tab .nav-alert-badge {
+        top:2px;
+        right:2px;
+        min-width:22px;
+        height:22px;
+        padding:0 4px;
+        font-size:15px;
+      }
+      .app-header #account-button.user-btn {order:3;}
+    }
+    @media (max-width:400px){
+      .app-header .header-tools > .admin-header-tab {
+        flex-basis:80px;
+        width:80px;
+        font-size:18px;
+      }
+    }
+    @media (max-width:360px){
+      .app-header .header-tools > .admin-header-tab {
+        flex-basis:76px;
+        width:76px;
+        font-size:17px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -2623,6 +2688,6 @@
   <div id="toast" class="toast" aria-live="polite" aria-atomic="true"></div>
 
   <script src="assets/js/core/class1-data.js?v=class1-greeting-audio-2"></script>
-  <script src="assets/js/app.js?v=class1-mobile-nav-20261021"></script>
+  <script src="assets/js/app.js?v=class1-admin-mobile-20261021"></script>
 </body>
 </html>
