@@ -189,13 +189,24 @@
       white-space:nowrap;
     }
     .tool-btn:not(.install-btn):hover{background:#FAF5FF}
-    .install-btn{
+    .header-tools .install-btn{
+      height:74px;
+      min-width:86px;
+      padding:.35rem .6rem;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:0;
       color:white;
       border:0;
       background:linear-gradient(90deg,var(--pink),var(--purple));
-      min-width:86px;
+      font-size:20px;
+      line-height:1.12;
+      text-align:center;
+      white-space:normal;
       transition:filter .18s ease, box-shadow .18s ease, transform .18s ease;
     }
+    .install-btn .install-line{display:block;width:100%;}
     .install-btn:hover{
       color:white;
       background:linear-gradient(90deg,var(--pink),var(--purple));
@@ -1287,6 +1298,7 @@
       .nav-tab{min-height:64px;font-size:20px}
       .nav-tab .tab-icon{font-size:19px}
       .tool-btn{height:39px}
+      .header-tools .install-btn{height:64px}
       .user-btn{width:auto;min-width:92px;max-width:160px;height:64px;padding:.34rem .55rem}
       .user-btn-avatar{font-size:27px}
       .user-btn-name{font-size:20px;line-height:1.08}
@@ -1420,7 +1432,7 @@
       .nav-tab .tab-icon{font-size:18px}
       .nav-tab::after{bottom:-3px;height:2px}
       .tool-btn{height:38px;border-radius:12px;padding:0 .52rem;font-size:20px}
-      .install-btn{min-width:74px}
+      .header-tools .install-btn{height:57px;min-width:82px;padding:.2rem .45rem}
       .user-btn{
         width:auto;min-width:84px;max-width:132px;height:57px;padding:.28rem .4rem;border-radius:14px;gap:.1rem;
       }
@@ -1788,7 +1800,7 @@
       <nav id="primary-nav" class="primary-nav" aria-label="Các tab chính"></nav>
 
       <div class="header-tools">
-        <button id="install-button" class="tool-btn install-btn hidden" type="button">Cài App</button>
+        <button id="install-button" class="tool-btn install-btn hidden" type="button" aria-label="Cài App"><span class="install-line">Cài</span><span class="install-line">APP</span></button>
         <div id="score-box" class="score-box hidden" aria-label="Thống kê đúng sai">
           <span class="good">★ Đúng</span><strong class="good">0</strong>
           <span class="bad">★ Sai</span><strong class="bad">0</strong>
