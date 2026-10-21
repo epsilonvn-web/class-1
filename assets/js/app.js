@@ -166,7 +166,7 @@
     overflow-wrap:break-word;
 }
 #content-stage :is(.class1-subject-card,.home-feature-card) .card-desc{
-    font-size:16px!important;line-height:1.38!important;font-weight:750!important;
+    font-size:20px!important;line-height:1.38!important;font-weight:750!important;
 }
 #content-stage .home-feature-card{
     min-height:112px!important;padding:10px 12px!important;
@@ -187,8 +187,8 @@
     transform:none!important;
     transition:transform .18s ease,box-shadow .18s ease!important;
 }
-#content-stage .subject-profile-card .subject-profile-title{font-size:18px!important;line-height:1.25!important;}
-#content-stage .subject-profile-card .subject-profile-note{font-size:15px!important;line-height:1.3!important;}
+#content-stage .subject-profile-card .subject-profile-title{font-size:20px!important;line-height:1.25!important;}
+#content-stage .subject-profile-card .subject-profile-note{font-size:20px!important;line-height:1.3!important;}
 /* ta_app.js Explore: the icon moves up and grows, but the whole tile doesn't. */
 @media(hover:hover) and (pointer:fine){
   #content-stage :is(.class1-subject-card,.home-feature-card,.subject-profile-card):hover{
@@ -229,22 +229,22 @@
       width:58px!important;height:58px!important;min-width:58px!important;min-height:58px!important;
       flex-basis:58px!important;font-size:35px!important;border-radius:16px!important;
   }
-  #content-stage :is(.class1-subject-card,.home-feature-card) .card-title{font-size:19px!important;}
-  #content-stage :is(.class1-subject-card,.home-feature-card) .card-desc{font-size:15px!important;}
+  #content-stage :is(.class1-subject-card,.home-feature-card) .card-title{font-size:20px!important;}
+  #content-stage :is(.class1-subject-card,.home-feature-card) .card-desc{font-size:20px!important;}
   #content-stage .home-feature-card{min-height:105px!important;padding:10px 11px!important;}
   #content-stage .class1-subject-card .card-top{padding-right:68px!important;}
   #content-stage .subject-profile-card .subject-profile-icon{
       width:46px!important;height:46px!important;min-width:46px!important;flex-basis:46px!important;font-size:28px!important;
   }
-  #content-stage .subject-profile-card .subject-profile-title{font-size:17px!important;}
-  #content-stage .subject-profile-card .subject-profile-note{font-size:14px!important;}
+  #content-stage .subject-profile-card .subject-profile-title{font-size:20px!important;}
+  #content-stage .subject-profile-card .subject-profile-note{font-size:20px!important;}
 }
 @media(max-width:360px){
   #content-stage :is(.class1-subject-card,.home-feature-card) .card-icon{
       width:54px!important;height:54px!important;min-width:54px!important;min-height:54px!important;
       flex-basis:54px!important;font-size:33px!important;
   }
-  #content-stage :is(.class1-subject-card,.home-feature-card) .card-title{font-size:18px!important;}
+  #content-stage :is(.class1-subject-card,.home-feature-card) .card-title{font-size:20px!important;}
   #content-stage .class1-subject-card .card-top{padding-right:65px!important;}
 }
 @media(prefers-reduced-motion:reduce){
@@ -696,12 +696,12 @@
       }
       #sub-pill.home-sub-breadcrumbs::-webkit-scrollbar{display:none!important}
       #sub-pill.home-sub-breadcrumbs .home-breadcrumb-sep{
-        flex:0 0 auto;color:#c084fc;font-size:16px;font-weight:900;
+        flex:0 0 auto;color:#c084fc;font-size:20px;font-weight:900;
       }
       #sub-pill.home-sub-breadcrumbs .home-breadcrumb-tab{
         flex:0 0 auto;height:38px;max-width:min(430px,42vw);padding:0 16px;border-radius:13px;
         display:inline-flex;align-items:center;justify-content:center;overflow:hidden;text-overflow:ellipsis;
-        white-space:nowrap;font-size:16px;font-weight:900;line-height:1;box-shadow:0 2px 7px rgba(76,29,149,.08);
+        white-space:nowrap;font-size:20px;font-weight:900;line-height:1;box-shadow:0 2px 7px rgba(76,29,149,.08);
         cursor:default;font-family:inherit;
       }
       #sub-pill.home-sub-breadcrumbs button.home-breadcrumb-tab{
@@ -721,8 +721,8 @@
       }
       @media(max-width:767px){
         #sub-pill.home-sub-breadcrumbs{max-width:calc(100% - .35rem)!important;gap:.22rem!important}
-        #sub-pill.home-sub-breadcrumbs .home-breadcrumb-tab{height:32px;max-width:68vw;padding:0 11px;font-size:16px;border-radius:11px}
-        #sub-pill.home-sub-breadcrumbs .home-breadcrumb-sep{font-size:16px}
+        #sub-pill.home-sub-breadcrumbs .home-breadcrumb-tab{height:32px;max-width:68vw;padding:0 11px;font-size:20px;border-radius:11px}
+        #sub-pill.home-sub-breadcrumbs .home-breadcrumb-sep{font-size:20px}
       }
     `;
     document.head.appendChild(style);
@@ -991,9 +991,9 @@
         #class1-premium-learning-gate .premium-gate-body{padding:24px 24px 18px;text-align:center;background:linear-gradient(145deg,#fff7fb,#faf5ff 55%,#effcf8)}
         #class1-premium-learning-gate .premium-gate-icon{width:64px;height:64px;margin:0 auto 12px;border-radius:20px;display:flex;align-items:center;justify-content:center;border:1px solid #f9a8d4;background:#fff;font-size:32px;box-shadow:0 6px 18px rgba(236,72,153,.12)}
         #class1-premium-learning-gate .premium-gate-title{margin:0;color:#7e22ce;font-size:21px;line-height:1.25;font-weight:950}
-        #class1-premium-learning-gate .premium-gate-message{margin:10px auto 0;max-width:590px;color:#475467;font-size:16px;line-height:1.65;font-weight:850;white-space:pre-line}
+        #class1-premium-learning-gate .premium-gate-message{margin:10px auto 0;max-width:590px;color:#475467;font-size:20px;line-height:1.65;font-weight:850;white-space:pre-line}
         #class1-premium-learning-gate .premium-gate-actions{display:grid;grid-template-columns:1.2fr 1fr .8fr;gap:9px;padding:14px 16px 16px;border-top:1px solid #fce7f3;background:#fff}
-        #class1-premium-learning-gate .premium-gate-btn{min-height:46px;border-radius:14px;padding:8px 12px;font-size:16px;line-height:1.25;font-weight:950;transition:transform .15s ease,box-shadow .15s ease,filter .15s ease}
+        #class1-premium-learning-gate .premium-gate-btn{min-height:46px;border-radius:14px;padding:8px 12px;font-size:20px;line-height:1.25;font-weight:950;transition:transform .15s ease,box-shadow .15s ease,filter .15s ease}
         #class1-premium-learning-gate .premium-gate-btn:active{transform:translateY(1px)}
         #class1-premium-learning-gate .premium-gate-vip{border:0;color:#fff;background:linear-gradient(90deg,#ec4899,#8b5cf6);box-shadow:0 6px 16px rgba(139,92,246,.2)}
         #class1-premium-learning-gate .premium-gate-contact{border:1px solid #67e8f9;color:#0369a1;background:linear-gradient(90deg,#eff6ff,#ecfdf5)}
@@ -2042,7 +2042,7 @@
           border-radius:999px;
           background:linear-gradient(90deg,#ec4899 0%,#8b5cf6 55%,#3b82f6 100%);
           color:#fff;
-          font-size:12px;
+          font-size:20px;
           line-height:1;
           font-weight:900;
           box-shadow:0 3px 9px rgba(99,102,241,.18);
@@ -2051,7 +2051,7 @@
         .home-feature-access-note{
           margin:5px 0 0!important;
           color:#7c3aed!important;
-          font-size:15px!important;
+          font-size:20px!important;
           line-height:1.35;
           font-weight:900!important;
         }
@@ -2075,7 +2075,7 @@
           color:#6b21a8;
           box-shadow:0 2px 6px rgba(76,29,149,.04);
           font:inherit;
-          font-size:14px;
+          font-size:20px;
           line-height:1.2;
           font-weight:850;
           white-space:nowrap;
@@ -2125,7 +2125,7 @@
         }
         .ai-lab-group-head h2{
           margin:0;
-          font-size:18px;
+          font-size:20px;
           line-height:1.2;
           font-weight:950;
           color:currentColor;
@@ -2137,7 +2137,7 @@
           border-radius:999px;
           background:rgba(255,255,255,.82);
           color:currentColor;
-          font-size:13px;
+          font-size:20px;
           line-height:1;
           font-weight:900;
           display:inline-flex;
@@ -2167,8 +2167,8 @@
           .ai-lab-filter-btn{flex:0 0 auto;min-height:40px;}
           .ai-lab-groups{gap:14px;}
           .ai-lab-group-head{min-height:38px;padding:6px 10px;border-radius:12px;}
-          .ai-lab-group-head h2{font-size:16px;}
-          .ai-lab-group-head span{font-size:12px;min-height:23px;padding:2px 8px;}
+          .ai-lab-group-head h2{font-size:20px;}
+          .ai-lab-group-head span{font-size:20px;min-height:23px;padding:2px 8px;}
         }
         @media (max-width:560px){
           .games-catalog-grid{grid-template-columns:1fr!important;}
@@ -2349,7 +2349,7 @@
         .class1-subject-card .card-top{padding-right:84px;}
         .subject-access-badge{
           position:absolute;top:11px;right:11px;z-index:2;min-height:28px;padding:3px 10px;border:1px solid;border-radius:999px;
-          display:inline-flex;align-items:center;justify-content:center;background:#fff;font-size:15px;line-height:1;font-weight:950;white-space:nowrap;
+          display:inline-flex;align-items:center;justify-content:center;background:#fff;font-size:20px;line-height:1;font-weight:950;white-space:nowrap;
           box-shadow:0 3px 8px rgba(76,29,149,.07);
         }
         .subject-access-badge.vip{color:#6d28d9;border-color:#c4b5fd;background:#f5f3ff;}
@@ -2358,7 +2358,7 @@
         .subject-access-badge.admin{color:#be185d;border-color:#f9a8d4;background:#fff1f7;}
         .subject-vip-request-button{
           width:100%;min-height:42px;border:0;border-radius:14px;padding:.55rem .75rem;color:#fff;
-          background:linear-gradient(90deg,#ec4899,#a855f7,#7c3aed);font-size:16px;font-weight:950;line-height:1.2;
+          background:linear-gradient(90deg,#ec4899,#a855f7,#7c3aed);font-size:20px;font-weight:950;line-height:1.2;
           box-shadow:0 5px 13px rgba(139,92,246,.16);
         }
         /* Nut dang ky VIP dong bo mau nen, vien va chu voi the mon hoc. */
@@ -2378,8 +2378,8 @@
         @media(max-width:767px){
           .class1-subject-card{min-height:118px!important;padding:.82rem .85rem!important;}
           .class1-subject-card .card-top{padding-right:72px;}
-          .subject-access-badge{top:9px;right:9px;min-height:26px;padding:3px 8px;font-size:14px;}
-          .subject-vip-request-button{min-height:40px;font-size:15px;}
+          .subject-access-badge{top:9px;right:9px;min-height:26px;padding:3px 8px;font-size:20px;}
+          .subject-vip-request-button{min-height:40px;font-size:20px;}
         }
       </style>
       <div class="section-heading">
@@ -2461,10 +2461,21 @@
     document.getElementById("profile-back-button")?.addEventListener("click", () => openHomeTab("class1"));
   }
 
+  // Liên kết dự phòng cho các lớp 4–9 đang xây dựng; không gửi phiên đăng nhập qua URL.
+  // Giữ nguyên những URL đã cấu hình cho lớp 1–3 và các lớp có địa chỉ riêng.
+  function epsilonEduClassUrl_(grade) {
+    const configured = String(EE_CLASS_SITES?.[grade] || "").trim();
+    if (configured) return configured;
+    const number = Number(grade);
+    return Number.isInteger(number) && number >= 4 && number <= 9
+      ? `https://epsilon-class-${number}.pages.dev/`
+      : "";
+  }
+
   function renderEpsilonTab() {
     const grades = Array.from({ length: 9 }, (_, i) => i + 1);
     const cards = grades.map((grade, index) => {
-      const url = EE_CLASS_SITES[grade] || "";
+      const url = epsilonEduClassUrl_(grade);
       const available = Boolean(url);
       return `
         <button class="content-card" data-tone="${PREVIEW_TONES[index % PREVIEW_TONES.length]}" data-grade="${grade}" type="button">
@@ -2490,7 +2501,7 @@
     el.content.querySelectorAll("[data-grade]").forEach((card) => {
       card.addEventListener("click", () => {
         const grade = Number(card.dataset.grade);
-        const url = EE_CLASS_SITES[grade] || "";
+        const url = epsilonEduClassUrl_(grade);
         if (!url) {
           showToast(`Website Lớp ${grade} hiện chưa được triển khai.`);
           return;
@@ -2512,7 +2523,7 @@
     const activeView = ["intro", "vip", "contact"].includes(state.contactTab) ? state.contactTab : "intro";
     const gradeLinks = Array.from({ length: 9 }, (_, index) => {
       const grade = index + 1;
-      const url = String(EE_CLASS_SITES[grade] || "").trim();
+      const url = epsilonEduClassUrl_(grade);
       if (!url) {
         return `<span class="contact-grade-link is-unavailable" aria-label="Lớp ${grade} đang cập nhật">Lớp ${grade}</span>`;
       }
@@ -2840,10 +2851,7 @@
       el.accountButton.title = `${state.auth.user.name} · ${state.auth.user.userId}${state.auth.user.role === "admin" ? " · Admin" : ""}`;
       el.accountButton.setAttribute("aria-label", `Tài khoản ${state.auth.user.name}${state.auth.user.role === "admin" ? ", Admin" : ""}`);
       if (state.auth.user.role === "admin") {
-        const roleBadge = document.createElement("span");
-        roleBadge.className = "user-btn-role-badge";
-        roleBadge.textContent = "Admin";
-        el.accountButton.replaceChildren(avatar, label, roleBadge);
+        el.accountButton.replaceChildren(avatar, label);
         return;
       }
       const noticeCount = Number((state.auth.notices || []).length || 0);
@@ -3036,7 +3044,7 @@
         <button id="account-back" class="back-btn" type="button">← Lớp 1</button>
       </div>
       <style>
-        .account-pending-contact{width:100%;min-height:48px;margin-top:.8rem;font-size:16px!important;font-weight:950!important;}
+        .account-pending-contact{width:100%;min-height:48px;margin-top:.8rem;font-size:20px!important;font-weight:950!important;}
       </style>
       <section class="account-page" aria-label="Tài khoản đang đăng nhập">
         <div class="account-page-hero">
@@ -3164,24 +3172,24 @@
     el.content.innerHTML = `
       <style>
         .vip-request-heading h1{font-size:clamp(24px,2.2vw,30px)!important;}
-        .vip-request-heading p{font-size:16px!important;line-height:1.45!important;font-weight:800!important;}
-        .account-request-page .access-request-note{font-size:16px!important;line-height:1.55!important;font-weight:850!important;}
-        .account-request-page .subject-choice strong{font-size:17px!important;line-height:1.3!important;font-weight:900!important;}
-        .account-request-page .subject-choice small{font-size:16px!important;line-height:1.4!important;font-weight:800!important;}
+        .vip-request-heading p{font-size:20px!important;line-height:1.45!important;font-weight:800!important;}
+        .account-request-page .access-request-note{font-size:20px!important;line-height:1.55!important;font-weight:850!important;}
+        .account-request-page .subject-choice strong{font-size:20px!important;line-height:1.3!important;font-weight:900!important;}
+        .account-request-page .subject-choice small{font-size:20px!important;line-height:1.4!important;font-weight:800!important;}
         .access-request-summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem;margin-top:.05rem}
-        .access-request-summary-card{min-height:48px;display:flex;align-items:center;justify-content:center;padding:.65rem .8rem;border:1px solid;border-radius:14px;font-size:16px!important;line-height:1.35!important;font-weight:900!important;text-align:center}
+        .access-request-summary-card{min-height:48px;display:flex;align-items:center;justify-content:center;padding:.65rem .8rem;border:1px solid;border-radius:14px;font-size:20px!important;line-height:1.35!important;font-weight:900!important;text-align:center}
         .access-request-summary-card.selection{border-color:#d8b4fe;background:linear-gradient(90deg,#faf5ff,#fdf2f8);color:#6d28d9}
         .access-request-summary-card.price{border-color:#67e8f9;background:linear-gradient(90deg,#eff6ff,#ecfdf5);color:#0369a1}
         .vip-request-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem;margin-top:.1rem}
-        .vip-request-actions button{width:100%;min-width:0;min-height:52px;margin:0!important;border-radius:14px;padding:.7rem .8rem;font-family:inherit;font-size:16px!important;font-weight:950;line-height:1.25}
+        .vip-request-actions button{width:100%;min-width:0;min-height:52px;margin:0!important;border-radius:14px;padding:.7rem .8rem;font-family:inherit;font-size:20px!important;font-weight:950;line-height:1.25}
         .vip-request-info{border:0;color:#fff;background:linear-gradient(90deg,#38bdf8,#3b82f6);box-shadow:0 6px 16px rgba(59,130,246,.20)}
         .vip-request-contact{border:0;color:#fff;background:linear-gradient(90deg,#34d399,#10b981);box-shadow:0 6px 16px rgba(16,185,129,.20)}
         .vip-request-submit{border:0!important;color:#fff!important;background:linear-gradient(90deg,#a855f7,#7c3aed)!important;box-shadow:0 6px 16px rgba(124,58,237,.22)}
         @media(max-width:720px){
           .access-request-summary-grid{grid-template-columns:1fr}
           .vip-request-actions{grid-template-columns:1fr}
-          .account-request-page .subject-choice strong{font-size:16px!important}
-          .account-request-page .subject-choice small{font-size:16px!important}
+          .account-request-page .subject-choice strong{font-size:20px!important}
+          .account-request-page .subject-choice small{font-size:20px!important}
         }
       </style>
       <div class="section-heading vip-request-heading">
