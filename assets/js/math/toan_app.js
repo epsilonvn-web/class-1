@@ -6045,7 +6045,7 @@ function muc2SpeakNumberLineIntro_() {
         'Càng sang bên phải, số càng lớn. Càng sang bên trái, số càng bé. ' +
         'Ô màu tím là chỗ con đứng. Khi thêm vào, con tiến sang bên phải. Khi bớt đi, con lùi sang bên trái. ' +
         'Mỗi lần con bấm vào ô số ngay bên cạnh là con đi được một bước, và cô sẽ đếm số bước giúp con. ' +
-        'Nếu có lá cờ nhỏ, đó là chỗ con cần đi đến. Nếu đi nhầm, con bấm nút Đi lại để làm lại từ đầu nhé.' + here, 0.94);
+        'Nếu có lá cờ nhỏ, đó là chỗ con cần đi đến.' + here, 0.94);
 }
 
 // Dãy số 0–10: mốc và chiều đi chỉ dựa trên các số ĐÃ BIẾT của câu hỏi.
@@ -6132,7 +6132,7 @@ function buildMuc2ReducedNumberLine_(q) {
                     aria-label="Số ${i}, ${meaning}" ${i === state.current ? 'aria-current="step"' : ''}>${i}${isGoal ? '<span class="muc2-line-flag" aria-hidden="true">⚑</span>' : ''}</button>`;
             }).join('')}
         </div>
-        ${state.count ? '<div class="muc2-reduced-number-line-bottom"><button type="button" class="muc2-reduced-number-line-reset" onclick="muc2ResetNumberLine_()">↺ Đi lại</button></div>' : ''}
+        ${q?._muc2_self_practice === true && state.count ? '<div class="muc2-reduced-number-line-bottom"><button type="button" class="muc2-reduced-number-line-reset" onclick="muc2ResetNumberLine_()">↺ Đi lại</button></div>' : ''}
     </section>`;
 }
 
@@ -6353,8 +6353,8 @@ function buildMuc2ReducedSupport_(q) {
                 ${buildMuc2ReducedTenFrame_(q, model)}
                 <div class="muc2-bond-row">
                     ${buildMuc2NumberBond_(model.topValue, model.leftValue, model.rightValue, q)}
-                    ${q?._muc2_self_practice !== true && ['2.5','2.6'].includes(getMuc2Stage_(q)) && muc2ReducedNumberLineModel_(q) ? `<button type="button" class="muc2-numberline-intro-btn pastel-btn" onclick="muc2SpeakNumberLineIntro_()" aria-label="Nghe giới thiệu dãy số từ 0 đến 10">
-                        <i class="fa-solid fa-volume-high" aria-hidden="true"></i><span>Giới thiệu tia số</span>
+                    ${q?._muc2_self_practice !== true && ['2.5','2.6'].includes(getMuc2Stage_(q)) && muc2ReducedNumberLineModel_(q) ? `<button type="button" class="muc2-numberline-intro-btn pastel-btn" onclick="muc2SpeakNumberLineIntro_()" aria-label="Nghe hướng dẫn dùng tia số từ 0 đến 10">
+                        <i class="fa-solid fa-volume-high" aria-hidden="true"></i><span>Tia số</span>
                     </button>` : ''}
                 </div>
                 ${buildMuc2ReducedNumberLine_(q)}
