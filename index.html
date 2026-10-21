@@ -1810,7 +1810,8 @@
         min-width:0;
         max-width:100%;
         display:flex;
-        flex-wrap:wrap;
+        /* Giữ đúng thứ tự: Cài App, Đúng/Sai, Tài khoản; không đẩy tên sang hàng khác. */
+        flex-wrap:nowrap;
         gap:5px;
         align-items:flex-start;
         align-content:start;
@@ -1850,13 +1851,15 @@
         max-width:100%;
       }
       .app-header .header-tools .score-box:not(.hidden) {
+        /* Điểm đứng bên trái tên, đúng với layout desktop. */
         flex:0 0 auto;
-        order:3;
-        margin-left:auto;
+        order:0;
+        margin-left:0;
         max-width:100%;
         height:auto;
         min-height:49px;
       }
+      .app-header #account-button.user-btn {order:1;}
       .app-header .primary-nav {
         min-width:0;
         grid-template-columns:repeat(3,minmax(0,1fr));
