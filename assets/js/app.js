@@ -162,7 +162,7 @@
     border-color:#bef264!important;background:linear-gradient(145deg,#fff,#ecfccb)!important;
 }
 #content-stage :is(.class1-subject-card,.home-feature-card) .card-title{
-    font-size:20px!important;line-height:1.22!important;font-weight:900!important;
+    font-size:22px!important;line-height:1.22!important;font-weight:900!important;
     overflow-wrap:break-word;
 }
 #content-stage :is(.class1-subject-card,.home-feature-card) .card-desc{
@@ -187,7 +187,7 @@
     transform:none!important;
     transition:transform .18s ease,box-shadow .18s ease!important;
 }
-#content-stage .subject-profile-card .subject-profile-title{font-size:20px!important;line-height:1.25!important;}
+#content-stage .subject-profile-card .subject-profile-title{font-size:22px!important;line-height:1.25!important;}
 #content-stage .subject-profile-card .subject-profile-note{font-size:20px!important;line-height:1.3!important;}
 /* ta_app.js Explore: the icon moves up and grows, but the whole tile doesn't. */
 @media(hover:hover) and (pointer:fine){
@@ -229,14 +229,14 @@
       width:58px!important;height:58px!important;min-width:58px!important;min-height:58px!important;
       flex-basis:58px!important;font-size:35px!important;border-radius:16px!important;
   }
-  #content-stage :is(.class1-subject-card,.home-feature-card) .card-title{font-size:20px!important;}
+  #content-stage :is(.class1-subject-card,.home-feature-card) .card-title{font-size:22px!important;}
   #content-stage :is(.class1-subject-card,.home-feature-card) .card-desc{font-size:20px!important;}
   #content-stage .home-feature-card{min-height:105px!important;padding:10px 11px!important;}
   #content-stage .class1-subject-card .card-top{padding-right:68px!important;}
   #content-stage .subject-profile-card .subject-profile-icon{
       width:46px!important;height:46px!important;min-width:46px!important;flex-basis:46px!important;font-size:28px!important;
   }
-  #content-stage .subject-profile-card .subject-profile-title{font-size:20px!important;}
+  #content-stage .subject-profile-card .subject-profile-title{font-size:22px!important;}
   #content-stage .subject-profile-card .subject-profile-note{font-size:20px!important;}
 }
 @media(max-width:360px){
@@ -244,7 +244,7 @@
       width:54px!important;height:54px!important;min-width:54px!important;min-height:54px!important;
       flex-basis:54px!important;font-size:33px!important;
   }
-  #content-stage :is(.class1-subject-card,.home-feature-card) .card-title{font-size:20px!important;}
+  #content-stage :is(.class1-subject-card,.home-feature-card) .card-title{font-size:22px!important;}
   #content-stage .class1-subject-card .card-top{padding-right:65px!important;}
 }
 @media(prefers-reduced-motion:reduce){
