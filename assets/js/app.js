@@ -2521,12 +2521,11 @@
 
   function renderContactTab() {
     const activeView = ["intro", "vip", "contact"].includes(state.contactTab) ? state.contactTab : "intro";
+    // Cả 9 lớp đều có URL điều hướng như danh mục Epsilon Edu.
+    // Lớp chưa triển khai vẫn cho phép bấm mở địa chỉ dự kiến.
     const gradeLinks = Array.from({ length: 9 }, (_, index) => {
       const grade = index + 1;
       const url = epsilonEduClassUrl_(grade);
-      if (!url) {
-        return `<span class="contact-grade-link is-unavailable" aria-label="Lớp ${grade} đang cập nhật">Lớp ${grade}</span>`;
-      }
       return `<a class="contact-grade-link${grade === 1 ? " is-current" : ""}" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" aria-label="Mở Epsilon Edu Lớp ${grade}">🏫 Lớp ${grade}</a>`;
     }).join("");
 
@@ -2582,7 +2581,7 @@
 
         <div class="contact-ee-section">
           <h3>🏫 Các chương trình trong Epsilon Edu</h3>
-          <p>Bé có thể mở trực tiếp các lớp đã triển khai bên dưới. Những lớp đang tiếp tục xây dựng sẽ được cập nhật dần trong hệ sinh thái Epsilon Edu.</p>
+          <p>Chọn lớp để mở website tương ứng. Các lớp đang xây dựng vẫn có sẵn liên kết và sẽ hoạt động khi được triển khai.</p>
           <div class="contact-grade-links" aria-label="Liên kết các lớp trong Epsilon Edu">${gradeLinks}</div>
         </div>
 
