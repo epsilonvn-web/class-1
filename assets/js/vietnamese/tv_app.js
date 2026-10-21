@@ -6689,7 +6689,7 @@ const TV_EXPLORE_ICON_TEXT_CSS_ = `
     font-family:inherit!important;font-size:20px!important;font-weight:900!important;
 }
 #class1-vietnamese-runtime :is(#view-dashboard-grid,#lecture-subtopics-list) > .l1-tv-explore-card .l1-tv-explore-title{
-    min-width:0!important;font-size:20px!important;font-weight:900!important;line-height:1.19!important;
+    min-width:0!important;font-size:22px!important;font-weight:900!important;line-height:1.19!important;
 }
 #class1-vietnamese-runtime :is(#view-dashboard-grid,#lecture-subtopics-list) > .l1-tv-explore-card .l1-tv-explore-foot{
     margin-top:8px!important;padding-top:8px!important;gap:8px!important;align-items:flex-end!important;
@@ -6713,7 +6713,7 @@ const TV_EXPLORE_ICON_TEXT_CSS_ = `
     flex-basis:52px!important;font-size:31px!important;border-radius:15px!important;
   }
   #class1-vietnamese-runtime :is(#view-dashboard-grid,#lecture-subtopics-list) > .l1-tv-explore-card .l1-tv-explore-icon--text{font-size:20px!important;}
-  #class1-vietnamese-runtime :is(#view-dashboard-grid,#lecture-subtopics-list) > .l1-tv-explore-card .l1-tv-explore-title{font-size:20px!important;}
+  #class1-vietnamese-runtime :is(#view-dashboard-grid,#lecture-subtopics-list) > .l1-tv-explore-card .l1-tv-explore-title{font-size:22px!important;}
   #class1-vietnamese-runtime :is(#view-dashboard-grid,#lecture-subtopics-list) > .l1-tv-explore-card .l1-tv-explore-desc{font-size:20px!important;}
   #class1-vietnamese-runtime :is(#view-dashboard-grid,#lecture-subtopics-list) > .l1-tv-explore-card .l1-tv-explore-count{font-size:20px!important;}
 }
@@ -6822,11 +6822,11 @@ const TV_CHILD_TA_PARITY_CSS_ = `
 }
 #class1-vietnamese-runtime .l1-tv-learning-card .l1-tv-learning-heading{display:flex;flex:1 1 auto;min-width:0;flex-direction:column;gap:3px;}
 #class1-vietnamese-runtime .l1-tv-learning-card .l1-tv-learning-title{
-  display:block;color:var(--lc-ink)!important;font-size:20px!important;font-weight:900!important;
+  display:block;color:var(--lc-ink)!important;font-size:22px!important;font-weight:900!important;
   line-height:1.18!important;overflow-wrap:anywhere;
 }
 #class1-vietnamese-runtime .l1-tv-learning-card .l1-tv-learning-title-vi{
-  display:block;color:#1f2937!important;font-size:20px!important;font-weight:800!important;
+  display:block;color:#1f2937!important;font-size:21px!important;font-weight:800!important;
   line-height:1.22!important;overflow-wrap:anywhere;
 }
 #class1-vietnamese-runtime .l1-tv-learning-card .l1-tv-learning-bottom{
@@ -6887,7 +6887,7 @@ const TV_CHILD_TA_PARITY_CSS_ = `
 @media(max-width:560px){
  #class1-vietnamese-runtime .l1-tv-learning-card{min-height:132px;padding:10px!important;border-radius:18px!important;}
  #class1-vietnamese-runtime .l1-tv-learning-card .l1-tv-learning-icon{width:52px;height:52px;min-width:52px;min-height:52px;flex-basis:52px;font-size:31px;border-radius:15px;}
- #class1-vietnamese-runtime .l1-tv-learning-card .l1-tv-learning-title{font-size:20px!important;}
+ #class1-vietnamese-runtime .l1-tv-learning-card .l1-tv-learning-title{font-size:22px!important;}
  #class1-vietnamese-runtime .l1-tv-learning-card .l1-tv-learning-desc-en{font-size:20px!important;}
  #class1-vietnamese-runtime .l1-tv-learning-card .l1-tv-learning-badge{font-size:20px!important;padding:4px 8px;}
 }
