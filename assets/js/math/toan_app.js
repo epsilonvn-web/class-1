@@ -6352,8 +6352,10 @@ function buildMuc2ReducedSupport_(q) {
                 ${buildMuc2SwapDemonstration_(q)}
                 ${buildMuc2ReducedTenFrame_(q, model)}
                 <div class="muc2-bond-row">
+                    ${q?._muc2_self_practice !== true && ['2.5','2.6'].includes(getMuc2Stage_(q)) ? `<span class="muc2-side-hint is-left">Trái</span>` : ''}
                     ${buildMuc2NumberBond_(model.topValue, model.leftValue, model.rightValue, q)}
-                    ${q?._muc2_self_practice !== true && ['2.5','2.6'].includes(getMuc2Stage_(q)) && muc2ReducedNumberLineModel_(q) ? `<button type="button" class="muc2-numberline-intro-btn pastel-btn" onclick="muc2SpeakNumberLineIntro_()" aria-label="Nghe hướng dẫn dùng tia số từ 0 đến 10">
+                    ${q?._muc2_self_practice !== true && ['2.5','2.6'].includes(getMuc2Stage_(q)) ? `<span class="muc2-side-hint is-right">Phải</span>` : ''}
+                    ${q?._muc2_self_practice !== true && ['2.5','2.6'].includes(getMuc2Stage_(q)) && muc2ReducedNumberLineModel_(q) ? `<button type="button" class="muc2-numberline-intro-btn pastel-btn" onclick="muc2SpeakNumberLineIntro_()" aria-label="Nghe cô giới thiệu tia số từ 0 đến 10">
                         <i class="fa-solid fa-volume-high" aria-hidden="true"></i><span>Tia số</span>
                     </button>` : ''}
                 </div>
@@ -10930,6 +10932,7 @@ const __mathInlineBridgeGetters_ = {
     "muc1ResetInteraction": () => muc1ResetInteraction,
     "muc2SpeakInteractionGuide_": () => muc2SpeakInteractionGuide_,
     "muc2SpeakReducedGuide_": () => muc2SpeakReducedGuide_,
+    "muc2SpeakNumberLineIntro_": () => muc2SpeakNumberLineIntro_,
     "muc2ExplainSwap_": () => muc2ExplainSwap_,
     "muc2TapReducedEmoji_": () => muc2TapReducedEmoji_,
     "muc2StepNumberLine_": () => muc2StepNumberLine_,
@@ -12139,9 +12142,12 @@ const MATH_MUC2_GUIDE_CSS_ = `
 #class1-math-runtime .muc2-guide-dot--blue{background:linear-gradient(145deg,#93c5fd,#2563eb);}
 #class1-math-runtime .muc2-guide-dot--green{background:linear-gradient(145deg,#86efac,#16a34a);}
 #class1-math-runtime #view-quiz .muc2-bond-row{position:relative;width:100%;display:flex;justify-content:center;}
+#class1-math-runtime #view-quiz .muc2-side-hint{position:absolute;top:8px;transform:none;display:inline-flex;align-items:center;justify-content:center;min-width:86px;min-height:42px;padding:6px 14px;border-radius:999px;border:2px solid #d8b4fe;background:linear-gradient(180deg,#ffffff,#faf5ff);color:#7c3aed;font-size:22px;line-height:1.1;font-weight:900;box-shadow:0 4px 10px rgba(124,58,237,.10);pointer-events:none;}
+#class1-math-runtime #view-quiz .muc2-side-hint.is-left{left:8px;}
+#class1-math-runtime #view-quiz .muc2-side-hint.is-right{right:8px;}
 #class1-math-runtime #view-quiz .muc2-numberline-intro-btn{position:absolute;right:8px;bottom:10px;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 16px;border-radius:999px;border:2px solid #c4b5fd;background:#f5f3ff;color:#6d28d9;font-size:20px;line-height:1.2;font-weight:900;box-shadow:0 4px 10px rgba(124,58,237,.12);cursor:pointer;}
 #class1-math-runtime #view-quiz .muc2-numberline-intro-btn:hover{background:#ede9fe;border-color:#a78bfa;}
-@media (max-width: 640px){#class1-math-runtime #view-quiz .muc2-bond-row{flex-direction:column;align-items:center;}#class1-math-runtime #view-quiz .muc2-numberline-intro-btn{position:static;margin-top:4px;}}
+@media (max-width: 640px){#class1-math-runtime #view-quiz .muc2-bond-row{flex-direction:column;align-items:center;gap:6px;}#class1-math-runtime #view-quiz .muc2-side-hint{position:absolute;top:22px;transform:translateY(-50%);min-width:74px;min-height:38px;padding:5px 12px;font-size:20px;}#class1-math-runtime #view-quiz .muc2-numberline-intro-btn{position:static;margin-top:0;}}
 #class1-math-runtime .muc2-guide-dot.is-removed{opacity:.3;box-shadow:none;}
 #class1-math-runtime .muc2-guide-dot.is-removed:after{content:'×';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#be123c;font-size:30px;font-weight:900;opacity:1;}
 #class1-math-runtime .muc2-guide-symbol{font-size:36px;line-height:1;font-weight:900;color:#9333ea;}
