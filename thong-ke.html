@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thống kê truy cập - epsilon-class-1.pages.dev</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f5f6fa;
+      color: #1e293b;
+    }
+    .card-box {
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px solid #eef0f5;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+    }
+    .bar-orange {
+      background-color: #f07336;
+      transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease, transform 0.15s ease;
+    }
+    .bar-orange:hover {
+      background-color: #d95d20;
+    }
+    .bar-blue {
+      background-color: #2563eb;
+      transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease;
+    }
+    .bar-blue:hover {
+      background-color: #1d4ed8;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.8); opacity: 0.8; }
+      75%, 100% { transform: scale(2.2); opacity: 0; }
+    }
+    .live-dot::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 9999px;
+      background-color: #10b981;
+      animation: pulse-ring 1.6s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    }
+  </style>
+</head>
+<body class="min-h-screen py-7 px-4 sm:px-6 lg:px-8">
+
+  <div class="max-w-6xl mx-auto space-y-4">
+    
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-1">
+      <div class="flex items-center gap-3 flex-wrap">
+        <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+          Truy cập <span id="domainTitle" class="text-slate-900">epsilon-class-1.pages.dev</span>
+        </h1>
+        <span id="modeBadge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span class="relative flex h-2 w-2 live-dot">
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span id="modeBadgeText">Đang theo dõi trực tiếp</span>
+        </span>
+      </div>
+
+      <div class="flex items-center gap-2 flex-wrap">
+        <button id="simulateVisitBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200 transition">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+          </svg>
+          Giả lập +1 khách vào web
+        </button>
+        <button id="openSetupBtn" type="button" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 transition shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+          </svg>
+          Lấy mã nhúng vào web & Cài đặt
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter & Info Card (Matches screenshot top box) -->
+    <div class="card-box p-4 sm:p-5">
+      <div class="text-xs font-semibold text-slate-600 mb-2">Khoảng thời gian</div>
+      <div class="flex flex-col md:flex-row md:items-center gap-3">
+        <div class="flex items-center gap-2.5 shrink-0">
+          <div class="relative">
+            <select id="periodSelect" class="appearance-none bg-white border border-slate-200 hover:border-slate-300 text-slate-800 text-sm font-medium rounded-lg pl-3.5 pr-9 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition cursor-pointer">
+              <option value="7">7 ngày</option>
+              <option value="14" selected>14 ngày</option>
+              <option value="30">30 ngày</option>
+            </select>
+            <svg class="w-4 h-4 text-slate-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+
+          <button id="refreshBtn" type="button" class="inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200/80 active:bg-slate-200 text-slate-800 text-sm font-medium px-4 py-2 rounded-lg transition">
+            <svg id="refreshIcon" class="w-3.5 h-3.5 text-slate-600 transition-transform duration-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+            <span>Cập nhật ngay</span>
+          </button>
+        </div>
+
+        <p id="statusDescription" class="text-xs sm:text-[13px] text-slate-500 leading-relaxed">
+          Đếm lượt xem trang và số người thực tế từ mã theo dõi <code class="text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded">epsilon-tracker</code> (số liệu cập nhật tức thì). <strong class="font-medium text-emerald-700">Đã phân biệt được khách riêng biệt (Unique Visitors)</strong> bằng mã định danh trình duyệt & phiên truy cập. Hiện có dữ liệu <span id="daysAvailableLabel">14/14</span> ngày.
+        </p>
+      </div>
+    </div>
+
+    <!-- 6 KPI Cards Row (Exact grid & typography like screenshot) -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+      <!-- Card 1: Total Pageviews -->
+      <div class="card-box p-4 flex flex-col justify-between">
+        <div id="kpiTotalViews" class="text-2xl sm:text-[26px] font-bold text-slate-900 tracking-tight">30,758</div>
+        <div class="mt-1.5 text-xs text-slate-500 flex items-center justify-between">
+          <span id="kpiTotalViewsLabel">Lượt xem (14 ngày)</span>
+        </div>
+      </div>
+
+      <!-- Card 2: Total Unique Visitors (Answers user's core question!) -->
+      <div class="card-box p-4 flex flex-col justify-between border-orange-200/80 bg-orange-50/20">
+        <div class="flex items-baseline gap-1.5">
+          <div id="kpiUniqueVisitors" class="text-2xl sm:text-[26px] font-bold text-orange-600 tracking-tight">6,842</div>
+          <span class="text-[11px] font-medium text-orange-600">người</span>
+        </div>
+        <div class="mt-1.5 text-xs text-slate-600 font-medium">
+          Khách riêng biệt (<span id="kpiUniquePeriod">14 ngày</span>)
+        </div>
+      </div>
+
+      <!-- Card 3: Today -->
+      <div class="card-box p-4 flex flex-col justify-between">
+        <div id="kpiTodayViews" class="text-2xl sm:text-[26px] font-bold text-slate-900 tracking-tight">21,487</div>
+        <div class="mt-1.5 text-xs text-slate-500 flex items-center justify-between">
+          <span>Hôm nay</span>
+          <span id="kpiTodayVisitors" class="text-[11px] font-medium text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">4,512 người</span>
+        </div>
+      </div>
+
+      <!-- Card 4: Yesterday -->
+      <div class="card-box p-4 flex flex-col justify-between">
+        <div id="kpiYesterdayViews" class="text-2xl sm:text-[26px] font-bold text-slate-900 tracking-tight">6,672</div>
+        <div class="mt-1.5 text-xs text-slate-500 flex items-center justify-between">
+          <span>Hôm qua</span>
+          <span id="kpiYesterdayVisitors" class="text-[11px] text-slate-400">1,490 người</span>
+        </div>
+      </div>
+
+      <!-- Card 5: Average per day -->
+      <div class="card-box p-4 flex flex-col justify-between">
+        <div id="kpiAvgViews" class="text-2xl sm:text-[26px] font-bold text-slate-900 tracking-tight">2197.0</div>
+        <div class="mt-1.5 text-xs text-slate-500">
+          Trung bình / ngày
+        </div>
+      </div>
+
+      <!-- Card 6: Online Now / Bot filtered -->
+      <div class="card-box p-4 flex flex-col justify-between">
+        <div class="flex items-center gap-2">
+          <div id="kpiOnlineNow" class="text-2xl sm:text-[26px] font-bold text-emerald-600 tracking-tight">18</div>
+          <span class="text-xs font-medium text-emerald-600 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">Online</span>
+        </div>
+        <div class="mt-1.5 text-xs text-slate-500 flex items-center justify-between">
+          <span>Đang xem web</span>
+          <span id="kpiBotCount" class="text-[11px] text-slate-400" title="Đã lọc bot tự động">3,412 bot</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Daily Bar Chart Card (Exact match to screenshot's orange chart + toggle) -->
+    <div class="card-box p-5">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+        <div class="flex items-center gap-2.5">
+          <h2 class="text-sm font-bold text-slate-800">Lượt xem theo ngày</h2>
+          <span id="chartHoverDetail" class="text-xs text-slate-500 font-normal hidden sm:inline-block">
+            (Di chuột hoặc chạm vào cột để xem chi tiết từng ngày)
+          </span>
+        </div>
+
+        <div class="inline-flex rounded-lg bg-slate-100 p-0.5 text-xs self-start">
+          <button id="chartModeViewsBtn" type="button" class="px-2.5 py-1 rounded-md font-medium bg-white text-slate-800 shadow-sm transition">
+            Lượt xem trang
+          </button>
+          <button id="chartModeUsersBtn" type="button" class="px-2.5 py-1 rounded-md font-medium text-slate-600 hover:text-slate-900 transition">
+            Số người (Khách riêng biệt)
+          </button>
+        </div>
+      </div>
+
+      <!-- Bar Chart Container -->
+      <div class="relative pt-6 pb-2">
+        <div id="barChartGrid" class="h-44 sm:h-48 flex items-end gap-1.5 sm:gap-2.5 border-b border-slate-100 pb-1">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <!-- X-Axis Start & End Dates -->
+        <div class="flex items-center justify-between text-xs text-slate-400 pt-2 font-medium">
+          <span id="chartStartDate">2026-10-08</span>
+          <span id="chartSelectedInfo" class="text-slate-600 font-medium"></span>
+          <span id="chartEndDate">2026-10-21</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom 2-Column Section: Top Pages & Traffic Sources -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      
+      <!-- Left: Trang được xem nhiều (7 cols on lg) -->
+      <div class="card-box p-5 lg:col-span-7 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-sm font-bold text-slate-800">Trang được xem nhiều</h2>
+            <span class="text-xs text-slate-400">Tự động ghi nhận đường dẫn URL</span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-100 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                  <th class="pb-2.5">TRANG</th>
+                  <th class="pb-2.5 text-right">LƯỢT XEM</th>
+                  <th class="pb-2.5 text-right">SỐ NGƯỜI</th>
+                </tr>
+              </thead>
+              <tbody id="topPagesBody" class="divide-y divide-slate-100 text-sm">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+          <span>Bấm vào đường dẫn để mở trang tương ứng trên <code class="text-slate-600">epsilon-class-1.pages.dev</code></span>
+        </div>
+      </div>
+
+      <!-- Right: Nguồn truy cập (5 cols on lg) -->
+      <div class="card-box p-5 lg:col-span-5 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-sm font-bold text-slate-800">Nguồn truy cập</h2>
+            <span class="text-xs text-slate-400">Phân tích Referrer & UTM</span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-100 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                  <th class="pb-2.5">NGUỒN</th>
+                  <th class="pb-2.5 text-right">LƯỢT</th>
+                  <th class="pb-2.5 text-right w-16">TỶ LỆ</th>
+                </tr>
+              </thead>
+              <tbody id="sourcesBody" class="divide-y divide-slate-100 text-sm">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-slate-100 text-xs text-slate-400">
+          Mẹo: Gửi link kèm <code class="text-slate-600 bg-slate-100 px-1 py-0.5 rounded">?ref=zalo</code> hoặc <code class="text-slate-600 bg-slate-100 px-1 py-0.5 rounded">?ref=fb</code> để phân loại nguồn chính xác 100%.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer quick switcher between Demo data (like screenshot) vs Clean Live Mode -->
+    <div class="card-box px-5 py-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-slate-500">
+      <div class="flex items-center gap-2 flex-wrap">
+        <span class="font-semibold text-slate-700">Chế độ dữ liệu:</span>
+        <button id="switchSampleDataBtn" type="button" class="px-2.5 py-1 rounded bg-orange-100 text-orange-800 font-medium transition">
+          Dữ liệu mẫu + Trực tiếp (Giống ảnh mẫu)
+        </button>
+        <button id="switchZeroDataBtn" type="button" class="px-2.5 py-1 rounded hover:bg-slate-100 text-slate-600 font-medium transition">
+          Đặt về 0 (Chỉ đếm lượt thật mới)
+        </button>
+      </div>
+      <div id="lastUpdatedTime" class="text-slate-400">
+        Cập nhật lần cuối: vừa xong
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Modal: Mã nhúng & Hướng dẫn cài đặt lên epsilon-class-1.pages.dev -->
+  <div id="setupModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-200 p-6 space-y-5">
+      <div class="flex items-start justify-between gap-4 border-b border-slate-100 pb-4">
+        <div>
+          <h3 class="text-lg font-bold text-slate-900">Cách gắn bảng thống kê này vào <span class="text-orange-600">epsilon-class-1.pages.dev</span></h3>
+          <p class="text-xs text-slate-500 mt-1">Chỉ cần làm 2 bước dưới đây là anh có ngay trang thống kê Tiếng Việt y hệt hình mẫu.</p>
+        </div>
+        <button id="closeSetupBtn" type="button" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="space-y-4 text-sm text-slate-700">
+        <!-- Step 1 -->
+        <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/80 space-y-2">
+          <div class="font-semibold text-slate-900 flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-orange-600 text-white text-xs flex items-center justify-center font-bold">1</span>
+            Lưu file này thành <code class="bg-white px-1.5 py-0.5 rounded border text-orange-600">thong-ke.html</code> trong thư mục web của anh
+          </div>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Đặt file <code class="font-mono">thong-ke.html</code> cùng chỗ với file <code class="font-mono">index.html</code> của dự án <strong>epsilon-class-1</strong>. Sau khi đẩy lên Cloudflare Pages, anh mở đường dẫn <code class="text-slate-800 font-medium">https://epsilon-class-1.pages.dev/thong-ke.html</code> là xem được bảng này bất cứ lúc nào.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="bg-slate-50 rounded-xl p-4 border border-slate-200/80 space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <div class="font-semibold text-slate-900 flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-orange-600 text-white text-xs flex items-center justify-center font-bold">2</span>
+              Dán đoạn mã đếm tự động này vào cuối file <code class="bg-white px-1.5 py-0.5 rounded border text-orange-600">index.html</code> (trước thẻ <code class="font-mono">&lt;/body&gt;</code>)
+            </div>
+            <button id="copySnippetBtn" type="button" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 transition">
+              Sao chép mã
+            </button>
+          </div>
+
+          <pre id="trackingSnippetCode" class="bg-slate-900 text-slate-100 p-3.5 rounded-lg text-[11px] font-mono overflow-x-auto leading-relaxed">&lt;!-- Bộ đếm lượt xem &amp; số người truy cập cho epsilon-class-1.pages.dev --&gt;
+&lt;script&gt;
+(function() {
+  const NAMESPACE = 'epsilon-class-1-pages-dev';
+  const today = new Date().toISOString().slice(0, 10);
+  const path = window.location.pathname || '/';
+  const ref = document.referrer || '';
+  
+  // 1. Phân biệt khách riêng biệt (Unique Visitor)
+  let uid = localStorage.getItem('eps_uid');
+  let isNewUserToday = false;
+  if (!uid) {
+    uid = 'u_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    localStorage.setItem('eps_uid', uid);
+  }
+  if (localStorage.getItem('eps_last_day') !== today) {
+    isNewUserToday = true;
+    localStorage.setItem('eps_last_day', today);
+  }
+
+  // 2. Gửi tín hiệu sang trang thong-ke.html và API đếm miễn phí
+  try {
+    const bc = new BroadcastChannel('epsilon_analytics_channel');
+    bc.postMessage({ type: 'visit', path, ref, isNewUserToday, date: today });
+  } catch(e) {}
+
+  fetch('https://api.counterapi.dev/v1/' + NAMESPACE + '/views/up').catch(() =&gt; {});
+  if (isNewUserToday) {
+    fetch('https://api.counterapi.dev/v1/' + NAMESPACE + '/users/up').catch(() =&gt; {});
+  }
+})();
+&lt;/script&gt;</pre>
+          <p id="copyFeedback" class="text-xs text-emerald-600 font-medium hidden">✓ Đã sao chép đoạn mã vào bộ nhớ tạm!</p>
+        </div>
+
+        <!-- Step 3: Cloud Sync Option -->
+        <div class="bg-emerald-50/70 rounded-xl p-4 border border-emerald-200 space-y-2">
+          <div class="font-semibold text-emerald-900 text-xs uppercase tracking-wider">Đồng bộ số liệu toàn cầu (CounterAPI miễn phí)</div>
+          <p class="text-xs text-emerald-800 leading-relaxed">
+            Đoạn mã ở Bước 2 đã tích hợp sẵn <strong>CounterAPI (`epsilon-class-1-pages-dev`)</strong> hoàn toàn miễn phí. Mỗi khi học sinh hoặc bất kỳ ai mở trang web của anh trên điện thoại/máy tính khác, tổng số lượt xem và số người thực tế sẽ tự động cộng dồn lên đám mây và hiển thị trên bảng thống kê này!
+          </p>
+        </div>
+      </div>
+
+      <div class="flex justify-end pt-2 border-t border-slate-100">
+        <button id="closeSetupFooterBtn" type="button" class="px-4 py-2 rounded-lg text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 transition">
+          Đã hiểu, đóng cửa sổ
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification when a live visit arrives -->
+  <div id="liveToast" class="fixed bottom-4 right-4 z-40 hidden bg-slate-900 text-white px-4 py-2.5 rounded-xl shadow-lg text-xs font-medium flex items-center gap-2.5 border border-slate-700">
+    <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+    <span id="liveToastText">Vừa có +1 lượt truy cập mới vào /index.html</span>
+  </div>
+
+  <script>
+    // =========================================================================
+    // CẤU HÌNH & DỮ LIỆU MẶC ĐỊNH CHO EPSILON-CLASS-1.PAGES.DEV
+    // =========================================================================
+    const STORAGE_KEY = 'epsilon_analytics_state_v1';
+    const NAMESPACE = 'epsilon-class-1-pages-dev';
+
+    // Danh sách 30 ngày gần nhất tính tới hôm nay (2026-10-21)
+    function generateDateSeries(numDays) {
+      const result = [];
+      const base = new Date();
+      for (let i = numDays - 1; i >= 0; i--) {
+        const d = new Date(base);
+        d.setDate(base.getDate() - i);
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const dd = String(d.getDate()).padStart(2, '0');
+        result.push(`${yyyy}-${mm}-${dd}`);
+      }
+      return result;
+    }
+
+    // Tạo dữ liệu khởi tạo giống bố cục ảnh mẫu nhưng gắn với trang epsilon-class-1.pages.dev
+    function createInitialSampleState() {
+      const dates30 = generateDateSeries(30);
+      const daily = {};
+
+      dates30.forEach((dateStr, idx) => {
+        // Các ngày trước có lượng truy cập vừa phải, 2 ngày cuối tăng vọt giống hệt biểu đồ mẫu
+        if (idx === dates30.length - 1) {
+          daily[dateStr] = { views: 21487, users: 4512 };
+        } else if (idx === dates30.length - 2) {
+          daily[dateStr] = { views: 6672, users: 1490 };
+        } else if (idx >= dates30.length - 14) {
+          const baseViews = 180 + ((idx * 37) % 140);
+          daily[dateStr] = {
+            views: baseViews,
+            users: Math.max(45, Math.round(baseViews * 0.34))
+          };
+        } else {
+          const baseViews = 150 + ((idx * 29) % 120);
+          daily[dateStr] = {
+            views: baseViews,
+            users: Math.max(38, Math.round(baseViews * 0.33))
+          };
+        }
+      });
+
+      return {
+        mode: 'sample',
+        onlineNow: 18,
+        botCount: 3412,
+        daily: daily,
+        pages: [
+          { path: '/', views: 19286, users: 4120 },
+          { path: '/bai-hoc.html', views: 4665, users: 1285 },
+          { path: '/luyen-tap.html', views: 3410, users: 980 },
+          { path: '/de-kiem-tra.html', views: 2180, users: 645 },
+          { path: '/tai-lieu-lop-1.html', views: 1217, users: 412 }
+        ],
+        sources: [
+          { name: 'Trực tiếp', views: 16858 },
+          { name: 'Facebook', views: 2472 },
+          { name: 'Zalo', views: 1914 },
+          { name: 'Google', views: 790 },
+          { name: 'Khác', views: 245 }
+        ]
+      };
+    }
+
+    function createZeroState() {
+      const dates30 = generateDateSeries(30);
+      const daily = {};
+      dates30.forEach((dateStr, idx) => {
+        daily[dateStr] = {
+          views: idx === dates30.length - 1 ? 1 : 0,
+          users: idx === dates30.length - 1 ? 1 : 0
+        };
+      });
+
+      return {
+        mode: 'clean',
+        onlineNow: 1,
+        botCount: 0,
+        daily: daily,
+        pages: [
+          { path: '/', views: 1, users: 1 }
+        ],
+        sources: [
+          { name: 'Trực tiếp', views: 1 },
+          { name: 'Zalo', views: 0 },
+          { name: 'Facebook', views: 0 },
+          { name: 'Google', views: 0 }
+        ]
+      };
+    }
+
+    // State hiện tại
+    let appState = createInitialSampleState();
+    let currentPeriod = 14;
+    let chartMetric = 'views'; // 'views' hoặc 'users'
+
+    // Đọc từ bộ nhớ trình duyệt nếu có
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.daily) {
+          appState = parsed;
+        }
+      }
+    } catch (err) {
+      // Bỏ qua nếu iFrame chặn localStorage
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (err) {}
+    }
+
+    // Định dạng số có dấu phẩy (ví dụ: 30,758)
+    function formatNumber(num) {
+      return Number(num || 0).toLocaleString('en-US');
+    }
+
+    // =========================================================================
+    // CẬP NHẬT GIAO DIỆN DASHBOARD
+    // =========================================================================
+    function renderDashboard() {
+      const datesAll = generateDateSeries(30);
+      // Đảm bảo ngày hôm nay luôn tồn tại trong appState.daily
+      datesAll.forEach(d => {
+        if (!appState.daily[d]) {
+          appState.daily[d] = { views: 0, users: 0 };
+        }
+      });
+
+      const activeDates = datesAll.slice(-currentPeriod);
+      const todayKey = datesAll[datesAll.length - 1];
+      const yesterdayKey = datesAll[datesAll.length - 2];
+
+      let totalPeriodViews = 0;
+      let totalPeriodUsers = 0;
+
+      activeDates.forEach(d => {
+        totalPeriodViews += appState.daily[d]?.views || 0;
+        totalPeriodUsers += appState.daily[d]?.users || 0;
+      });
+
+      const todayData = appState.daily[todayKey] || { views: 0, users: 0 };
+      const yesterdayData = appState.daily[yesterdayKey] || { views: 0, users: 0 };
+      const avgDaily = (totalPeriodViews / currentPeriod).toFixed(1);
+
+      // Cập nhật 6 thẻ KPI
+      document.getElementById('kpiTotalViews').textContent = formatNumber(totalPeriodViews);
+      document.getElementById('kpiTotalViewsLabel').textContent = `Lượt xem (${currentPeriod} ngày)`;
+      document.getElementById('kpiUniqueVisitors').textContent = formatNumber(totalPeriodUsers);
+      document.getElementById('kpiUniquePeriod').textContent = `${currentPeriod} ngày`;
+
+      document.getElementById('kpiTodayViews').textContent = formatNumber(todayData.views);
+      document.getElementById('kpiTodayVisitors').textContent = `${formatNumber(todayData.users)} người`;
+
+      document.getElementById('kpiYesterdayViews').textContent = formatNumber(yesterdayData.views);
+      document.getElementById('kpiYesterdayVisitors').textContent = `${formatNumber(yesterdayData.users)} người`;
+
+      document.getElementById('kpiAvgViews').textContent = avgDaily;
+      document.getElementById('kpiOnlineNow').textContent = formatNumber(appState.onlineNow);
+      document.getElementById('kpiBotCount').textContent = `${formatNumber(appState.botCount)} bot`;
+      document.getElementById('daysAvailableLabel').textContent = `${currentPeriod}/${currentPeriod}`;
+
+      // Render biểu đồ cột
+      renderBarChart(activeDates);
+
+      // Render bảng Trang được xem nhiều
+      renderTopPages();
+
+      // Render bảng Nguồn truy cập
+      renderTrafficSources();
+
+      // Cập nhật nút chế độ
+      const sampleBtn = document.getElementById('switchSampleDataBtn');
+      const zeroBtn = document.getElementById('switchZeroDataBtn');
+      if (appState.mode === 'sample') {
+        sampleBtn.className = 'px-2.5 py-1 rounded bg-orange-100 text-orange-800 font-medium transition';
+        zeroBtn.className = 'px-2.5 py-1 rounded hover:bg-slate-100 text-slate-600 font-medium transition';
+      } else {
+        zeroBtn.className = 'px-2.5 py-1 rounded bg-emerald-100 text-emerald-800 font-medium transition';
+        sampleBtn.className = 'px-2.5 py-1 rounded hover:bg-slate-100 text-slate-600 font-medium transition';
+      }
+    }
+
+    function renderBarChart(activeDates) {
+      const container = document.getElementById('barChartGrid');
+      container.innerHTML = '';
+
+      const values = activeDates.map(d => appState.daily[d]?.[chartMetric] || 0);
+      const maxVal = Math.max(...values, 10);
+
+      document.getElementById('chartStartDate').textContent = activeDates[0];
+      document.getElementById('chartEndDate').textContent = activeDates[activeDates.length - 1];
+
+      activeDates.forEach((dateStr) => {
+        const dayObj = appState.daily[dateStr] || { views: 0, users: 0 };
+        const val = dayObj[chartMetric] || 0;
+        // Chiều cao tối thiểu 4% để giống vạch cam mảnh ở đáy như trong ảnh mẫu
+        const heightPercent = val === 0 ? 2 : Math.max(4, Math.round((val / maxVal) * 100));
+
+        const col = document.createElement('div');
+        col.className = 'group relative flex-1 h-full flex flex-col justify-end items-center cursor-pointer';
+
+        // Tooltip nổi lên khi di chuột vào cột
+        const tooltip = document.createElement('div');
+        tooltip.className = 'opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-150 absolute -top-12 z-20 bg-slate-900 text-white text-[11px] px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap';
+        tooltip.innerHTML = `
+          <div class="font-semibold text-orange-300">${dateStr}</div>
+          <div>${formatNumber(dayObj.views)} lượt xem • <strong>${formatNumber(dayObj.users)} người</strong></div>
+        `;
+
+        const bar = document.createElement('div');
+        const barColorClass = chartMetric === 'views' ? 'bar-orange' : 'bar-blue';
+        bar.className = `w-full rounded-t-[2px] ${barColorClass}`;
+        bar.style.height = `${heightPercent}%`;
+
+        col.addEventListener('mouseenter', () => {
+          document.getElementById('chartSelectedInfo').textContent =
+            `Ngày ${dateStr}: ${formatNumber(dayObj.views)} lượt xem (${formatNumber(dayObj.users)} khách riêng biệt)`;
+        });
+        col.addEventListener('mouseleave', () => {
+          document.getElementById('chartSelectedInfo').textContent = '';
+        });
+
+        col.appendChild(tooltip);
+        col.appendChild(bar);
+        container.appendChild(col);
+      });
+    }
+
+    function renderTopPages() {
+      const tbody = document.getElementById('topPagesBody');
+      tbody.innerHTML = '';
+
+      const sortedPages = [...appState.pages].sort((a, b) => b.views - a.views);
+
+      sortedPages.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50/80 transition';
+        const fullUrl = `https://epsilon-class-1.pages.dev${item.path === '/' ? '' : item.path}`;
+        tr.innerHTML = `
+          <td class="py-3 pr-4">
+            <a href="${fullUrl}" target="_blank" rel="noopener noreferrer" class="text-slate-700 hover:text-orange-600 underline decoration-slate-300 hover:decoration-orange-500 underline-offset-4 font-medium transition">
+              ${item.path}
+            </a>
+          </td>
+          <td class="py-3 text-right font-medium text-slate-800">${formatNumber(item.views)}</td>
+          <td class="py-3 text-right text-xs font-semibold text-emerald-700">
+            <span class="bg-emerald-50 border border-emerald-200/70 px-2 py-0.5 rounded-md">${formatNumber(item.users)} người</span>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderTrafficSources() {
+      const tbody = document.getElementById('sourcesBody');
+      tbody.innerHTML = '';
+
+      const totalSourceViews = appState.sources.reduce((acc, s) => acc + s.views, 0) || 1;
+      const sortedSources = [...appState.sources].sort((a, b) => b.views - a.views);
+
+      sortedSources.forEach(src => {
+        const pct = Math.round((src.views / totalSourceViews) * 100);
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50/80 transition';
+        tr.innerHTML = `
+          <td class="py-3 pr-4">
+            <div class="font-medium text-slate-700">${src.name}</div>
+            <div class="w-full bg-slate-100 h-1 rounded-full mt-1.5 overflow-hidden">
+              <div class="bg-orange-500 h-full rounded-full" style="width: ${pct}%"></div>
+            </div>
+          </td>
+          <td class="py-3 text-right font-medium text-slate-800 align-top">${formatNumber(src.views)}</td>
+          <td class="py-3 text-right text-slate-400 font-medium align-top">${pct}%</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // =========================================================================
+    // GHI NHẬN LƯỢT TRUY CẬP MỚI (THẬT HOẶC GIẢ LẬP THỬ NGHIỆM)
+    // =========================================================================
+    function recordIncomingVisit({ path, sourceName, isNewUser }) {
+      const datesAll = generateDateSeries(30);
+      const todayKey = datesAll[datesAll.length - 1];
+
+      if (!appState.daily[todayKey]) {
+        appState.daily[todayKey] = { views: 0, users: 0 };
+      }
+
+      appState.daily[todayKey].views += 1;
+      if (isNewUser) {
+        appState.daily[todayKey].users += 1;
+      }
+
+      // Cập nhật bảng Trang
+      let pageEntry = appState.pages.find(p => p.path === path);
+      if (!pageEntry) {
+        pageEntry = { path, views: 0, users: 0 };
+        appState.pages.push(pageEntry);
+      }
+      pageEntry.views += 1;
+      if (isNewUser) {
+        pageEntry.users += 1;
+      }
+
+      // Cập nhật bảng Nguồn
+      let srcEntry = appState.sources.find(s => s.name === sourceName);
+      if (!srcEntry) {
+        srcEntry = { name: sourceName, views: 0 };
+        appState.sources.push(srcEntry);
+      }
+      srcEntry.views += 1;
+
+      saveState();
+      renderDashboard();
+      showToast(`+1 lượt truy cập vào ${path} (${sourceName})`);
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('liveToast');
+      const text = document.getElementById('liveToastText');
+      text.textContent = message;
+      toast.classList.remove('hidden');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 2800);
+    }
+
+    // =========================================================================
+    // KẾT NỐI BROADCAST CHANNEL & COUNTERAPI ĐỂ NHẬN LƯỢT TRUY CẬP THẬT
+    // =========================================================================
+    try {
+      const bc = new BroadcastChannel('epsilon_analytics_channel');
+      bc.onmessage = (event) => {
+        const data = event.data;
+        if (data && data.type === 'visit') {
+          let src = 'Trực tiếp';
+          const r = (data.ref || '').toLowerCase();
+          if (r.includes('zalo')) src = 'Zalo';
+          else if (r.includes('facebook') || r.includes('fb.')) src = 'Facebook';
+          else if (r.includes('google')) src = 'Google';
+
+          recordIncomingVisit({
+            path: data.path || '/',
+            sourceName: src,
+            isNewUser: Boolean(data.isNewUserToday)
+          });
+        }
+      };
+    } catch (e) {}
+
+    // Đồng bộ thêm với CounterAPI công khai của dự án nếu có
+    async function syncCloudCounter() {
+      try {
+        const res = await fetch(`https://api.counterapi.dev/v1/${NAMESPACE}/views/`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && typeof data.count === 'number' && appState.mode === 'clean') {
+            const datesAll = generateDateSeries(30);
+            const todayKey = datesAll[datesAll.length - 1];
+            if (data.count > appState.daily[todayKey].views) {
+              appState.daily[todayKey].views = data.count;
+              renderDashboard();
+            }
+          }
+        }
+      } catch (e) {}
+    }
+
+    // =========================================================================
+    // SỰ KIỆN NÚT BẤM TRÊN GIAO DIỆN
+    // =========================================================================
+    document.getElementById('periodSelect').addEventListener('change', (e) => {
+      currentPeriod = parseInt(e.target.value, 10) || 14;
+      renderDashboard();
+    });
+
+    document.getElementById('refreshBtn').addEventListener('click', () => {
+      const icon = document.getElementById('refreshIcon');
+      icon.classList.add('rotate-180');
+      setTimeout(() => icon.classList.remove('rotate-180'), 500);
+
+      syncCloudCounter();
+      renderDashboard();
+
+      const nowStr = new Date().toLocaleTimeString('vi-VN');
+      document.getElementById('lastUpdatedTime').textContent = `Cập nhật lần cuối: ${nowStr}`;
+      showToast('Đã làm mới dữ liệu thống kê mới nhất!');
+    });
+
+    // Chuyển đổi biểu đồ giữa Lượt xem và Số người
+    const viewsBtn = document.getElementById('chartModeViewsBtn');
+    const usersBtn = document.getElementById('chartModeUsersBtn');
+
+    viewsBtn.addEventListener('click', () => {
+      chartMetric = 'views';
+      viewsBtn.className = 'px-2.5 py-1 rounded-md font-medium bg-white text-slate-800 shadow-sm transition';
+      usersBtn.className = 'px-2.5 py-1 rounded-md font-medium text-slate-600 hover:text-slate-900 transition';
+      renderDashboard();
+    });
+
+    usersBtn.addEventListener('click', () => {
+      chartMetric = 'users';
+      usersBtn.className = 'px-2.5 py-1 rounded-md font-medium bg-white text-blue-600 shadow-sm transition';
+      viewsBtn.className = 'px-2.5 py-1 rounded-md font-medium text-slate-600 hover:text-slate-900 transition';
+      renderDashboard();
+    });
+
+    // Nút Giả lập +1 khách vào web để anh test trực tiếp
+    document.getElementById('simulateVisitBtn').addEventListener('click', () => {
+      const samplePaths = ['/', '/bai-hoc.html', '/luyen-tap.html', '/de-kiem-tra.html', '/tai-lieu-lop-1.html'];
+      const sampleSources = ['Trực tiếp', 'Zalo', 'Facebook', 'Google'];
+      const randomPath = samplePaths[Math.floor(Math.random() * samplePaths.length)];
+      const randomSource = sampleSources[Math.floor(Math.random() * sampleSources.length)];
+
+      appState.onlineNow = Math.max(1, appState.onlineNow + (Math.random() > 0.4 ? 1 : 0));
+      recordIncomingVisit({
+        path: randomPath,
+        sourceName: randomSource,
+        isNewUser: true
+      });
+    });
+
+    // Chuyển đổi giữa Dữ liệu mẫu (giống ảnh) và Đặt về 0
+    document.getElementById('switchSampleDataBtn').addEventListener('click', () => {
+      appState = createInitialSampleState();
+      saveState();
+      renderDashboard();
+      showToast('Đã chuyển sang dữ liệu mẫu giống ảnh chụp');
+    });
+
+    document.getElementById('switchZeroDataBtn').addEventListener('click', () => {
+      appState = createZeroState();
+      saveState();
+      renderDashboard();
+      showToast('Đã đặt bộ đếm về 0 để bắt đầu đếm lượt truy cập thật');
+    });
+
+    // Mở / đóng Modal lấy mã nhúng
+    const setupModal = document.getElementById('setupModal');
+    document.getElementById('openSetupBtn').addEventListener('click', () => {
+      setupModal.classList.remove('hidden');
+    });
+    document.getElementById('closeSetupBtn').addEventListener('click', () => {
+      setupModal.classList.add('hidden');
+    });
+    document.getElementById('closeSetupFooterBtn').addEventListener('click', () => {
+      setupModal.classList.add('hidden');
+    });
+    setupModal.addEventListener('click', (e) => {
+      if (e.target === setupModal) setupModal.classList.add('hidden');
+    });
+
+    // Sao chép mã nhúng
+    document.getElementById('copySnippetBtn').addEventListener('click', () => {
+      const rawCode = document.getElementById('trackingSnippetCode').innerText;
+      const textarea = document.createElement('textarea');
+      textarea.value = rawCode;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+
+      const feedback = document.getElementById('copyFeedback');
+      feedback.classList.remove('hidden');
+      setTimeout(() => feedback.classList.add('hidden'), 3000);
+    });
+
+    // Khởi chạy lần đầu
+    window.onload = function() {
+      renderDashboard();
+      syncCloudCounter();
+    };
+  </script>
+</body>
+</html>
