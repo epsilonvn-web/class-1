@@ -2567,6 +2567,34 @@
         font-size:17px;
       }
     }
+
+    /* Admin-only Cloudflare shortcut, visually next to Management. */
+    .class1-analytics-header-tab{
+      background:#E0F2FE;color:#0369A1;border-color:#BAE6FD;
+      text-decoration:none!important;
+    }
+    .class1-analytics-header-tab:hover{color:#0369A1;text-decoration:none!important}
+    .class1-analytics-header-tab:focus-visible{outline:3px solid #93C5FD;outline-offset:2px}
+    @media (min-width:768px) and (max-width:1175px){
+      .app-header .primary-nav:has(> .class1-analytics-header-tab){grid-template-columns:repeat(8,minmax(0,1fr))}
+    }
+    @media (max-width:767px){
+      .app-header .header-tools > .class1-analytics-header-tab{
+        order:2;flex:0 1 85px;width:85px;min-width:59px;
+        min-height:74px;height:74px;padding:4px 3px;border-radius:14px;
+        display:flex;flex-direction:column;align-items:center;justify-content:center;
+        gap:3px;font-size:16px;line-height:1.1;white-space:nowrap;
+      }
+      .app-header .header-tools > .class1-analytics-header-tab .tab-icon{font-size:22px;line-height:1}
+    }
+    @media (max-width:400px){
+      .app-header .header-tools > .class1-analytics-header-tab{flex-basis:66px;width:66px;min-width:55px;font-size:15px;padding-inline:1px}
+      .app-header .header-tools > .class1-analytics-header-tab .tab-icon{font-size:20px}
+    }
+    @media (max-width:360px){
+      .app-header .header-tools > .class1-analytics-header-tab{flex-basis:59px;width:59px;min-width:49px;font-size:14px}
+      .app-header .header-tools > .class1-analytics-header-tab > span:last-child{white-space:normal;text-align:center;line-height:1.04}
+    }
   </style>
 </head>
 <body>
@@ -2686,5 +2714,54 @@
 
   <script src="assets/js/core/class1-data.js?v=class1-greeting-audio-2"></script>
   <script src="assets/js/app.js?v=class1-admin-mobile-20261021"></script>
+  <script>
+  /* Admin sees a shortcut to Cloudflare's official Web Analytics screen.
+     No data fetching, no private credentials and no new API endpoint. */
+  (() => {
+    'use strict';
+    if (typeof MutationObserver !== 'function') return;
+    const header = document.querySelector('.app-header');
+    const tools = header?.querySelector('.header-tools');
+    const nav = header?.querySelector('.primary-nav');
+    if (!header || !tools || !nav) return;
+    // Direct link to the Class 1 Cloudflare Web Analytics report (bots excluded).
+    const analyticsUrl = 'https://dash.cloudflare.com/3de6bce652c7f5ab4546ad0eb0b52f1d/web-analytics/overview?siteTag~in=3e950846dd7e46dc89da16884bb7237b&excludeBots=Yes';
+    const selector = '[data-class1-statistics-header]';
+    function syncShortcut() {
+      const management = tools.querySelector('.admin-header-tab[data-id="admin"]')
+        || nav.querySelector('.nav-tab[data-id="admin"]');
+      let link = header.querySelector(selector);
+      if (!management) {
+        link?.remove();
+        return;
+      }
+      if (!link) {
+        link = document.createElement('a');
+        link.className = 'nav-tab tone-blue class1-analytics-header-tab';
+        link.dataset.class1StatisticsHeader = 'true';
+        link.href = analyticsUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.title = 'Mở Cloudflare Web Analytics trong tab mới';
+        link.setAttribute('aria-label', 'Thống kê truy cập trên Cloudflare (mở tab mới)');
+        const icon = document.createElement('span');
+        icon.className = 'tab-icon';
+        icon.setAttribute('aria-hidden', 'true');
+        icon.textContent = '📊';
+        const label = document.createElement('span');
+        label.textContent = 'Thống kê';
+        link.append(icon, label);
+      }
+      // app.js replaces the navigation on render; place the live shortcut
+      // immediately before the native Management control each time.
+      if (link.parentElement !== management.parentElement || link.nextElementSibling !== management) {
+        management.parentElement.insertBefore(link, management);
+      }
+    }
+    new MutationObserver(syncShortcut).observe(header, {childList:true,subtree:true});
+    syncShortcut();
+  })();
+  </script>
+
 </body>
 </html>
