@@ -975,19 +975,15 @@
       padding:0 1rem;
       pointer-events:none;
     }
-    .footer-logo{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      transform:translateY(-6px);
-      width:100%;
-    }
-    .footer-logo img{
+    /* Dong bo logo chan trang Lop 1 voi Lop 3 (desktop/tablet). */
+    .footer-brand-logo{
       display:block;
-      width:clamp(280px, 34vw, 420px);
+      width:clamp(140px,24vw,300px);
       height:auto;
-      max-height:100px;
+      max-width:55%;
+      max-height:75%;
       object-fit:contain;
+      filter:drop-shadow(0 1px 1px rgba(255,255,255,.9));
     }
 
     .modal-backdrop{
@@ -1491,11 +1487,12 @@
         background-repeat:no-repeat;
       }
       .content-stage:has(> .card-grid) + .app-footer{margin-top:0}
-      .footer-logo{transform:none}
-      .footer-logo img{
-        width:clamp(160px,50vw,285px);
-        height:auto;
-        max-height:none;
+      /* Lop 3 mobile: lon hon 25%, nang len 8px. */
+      .footer-brand-logo{
+        width:clamp(175px,30vw,320px);
+        max-width:72%;
+        max-height:90%;
+        transform:translateY(-8px);
       }
       
       .auth-logo{width:225px;max-width:74%}
@@ -2648,9 +2645,7 @@
     <main id="content-stage" class="content-stage" tabindex="-1"></main>
 
     <footer class="app-footer" aria-label="Chân trang">
-      <div class="footer-logo">
-        <img src="EE%20logo-slogan.png?v=20261022" alt="Epsilon Edu - Tiến bộ từng ngày">
-      </div>
+      <img class="footer-brand-logo" src="EE%20logo-slogan.png?v=20261022" alt="Epsilon Edu - Tiến bộ từng ngày">
     </footer>
   </div>
 
