@@ -3782,6 +3782,7 @@ function loadQuestion() {
     // Khám phá Mục 7: tách văn bản/hình (trái) và câu hỏi/đáp án (phải).
     // Không áp dụng renderer này cho Bài tập, Ôn tập hoặc Đề thi.
     const isTopic7ReadingLayout = !isEvaluationMode && Number(activeTopicId) === 7 && !!pText;
+    const isTopic7Poem = isTopic7ReadingLayout && isTopic7PoemTV1_(q);
 
     let html;
     if (isTopic7ReadingLayout) {
@@ -3792,7 +3793,7 @@ function loadQuestion() {
                 : '';
         html = `
           <div class="tv7-reading-layout">
-            <section class="tv7-passage-card" aria-label="Bài đọc">
+            <section class="tv7-passage-card${isTopic7Poem ? ' tv7-passage-card--poem' : ''}" aria-label="Bài đọc">
               <div class="tv7-passage-head">
                 ${illustrationHtml ? `<div class="tv7-reading-media">${illustrationHtml}</div>` : ''}
                 ${pTitle ? `<h3 class="tv7-passage-title">${escapeHtml(pTitle)}</h3>` : ''}
@@ -3801,7 +3802,7 @@ function loadQuestion() {
               <div class="mt-3 flex justify-center">
                 <button type="button" onclick="speakTopic7Passage_()" class="tv7-listen-btn px-4 py-2 rounded-2xl text-sm font-extrabold shadow-sm pastel-btn">
                   <i class="fa-solid fa-volume-high" aria-hidden="true"></i>
-                  <span>${isTopic7PoemTV1_(q) ? 'Cô đọc thơ' : 'Cô đọc bài'}</span>
+                  <span>${isTopic7Poem ? 'Cô đọc thơ' : 'Cô đọc bài'}</span>
                 </button>
               </div>
             </section>
@@ -6230,6 +6231,21 @@ const TV_MODULE_UI_CSS_ = `
 }
 @media(max-width:390px){
     #class1-vietnamese-runtime #question-box .tv7-answer-grid{grid-template-columns:minmax(0,1fr);gap:7px;}
+}
+
+/* Muc 7: chi tang chu va can giua cac bai tho, giu van xuoi can trai nhu cu. */
+#class1-vietnamese-runtime #question-box .tv7-passage-card--poem .tv7-passage-title{
+    font-size:23px; /* 21px + 2px */
+}
+#class1-vietnamese-runtime #question-box .tv7-passage-card--poem .tv7-passage-body{
+    width:max-content;max-width:100%;margin:0 auto;
+    font-size:22px; /* 20px + 2px */
+    text-align:center;
+}
+@media(max-width:767px){
+    #class1-vietnamese-runtime #question-box .tv7-passage-card--poem .tv7-passage-title{
+        font-size:22px; /* 20px + 2px */
+    }
 }
 
 /* Muc 11 / lục bát: text-only two-column riddle table, accessible responsive cards. */

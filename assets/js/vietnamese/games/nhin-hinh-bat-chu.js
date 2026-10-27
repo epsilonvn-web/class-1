@@ -107,7 +107,7 @@ function pwcEnsureStyles() {
       .pwc-track.pwc-danger{animation:pwcDanger .62s ease-in-out infinite}
       .pwc-stage-shake{animation:pwcStageShake .48s linear 1}
       .pwc-word.pwc-crash{z-index:40;pointer-events:none;animation:pwcCrash .65s ease-in forwards}
-      @media(max-width:640px){.pwc-emoji{min-height:108px}.pwc-target-image{width:108px;height:108px;border-radius:20px}.pwc-target-fallback{font-size:76px}.pwc-track{height:132px!important}.pwc-word button{font-size:14px!important;padding:.55rem .8rem!important}}
+      @media(max-width:640px){.pwc-emoji{min-height:108px}.pwc-target-image{width:108px;height:108px;border-radius:20px}.pwc-target-fallback{font-size:76px}.pwc-track{height:132px!important}.pwc-word button{font-size:20px!important;padding:.55rem .8rem!important}}
     `;
     document.head.appendChild(style);
 }
@@ -198,19 +198,19 @@ function startPictureWordCatchGame() {pwclifeCancelTimers_();
     const box = document.getElementById('game-play-container');
     if (!box) return;
     box.innerHTML = `
-      <div class="rounded-[28px] border-2 border-pink-200 bg-gradient-to-b from-sky-50 via-white to-rose-50 p-4 md:p-6 shadow-sm relative overflow-hidden text-center">
+      <div class="text-xl rounded-[28px] border-2 border-pink-200 bg-gradient-to-b from-sky-50 via-white to-rose-50 p-4 md:p-6 shadow-sm relative overflow-hidden text-center">
         <div class="absolute -left-5 -bottom-3 text-8xl opacity-10">🌈</div>
         <div class="absolute -right-5 top-0 text-8xl opacity-10">🎈</div>
         <div class="relative z-10">
           <div class="text-6xl md:text-7xl mb-2">👀 🖼️ 🔤</div>
           <h3 class="text-xl md:text-2xl font-black text-pink-600">Nhìn hình bắt chữ</h3>
-          <p class="text-sm md:text-base font-bold text-slate-600 mt-2 max-w-2xl mx-auto leading-relaxed">Nhìn hình thật nhanh, rồi chạm đúng từ đang chạy bên dưới trước khi từ đó chạm bức tường bên phải.</p>
-          <div class="grid grid-cols-3 gap-2 mt-4 text-xs md:text-sm font-black">
+          <p class="text-xl font-bold text-slate-600 mt-2 max-w-2xl mx-auto leading-relaxed">Nhìn hình thật nhanh, rồi chạm đúng từ đang chạy bên dưới trước khi từ đó chạm bức tường bên phải.</p>
+          <div class="grid grid-cols-3 gap-2 mt-4 text-xl font-black">
             <div class="bg-white border border-emerald-200 rounded-2xl p-3">✅ Đúng<br><span class="font-bold text-slate-500">+ điểm & pháo hoa</span></div>
             <div class="bg-white border border-amber-200 rounded-2xl p-3">⚡ Sai<br><span class="font-bold text-slate-500">Bíp bíp, chơi tiếp</span></div>
             <div class="bg-white border border-rose-200 rounded-2xl p-3">🧱 Chạm tường<br><span class="font-bold text-slate-500">Thua lượt chơi</span></div>
           </div>
-          <button id="pwc-start-btn" class="mt-5 px-7 py-3 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-black text-base shadow-md pastel-btn">🚀 Bắt đầu chơi</button>
+          <button id="pwc-start-btn" class="mt-5 px-7 py-3 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-black text-xl shadow-md pastel-btn">🚀 Bắt đầu chơi</button>
         </div>
       </div>`;
     document.getElementById('pwc-start-btn')?.addEventListener('click', pwcStartSession);
@@ -227,26 +227,26 @@ function pwcRenderStage() {
     const box = document.getElementById('game-play-container');
     if (!box) return;
     box.innerHTML = `
-      <div id="pwc-stage" class="pwc-stage rounded-[28px] border-2 border-pink-200 shadow-sm min-h-[500px] md:min-h-[535px] p-3 md:p-5">
+      <div id="pwc-stage" class="text-xl pwc-stage rounded-[28px] border-2 border-pink-200 shadow-sm min-h-[500px] md:min-h-[535px] p-3 md:p-5">
         <div class="pwc-cloud pwc-cloud-a top-10 left-[8%] text-5xl">☁️</div><div class="pwc-cloud pwc-cloud-b top-20 right-[10%] text-4xl">☁️</div>
-        <div class="pwc-sparkle top-[30%] left-[18%] text-xl">✨</div><div class="pwc-sparkle top-[34%] right-[19%] text-lg" style="animation-delay:.8s">⭐</div><div class="pwc-sparkle top-[16%] right-[32%] text-base" style="animation-delay:1.4s">✨</div>
-        <div class="relative z-10 flex items-center justify-between gap-2 flex-wrap text-xs md:text-sm font-black">
+        <div class="pwc-sparkle top-[30%] left-[18%] text-xl">✨</div><div class="pwc-sparkle top-[34%] right-[19%] text-xl" style="animation-delay:.8s">⭐</div><div class="pwc-sparkle top-[16%] right-[32%] text-xl" style="animation-delay:1.4s">✨</div>
+        <div class="relative z-10 flex items-center justify-between gap-2 flex-wrap text-xl font-black">
           <div class="flex gap-1.5"><span class="px-3 py-1 rounded-full bg-white/90 border border-pink-200 text-pink-700">👀 Lượt <span id="pwc-round">1</span></span><span class="px-3 py-1 rounded-full bg-white/90 border border-amber-200 text-amber-700">🔥 <span id="pwc-streak">0</span></span></div>
           <div class="flex gap-1.5"><span class="px-3 py-1 rounded-full bg-white/90 border border-emerald-200 text-emerald-700">⭐ <span id="pwc-score">0</span></span><span class="px-3 py-1 rounded-full bg-white/90 border border-purple-200 text-purple-700">🏆 <span id="pwc-best">0</span></span></div>
         </div>
 
         <div class="relative z-10 mt-4 text-center">
-          <div class="text-[11px] md:text-xs font-black text-slate-500 uppercase tracking-wider">Bé hãy tìm từ của hình này</div>
+          <div class="text-xl font-black text-slate-500 uppercase tracking-wider">Bé hãy tìm từ của hình này</div>
           <div id="pwc-target-emoji" class="pwc-emoji mt-1"><span class="pwc-target-fallback">🐰</span></div>
-          <div id="pwc-feedback" class="h-8 mt-1 flex items-center justify-center text-sm md:text-base font-black text-pink-600">Nhìn hình rồi chạm đúng từ nhé!</div>
+          <div id="pwc-feedback" class="min-h-8 mt-1 flex items-center justify-center text-xl font-black text-pink-600">Nhìn hình rồi chạm đúng từ nhé!</div>
         </div>
 
         <div class="relative z-10 mt-3">
-          <div class="flex items-center justify-between text-[10px] md:text-xs font-black text-slate-500 mb-1.5"><span>🏁 XUẤT PHÁT</span><span class="text-rose-500">BỨC TƯỜNG 🧱</span></div>
+          <div class="flex items-center justify-between text-xl font-black text-slate-500 mb-1.5"><span>🏁 XUẤT PHÁT</span><span class="text-rose-500">BỨC TƯỜNG 🧱</span></div>
           <div id="pwc-track" class="pwc-track rounded-2xl h-[150px] md:h-[166px]"></div>
         </div>
 
-        <div class="relative z-10 mt-3 text-center text-xs md:text-sm font-bold text-slate-500">💡 Từ đúng xuất hiện xen giữa các từ gây nhiễu. Càng chơi lâu, chữ chạy càng nhanh.</div>
+        <div class="relative z-10 mt-3 text-center text-xl font-bold text-slate-500">💡 Từ đúng xuất hiện xen giữa các từ gây nhiễu. Càng chơi lâu, chữ chạy càng nhanh.</div>
       </div>`;
 }
 
@@ -320,7 +320,7 @@ function pwcSpawnWord(word, roundToken) {
         'bg-sky-50 border-sky-300 text-sky-700'
     ];
     const cls = colorClasses[id % colorClasses.length];
-    item.innerHTML = `<button class="px-5 py-3 rounded-full border-2 ${cls} font-black text-base md:text-lg bg-white">${typeof escapeHtml === 'function' ? escapeHtml(word) : word}</button>`;
+    item.innerHTML = `<button class="px-5 py-3 rounded-full border-2 ${cls} font-black text-xl bg-white">${typeof escapeHtml === 'function' ? escapeHtml(word) : word}</button>`;
     track.appendChild(item);
     const width = Math.max(90, item.getBoundingClientRect().width || 120);
     const speed = Math.min(150, 72 + pwcRound * 4.8); // px/s
@@ -460,14 +460,14 @@ function pwcRenderGameOver() {
     if (!box) return;
     const roundsPassed = Math.max(0, pwcRound - 1);
     box.innerHTML = `
-      <div class="rounded-[28px] border-2 border-rose-200 bg-gradient-to-b from-rose-50 via-white to-amber-50 p-5 md:p-7 shadow-sm text-center relative overflow-hidden">
+      <div class="text-xl rounded-[28px] border-2 border-rose-200 bg-gradient-to-b from-rose-50 via-white to-amber-50 p-5 md:p-7 shadow-sm text-center relative overflow-hidden">
         <div class="text-7xl mb-2">🧱💥😵</div>
         <h3 class="text-xl md:text-2xl font-black text-rose-600">Chữ đã chạm tường!</h3>
-        <p class="text-sm font-bold text-slate-600 mt-2">Bé bắt đúng được <strong class="text-emerald-600">${roundsPassed}</strong> hình trước khi để từ đúng chạy mất.</p>
+        <p class="text-xl font-bold text-slate-600 mt-2">Bé bắt đúng được <strong class="text-emerald-600">${roundsPassed}</strong> hình trước khi để từ đúng chạy mất.</p>
         <div class="grid grid-cols-3 gap-2 mt-4 max-w-xl mx-auto">
-          <div class="bg-white border border-emerald-200 rounded-2xl p-3"><div class="text-2xl">⭐</div><div class="font-black text-emerald-700">${pwcScore}</div><div class="text-[11px] font-bold text-slate-400">Điểm</div></div>
-          <div class="bg-white border border-amber-200 rounded-2xl p-3"><div class="text-2xl">🔥</div><div class="font-black text-amber-700">${pwcBestStreak}</div><div class="text-[11px] font-bold text-slate-400">Combo tốt nhất</div></div>
-          <div class="bg-white border border-purple-200 rounded-2xl p-3"><div class="text-2xl">🖼️</div><div class="font-black text-purple-700">${roundsPassed}</div><div class="text-[11px] font-bold text-slate-400">Hình bắt được</div></div>
+          <div class="bg-white border border-emerald-200 rounded-2xl p-3"><div class="text-2xl">⭐</div><div class="font-black text-emerald-700">${pwcScore}</div><div class="text-xl font-bold text-slate-400">Điểm</div></div>
+          <div class="bg-white border border-amber-200 rounded-2xl p-3"><div class="text-2xl">🔥</div><div class="font-black text-amber-700">${pwcBestStreak}</div><div class="text-xl font-bold text-slate-400">Combo tốt nhất</div></div>
+          <div class="bg-white border border-purple-200 rounded-2xl p-3"><div class="text-2xl">🖼️</div><div class="font-black text-purple-700">${roundsPassed}</div><div class="text-xl font-bold text-slate-400">Hình bắt được</div></div>
         </div>
         <div class="mt-5 flex flex-col sm:flex-row gap-2 justify-center">
           <button id="pwc-retry" class="px-6 py-3 rounded-2xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-black shadow-md pastel-btn">🔄 Chơi lại</button>

@@ -118,14 +118,14 @@ function seRenderScene(){
   ]);
 
   box.innerHTML=`
-    <div class="relative overflow-hidden rounded-[28px] border-2 border-pink-200 bg-gradient-to-b from-sky-50 via-pink-50/60 to-emerald-50/60 p-3 md:p-4">
-      <div class="flex items-center justify-between gap-2 mb-2">
-        <div class="px-3 py-1.5 rounded-full bg-white/90 border border-pink-200 text-pink-600 font-black text-xs md:text-sm shrink-0">🔎 Lượt ${seRound}</div>
-        <div class="flex-1 text-center text-sm md:text-lg font-black text-teal-700 leading-tight px-1">Đồ vật nào <span class="text-rose-500">KHÔNG CÓ</span> trong bức tranh?</div>
-        <div class="flex gap-2 shrink-0">
-          <div class="px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-black text-xs md:text-sm">⭐ ${seScore}</div>
-          <div class="px-3 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-rose-600 font-black text-xs md:text-sm">🔥 x${seStreak}</div>
-          <div class="px-3 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-purple-600 font-black text-xs md:text-sm">🏆 ${seBest}</div>
+    <div class="text-xl relative overflow-hidden rounded-[28px] border-2 border-pink-200 bg-gradient-to-b from-sky-50 via-pink-50/60 to-emerald-50/60 p-3 md:p-4">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+        <div class="px-3 py-1.5 rounded-full bg-white/90 border border-pink-200 text-pink-600 font-black text-xl shrink-0">🔎 Lượt ${seRound}</div>
+        <div class="flex-1 text-center text-xl font-black text-teal-700 leading-tight px-1">Đồ vật nào <span class="text-rose-500">KHÔNG CÓ</span> trong bức tranh?</div>
+        <div class="flex flex-wrap gap-2 shrink-0">
+          <div class="px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-black text-xl">⭐ ${seScore}</div>
+          <div class="px-3 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-rose-600 font-black text-xl">🔥 x${seStreak}</div>
+          <div class="px-3 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-purple-600 font-black text-xl">🏆 ${seBest}</div>
         </div>
       </div>
 
@@ -134,7 +134,7 @@ function seRenderScene(){
           <img id="se-picture" src="${seCurrent.image}" alt="${seCurrent.name}"
             onerror="this.style.display='none';this.nextElementSibling.classList.remove('hidden')">
           <div class="hidden se-picture-fallback flex items-center justify-center text-6xl">🖼️</div>
-          <div class="absolute left-3 bottom-3 px-4 py-2 rounded-full bg-white/95 border border-pink-200 text-pink-600 text-base md:text-lg font-black shadow-sm">${seCurrent.name}</div>
+          <div class="absolute left-3 bottom-3 px-4 py-2 rounded-full bg-white/95 border border-pink-200 text-pink-600 text-xl font-black shadow-sm">${seCurrent.name}</div>
         </div>
         <div class="se-side">
           <div id="se-options">
@@ -145,11 +145,11 @@ function seRenderScene(){
                   'bg-sky-50 border-sky-200 hover:bg-sky-100',
                   'bg-amber-50 border-amber-200 hover:bg-amber-100',
                   'bg-emerald-50 border-emerald-200 hover:bg-emerald-100'
-                ][i]} text-slate-700 font-black text-sm md:text-base shadow-sm transition-all">
+                ][i]} text-slate-700 font-black text-xl shadow-sm transition-all">
                 ${o.text}
               </button>`).join('')}
           </div>
-          <div id="se-feedback" class="min-h-[28px] mt-3 text-center text-xs md:text-sm font-black text-slate-500">
+          <div id="se-feedback" class="min-h-[28px] mt-3 text-center text-xl font-black text-slate-500">
             👀 4 đáp án đều cùng chủ đề, bé nhìn thật kỹ nhé!
           </div>
         </div>

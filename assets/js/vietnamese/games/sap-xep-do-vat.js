@@ -187,15 +187,15 @@ function startObjectSortingGame(){sxlifeCancelTimers_();
   sxRound=0;sxScore=0;sxStreak=0;sxBestStreak=0;sxLocked=false;sxSelectedGood=new Set();sxCurrentGood=[];sxCurrentOdd='';sxSceneDeck=[];
   const box=document.getElementById('game-play-container'); if(!box) return;
   box.innerHTML=`
-    <div class="sx-stage rounded-[28px] border-2 border-pink-100 p-2.5 md:p-3 min-h-[430px]">
+    <div class="text-xl sx-stage rounded-[28px] border-2 border-pink-100 p-2.5 md:p-3 min-h-[430px]">
       <div class="sx-cloud" style="top:18px;left:-70px;animation-delay:-5s">☁️</div>
       <div class="sx-cloud" style="top:70px;left:-120px;animation-delay:-11s;font-size:30px">☁️</div>
       <div class="sx-bird" style="top:58px;left:-70px;animation-delay:-3s">🕊️</div>
       <div class="sx-leaf" style="left:12%;animation-delay:-2s">🍂</div><div class="sx-leaf" style="left:74%;animation-delay:-5s">🍁</div>
       <div class="relative z-10">
         <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-          <div class="text-sm md:text-base font-black text-purple-700">🧺 Chọn 3 đồ vật đúng với bức tranh!</div>
-          <div class="flex gap-2 text-xs md:text-sm font-black">
+          <div class="text-xl font-black text-purple-700">🧺 Chọn 3 đồ vật đúng với bức tranh!</div>
+          <div class="flex gap-2 text-xl font-black">
             <span class="px-3 py-1.5 rounded-full bg-amber-100 text-amber-700 border border-amber-200">⭐ <span id="sx-score">0</span></span>
             <span class="px-3 py-1.5 rounded-full bg-rose-100 text-rose-700 border border-rose-200">🔥 x<span id="sx-streak">0</span></span>
             <span class="px-3 py-1.5 rounded-full bg-sky-100 text-sky-700 border border-sky-200">🏆 <span id="sx-best">0</span></span>
@@ -219,7 +219,7 @@ function sxNextRound(){
       <div id="sx-scene-card" class="sx-scene-card">
         <img class="sx-scene-img" src="${data.scene.image}" alt="${data.scene.label}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="sx-scene-fallback" style="display:none">${data.scene.emoji}</div>
-        <div class="absolute left-3 bottom-3 px-4 py-2 rounded-full bg-white/95 border border-pink-200 text-pink-700 font-black text-base md:text-lg shadow-sm">${data.scene.label}</div>
+        <div class="absolute left-3 bottom-3 px-4 py-2 rounded-full bg-white/95 border border-pink-200 text-pink-700 font-black text-xl shadow-sm">${data.scene.label}</div>
       </div>
       <div class="sx-options-column">
         ${data.options.map((word,idx)=>{
@@ -229,7 +229,7 @@ function sxNextRound(){
             'bg-amber-50/80 border-amber-200 hover:bg-amber-100',
             'bg-emerald-50/80 border-emerald-200 hover:bg-emerald-100'
           ][idx%4];
-          return `<button class="sx-option px-3 py-2 md:px-4 md:py-2.5 rounded-2xl border-2 ${pastel} text-slate-700 font-black text-sm md:text-base flex items-center justify-center gap-2.5 shadow-sm" onclick="sxChooseObject(this,'${word.replace(/'/g,"\'")}')"><span class="text-2xl md:text-3xl shrink-0">${SX_ITEM_EMOJI[word]||'📦'}</span><span class="leading-tight">${word}</span></button>`;
+          return `<button class="sx-option px-3 py-2 md:px-4 md:py-2.5 rounded-2xl border-2 ${pastel} text-slate-700 font-black text-xl flex items-center justify-center gap-2.5 shadow-sm" onclick="sxChooseObject(this,'${word.replace(/'/g,"\'")}')"><span class="text-2xl md:text-3xl shrink-0">${SX_ITEM_EMOJI[word]||'📦'}</span><span class="leading-tight">${word}</span></button>`;
         }).join('')}
       </div>
     </div>`;
@@ -256,7 +256,7 @@ function sxChooseObject(btn,word){
   sxScore+=10;
   btn.classList.add('sx-good-picked');
   btn.disabled=true;
-  btn.innerHTML += '<span class="text-emerald-600 text-xs font-black">✓ Đúng</span>';
+  btn.innerHTML += '<span class="text-emerald-600 text-xl font-black">✓ Đúng</span>';
   sxCorrectSound();
 
   // Doc ro ten do vat vua duoc chon.

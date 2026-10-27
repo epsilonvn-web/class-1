@@ -92,16 +92,16 @@ function maRender(){
     'bg-emerald-50 border-emerald-200 hover:bg-emerald-100'
   ];
   box.innerHTML=`
-    <div class="rounded-[28px] border-2 border-pink-100 bg-gradient-to-b from-sky-50/70 via-pink-50/50 to-emerald-50/60 p-2.5 md:p-3">
-      <div class="flex items-center justify-between gap-2 mb-2">
-        <div class="flex items-center gap-2 min-w-0">
-          <span class="px-3 py-1.5 rounded-full bg-white/90 border border-pink-200 text-pink-600 font-black text-xs md:text-sm shrink-0">🔎 Lượt ${maRound}</span>
-          <div class="font-black text-teal-700 text-sm md:text-lg leading-tight truncate">Con vật nào <span class="text-rose-500">KHÔNG CÓ</span> trong bức hình?</div>
+    <div class="text-xl rounded-[28px] border-2 border-pink-100 bg-gradient-to-b from-sky-50/70 via-pink-50/50 to-emerald-50/60 p-2.5 md:p-3">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+        <div class="flex flex-wrap items-center gap-2 min-w-0 flex-1">
+          <span class="px-3 py-1.5 rounded-full bg-white/90 border border-pink-200 text-pink-600 font-black text-xl shrink-0">🔎 Lượt ${maRound}</span>
+          <div class="font-black text-teal-700 text-xl leading-tight">Con vật nào <span class="text-rose-500">KHÔNG CÓ</span> trong bức hình?</div>
         </div>
         <div class="flex gap-1.5 shrink-0">
-          <span class="px-2.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-black text-xs md:text-sm">⭐ ${maScore}</span>
-          <span class="px-2.5 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-rose-600 font-black text-xs md:text-sm">🔥 x${maStreak}</span>
-          <span class="px-2.5 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-purple-600 font-black text-xs md:text-sm">🏆 ${maBest}</span>
+          <span class="px-2.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-black text-xl">⭐ ${maScore}</span>
+          <span class="px-2.5 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-rose-600 font-black text-xl">🔥 x${maStreak}</span>
+          <span class="px-2.5 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-purple-600 font-black text-xl">🏆 ${maBest}</span>
         </div>
       </div>
       <div class="ma-main-layout">
@@ -110,8 +110,8 @@ function maRender(){
           <div class="hidden absolute inset-0 flex items-center justify-center text-7xl">🖼️</div>
         </div>
         <div class="ma-options">
-          ${maQuestion.options.map((a,i)=>`<button class="ma-option px-4 py-2.5 rounded-2xl border-2 ${palettes[i]} text-slate-700 font-black text-sm md:text-base shadow-sm transition-all" data-animal="${a.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" onclick="maChoose(this,this.dataset.animal)">${a}</button>`).join('')}
-          <div id="ma-feedback" class="min-h-[28px] flex items-center justify-center text-center text-xs md:text-sm font-black text-slate-500">3 con có trong tranh + 1 con không có nhưng vẫn cùng chủ đề. Bé nhìn thật kỹ nhé!</div>
+          ${maQuestion.options.map((a,i)=>`<button class="ma-option px-4 py-2.5 rounded-2xl border-2 ${palettes[i]} text-slate-700 font-black text-xl shadow-sm transition-all" data-animal="${a.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" onclick="maChoose(this,this.dataset.animal)">${a}</button>`).join('')}
+          <div id="ma-feedback" class="min-h-[28px] flex items-center justify-center text-center text-xl font-black text-slate-500">3 con có trong tranh + 1 con không có nhưng vẫn cùng chủ đề. Bé nhìn thật kỹ nhé!</div>
         </div>
       </div>
     </div>`;

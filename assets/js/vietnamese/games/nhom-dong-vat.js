@@ -100,16 +100,16 @@ function agRender(){
     'bg-emerald-50 border-emerald-200 hover:bg-emerald-100'
   ];
   box.innerHTML=`
-    <div class="rounded-[28px] border-2 border-pink-100 bg-gradient-to-b from-sky-50/70 via-pink-50/50 to-emerald-50/60 p-2.5 md:p-3">
-      <div class="flex items-center justify-between gap-2 mb-2">
-        <div class="flex items-center gap-2 min-w-0">
-          <span class="px-3 py-1.5 rounded-full bg-white/90 border border-pink-200 text-pink-600 font-black text-xs md:text-sm shrink-0">🐾 Lượt ${agRound}</span>
-          <div class="font-black text-teal-700 text-sm md:text-lg leading-tight truncate">Bức tranh thuộc nhóm nào?</div>
+    <div class="text-xl rounded-[28px] border-2 border-pink-100 bg-gradient-to-b from-sky-50/70 via-pink-50/50 to-emerald-50/60 p-2.5 md:p-3">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+        <div class="flex flex-wrap items-center gap-2 min-w-0 flex-1">
+          <span class="px-3 py-1.5 rounded-full bg-white/90 border border-pink-200 text-pink-600 font-black text-xl shrink-0">🐾 Lượt ${agRound}</span>
+          <div class="font-black text-teal-700 text-xl leading-tight">Bức tranh thuộc nhóm nào?</div>
         </div>
         <div class="flex gap-1.5 shrink-0">
-          <span class="px-2.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-black text-xs md:text-sm">⭐ ${agScore}</span>
-          <span class="px-2.5 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-rose-600 font-black text-xs md:text-sm">🔥 x${agStreak}</span>
-          <span class="px-2.5 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-purple-600 font-black text-xs md:text-sm">🏆 ${agBest}</span>
+          <span class="px-2.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-black text-xl">⭐ ${agScore}</span>
+          <span class="px-2.5 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-rose-600 font-black text-xl">🔥 x${agStreak}</span>
+          <span class="px-2.5 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-purple-600 font-black text-xl">🏆 ${agBest}</span>
         </div>
       </div>
       <div class="ag-main-layout">
@@ -118,8 +118,8 @@ function agRender(){
           <div class="hidden absolute inset-0 flex items-center justify-center text-7xl">🖼️</div>
         </div>
         <div class="ag-options">
-          ${options.map((s,i)=>`<button class="ag-option px-4 py-2.5 rounded-2xl border-2 ${palettes[i]} text-slate-700 font-black text-sm md:text-base shadow-sm transition-all" onclick="agChoose(this,'${s.id}')">${s.title}</button>`).join('')}
-          <div id="ag-feedback" class="min-h-[28px] flex items-center justify-center text-center text-xs md:text-sm font-black text-slate-500">Tên đáp án bám đúng tên nhóm tranh Notebook đã đặt. Bé quan sát thật kỹ nhé!</div>
+          ${options.map((s,i)=>`<button class="ag-option px-4 py-2.5 rounded-2xl border-2 ${palettes[i]} text-slate-700 font-black text-xl shadow-sm transition-all" onclick="agChoose(this,'${s.id}')">${s.title}</button>`).join('')}
+          <div id="ag-feedback" class="min-h-[28px] flex items-center justify-center text-center text-xl font-black text-slate-500">Tên đáp án bám đúng tên nhóm tranh Notebook đã đặt. Bé quan sát thật kỹ nhé!</div>
         </div>
       </div>
     </div>`;

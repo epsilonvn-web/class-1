@@ -156,11 +156,11 @@ function petEnsureStyles() {
     .pet-animal-wrap{position:relative;width:100%;aspect-ratio:1/1;display:block;animation:petFloat 2.4s ease-in-out infinite;overflow:hidden}
     .pet-animal-image{display:block;width:100%;height:100%;aspect-ratio:1/1;object-fit:cover;border:0;border-radius:0;background:transparent;padding:0;box-shadow:none;user-select:none;pointer-events:none}
     .pet-animal-fallback{width:100%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:168px;line-height:1;filter:drop-shadow(0 12px 9px rgba(15,23,42,.13))}
-    .pet-scene-label{position:absolute;left:12px;bottom:12px;z-index:5;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.95);border:1px solid #fbcfe8;color:#db2777;font-weight:900;font-size:16px;box-shadow:0 4px 12px rgba(15,23,42,.08)}
+    .pet-scene-label{position:absolute;left:12px;bottom:12px;z-index:5;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.95);border:1px solid #fbcfe8;color:#db2777;font-weight:900;font-size:20px;box-shadow:0 4px 12px rgba(15,23,42,.08)}
     #pet-food-grid{display:grid;grid-template-columns:1fr;gap:10px;width:100%}
     .pet-food-btn{min-height:58px!important;display:flex;align-items:center;justify-content:flex-start;gap:14px;text-align:left}
     .pet-food-btn .pet-food-emoji{font-size:32px;line-height:1;flex:0 0 auto}
-    .pet-food-btn .pet-food-word{font-size:16px;line-height:1.2}
+    .pet-food-btn .pet-food-word{font-size:20px;line-height:1.2}
     .pet-animal-happy{animation:petHappy .62s ease-out 1!important}
     .pet-animal-sad{animation:petSad .35s linear 1!important}
     .pet-food-btn{transition:transform .14s,box-shadow .14s,filter .14s;touch-action:manipulation;user-select:none}
@@ -177,7 +177,7 @@ function petEnsureStyles() {
     .pet-bird{position:absolute;left:0;pointer-events:none;z-index:1;opacity:.72;animation:petBirdFly 12s linear infinite;filter:drop-shadow(0 3px 4px rgba(15,23,42,.08))}
     .pet-leaf{position:absolute;top:-45px;pointer-events:none;z-index:1;opacity:.72;animation:petLeafFall 8s linear infinite;filter:drop-shadow(0 3px 3px rgba(15,23,42,.06))}
     @media(max-width:900px){.pet-main-layout{grid-template-columns:350px minmax(0,1fr);gap:10px}.pet-animal-fallback{font-size:145px}.pet-food-btn{min-height:52px!important}}
-    @media(max-width:700px){.pet-main-layout{grid-template-columns:1fr}.pet-animal-wrap{max-width:420px;width:100%;justify-self:start}.pet-animal-fallback{font-size:100px}#pet-food-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.pet-food-btn{min-height:48px!important;justify-content:center;text-align:center;gap:8px}.pet-food-btn .pet-food-emoji{font-size:28px}.pet-food-btn .pet-food-word{font-size:14px}.pet-scene-label{font-size:14px;padding:6px 11px}}
+    @media(max-width:700px){.pet-main-layout{grid-template-columns:1fr}.pet-animal-wrap{max-width:420px;width:100%;justify-self:start}.pet-animal-fallback{font-size:100px}#pet-food-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.pet-food-btn{min-height:48px!important;justify-content:center;text-align:center;gap:8px}.pet-food-btn .pet-food-emoji{font-size:28px}.pet-food-btn .pet-food-word{font-size:20px}.pet-scene-label{font-size:20px;padding:6px 11px}}
   `;
   document.head.appendChild(style);
 }
@@ -291,26 +291,26 @@ function startPetFeedingGame() {petlifeCancelTimers_();
   const box = document.getElementById('game-play-container');
   if (!box) return;
   box.innerHTML = `
-    <div class="pet-stage rounded-[28px] border-2 border-pink-200 shadow-sm p-3 md:p-4">
+    <div class="text-xl pet-stage rounded-[28px] border-2 border-pink-200 shadow-sm p-3 md:p-4">
       <div class="pet-cloud pet-cloud-a text-5xl" style="left:7%;top:9%">☁️</div>
       <div class="pet-cloud pet-cloud-b text-4xl" style="right:8%;top:15%">☁️</div>
       <div class="pet-sparkle text-xl" style="left:18%;top:34%">✨</div>
-      <div class="pet-sparkle text-lg" style="right:19%;top:31%;animation-delay:.8s">⭐</div>
+      <div class="pet-sparkle text-xl" style="right:19%;top:31%;animation-delay:.8s">⭐</div>
       <div class="relative z-10">
-        <div class="flex items-center justify-between gap-2 mb-2">
-          <div class="px-3 py-1.5 bg-white/90 border border-pink-200 rounded-full text-xs md:text-sm font-black text-pink-600 shrink-0">🐾 Lượt <span id="pet-round">1</span></div>
-          <div id="pet-question" class="flex-1 text-center text-sm md:text-lg font-black text-pink-600 leading-tight px-1"></div>
-          <div class="flex gap-2 shrink-0">
-            <span class="px-3 py-1.5 bg-white/90 border border-amber-200 rounded-full text-xs md:text-sm font-black text-amber-600">🔥 <span id="pet-streak">0</span></span>
-            <span class="px-3 py-1.5 bg-white/90 border border-emerald-200 rounded-full text-xs md:text-sm font-black text-emerald-600">⭐ <span id="pet-score">0</span></span>
-            <span class="px-3 py-1.5 bg-white/90 border border-purple-200 rounded-full text-xs md:text-sm font-black text-purple-600">🏆 <span id="pet-best">0</span></span>
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+          <div class="px-3 py-1.5 bg-white/90 border border-pink-200 rounded-full text-xl font-black text-pink-600 shrink-0">🐾 Lượt <span id="pet-round">1</span></div>
+          <div id="pet-question" class="flex-1 text-center text-xl font-black text-pink-600 leading-tight px-1"></div>
+          <div class="flex flex-wrap gap-2 shrink-0">
+            <span class="px-3 py-1.5 bg-white/90 border border-amber-200 rounded-full text-xl font-black text-amber-600">🔥 <span id="pet-streak">0</span></span>
+            <span class="px-3 py-1.5 bg-white/90 border border-emerald-200 rounded-full text-xl font-black text-emerald-600">⭐ <span id="pet-score">0</span></span>
+            <span class="px-3 py-1.5 bg-white/90 border border-purple-200 rounded-full text-xl font-black text-purple-600">🏆 <span id="pet-best">0</span></span>
           </div>
         </div>
         <div class="pet-main-layout">
           <div class="pet-visual-panel"><div id="pet-animal-zone"></div></div>
           <div class="pet-answer-panel">
             <div id="pet-food-grid"></div>
-            <div id="pet-feedback" class="text-center mt-3 min-h-[28px] text-xs md:text-sm font-black text-slate-500">🍽️ Bé chọn món ăn phù hợp nhé!</div>
+            <div id="pet-feedback" class="text-center mt-3 min-h-[28px] text-xl font-black text-slate-500">🍽️ Bé chọn món ăn phù hợp nhé!</div>
           </div>
         </div>
       </div>
